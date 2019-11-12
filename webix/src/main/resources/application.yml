@@ -1,0 +1,9 @@
+micronaut:
+  application:
+    name: webix
+  server:
+    port: 8079
+
+---
+assets:
+  mapping: assets

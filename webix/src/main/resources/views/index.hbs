@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home9</title>
+  {{> views/includes/header}}
+</head>
+<body>
+<h1>Hello</h1>
+{{#if loggedIn}}
+  <form action="logout" method="POST">
+    <input type="submit" value="Logout"/>
+  </form>
+{{else}}
+  <p><a href="/login/auth">Login</a></p>
+{{/if}}
+test2 {{someText}} {{loggedIn}} {{username}} <br/>
+
+<div id="w"></div>
+<script>
+  var form3 = [
+    {
+      view: "text", value: '{{username}}', id: "uName", name: "uName", required: true, label: "User Name",
+      labelAlign: 'right', labelWidth: 200, inputWidth: 350, attributes: {maxlength: 10, id: "userName"}
+    },
+    {view: "text", type: 'password', value: '123pass', label: "Passwoooooord", labelAlign: 'right', labelWidth: 200},
+    {
+      margin: 5, cols: [
+        {view: "button", value: "Login", type: "form", click: "console.log('clicked');"},
+        {view: "button", value: "Cancel"}
+      ]
+    }
+  ];
+
+  webix.ui({
+    container: 'w',
+    type: "space", margin: 30, cols: [
+      {view: "form", scroll: false, width: 400, elements: form3}
+    ]
+  });
+</script>
+
+<h2>Task Menu</h2>
+<ul>
+  <li><a href="/sample/extension/read">Read</a></li>
+  <li><a href="/sample/extension/test">Test</a></li>
+  <li><a href="/sample/dashboard">Dashboard</a></li>
+</ul>
+</body>
+</html>
+

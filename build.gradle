@@ -1,0 +1,27 @@
+apply plugin: 'groovy'
+
+group "org.simplemes"
+//version "1.0"
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+  jcenter()
+}
+
+task cleanAll {
+  dependsOn gradle.includedBuild('webix').task(':clean')
+}
+
+task testAll {
+  dependsOn gradle.includedBuild('webix').task(':test')
+}
+
+task assembleAll {
+  dependsOn gradle.includedBuild('webix').task(':assemble')
+}
+
+task bintrayUploadAll {
+  dependsOn gradle.includedBuild('webix').task(':bintrayUpload')
+}
+

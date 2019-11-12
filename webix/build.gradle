@@ -1,0 +1,167 @@
+buildscript {
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+  }
+}
+
+plugins {
+  id "application"
+  id "groovy"
+  id "io.spring.dependency-management" version "1.0.6.RELEASE"
+  id 'maven-publish'
+  id "com.jfrog.bintray" version "1.8.4"
+  id "com.bertramlabs.asset-pipeline" version "3.0.6"
+}
+
+version "6.0.9"
+group "org.simplemes"
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+  jcenter()
+}
+
+dependencyManagement {
+  imports {
+    mavenBom "io.micronaut:micronaut-bom:${micronautBomVersion}"
+  }
+}
+
+dependencies {
+  compileOnly "io.micronaut:micronaut-http-client"
+  compileOnly "io.micronaut:micronaut-http-server-netty"
+  compileOnly "io.micronaut:micronaut-runtime-groovy"
+  compileOnly "io.micronaut:micronaut-validation"
+  compileOnly "ch.qos.logback:logback-classic:1.2.3"
+  compileOnly "io.micronaut:micronaut-inject-groovy"
+  compileOnly("org.spockframework:spock-core") {
+    exclude group: "org.codehaus.groovy", module: "groovy-all"
+  }
+
+  // Changes from std micronaut build.gradle
+  compileOnly  "io.micronaut:micronaut-views"
+  testImplementation  "com.github.jknack:handlebars:4.1.0"
+  testImplementation  ('com.bertramlabs.plugins:asset-pipeline-micronaut:3.0.6') {
+    exclude group: "io.micronaut", module: "http-server-netty"
+  }
+
+  testImplementation("org.gebish:geb-spock:2.1") {
+    exclude group: "org.codehaus.groovy", module: "groovy-all"
+  }
+  testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:3.6.0"
+  testImplementation "org.seleniumhq.selenium:selenium-firefox-driver:3.6.0"
+  testImplementation "org.seleniumhq.selenium:selenium-support:3.6.0"
+  testImplementation "org.seleniumhq.selenium:selenium-api:3.6.0"
+  testImplementation "io.micronaut:micronaut-inject-java"
+  testImplementation "org.codehaus.groovy:groovy-templates" // Added for Groovydoc
+}
+
+assets {
+  maxThreads = 4
+  packagePlugin=false  // Can't use Grails plugin scheme here.
+}
+
+run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')
+
+mainClassName = "webix.Application"
+
+groovydoc {
+  destinationDir = new File("${project.docsDir}/html5/groovydoc")
+}
+
+// Local Tasks
+// Remove some sample/test files from the published jar.
+jar {
+  exclude "logback.xml"
+  exclude "/webix/Application.class"
+  exclude "application.yml"
+  exclude "**/*.class"
+  exclude "/views/**"
+}
+
+task sourcesJar(type: Jar, dependsOn: classes) {
+  classifier 'sources'
+  from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+  classifier 'javadoc'
+  from groovydoc.destinationDir
+}
+
+artifacts {
+  archives sourcesJar
+  archives javadocJar
+}
+
+
+def pomConfig = {
+  licenses {
+    license {
+      name "GNU GPL 3.0"
+      url "http://www.webix.com/"
+      distribution "repo"
+    }
+  }
+  developers {
+    developer {
+      id "mphouston"
+      //name "Mike Houston"
+      email "dev@simplemes.org"
+    }
+  }
+
+  scm {
+    url "https://github.com/simplemes/simplemes-core"
+  }
+}
+
+publishing {
+  publications {
+    mavenPublication(MavenPublication) {
+      from components.java
+      artifact sourcesJar {
+        classifier "sources"
+      }
+      artifact javadocJar {
+        classifier "javadoc"
+      }
+      groupId 'org.simplemes'
+      artifactId 'webix'
+      version '6.0.9'
+      pom.withXml {
+        def root = asNode()
+        root.appendNode('description', 'Repackaged Webix Open Source library for micronaut and asset pipeline')
+        root.appendNode('name', 'Webix Library for SimpleMES Modules')
+        root.appendNode('url', 'https://github.com/simplemes/simplemes-core')
+        root.children().last() + pomConfig
+      }
+    }
+  }
+}
+
+
+bintray {
+  user = System.getProperty('bintray_user')
+  key = System.getProperty('bintray_key')
+  publications = ['mavenPublication']
+
+  pkg {
+    repo = 'simplemes-core'
+    name = 'webix'
+    //userOrg = 'simplemes.org'
+    licenses = ['GPL-3.0']
+    vcsUrl = 'https://github.com/simplemes/simplemes-core.git'
+    version {
+      name = '6.0.9'
+      desc = 'Repackaged Open Source Webix library for SimpleMES/Micronaut/Asset Pipeline'
+      released  = new Date()
+    }
+  }
+
+}
+
+
