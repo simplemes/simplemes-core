@@ -15,7 +15,7 @@ plugins {
   id "com.bertramlabs.asset-pipeline" version "3.0.6"
 }
 
-version "6.0.9"
+version "6.0.0"
 group "org.simplemes"
 
 repositories {
@@ -59,6 +59,9 @@ dependencies {
   testImplementation "org.codehaus.groovy:groovy-templates" // Added for Groovydoc
 }
 
+// Common tasks from the overall common.gradle file provides: bintray,
+apply from: "../gradle/common.gradle"
+
 assets {
   maxThreads = 4
   packagePlugin=false  // Can't use Grails plugin scheme here.
@@ -98,27 +101,7 @@ artifacts {
 }
 
 
-def pomConfig = {
-  licenses {
-    license {
-      name "GNU GPL 3.0"
-      url "http://www.webix.com/"
-      distribution "repo"
-    }
-  }
-  developers {
-    developer {
-      id "mphouston"
-      //name "Mike Houston"
-      email "dev@simplemes.org"
-    }
-  }
-
-  scm {
-    url "https://github.com/simplemes/simplemes-core"
-  }
-}
-
+println "project = ${project.version}, repo = ${bintrayRepoName}, module = ${moduleName}"
 publishing {
   publications {
     mavenPublication(MavenPublication) {
@@ -131,37 +114,16 @@ publishing {
       }
       groupId 'org.simplemes'
       artifactId 'webix'
-      version '6.0.9'
+      version project.version
       pom.withXml {
         def root = asNode()
-        root.appendNode('description', 'Repackaged Webix Open Source library for micronaut and asset pipeline')
+        root.appendNode('description', moduleDescription)
         root.appendNode('name', 'Webix Library for SimpleMES Modules')
         root.appendNode('url', 'https://github.com/simplemes/simplemes-core')
         root.children().last() + pomConfig
       }
     }
   }
-}
-
-
-bintray {
-  user = System.getProperty('bintray_user')
-  key = System.getProperty('bintray_key')
-  publications = ['mavenPublication']
-
-  pkg {
-    repo = 'simplemes-core'
-    name = 'webix'
-    //userOrg = 'simplemes.org'
-    licenses = ['GPL-3.0']
-    vcsUrl = 'https://github.com/simplemes/simplemes-core.git'
-    version {
-      name = '6.0.9'
-      desc = 'Repackaged Open Source Webix library for SimpleMES/Micronaut/Asset Pipeline'
-      released  = new Date()
-    }
-  }
-
 }
 
 

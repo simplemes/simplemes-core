@@ -1,0 +1,61 @@
+/*
+  Defines common gradle settings, properties and actions used by most builds.
+ */
+println "in common setup ${System.getProperty('user.dir')}"
+
+// bintray-related actions
+project.ext.bintrayRepoName = 'simplemes-core'
+project.ext.bintrayUser = 'simplemes'
+
+
+// Common targets for the build process.
+project.ext.pomConfig = {
+  licenses {
+    license {
+      name "GNU GPL 3.0"
+      url "http://www.webix.com/"
+      distribution "repo"
+    }
+  }
+  developers {
+    developer {
+      id "mphoustonX"
+      name "Mike Houston"
+      email "dev@simplemes.org"
+    }
+  }
+
+  scm {
+    url "https://github.com/simplemes/simplemes-core"
+  }
+}
+
+
+
+
+// See https://github.com/bintray/gradle-bintray-plugin#Plugin_DSL for syntax.
+bintray {
+  user = bintrayUser
+  key = System.getProperty('bintray_key')
+  publications = ['mavenPublication']
+
+  dryRun = false //[Default: false] Whether to run this as dry-run, without deploying
+  publish = false //[Default: false] Whether version should be auto published after an upload
+  override = false //[Default: false] Whether to override version artifacts already published
+
+  pkg {
+    repo = bintrayRepoName
+    name = moduleName
+    //userOrg = 'simplemes.org'
+    licenses = ['GPL-3.0']
+    vcsUrl = 'https://github.com/simplemes/simplemes-core.git'
+    version {
+      name = project.version
+      desc = moduleDescription
+      released  = new Date()
+    }
+  }
+
+}
+
+

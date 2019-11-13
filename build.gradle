@@ -1,3 +1,9 @@
+/*
+  A composite build that is used to simplify CI/CD actions when the repository changes.
+  Provides cleanAll, buildAll, etc tasks that process through all tasks.
+ */
+
+
 apply plugin: 'groovy'
 
 group "org.simplemes"
@@ -9,16 +15,27 @@ repositories {
   jcenter()
 }
 
+/*
+  Some tasks that apply to all sub-projects in this composite build.
+  Update gradle.properties in the top-level directory to change the sub-projects that are processed
+  in each of these elements.
+ */
 task cleanAll {
-  dependsOn gradle.includedBuild('webix').task(':clean')
+  includedBuilds.tokenize().each { buildName ->
+    dependsOn gradle.includedBuild(buildName).task(':clean')
+  }
 }
 
 task testAll {
-  dependsOn gradle.includedBuild('webix').task(':test')
+  includedBuilds.tokenize().each { buildName ->
+    dependsOn gradle.includedBuild(buildName).task(':test')
+  }
 }
 
 task assembleAll {
-  dependsOn gradle.includedBuild('webix').task(':assemble')
+  includedBuilds.tokenize().each { buildName ->
+    dependsOn gradle.includedBuild(buildName).task(':assemble')
+  }
 }
 
 task bintrayUploadAll {
