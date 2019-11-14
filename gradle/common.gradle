@@ -1,14 +1,47 @@
 /*
   Defines common gradle settings, properties and actions used by most builds.
  */
-println "in common setup ${System.getProperty('user.dir')}"
 
-// bintray-related actions
+
+
+// bintray-related properties, common to all modules.
 project.ext.bintrayRepoName = 'simplemes-core'
 project.ext.bintrayUser = 'simplemes'
 
+// Load the parent composite build's properties, as override for the main settings.
+def compositePropFile = new File("../gradle.properties")
+if (compositePropFile.exists()) {
+  Properties props = new Properties()
+  InputStream ins = new FileInputStream(compositePropFile)
+  props.load(ins)
+  ins.close()
+  props.each {k,v ->
+    logger.info("Using property '$k' to '$v' from $compositePropFile")
+    try {
+      project.setProperty(k,v)
+    } catch (Exception ignored) {
+      logger.info("Could not override property '$k' to '$v' from $compositePropFile")
+    }
+  }
+}
 
-// Common targets for the build process.
+println "in common setup, module = ${moduleName}, version = ${project.version}, micronaut = ${micronautBomVersion}"
+
+
+
+assets {
+  maxThreads = 4
+  packagePlugin=false  // Can't use Grails plugin scheme here.
+}
+
+run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')
+
+groovydoc {
+  destinationDir = new File("${project.docsDir}/html5/groovydoc")
+}
+
+
+// Module publishing task setup.
 project.ext.pomConfig = {
   licenses {
     license {
@@ -19,7 +52,7 @@ project.ext.pomConfig = {
   }
   developers {
     developer {
-      id "mphoustonX"
+      id "mphouston"
       name "Mike Houston"
       email "dev@simplemes.org"
     }
@@ -31,8 +64,47 @@ project.ext.pomConfig = {
 }
 
 
+task sourcesJar(type: Jar, dependsOn: classes) {
+  classifier 'sources'
+  from sourceSets.main.allSource
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+  classifier 'javadoc'
+  from groovydoc.destinationDir
+}
+
+artifacts {
+  archives sourcesJar
+  archives javadocJar
+}
+
+publishing {
+  publications {
+    mavenPublication(MavenPublication) {
+      from components.java
+      artifact sourcesJar {
+        classifier "sources"
+      }
+      artifact javadocJar {
+        classifier "javadoc"
+      }
+      groupId 'org.simplemes'
+      artifactId moduleName
+      version project.version
+      pom.withXml {
+        def root = asNode()
+        root.appendNode('description', moduleDescription)
+        root.appendNode('name', moduleDescription)
+        root.appendNode('url', 'https://github.com/simplemes/simplemes-core')
+        root.children().last() + pomConfig
+      }
+    }
+  }
+}
 
 
+// Bintray upload setup
 // See https://github.com/bintray/gradle-bintray-plugin#Plugin_DSL for syntax.
 bintray {
   user = bintrayUser

@@ -11,5 +11,9 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Upload with Gradle
-        run: ./gradlew cleanAll bintrayUploadAll -Dbintray_key=${{ secrets.bintray_key }}
+      - name: Build
+        run: ./gradlew cleanAll buildAll
+      - name: Test
+        run: ./gradlew testAll
+      - name: Upload
+        run: ./gradlew bintrayUploadAll -Dbintray_key=${{ secrets.bintray_key }}

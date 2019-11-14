@@ -24,6 +24,11 @@ repositories {
   jcenter()
 }
 
+// Common tasks from the overall common.gradle file provides: bintrayUpload, maven artifact creation.
+apply from: "../gradle/common.gradle"
+
+
+
 dependencyManagement {
   imports {
     mavenBom "io.micronaut:micronaut-bom:${micronautBomVersion}"
@@ -35,7 +40,7 @@ dependencies {
   compileOnly "io.micronaut:micronaut-http-server-netty"
   compileOnly "io.micronaut:micronaut-runtime-groovy"
   compileOnly "io.micronaut:micronaut-validation"
-  compileOnly "ch.qos.logback:logback-classic:1.2.3"
+  compileOnly "ch.qos.logback:logback-classic:$logbackVersion"
   compileOnly "io.micronaut:micronaut-inject-groovy"
   compileOnly("org.spockframework:spock-core") {
     exclude group: "org.codehaus.groovy", module: "groovy-all"
@@ -44,39 +49,27 @@ dependencies {
   // Changes from std micronaut build.gradle
   compileOnly  "io.micronaut:micronaut-views"
   testImplementation  "com.github.jknack:handlebars:4.1.0"
-  testImplementation  ('com.bertramlabs.plugins:asset-pipeline-micronaut:3.0.6') {
+  testImplementation  ("com.bertramlabs.plugins:asset-pipeline-micronaut:$assetPipelineVersion") {
     exclude group: "io.micronaut", module: "http-server-netty"
   }
 
-  testImplementation("org.gebish:geb-spock:2.1") {
+  testImplementation("org.gebish:geb-spock:$gebVersion") {
     exclude group: "org.codehaus.groovy", module: "groovy-all"
   }
-  testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:3.6.0"
-  testImplementation "org.seleniumhq.selenium:selenium-firefox-driver:3.6.0"
-  testImplementation "org.seleniumhq.selenium:selenium-support:3.6.0"
-  testImplementation "org.seleniumhq.selenium:selenium-api:3.6.0"
+  testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:$webDriversVersion"
+  testImplementation "org.seleniumhq.selenium:selenium-firefox-driver:$webDriversVersion"
+  testImplementation "org.seleniumhq.selenium:selenium-support:$webDriversVersion"
+  testImplementation "org.seleniumhq.selenium:selenium-api:$webDriversVersion"
   testImplementation "io.micronaut:micronaut-inject-java"
   testImplementation "org.codehaus.groovy:groovy-templates" // Added for Groovydoc
 }
 
-// Common tasks from the overall common.gradle file provides: bintray,
-apply from: "../gradle/common.gradle"
-
-assets {
-  maxThreads = 4
-  packagePlugin=false  // Can't use Grails plugin scheme here.
-}
-
-run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')
 
 mainClassName = "webix.Application"
 
-groovydoc {
-  destinationDir = new File("${project.docsDir}/html5/groovydoc")
-}
 
 // Local Tasks
-// Remove some sample/test files from the published jar.
+// Removes some sample/test/app-related files from the published jar.
 jar {
   exclude "logback.xml"
   exclude "/webix/Application.class"
@@ -84,46 +77,4 @@ jar {
   exclude "**/*.class"
   exclude "/views/**"
 }
-
-task sourcesJar(type: Jar, dependsOn: classes) {
-  classifier 'sources'
-  from sourceSets.main.allSource
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-  classifier 'javadoc'
-  from groovydoc.destinationDir
-}
-
-artifacts {
-  archives sourcesJar
-  archives javadocJar
-}
-
-
-println "project = ${project.version}, repo = ${bintrayRepoName}, module = ${moduleName}"
-publishing {
-  publications {
-    mavenPublication(MavenPublication) {
-      from components.java
-      artifact sourcesJar {
-        classifier "sources"
-      }
-      artifact javadocJar {
-        classifier "javadoc"
-      }
-      groupId 'org.simplemes'
-      artifactId 'webix'
-      version project.version
-      pom.withXml {
-        def root = asNode()
-        root.appendNode('description', moduleDescription)
-        root.appendNode('name', 'Webix Library for SimpleMES Modules')
-        root.appendNode('url', 'https://github.com/simplemes/simplemes-core')
-        root.children().last() + pomConfig
-      }
-    }
-  }
-}
-
 

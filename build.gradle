@@ -26,6 +26,12 @@ task cleanAll {
   }
 }
 
+task buildAll {
+  includedBuilds.tokenize().each { buildName ->
+    dependsOn gradle.includedBuild(buildName).task(':build')
+  }
+}
+
 task testAll {
   includedBuilds.tokenize().each { buildName ->
     dependsOn gradle.includedBuild(buildName).task(':test')
