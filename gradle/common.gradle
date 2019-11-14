@@ -9,7 +9,12 @@ project.ext.bintrayRepoName = 'simplemes-core'
 project.ext.bintrayUser = 'simplemes'
 
 // Load the parent composite build's properties, as override for the main settings.
-def compositePropFile = new File("../gradle.properties")
+def parentPropFileName="../gradle.properties"
+if (System.getProperty('user.dir').endsWith('simplemes-core')) {
+  // Handle the case when we are running the composite build from the main directory.
+  parentPropFileName="gradle.properties"
+}
+def compositePropFile = new File(parentPropFileName)
 if (compositePropFile.exists()) {
   Properties props = new Properties()
   InputStream ins = new FileInputStream(compositePropFile)
@@ -26,6 +31,7 @@ if (compositePropFile.exists()) {
 }
 
 println "in common setup, module = ${moduleName}, version = ${project.version}, micronaut = ${micronautBomVersion}"
+println "user.dir = ${System.getProperty('user.dir')}, root = ${rootProject.name}"
 
 
 
