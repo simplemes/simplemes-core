@@ -9,4 +9,4 @@ Provides the Javascript assets needed for the SimpleMES modules to display GUIs
 
 This module contains the open-source version of the Webix UI assets.
 
-**This framework is in a pre-release state.**
+**This module is in a pre-release state.**

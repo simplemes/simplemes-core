@@ -50,16 +50,17 @@ fields to the domain class.
 The `fieldOrder` list will look something like this:
 
 [source,groovy]
-.fieldOrder
+.Example - fieldOrder for User
 ----
-class FlexType {
+class User {
   . . .
-  static fieldOrder = ['flexType', 'category', 'title', 'defaultFlexType', 'fields']
+  static fieldOrder = ['userName', 'title', 'enabled', 'accountExpired',
+                       'accountLocked', 'passwordExpired', 'email', 'userRoles']
   . . .
 }
 ----
 
-An example Flex Type edit page is shown below:
+An example User edit page is shown below:
 
 image::guis/userEditDef.png[UserEditDef,align="center",width=75%]
 

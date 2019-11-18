@@ -29,8 +29,7 @@ micronaut:
         signatures:
           secret:
             generator:
-              secret: someSecretStuffToBeHiddenpleaseChangeThisSecretForANewOne
-              # TODO: Figure out a secure way to store this.
+              secret: ${eframe.key}
         generator:
           access-token-expiration: 1209600  # TODO: 14 days, 1.0.1 Check fix when RedirectRejectionHandler released (https://github.com/micronaut-projects/micronaut-core/pull/893)
     interceptUrlMap:

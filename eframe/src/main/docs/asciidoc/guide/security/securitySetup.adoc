@@ -36,7 +36,7 @@ Your application's _application.yml_ needs a few entries for security to work as
         signatures:
           secret:
             generator:
-              secret: someSecretStuffToBeHiddenpleaseChangeThisSecretForANewOne    // <1>
+              secret: ${eframe.key}    // <.>
         generator:
           access-token-expiration: 1800  # 30 minutes
     interceptUrlMap:
@@ -50,7 +50,10 @@ Your application's _application.yml_ needs a few entries for security to work as
           - isAnonymous()
 
 ----
-<1> This will be stored in *TBD*.
+<.> This value comes from the environment or -D option for 'eframe.key'.  The JWT encryption
+    provider requires a 256 bit or longer key (32+ characters).
+    See https://docs.micronaut.io/latest/guide/index.html#_included_propertysource_loaders[Micronaut Configuration]
+    for more details.
 
 This configures JWT Security to force all controller requests to be authenticated.
 It also allows access to some pages/assets without a login.

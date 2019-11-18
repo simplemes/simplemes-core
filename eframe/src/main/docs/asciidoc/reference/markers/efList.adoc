@@ -47,7 +47,6 @@ The main parameters/body supported are:
 |Argument|Description
 
 |*(body)*    |Ignored.
-| TBD *action*   | The name of the controller method (action) that provides the rows.  (*Default:* list).
 | *columns*  | A comma-delimited list of columns to display
               (*Default:* The list from the domain's <<fieldOrder>>).
 

@@ -36,8 +36,7 @@ The `dialogMap` parameter is a javascript object (map) with these elements:
                   The function is passed the dialogID and the event that closed the dialog.
                   This function CAN prevent the closure by returning false.
                   See <<displayDialog Buttons>> for details on event handler for specific buttons.
-| TBD *displayed* | A function that is called when the dialog contents are displayed.
-                    This is called after the page is loaded from the server (if `bodyURL` is used).
+| *postScript* | Some javascript to be executed after the dialog is displayed (with a delay of 1ms).
 
 |===
 
