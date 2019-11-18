@@ -8,7 +8,9 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.http.client.HttpClient
 import io.micronaut.http.client.exceptions.HttpClientResponseException
+import io.micronaut.security.token.jwt.signature.SignatureConfiguration
 import io.reactivex.Flowable
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.security.SecurityUtils
 
@@ -92,6 +94,14 @@ class BaseAPISpecification extends BaseSpecification {
     if (passwordInput == null) {
       passwordInput = _userName
     }
+
+    def config = Holders.applicationContext.getBean(SignatureConfiguration)
+    println "config = $config ${config?.dump()}"
+    println "env = ${System.getenv()}"
+    if (config) {
+      println "s = ${new String(config?.secret)}"
+    }
+
 
     def client = getClient()
     Flowable<HttpResponse<Map>> flowable = Flowable.fromPublisher(client.exchange(
