@@ -163,3 +163,7 @@ jar {
   exclude "/i18n/sample*.*"
 }
 
+test {
+  // Force STDOUT to echo in github server.
+  testLogging.showStandardStreams = true
+}

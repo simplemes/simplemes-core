@@ -21,6 +21,7 @@ class BaseCrudControllerAPISpec extends BaseAPISpecification {
 
   def "verify that index works in a live server"() {
     when: 'the page is read'
+    println "env = ${System.getenv()}"   // TODO: Remove
     login()
     def res = sendRequest(uri: "/sample", method: 'get')
 
