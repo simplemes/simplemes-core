@@ -29,16 +29,6 @@ class BaseCrudControllerAPISpec extends BaseAPISpecification {
     res.contains('parentGrid')
   }
 
-  // TODO: Remove
-  def "verify that index works in a live server - delete"() {
-    when: 'the page is read'
-    login()
-    def res = sendRequest(uri: "/sample", method: 'get')
-
-    then: 'the page is correct'
-    res.contains('parentGrid')
-  }
-
   def "verify that index prevents access without the correct role in a live server"() {
     given: 'a user without the MANAGER Role'
     User.withTransaction {
