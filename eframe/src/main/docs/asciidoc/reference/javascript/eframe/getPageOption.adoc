@@ -1,0 +1,59 @@
+
+=== getPageOption
+
+.getPageOption(name, default)
+
+This Javascript function gets a simple
+link:guide.html#page-options[page option^] icon:share-square-o[role="link-blue"],
+previously set by the <<setPageOption>> function.
+
+This function is part of the <<eframe-js>> library.
+
+
+.Parameters
+[cols="1,1,5"]
+|===
+|Parameter|Type|Description
+
+|*name*    |string| The page option to return (*Required*).
+|*default* |string/number| The default value. (*Optional*).
+|===
+
+A common use of this method is to set the width of the labels in a definition page to
+a consistent value.  This allows markers such as <<efShow>> to adjust this value for
+the whole page. This set/get allows simple values to be retrieved by lower level
+methods without passing them as arguments through many layers of method calls down to the widget
+level.
+
+==== Example
+
+For example, <<efShow>> generates the javascript to set the option to '25%':
+
+
+[source,html]
+.efShow - Label Width
+----
+<@efShow labelWidth="25%"/>
+----
+
+
+[source,javascript]
+.Set Page Option - Generated Code
+----
+ef.setPageOption('labelWidth','25%');
+----
+
+When the text field is rendered, the label width is set to this page-specific value:
+
+[source,javascript]
+.Using Page Option - TextFieldWidget
+----
+
+{view: "label", label: "Order *", align: "right",
+ width: tk.pw(ef.getPageOption('labelWidth','20%')) // <.>
+}
+
+----
+<.> Use the page option, with a fallback to '20%'.  This is then converted to pixels
+    for the actual display width.
+

@@ -1,0 +1,40 @@
+
+[[domain-testing,Domains]]
+=== Domain Testing
+
+Domain class testing can be tedious when you have a lot of domain classes and fields to test.
+The framework provides a helper class
+(link:groovydoc/org/simplemes/eframe/test/DomainTester.html[DomainTester^])
+to make testing a little simpler.
+
+For example, the _ArchiveLog_ unit tests below will verify the string field max size limits
+and the non-nullable fields:
+
+[source,groovy]
+.Example Domain Test
+----
+def "verify that user domain enforces constraints"() {
+  expect: 'the constraints are enforced'
+  DomainTester.test {
+    domain Order
+    requiredValues order: 'M1003', qty: 2.0       // <1>
+    maxSize 'order', FieldSizes.MAX_CODE_LENGTH   // <2>
+    maxSize 'password', 128
+    notNullCheck 'userName'                       // <3>
+    notNullCheck 'password'
+    notInFieldOrder (['authorities', 'password']) // <4>
+  }
+}
+----
+<1> Defines the required values for the domain record.
+<2> Verifies that the max length is enforced.
+<3> Verifies that null values are prevented.
+<4> Make sure the <<reference.adoc#field-order,fieldOrder>> is defined for the domain class.
+
+
+These 9 lines of code replace about 60 lines of test code.  You just have to define some values
+for the required (non-nullable) fields in your domain class and then create a sample domain object.
+Then you specify which fields sizes to check and which not-null constraints to check.
+
+You will need to write any other tests for more complex constraints (such as unique value tests).
+

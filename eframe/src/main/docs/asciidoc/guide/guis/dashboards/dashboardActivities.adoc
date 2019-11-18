@@ -1,0 +1,277 @@
+
+==== Dashboard Activities
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Activity URI/URL>>#
+[inline-toc]#<<Form Submission (Ajax)>>#
+[inline-toc]#<<Activity Variable Collisions>>#
+[inline-toc]#<<Activities with Limited GUIs>>#
+
+[inline-toc-header]#Examples#
+[inline-toc]#<<GUI Activity>>#
+[inline-toc]#<<Non-GUI Activity>>#
+
+endif::[]
+
+The dashboard is a general-purpose mechanism used to display activities (pages) that let your
+users interact with your application. These activities are specialized HTML pages that use the
+<<Dashboard API>> to interact with the dashboard and perform actions for your users.  These
+activities can have a GUI, no GUI or a GUI that is only displayed when you have to ask
+the user for input.
+
+NOTE: These activities are not full-blown HTML pages.  They are displayed within a splitter panel in
+      the dashboard, so the standard form submission is not allowed.
+      See <<Form Submission (Ajax)>> for details.
+
+
+
+You create these activities much like any other page, with a controller method
+and a .FTL page:
+
+[source,groovy]
+.Example - Controller Activity Method - Start
+----
+@Produces(MediaType.APPLICATION_JSON)
+@Post("/start")
+HttpResponse start(HttpRequest request, @Nullable Principal principal) {
+  def startRequest = Holders.objectMapper.readValue(request.body.get(), StartRequest)
+  def service = Holders.applicationContext.getBean(WorkService)
+  def res = service.start(startRequest)
+  return HttpResponse.status(HttpStatus.OK).body(Holders.objectMapper.writeValueAsString(res))
+}
+----
+
+[source,html]
+.Example - FTL Page for a Dashboard Activity
+----
+<script>
+  <@efForm id="logFailure" dashboard=true>  // <.>
+    <@efField field="rma" value="RMA1001" width=20/>
+    <@efField field="product" value="CM3056857"/>
+    <@efButtonGroup>
+      <@efButton label="Log Failure"   // <.>
+        click="dashboard.postActivity('logFailure','/sample/dashboard/log','${params._panel}');"/> // <.>
+      <@efButton label="cancel.label" click="dashboard.finished('${params._panel}')"/>  // <.>
+    </@efButtonGroup>
+  </@efForm>
+</script>
+
+
+----
+<.> A simple form for the dashboard.
+<.> A button that will post the form to a URI.
+<.> Use of unique `${params._panel}` to make avoid <<Activity Variable Collisions>>.
+<.> A cancel button that dismisses the activity and re-displays the next activity in the panel.
+
+
+This simple example allows the page to be displayed, and respond to user actions.
+The logic will notify the dashboard that it is finished.
+See the <<reference.adoc#dashboard-js,Dashboard JS>> for details on what your activities can do.
+
+NOTE: It is a good practice to use the `params._panel` parameter on all functions, variables and
+      HTML IDs in your activity pages. This avoid collisions (see below).
+
+Your dashboard activity pages are passed a small number of HTTP parameters that you will need
+to interact with the dashboard itself:
+
+[cols="1,1,4"]
+|===
+|Parameter|Type|Description
+
+|_panel|String|The panel (name) this activity is displayed in.  This is needed for some of the javascript API methods.
+|_panelCount|Integer|The total number of panels in the dashboard.
+|_variable|String|The name of a Javascript variable that you can use to define the
+                  the elements to be displayed or define functions executed by your code.
+                  Normally, the display element is created by the <<efForm>> marker.
+|===
+
+NOTE: Any parameters from the dashboard URL will be passed to each activity displayed.  Typically,
+      this is used to default field values for your users.
+
+===== Activity URI/URL
+
+The activities are access by their uri/url.  These only really allow two basic formats:
+
+[cols="1,1,4"]
+|=== 
+|Format|Example|Effective URL
+
+|Relative|/order/scrap|/order/scrap
+|Absolute|http://server:port/order/scrap|http://server:port/order/scrap
+|=== 
+
+The absolute format is subject to the normal cross-site restrictions in the browser.
+
+There is no short form relative (e.g. just 'action') since the enclosing controller is typically
+the framework Dashboard controller.  This is not too useful for most application.
+
+
+===== Form Submission (Ajax)
+
+These dashboard activities are not full-blown web pages.  They are a fragment of a page that
+is displayed within a panel in the dashboard.
+This means you can't use the normal HTML form submission mechanism. Instead, you will need to use
+the <<reference.adoc#postactivity,postActivity()>> convenience function to post the inputs.
+This will convert the standard form to a JSON payload and POST it to a URL.  The page will not
+be refreshed.
+This function also handles the standard message <<reference.adoc#responses,Responses>> and
+support for <<Undo>>.
+
+===== Activity Variable Collisions
+
+Since the activities are all displayed in a single web page, you have to be careful with naming of
+HTML elements and javascript entities.  Variables and functions can collide if there are duplicate
+values on the page.  To avoid this, you should use the `_panel` or `_variable` parameter to make
+unique names on the page.
+
+[source,html]
+.Example - Avoid Javascript Name Collisions
+----
+<script>
+  ${params._variable}.done =  function() {  // <.>
+    dashboard.postActivity('logFailure','/sample/dashboard/log','${params._panel}');
+    ef.displaymessage({info: 'Finished.});
+  }
+  <@efForm id="logFailure" dashboard=true>
+    <@efField field="rma" value="RMA1001" width=20/>
+    <@efButtonGroup>
+      <@efButton label="Log Failure"
+        click="${params._variable}.done()"/>  // <.>
+    </@efButtonGroup>
+  </@efForm>
+</script>
+----
+<.> Defines the a function stored in the `_variable` for use by the dialog.
+<.> Calls the function.  If on Panel 'B', then the function will be `_B.done()`.
+
+
+[[dashboard-activity-non-gui,Activities with Limited GUIs]]
+===== Activities with Limited GUIs
+
+In some cases, a dashboard activity will trigger a request with no GUI when a dashboard button
+is pressed. These typically do not need a GUI to perform their task.
+To optimize this scenario, the dashboard logic will detect a non-GUI activity
+and handle it differently.  In this scenario, the page will contain no display element.  Instead of
+displaying a page in a panel, the Javascript will be evaluated without a change to the panel display.
+When this Javascript finishes, the dashboard will remove the Javascript from the page.
+
+These non-GUI activities can have these capabilities:
+
+* Execute Ajax call(s) to perform the actions.
+* Ask questions in a dialog.
+* Handle requests from the server (<<Asking Questions>>).
+* Display messages for the Dashboard.
+
+This non-GUI flow is shown below:
+
+image::models/Non-GUIDashboardActivity.png[Non-GUIDashboardActivity,align="center"]
+
+The user presses a configured button in the dashboard.  This button triggers an activity that has
+no GUI elements.  It has just a single `<script>` tag.  The dashboard evaluates this script in the
+appropriate panel.  When the script codes finishes, it must call the standard
+dashboard <<dashboard-finished>> method.  The dashboard then removes the
+Javascript methods from the browser.
+
+See <<Non-GUI Activity>> example below for details on how you can use this feature.
+
+
+
+
+==== Activity Examples
+
+
+===== GUI Activity
+
+Dashboard activities can have a GUI that allows the user to enter data.  These tend to work with a
+controller method to process the inputs and show the results.  A simple RMA controller is shown below:
+
+[source,groocy]
+.Example - Dashboard Activity with Input Fields - Controller
+----
+@Get("/rma")
+@View("sample/dashboard/rma")
+@Produces(MediaType.TEXT_HTML)
+StandardModelAndView index(@Nullable Principal principal) { // <.>
+  def modelAndView = new StandardModelAndView("sample/dashboard/rma", principal, this)
+  Map model = (Map) modelAndView.model.get()
+  return modelAndView
+}
+
+@Produces(MediaType.APPLICATION_JSON)
+@Post("/rma")
+HttpResponse rma(HttpRequest request, @Nullable Principal principal) {  // <.>
+  def rmaRequest = Holders.objectMapper.readValue(request.body.get(), RMARequest)
+  def service = Holders.applicationContext.getBean(RMAService)
+  def res = service.createRMA(rmaRequest)
+  return HttpResponse.status(HttpStatus.OK).body(Holders.objectMapper.writeValueAsString(res))
+}
+
+----
+<.> Provides the display page for the _rma.ftl_ file.
+<.> Creates the RMA using the service _RMAService_. Uses the Micronaut application context to
+    find the bean.  Returns a response in JSON format.
+
+
+[source,html]
+.Example - Dashboard Activity with Input Fields - View rma.ftl
+----
+<script>
+  <#assign panel = "${params._panel}"/>  // <.>
+  <#assign variable = "${params._variable}"/>
+
+  <@efForm id="logFailure" dashboard=true>  // <.>
+    <@efField field="serial" value="RMA1001" width=20/>  // <.>
+    <@efField field="customer" value="ACME_101"/>
+    <@efButtonGroup>
+      <@efButton label="RMA"  // <.>
+                 click="dashboard.postActivity('logFailure','/sample/dashboard/rma','${panel}');"/>
+      <@efButton label="cancel.label" click="dashboard.finished('${panel}')"/>
+    </@efButtonGroup>
+  </@efForm>
+</script>
+----
+<.> Uses some local variables for `panel` and `variable` to make the logic clearer.
+<.> A form that supports posting.  Defined as a dashboard-type form.
+<.> Defines two input fields, with default values.
+<.> Defines a button to POST the results to the controller.
+
+
+This example displays a form in the dashboard with 2 input fields (`Serial Number` and `Customer ID`).
+
+When the user presses the RMA button, the parameters are sent to the controller method `rma()`
+which calls a service to create the RMA.  This service in turn, may call other services or
+extensions that need to return messages.
+
+===== Non-GUI Activity
+
+Dashboard activities with no or limited GUIs tend to use the values/inputs from the other activities
+that are displayed.  A common use is in a selection panel that has an input field and a configured
+button that triggers one of these non-GUI activities.  For example, you might have a dashboard with
+two panels that looks like this:
+
+image::guis/dashboard.png[Dashboard,align="center",width="75%"]
+
+This dashboard has a single input field in the top panel and a button (Start) that acts on the
+value from that field. When the button is pressed, the following non-GUI activity is loaded by the dashboard:
+
+[source,html]
+.Example - .FTL Page for Non-GUI Activity
+----
+<script>  // <.>
+  var order = document.getElementById('order').value;  // <.>
+  dashboard.postActivity({order: order},'/sample/dashboard/start','${params._panel}', // <.>
+                         {success: function(res) {ef.displayMessage({info: res})} });
+</script>
+
+----
+<.> The non-GUI activity is javascript content that does not define the .display element.
+<.> Gets the value of the order field (HTML Element ID='order').
+<.> Sends the request to the server, with the order value.
+
+
+The <<reference.adoc#postactivity,postActivity()>> convenience function sends the request
+to the server.  It will convert the object to a JSON payload and POST it to a URL.
+The page will not be refreshed. This function also handles the standard message
+<<reference.adoc#responses,Responses>> and support for <<Undo>>.
+

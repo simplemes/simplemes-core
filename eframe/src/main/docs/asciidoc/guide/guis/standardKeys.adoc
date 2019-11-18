@@ -1,0 +1,24 @@
+
+=== Standard Keys
+
+There are a number of standard keystroke definitions that are used throughout the framework GUIs
+and should be followed in the application defined GUIs.  The common keys (with Chrome
+Windows bindings) are shown below:
+
+[cols="1,4"]
+|===
+|Keystroke|Description
+
+|kbd:[Alt+A]|Add row to an inline grid.
+|kbd:[F9]|Display <<Task Menu>>.
+|kbd:[space]|Select <<Task Menu>> or start editing in an editable grid.
+|kbd:[enter]|Select <<Task Menu>> or start editing in an editable grid.
+|===
+
+Some of these common keystrokes may be defined for multiple elements on the page.  For example,
+your page might have two inline grids, which support the kbd:[Alt+A] access key.  When this happens,
+the browser will honor one of the assignments, chosen by the browser.  Typically, this is the last
+element that defines the given access key.
+
+NOTE: Firefox uses the kbd:[Shift+Alt] instead of the normal kbd:[Alt] for access keys.
+

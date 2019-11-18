@@ -1,0 +1,22 @@
+
+== Setup
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Initial Data Load>>#
+[inline-toc]#<<Configuration>>#
+//[inline-toc]#<<Settings>>#
+
+endif::[]
+
+
+
+Enterprise applications frequently need extensive setup.  To make this simpler for your customers, the framework provides
+some utilities to make setup easier.
+
+For security setup, see <<security>>.
+
+include::initialDataLoad.adoc[]
+
+//include::settings.adoc[]
+

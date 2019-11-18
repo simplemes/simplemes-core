@@ -1,0 +1,91 @@
+
+=== Internationalization
+
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Default Labels>>#
+[inline-toc]#<<Specific Label and Tooltip Handling>>#
+[inline-toc]#<<Internationalization Naming Conventions>>#
+[inline-toc]#<<Internationalized Database Values>>#
+
+endif::[]
+
+
+Internationalization is a critical part of most enterprise applications. Almost all text
+displayed to the user should internationalized.  The framework provides mechanisms in most
+markers to support this.  Most of this support relies on
+naming conventions for default labels.
+
+See the <<domains>> section for additional _messages.properties_ notes.
+
+==== Default Labels
+
+Most markers use a default label for most fields.  This means you won't need to specify the
+label in your HTML pages.  It just requires an entry in your _messages.properties_ file.
+For example, the <<reference.adoc#eflist,efList>> marker will use the field's name to
+generate the list column header.  For example, if you display a field _order_
+in your list, then the label for the header will be taken from the _messages.properties_ file:
+
+[source]
+----
+order.label=Order
+----
+
+If this entry is not in the _messages.properties_ file, then the text _order.label_ will be used.
+
+[[labels-and-tooltips,Specific Label and Tooltip Handling]]
+==== Specific Label and Tooltip Handling
+
+Labels and tooltips are usually automatically determined by the framework for most common scenarios.
+Some cases require your application to specify a custom label/tooltip.  For example, adding
+buttons to a <<reference.html#list-with-buttons,standard list>>.
+
+To simplify this, the framework follows a standard way to specify the label and tooltip with one entry.
+
+[source,html]
+.Specifying Label/Tooltip
+----
+<ef:list controller="Order" columns="order,product,qtyToBuild"
+         releaseButtonLabel="release.label"   // <1>
+         releaseButtonHandler="releaseRow"/>
+----
+<1> The label "release.label" and the tooltip "release.tooltip" will be used (if defined in bundle).
+
+NOTE: This is not yet supported consistently in all markers.  The markers that support this approach
+      will be noted in the reference guide.
+
+This standard labelling logic is provided by
+link:groovydoc/org/simplemes/eframe/i18n/GlobalUtils.html[GlobalUtils^]
+icon:share-square-o[role="link-blue"]
+method `lookupLabelAndTooltip()`.
+
+If a given label is not found in the _messages.properties_ file, then the lookup key is
+used instead.
+
+===== Internationalization Naming Conventions
+
+The _messages.properties_ file follows specific naming conventions that makes it easier to
+internationalize your application.  Some of the most common patterns are shown below:
+
+[source]
+----
+create.title=Create {0} - {1}
+customNotAllowed.message=Custom fields not allowed on the {0} domain class.
+default.create.tooltip=Create a new record
+fieldFormat.DATE_TIME.label=Date/Time
+order.label=Order
+
+# Error messages
+error.103.message=Error creating directory {0}
+----
+
+Many of these use replaceable parameters (e.g. {0}) to make it clear what the user is working on.
+
+===== Internationalized Database Values
+
+As a general rule, a _label_ stored in the database (e.g. for custom field extensions) can be
+localized.  The system will attempt to localize the value, but if it is not found in the
+_messages.properties_ file(s), it will be displayed as-is. This allows you to use some
+non-localized text (e.g. 'Details') or some localized text (e.g. 'details.label').
+

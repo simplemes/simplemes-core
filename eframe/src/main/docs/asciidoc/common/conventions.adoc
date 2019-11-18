@@ -1,0 +1,164 @@
+
+=== Document Conventions
+
+This document follows certain conventions as shown below:
+
+* _Literal values_  
+* _File/path names_
+* _Class names_
+* `Variables, fields or parameters`
+* `Method names`
+* `Groovy or java code`
+
+See <<guide.adoc#naming-conventions,Naming Conventions>> for details on how elements are named.
+
+
+There are a number of diagrams in these documents.  We follow the given conventions for these diagrams.
+Some colors and shapes are used to flag specific types of elements:
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271  and IDEA plugin dir issue
+:imagesdir: {imagesdir-build}
+ifeval::[{env}==idea]
+:imagesdir-build: .asciidoctor
+:imagesdir: .asciidoctor
+endif::[]
+
+.Color and Shape Conventions
+[ditaa,"colorShapeConventions"]
+----
+        Shapes               Colors
+       (Objects)           (Packages)
+
+    +-------------+     +-------------+
+    | Controllers |     |    GUI      |
+    |   {io}    io|     |         c6D6|6D6
+    +-------------+     +-------------+
+    /-------------\     |    Data     |
+    |   Domains   |     |         c4CF|4CF
+    |             |     +-------------+
+    \-------------/     |   Custom    |
+    +-------------+     |         cF90|F90
+    |  Services   |     +-------------+
+    |             |     |    User     |
+    +-------------+     |         cF88|F88
+                        +-------------+
+                        |   Monitor   |
+                        |         cCCC|CCC
+                        +-------------+
+                        |    Utils    |
+                        |         cEB9|EB9
+                        +-------------+
+
+
+
+
+
+----
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+
+==== Document Layout
+
+Most modules have 3 main sets of documents:
+
+* Guide - General overview and key concepts document.
+* Reference - In depth reference for APIs, Domains, etc.
+* Groovydoc - The generated Groovydoc (Javadoc) from the source code.
+
+The intent of the guide is to give you a general overview of feature, but not overwhelm you with details
+of the implementation.  The reference documentation will explain most key fields, API calls and options.
+The guide generally has many links into the reference documentation.
+
+Dashboards are fairly complex.  To manage this in the documents, we use the guide for concept introduction and
+sometime simple examples. The reference document will explain all of the activities, events and scan actions
+for the dashboard.  Each module will have additional  activities, events and scan actions.  These will be
+documented in a similar way:
+
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271  and IDEA plugin dir issue
+:imagesdir: {imagesdir-build}
+ifeval::[{env}==idea]
+:imagesdir-build: .asciidoctor
+:imagesdir: .asciidoctor
+endif::[]
+
+
+.Dashboard Documents - MES Core Example
+[ditaa,"dashboardDocuments"]
+----
+        Guide                Reference
+
+    +-------------+     +-------------+
+    |    GUIs     |     |  Dashboards |
+    |         c6D6|     |         cF88|
+    +------+------+     +-------+-----+
+           |                    |
+      +----+--------+      +----+--------+
+      |  Dashboard  |      | Activities  |
+      |             |      |  URI        |
+      |         c6D6|      |  Events cF88|
+      +------+------+      +----+--------+
+             |                  |
+        +----+---------+   +----+--------+
+        |Scan Dashboard|   |   Events    |
+        |    Intro     +-->|  Properties |
+        |          c6D6|   |  Source cF88|
+        +--------------+   +----+--------+
+                                |
+                           +----+--------+
+                           | Scan Actions|
+                           |  Properties |
+                           |         cF88|
+                           +-------------+
+
+----
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+
+=== Folder Conventions
+
+For the most part, your application should be free to use most Micronaut-supported folder
+conventions.  This is pretty open, so the framework and application modules that we develop
+will follow a specific folder layout for common artifacts.
+
+Each major package for an application module should be organized like this:
+
+* product  (Product Definition package for the MES Core module)
+**    controller
+**    domain
+**    page (GEB GUI Test Pages - in _src/test/groovy_ folder)
+**    service
+
+
+The folder layouts we will use are for the _src/main/groovy_ source folder looks something
+like this under the org.simplemes.eframe package:
+
+* application  (startup and common pages "/")
+**    controller
+**    domain
+**    service
+*  controller (controller support classes)
+*  custom
+**    controller
+**    domain
+*  domain (domain support classes)
+*  misc
+* security
+**    controller
+**    domain
+**    service
+*  system
+*  test
+*  web
+**    request
+**    view
+**    builder
+**    widget
+
+
+
+

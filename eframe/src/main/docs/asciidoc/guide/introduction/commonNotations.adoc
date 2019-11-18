@@ -1,0 +1,29 @@
+=== Common Notations
+
+This is a complex framework.  We want to define specific notations used to indicates issues in the
+code and the application behaviors.
+
+==== Note
+
+This indicates something be beware of.  This is frequently used to flag things that may become an
+issue someday.  We want these flagged in a standard way to easily identify possible source of
+problems when a library module is upgraded.  This includes some highlighting in the JavaDoc.
+
+For example:
+
+[source,groovy]
+.Note Example - Groovy Code
+----
+  /**
+   * Returns all of the domain classes defined in the system.
+   * <p>
+   * <b>Note:</b> This method uses the internal values of the GORM HibernateDatastore.  // <1>
+                  This may change someday.
+   * @return
+   */
+  List<Class> getAllDomains() {
+    . . .
+  }
+----
+<1> Flags something that may change in future releases of modules this code depends on.
+

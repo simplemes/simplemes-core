@@ -1,0 +1,213 @@
+== Introduction
+
+ifeval::["{backend}" != "pdf"]
+[inline-toc]#<<Purpose>>#
+[inline-toc]#<<Enterprise App?>>#
+[inline-toc]#<<Philosophy>>#
+[inline-toc]#<<Architecture>>#
+[inline-toc]#<<Document Conventions>>#
+[inline-toc]#<<Folder Conventions>>#
+[inline-toc]#<<Naming Conventions>>#
+[inline-toc]#<<Common Notations>>#
+endif::[]
+
+
+This is the high-level User Guide for the Enterprise Framework module.  The goal of this document is to provide
+a general introduction to the important features and behaviors of the framework.
+
+For a detailed explanation of the many options and features, see the <<reference.adoc#general,Reference>>.
+The Groovydoc (Javadoc) link:groovydoc/index.html[API^] icon:share-square-o[role="link-blue"]
+covers other details of the underlying classes.
+
+=== Purpose
+
+This is the Enterprise Framework module for http://micronaut.io/[Micronaut].
+We wrote this framework as we were developing the <<{mes-core-path}/guide.adoc#,SimpleMES>> application.
+The main goal was to allow other developers to create enterprise applications using Micronaut as
+quickly as possible.
+
+Enterprise customers expect a certain level of common features within enterprise applications.
+Enterprise applications tend have many domain classes with a lot of business logic.  Creating a
+few domain classes in Micronaut is simple, but the boiler-plate code needed for common features
+such as JSON import becomes unmanageable quickly.  The goal of this framework is to speed application
+developing by letting you concentrate on the business logic and objects that really
+matter to your customers.
+
+
+
+////
+
+The framework provides common features needed by enterprise applications such as:
+
+* <<Modularity>>
+* <<GUIs>>
+* <<gui-configuration>> (User-level)
+* <<Security>>
+* <<Monitoring>>
+* <<Archiving>>
+* <<testing>>
+* <<api>>
+* <<Customizations>>
+* Application marker classes.
+////
+
+
+The framework provides many of these features with little or no coding needed in your application.
+The goal is to let you, the application developer concentrate on the functionality needed.
+
+The (link:groovydoc/index.html[Groovy API^]) for the framework contains details on
+all fields and methods for most objects/services.
+
+See <<Document Conventions>> for document notation conventions.
+
+=== Enterprise App?
+
+The term _Enterprise Application_ is so overused that it has lost much of its meaning.
+For the purpose of this framework and documentation, our definition is:
+
+[source,groovy]
+----
+An Enterprise Application is a wide application that has specific feature and
+reliability requirements.  The application generally appears as one consistent
+product to the users.
+----
+
+By wide application, we mean a large number of domain and business classes.  The domain classes
+usually have a lot of relationships and business logic that operates on these classes.
+The reliability requirements tend to force a good deal of monitoring capability.
+
+Micronaut is a great start, but it frequently gives you 90% of what you need.
+This framework helps you with the last 10%.  For example, each domain object needs a controller
+to expose the basic CRUD/REST actions.  The framework lets you implement this with very little code.
+
+
+=== Philosophy
+
+This framework is a packaged as a big module (.jar file) for Micronaut applications.  Why is this so big?
+Because so many of the features work together, it would be difficult to keep all of the dependencies
+together.  For example, the custom fields work with the GUI pages to allow the end user to
+define and move fields around the GUIs.  Archiving must be able to archive custom fields.
+Common features such as JSON support needs to be consistent across all domain classes and needs to
+be handled in a central location.
+
+==== Microservices
+
+Micronaut is designed to produce microservices that are small and easy to implement.  Why use
+a microservice framework for an enterprise application?  Because many of the Micronaut features
+are very useful for an enterprise application.  For example, quick startup time is very important
+if the app is host on a cloud provider.
+
+The application (<<{mes-core-path}/guide.adoc#,SimpleMES>>) is designed as a monolith.
+Why use a microservice toolkit for this type of application?  Because we envision the application
+starting as monolith and evolving into a microservice app as needed.  To do this, we chose
+to build the application in separate modules that work together inside of a single JVM.
+As the need arises, we can separate these modules into their own microservice.
+
+This is monolith-to-microservice evolution is one reasonable way to build an app quickly
+and then evolve when needed.  Not every app needs to start as a microservice-based app.
+There is a large cost to starting as a microservice.  Some of the high costs include:
+
+. Development Time.
+. Testing Complexity.
+. Admin Costs.
+. Lack of Clarity.
+. Distributed Transaction Complexity.
+
+All of these add to the initial development cost.  If the app is a success and needs to evolve, then
+we already have clear lines to break the app into microservices.  This evolution is shown below:
+
+
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271  and IDEA plugin dir issue
+:imagesdir: {imagesdir-build}
+ifeval::[{env}==idea]
+:imagesdir-build: .asciidoctor
+:imagesdir: .asciidoctor
+endif::[]
+
+.Microservices vs. Monolith (or Microlith)
+[ditaa,"microlith"]
+----
+
+Time
+ |  +-------------------------------------------+
+ |  |            Microlith                      |
+ v  |  +------+   +------+   +------+           |
+    |  | Core |-->| Assy |-->|Track |           |
+    |  |  c999|   |  cYEL|   |  cBLU|           |
+    |  +------+   +------+   +------+           |
+    |     |                                     |
+    |     v                                     |
+    |   +--------+                              |
+    |   | Defects|                              |
+    |   |    cRED|                              |
+    |   +--------+                              |
+    |                                           |
+    +-------------------------------------------+
+
+
+    +------------------------+
+    |            Microlith   |   +--------------+
+    |  +------+   +------+   |   | Microservice |
+    |  | Core |-->| Assy |-->|-->|   Track      |
+    |  |  c999|   |  cYEL|   |   |              |
+    |  +------+   +------+   |   |              |
+    |     |                  |   |              |
+    |     v                  |   |         cBLU |
+    |   +--------+           |   +--------------+
+    |   | Defects|           |
+    |   |    cRED|           |
+    |   +--------+           |
+    |                        |
+    +------------------------+
+
+
+----
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+The initial release of the application bundles all of the modules into one service.
+These all communicate using internal JVM calls.  This allows simple database transaction
+control and supports easy rollback.
+
+When needed, one of the modules (Track) is moved to its own microservice.  This means we will
+develop a distributed transaction mechanism like Saga pattern to keep the data in
+synch.
+
+This whole approach means the initial release will be simpler and easier to develop.  As the
+requirements grow over time, we can decide to pay the extra cost of supporting multiple
+microservices.
+
+This does force us to keep the modules as separate entities and minimize the the method calls
+to other modules.  Micronaut makes this easy, but it does require some discipline. 
+
+
+==== Other Key Philosophies
+
+.Don't Repeat Yourself.
+
+Boiler-plate code should be kept to a minimum.
+This means _anything_ that you have to do over and over in your application should be handled
+by the framework with minimal trouble.
+
+.Keep It Simple
+
+Complexity kills productivity.  To reduce the complexity, we just implement features/flexibility
+as it is needed. 
+
+
+include::architecture.adoc[]
+
+include::../../common/conventions.adoc[]
+
+include::dependencies.adoc[]
+
+include::namingConventions.adoc[]
+
+include::commonNotations.adoc[]
+
+
+
+
+

@@ -1,0 +1,125 @@
+
+==== Multiple Return Values
+
+WARNING: Philosophical Discussion Ahead!
+
+This is probably a tricky subject that almost everyone will disagree with :).
+In most complex programs, you will likely need to return multiple values from a method.
+The traditional Java approach to this is to create a new Java class (POJO) and populate
+its fields with the values.  Java could also return a Map with the
+name/value pairs, but that is frowned upon by some in the Java programming world.
+
+Groovy is much more flexible.  It can return multiple values with multiple assignment,
+return a Map with the proper elements or return a simple Groovy class (POGO) with the right fields.
+Each of these has different pros and cons.
+
+===== Guideline for Multiple Returns
+
+Based on the pros and cons below, the framework will generally use the POGO as a return value.
+This follows the Micronaut Controller/Command class pattern.
+The main drawback is the extra files and classes to manage.
+
+One common exception is utility classes that return two or three values.  This is somewhat
+common in the places like
+link:groovydoc/org/simplemes/eframe/controller/ControllerUtils.html[ControllerUtils^]
+that determine sorting directions.
+
+In these cases, we use the Groovy _Tuple2_ return value for simple two-value cases.
+Like Map, this should be limited to internal logic that is not frequently used.
+The _Tuple2_ method must be specified with valid types (_Tuple2<Integer, Integer>_ below) :
+
+[source,groovy]
+.Tuple2 Usage - Allowed in Limited Cases
+----
+def Tuple2<Integer, Integer> calculateOverallStatus() {
+  ...
+  return [200, 404]
+}
+
+def (code, fallback) = calculateOverallStatus()
+ . . .
+
+----
+
+
+===== Multiple Return Values - Pros/Cons
+
+This uses a List to return the multiple values and assign them to the variables in order:
+
+[source,groovy]
+.List Return Example - Rarely Allowed
+----
+// Not Allowed
+def calculateOverallStatus() {
+  ...
+  return [200, 'OK']
+}
+
+def (int code, String text) = calculateOverallStatus()
+if (code!=200) {
+  throw new IllegalArgumentException()...
+}
+
+----
+
+This looks concise, but it is somewhat fragile.  If the order of the return values changes,
+then this code can break and will only be detected at runtime.
+
+===== Map for Return Values - Pros/Cons
+
+This uses a generic Map for the values returned:
+
+[source,groovy]
+.Map Return Example - Rarely Allowed
+----
+def calculateOverallStatus() {
+  ...
+  return [code: 200, text:'OK']
+}
+
+def status = service.calculateOverallStatus()
+if (status.code!=200) {
+  throw new IllegalArgumentException()...
+}
+----
+
+This is somewhat less robust than the POGO approach, but due to Groovy's dynamic nature, it is
+only caught at runtime. This avoids the extra classes and the actual code that uses the value
+is almost the same as the POGO approach and no compile time checks are lost.
+
+We rarely use this approach.
+
+===== POGO Class as Return Value - Pros/Cons
+
+This creates a specific POGO that defines the fields returned:
+
+[source,groovy]
+.POGO Return Example - Preferred Approach
+----
+class OverallStatus {
+  int code
+  String text
+}
+
+def calculateOverallStatus() {
+  ...
+  return new OverallStatus(code: 200, text:'OK')
+}
+
+def status = service.calculateOverallStatus()
+if (status.code!=200) {
+  throw new IllegalArgumentException()...
+}
+----
+
+This is pretty robust, but the extra classes this creates adds to the size of the project in
+the programmer's head. We've all seen Javadocs with hundreds of POJOs for return and argument classes.
+
+Most good IDEs will flag invalid assignments such as assigning a string to `code` above.
+IDEs can also use the type information to help a lot with code completion.
+
+One other benefit of this approach:  The JSON rendering/parsing provided by
+link:groovydoc/org/simplemes/eframe/json/JSONFactory.html[JSONFactory^]
+icon:share-square-o[role="link-blue"]
+can handle this reasonable well.
+

@@ -1,0 +1,38 @@
+
+=== Field Types
+
+GORM/Hibernate supports a large number of field types (e.g. String, Date, other
+domain classes, etc).  The enterprise framework works with a subset of these types to reduce the
+boiler-plate code you must write.  Most of the time, these types are used
+internally in the framework and you won't need to use them directly.
+
+
+
+.Field Types
+|===
+|  Class                    | Name                      | DB Value
+
+| String                    | StringFieldFormat         | S
+| Integer/int               | IntegerFieldFormat        | I
+| BigDecimal                | NumberFieldFormat         | N
+| DateOnly                  | DateOnlyFieldFormat       | D
+| DateTime                  | DateFieldFormat           | T
+| Boolean/boolean           | BooleanFieldFormat        | B
+| Long/long                 | LongFieldFormat           | L
+| _Domain Reference_        | DomainReferenceFieldFormat| R
+| _List of Refs_            | DomainRefListFieldFormat  | Q
+| _List of Children_        | ChildListFieldFormat      | C
+| _List of Custom Children_ | CustomChildListFieldFormat| K
+| _Enumeration_             | EnumFieldFormat           | E
+| _EncodedType_             | EncodedTypeFieldFormat    | Y
+| Configurable Type         | ConfigurableTypeFieldFormat| G
+|===
+
+Each type is represented by a class in the _data.format_ packages and implements the
+link:groovydoc/org/simplemes/eframe/data/format/FieldFormatInterface.html[FieldFormatInterface^].
+icon:share-square-o[role="link-blue"]
+The enumeration field type above represents an enumeration field in your domain class.
+The standard GORM/Hibernate DB value stored is the ID value from the enumeration itself.
+
+The framework and GORM/Hibernate automatically maps these type of fields to the correct database
+type.

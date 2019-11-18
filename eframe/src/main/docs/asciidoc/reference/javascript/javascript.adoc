@@ -1,0 +1,22 @@
+=== Javascript Libraries
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<eframe-js>>#
+[inline-toc]#<<eframe_toolkit-js>>#
+[inline-toc]#<<dashboard-js>>#
+
+endif::[]
+
+
+The enterprise framework provides several Javascript libraries to make your application code simpler.
+These allow the application code to perform complex actions within the browser will limited code.
+These libraries provide functions to POST data to the server, display dialogs and handle
+internationalization.
+
+
+include::eframe/eframeJSReference.adoc[]
+
+include::eframeToolkit/eframeToolkitJSReference.adoc[]
+
+include::dashboardJS/dashboardJS.adoc[]

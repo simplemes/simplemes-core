@@ -1,0 +1,584 @@
+
+== Domains
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Domain Packages>>#
+[inline-toc]#<<Reserved Domain Names>>#
+[inline-toc]#<<Field Types>>#
+[inline-toc]#<<Field Names>>#
+[inline-toc]#<<Reserved Field Names>>#
+[inline-toc]#<<Key Fields>>#
+[inline-toc]#<<Unlimited Length String Fields>>#
+[inline-toc]#<<parent-child-one-to-many>>#
+[inline-toc]#<<list-object-references>>#
+[inline-toc]#<<Encoded Types>>#
+[inline-toc]#<<Choice List>>#
+[inline-toc]#<<Field Ordering>>#
+[inline-toc]#<<toStringLocalized()>>#
+[inline-toc]#<<beforeValidate Method>>#
+[inline-toc]#<<Dates and Timezones>>#
+[inline-toc]#<<Transactions>>#
+[inline-toc]#<<Field Definitions>>#
+[inline-toc]#<<Initial Data Load>>#
+[inline-toc]#<<Configurable Types>>#
+
+endif::[]
+
+=== Domain Introduction
+
+Your domain classes have a few requirements to be easily used by various pieces of the framework.
+Your domain classes should be in proper packages, but that is not required.
+See <<domain-testing>> for details on testing.
+
+
+==== Domain Packages
+
+Your domain classes can be stored in any Java package you like, but Hibernate needs to find them.
+We suggest that you place them under a 'domain' package like _org.simplemes.mes.demand.domain_.
+Then, define a single dummy class like _MESCorePackage_ at the top-level of your module's
+package structure (_org.simplemes.mes_ in this case).  This makes it easy to define any domains
+under that level.
+
+Then, in your addition (<<Module Additions>>), you will have to use the package class.
+See <<Domain Packages Provided By Additions>> for details.
+
+==== Reserved Domain Names
+
+This framework has features that slightly restrict the name of the domain classes you can created.
+This is mainly because of the way <<Markers and Models>> work.  A few names are used
+to store elements in the marker model (a Map).  You should avoid the names
+used by the <<StandardModelAndView>>.
+
+==== Field Names
+
+Almost every piece of text displayed in a web-based GUI should be translatable to the user's language.
+Since most of the fields in your domain classes will be displayed somewhere, the framework uses
+some labelling conventions to reduce the boiler-plate code in your application.
+
+Most of the GUI markers will determine the right label needed for a domain field based on the field's
+name.  For example, if you want to display a list of orders, you would use the
+<<reference.adoc#eflist,efList>> marker in your pages like this:
+
+[source,html]
+----
+<@efList columns="order,product,status,qtyToBuild"/>
+----
+
+The _messages.properties_ file for you application would include these entries:
+
+[source,groovy]
+----
+order.label=Order
+orders.label=Orders
+product.label=Product
+status.label=Status
+qtyToBuild.label=Quantity To Build
+----
+
+Note the use of the plural form of _"Order"_ that is used for fields that show multiples
+(e.g. for the list's message _'1 to 8 of 200 Orders'_).  Most fields will not use a plural,
+but they are used frequently for the top-level domain elements in GUI lists.
+
+If you have not defined the entry in the _messages.properties_ file, then the framework will
+show the key (_'order.label'_, etc).
+
+==== Reserved Field Names
+
+Micronaut/GORM and this framework use several domain field names for internal use and your domains should not create them.
+The framework uses these in JSON/XML processing, so your domains are not allowed to create fields
+ with these names:
+
+[cols="1,4"]
+|===
+|Field Name|Description
+
+|id|The internal database ID field.
+|class|The Java class name for the field.
+|version|The version of the record in the DB.  Automatically maintained by GORM.
+|===
+
+
+==== Key Fields
+
+All domain objects in most enterprise applications need some sort of key field definitions.
+These are the specific key(s) needed to find and uniquely identify the object.  A common
+example is an order object.  It will have a unique order name (ID) that
+customers will reference when creating or working with the order.
+
+A number of the framework features rely on this key field definition to make your application
+coding simpler.  For example, the <<reference.adoc#eflist,efList>> marker relies on the key field
+to implement the standard filter/search feature and
+the hyper-links in lists.
+
+
+===== Identifying Key Fields in Your Domain Classes
+
+In all domains, you usually have one or more key fields.
+This framework uses the <<Field Ordering>> mechanism and optional `keys` definitions to flag the right
+key fields. For example, a work center domain might look like this:
+
+.Example - Key Fields from fieldOrder
+[source,groovy]
+----
+class WorkCenter {
+  String workCenter
+  String title
+
+  static fieldOrder = ['workCenter', 'title']
+}
+----
+
+In this case, the key field is assumed to be the `workCenter` field.
+
+Sometimes, your `fieldOrder` list does not start with the key field, or you have two key fields.
+This can be done with the `keys` static field:
+
+
+.Example - Key Fields from keys static field
+[source,groovy]
+----
+class Order {
+  String order
+  Customer customer
+  BigDecimal qtyToBuild = 1.0
+
+  static fieldOrder = ['customer', 'order', 'qtyToBuild', 'status']
+
+  static keys = ['order']  // <.>
+}
+----
+<.> The `keys` values are used to find the key field.
+
+===== Primary Key Field
+
+Many of this plugin's features require a single primary key field to reduce boiler-plate code.
+For example, the <<json-by-key>> mechanism uses the primary key field to find other domain objects
+when creating a foreign reference.  This is much simpler when you have a single key field.
+
+To find this primary key field, the framework assumes the first key field is the primary
+key field.
+
+If you have domains with multiple key fields, then you should avoid using features like
+<<json-by-key>>.  You will most likely get a domain record not found if you try to de-serialize
+using <<json-by-key>> with multiple key fields.
+
+
+==== Unlimited Length String Fields
+
+In most cases, unlimited length string fields are shown in an HTML text area.  This means the
+framework must be able to detect when you really have an unlimited length string field.
+This is made difficult by some of the default behavior in Micronaut/GORM.  In particular,
+if you define a String field without a _maxSize_ constraint,
+then Micronaut/GORM will use a reasonable default for the column width in the database.
+For example, in most databases a column width 255 characters is used.
+
+This causes problems with the text areas used by some of the HTML markers in this framework.
+The text areas will be unlimited in size, so it is possible for your users to enter too much text.
+
+To prevent this problem, it is recommended that you always specify a _maxSize_ constraint
+or use a truly unlimited TEXT (or CLOB) column like this:
+
+[source,groovy]
+----
+/**
+ * Internal column/field mappings.
+ */
+static mapping = {
+  unlimitedField type: 'text'
+}
+----
+
+
+
+[[parent-child-one-to-many]]
+==== Parent/Child Relationships (One-To-Many)
+
+Parent/Child relationships are quite common in enterprise applications.  The children are fully-owned by the parent.  Deleting
+the parent also deletes the children.  A typical parent/child relationship should be defined as:
+
+[source,groovy]
+----
+class Parent {
+  List<Child> children = []
+  static hasMany = [children: Child]
+}
+
+class Child {
+  static belongsTo = [parent: Parent]
+}
+----
+
+The use of a _List_ preserves the order of the child elements and allows updates using inline
+grids within the GUI markers in the framework.  When a user deletes an entry from the list in the
+GUI, the controller must be able to determine that
+a record was removed.  If you leave out the _List_, then a Set is used.  In that case, the
+framework can't handle all update scenarios using inline grids. If a _Set_ must be used,
+then you can't use the inline grid options.
+
+For these updates to work, you will have to adjust the generated controller code for these
+scenarios.  See <<controllers>> for details.
+
+// TODO: Investigate issues with GORM bug 874.  See domain.adoc in grails eframe.  Also break into multiple docs.
+
+
+[[list-object-references]]
+==== Lists of Object References (One-To-Many)
+
+Another common relationship is a list (or set) of simple references to another object.
+This is usually created with a one-sided `hasMany` relationship in the domain class:
+
+[source,groovy]
+----
+class Product {
+  List flexTypes
+
+  static hasMany = [flexTypes: FlexType]
+}
+----
+
+This relationship is used when the _Many_ side of the relationship is not a wholly-owned child of
+the domain class.  In the example above, the _Product_ can have many _FlexType_ references.
+The _FlexType_ exists, even if the all _Products_ that reference them are deleted.
+
+In this type of relationship, saves, updates and deletes are not cascaded to the _FlexType_ records.
+The JSON import/output of these references uses the key fields or IDs to create the reference.
+
+NOTE: You should use _List_ to define most collections in your domains.  This ensures the
+      order is preserved when saved.  The framework does not support all scenarios with
+      _Set/Collection_.
+
+==== Choice List
+
+You will frequently need to present your user with a drop-down list of options to choose
+from. This list can be fairly static, expandable or database-driven.
+
+You can create these list in several ways:
+
+* <<Enumerations>> (static list).
+* <<Encoded Types>> - Expandable List - Code-Based (expandable in add-on modules).
+* <<Database Values>>.
+
+===== Enumerations
+
+If you have a very static list of valid values, you can use an
+enumeration.  Your enumeration should provide a `toStringLocalized()` method to help
+generate the drop-down list.
+
+The normal <<Definition Pages>> support this type of field.
+
+A simple example is shown below:
+
+[source,groovy]
+.Example Enumeration - Enum Definition
+----
+enum ReportTimeIntervalEnum implements Comparable {
+  TODAY( . . .),    // <.>
+  YESTERDAY(. . .})
+    . . .
+  String toStringLocalized(Locale locale = null) {    // <.>
+    return GlobalUtils.lookup("reportTimeInterval.${name()}.label", null, locale)
+  }
+}
+----
+<.> The list of valid values.  These are displayed in the order they are defined here.
+<.> The method that will generate a human-readable form of the enumeration for the drop-down list.
+    Typically based on a `lookup()` in the _messages.properties_ file.
+
+
+[source,groovy]
+.Example Enumeration - Domain Field
+----
+class Product {
+  ReportTimeIntervalEnum reportTimeInterval // <.>
+}
+----
+<.> This creates a single column (normally 255 chars wide) to hold the enumeration's `toString()` value.
+    For example _'LAST_24_HOURS'_.
+
+
+[source,groovy]
+.Example Enumeration - _messages.properties_ File
+----
+reportTimeInterval.LAST_24_HOURS.label=Last 24 Hours
+reportTimeInterval.LAST_7_DAYS.label=Last 7 Days
+reportTimeInterval.LAST_30_DAYS.label=Last 30 Days
+ . . .
+----
+
+
+===== Encoded Types
+
+
+This is a list of values defined in your code, but it can be expanded by other modules.
+This is commonly used for status codes that can be applied to a domain object.
+Instead of using a separate domain class with a new database table, you define a class hierarchy
+that defines all of the available status codes.
+
+NOTE: Each module can define additional encoded types. See <<Encoded Types Provided By Additions>>.
+
+For example, you might have a _BasicStatus_ that can be _EnabledStatus_ or _DisabledStatus_.
+You want these to be stored in an _Order_ domain field like this:
+
+[source,groovy]
+.Example - BasicStatus Use
+----
+class Order {
+  String key
+  BasicStatus status = EnabledStatus.instance  // <.>
+
+  static constraints = {
+    status length: FieldSizes.MAX_ENCODED_TYPE_LENGTH // <.>
+  }
+}
+----
+<.> A simple reference to the BasicStatus, with a default value.
+<.> The status database column will be a small length (8 chars in the example).
+    If not specified, then hibernate will default this to 255 characters.
+
+The mapping of the BasicStatus to a database column is handled automatically by the
+custom link:groovydoc/org/simplemes/eframe/data/EncodedType.html[EncodedType^]
+icon:share-square-o[role="link-blue"].
+
+If you create custom EncodedTypes, then you will need to register the base class
+(like BasicStatus above) in an <<Addition>>
+
+
+Then your code that checks the status can be simple and clear:
+
+[source,groovy]
+.Example - BasicStatus Use
+----
+def order = . . .
+if (!order.status.enable) {
+  throw new SomeException('Order is not enabled')
+}
+----
+
+The GUI <<Definition Pages>> will show these two options in a drop-down list with localized text (e.g. 'Enabled'
+and 'Disabled').  When saved, the selected status is stored in an encoded column in the database
+automatically.
+
+
+This all works by defining your types correctly.   See
+link:groovydoc/org/simplemes/eframe/system/BasicStatus.html[BasicStatus^]
+icon:share-square-o[role="link-blue"] for an example.
+
+The parent class for the encoded/choice list provides the main contact point for most of the GUI
+and database features.  The sub-classes provide the individual choices in the list.  The parent
+class must provide a list of valid values for the sub-classes defined in the core code.
+
+The basic class structure is shown below:
+
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-build}
+
+[plantuml,"encodedTypeExample",align="center"]
+.EncodedTypeList and EncodedType Classes
+----
+@startuml
+
+interface EncodedTypeListInterface {
+}
+
+
+interface ChoiceListItemInterface {
+  String toStringLocalized()
+}
+
+interface EncodedTypeInterface {
+  String getId()
+}
+
+class BasicStatus {
+  String getId()
+  boolean isEnabled()
+  List<Choice> getValues()
+  String toStringLocalized()
+}
+
+class EnabledStatus {
+  String id = 'ENABLED'
+  boolean enabled = true
+}
+
+class DisabledStatus {
+  String id = 'DISABLED'
+  boolean enabled = false
+}
+
+ChoiceListItemInterface -- BasicStatus
+EncodedTypeListInterface -- BasicStatus
+EncodedTypeInterface -- BasicStatus
+BasicStatus --|> EnabledStatus
+BasicStatus --|> DisabledStatus
+
+
+@enduml
+----
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+This link:groovydoc/org/simplemes/eframe/system/BasicStatus.html[BasicStatus^]
+icon:share-square-o[role="link-blue"] is used in the core framework and most
+application modules.  These application modules define their own status codes (e.g.
+_OrderStatus_) that are used throughout the application.  These include more states
+such as `isDone()` and `isHold()`.   See the source code for details on
+how to implement these types of statuses.
+
+The link:groovydoc/org/simplemes/eframe/data/EncodedTypeListInterface.html[EncodedTypeListInterface^]
+icon:share-square-o[role="link-blue"] and
+link:groovydoc/org/simplemes/eframe/data/EncodedTypeInterface.html[EncodedTypeInterface^]
+icon:share-square-o[role="link-blue"] are used to provide the valid choices and to store/retrieve
+the value from the database.
+
+
+
+===== Database Values
+
+The most flexible approach to lists of valid values is to use a database reference.  This allows
+your users to (normally) create new values of the records.  This is usually more work since
+a new set of <<Definition Pages>> must be built and tested.
+
+In the example below, we will reference a _Product_ from an _Order_ record.
+
+
+[source,groovy]
+.Example Database Values - Product Domain
+----
+class Product {
+  String product
+  String title
+   . . .
+}
+----
+
+[source,groovy]
+.Example Database Values - Order Domain
+----
+class Order {
+  String order
+  BigDecimal qty
+  Product product  // <.>
+   . . .
+}
+----
+<.> The order is defined to build a certain qty of a _Product_.  This is the reference to
+    an existing domain object.
+
+NOTE: This _Product_ is not a direct child of the _Order_.  The _Order_ can be deleted and
+      the _Product_ will still be in the database.
+
+This type of relationship will usually be displayed as a single-selection combobox in
+the normal edit/create pages.
+
+
+==== Field Ordering
+
+Frequently, the framework features will need to list or display your domain fields in a logical order.
+Framework markers such as <<ef-show>> will show the fields in any order you like, but you would have to
+update the `<@efShow/>` marker for every new field added to the domain class.
+To simplify this maintenance task, the framework supports an optional
+link:reference.html#field-order[fieldOrder^] icon:share-square-o[role="link-blue"]
+static variable in domain classes.
+
+WARNING: Philosophical Discussion Ahead!
+
+Field ordering is not traditionally part of a domain class's definition.  Following the
+'Don't Repeat Yourself' philosophy, a central place to store the field ordering
+'hints' is needed.  We chose the domain class. This is optional. If you don't want to embed field
+ordering in your domain classes, then you can specify the field ordering on the respective
+<<reference.adoc#ef-show,efShow>> markers in your HTML files.  This means updating 3  files
+whenever you add a new field to a domain class.  This is your choice.
+
+See <<reference.adoc#field-order,fieldOrder >> for details.
+
+==== toStringLocalized()
+
+A number of places in the framework rely on the `toStringLocalized()` in the
+link:groovydoc/org/simplemes/eframe/i18n/GlobalUtils.html[GlobalUtils^]
+icon:share-square-o[role="link-blue"] utility class.
+This allows the framework to provide a human-readable representation of your domain record for display.
+For example, this is used in the <<reference.adoc#eflist,efList>> marker to build the
+hyper-link text for the links generated.  Also, drop-down lists and archiving use this short
+string format.
+
+Most domains will not need to implement this method.  You won't need to implement this methods
+if your domain has a single key and it is the first field in the <<Field Ordering,fieldOrder>>
+static value.
+
+
+==== beforeValidate Method
+
+The `beforeValidate()` event method is trigger by GORM when a domain is validated.  It is a
+common place to put complex logic to default values in the domain.  Because this method is
+called during the hibernate flush logic, you need to be careful with database updates during
+this action.  If your domain needs to update
+other records, then you will need to do this inside of a _withNewSession_ block:
+
+[source,groovy]
+.Example withNewSession Use
+----
+withNewSession {session ->  // <1>
+  someMethodWithDBUpdates()
+}
+----
+<1> This creates a new session that allows updates during the `beforeValidate()` logic.
+
+If you don't do this, then you will have hard-to-debug _NonUniqueObjectException_ and _DuplicateKeyException_
+exceptions.
+
+==== Dates and Timezones
+
+Dates and timezones are a common problems with enterprise systems.  Most common SQL databases
+don't support timezones for values stored in the original SQL date/time columns.  Also, the GUI
+toolkit doesn't support timezones.  The toolkit doesn't need to know the timezone since
+the GUI elements don't need it.
+
+To keep the date/times consistent
+in the database, we always force the time to be stored in the UTC timezone.  Then, when the date/time
+is displayed to the user, a global UI timezone is used.
+This global UI default timezone is set to eastern US timezone by default.
+
+To make this work, the JVM's default timezone is set to UTC by the StartupHandler.
+This means the JDBC drivers and
+Hibernate will store the time in UTC.  Then, when the value is retrieved from the database and
+sent to a client using JSON, the ISO date is sent with the timezone offset.  Then on the client,
+the Javascript time is created by discarding the timezone offset.  This means the time will be
+displayed by the toolkit with no adjustments.
+
+
+==== Transactions
+
+Database transactions are critical to enterprise applications.  The data must be saved in a
+consistent state across several domains.  To support this, the framework uses GORM/Hibernate
+for database access and uses transactions around all database accesses.
+
+Most transactions are initiated at the <<Services>> layer, but also sometimes in the controllers.
+Since many services are called by passing other domain objects to the service methods, you will
+probably need to create the transaction using the _withTransaction_ method:
+
+[source,groovy]
+.Example Transaction Usage
+----
+Order.withTransaction {  // <.>
+  def order = Order.findByOrder('1234')  // <.>
+  ResolveWorkableRequest req = new ResolveWorkableRequest(lsn: order.lsns[0], order: order)
+  def workable = resolveService.resolveWorkable(req)[0]  // <.>
+}
+----
+<.> Starts the transaction, if not already in a DB transaction.  This reads a domain that is passed
+    to the service method.
+<.> The domain object(s) used by the service must be read within the current session to
+    avoid Hibernate session issues (e.g. NonUniqueObjectException and DuplicateKeyException).
+<.> The service method may be a _@Transactional_ method.  This is fine for most scenarios.
+
+Since the _ResolveService_ method expects domain objects as inputs, you need to make sure they are
+passed while a session/transaction is active for the current thread.  Domain object proxies
+(generated by hibernate) can only be processed inside of a session.
+
+
+
+include::configurableTypes.adoc[]

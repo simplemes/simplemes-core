@@ -1,0 +1,40 @@
+== Guidelines
+
+ifeval::["{backend}" != "pdf"]
+[inline-toc-header]#General#
+[inline-toc]#<<Configuration>>#
+[inline-toc]#<<Naming Conventions>>#
+[inline-toc]#<<Programming Standards>>#
+[inline-toc]#<<Internationalization>>#
+[inline-toc]#<<Application.main()>>#
+
+[inline-toc]#<<domain-controller-or-service>>#
+[inline-toc]#<<Domains>>#
+[inline-toc]#<<Controllers>>#
+[inline-toc]#<<Services>>#
+[inline-toc]#<<GUI Guidelines>>#
+endif::[]
+
+
+
+
+To take full advantage of the Enterprise Framework, your application must follow some basic
+guidelines.  You can sometimes ignore these guidelines, but some features of the framework
+may not work as expected or require special coding on your part.
+Most of these guidelines will not disrupt your application design too much.
+
+include::config.adoc[]
+
+include::standards.adoc[]
+
+include::internationalization.adoc[]
+
+include::applicationMain.adoc[]
+
+include::domainControllerOrService.adoc[]
+
+include::fieldDefinitions.adoc[]
+
+include::guiGuidelines.adoc[]
+
+

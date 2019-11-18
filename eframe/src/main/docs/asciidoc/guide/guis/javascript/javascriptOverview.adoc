@@ -1,0 +1,55 @@
+
+=== Javascript Libraries
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<eframe-js>>#
+[inline-toc]#<<eframe_toolkit-js>>#
+
+endif::[]
+
+
+The enterprise framework provides several Javascript libraries:
+
+* General UI Functions - <<eframe-js>>
+* UI Toolkit-Specific Functions  <<eframe_toolkit-js>>
+
+These allow the application code to perform complex actions within the browser will limited code.
+These libraries provide functions to POST data to the server, display dialogs and handle
+internationalization. 
+
+
+==== Common Features
+
+The javascript libraries provided by this framework follow some basic common patterns and
+guidelines. This includes internal structure and use of DOM features.
+
+NOTE: Any methods that start with an underscore (eg. __checkMissing_) are internal methods
+      and are subject to change.
+
+
+===== Access
+
+The libraries provide a short-form way to access their functions without filling the global
+Javascript namespace.  The libraries place the methods in a Javascript object with a single
+variable for the object.  For example, to access the displayDialog() function:
+
+[source,javascript]
+.Javascript Library Access
+----
+
+  ef.displayDialog({title: "Add Logger"});
+
+----
+
+Each library is provided with a full name object and short form:
+
+* _ef_ or _eframe_  - <<eframe.js>>
+* _tk_ or _toolkit_ - <<eframe_toolkit.js>>
+
+This reduces the chance of namespace collisions with other libraries you might use in your application.
+
+
+include::eframeJS.adoc[]
+
+include::eframeToolkitJS.adoc[]

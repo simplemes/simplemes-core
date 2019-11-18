@@ -1,0 +1,30 @@
+==== efAsset
+
+The link:reference.html#efasset[efAsset^] icon:share-square-o[role="link-blue"] marker
+takes the  asset URI and converts it to the correct form for use
+with the asset pipeline.  This converts a simple URI to the digest form
+to allow proper caching of assets in the browse.
+
+When a module is packaged into its .jar file, the asset pipeline creates a zipped and hashed
+copy of each asset.  If the page requests these hashed copies, then the browser will cache the
+asset for a long time.  This significantly reduces page load times.
+
+For example, the asset pipeline will create a hashed copy of the file _/assets/eframe.js_ as
+_/assets/eframe-856347867645.js_.   This hashed version is guaranteed to always be the same since
+any changes to the file will result in a new hash.
+
+If your page requests the hashed copy by name (_/assets/eframe-856347867645.js_),
+then the browser will cache that file without any request made to the server.  The problem is that your
+HTML views don't know this hashed name.  To work around this, you can use the efAsset marker
+to adjust the static file name (_/assets/eframe.js_) to the hashed copy that is found in the
+asset pipeline's .jar file (_/assets/eframe-856347867645.js_).
+
+[source,html]
+.Example
+----
+<script src="<@efAsset uri='/assets/eframe.min.js'/>" type="text/javascript"></script>
+----
+
+This handles all of the logic needed to use the asset when it is in the pipeline's .jar file
+or in development mode.   In development mode, the asset is never cached and always re-read from
+the _src/assets_ directory.

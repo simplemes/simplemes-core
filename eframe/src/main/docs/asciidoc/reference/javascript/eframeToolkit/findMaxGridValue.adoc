@@ -1,0 +1,36 @@
+
+=== findMaxGridValue
+
+.findMaxGridValue(gridName, columnName)
+
+This Javascript function finds the largest value for a column in the given grid.
+This function is typically used with the column default script in the <<efEdit>> or <<efCreate>> marker.
+
+This function is part of the <<eframe_toolkit-js>> library.
+
+The arguments are:
+
+[cols=".^1,1,5"]
+|===
+|Parameter|Type|Description
+
+|gridName|String| The grid's name (HTML ID for a toolkit Grid object).  Defined by the <<efEdit>> marker.  (*Required*).
+|columnName|String| The name of the column to find the max for. (*Required*).
+|===
+
+
+[source,html]
+----
+<@efForm id="edit">
+  <@efEdit items@sequence@default="tk.findMaxGridValue(gridName, 'sequence')+10"/> // <.>
+<@/efForm>
+----
+<.> The variable `gridName` is a special variable available to the script from <<efEdit>> and similar
+    markers.
+
+
+This example sets the default value for the `sequence` column to 10 more than the max value
+currently in the grid.  This results in sequences of 10, 20, 30, etc.
+
+
+

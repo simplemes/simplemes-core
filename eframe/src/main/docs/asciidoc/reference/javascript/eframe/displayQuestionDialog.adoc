@@ -1,0 +1,77 @@
+
+[[display-question-dialog]]
+=== displayQuestionDialog
+
+.displayQuestionDialog(dialogMap)
+
+This Javascript function displays a popup question 'dialog' within the given page.  This dialog
+is an internal modal window within the page.  This dialog is restricted to a simple question with a
+configurable number of buttons.  This function calls the more complex <<displayDialog>> function,
+so some of that function's options are also supported (e.g. width, height, etc).
+
+This function is part of the <<eframe-js>> library.
+
+The `dialogMap` parameter is a javascript object (map) with these elements:
+
+.Parameters
+[cols="1,6"]
+|===
+|Argument|Description
+
+| *title*    | A simple text text title for the dialog. (*Default*: 'Dialog').
+               This is displayed with <<eframe-lookup,lookup()>> and <<efPreloadMessages>>.
+| *question* | A string that contains the contents for the question dialog (e.g. 'Ok to Delete Record?').
+               Can contain HTML, if needed.
+               This is not localized, so you need to localize it in your call. (*Required*)
+| *ok*       | The Ok handler function.  If the default 'Ok' button is clicked, then this
+               function will be called.  Ignored if the *buttons* are given below.
+| *buttons*  | A sub-array of the button(s) to display below the 'contents' above.
+               (*Default:*  ['ok', 'cancel']).
+               See <<displayDialog Buttons>> for details.
+| *width*    | The width of the dialog. Values in pixels or percent.
+               The default units will be percent. (*Default*: '30%')
+| *height*   | The width of the dialog. Values in pixels or percent.
+               The default units will be percent. (*Default*: '25%')
+
+|===
+
+See <<displayDialog>> for details on the common elements (e.g. width, height).
+
+
+NOTE: The default focus is on the last button (typically a Cancel button).
+
+
+[source,javascript]
+.Example - Simplest Question dialog
+----
+ef.displayQuestionDialog({title: 'Delete',
+  question: 'Ok to Delete?',
+  ok: function() {ef.alert('ok')}  //  <.>
+});
+----
+<.> The default Ok and Cancel buttons will be created.  This Ok handler function is called when
+    Ok is clicked.
+
+
+The above example will display a simple dialog and when the user presses the Ok button, it will
+call the `deleteRecord()` function on your page.  (Localization of the displayed text is not shown
+above, but your application should use <<eframe-lookup>>
+on the `question`).
+
+All buttons will cause the dialog to close.
+
+
+A more complex example shows how to use your own buttons.
+
+[source,javascript]
+.Example - Question Dialog with Custom Buttons
+----
+ef.displayQuestionDialog({title: 'Delete',
+  question: 'Continue?',
+  buttons: ['yes','no','cancel'],   // <.>
+  yes: function() {ef.alert('yes')},
+  no: function() {ef.alert('no')}
+});
+----
+<.> The buttons will be looked up using the <<eframe-lookup>> method (e.g. 'yes.label').
+

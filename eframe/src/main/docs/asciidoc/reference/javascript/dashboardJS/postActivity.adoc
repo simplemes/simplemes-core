@@ -1,0 +1,62 @@
+
+=== postActivity
+
+.postActivity(formOrData, uri, panel, options)
+
+This Javascript function posts a toolkit form from an activity as an Ajax POST request at
+the given `uri`.   Additional values can be passed to the server if needed.
+The values are converted to JSON and sent as the body of the request.
+This function is part of the <<dashboard-js>> library.
+
+When the response is received, this function will display any messages from the server
+and handle MPE responses.  If there are no errors, then this function will also call
+the <<finished>> method on the given panel.
+
+NOTE: This function uses the <<postAjaxForm>> method from the <<eframe-js>> library.
+
+.Parameters
+[cols="1,1,5"]
+|===
+|Parameter|Type|Description
+
+|*formOrData*   |string or object| The toolkit form ID that holds the fields to POST (*Required*).
+                         Can also be a Javascript object (map) with the data to send.
+                         This is usually the form specified in the <<efForm>> marker.
+|*uri*          |string| The URI to send the request to (*Required*).
+|*panel*        |string| The URI to send the request to (*Required*).
+|*options*      |map| Additional options (*Optional*).  See below.
+|===
+
+.Options
+[cols="1,1,5"]
+|===
+|Option|Type|Description
+
+|*otherData*    |map| Additional values to send with the post request (*Optional*).
+|*success*      |function| This is called when the request succeeds (*Optional*).
+                           This function is passed a single argument (the response text).
+|===
+
+
+[source,html]
+.Example - Simple Dashboard Activity Form Submit
+----
+<script>
+  <#assign panel = "${params._panel}"/>
+  <@efForm id="logFailure" dashboard=true>
+    <@efField field="rma" value="RMA1001" width=20/>
+    <@efField field="product" value="CM3056857"/>
+    <@efButtonGroup>
+      <@efButton label="Log Failure"
+                 click="dashboard.postActivity('logFailure','/sample/dashboard/echo','${panel}');"/> // <.>
+      <@efButton label="cancel.label" click="dashboard.finished('${panel}')"/>
+    </@efButtonGroup>
+  </@efForm>
+</script>
+----
+<.> Uses the standard submit and response handler for the dashboard activities.
+
+Server-side errors and other messages are displayed in the standard message location
+link:guide.html#message-display[location^] icon:share-square-o[role="link-blue"].
+This function also detects link:guide.html#undo[Undo^] icon:share-square-o[role="link-blue"]
+actions a registers them with the dashboard.

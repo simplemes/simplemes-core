@@ -1,0 +1,193 @@
+
+=== Rest API
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc-header]#CRUD#
+[inline-toc]#<<GET (read)>>#
+[inline-toc]#<<POST (create)>>#
+[inline-toc]#<<PUT (update)>>#
+[inline-toc]#<<DELETE (delete)>>#
+
+endif::[]
+
+
+The enterprise framework supports a standard
+http://en.wikipedia.org/wiki/Representational_state_transfer[REST^]
+(Representational state transfer) API where appropriate.  The domain objects are exposed
+by controllers for CRUD actions.  <<API Actions - Non-CRUD>> are implemented as services that are also
+exposed by controllers, but with specific URL endpoints.
+
+NOTE: Only <<JSON>> is supported in these Rest API methods.
+
+==== CRUD
+
+In general, Create, Read, Update, Delete (CRUD) actions are handled by REST-style URLs and
+HTTP methods on the object's controller page. Most of the time, you will use the
+link:groovydoc/org/simplemes/eframe/controller/BaseCrudRestController.html[BaseCrudRestController^]
+icon:share-square-o[role="link-blue"]
+in your controller to support REST-style JSON API for your domain classes.  An example is shown below:
+
+[source,groovy]
+.Example Rest API Controller
+----
+@Secured("MANAGER")
+@Controller("/somePath")
+class SomeController extends BaseCrudRestController { // <1>
+
+  . . .
+
+}
+----
+<1> Handles standard Rest CRUD API actions (GET, POST, PUT and DELETE).
+
+
+
+An HTTP GET request on the URI _/product/crud/BIKE27_  will read a _Product_ and return the
+given JSON response:
+
+[source,json]
+.JSON Response
+----
+{
+  "id":1000000001308000,
+  "product":"PRODUCT_XYZ",
+  "description":"Standard 27-inch Bicycle"
+   . . .
+}
+----
+
+
+===== GET (read)
+
+A `GET` is used to read data for a specific record.  The record to read is identified by the URL.
+For example, to read a _Product_, use a an HTTP request like this below:
+
+*uri:* `/product/crud/PRODUCT_XYZ`  _(GET)_
+
+The record's JSON is returned as the response content.  It is also possible to perform a get with
+the record's internal ID with a URI:
+
+*uri:* `/product/crud/1000000001307601` _(GET)_
+
+The response is shown below:
+
+[source,json]
+.JSON Response
+----
+{
+  "id":1000000001308000,
+  "product":"PRODUCT_XYZ",
+  "description":"Standard 27-inch Bicycle"
+   . . .
+}
+----
+
+===== POST (create)
+
+A POST request is used to create a record in your application.  An example creation is shown below:
+
+*uri:* `/product/crud`  _(POST)_
+
+[source,json]
+.JSON Request Content
+----
+{
+  "product":"PRODUCT_XYZ",
+  "description":"Standard 27-inch Bicycle"
+  "operations" : [
+    "sequence": 10,
+    "title": "Install Wheels",
+      . . .
+  ]
+}
+----
+
+
+===== PUT (update)
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Child Updates>>#
+[inline-toc]#<<Removing Child Elements with One-To-One Relation>>#
+
+endif::[]
+
+
+
+A PUT is used to update the data for a specific record.  The record to read is identified by the URL.
+For example, to update a _Product_, perform a PUT with this URL:
+
+*uri:* `/product/crud/PRODUCT_XYZ` _(PUT)_
+
+The record's JSON is passed in as the content.  A sparse update is performed on each record,
+but all child records must be present. This sparse update means only fields provided in the JSON
+content are updated.  The updated record is returned in the response in JSON format.
+
+You can also perform a get with the record's internal ID with a URI similar to:
+
+*uri:* `/product/crud/1000000001307601` _(PUT)_
+
+A sample request is shown below:
+
+*uri:* `/product/crud/PRODUCT_XYZ`  _(PUT)_
+
+[source,json]
+.JSON Request Content
+----
+{
+  "product":"PRODUCT_XYZ",
+  "description":"Standard 27-inch Bicycle"
+   . . .
+}
+----
+
+NOTE: You may update the key field(s) of an object but this is not recommended in most scenarios.
+
+
+
+====== Child Updates
+
+Many domain classes have child records that belong to a parent.  These can be created and updated
+with the REST API in a single request. It is important that these child records have a _belongsTo_
+relationship to the parent. See <<Parent/Child Relationships (One-To-Many)>> for more details.
+
+When you send a PUT request to a domain object, the child records are
+updated with a 'flush and fill' approach.  This means all of the child records are deleted
+and the replaced with the records from the input JSON.
+
+Also, if the children element is not mentioned in the input JSON, then the child records
+will be left untouched.
+
+
+====== Removing Child Elements with One-To-One Relation
+
+If a domain object has a single child element, you can clear this child element with JSON as in
+this example below:
+
+[source,json]
+.JSON Clear Reference
+----
+{
+  "orderCode": "10102-23",
+  "customer": {}  // <1>
+}
+----
+<1> Clears the customer.
+
+This assumes the customer is part of the order with a _hasOne_ relationship.  This will
+remove the customer from the order and delete it from the database.
+
+===== DELETE (delete)
+
+A `DELETE` HTTP method is used to remove entire records from the database.  The record to delete
+is identified by the URL. An example delete is shown below:
+
+
+*uri:* `/product/crud/PRODUCT_XYZ` _(DELETE)_
+
+NOTE: The response code for a successful delete is 204 (successful, no content).
+
+
+
+

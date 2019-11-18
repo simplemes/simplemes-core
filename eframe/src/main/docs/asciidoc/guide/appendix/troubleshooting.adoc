@@ -1,0 +1,11 @@
+=== Troubleshooting
+
+==== Hibernate Error HHH020003
+
+On startup, you see a warning like this:
+
+----
+WARN  o.h.c.e.AbstractEhcacheRegionFactory - HHH020003: Could not find a specific ehcache configuration for cache named [XYZ]; using defaults.
+----
+
+This is caused by a missing cache setting in the _ehcache.xml_ file.  See <<Hibernate>> for details.

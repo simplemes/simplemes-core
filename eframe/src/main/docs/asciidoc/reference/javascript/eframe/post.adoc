@@ -1,0 +1,52 @@
+
+[[eframe-post]]
+=== post
+
+.post(uri, postData, success)
+
+This Javascript function performs an Ajax POST request to the server at the given `uri`.
+The results are passed to the `success` function you provide. The `postData` are converted
+to JSON and sent as the body of the request.
+This function is part of the <<eframe-js>> library.
+
+.Parameters
+[cols="1,1,5"]
+|===
+|Parameter|Type|Description
+
+|*uri*          |string| The URI to send the request to (*Required*).
+|*postData*     |map or String| The body of the request (as JSON) sent to the server (*Optional*).
+                                Can be a JSON string or a javascript object.
+|*success*      |function| This is called when the request succeeds (*Optional*).
+|*options*      |object| Additional objects for the request (*Optional*).
+|===
+
+The `options` is a Javascript object that can contain these options:
+
+* *divID* - The Message div ID to display any error messages.
+
+
+[source,javascript]
+.Example
+----
+var postData = {};                 // <.>
+postData.event = "ColumnResized";
+postData.pageURI = '/the/page';
+postData.element = 'aGrid';
+postData.column = 'userName';
+postData.newSize = 12.5;
+
+ef.post("/userPreference/guiStateChanged", postData,
+  function (responseText) {  // <.>
+     var data = JSON.parse(responseText);
+     console.log(data);
+     . . .
+  }
+);
+----
+<.> The body of the POST request is a javascript plain object (a map).
+<.> Function called when the POST succeeds, passing the HTTP response body to the function as a string.
+
+
+Server-side errors are displayed in the standard error
+link:guide.html#message-display[location^] icon:share-square-o[role="link-blue"].

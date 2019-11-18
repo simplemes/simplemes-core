@@ -1,0 +1,49 @@
+
+
+=== efGUISetup
+
+The link:guide.html#efguisetup[efGUISetup^] icon:share-square-o[role="link-blue"] marker
+generates some HTML `<head>` elements needed to set the language
+and theme for the user within the page.  The language is determined from the request's locale.
+
+
+==== Examples
+
+A typical use is in the main header include (_view/includes/header.ftl_):
+
+[source,html]
+.header.ftl
+----
+<head>
+  . . .
+  <script src="<@efAsset uri="/assets/eframe_toolkit.js"/>" type="text/javascript"></script>
+  <@efGUISetup/>
+</head>
+
+ . . .
+
+----
+
+
+[[efguisetup-parameters]]
+==== Parameters/Body
+
+The main parameters/body supported are:
+
+.Parameters
+[cols="1,6"]
+|===
+|Argument|Description
+
+|*(body)*    |Ignored.
+|`testTheme` |The theme to test display for the page.  This is usually only useful in the page that sets the default theme.
+
+|===
+
+
+
+==== Attributes
+
+There is a special attribute that can be used to test display a theme for the given page.  This overrides the default theme.
+
+

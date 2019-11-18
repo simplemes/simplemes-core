@@ -1,0 +1,119 @@
+
+
+=== Controller Testing
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Controller Test Helper>>#
+[inline-toc]#<<Mock Controller Classes>>#
+
+endif::[]
+
+
+Controllers are the main entry point into your application from the outside world. These
+must be secured and rigorously tested.  Test helpers are provided to make your life easier.
+The general philosophy of controller testing is to use real GORM/Hibernate domain objects
+and test with a real (in memory) database.  In general, most controller testing does not
+use the embedded server support provided by Micronaut.
+
+Controller class testing can be tedious when you have a lot of controllers and fields to test.
+
+==== Controller Test Helper
+
+To reduce testing efforts for controllers, the framework provides a simple test helper
+(link:groovydoc/org/simplemes/eframe/test/ControllerTester.html[ControllerTester^]
+ icon:share-square-o[role="link-blue"])
+with a DSL suited for common controller testing actions.
+
+The ControllerTester checks these features:
+
+* All methods are secured (with optional role).
+* Specific method requires a specific role.
+* Proper use of the <<Task Menu>> for the controller.
+* Error handling (TBD).
+
+[source,groovy]
+.Example Controller Tester Use
+----
+def "verify that controller has secured methods and meets standard requirements"() {
+  expect: 'the controller follows the standard requirements'
+  ControllerTester.test {
+    controller OrderController
+    role 'MANAGER'                 // <.>
+    secured 'release', 'ADMIN'     // <.>
+    taskMenu name: 'user', uri: '/user', clientRootActivity: false // <.>
+  }
+}
+----
+<.> The role required for all methods.  Defaults to any annotation (even anonymous or not logged in).
+<.> The release method must require the ADMIN role using the Micronaut _@Secured()_ annotation.
+<.> The task menu expected in the controller.  The task menu 'user' must be defined with a URI of '/user'.
+    The URI must also not be flagged as the root URI for the logger for the controller (default true).
+
+By default, all public methods must be secured.  If the controller is secured at the class level,
+then all methods are assumed to be secured.
+
+NOTE: If no `role` is specified for the test() method, then the test will make sure
+      all methods are covered by a role other than 'isAnonymous()'.
+
+The most common options are shown below:
+
+[source,groovy]
+.Example Controller Tester Use
+----
+def "verify that controller has secured methods and meets standard requirements"() {
+  expect: 'the controller follows the standard requirements'
+  ControllerTester.test {
+    controller OrderController
+    role 'MANAGER'              // <.>
+    secured 'release', 'ADMIN'  // <.>
+    //securityCheck false       // <.>
+  }
+}
+----
+<.> The role required for all methods.  Defaults to any annotation (even anonymous or not logged in).
+<.> The release method must require the ADMIN role using the Micronaut _@Secured()_ annotation.
+<.> Completely disables the security check.
+
+==== Mock Controller Classes
+
+To reduce coupling with the real controllers, the framework provides a way to create
+dynamic controllers quickly.  These are compiled from source during the test and
+are not part of the shipped classes.
+
+This relies on simple compilation into a local class that can be used like normal controller
+classes.
+
+See
+link:groovydoc/org/simplemes/eframe/test/CompilerTestUtils.html[CompilerTestUtils^]
+icon:share-square-o[role="link-blue"] for details.
+
+[source,groovy]
+.Example Controller with Dynamic Class Compilation
+----
+  def "verify that findDomainClass supports static domainClass value is supported"() {
+    given: 'a mock controller'
+    def src = """
+      package sample
+
+      import sample.domain.SampleParent
+
+      class NotSampleParentController {
+        static domainClass = SampleParent   // <1>
+      }
+    """
+    def clazz = CompilerTestUtils.compileSource(src)    // <2>
+
+    expect: 'the correct domain class is found'
+    ControllerUtils.instance.getDomainClass(clazz.newInstance()) == SampleParent  // <3>
+  }
+----
+<1> This temporary class must refer to a real domain class.
+<2> Creates a temporary class from the given source.
+<3> The temporary class can be used in most places a real controller can be used.
+
+One of the big drawbacks of this approach is that the temporary class can't refer to other
+temporary classes created this way.  This means you will probably have to use real
+domain classes like _SampleParent_ above.
+
+

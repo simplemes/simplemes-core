@@ -1,0 +1,25 @@
+==== efShow
+
+The link:reference.html#efshow[efShow^] icon:share-square-o[role="link-blue"] marker
+is used to build a <<definition-pages,definition GUI>> that displays a single domain object.
+This shows all of the configured fields and provides menus to edit and delete the record.
+
+NOTE: The last used tab panel is saved in the browser's local storage.  This is done
+      because the user may switch tabs frequently and we do not want to overload the
+      server with updates on each tab switch.
+
+
+[source,html]
+.efShow Example - User
+----
+<@efForm id="show">
+  <@efShow fields="user,title,email"/>  // <.>
+<@/efForm>
+
+----
+<.> Specific fields are displayed in the show page.
+
+An example page is shown below:
+
+image::guis/show.png[title="Show",align="center", width=75%]
+

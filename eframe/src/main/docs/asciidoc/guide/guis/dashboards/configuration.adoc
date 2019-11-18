@@ -1,0 +1,103 @@
+
+==== Dashboard Configuration
+
+The dashboard configurations are defined in a typical domain class
+(link:groovydoc/org/simplemes/eframe/web/dashboard/DashboardConfig.html[DashboardConfig^]),
+but there are no standard definition GUIs for the classes.  Instead, the dashboard configuration
+pages allow the user to alter the configurations. All dashboards must have a name and be stored
+in the database.
+
+===== Dashboard Categories
+
+Dashboards are arranged into categories to allow you define the right kind of dashboard for the
+right kind of task.  For example, you might want one type of dashboards for managers, but another
+for supervisors. The category is not part of the primary key for a dashboard configuration.
+This allows the URLs that displays a given dashboard to be simpler
+(e.g. _/dashboard?category=MANAGER_).
+
+===== Default Dashboards
+
+Your application will probably need to provide some default dashboard configurations as examples
+for your users. These are generally meant to be starting places for your users to rearrange into
+suitable dashboards. You can define sub-classes of the DashboardConfig domain class and implement
+your own initial data load for whatever categories and default configurations you need.
+The framework does not provide a default configuration.
+
+===== Dashboard Editor
+
+The dashboard editor allows you or your users to configure their own dashboards using
+pre-defined activities or custom developer activities.  The editor allows you to configure
+the panels, default sizes, buttons and activities available to the dashboard users:
+
+image::guis/dashboardEditor.png[dashboardEditor,align="center",width="75%"]
+
+This dialog represents the dashboard configuration.  It shows the buttons in the top panel, but the
+specific location and orientation is determined by the activities used in the dashboard
+(see <<Configurable Buttons>>).
+
+You can select panels or buttons and use the context (right-click) menu to perform actions on
+the selected element. The menus also allow you to modify the elements as you need.
+
+
+For example, the _'Details...'_ menu will open the details dialog that allows you to change the
+dashboard name, title or other top-level settings:
+
+image::guis/dashboardDetails.png[dashboardDetails,align="center",width="75%"]
+
+
+
+===== Configurable Buttons
+
+You dashboard can have common buttons defined by you or your users.  Each button will trigger one
+or more activities to be displayed in specific panels in the dashboard.  This can be used to string
+together several user actions with just a single click by your users.
+
+These buttons are displayed in one of your panel activities that have the `DashboardButtons`
+element defined.  For example, you might have a general-purpose selection
+activity page that is displayed at the top of the dashboard that looks like this:
+
+[source,html]
+----
+<div id="wcSelection">
+  <@efField model="SelectionCommand" field="workCenter"/>
+  <span id="DashboardButtons"></span>
+</div>
+----
+
+The first element with the ID _'DashboardButtons'_ will be replaced with the configurable
+buttons for this dashboard. You should only have one activity on the dashboard with this
+`DashboardButtons` ID.
+
+NOTE: These configurable buttons are optional.  You can have no buttons or create your
+      own controls as needed.
+
+
+The buttons are stored as child
+link:groovydoc/org/simplemes/eframe/web/dashboard/DashboardButton.html[DashboardButton^]
+icon:share-square-o[role="link-blue"] records of the DashboardConfig object.  These buttons are
+displayed one after another in the appropriate area of the page.  The buttons have configurable
+labels, styling, title (tooltip) and display sequence.
+
+Each button can be configured using the menu items in the dashboard editor dialog.  You can do this
+by selecting the button and then using the context menu (right-click) to display the details.
+The button details dialog looks like this:
+
+image::guis/dashboardButtonDetails.png[DashboardButtonDetails,align="center",width="75%"]
+
+WARNING: All buttons on activities must have a unique sequence.  This sequence will be used to
+         order the buttons on the display and the execution sequence for the activities.
+
+NOTE: If you have more than one button with the same button label, the dashboard will display one
+      button with the multiple activities on it.  Each activity will be executed in sequence
+      when the previous activity is finished.
+
+
+====== Button Activities (Pages)
+
+Each activity (page url) executed for a button can be executed in its own panel or sequentially
+in a single panel. The pages displayed are defined in the Button Details dialog shown above.
+
+It is possible to have multiple activities on a single button.
+
+
+

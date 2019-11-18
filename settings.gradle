@@ -1,4 +1,5 @@
 rootProject.name = 'simplemes-core'
 
 includeBuild 'webix'
+includeBuild 'eframe'
 

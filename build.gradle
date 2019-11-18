@@ -21,30 +21,44 @@ repositories {
   in each of these elements.
  */
 task cleanAll {
-  includedBuilds.tokenize().each { buildName ->
+  includedBuilds.tokenize(',').each { buildName ->
     dependsOn gradle.includedBuild(buildName).task(':clean')
   }
 }
 
 task buildAll {
-  includedBuilds.tokenize().each { buildName ->
+  includedBuilds.tokenize(',').each { buildName ->
     dependsOn gradle.includedBuild(buildName).task(':build')
   }
 }
 
 task testAll {
-  includedBuilds.tokenize().each { buildName ->
+  includedBuilds.tokenize(',').each { buildName ->
     dependsOn gradle.includedBuild(buildName).task(':test')
   }
 }
 
 task assembleAll {
-  includedBuilds.tokenize().each { buildName ->
+  includedBuilds.tokenize(',').each { buildName ->
     dependsOn gradle.includedBuild(buildName).task(':assemble')
   }
 }
 
+task publishAll {
+  includedBuilds.tokenize(',').each { buildName ->
+    dependsOn gradle.includedBuild(buildName).task(':publish')
+  }
+}
+
+task dependenciesAll {
+  includedBuilds.tokenize(',').each { buildName ->
+    dependsOn gradle.includedBuild(buildName).task(':dependencies')
+  }
+}
+
 task bintrayUploadAll {
-  dependsOn gradle.includedBuild('webix').task(':bintrayUpload')
+  includedBuilds.tokenize(',').each { buildName ->
+    dependsOn gradle.includedBuild(buildName).task(':bintrayUpload')
+  }
 }
 

@@ -1,0 +1,86 @@
+=== efList
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<ef-list-parameters>>#
+[inline-toc]#<<ef-list-requirements>>#
+[inline-toc]#<<Grid Examples>>#
+
+endif::[]
+
+
+
+The link:guide.html#eflist[efList^] icon:share-square-o[role="link-blue"] marker
+is used to build a pageable GUI grid with one or more columns of data.
+By default, the row values are found by a controller `list()` method using the json format.
+
+For an overview, see link:guide.html#eflist[efList^] icon:share-square-o[role="link-blue"].
+See the groovydoc
+link:groovydoc/org/simplemes/eframe/web/ui/webix/marker/ListMarker.html[ListMarker^]
+icon:share-square-o[role="link-blue"] for additional details.
+
+
+See <<guide.adoc#markers,Markers>> for common features of markers such as Pagination, Filtering
+and Sorting. See <<guide.adoc#controllers,Controllers>> for details on helper classes that
+can provide the `list()` method logic for you.
+
+This marker relies on the common <<Grid Widget>> to implement most of the list features.
+All common <<Grid Widget>> features are supported.
+
+
+[source,html]
+.efList Example - Display a List of Orders
+----
+<@efList columns="order,product,qtyToBuild,qtyDone,dateCompleted"/>
+----
+
+
+
+[[ef-list-parameters]]
+==== Parameters/Body
+
+The main parameters/body supported are:
+
+.Parameters
+[cols="1,6"]
+|===
+|Argument|Description
+
+|*(body)*    |Ignored.
+| TBD *action*   | The name of the controller method (action) that provides the rows.  (*Default:* list).
+| *columns*  | A comma-delimited list of columns to display
+              (*Default:* The list from the domain's <<fieldOrder>>).
+
+|===
+
+
+
+This marker also supports most of the <<Grid Widget>> options to control the list display,
+This includes default widths, specific links needed, etc.
+
+NOTE: This marker assumes the controller serving up this page is the same used for the
+      edit/create/show/delete actions.
+
+
+[[ef-list-requirements]]
+==== Requirements
+
+* The list of data to display must be static (_model=".."_) or the domain must have a controller
+  that implements a standard `list()` method that supports *json* format and structures the output
+  with two top-level elements:
+** `total_count` - The total number of rows available (integer).
+** `data` - The actual list data (an array of each row's values).
+* One or more key fields are defined in your domain class. See <<guide.adoc#domains,Domains>>
+* The columns have standard labels defined in _messages.properties_.
+  See <<guide.adoc#internationalization,Internationalization>>
+* The main domain class (if found) has a standard label defined in _messages.properties_.
+* The domain classes for child and foreign key references should have a reasonable `toString()` method.
+  This makes the list more readable.
+
+NOTE: Any sub-object references in the list of columns will be ignored (not displayed).  This includes
+column references such as _flexType.fields_.
+
+
+==== Grid Examples
+
+

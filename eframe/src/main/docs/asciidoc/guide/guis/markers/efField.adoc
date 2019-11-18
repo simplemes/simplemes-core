@@ -1,0 +1,20 @@
+==== efField
+
+The link:reference.html#effield[efField^] icon:share-square-o[role="link-blue"] marker
+builds an input field suitable for submission to the server (using a javascript submit mechanism).
+
+[source,html]
+.Example - Update Password
+----
+<@efForm id="changeForm">
+  <@efField field="User.userName" value="joe"/>
+  <@efField field="User.password" id="passwordOld" required="true" fieldType="password"/>
+  <@efField field="User.password" id="passwordNew" required="true" fieldType="password"/>
+  <@efField field="User.password" id="passwordConfirm" required="true" fieldType="password"/>
+  <@efButton id="change" label="changePassword.label" click="changeFormSubmit()"/>
+<@/efForm>
+----
+
+This will display a simple form with some fields for the new password and a submit button
+The submit button must call a generated function to submit the form.
+

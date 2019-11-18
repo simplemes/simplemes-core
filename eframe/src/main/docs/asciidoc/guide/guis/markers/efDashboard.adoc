@@ -1,0 +1,27 @@
+==== efDashboard
+
+The
+link:reference.html#efdashboard[efDashboard^] icon:share-square-o[role="link-blue"] marker is used to
+display the configurable dashboard for user interaction. A dashboard is an instrument panel
+that gives your users information and allows them to control some parts of your
+application.  Typically, this dashboard allows configuration so that your customers can
+tailor the display and behavior to their needs.  See <<Dashboards>> for an overview.
+
+The enterprise framework provides a core dashboard mechanism that lets you provide those
+features to your customers.  This dashboard uses small building blocks called 'activities' to
+make up elements of this dashboard.  You provide core activities to your customers who combine
+them into usable dashboard for their users.
+
+image::guis/dashboard.png[Dashboard,align="center",width="75%"]
+
+For example, to show a Manager's default dashboard, you would use this marker:
+
+[source,groovy]
+.Example Dashboard Marker use
+----
+<@efDashboard category="MANAGER"/>
+----
+
+
+
+

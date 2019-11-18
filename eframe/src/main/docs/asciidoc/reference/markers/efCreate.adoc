@@ -1,0 +1,87 @@
+=== efCreate
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<ef-create-parameters>>#
+[inline-toc]#<<Create Examples>>#
+[inline-toc]#<<Inline Grid>>#
+
+endif::[]
+
+
+
+The link:guide.html#efcreate[efCreate^] icon:share-square-o[role="link-blue"] marker
+is used to build a definition-style page that allows the user to create a top-level
+domain record.
+This provides the core for the standard definition create page.
+
+
+For an overview, see link:guide.html#efcreate[efCreate^] icon:share-square-o[role="link-blue"].
+See the groovydoc
+link:groovydoc/org/simplemes/eframe/web/ui/webix/marker/CreateMarker.html[CreateMarker^]
+icon:share-square-o[role="link-blue"] for additional details.
+
+
+[source,html]
+.efCreate Example - Order
+----
+<@efForm id="create">
+  <@efCreate fields="order,product,qtyToBuild,qtyDone,dateCompleted"/>
+<@/efForm>
+----
+
+NOTE: This marker assumes the controller serving up this page is the same used for the
+      edit/show/list/delete actions.
+      Also, this marker must be used inside of an <<efForm>> marker pair.
+
+[[ef-create-parameters]]
+==== Parameters/Body
+
+The main parameters/body supported are:
+
+.Parameters
+[cols="1,6"]
+|===
+|Argument|Description
+
+| *(body)*    |Ignored.
+| *fields*    | A comma-delimited list of fields to display
+               (*Default:* The list from the domain's <<fieldOrder>>).
+| *labelWidth* | The width of the label section of the page.
+               (*Default:* '20%').
+| *_field_@readOnly* | If true, then the given field will be displayed as read-only (no changes)
+               (*Default:* false).
+
+|===
+
+
+This marker also supports most of the common features mentioned in
+link:guide.html#markers-and-options[Markers and Options^] icon:share-square-o[role="link-blue"].
+This includes labels and sizes.
+
+NOTE: This marker supports the <<Inline Grid>>.
+
+
+==== Create Examples
+
+[source,html]
+.Standard Create Page - User Definition
+----
+<#assign title><@efTitle type='create'/></#assign>
+
+<#include "../includes/header.ftl" />
+<#include "../includes/definition.ftl" />
+
+<@efForm id="create">
+    <@efCreate fields="user,title,email"           // <.>
+               title@label="customTitle.label"/>   // <.>
+</@efForm>
+
+<#include "../includes/footer.ftl" />
+----
+<.> Specific fields are displayed in the page.
+<.> The title field has a custom title that is different from the default ('title.label').
+
+
+
+

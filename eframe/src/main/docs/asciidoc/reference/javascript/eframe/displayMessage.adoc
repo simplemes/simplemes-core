@@ -1,0 +1,55 @@
+
+[[eframe-display-message]]
+=== displayMessage
+
+.displayMessage(msg)
+
+This Javascript function displays one or more messages in the standard 
+link:guide.html#message-display[message area^] icon:share-square-o[role="link-blue"].
+This is useful for messages and errors from the server that are typically displayed when
+some Ajax action completes and you wish to show a message without forcing the user to
+dismiss a dialog.  You can also use this function in your javascript to display messages
+when you need to.
+
+This function is part of the <<eframe-js>> library. See also <<eframe-clear-messages>>.
+
+.Parameters
+[cols=".^1,1,5"]
+|===
+|Parameter|Type|Description
+
+.3+|msg|String| A single information message text.
+       |Array| Multiple object (maps) or strings (information messages).
+       |Object (map)| Multiple messages, with possible mixed types and options (see below).
+                      Can also be the javascript object from a standard MessageHolder response.
+|===
+
+The `msg` can be a javascript object (map) or array of maps with these elements for mixed messages:
+
+* `info` - A simple text message or array of info messages, shown as a blue non-error information message.
+* `warn` - A simple text message or array of warning messages, shown as a yellow warning message.
+* `error` - A simple error message or array of error messages, shown as a red error message.
+* `divID` - The HTML ID of the <div> to display the error messages in.  This area is not auto-cleared.
+            (*Default*: the _messages_ div).
+* `clear` - If true, then clears the given message div before displaying this message.
+
+
+[source,javascript]
+.Examples
+----
+
+eframe.displayMessage('Order 1234 Cancelled.');          // <.>
+eframe.displayMessage({error: 'Order 1234 not found.'}); // <.>
+eframe.displayMessage({ info: ['Order 1234 Cancelled.','Order 1234 Archived.'] }); // <.>
+eframe.displayMessage({
+            info: 'Order 1234 Cancelled.',
+            error: 'Order 1234 could not be archived.' });  // <.>
+eframe.displayMessage({
+            divID: 'activityAMessages',
+            error: 'Order 1234 could not be archived.' });  // <.>
+----
+<.> Displays a single info message.
+<.> Displays a single error message
+<.> Displays multiple info messages
+<.> Displays multiple info and error messages
+<.> Displays an error in your activity's message area.

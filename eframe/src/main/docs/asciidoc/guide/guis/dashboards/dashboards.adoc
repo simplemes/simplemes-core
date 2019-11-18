@@ -1,0 +1,98 @@
+
+=== Dashboards
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Interactive Dashboard Flow>>#
+[inline-toc]#<<Custom Dashboard Page>>#
+[inline-toc]#<<Dashboard Activities>>#
+[inline-toc]#<<Dashboard Configuration>>#
+[inline-toc]#<<Dashboard API>>#
+[inline-toc]#<<Undo>>#
+
+
+endif::[]
+
+
+
+A dashboard is an instrument panel that gives your users information and allows them to interact
+with and control some parts of your application.  Typically, this dashboard allows configuration
+so that your users can tailor the display and behavior to their needs.  These dashboards can display
+one or more pages in a resizable set of panels so that a lot of information can be visible to your
+users to operate on.
+
+// TODO: Update GUIs (3)
+
+.Typical Dashboard
+image::guis/dashboard.png[Dashboard,align="center",width="75%"]
+
+
+The enterprise framework provides a core dashboard mechanism that lets you provide those features
+to your customers. This dashboard uses small building blocks called <<Dashboard Activities>> to
+make up elements of this dashboard.  You provide core activities to your users who can combine
+them into usable dashboards for their purposes. These activities are specialized HTML pages that
+use the <<Dashboard API>> to interact with the dashboard and perform actions for your users.
+
+
+Dashboards are displayed with the <<efDashboard>> tag and the dashboard provides these
+capabilities:
+
+* 'Single page application' approach.
+* Display 1 or more sub-pages (activities) in a user-adjustable layout.
+* <<Dashboard Configuration>> with default configuration(s) for your application.
+* Shared message area for non-GUI activities.
+* <<Dashboard API>> for <<Dashboard Activities>> (page) lifecycle control.
+* User-configurable action buttons.
+* Javascript-based event system.
+* Complex, configurable flows.
+
+The dashboard activities are simple GSP/HTML pages that use the <<Dashboard API>> to perform most
+actions.
+
+
+
+==== Interactive Dashboard Flow
+
+Dashboards can be used to display complex GUI flows with minimal user input.  This includes the
+ability to display activities and let the user enter data.  These activities can display error
+and result messages.  A typical dashboard flow for an interactive dashboard is shown below:
+
+image::models/DashboardFlow.png[DashboardFlow,align="center"]
+
+The steps in the flow above are:
+
+. This flow starts with the initial display of the dashboard.  The Work Center selection
+  panel is displayed at the top and a work list (order list) is shown in the bottom panel.
+  The user-configurable buttons (Pass, Fail,...) are added to the top panel.
+. The user presses the Fail button to display the 'Log Failure' activity in the lower panel.
+. The user then enters an invalid code and presses the 'Log Failure' button.
+. An error is displayed within the activity panel, allowing the user to correct the inputs.
+. The user fixes the input and successfully logs a failure code.
+. The default activity (a work list) is displayed in the lower panel and a blue information
+  message is shown in the shared message are for the dashboard.
+
+More complex flows can be configured through the button configuration and with smart activities
+in the dashboard. The <<Dashboard API>> provides the functions needed to orchestrate complex
+flows as needed.
+
+Most of the Javascript APIs use the panel name from the dashboard definition to select specific
+panels to operate on. These panel names are automatically assigned (A, B, C...), but you can
+assign your own name in the configuration GUI or in the CRUD API for the
+link:groovydoc/org/simplemes/eframe/web/dashboard/DashboardConfig.html[DashboardConfig^]
+
+==== Custom Dashboard Page
+
+The standard dashboard page (e.g. _views/dashboard/index.ftl_) uses the javascript assets for the dashboard.
+The <<Dashboard API>> is provided for your dashboard activities by the core dashboard pages.
+You can define your own dashboard page if needed.  See <<Dashboard Usage>> for details.
+
+
+
+
+include::dashboardActivities.adoc[]
+
+include::configuration.adoc[]
+
+include::dashboardAPI.adoc[]
+
+include::dashboardUndo.adoc[]

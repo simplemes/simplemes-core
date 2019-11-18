@@ -1,0 +1,125 @@
+
+=== Archive API
+
+
+The Archive API is available for your application's use.  You can use is directly through
+programmatic calls or via the <<Archive Configuration>> options to register your archive logic.
+This archiver generally writes simple text (JSON) versions of the objects to a text file for later
+un-archiving.
+
+
+
+
+////
+==== Exposing The Archive API
+
+Typically, you will want make your archive/unarchive capability available to other programs.  The best way to do this is with
+your controller.  In your controller, you would add this code:
+
+[source,groovy]
+.Example Controller archive()
+----
+  @Transactional
+  def archive() {
+    ArchiveUtils.handleArchive(this, Order, grailsApplication)
+  }
+
+  @Transactional
+  def unarchive() {
+    ArchiveUtils.handleUnarchive(this, Order, grailsApplication)
+  }
+----
+
+This handles the standard archive and unarchive requests using a REST-like POST API.
+An example request to archive an Order is shown below:
+
+[source,XML]
+.Archive Request *POST - /order/archive*
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<archive>
+  <order>M101247</order>
+</archive>
+----
+
+The content uses the standard XML References for the request and responses.  See <<API Formats>> for details.
+If the archive is successful, the response is:
+
+[source,xml]
+.XML Response
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<archive>
+  <reference>2013-08-14/M101247.arc</reference>  // <1>
+  <order id="12324443">M101247</order>
+</archive>
+----
+<1> The `reference` is generally the file the record(s) was archived to.  It can be used to unarchive the records.
+
+It is also possible to archive by record ID:
+
+[source,html]
+.Archive by ID
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<archive>
+  <order id="12324443"/>
+</archive>
+----
+
+
+The `reference` is the value you will need to unarchive an object.  An example request to unarchive an Order is shown below:
+
+[source,xml]
+.Unarchive Request *POST - /order/unarchive*
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<unarchive>
+  <reference>2013-08-14/M101247.arc</reference>
+</unarchive>
+----
+
+[source,xml]
+.Unarchive Response
+----
+<?xml version="1.0" encoding="UTF-8"?>
+<unarchive>
+  <reference>2013-08-14/M101247.arc</reference>
+  <order id="12324443">M101247</order>
+</unarchive>
+----
+
+NOTE: Unarchiving records will not delete the underlying archive (file).  When archiving the record a second time,
+      the original file will not be overwritten.
+////
+
+
+==== Programmatic Archiving
+
+Sometimes, you have scenarios that require specific archive or unarchive actions.
+You can use the link:groovydoc/org/simplemes/eframe/archive/ArchiverFactory.html[ArchiverFactory^]
+directly when needed:
+
+[source,groovy]
+.Archiving on Demand
+----
+import org.simplemes.eframe.archive.ArchiverFactory
+
+def archiver = ArchiverFactory.archiver
+archiver.archive(domainObject)           // <.>
+archiver.archive(relatedObject1)
+archiver.archive(relatedObject2)
+def reference = archiver.close()
+
+ . . .
+
+archiver = ArchiverFactory.archiver  // <.>
+archiver.unarchive(reference)
+----
+<.> Archive a domain object and two related objects.
+<.> Later, unarchive the object(s)
+
+This creates an XML file in a configurable directory and deletes the archived objects.  Later, this example uses the
+archive `reference` to unarchive the domain objects.
+
+

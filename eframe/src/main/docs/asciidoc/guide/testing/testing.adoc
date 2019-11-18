@@ -1,0 +1,46 @@
+
+== Testing
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Testing Philosophy>>#
+[inline-toc]#<<Testing Overview>>#
+[inline-toc]#<<Testing Guidelines>>#
+[inline-toc]#<<BaseSpecification>>#
+[inline-toc]#<<Detecting Test Mode>>#
+[inline-toc]#<<Test Helpers>>#
+[inline-toc]#<<Mocking Beans>>#
+[inline-toc]#<<Creating Test Data>>#
+[inline-toc]#<<Test Data Pollution>>#
+[inline-toc]#<<Controller Testing>>#
+[inline-toc]#<<domain-testing>>#
+[inline-toc]#<<GUI Testing>>#
+[inline-toc]#<<API Testing>>#
+
+endif::[]
+
+
+Automated testing of your application is critical to your success.
+The Enterprise Framework plugin helps you test your application with test support helpers.
+
+=== Testing Philosophy
+
+Our applications use the unit tests to test as much code as possible.
+These can be 'true' unit tests or more like integration tests.
+This is done for speed purposes.
+
+GUI tests end with '_GUISpec_'.  These typically trigger an embedded server startup.
+Some tests will test domains, which will start the hibernate data store for testing the full
+domain stack.
+
+include::testingOverview.adoc[]
+
+include::controllerTesting.adoc[]
+
+include::domainTesting.adoc[]
+
+include::guiTesting.adoc[]
+
+include::apiTesting.adoc[]
+
+

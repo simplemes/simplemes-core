@@ -1,0 +1,54 @@
+
+
+=== finished
+
+.finished(status)
+
+This Javascript function notifies the <<guide.adoc#dashboards,Dashboards>> that a given activity is finished.
+This closes the activity and replaces it with the default or next activity page.  You can specify error, info and
+warning messages. You can also indicate that the next plugin in the sequence should stop.  This function is provided
+in the _dashboard.js_ library.
+
+The parameters supported by the function are:
+
+[cols=".^1,1,5"]
+|=== 
+|Parameter|Type|Description
+
+.2+|status|String|The panel (name) this activity is displayed in.  This panel name is passed to your page as an HTTP parameter
+                  `_panel`.  See below for example uses in your GSP. (*Required*)
+|Object (map)| A map of messages and a flag to notify the dashboard of the result of the activity's
+               work.  See below for details. (*Required:* `panel`)
+|=== 
+
+The `status` can contain a javascript object (map) with these elements for various options upon completion of the activity:
+
+* `panel` - This panel (name) is passed to your page as an HTTP parameter `_panel`.  (*Required* - String)
+* `info` - A simple text message or array of info messages, shown as a blue non-error information message.
+* `warn` - A simple text message or array of warning messages, shown as a yellow warning message.
+* `error` - A simple error message or array of error messages, shown as a red error message.
+* `cancel` - A true/false boolean.  Indicates that any remaining activities should not be displayed.  Default page is displayed instead.
+
+
+[source,javascript]
+.Examples - finished()
+----
+// Finished with no messages.
+dashboard.finished('${params._panel}');
+
+// Finish and display two messages.
+dashboard.finished({panel: '${params._panel}',
+                    info: ['Order 1234 Cancelled.','Order 1234 Archived.']});
+
+// Finish and prevent the next activity from displaying.
+dashboard.finished({panel: '${params._panel}',
+                    error: ['Null pointer exception found.',
+                    cancel: true]});
+----
+
+NOTE: Always call `dashboard.finished()` with an argument.  If missing, this can cause an infinite loop in some scenarios.
+
+
+
+
+

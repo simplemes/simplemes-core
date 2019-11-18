@@ -1,0 +1,26 @@
+
+=== Initial Data Load
+
+Initial data loading is one of the common setup needs for large applications.  These applications
+usually have a number of status codes or numbering sequences that need some sort of initial values.
+If you don't have some reasonable defaults, then your first-time customers may spend hours trying
+to configure your product.  This will discourage most normal customers.
+
+To trigger the initial data load on startup, you will need to add a method to your domain class.
+This method will be executed on application startup.  The method should check for the existence
+of the record before attempting to create it.  You should also minimize the logic to reduce
+startup time.  Don't add extensive or slow logic it you can avoid it.
+
+[source,groovy]
+.Example Initial Data Load
+----
+static initialDataLoad() {
+  if (!findByKey('2000')) {
+    new SampleDomain(key: '2000', name: 'Ready').save()
+  }
+
+  if (!findByKey('2001')) {
+    new SampleDomain(key: '2001', name: 'Done').save()
+  }
+}
+----

@@ -1,0 +1,22 @@
+== Dependencies
+
+This framework module depends on a number of other modules/libraries/products.
+The important dependencies are:
+
+* http://gorm.grails.org/[GORM Object Relational Mapping Module^]
+* http://www.gebish.org/[GEB^] (GUI Testing)
+* http://js.jsnlog.com/[JSNLog Client Logger^]
+* https://webix.com/[Webix^]
+* https://github.com/FasterXML/jackson-docs[Jackson^]
+* https://community.jaspersoft.com/[Jasper Reports^]
+* https://freemarker.apache.org/[Freemarker^]
+
+You do not have to include these in your _build.gradle_ file.  This framework depends on these
+modules and the build system will include them in your application.
+
+NOTE: If you include these in your _build.gradle_ file, then you must make sure the versions are
+consistent with the versions this framework requires. The specific versions needed are listed in
+the framework's _build.gradle_ file.
+
+
+

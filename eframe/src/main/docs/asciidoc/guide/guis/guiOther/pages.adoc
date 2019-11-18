@@ -1,0 +1,45 @@
+
+=== GUI Pages
+
+GUIs are a key part of any web application.  This framework uses
+https://freemarker.apache.org/[Freemarker] to render the GUI pages.  This means your page source
+code is mostly HTML with some Freemarker directives and some Enterprise Framework
+<<Markers>>.
+
+Most <<Controllers>> define methods that return some sort of HTTP response.
+Most GUI pages will return the <<StandardModelAndView>> to trigger the display
+of a specific page (e.g. an _.ftl_ file).  This model provides access to a number of common
+data elements that you need to display data from your system.
+
+
+==== StandardModelAndView
+
+Your GUI support <<Controllers>> usually define methods that return some sort of HTTP response.
+Most GUI pages will return the
+link:groovydoc/org/simplemes/eframe/controller/StandardModelAndView.html[StandardModelAndView^]
+icon:share-square-o[role="link-blue"] to let the framework (and Micronaut) display a given page.
+
+This model normally provides these elements for your page:
+
+[cols="1,4"]
+|===
+|Name|Description
+
+|request|The HTTP request for the marker.
+|params|The HTTP request parameters.
+|_messages|The internal messages for display.
+|_loggedIn|The flag that indicates if the user is logged in.
+|_userName|The current user that is logged in.
+|_markerContext|The internal context for the marker to use.
+|===
+
+You can use these model elements in your .ftl pages like this:
+
+[source,html]
+.Example -
+----
+<@efTitle type="dashboard" dashboardCategory="${params.category!'OPERATOR'}"/>  // <.>
+----
+<.> Uses the URL parameter `category` for the <<efTitle>> marker, with a default value
+    of 'OPERATOR'.
+

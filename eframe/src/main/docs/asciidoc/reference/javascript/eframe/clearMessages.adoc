@@ -1,0 +1,31 @@
+
+[[eframe-clear-messages]]
+=== clearMessages
+
+.clearMessages(div)
+
+This Javascript function clears the standard message area
+link:guide.html#message-display[message area^] icon:share-square-o[role="link-blue"].
+
+This function is part of the <<eframe-js>> library. See also <<eframe-display-message>>.
+
+The parameters supported by the function are:
+
+[cols=".^1,1,5"]
+|===
+|Parameter|Type|Description
+
+|div|String| The optional DIV to clear (*Default*: 'messages').
+|===
+
+
+[source,javascript]
+.Examples
+----
+
+ef.displayMessage('Order 1234 Cancelled.');
+
+ . . .
+
+ef.clearMessagea();
+----

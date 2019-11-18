@@ -1,0 +1,55 @@
+=== Naming Conventions
+
+ifeval::["{backend}" != "pdf"]
+[inline-toc]#<<Class Names>>#
+[inline-toc]#<<Field Naming Conventions>>#
+endif::[]
+
+==== Class Names
+
+These follow the basic Micronaut conventions, but add a few conventions for simplicity.  The common suffixes used are:
+
+* `*Controller` - A controller class.  This is the main entry point for external clients.
+* `*Service` - The business logic service.  These are typically transactional.
+* `*Interface` - A public interface.
+* `*Marker` - The helper implementation for the Freemarker markers (template directive models).
+* `*Widget` - A general GUI widget such as link:groovydoc/org/simplemes/eframe/web/widget/GridWidget.html[GridWidget^].
+* `*FieldBuilder` - Creates a GUI field for a specific object type with edit capability.  Example: link:groovydoc/org/simplemes/eframe/web/builder/LinkListBuilder.html[LinkListBuilder^].
+* `*Factory` - Abstracts object creation for extension purposes such as link:groovydoc/org/simplemes/eframe/web/builder/FieldBuilderFactory.html[FieldBuilderFactory^].
+* `*Utils` - Various utilities packages as static methods on the Utils class. Example: link:groovydoc/org/simplemes/eframe/misc/DateUtils.html[DateUtils^].
+* `*Request` - A POGO object that contains the values for a specific request.  Usually used by services to hold all values needed for the request.
+* `*Response` - A POGO object that contains results from a specific request.  Usually used by services to hold the values returned to the caller.
+* `Abstract*` - A prefix for abstract parent classes such as link:groovydoc/org/simplemes/eframe/web/builder/AbstractFieldBuilder.html[AbstractFieldBuilder^].
+* `Base*` - A prefix for parent classes that have no abstract methods.
+* `*Spec` - A Spock-based test.
+* `*GUISpec` - A Spock-based test that use a live GUI for testing with GEB/Selenium/Webdriver.
+* `*APISpec` - A Spock-based test that uses an embedded server to test an API feature in a server.
+
+These are not hard and fast restrictions, since Micronaut typically allows almost any name for
+the defined beans.
+You can deviate from these conventions if needed in your application.
+
+NOTE: The domain classes typically use the base name alone.  For example _Order_ is the order domain class.
+
+==== Field Naming Conventions
+
+Most standard objects will have these typical fields:
+
+[cols="1,4"]
+|===
+|Field|Description
+
+|id| The internal database record ID (a long integer).  Usually not visible to the user.
+|key(s)/name | One or more primary key fields for the object.
+               These are usually unique and provided by the user.  The user will typically
+               retrieve the records by these key fields.  The first key field is usually
+               named the same as the object (e.g. _Order_ has a key field of `order`).
+               Sometimes, the word 'name' is used in place of key field.
+|title| The single line title.  This is usually a short description displayed in lists.
+|description| A multi-line description.  Typically limited to 255 characters to reduce database size.
+|dateCreated| The date/time this record was created.
+|lastUpdated| The date/time this record was last updated.
+|===
+
+Quantity fields typically start with 'qty' and have a _BigDecimal_ type.
+

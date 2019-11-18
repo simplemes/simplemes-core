@@ -1,0 +1,33 @@
+=== efAsset
+
+The `efAsset` marker
+takes the asset URI and converts it to the correct form for use
+with the asset pipeline.  This converts a simple URI to the digest form
+to allow proper caching of assets in the browse.
+
+For an overview, see link:guide.html#efasset[efAsset^] icon:share-square-o[role="link-blue"].
+See the groovydoc link:groovydoc/org/simplemes/eframe/web/ui/webix/marker/AssetMarker.html[AssetMarker^]
+icon:share-square-o[role="link-blue"] for additional details.
+
+==== Parameters/Body
+
+The main parameters/body supported are:
+
+
+.Parameters
+[cols="1,6"]
+|===
+|Argument|Description
+
+|*uri*| This is the asset path to convert to a proper pipeline asset (if possible)  *(Required)*
+
+|===
+
+
+
+[source,html]
+.Example
+----
+<script src="<@efAsset uri='/assets/eframe.min.js'/>" type="text/javascript"></script>
+----
+

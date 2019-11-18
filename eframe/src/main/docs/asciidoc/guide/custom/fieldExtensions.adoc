@@ -1,0 +1,484 @@
+
+=== Field Extensions
+
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Design Decisions>>#
+[inline-toc]#<<Custom Field Design>>#
+[inline-toc]#<<Custom Field Usage>>#
+[inline-toc]#<<ExtensibleFields Annotation>>#
+[inline-toc]#<<Extension Logging>>#
+[inline-toc]#<<Field Extension Example>>#
+[inline-toc]#<<Storage Limitations>>#
+[inline-toc]#<<Field Types>>#
+[inline-toc]#<<Single Domain Reference>>#
+[inline-toc]#<<Custom Child List>>#
+[inline-toc]#<<Custom Child List - Integration/GUI Testing>>#
+
+endif::[]
+
+
+
+The Enterprise Framework plugin lets the user define custom fields for most domain objects.
+These are stored in a single string column in the domain object.  You (as the application
+developer) must enable this feature on the domain classes that need this ability.
+Once enabled, the end user can add custom fields and adjust the definition GUIs as they like.
+
+The <<Configurable Types>>, <<Flex Types>> and <<Module Additions>> are based on features of
+these field extensions. These features share a lot of common code.
+
+NOTE: This feature is not yet compatible with clustering.  A manual restart of all nodes in the
+      cluster is needed when changes are made to this definition.
+
+
+==== Design Decisions
+
+All of the decisions below are based on a number of assumptions on the use of custom fields:
+
+* Most use cases will need a few custom fields at any given time (5-10).
+* In extreme cases, users may define a large number of custom fields in each domain (100+).
+* Most use cases will likely be reading the value (80% read, 20% write).
+* Users will sometimes not be able to restart the server to add a custom field.
+  Downtime is not allowed.
+* Configuration objects (e.g. Products) and production objects (e.g. Orders) will both
+  need user-defined fields added.  The configuration objects will use one type of customizations
+  (<<Field Extensions>>) and production objects will tend to use another type (<<Flex Fields>>).
+
+When designing the custom field support, we had hoped to store each custom field value in its own
+database column. Unfortunately, that was not possible with GORM.  The hibernate plugin requires
+that persisted fields be compiled into the domain classes. This would force a recompilation/restart
+of the application just to add a custom field. Instead, we chose to store all custom fields into a
+single text column.  Each custom field still appears as a dynamic
+field in the domain class, but they are all persisted to a single text column.
+
+This leads to some limitations.  We feel these limitations are worth the extra flexibility.
+Most importantly: The user can change the fields on the fly without restarting the application server.
+
+Another key decision was made to use JSON for the encoding of the fields into the database column.
+This allows most database engines to extract the values as needed in ad-hoc SQL.  This JSON is a
+little more verbose than the absolute minimum, but it
+is best for compatibility with the external tools.
+
+Another decision was to keep the custom value in the JSON field instead of creating a new field in
+the domain class itself.  This avoids double storage.
+
+==== Custom Field Design
+
+Custom fields are used by many different parts of the framework to allow customization
+of your application.  The features that are associated with custom fields include:
+
+* <<Configurable Types>>
+* <<Flex Types>>
+* <<Module Additions>>
+
+These all use the common
+link:groovydoc/org/simplemes/eframe/custom/ExtensibleFieldHelper.html[ExtensibleFieldHelper^]
+icon:share-square-o[role="link-blue"] helper methods to access the field values.
+The <<Configurable Types>> and <<Flex Types>> also create helper methods in the domain class
+(e.g. `setRmaTypeValue()`).
+
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271  and IDEA plugin dir issue
+:imagesdir: {imagesdir-build}
+ifeval::[{env}==idea]
+:imagesdir-build: .asciidoctor
+:imagesdir: .asciidoctor
+endif::[]
+
+.Custom Field Design
+[ditaa,"customFieldDesign"]
+----
+    +-------------------+ +-------------------+ +-------------------+ +-------------------+
+    | Field Extension   | | Module Addition   | | Flex Type         | | Configurable Type |
+    |   "warehouse"     | |                   | |    field rmaType  | |                   |
+    |                   | |                   | |    name "location"| |                   |
+    |               cCCC| |               cCCC| |               cCCC| |               cCCC|
+    +--------+----------+ +-----------+-------+ +---------+---------+ +--------------+----+
+             |                        |                   |                          |
+             +----------------+       |                   |       +------------------+
+                              |       |                   |       |
+                              v       v                   v       v
+                         +-----------------------------------------------+
+                         |ExtensibleFieldHelper                          |
+                         |  setFieldValue(domain,name,value,prefix)      |
+                         |  getFieldValue(domain,name,prefix)            |
+                         |                                           c4CF|
+                         +---------------------+-------------------------+
+                                               |
+                                               |
+                                               v
+                                  +--------------------------+
+                                  |Domain Record             |
+                                  | _customFields            |
+                                  | {                        |
+                                  | "warehouse" "CENTER",    |
+                                  | "rmaType_location" "SW"  |
+                                  | }                        |
+                                  |                  {s} c6D6|
+                                  +--------------------------+
+
+----
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+All of these types of custom fields store the values in the _customFields (by default)
+in the domain record.
+The FieldExtension (user-defined and additions) are stored with the field name as-is.
+The Configurable Types and flex types use a prefix that is the field name for the
+configuration field.  For example,  the FlexType field name of 'rmaType' uses the prefix
+'rmaType _'.
+
+
+
+
+==== Custom Field Usage
+
+The user can define custom fields on most domain classes that are marked to allow this.  These can
+appear in the framework definition tags such as the <<efEdit>> tag.  By default, the custom fields
+are not shown in the web pages, but the user can configure the pages to show any of the custom fields.
+
+The custom fields do not appear to be normal fields on the domain class.  They do NOT have a getters
+and setters.  Instead, the framework uses the
+link:groovydoc/org/simplemes/eframe/data/FieldDefinitionInterface.html[FieldDefinitionInterface^]
+icon:share-square-o[role="link-blue"] to access the value in the domain.
+
+These fields do not support GORM dynamic finders (e.g. Order.findByProduct(), etc).
+
+
+===== ExtensibleFields Annotation
+
+You, as the application developer, must mark your domain classes that you wish to allow custom fields.
+A simple domain class might look like this:
+
+[source,groovy]
+.Extensible Fields Use
+----
+@ExtensibleFields
+class SampleDomain {
+  String key
+  String name
+  . . .
+}
+----
+
+This will add a new field `_customFields` to the domain class and save it in the database with a
+max size of 1024 characters. If you do not like the default field name or maxSize, you can specify
+them as below:
+
+[source,groovy]
+.Extensible Fields Max Size
+----
+@ExtensibleFields(fieldName = 'userFields',maxSize = 9999)
+class SampleDomain {
+  String key
+  String name
+  . . .
+}
+----
+
+This will create a column in the database `USER_FIELDS` with a type of _TEXT_.  The database
+you are using will determine when the column type of _TEXT_ is used.  You should avoid this
+because of the performance issues with _TEXT_ columns. Most databases can support a size of
+1024 characters in a normal _varchar_ column.
+
+If you use inheritance in your domain classes, then only the top-level domain class should
+have the _@ExtensibleFields_ annotation.
+
+NOTE: You should not change the column name for custom fields on a production database.
+      There is no automatic database migration to handle a column name change.
+
+===== Accessing Custom Field Values
+
+Now that your domain supports custom fields, how do you access them?
+The core framework supports setting/displaying the values via the <<Definition Pages>>
+and the <<Rest API>>.  The fields are configured using the <<Field Extension GUI>>.
+
+To access the fields in your code, you can use the `setFieldValue()` and `getFieldValue()`
+methods that are added to your domain classes:
+
+[source,groovy]
+.Example - Accessing Custom Fields
+----
+
+def order = new Order(order: 'M1002')
+
+order.setFieldValue('caseColor', 'Red')   // <.>
+
+Date promiseDate = order.getFieldValue('promiseDate') // <.>
+
+----
+<.> Set a custom field 'caseColor' to 'Red'.
+<.> The set and get methods support the field extension data types such as Date and other
+    supported <<Field Types>>.
+
+
+===== Deleting Fields
+
+You can delete the field definition.  Existing records will not have the value removed from the
+`_customFields` column, but the the support logic won't process them for display/editing.
+
+Also, the data in the `_customFields` column will no longer be validated, but it is part of the
+stored values.
+
+You can also change the custom field name, but existing values in domain records will not
+be changed.
+
+==== Extension Logging
+
+You can enabled several levels of logging for the _org.simplemes.eframe.custom.FieldExtensionHelper_
+class to track what field extensions are loaded and how they are performing.  The levels used in the extension process are:
+
+* `Debug` - Lists custom fields added to core objects.
+* `Trace` - Logs whenever a value is added/retrieved from the custom field storage.
+            Also logs when the child records are stored for custom child lists.
+
+
+==== Field Extension Example
+
+A simple example domain class may help you understand how these custom features can be used.
+In this example, you, as the application developer, provide an _Order_ domain class.
+This class represents a customer order:
+
+[source,groovy]
+.Example - Extensible Domain
+----
+@ExtensibleFields
+public class Order {
+  String order             // <.>
+  String product           // <.>
+  BigDecimal quantity      // <.>
+     . . .
+}
+----
+<.> The order name.
+<.> The product the customer ordered.
+<.> The number ordered.
+
+The end user of your application wants to add some custom fields to help them process orders more
+easily. The fields needed are:
+
+[width=50]
+|===
+|Field|Format
+
+|`promiseDate`| Date
+|`caseColor`|String
+|===
+
+In this example, the user added `promiseDate` and `caseColor` fields.
+
+image::guis/customFieldAdd.png[Custom Field Add,align="center",width=60%]
+
+The user can put these fields anywhere on the core _Order_ displays by moving the fields in the
+add/remove panel shown below:
+
+image::guis/orderCustom.png[Order Custom,align="center",width="60%"]
+
+See <<Field Types>> for the list of supported field types.
+
+
+===== Data Type Changes
+
+The setValue() method will enforce the type, but the type can be changed after data is
+created. If the defined type changes and there are existing records with the old type, then the
+new data type will be used for the getter. When conversion is not possible, then the string value
+will be returned.  Data will normally not be lost, but automatic conversion
+to the type may not happen.
+
+For example, you store the value 'XYZ' in a String custom field.  If you later change
+the field's type to Number, then you will not be able to return a BigDecimal form of the number.
+Instead, the string 'XYZ' will be returned to avoid data loss.  This may trigger exceptions in
+your code, but the framework will allow this.
+
+NOTE: One exception is _Booleans_.  These will return a boolean object, if the string value starts with
+      't' (any case). This can result in loss of data.
+
+
+If a custom field is no longer defined for the object, you can still get the value.  You can't
+set values when the custom field definition for the specific field is deleted.  This `setValue()`
+method will trigger an exception.
+
+==== Storage Limitations
+
+Custom field values are stored in the domain object (and database table) along with the core fields.
+These custom fields are stored in a text column with a limited length.  This means there is a limit
+on the number of custom fields that can be
+added.  It also means that SQL queries will need to use JSON queries to find the records.
+
+The values are stored in a column __customFields._  This is typically limited to 1024 characters by
+default. This means you can store about 20 fields with an average length of 20 characters.
+Shorter field names will allow more data to be stored. When the value exceeds the actual database
+field limit, then a validation error will happen on save.
+
+The fields are stored in a text column in a JSON format.  An example is shown below (new lines
+added for clarity).
+
+[source,JSON]
+.JSON Format of Custom Fields
+----
+{
+  "color" : "Red",
+  "length" : 12.01,
+  "passed" : true,
+  "releasedTime" : "2011-04-03T06:06:17.000-04:00"
+}
+----
+
+The field type (boolean, date, etc) is not encoded in this storage JSON.  The types are enforced when
+getting or setting values.
+
+==== Single Domain Reference
+
+You can add a custom field that is a reference to a single foreign domain record.
+The reference is stored in the JSON using the record ID (Long).
+
+NOTE: The field definition defines a `valueClassName` that is used to find
+      the actual record.  It is important that this `valueClassName` not be changed if data
+      already exists for it. If changed, then the record will not be found.
+
+
+==== Custom Child List
+
+A Custom Child List can be defined as a custom data field in a domain object.  This list of
+custom children is stored in its own custom domain object (table), not in the normal JSON storage
+field. This allows a large number of custom sub-objects to be defined for a core domain object.
+
+How is this implemented?  A custom field `_complexCustomFields` is added to the domain class to store
+the transient list of the records.  The actual custom domain objects are saved like any normal
+domain class.  Various portions of the framework support these custom lists of objects:
+
+* JSON Parsing and Formatting.
+* CRUD actions in the controller base classes
+  (e.g. link:groovydoc/org/simplemes/eframe/controller/BaseCrudController.html[BaseCrudController^]
+  icon:share-square-o[role="link-blue"] )
+* The GUI tags <<efList>>, <<efShow>> , <<efCreate>> and <<efEdit>>.
+* Support for auto save/delete from core domain objects
+  (see link:groovydoc/org/simplemes/eframe/custom/EframePersistenceListener.html[EframePersistenceListener^]
+  icon:share-square[role="link-blue"]).
+* Normal custom `getFieldValue()` and `setFieldValue()` access.  The `getFieldValue()` method will
+  perform a load of the values.
+
+This means your core code and custom lists of objects in complex scenarios will work with little or no
+coding in your core application.  A common application of this is in <<Module Additions>>.
+Sub-modules can add some very complex sub-objects to core domain objects.
+
+For example, a core _Product_ object needs a custom list of components that can be assembled into
+the product.
+
+[source,groovy]
+.Example - Custom Child List
+----
+@ExtensibleFields
+public class Product {
+  String product
+  Date lastUpdated  // <1>
+     . . .
+}
+----
+<1> The parent object should have a `lastUpdated` field.  This allows the controller code to update
+    the custom child records, even if the parent record is not changed during an Update.
+    The framework will change the `lastUpdated` field to force a database update of the parent.
+
+To support this, the _@ExtensibleFields_ creates a transient Map `_complexCustomFields` to hold the
+list from the database.
+
+Then in a module or other extension, you decide you need to add a list of components to the
+Product definition:
+
+[source,groovy]
+.Example - Custom Child Sub-Object
+----
+public class Component {
+  Long productId // <.>
+  Long sequence
+  BigDecimal qty
+
+  static keys = ['productId', 'sequence'] // <.>
+
+}
+----
+<.> The parent Product reference.  This is stored as an ID only to avoid issues with the hibernate
+    _TransientPropertyValueException_ triggered by saving a direct reference to the parent.
+    This also avoids issues with creating the parent record in a different session from the
+    sub-objects. Since you will normally use the sub-objects as a list from the parent,
+    this is not a serious problem.
+<.> Your custom child needs to have some keys defined.  This allows the JSON update capability.
+
+The list will contain a list of Component sub-objects.
+
+To use this custom child list in a domain, you can define it in <<Module Additions>>:
+
+[source,groovy]
+.Example - Custom Child Addition
+----
+  AdditionConfiguration addition = Addition.configure {
+    field {
+      domain Order
+      name 'orderLines'
+      label 'Line Items'
+      format CustomChildListFieldFormat
+      valueClass OrderLine
+      fieldOrder {
+        name 'orderLines'
+        after 'dueDate'
+      }
+    }
+  }
+----
+
+This addition will add an inline grid for these child order line items in the standard
+Order definition pages.
+
+GORM will not save a record if it thinks the record is unchanged.  When you only change the
+custom sub-table (e.g. `Component` below), the parent record (`Product`) will not be updated.
+To fix this, the framework will change the `lastUpdated` in the parent domain record.
+
+NOTE: The `lastUpdated` field is automatically change by the BaseCrudController logic.
+      If you save the records in a service or other controller, then you should make sure the parent
+      record is changed to force an update on your custom child records.
+
+NOTE: If your parent domain (e.g. _Product_) has any sub-classes, then be sure to include all of the
+      parent IDs for these sub-classes in your custom sub domain object.
+      This is needed to handle any queries that are triggered from the sub-class.
+
+When testing using GUI/GEB testing, remember to delete your custom child classes first.
+There is a bug in the GUI testing support classes that triggers a strange proxy error
+from Hibernate. See the <<Potholes>> for details.  Also, you probably can't run your
+GEB tests in @Rollback mode. There is no easy way to force an update event to happen
+(`lastUpdated` note above).
+
+Be careful with unique constraints involving the parent and a field in the custom child
+(`productId` and `sequence` in the example above).
+This causes some issues with the way the child records are updated during save.  It
+is best to enforce this unique constraint in other ways.
+
+==== Custom Child List - Integration/GUI Testing
+
+Testing lists of child records in Integration/GUI tests is a little more complex than we
+would like. The simplest approach for most integration testing is to use the @Rollback notation.
+This causes multiple issues with the list field extension.  In particular, many of the hibernate
+events are not triggered until the transaction is committed.   This means the custom records will
+never be saved.
+
+To avoid these problems, you will need to use explicit transactions in your tests.  For example:
+
+[source,groovy]
+.Example - Integration Testing of Custom Child List
+----
+
+  def "test additions to Work Service start action - works in integration"() {
+    given: "An order to start"
+    Order order = null
+    Order.withTransaction {        // <.>
+      order = new Order(order: 'M001', product: product).save()
+      new OrderService().release(new OrderReleaseRequest(order))
+    }
+
+  }
+
+
+----
+<.> All database access in the test must be within a transaction.
+

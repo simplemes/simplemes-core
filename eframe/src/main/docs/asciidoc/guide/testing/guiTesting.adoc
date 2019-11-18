@@ -1,0 +1,483 @@
+
+=== GUI Testing
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Testing and Logging in>>#
+[inline-toc]#<<GUI Test Helpers (CRUD)>>#
+[inline-toc]#<<GUI Language Testing>>#
+[inline-toc]#<<GEB Page Modules>>#
+[inline-toc]#<<Deleting Records After Tests>>#
+[inline-toc]#<<Slowing Down GUI Tests>>#
+
+endif::[]
+
+
+
+Integration testing is used to test the GUI-level functionality of your application in a live
+running system (embedded).
+A GUI test should exercise the features of one GUI or related GUIs.  For example, testing the
+create/update/read/delete actions for the User domain/controller can be considered one GUI test.
+Most GUI tests that cover multiple domains, services or controllers should be considered an
+<<e2e-testing,End-to-End Test>>.
+
+You can use whatever functional/GUI testing framework that you prefer, but the framework and
+Micronaut support GEB. The http://www.gebish.org/[GEB^] module is the easiest
+GUI testing framework to get up and running with your application.
+
+The GEB framework uses the http://www.seleniumhq.org/[Selenium^] framework to work with the browser
+GUIs.  This means you will need these dependencies in your _build.gradle_ file.  The framework uses
+these dependencies (version numbers will change):
+
+[source,groovy]
+.build.gradle
+----
+dependencies {
+  testCompile("org.gebish:geb-spock:2.1") {
+    exclude group: "org.codehaus.groovy", module: "groovy-all"  // <1>
+  }
+  testRuntime "cglib:cglib-nodep:3.2.9"
+  testRuntime "org.objenesis:objenesis:3.0.1"
+  testRuntime "net.bytebuddy:byte-buddy:1.9.5"
+
+  testRuntime "org.seleniumhq.selenium:selenium-chrome-driver:3.6.0"
+  testRuntime "org.seleniumhq.selenium:selenium-firefox-driver:3.6.0"
+  testCompile("org.seleniumhq.selenium:selenium-support:3.6.0") {
+    exclude group: "net.bytebuddy", module: "byte-buddy"
+  }
+  testCompile "org.seleniumhq.selenium:selenium-api:3.6.0"
+}
+----
+<1> The geb-spock module pulls in the wrong version of Groovy, so this exclude is needed.
+
+The framework also uses some _compileOnly_ dependencies to allow us to build some of the
+test utilities and base specification classes for other module's use.
+
+GEB provides support for the http://www.gebish.org/[Page Objects^].
+The built-in test support classes make use of the Page concept and provides content references
+that GEB uses. A base page class
+link:groovydoc/org/simplemes/eframe/test/page/AbstractPage.html[AbstractPage^]
+icon:share-square-o[role="link-blue"]
+is provided to make it easier to work with common framework elements. This includes methods to
+wait for all Ajax requests to finish when a page loads.
+
+==== GUI Test Helpers (CRUD)
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Helper Notes>>#
+[inline-toc]#<<Disabling Test Phases>>#
+[inline-toc]#<<Testing Domains with Initial Data Loaded>>#
+
+endif::[]
+
+
+
+Most definition GUIs provide the common CRUD actions in your application.  These are fairly
+standardized and follow a consistent pattern that uses the common GUI markers such as
+<<efList>>.  GUI testing is where you test how your controller,
+views and domains work together.  These pieces are usually tested separately in a unit
+test, so most of the GUI testing is done to test the mapping of your domain classes to the
+GUI and to verify end-to-end functionality.
+
+To make automated GUI testing of these features simpler, the framework provides the test helper class
+(link:groovydoc/org/simplemes/eframe/test/CRUDGUITester.html[CRUDGUITester^] icon:share-square-o[role="link-blue"])
+that greatly simplifies GUI testing of these pages.
+
+The helper performs these basic tests on the GUIs:
+
+* List Page
+** All simple fields (string, date, boolean, number, enum)
+** Complex fields (hyperlinks, domain references)
+** Inline Grids
+** Search Ability
+* Show Page
+** Delete Action
+* Create Page
+** Save
+* Edit Page
+** Save
+
+The helper will exercise these basic features to make sure the controller, views and domains all
+work together correctly.  You will need to run the GUI tests with a command-line option to specify
+the language to be tested.  
+See <<GUI Language Testing>> for details on testing in multiple languages.
+
+
+For example, this can be used to test a simple set of definition GUIs that use the
+framework scaffolding:
+
+[source,groovy]
+.Example GUI Test
+----
+class ProductGUITests extends BaseGUISpecification {
+  static dirtyDomains = [Product] // <1>
+
+  def "verify that the standard pages work"() {
+    expect: 'the pages work'
+    CRUDGUITester.test {
+      tester this
+      domain Product
+      htmlIDBase 'Product'
+      recordParams product: 'PRODUCT1', name: 'First product', lotSize: 27.3 // <2>
+      minimalParams product: 'X' // <3>
+    }
+  }
+}
+----
+<1> Records to be cleaned up when each test is done.  _UserPreference_ records are always deleted.
+<2> Defines the field values for a valid record.  Most of your fields should be listed here.
+    All fields listed here will be tested for creation/update.
+<3> The `minimalParams` defines the minimal required field values for a record.  These will be
+    used to create a record for update testing.  This record should show up after the
+    recordParams record.
+
+
+This example replaces 200+ lines of code in a normal GEB test.
+This example will test the list, show, create and edit pages for the _Product_ domain class.
+
+The test helper needs two sets of values for the domain record:
+
+*  `recordParams` - Used to test the show, create and edit pages.
+*  `minimalParams` - Used to test the edit page and search action.
+
+NOTE: The top-level parameters listed in the `recordParams` or `minimalParams` are tested
+      in the GUI.  Any fields not listed in these two parameter lists are ignored for the test.
+
+The test helper uses the <<reference.adoc#field-order,fieldOrder>> static list from your domain
+object to determine which fields should be tested in the GUI.  The display markers allow you work
+on a different set of fields in your pages. If your field list is different from the
+<<reference.adoc#field-order,fieldOrder>> in some of the pages, then you can specify additional
+fields to test with options in the
+link:groovydoc/org/simplemes/eframe/test/CRUDGUITester.html[CRUDGUITester^] icon:share-square-o[role="link-blue"]
+using the `readOnlyFields` option.
+
+
+Some other features of the tester allow you to tailor the test to your domain.
+See the
+link:groovydoc/org/simplemes/eframe/test/CRUDGUITester.html[CRUDGUITester^] icon:share-square-o[role="link-blue"]
+for details.  These includes options for:
+
+* Support for Dynamic Fields (using closures for the edit/create tests).
+* Ability to disable specific tests.
+* Tests for inline grids.
+* Multiple language support (see <<GUI Language Testing>>).
+
+===== Helper Notes
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Disabling Test Phases>>#
+[inline-toc]#<<Testing Domains with Initial Data Loaded>>#
+[inline-toc]#<<Read-Only Fields>>#
+[inline-toc]#<<Testing Inline Grids>>#
+
+endif::[]
+
+
+
+Some basic notes about testing specific conditions/features with this helper.
+
+====== Disabling Test Phases
+
+The
+link:groovydoc/org/simplemes/eframe/test/CRUDGUITester.html[CRUDGUITester^] icon:share-square-o[role="link-blue"]
+tests all of the main CRUD definition pages: List, Show, Create and Edit.
+You can disable specific phases if there is a good reason.  For example, to disable the Create
+and Edit page tests:
+
+[source,groovy]
+.Disabling Test Phases - Programmatically
+----
+class ProductGUITests extends BaseGUISpecification {
+  def "verify that the standard pages work"() {
+    expect: 'the pages work'
+    CRUDGUITester.test {
+      tester this
+      domain Product
+      recordParams product: 'PRODUCT1', name: 'First product', lotSize: 27.3
+      minimalParams product: 'X'
+      enableEditTests false,    // <.>
+      enableCreateTests false
+    }
+  }
+}
+----
+<.> The two phases are disabled.
+
+The enable flags include (all default to _true_):
+
+* *enableListTests*
+* *enableShowTests*
+* *enableEditTests*
+* *enableCreateTests*
+
+If you want to temporarily to run just a single test phase, you can use the
+_-DtestOnly_ option:
+
+[source,groovy]
+.Disabling Test Phases - Command Line
+----
+  -ea -XX:TieredStopAtLevel=1 -noverify -Dgeb.env=firefox -DtestOnly=show
+----
+
+
+
+====== Testing Domains with Initial Data Loaded
+
+The <<Initial Data Load>> feature will affect some CRUD GUI tests.  These records will show up
+in the main list page and in drop-down lists.   For this reason, it is best to make sure that
+your test data records show up before records loaded by the initial data loading.
+
+For example, if the User object creates a user _'admin'_, then you should make sure that your
+tester data shows up before the admin record:
+
+[source,groovy]
+.Ordering of records with Initial Data Loaded
+----
+class ProductGUITests extends BaseGUISpecification {
+
+  def "verify that the standard pages work"() {
+    expect: 'the pages work'
+    CRUDGUITester.test {
+      tester this
+      domain User
+      recordParams user: 'ABC', password: 'secret', title: 'abc001' // <1>
+      minimalParams product: 'X', password: 'secret'// <2>
+    }
+  }
+}
+----
+<1> This record will show up at the top of the list in the default short order.
+<2> This record will show up above the _'admin'_ user.
+
+====== Read-Only Fields
+
+Some fields are defined as read-only (see <<efCreate>> and <<efEdit>>) in the page definitions.
+This means the
+link:groovydoc/org/simplemes/eframe/test/CRUDGUITester.html[CRUDGUITester^] icon:share-square-o[role="link-blue"]
+needs to know that those fields are read-only.  This is done with the `readOnlyFields` option:
+
+[source,groovy]
+.Read-Only Fields
+----
+class ProductGUITests extends BaseGUISpecification {
+  def "verify that the standard pages work"() {
+    expect: 'the pages work'
+    CRUDGUITester.test {
+      tester this
+      domain Product
+      recordParams product: 'PRODUCT1', name: 'First product', lotSize: 27.3
+      minimalParams product: 'X'
+      readOnlyFields 'qtyReleased,qtyDone'    // <.>
+    }
+  }
+}
+----
+<.> Defines the fields to be tested as read-only fields.
+
+If you forget to note the read-only fields, then you will see an error similar to:
+
+  java.lang.AssertionError: Field Value for qtyReleased is not correct. Found '', expected '0'.
+
+
+====== Testing Inline Grids
+
+Inline grids can be tested using the
+link:groovydoc/org/simplemes/eframe/test/CRUDGUITester.html[CRUDGUITester^] icon:share-square-o[role="link-blue"].
+
+[source,groovy]
+.Example - Inline Grid Testing
+----
+@IgnoreIf({ !sys['geb.env'] })
+class FlexTypeGUISpec extends BaseGUISpecification {
+
+  @SuppressWarnings("unused")
+  static dirtyDomains = [FlexType]
+
+  def "verify that the standard GUI definition pages work"() {
+    expect: 'the constraints are enforced'
+    CRUDGUITester.test {
+      tester this
+      domain FlexType
+      recordParams flexType: 'ABC',  // <.>
+                   fields: [[fieldName: 'F1', fieldLabel: 'f1', maxLength: 23, sequence: 20]]
+      minimalParams flexType: 'XYZ', // <.>
+                    fields: [[fieldName: 'F2', fieldLabel: 'f2', maxLength: 33, sequence: 30]]
+      listColumns 'flexType,category,title,defaultFlexType,fieldSummary'
+      unlabeledFields 'fields'
+    }
+  }
+----
+<.> Defines the fields (rows) added during the edit/create phases.
+<.> Defines the fields that will be in the initial value used during the edit.
+
+At the start of the edit phase, the rows from the `minimalParams` will be added to the
+`fields` list above.  Then record will be changed in the edit page by adding
+the rows from the `recordParams` to the grid.
+
+
+==== GUI Language Testing
+
+Non-GUI tests frequently mock specific languages for testing the internal support for localization.
+For example, date input fields are tested for proper date formats in the various widget tests.
+This level of testing should cover most localization needs for a lot of your application.
+
+Unfortunately, that type of widget-level testing does not verify that your app will be localized
+in a real browser.  To verify this, the framework supports testing with multiple languages
+as sent by the browser to the server (using the header 'Accept-Languages').  This is done in
+_GebConfig.groovy_ when creating the browser instance and in the some core classes to help you verify
+the localization.
+
+This is done by re-running the GUI tests with the -Dgeb.lang option.  For example, when
+run from the gradle command line:
+
+  ./gradlew -Dgeb.lang=de-DE  test
+
+This language is used to create the browser instance.  It is also used in the test helpers
+<<GUI Test Helpers (CRUD)>> and the base GUI specification class
+link:groovydoc/org/simplemes/eframe/test/BaseGUISpecification.html[BaseGUISpecification^]
+icon:share-square-o[role="link-blue"].
+
+Your test class can access this locale with the _currentLocale_ property:
+
+[source,groovy]
+.Example GUI Test
+----
+class ProductGUITests extends BaseGUISpecification {
+
+  def "verify . . ."() {
+    given: 'the date format to expect in the GUI'
+      def format = DateUtils.getDateFormat(currentLocale)   // <1>
+    expect:
+      . . .
+  }
+}
+----
+<1> The current locale for the test from the _-Dgeb.lang_ argument. Defaults to en-US.
+
+
+==== GEB Page Modules
+
+The framework supports many types of common GUI elements such as grids, input fields, buttons and
+drop-down lists.  Interacting with them in GEB tests cane be tedious.  The <<GUI Toolkit>>
+has complex HTML structures for even simple elements like input fields.
+
+To make working with these elements easier, we provide some GEB Modules to access them easier.
+For example, the Page content section for a grid looks something like this:
+
+[source,groovy]
+.Example Page content
+----
+static content = {
+  routingSteps { module(new GridModule(field: 'routingSteps')) }
+}
+----
+
+In your test spec, you would access the routingSteps cells as:
+
+[source,groovy]
+.Example Cell Access
+----
+routingSteps.cell(2,3).text() == 'M1001'  // <1>
+----
+<1> Access the cell's text at row 2, column 3.  (0,0) is the first cell in the first row.
+
+This cell can support the `text()` and `click()` methods.  The GridModule also has other content
+elements that might be useful, such as `headers` and `rows`.
+
+Some of the supported modules include:
+
+* link:groovydoc/org/simplemes/eframe/test/page/GridModule.html[GridModule^] icon:share-square-o[role="link-blue"]
+
+
+
+==== Testing and Logging in
+
+The
+link:groovydoc/org/simplemes/eframe/test/BaseGUISpecification.html[BaseGUISpecification^]
+icon:share-square-o[role="link-blue"]
+base class is designed to use a single login
+and never log out during the tests.  This speeds up tests significantly.  This is accomplished by
+setting a configuration flag to NOT clear the cookies automatically.
+
+Logging out is not needed for most tests.  Your test should just call the `login()` function
+(with or without a user argument).  The method will automatically log out if you need a different
+user/locale.
+
+Since the framework uses cookies for JWT security, the
+link:groovydoc/org/simplemes/eframe/test/BaseGUISpecification.html[BaseGUISpecification^]
+icon:share-square-o[role="link-blue"]
+base class used for GUI testing is set to retain the cookies between tests.
+
+To re-enable the clearing of cookies between tests, you may need to use this in your test
+`setup()` method:
+
+[source,groovy]
+.Clearing Cookies
+----
+browser.config.autoClearCookies = true
+----
+
+NOTE: This should only be used in special cases.  Most security checks will fail without cookies.
+
+
+==== Deleting Records After Tests
+
+Test data pollution can be a big problem in making tests reliable.  This pollution happens when
+domain records are left over from earlier tests.  These records can cause problems with the other tests
+that expect an empty database.  This biggest problem is finding the test that actually left the data.
+
+Most non-GUI tests can avoid this problem by using the _@Rollback_ annotation for the test method.
+This works great for simple tests, but GUI tests must commit the data to the database to work.
+
+See <<Test Data Pollution>> for details on simple ways to clean up these left over records.
+
+==== Slowing Down GUI Tests
+
+Sometimes, it is useful slow down GUI tests with strategic pauses.  You can insert pauses in your
+test code but sometimes you need the server to simulate a slow execution.
+
+A framework configuration setting is available for use in key places in the framework.  For example,
+the <<BaseCrudController>> `list()` method can wait for given number of milliseconds to simulate
+a slow server response.
+
+This setting is most easily set from the environment/command line with the given variable:
+
+[source,shell]
+.application.yml
+----
+EFRAME_TEST_DELAY=1000
+----
+
+This is a global setting and will affect all uses of the delay function.
+See the `delayForTesting()` method in
+link:groovydoc/org/simplemes/eframe/controller/ControllerUtils.html[ControllerUtils^]
+icon:share-square-o[role="link-blue"]
+for details.
+
+You can also set the delay temporarily in a single test.  This is done as below:
+
+[source,groovy]
+.Temporarily Setting Server Delay
+----
+def "verify that . . ."() {
+  given: 'simulate a slow server'
+  Holders.configuration.testDelay = 500     // <1>
+
+  expect: 'some stuff'
+  . . .
+
+  cleanup:
+  Holders.configuration.testDelay = null    // <2>
+
+}
+----
+<1> Sets the delay to 500ms.
+<2> Resets the delay to none.  You should normally save the original setting and
+    restore it in a `cleanup()` method.
+
+
+
+
+

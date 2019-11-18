@@ -1,0 +1,132 @@
+
+=== efTitle
+
+The `efTitle` marker is used to display a standardized title for a given page.  This is common in
+almost all pages, so a central way to define it is provided.  You can use your own titles as you
+see fit, but this can help reduce the boiler-plate code in your application. Also, the prevalent
+use of tabs in most browsers means title display space is limited.  Titles should place the most
+important information first in the title.  For example, the title for a show page for a single
+order should be something like:
+
+[source,groovy]
+.Example Title
+----
+M1004536 Order - Application Name
+----
+
+This places the most important part of the title (the order name 'M1004536') at the beginning of the title.  In a crowded
+tabbed panel, this will allow the user to find the tab with the order 'M1004536' quickly.
+
+==== Parameters/Body
+
+The main parameters/body supported are:
+
+.Parameters
+[cols="1,6"]
+|===
+|Argument|Description
+
+|*(body)*      | Ignored.
+|*type*        | The type of title to display (*Default:* 'main').  See below for valid types.
+|*label*       | The label key for the main title only.  Only used for `main` type titles.
+|*dashboardCategory* | The dashboard configuration category to use to find the dashboard's title.
+                       (dashboard or dashboardCategory is *Required* for dashboard types).
+|*dashboard* | The dashboard configuration to use to find the dashboard's title.
+                       (dashboard or dashboardCategory is *Required* for dashboard types).
+|===
+
+
+
+
+
+Each main page type has a corresponding title type defined with specific behaviors:
+
+.Supported Title Types
+[cols="1,1,1,6"]
+|===
+|Type|Model?|domainLabel?|Description
+
+|*main*     |No|No|The application name with optional page name.
+|*list*     |No|Required|A page that shows a list of defined values.
+                         Example: _'Flex Type List - Application'_.
+|*create*   |No|Required|A page that allows creation of a new record.
+                         Example: _'Create Flex Type - Application'_.
+|*show*     |Yes|Required|A page that shows a single, existing value.
+                          Example: _'SERIAL (Serial Number) Flex Type - Application'_.
+|*edit*     |Yes|Required|A page that allows edits to a single, existing value values.
+                          Example: _'SERIAL (Serial Number) Flex Type - Application'_.
+|*dashboard*|No|No|A page that displays a configurable dashboard.  The `dashboardCategory`
+                   is required.  Example: _'Manager - Application'_.
+|===
+
+==== Requirements
+
+* The entry `eframe.appName` should be defined in your _application.yml_ bundle.
+* The entry for your domain object's label should be defined in your _messages.properties_ bundle.
+  For example: _'product.label=Product'_.
+* The model will be stored in the marker options under the standard name (e.g. 'order' for the
+  'OrderController'.
+* The controller must place the domain object for edit/show into the context using
+  the variable name specified in the `model=""` option.  See
+  link:guide.html#markers-and-models[Markers and Models^] icon:share-square-o[role="link-blue"]
+  for details on how to make a model available to the marker.
+
+==== Main Type
+
+If you use the _type="main"_, then you can also specify an optional label.  If provided,
+then the title generated will be the application name, followed by the label.  The label
+can be looked up.
+
+
+==== Examples
+
+===== Show Page title
+
+This example will use the standard label '_product.label_' for the title in
+a standard 'show' page.
+
+[source,html]
+.Show Page Title
+----
+<#assign title><@efTitle type='show'/></#assign>  // <.>
+
+<#include "../includes/header.ftl" />
+<#include "../includes/definition.ftl" />
+
+<@efForm id="show">
+  <@efShow/>
+</@efForm>
+
+<#include "../includes/footer.ftl" />
+----
+<1> Fills in the text used by the `views/includes/header.ftl` file for the title.
+    The title is based on the record being show (product in the page's model) and
+    the basic _show_ type.
+
+
+The domain class should provide a proper toString() method:
+
+[source,groovy]
+.Domain
+----
+class Product {
+  String product
+  String title
+
+  . . .
+
+  @Override
+  public String toString() {
+    return product
+  }
+}
+----
+
+
+
+
+
+
+
+
+

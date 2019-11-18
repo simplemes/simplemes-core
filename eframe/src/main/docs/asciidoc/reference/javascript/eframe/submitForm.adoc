@@ -1,0 +1,39 @@
+
+=== submitForm
+
+.submitForm(formID, uri, otherData)
+
+This Javascript function simulates a traditional page submit using the given toolkit form.
+The fields are submitted as a normal UrlEncoded form.
+This function is part of the <<eframe-js>> library.
+
+NOTE: This function submits the request in the foreground and the response
+      should be a normal page display (or redirect).
+
+.Parameters
+[cols="1,1,5"]
+|===
+|Parameter|Type|Description
+
+|*formID*   |string| The toolkit form view ID that holds the fields to send (*Required*).
+                     This is usually the form ID specified in the <<efForm>> marker.
+|*uri*      |string| The URI to send the request to (*Required*).
+|*otherData*|map| Additional values to send with the post request (*Optional*).
+|===
+
+
+[source,html]
+.Example - Simple Dashboard Activity Form Submit
+----
+<@efForm id="filter" fieldDefinitions="reportFields">  // <.>
+    <@efButtonGroup>
+        <@efButton label="reportFilter.update.label"
+                   click="ef.submitForm('filter','/report/filterUpdate')"/>  // <.>
+    </@efButtonGroup>
+</@efForm>
+
+----
+<.> Defines the form to submit.  Has some fields and a submit button (update).
+<.> This will submit the form to the given URL.
+
+

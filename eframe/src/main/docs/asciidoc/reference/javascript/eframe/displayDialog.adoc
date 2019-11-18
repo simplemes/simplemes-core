@@ -1,0 +1,147 @@
+
+[[display-dialog]]
+=== displayDialog
+
+.displayDialog(dialogMap)
+
+This Javascript function displays a popup 'dialog' within the given page.  This dialog is an
+internal modal window within the page.  The contents can be static or dynamic from the server.
+This function is part of the <<eframe-js>> library.
+
+
+The `dialogMap` parameter is a javascript object (map) with these elements:
+
+.Parameters
+[cols="1,6"]
+|===
+|Argument|Description
+
+| *title*    | A simple text text title for the dialog. (*Default*: 'Dialog').
+               This is displayed with <<eframe-lookup,lookup()>> and <<efPreloadMessages>>.
+| *bodyURL*  | The page that provides the contents of the dialog.  This should be a page that provides a
+               the body for the dialog.
+               (*Required* or `body` is required).
+| *body*     | A string that contains the contents for the dialog (*Required* or `bodyURL` is required).
+| *buttons*  | A sub-array of the button(s) to display below the 'body' above. (*Default ['ok']:*).
+               See <<displayDialog Buttons>> for details.
+| *focus*    | The view ID of the element to request focus on.  (*Default*: last button).
+               If the given view has a `select()` function, then it will also be called.
+| *width*    | The width of the dialog. Values in pixels or percent.
+               The default units will be percent. (*Default*: '50%')
+| *height*   | The width of the dialog. Values in pixels or percent.
+               The default units will be percent. (*Default*: '35%')
+| *left*     | The left position of the dialog. Values in pixels percent. (*Default*: centered)
+| *top*      | The top position of the dialog. Values in pixels percent. (*Default*: centered)
+| *beforeClose* | A function that is called before the dialog is closed.
+                  The function is passed the dialogID and the event that closed the dialog.
+                  This function CAN prevent the closure by returning false.
+                  See <<displayDialog Buttons>> for details on event handler for specific buttons.
+| TBD *displayed* | A function that is called when the dialog contents are displayed.
+                    This is called after the page is loaded from the server (if `bodyURL` is used).
+
+|===
+
+
+
+
+*Returns*: The ID for the dialog.  This can be used to close the dialog.
+
+NOTE: The default focus is on the last button, if defined.
+
+
+==== Size/Position Persistence
+
+In most cases, the dialog can be resized and moved by the user.  The `name` passed in is used
+along with the containing page to remember the size/position of each dialog for each user.
+The preferences must be loaded by your page using the <<eframe-load-dialog-preferences>> function.
+
+
+==== displayDialog Buttons
+
+The `buttons` element is an array of buttons to display.  This array contains a list
+string (e.g. ['ok','cancel']).  If the array element is a string, then it is treated as the label
+for the button. See <<efPreloadMessages>> for how to load these localized labels on the page.
+
+The first button has a hot-key of enter and the last button has a hot-key of Escape.
+
+If no buttons are passed to the dialog, then a single 'ok' button is generated, which has a
+hot-key of Escape.
+
+If not `focus` element is passed in, the last button has the focus.
+
+A dialog with 3 custom buttons is shown below:
+
+[source,javscript]
+.Example Button Handlers
+----
+ef.displayDialog({
+  title: "Title", body: 'the body text',
+  buttons: ['yes','no','cancel'],   // <.>
+  yes: function (dialogID,button) { // <.>
+   return true;                     // <.>
+  }
+});
+----
+<.> Defines 3 buttons with the localized labels: _'yes.label'_, _'no.label'_ and _'cancel.label'_.
+<.> The 'yes' button will execute this function.
+    It is passed the `dialogID`, which can be used to close the dialog.
+    It is also passed the `button` which was pressed (e.g. 'yes' in this example).
+<.> Return false to prevent the rest of the processing of the button (e.g. closing the dialog).
+
+
+==== Dynamic Pages
+
+Most dialogs can display content from a server-side URL (GET response).  This allows you to build
+complex GUIs with client-side javascript features without writing server-side markers.
+Typically, these pages create some sort of javascript object(s) that are displayed using the
+native link:guide.html#gui-toolkit[GUI Toolkit^] icon:share-square-o[role="link-blue"]
+features.  This javascript logic is typically contained in javascript served by a controller.
+
+The logic to display a simple button is shown below:
+
+[source,javscript]
+.Example - Simple Button Dialog - Display Logic
+----
+ef.displayDialog({bodyURL: '/extension/buttonDialog', title: 'Sample Title' });
+----
+
+This relies on the
+link:groovydoc/org/simplemes/eframe/custom/controller/ExtensionController.html[ExtensionController^]
+icon:share-square-o[role="link-blue"].
+that serves up the dialog content from the '_/extension/buttonDialog.ftl_' file:
+
+[source,javscript]
+.Example .ftl - Simple Button Dialog - Dialog Content
+----
+${params._variable}.display = {  // <.>
+  rows: [  // <.>
+    {template: "Make changes as needed."},
+    {view: "button", id: "Save", label: "Save", tooltip: "Save Changes",
+     click: "createSave", type: "iconButton" ,icon: 'fas fa-check'
+    },
+  ]
+}
+----
+<.> Sets a variable with the content to display (a javascript object using the toolkit logic).
+    The variable to use is passed in as a URL parameter.
+<.> The toolkit logic used to create two rows of elements (some text and a button).
+
+For an example controller, see
+link:groovydoc/org/simplemes/eframe/custom/controller/ExtensionController.html[ExtensionController^]
+icon:share-square-o[role="link-blue"].
+
+
+
+
+==== Examples
+
+This example displays some simple text.
+
+[source,javscript]
+.Javascript
+----
+ef.displayDialog({body: 'Some text', buttons: ['ok','cancel'] });
+----
+
+
+

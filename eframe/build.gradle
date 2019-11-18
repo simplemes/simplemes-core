@@ -1,0 +1,165 @@
+buildscript {
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+  }
+  dependencies {
+    classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
+    classpath 'com.github.jruby-gradle:jruby-gradle-plugin:0.1.17'
+    classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.11'
+    classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:1.4"
+  }
+
+}
+
+plugins {
+  id "io.spring.dependency-management" version "1.0.6.RELEASE"
+  id 'maven-publish'
+  id "com.jfrog.bintray" version "1.8.4"
+  id "com.bertramlabs.asset-pipeline" version "3.0.6"
+  id "org.owasp.dependencycheck" version "4.0.0.1"
+}
+
+// Temporarily roll back to Groovy 2.5.4 for compiling to avoid code coverage issue: https://issues.apache.org/jira/browse/GROOVY-9126
+ext['groovy.version'] = '2.5.4'
+
+version "0.5"
+group "org.simplemes"
+
+repositories {
+  mavenLocal()
+  mavenCentral()
+  jcenter()
+}
+
+apply plugin: "application"
+apply plugin: "java"
+apply plugin: "groovy"
+apply plugin: 'com.github.jruby-gradle.base'
+apply plugin: 'org.asciidoctor.convert'
+apply plugin: "com.energizedwork.webdriver-binaries"
+
+// Common tasks from the overall common.gradle file provides: bintrayUpload, maven artifact creation.
+apply from: "../gradle/common.gradle"
+
+
+
+dependencyManagement {
+  imports {
+    mavenBom "io.micronaut:micronaut-bom:${micronautBomVersion}"
+  }
+}
+// TODO: Check pom for correct dependencies.
+
+dependencies {
+  implementation "io.micronaut:micronaut-http-client"
+  implementation "io.micronaut.configuration:micronaut-hibernate-validator"
+  implementation "io.micronaut.configuration:micronaut-hibernate-gorm"
+  implementation "io.micronaut:micronaut-http-server-netty"
+  implementation "io.micronaut:micronaut-runtime-groovy"
+  implementation "io.micronaut:micronaut-validation"
+  compileOnly "io.micronaut:micronaut-inject-groovy"
+  implementation "io.micronaut:micronaut-management"
+  implementation "io.micronaut:micronaut-views"
+  implementation "org.freemarker:freemarker:$freemarkerVersion"
+  implementation( "org.spockframework:spock-core") {
+    exclude group: "org.codehaus.groovy", module: "groovy-all"
+  }
+  implementation("org.spockframework:spock-core") {
+    exclude group: "org.codehaus.groovy", module: "groovy-all"
+  }
+  implementation "ch.qos.logback:logback-classic:$logbackVersion"
+  runtime "com.h2database:h2"
+  runtime "org.apache.tomcat:tomcat-jdbc"
+
+  //println "Groovy version: " + GroovySystem.getVersion()
+  
+  implementation "org.codehaus.groovy:groovy-dateutil:$groovyDateUtilsVersions"
+  implementation "io.micronaut:micronaut-security-jwt"
+  // TODO: Update asset pipeline to 3.0.10 ?
+  implementation ( "com.bertramlabs.plugins:asset-pipeline-micronaut:$assetPipelineVersion") {
+    exclude group: "io.micronaut", module: "http-server-netty"
+  }
+  implementation ( "com.bertramlabs.plugins:asset-pipeline-core:$assetPipelineVersion")
+  compile "org.springframework.security:spring-security-crypto:${springSecurityCryptoVersion}"
+  compile "org.hibernate:hibernate-ehcache:${hibernateEhcacheVersion}"
+
+  // gems dependency configuration is added by
+  // jruby-gradle-plugin. Here we define
+  // the gems we need in our build.
+  gems "rubygems:asciidoctor-diagram:$asciidoctorDiagramVersion"
+  gems "rubygems:asciidoctor-plantuml:$asciidoctorPlantumlVersion"  // Needs GraphViz dot.exe on PATH.
+
+  compileOnly("org.gebish:geb-spock:$gebVersion") {
+    exclude group: "org.codehaus.groovy", module: "groovy-all"
+  }
+  testCompile("org.gebish:geb-spock:$gebVersion") {
+    exclude group: "org.codehaus.groovy", module: "groovy-all"
+  }
+  testRuntime "cglib:cglib-nodep:$cglibVersion"
+  testRuntime "org.objenesis:objenesis:$objenesisVersion"
+  testRuntime "net.bytebuddy:byte-buddy:$byteBuddyVersion"
+  compileOnly "org.codehaus.groovy:groovy-templates" // Added for Groovydoc
+
+/*
+  // See https://github.com/MachinePublishers/jBrowserDriver
+  testRuntime ("com.machinepublishers:jbrowserdriver:1.1.1") {
+    exclude group:  "org.seleniumhq.selenium"
+    */
+/*
+    um:selenium-api:4.0.0-alpha-2
+     +--- org.seleniumhq.selenium:selenium-remote-driver:4.0.0-alpha-2
+     +--- org.seleniumhq.selenium:selenium-server:4.0.0-alpha-2
+     *//*
+
+  }
+*/
+  testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:$webDriversVersion"
+  testImplementation "org.seleniumhq.selenium:selenium-firefox-driver:$webDriversVersion"
+  implementation "org.seleniumhq.selenium:selenium-api:$webDriversVersion"
+  testImplementation ("org.seleniumhq.selenium:selenium-support:$webDriversVersion"){
+    exclude group:  "net.bytebuddy", module: "byte-buddy"  // Conflicts with Spock
+  }
+
+  
+  // runtime 'mysql:mysql-connector-java:5.1.36'
+  // https://mvnrepository.com/artifact/org.postgresql/postgresql
+  compile group: 'org.postgresql', name: 'postgresql', version: '42.2.6'
+
+
+  // For Java code
+  //compile "io.micronaut:micronaut-inject-java"
+  //testCompile "io.micronaut:micronaut-inject-java"
+  annotationProcessor "io.micronaut:micronaut-inject-java"
+  testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+
+  // The Jasper reports library with PDF support (lowagie) and DejaVu fonts
+  compile("net.sf.jasperreports:jasperreports:$jasperreportsVersion"){
+    exclude module:'commons-logging'
+    exclude module:'olap4j'
+    //exclude module:'jcommon'
+    // exclude module: 'jfreechart' //<-charts
+    exclude module: 'itext' //exclude itext:2.1.7js5 which is not available in jcenter or maven central
+  }
+  compile group: 'com.lowagie', name: 'itext', version: lowagieItextVersion
+  compile("net.sf.jasperreports:jasperreports-fonts:$jasperreportsVersion")
+  // https://mvnrepository.com/artifact/net.sourceforge.barbecue/barbecue
+  compile group: 'net.sourceforge.barbecue', name: 'barbecue', version: barbecueVersion
+
+  implementation ("org.simplemes:webix:6.0.9") // { transitive = false}
+
+}
+
+mainClassName = "org.simplemes.eframe.application.Application"
+
+// Local Tasks
+// Remove some sample/test files from the published jar. 
+jar {
+  exclude "logback.xml"
+  exclude "/org/simplemes/eframe/application/Application.class"
+  exclude "/sample/**"
+  exclude "/views/sample/**"
+  exclude "/i18n/sample*.*"
+}
+

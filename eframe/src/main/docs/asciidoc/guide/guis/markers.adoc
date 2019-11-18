@@ -1,0 +1,80 @@
+
+=== Markers
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc-header]#Overview#
+[inline-toc]#<<Common Features>>#
+[inline-toc]#<<markers-and-models,Markers and Models - Displaying Values>>#
+[inline-toc]#<<Markers and Options>>#
+[inline-toc]#<<Adding to the HTML Head>>#
+[inline-toc]#<<pagination-filtering-and-sorting>>#
+
+[inline-toc-header]#Support Elements#
+[inline-toc]#<<efAsset>>#
+[inline-toc]#<<efGUISetup>>#
+[inline-toc]#<<efLanguage>>#
+[inline-toc]#<<efMessages>>#
+[inline-toc]#<<efTitle>>#
+
+[inline-toc-header]#General Forms#
+[inline-toc]#<<efButton>>#
+[inline-toc]#<<efButtonGroup>>#
+[inline-toc]#<<efField>>#
+[inline-toc]#<<efForm>>#
+
+[inline-toc-header]#Definition Pages#
+[inline-toc]#<<efCreate>>#
+[inline-toc]#<<efEdit>>#
+[inline-toc]#<<efList>>#
+[inline-toc]#<<efShow>>#
+
+[inline-toc-header]#Others#
+[inline-toc]#<<efDashboard>>#
+
+endif::[]
+
+
+
+
+This framework uses https://freemarker.apache.org/[Freemarker] to render the GUI pages.
+In Freemarker, some markers
+(template directive models) can be used to simplify the HTML view page.  These markers also
+hide the GUI Toolkit-specific logic needed for many scenarios.
+
+NOTE: This framework uses the term _Marker_ instead of _Helper_ when referring to freemarker
+      template directive models.  We do this because helper is an over-used term in the framework
+      and we did not want any more confusion than necessary.  Also, 'template directive models'
+      way too long.
+
+
+include::markers/markerOverview.adoc[]
+
+include::markers/efAsset.adoc[]
+
+include::markers/efButton.adoc[]
+
+include::markers/efButtonGroup.adoc[]
+
+include::markers/efCreate.adoc[]
+
+include::markers/efEdit.adoc[]
+
+include::markers/efField.adoc[]
+
+include::markers/efForm.adoc[]
+
+include::markers/efGUISetup.adoc[]
+
+include::markers/efLanguage.adoc[]
+
+include::markers/efList.adoc[]
+
+include::markers/efMessages.adoc[]
+
+include::markers/efShow.adoc[]
+
+include::markers/efTitle.adoc[]
+
+include::markers/efDashboard.adoc[]
+

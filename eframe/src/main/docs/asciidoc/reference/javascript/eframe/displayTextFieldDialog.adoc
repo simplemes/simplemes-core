@@ -1,0 +1,49 @@
+
+=== displayTextFieldDialog
+
+.displayTextFieldDialog(dialogMap)
+
+This Javascript function displays a popup 'dialog' within the given page.  This dialog is an
+internal modal window within the page.  
+This function is part of the <<eframe-js>> library.
+
+
+The `dialogMap` parameter is a javascript object (map) with these elements:
+
+.Parameters
+[cols="1,6"]
+|===
+|Argument|Description
+
+| *value*    | The input field's default value (*Default*: "").
+| *fieldID*  | The test field's view ID (*Default*: "efText").
+| *label*    | The text field input (*Default*: "label").
+               This is displayed with <<eframe-lookup,lookup()>> and <<efPreloadMessages>>.
+| *textOk*   | The OK event handler. Passes the text field value when the use presses the Ok button.
+               If this function returns false, then the dialog is not closed.
+| _(others)_ | The other options supported by the <<displayDialog>> function.
+
+|===
+
+*Returns*: The ID for the dialog.  This can be used to close the dialog.
+
+
+==== Examples
+
+This example displays some simple text.
+
+[source,javscript]
+.Javascript
+----
+ef.displayTextFieldDialog({
+   title: "addLogger.title", value: 'the default value', label: 'logger.label',
+   textOk: function (value) {
+     . . .;
+     return true;
+   }
+});
+
+----
+
+
+

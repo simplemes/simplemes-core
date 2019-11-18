@@ -1,0 +1,44 @@
+
+[[check-for-undo-actions]]
+=== checkForUndoActions
+
+.checkForUndoActions(object)
+
+This Javascript function is part of the Dashboard
+link:guide.html#undo[Undo^] icon:share-square-o[role="link-blue"] feature.
+The given object is the parsed JSON response from a server request.  If it contains an element
+`undoActions` with a list of undo actions, then the undo event will be added to the undo stack for
+later execution (if needed).  Each undo action must have the elements: `URI` and `JSON`.
+
+This function is provided in the _dashboard.js_ library.
+
+
+The parameters supported by the function are:
+
+[cols="1,1,5"]
+|===
+|Parameter|Type|Description
+
+|*json*|Object| The response from the request to check.  Typically a JSON object that might have undo actions list (*Required* ).
+|===
+
+
+
+[source,html]
+.Example checkForUndoActions() Usage
+----
+<script>
+  ef.post("/production/pass", {'arg1': value},   // <.>
+    function (responseText) {  // <.>
+      var json = JSON.parse(responseText);
+      dashboard.checkForUndoActions(responseText);                      // <.>
+      dashboard.finished('${params._panel}');
+    }
+  );
+</script>
+
+----
+<.> The POST request to perform an action that supports undo.
+<.> The function that is called when the POST completes without an error.
+<.> The undo actions are extracted from the response and saved for later undo execution.
+

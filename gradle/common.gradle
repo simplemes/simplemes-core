@@ -2,6 +2,11 @@
   Defines common gradle settings, properties and actions used by most builds.
  */
 
+ext {
+  //noinspection GroovyAssignabilityCheck
+  springSecurityCryptoVersion='4.2.5.RELEASE'
+}
+
 
 
 // bintray-related properties, common to all modules.
@@ -31,7 +36,7 @@ if (compositePropFile.exists()) {
 }
 
 println "in common setup, module = ${moduleName}, version = ${project.version}, micronaut = ${micronautBomVersion}"
-println "user.dir = ${System.getProperty('user.dir')}, root = ${rootProject.name}"
+//println "user.dir = ${System.getProperty('user.dir')}, root = ${rootProject.name}"
 
 
 
@@ -45,6 +50,93 @@ run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')
 groovydoc {
   destinationDir = new File("${project.docsDir}/html5/groovydoc")
 }
+
+// Disable compilation of Java and Groovy due to classpath issues when groovyDoc is used.
+gradle.taskGraph.whenReady { graph ->
+  if (graph.hasTask(':groovydoc')) {
+    compileGroovy.enabled = false
+    compileJava.enabled = false
+  }
+}
+
+test{
+  systemProperty 'writeTests', System.getProperty('writeTests')
+}
+
+dependencyCheck {
+  // For the dependencyCheckAnalyze to find security issues in libraries.
+  format='ALL' // the default is HTML only
+}
+
+// GEB Testing settings
+webdriverBinaries {
+  chromedriver '2.40'
+  geckodriver '0.21.0'
+}
+
+tasks.withType(Test) {
+  systemProperty "geb.env", System.getProperty('geb.env')
+  systemProperty "webdriver.chrome.driver", System.getProperty('webdriver.chrome.driver')
+  systemProperty "webdriver.gecko.driver", System.getProperty('webdriver.gecko.driver')
+}
+
+// The ASCIIDOCTOR related tasks.
+asciidoctorj {
+  version = '1.5.4'
+}
+
+def backend =  'html5'
+def imagesBuildDir = 'images'
+
+// Use -PbackendProp=pdf to generate the PDF.
+// Fixes some issues with images in PDF generation.  You must run the HTML docs first for this to work.
+// It appears the PDF generator expects the diagram images in a specific directory.
+// The imagesBuildDir will point to the location of the HTML generated docs images directory.
+// This work around may only work with diagrams two layers down (e.g. in guide/introduction).
+////workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+if (hasProperty('backendProp') && backendProp == 'pdf') {
+  //println "backendProp = $backendProp"
+  backend = backendProp
+  imagesBuildDir = '../../../../../staging/docs/eframe/html5/images'
+}
+
+asciidoctor {
+  //sourceDir "${projectDir}/src/docs/asciidoc"
+  //println "${projectDir}/src/docs/asciidoc"
+  sourceDir "src/main/docs/asciidoc"
+  sources {
+    include 'guide.adoc'
+    include 'reference.adoc'
+    //include 'allElements.adoc'
+    //include 'convBook.adoc'
+    //include 'convReference.adoc'
+  }
+  outputDir "${project.docsDir}"
+  options doctype: 'book', ruby: 'erubis'
+  //backends=['html5', 'pdf']
+  backends = [backend]
+  //println "inHTML $backend"
+
+  //noinspection GroovyAssignabilityCheck
+  attributes 'source-highlighter': 'coderay',
+             toc: 'auto',
+             'imagesdir-build': imagesBuildDir,
+             idprefix: '',
+             'project-version': project.version,
+             stylesheet: "${projectDir}/src/main/docs/asciidoc/resources/asciidoctor.css",
+             sectlinks: true,
+             idseparator: '-'
+
+  // Diagram support
+  if (!project.hasProperty('ignoreJrubyPrepareGems')) {
+    //println "still jruby"
+    dependsOn jrubyPrepareGems
+  }
+  jrubyPrepareGems.outputDir = new File((String) "${projectDir}/tmp/gems")   // Keep GEMs out of the build directory.
+  gemPath = jrubyPrepareGems.outputDir
+  requires = ['asciidoctor-diagram']
+}
+
 
 
 // Module publishing task setup.

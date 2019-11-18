@@ -1,0 +1,110 @@
+
+=== Archive Overview
+
+In enterprise applications, old data can build up and slow down runtime performance.
+To reduce this, the framework provides a simple mechanism for archiving old data from the production
+database.  The framework also provides the unarchive mechanism.
+
+Multiple types of archive mechanisms are possible.  The framework provides an implementation for JSON
+<<File Archiver>>, but you can provide your own archiver(s).  See the bean
+link:groovydoc/org/simplemes/eframe/archive/ArchiverFactory.html[ArchiverFactory^]
+icon:share-square-o[role="link-blue"] for details.
+
+NOTE: When exposed via your controllers, the archive action takes place in a single database transaction.
+This means very large archive transactions may happen if you archive a lot of records at one time.
+
+
+[source,json]
+.Example Archive JSON File
+----
+[ "org.simplemes.mes.demand.Order",   // <1>
+    {
+        "order": "SC1",
+        "dateCompleted": "2013-05-11T18:29:50.307Z",
+        "lsnTrackingOption": "ORDER_ONLY",
+        "overallStatusId": "2",
+        "qtyToBuild": 1.0000,
+        "qtyDone": 1.0000
+    },
+    "org.simplemes.mes.action.ActionLog",
+    {
+        "action": "RELEASE"
+        . . .
+    }
+]
+----
+<1> The archive is made up of pairs of entries in an array.  The first part of the pair is the
+    class name.  The second is the JSON of the object itself.
+
+This format relies on the ability of Jackson to parse in stages. The
+<<TypeableMapper>> utility bean provides access to the archive by reading the
+JSON and then converting the payload(s) to the right type.
+
+
+==== Archive Design Decisions
+
+Some of the key requirements of archiving are:
+
+. Handle large number of un-related elements in an archive.
+. Support JSON format of all GORM/Hibernate entities.
+. Prevent any security holes.
+. Allow extension by customers.
+. Support JSON format for User Preferences in secure way.
+
+These requirements forced us to consider how to configure Jackson to meet these requirements.
+
+We investigated Jackson's
+https://github.com/FasterXML/jackson-docs/wiki/JacksonPolymorphicDeserialization[Polymorphic Deserialization]
+capability.  That approach allows the JSON payload to instantiate almost any Java class.
+This can be a vector for attacks on your servers.
+
+Instead, we chose to use a simple array representation of of the objects being archived.  Then, we have a
+white list of allowed classes that can be stored in this JSON.  This list includes:
+
+* All GORM/Hibernate Entities (persistent domain objects).
+* Classes marked with the the special interface
+link:groovydoc/org/simplemes/eframe/json/TypeableJSONInterface.html[TypeableJSONInterface^]
+icon:share-square-o[role="link-blue"].
+
+This is done because we never want to allow any client to create an arbitrary class via a REST API.
+To help reduce this risk, we also only allow the Typeable logic for archive files and for
+User Preferences.
+
+
+==== Archive References
+
+The archive process returns a string reference that can later be used to unarchive the object(s).  With File archives,
+this is a relative path name for the archive file itself.   You can use this reference as you need.
+
+
+==== Archiving Related Records
+
+The framework archive mechanisms will archive the top-level object and any direct children.  It does
+not archive foreign objects that your classes refer to.  For example, an order will be archived
+with its order line items.  The _Product_ the order refers to will not be automatically archived.
+This is because the _Product_ will probably be re-used for other orders.
+
+You can change this default behavior. Usually, when you archive a top-level domain object, there are other,
+related records that you want to archive with it.
+To support this, the framework looks at your top-level domain class and looks for the `findRelatedRecords()` method.
+If the method exists, it will be called and those returned objects will be archived along with your domain object.
+
+This clean up of related records is critical for keeping your database size manageable.
+An example `findRelatedRecords()` is shown below:
+
+[source,groovy]
+.Domain Class
+----
+List<Object> findRelatedRecords() {
+  return ActionLog.findAllByOrder(order)
+}
+----
+
+This finds all _ActionLog_ records related to the order being archived and returns them for archiving.
+You do not need to include child records for your domain object.  Just the objects that are related but are not true
+children.
+
+NOTE: When this `findRelatedRecords()` method is called, the record(s) in your top-level domain class have
+      not been deleted. All deletes take place after the archive has been successfully written to the file.
+
+

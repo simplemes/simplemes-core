@@ -1,0 +1,129 @@
+=== efForm
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<ef-form-parameters>>#
+[inline-toc]#<<Form Examples>>#
+
+endif::[]
+
+
+The link:guide.html#efform[efForm^] icon:share-square-o[role="link-blue"] marker
+is used to build a page suitable for submitting to the server (using a javascript submit mechanism).
+This javascript mechanism emulates the normal HTML page submission behavior with the expected
+page refresh.
+
+
+For an overview, see link:guide.html#efform[efForm^] icon:share-square-o[role="link-blue"].
+For more details, see the groovydoc
+link:groovydoc/org/simplemes/eframe/web/ui/webix/marker/FormMarker.html[FormMarker^]
+icon:share-square-o[role="link-blue"].
+
+This will work with fields defined using other markers (inside of the
+`efForm` block:
+
+* <<efCreate>> - Must be used inside of `<@efForm><@/efForm>` pair.
+* <<efEdit>> - Must be used inside of `<@efForm><@/efForm>` pair.
+* <<efShow>> - Must be used inside of `<@efForm><@/efForm>` pair.
+* <<efField>>
+* <<efButton>>
+
+
+
+[[ef-form-parameters]]
+==== Parameters/Body
+
+The main parameters/body supported are:
+
+.Parameters
+[cols="1,6"]
+|===
+|Argument|Description
+
+| *(body)*| The form contents. See above for details on what elements can be in the body.
+| *id*    | The ID of the form to submit.  This is also used to define a number of javascript
+            variables in the page. (*Default:* 'form').
+| *dashboard* | If set, then the form is assumed to be a dashboard activity style form.
+                This type does not create the HTML content around the Javascript values used
+                to create the GUI elements.
+                See link:guide.html#dashboard-activities[Dashboard Activities^]
+                icon:share-square-o[role="link-blue"] for details on these activity pages.
+                Supports the value '_buttonHolder_' to generate a form with a dashboard button
+                holder at the bottom.  (*Optional*.  Values: true or '_buttonHolder_')
+| *fieldDefinitions*    | The name of the model element that holds the
+                          field definitions.  This is used to let the controller generate
+                          the list of fields to display.  This is
+                          link:groovydoc/org/simplemes/eframe/data/FieldDefinitions.html[FieldDefinitions^]
+                          icon:share-square-o[role="link-blue"].
+                          *Not allowed with dashboard or with a body.*
+
+|===
+
+
+This marker also supports most of the common features mentioned in
+link:guide.html#markers-and-options[Markers and Options^] icon:share-square-o[role="link-blue"].
+This includes labels and sizes.
+
+
+==== Form Examples
+
+
+===== Change Password Example
+
+The fields on this form are not part of a normal HTML form with a normal submit button.
+Instead, you need to use a javascript submit mechanism to submit the page.
+
+This example provides a simple change password form with a 'change' button.
+
+[source,html]
+.Example - Update Password
+----
+<script>
+function changeFormSubmit() {
+  ef.submitForm('formName', '/user/changePassword'); // <.>
+};
+</script>
+
+<@efForm id="changeForm">
+  <@efField field="User.userName" value="joe"/>
+  <@efField field="User.password" id="passwordOld" required="true" fieldType="password"/>
+  <@efField field="User.password" id="passwordNew" required="true" fieldType="password"/>
+  <@efField field="User.password" id="passwordConfirm" required="true" fieldType="password"/>
+  <@efButton label="changePassword.label" click="changeFormSubmit()"/>
+<@/efForm>
+----
+
+<.> Grabs the values from the form and submits the form to the given URI ('/order/save').
+
+
+This will gather the form fields and put them into normal HTML format (e.g.
+"application/x-www-form-urlencoded" format) and POST them to the given URL.
+
+===== Create Page with Added Fields Example
+
+This example shows how to add non-domain fields to a standard Create page and place them
+after a specific field.
+
+[source,html]
+.Example - Create User with Password Fields
+----
+<@efForm id="createUser">   // <.>
+  <@efCreate/>  // <.>
+  <@efField field="User.password" id="passwordNew" fieldType="password" addAfter="roles"/>  // <.>
+  <@efField field="User.password" id="passwordConfirm" fieldType="password" addAfter="passwordNew"/>
+  <@efButton id="testEmail" label="test.label" click="sendTestEmail()" addToField="email"/> // <.>
+<@/efForm>
+----
+<.> No URL is needed.  The `efCreate` provides that.
+<.> The normal create fields are displayed in the standard order.
+<.> The password fields are added after the `roles` field.
+<.> A button is inserted into the form on the same line as the `email` field.
+
+
+
+
+
+
+
+
+

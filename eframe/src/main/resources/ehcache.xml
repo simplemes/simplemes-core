@@ -1,0 +1,48 @@
+<ehcache>
+
+    <!-- No disk storage is used since the framework is not a big user of the cache.  -->
+    <!--<diskStore path="java.io.tmpdir"/>-->
+    <defaultCache
+            maxEntriesLocalHeap="10000"
+            eternal="false"
+            timeToIdleSeconds="120"
+            timeToLiveSeconds="120"
+            maxEntriesLocalDisk="10000000"
+            diskExpiryThreadIntervalSeconds="120"
+            memoryStoreEvictionPolicy="LRU">
+        <!--<persistence strategy="localTempSwap"/>-->
+    </defaultCache>
+    <!-- The query cache is configured to work with User preference loading.  -->
+    <cache name="default-query-results-region"
+           maxEntriesLocalHeap="1000"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="300"
+           diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU">
+        <!--<persistence strategy="localTempSwap"/>-->
+    </cache>
+
+    <!-- Make sure this matches or is longer than the StandardQueryCache and the userPreference cache -->
+    <cache name="default-update-timestamps-region"
+           maxEntriesLocalHeap="1000"
+           eternal="false"
+           timeToIdleSeconds="360"
+           timeToLiveSeconds="360"
+           diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU">
+        <!--<persistence strategy="localTempSwap"/>-->
+    </cache>
+    <!-- The user preferences are tuned to optimize with repeated page refreshes  -->
+    <cache name="org.simplemes.eframe.preference.domain.UserPreference"
+           maxEntriesLocalHeap="1000"
+           eternal="false"
+           timeToIdleSeconds="300"
+           timeToLiveSeconds="300"
+           diskExpiryThreadIntervalSeconds="120"
+           memoryStoreEvictionPolicy="LRU">
+        <!--<persistence strategy="localTempSwap"/>-->
+    </cache>
+    <!-- See https://www.baeldung.com/hibernate-second-level-cache for details on org.hibernate.cache.internal.StandardQueryCache and
+    org.hibernate.cache.spi.UpdateTimestampsCache -->
+</ehcache>

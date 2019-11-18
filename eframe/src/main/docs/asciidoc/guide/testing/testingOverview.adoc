@@ -1,0 +1,311 @@
+
+=== Testing Overview
+
+The framework has a lot of support utilities to reduce your test code.  In general, we want
+your tests to be as concise as your application code.  For example, imagine you have a simple
+domain class:
+
+[source,groovy]
+.Example Domain
+----
+@Entity
+class Order {
+  String order
+  BigDecimal qty = 1.0
+  Product product  // <1>
+  BigDecimal qtyScrapped = 0.0
+
+  static constraints = {
+    order(maxSize: Constants.CODE_LENGTH, blank: false, unique: true)
+    product(nullable: true)
+  }
+
+  static fieldOrder = ['order', 'qty', 'product']
+}
+----
+<1> Optional
+
+You can test this very concisely with this domain unit test DSL (Domain Specific Language):
+
+
+[source,groovy]
+.Example Domain Test
+----
+class UserSpec extends BaseSpecification {  // <1>
+
+  static specNeeds = [HIBERNATE]            // <2>
+  static dirtyDomains = [User, Role]
+
+  def "verify that user domain enforces constraints"() {
+    expect: 'the constraints are enforced'
+    DomainTester.test {                             // <3>
+      domain Order
+      requiredValues order: 'M1003', qty: 2.0
+      maxSize 'order', FieldSizes.MAX_CODE_LENGTH
+      notNullCheck 'order'
+      notInFieldOrder (['qtyScrapped'])
+    }
+  }
+}
+----
+<1> Uses the common Spock link:groovydoc/org/simplemes/eframe/test/BaseSpecification.html[BaseSpecification^].
+<2> Indicates that the GORM/Hibernate system needs to be started and that the User and Role
+    objects will need to be cleaned up when the test finishes.  See <<Test Data Pollution>> for details.
+<3> A Domain test helper to simplify testing.  See <<domain-testing>>.
+
+
+This is much shorter than the equivalent unit test without the
+link:groovydoc/org/simplemes/eframe/test/DomainTester.html[DomainTester^].
+
+==== Testing Guidelines
+
+Tests are critical to complex enterprise applications.  This means you will have many thousands
+of tests to maintain.  These tests must be reliable and easily survive changes to the core
+classes.
+
+To keep these classes in good shape, we follow these guidelines:
+
+===== Treat tests as if they are production code
+
+Tests will make up at least 50% of your code base.  It is critical that the test code be of the
+same quality as the production code.   This means following the same naming, commenting and coding
+guidelines as the production code.
+
+===== Test organization
+
+The main goal here is to keep all tests in obvious places.  When a developer needs to add a test,
+the specification it belongs in should be obvious.
+
+Some naming conventions for a _GridWidget_ test:
+
+* _GridWidgetSpec_ - Basic tests.  Some may need hibernate domain objects.
+* _GridWidgetAPISpec_ - Non-GUI tests that need a live embedded server.  Typically tests REST API via an HTTP client. See <<API Testing>>.
+* _GridWidgetGUISpec_ - The GUI tests for the widget.  Runs a live embedded server and tests via GEB. See <<GUI Testing>>.
+
+So basically, all _GridWidget_ tests should be in specifications that start with _GridWidget_.
+
+
+===== Use of core domain objects
+
+It is tempting to use core domain objects such as _User_ or _FlexType_ as test classes.
+For example, when testing the _GridWidget_, it was tempting to use the _User_ domain as a test subject.
+Instead, we chose to use domains for the _sample.domain_ package.
+
+This allows us more flexibility to change the core classes without breaking dozens of tests.
+
+During early development, we found that the same core classes were being used in un-related tests
+because the domain classes had the right fields we needed to test.  Then, we could not easily change
+the core domain class because of dependencies in the test suite.  These dependencies were
+unnecessary, so we decided to avoid them in the future.
+
+We still have tests that exercise the core classes, but those are directly related to those
+classes behaviors.
+
+===== No test spec for a single specific issue
+
+We will not create a new test specification for a specific issue. Instead, we will find the
+correct test specification and add a new method.  It is ok to use the Spock _@Issue()_ annotation
+to document what issue the test verifies.
+
+For example, we have a bug in _GridWidget_ with the localization of the column header.
+We would add a new test method to the _GridWidgetSpec_ such as:
+
+[source,groovy]
+.Example Issue Verification Test
+----
+  @Issue("http://www.simplemes.org/issues/3482")
+  def "verify that the primary column label is localized"() {
+    given: 'some test records'
+    when: 'some stuff'
+     . . .
+  }
+----
+
+The main goal here is to keep all tests in obvious places.  All _GridWidget_ tests should be in
+specifications that start with _GridWidget_.
+
+==== BaseSpecification
+
+There is a common Spock specification class
+link:groovydoc/org/simplemes/eframe/test/BaseSpecification.html[BaseSpecification^]
+that most tests should inherit from.  This base class
+provides simple startup and mocking features to make your tests as simple as possible.  It
+also performs checks after cleanup to make sure that your tests did not leave too much bad data
+around.
+
+Some of the cleanup checks performed include:
+
+* Check for records in all domains.
+* Reset any utility instance variables.
+
+
+==== BaseGUISpecification
+
+There is a common Spock specification class
+link:groovydoc/org/simplemes/eframe/test/BaseGUISpecification.html[BaseGUISpecification^]
+that provides support for GUI/GEB tests.  This includes login/out and debug functions for
+GEB elements.
+
+==== Detecting Test Mode
+
+Sometimes, you need to detect when some piece of code is running in test or development mode.
+This should be rare, but you can use the _Holders_ class:
+
+[source,groovy]
+.Example - Detecting Test Mode
+----
+// For unit tests without GORM active, we will check to make sure the entity is defined in GORM
+if (Holders.environmentDev || Holders.environmentTest) {
+  isGormEntity = getAllDomains()?.contains(c)  // <.>
+}
+----
+<.> This logic is not triggered in production mode.
+
+
+
+==== Test Helpers
+
+There are many helper classes that make your testing easier.  The helper classes used
+to make testing easier include:
+
+* <<domain-testing,DomainTester>> - Tests Constraints and FieldOrder
+* <<GUI Test Helpers (CRUD)>> - Tests CRUD GUI pages for a domain class.
+* <<Controller Test Helper>> - Controller Test Utilities.
+
+Also, there is a series of base classes used in Spock tests that simplifies testing of common features:
+
+* <<BaseSpecification>> - Base class for non-GUI testing.  Includes support for Hibernate and Embedded servers test.
+* <<BaseGUISpecification>> - Base class for GUI testing or non-GUI testing.  Includes GUI login/logout and other common functions.
+* <<BaseAPISpecification>> - Non-GUI access to controller actions in integration tests.
+
+
+==== Mocking Beans
+
+Quite often, you will need to mock a bean for use in your tests.  The framework provides a simple
+way to mock the bean.
+
+
+[source,groovy]
+.Example - Mocking a Singleton Bean
+----
+given: 'a mock object mapper'
+new MockBean(this, ObjectMapper, new ObjectMapper()).install() // <.>
+
+when: 'the bean is found in the context'
+def bean = Holders.applicationContext.getBean(ObjectMapper)  // <.>
+bean  instanceof ObjectMapper
+
+----
+<.> The mock ObjectMapper instance is added to the context.  This can be a real instance
+    or a normal Spock Mock() class.
+<.> The bean is found the normal way from the Micronaut application context.
+    This is normally done by collaborating code to find the desired singleton ObjectMapper.
+
+This will create a mocked bean instance from the concrete class for use in your tests.
+
+
+==== Creating Test Data
+
+Many tests rely on domain data to properly test your code.  Creating this test data is a tedious
+process that can be simplified with this DSL (Domain Specific Language):
+
+[source,groovy]
+.Example Test Data Creation
+----
+class UserSpec extends BaseSpecification {  // <.>
+
+  static specNeeds = [HIBERNATE] // <.>
+  static dirtyDomains = [Order]
+
+  @Rollback // <.>
+  def "verify that the order controller list method works"() {
+    given: 'some test records'
+    DataGenerator.generate { // <.>
+      domain Order
+      count 10
+      values qtyToBuild: 12.2, customer: 'CUSTOMER-$i' // <.>
+    }
+    when: 'some stuff'
+     . . .
+  }
+}
+----
+<.> Uses the common Spock <<BaseSpecification>>.
+<.> Indicates that the GORM/Hibernate system needs to be started and that the Order
+    objects will need to be cleaned up when the test finishes.
+<.> Rollback is supported, but not required.
+<.> The data generator.
+<.> Other values to populate the record(s).  Supports G-String like replacements inside
+    single quoted strings.
+
+This will generate 10 records like this:
+
+  order: ABC001
+  title: abc010
+
+The primary key (if a string) will be loaded with a sequential value from 1..count.
+The title (if in the object) will be set to a similar value, but decreasing number will be
+used (e.g. count..1). This will be done in a transaction automatically, so no need to use
+_Order.withTransaction_ in your
+test code.
+
+See the link:groovydoc/org/simplemes/eframe/test/DataGenerator.html[DataGenerator^] icon:share-square-o[role="link-blue"]
+for details.
+
+To reduce the boiler-plate code in your tests, you can generate a single record with the same utility:
+
+[source,groovy]
+.Example Test Data Creation - Single Record
+----
+  def (Order order) = DataGenerator.generate { // <.>
+    domain Order
+    values qtyToBuild: 12.2, customer: 'CUSTOMER-$i'
+  }
+----
+<.> This generates a list with one element.  The first record is stored in the variable
+    `order` with a type of _Order_.
+
+This relies on the ability to return multiple values from a method in Groovy.
+
+
+
+==== Test Data Pollution
+
+Test data pollution in the in-memory database can be a big problem in making tests reliable.
+This pollution happens when domain records are left over from earlier tests.  These records can
+cause problems with the other tests that expect an empty database.  This biggest problem is
+finding the test that left the data.
+
+Most non-GUI tests can avoid this problem by using the _@Rollback_ annotation for the test method.
+This works great for simple tests, but GUI tests must commit the data to the database to work.
+
+All sub-classes of
+link:groovydoc/org/simplemes/eframe/test/BaseSpecification.html[BaseSpecification^] icon:share-square-o[role="link-blue"]
+will check for left over records.  This checks every domain after every test and will cause the
+test to fail if any left over records are found.
+
+To help you remove these records, most tests can use the simple `dirtyDomains`
+static list of classes.  After the test finishes, all records in those domains will be deleted.
+Some core records such as the _admin_ user and roles will be left in the database.
+
+[source,groovy]
+.Example Test Data Creation
+----
+class UserSpec extends BaseSpecification {
+
+  static dirtyDomains = [Order]  // <1>
+
+  def "verify that the order controller list method works"() {
+     . . .
+  }
+}
+----
+<1> Indicates that the GORM/Hibernate system needs to be started and that the Order
+    objects will need to be cleaned up when the test finishes.
+
+If your domains support <<Initial Data Load>>, then your load method should return the list
+of records created as described in <<Initial Data Loading and Tests>>.
+This will be used to ignore those records during the test cleanup.
+
+
+

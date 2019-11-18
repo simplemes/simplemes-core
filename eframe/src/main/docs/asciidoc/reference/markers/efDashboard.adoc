@@ -1,0 +1,66 @@
+
+=== efDashboard
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<ef-dashboard-parameters>>#
+[inline-toc]#<<Dashboard Examples>>#
+
+endif::[]
+
+
+The `efDashboard` marker is used to display a configurable <<guide.adoc#dashboards,Dashboard>> in
+the page. A dashboard is an instrument panel that gives your users information and allows them to control some parts of your
+application.  This dashboard allows configuration so that your customers can tailor the display and
+behavior to their needs.
+
+The enterprise framework provides a core dashboard mechanism that lets you provide those features to your customers.
+This dashboard uses small building blocks called _activities_ to make up elements of this dashboard.  You provide
+core activities to your customers who combine them into usable dashboard for their users.
+
+Different dashboards can be used by customers, managers, supervisors or production workers.   See
+<<guide.adoc#dashboards,Dashboards>> for details on how dashboards can be used in your application.
+
+This marker requires the standard toolkit assets (includes with the standard _header.ftl_).
+
+
+
+[[ef-dashboard-parameters]]
+==== Parameters/Body
+
+The main parameters/body supported are:
+
+.Parameters
+[cols="1,6"]
+|===
+|Argument|Description
+
+|*category* | The category of the dashboard to display.   (*Default:* _NONE_)
+|*dashboard*| The specific dashboard to display.  The `category` is ignored if this is provided.
+//|*height*   | The height of the dashboard top-level splitter (if needed).  This affects the overall height of the
+//             dashboard content. (*Default:* '93%').
+|*activityParams*| A Map that contains parameters to be passed to every activity loaded. The keys and values in this map must be strings. (*Optional*)
+
+|===
+
+
+==== Dashboard Examples
+
+This example will use the standard label '_product.label_' for the title in
+a standard 'show' page.
+
+[source,html]
+.Show Page Title
+----
+<#include "../includes/header.ftl" />
+<#include "../includes/definition.ftl" />
+
+<@efDashboard category="MANAGER" />
+
+<#include "../includes/footer.ftl" />
+----
+
+This example shows a default dashboard for your managers.  This is displayed to take up the
+entire page.
+
+

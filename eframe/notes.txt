@@ -1,0 +1,331 @@
+Scratch
+=======
+
+Report Filter page
+<@efForm fieldDefinitions="reportFields"/>  -- Provides a FieldDefinitions value for the filter fields.
+FieldDefinitions
+  ReportFieldDefinition
+    populated by factory: Report
+
+
+
+Tasks
+=====
+Tasks left out
+  Check Search in CrudGUITester.
+  CrudGUITester - combobox - Enum, Domain Ref, Option objects.
+  Look into Jackson skipping foreign references.  Only need key and ID fields to import.
+  Simplify Client.javascript to one per Controller by default -  Add GUI test of logging level in EFrameJSLoggingGUISpec.
+  Rename efList to efGrid? for Defn pages? Doc/Code
+  Add unit test with mocks for EframeHibernateMappingContextConfiguration or use in BaseSpecification?
+  Add E2E test for optimistic locking detection.  In definition GUIs.
+  Add Dashboard editor.
+  Add splitter position remember in dashboard.
+  Upgrade to Webix 6.4 for window close option.
+  Reports
+    Test in MES app.
+  Build check from jenkins with single Repo on GitHub.
+
+  Look into Micronaut Data? (aka Predator).
+    No First level cache, proxy or optimistic locking.
+
+  Bugs:
+    Definition List allows changing boolean checkbox and the checkbox is not centered.
+    Definition List shows [Object object] for sub object cases.  User.  Fixable or add -userRoles as supported field list.
+    Definition List key field allows HTML un-escaped in it.
+    Show Page with name="<script>alert('bad')</script>" fails with Javascript syntax error in SampleParent.
+
+MES Demo Release Requirements
+-----------------------------
+  OrderStatus
+  Order/Product/Routing/Release
+  LSNStatus
+  LSN
+  Barcode Dashboard
+  Assembly
+    Custom Fields via FlexType
+    Barcode Support
+    Where Used Report (Elastic Search and Jasper?)
+  Elastic Global/List Search
+  Reports
+    WIP
+    As-built Report
+    Traveler
+
+
+MES Core First Pass Predecessors
+  
+
+Freemarker Conversion?     https://freemarker.apache.org/docs/pgui_datamodel_directive.html
+
+Custom Fields
+  CustomFieldMapType - Encoded as JSON.  Store Type in JSON or rely on current defn?:
+    {vendor: 'ACME', _vendorFormat: 'R', _vendorType: Product}
+  Annotation for fields? plus FlexType support>
+  LSNAssy
+    LSN
+    Order
+    CustomFieldMapType custom
+  lsnAssy.custom['vendor'] = . . .
+
+
+
+Task Before MES work
+  Dashboards/Questions from nested code
+  Addition modules
+    Fields - Single CLOB column with multiple Flex Field ID stored in a comma-delimited list.
+           - Holds custom and flex field values.
+           - Copy C:\Users\mph\Documents\git\mes\mes-core\src\main\docs\asciidoc\guide\dataModel ==== Custom Field Extensions to eframe custom docs and config areas.
+    Methods after/before core method.
+    Global Toggles?
+  custom fields
+    UI
+  Security
+    Login/Auth pages.
+    Access Denied re-direct for JWT Cookies.
+  Searchable
+  Report Engine
+  Task Menu
+  Themes - Including fixes to 'TBD: Needs different value for theme.' notes.
+  Periodic Archiving
+  Markers
+   efdashboard
+   efjavascriptStub
+   efpanel
+
+
+UI
+Custom Fields
+  Adds static fieldDef to class?
+    static fieldDef
+    storage
+  Works with Flex Fields too?
+
+Search
+
+Postgres Setup
+==============
+Create new DB
+  Create from template0, owner mph.
+
+Jenkins Setup
+==============
+URL: mphouston@s.attlocal.net:/opt/git/smes/eframe.git
+
+Global Renames
+==============
+Grails -> Micronaut
+Plugin -> Module
+
+Setup
+=========
+GIT server
+  cd /opt/git/smes
+  mkdir eframe.git
+  cd eframe.git
+  git init --bare
+MN Create
+   cd smes
+   mn create-app eframe -l groovy -f spock,hibernate-gorm,management
+IDEA
+  New Project from Existing Sources (default for all)
+  Import Gradle.
+  Remove second-level eframe module in IDEA.
+  Edit build.gradle (import sources).
+  Move Application.groovy to correct package.
+GIT Setup
+  cd eframe
+  git init
+  git remote add origin mphouston@s:/opt/git/smes/eframe.git
+  git clone ssh://mphouston@s:/opt/git/smes/eframe.git
+  Added master section to .git/config
+
+
+Make Module for Distr.
+=====================
+Delete from .jar
+  Application.class
+  logback.xml
+
+UI
+==
+UI Toolkit Module (two flavors: JQX and HTML).
+
+
+Notes on Micronaut investigation
+
+
+Key Missing Features
+====================
+
+Persistence - CRUD and ad-hoc
+  Txn
+  Foreign Keys
+Message Broker (with Saga/undo support)
+Custom Fields
+Client Asset delivery/gzip/etc
+UI Layer - tags?
+Modules (e.g. plugins)
+
+Key Decisions
+=============
+Persistence
+UI
+Single mini-service or multiple?  UI inside service?
+Graal is not supported with Hibernate now.   Ignore Graal for now.
+
+Modules
+=======
+eframe (library) only
+  org.simplemes.eframe.*
+  /opt/git/mmes/eframe.git
+mes-core
+mes-assy
+mes (appl)
+
+Module JAR Support
+==================
+compile "org.simplemes:eframe"
+Provides:
+  Controllers
+  Views
+  Security Providers
+  Domains
+Dependencies:
+  compile "io.micronaut:micronaut-security-jwt"
+
+
+
+Package structure
+=================
+Option 1 org.simplemes.eframe
+  application  (startup and common pages "/")
+    controller
+    domain
+    service
+  auth
+    controller
+    domain
+  controller
+  custom
+    controller
+    domain
+  domain
+  auth
+    controller
+    domain
+  misc
+  system
+  test
+  web
+    request
+    view
+    builder
+    widget
+
+
+std layout
+----------
+  XYZ
+    controller
+    domain
+    service
+    page (GEB in test module)
+
+views structure
+===============
+views
+  auth/loginAuth, denied
+  home/index
+  includes
+    header.hbs
+src/assets
+  css
+  javascript
+  images
+
+
+Groovy vs. Kotlin
+=================
+
+Groovy is clearer.
+GORM vs. JPA vs. Kotlin Expose
+
+Sizes and Startup Times
+=======================
+                         Startup (ms)  distZip (MB)     create
+jonly (Java)                 2,056        10.2          mn create-app jonly -l java
+jjspock (Java/JPA/Spock)     2,141        32.2          mn create-app jjspock -l java -f kafka,spock,hibernate-jpa
+kspock (Kotlin/Spock)        2,107        17.5          mn create-app kspock -l kotlin -f kafka,spock
+gspock (Groovy/Spock)        2,032        19.0          mn create-app gspock -l groovy -f kafka,spock
+ggspock (Groovy/GORM/Spock)  2,089        35.7          mn create-app ggspock -l groovy -f kafka,spock,hibernate-gorm,management
+gjspock (Groovy/JPA/Spock)   2,098        36.9          mn create-app gjspock -l groovy -f kafka,spock,hibernate-jpa
+
+persist                      2,281        31.7          mn create-app persist -l groovy -f spock,hibernate-gorm,management
+test2                                                   mn create-app test2 -l groovy -f spock,hibernate-gorm,management
+
+
+
+UI Decision
+===========
+JQX or Other Toolkit?
+Toolkit Module?
+Webix Notes:
+  Look at https://snippet.webix.com/309867f6 for replacing sections of a page (e.g. dashboard) and form layout
+  Look at https://snippet.webix.com/5e25f570 for form layout.
+  https://snippet.webix.com/a674ca30 - Simulate a real login form.
+  Input fields have unique ID generated.  Not easy to test.  $('#field') vs. $('div', view_id: 'field').find('input').  Module?
+    Uses in Page: field { module(new InputFieldModule(id: 'field')) }
+  Forms can't be submitted like normal.  Need JS code.
+  Consider white-listing function calls in dynamic pages?
+
+Webix Dashboard Activity Example
+================================
+     dash.y = function() {
+       console.log("y()")
+     };
+     _json = {
+       view: "button", value: "List", type: "form", click: "dash.y();", width: tk.width('33%')
+     };
+
+Page Mockups
+============
+  static content = {
+    startButton {module(new ButtonModule(id: 'start'))}  //{ $('div', view_id: 'start').find('button')}
+    panelA { $('div', view_id: 'PanelA')}
+    panelB { $('div', view_id: 'PanelB')}
+    resizer { $('div', view_id: 'resizerA')}
+    //startButton { $('div', view_id: 'start')}  // Works
+    //startButton { $('button')}  // adding view_id takes extra 32ms to find element.
+  }
+
+
+
+
+Needs
+-----
+Theme?
+GEB Testable
+Grid for inline editing.
+  Resizable columns
+  Sort order
+  Hide column
+Table - Display only
+  Paging Support
+  Resizable columns
+  Sort order
+  Hide column
+Tree
+  TaskMenu
+  Logging
+Splitter
+Dialog - Modal
+Widgets
+  Date/Time
+  Single/Multi-select Combobox with completion
+Replaceable content with logic.
+
+
+jrebel code
+
+rO0ABXNyAChjb20uemVyb3R1cm5hcm91bmQubGljZW5zaW5nLlVzZXJMaWNlbnNlAAAAAAAAAAECAANMAAdkYXRhTWFwdAAPTGphdmEvdXRpbC9NYXA7WwAHbGljZW5zZXQAAltCWwAJc2lnbmF0dXJlcQB+AAJ4cHB1cgACW0Ks8xf4BghU4AIAAHhwAAACbaztAAVzcgARamF2YS51dGlsLkhhc2hNYXAFB9rBwxZg0QMAAkYACmxvYWRGYWN0b3JJAAl0aHJlc2hvbGR4cD9AAAAAAAAYdwgAAAAgAAAAFHQACGxhc3ROYW1ldAAHSG91c3RvbnQAC0dlbmVyYXRlZEJ5dAAEQVVUT3QABUVtYWlsdAAMaDE5OEBhdHQubmV0dAAMT3JnYW5pemF0aW9udAAJU2ltcGxlbWVzdAAKZW50ZXJwcmlzZXQABHRydWV0AAdQcm9kdWN0dAAGSlJlYmVsdAALR2VuZXJhdGVkT25zcgAOamF2YS51dGlsLkRhdGVoaoEBS1l0GQMAAHhwdwgAAAFoPR5xTHh0AAl2YWxpZEZyb21xAH4AEHQAB09yZGVySWR0AAB0AAtsaW1pdGVkRnJvbXEAfgAQdAAHdmVyc2lvbnQABDEuMjZ0AAROYW1ldAAPTWljaGFlbCBIb3VzdG9udAAFU2VhdHN0AAExdAADdWlkdAAoYzE2NTFmY2EzZTkzZTAxZjA0YzkwMTliNDQwZWYwYTJiMjA5NTIzYnQACWZpcnN0TmFtZXQAB01pY2hhZWx0AARUeXBldAAKZXZhbHVhdGlvbnQACnZhbGlkVW50aWxzcQB+AA93CAAAAW+Uz51MeHQACG92ZXJyaWRldAAFZmFsc2V0AAxsaW1pdGVkVW50aWxxAH4AInQACXZhbGlkRGF5c3NyABFqYXZhLmxhbmcuSW50ZWdlchLioKT3gYc4AgABSQAFdmFsdWV4cgAQamF2YS5sYW5nLk51bWJlcoaslR0LlOCLAgAAeHAAAAAOeHVxAH4ABAAAAQCZz7NH4BEgLgwvekbnJsWoPvQ37YgkswTH8mlPIkLZ8pXpcggGYSlbBXuHoDhTUdkJmvH3YMyQ1+Y1cIxmBI/l9gEK/aU/RAr3Woqvcio42Vhyd2/ruzWtbsy4MQH5Kiu4ySmcoQgZe1gZEFAYMrYR9wMEF4o8D+W/WYcL7sAFNBeJIU2EgU4+n2JB3LY0Nn1TpFupIkK+QX42VCg2K58z+vwlxFZaLMUucJPIXsSvQImB8KFrkmbiafrstOGctpiLYQai+Eub+OBdjy9xmV9n+dqp2Yx6wIPlECE5E2tnw49JPXEda0vukrpsy2LFwNaOFwG5urHPQPHwV5knojrS

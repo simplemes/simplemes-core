@@ -1,0 +1,352 @@
+
+==== Report Engine
+
+
+The third-party report engine is provided by the open-source
+https://community.jaspersoft.com/[Jasper Reports^] library.  This report engine can generate
+reports from user-designed reports created in an interactive report designer.   The enterprise framework
+can use the report definitions (.jrxml files) to generate report output in the browser
+and for printing.
+
+image::guis/SampleOrderReport.png[title="SampleOrderReport",align="center", width=60%]
+
+
+These report support HTML and PDF formats.  The HTML formats also provide a filter panel at the
+top to display the parameters used for the report and to allow the user to change the
+filter values.
+
+===== Report Guidelines
+
+The report engine uses the .jrxml file format for the reports produced by its designer studio.
+There are a few guidelines that you must follow to make some features work.  For example, there
+is a specific way to specify the location of images that will work with reports in HTML and
+PDF formats.
+
+
+====== Report Parameter BaseDir
+
+There is an important report parameter that is used to find the location of images and
+hyper-linked reports.  This is the `BaseDir` parameter.   This parameter must be defined
+as:
+
+* Is For Prompting  - *False*
+* Class - *String*
+* Evaluation Time - *Early*
+
+These settings make the `BaseDir` available for things like image locations and
+hyperlinks (see below).
+
+NOTE: If `Is For Prompting` is set wrong, then the value won't be set at run-time.
+      This means the report may not create image links and hyperlinks correctly.
+
+====== Report Permissions
+
+Reports can sometimes contain sensitive information.   To make sure data is not viewed
+by unauthorized people, you can define additional permissions needed to view the report.
+
+By default, all reports are viewable by all users.  To restrict a report, you can define
+a custom property in the report to limit the report to users with the given role(s).
+
+In the report designer studio, you can add a custom property by viewing the report properties
+and under 'Misc', click on the Edit Properties '...' dialog.  This dialog allows you to create
+a string property:
+
+  org.simplemes.roles  ADMIN,SUPERVISOR
+
+This will allow any user with the ADMIN and SUPERVISOR to view the report.
+
+
+====== Report Conventions
+
+To enable some of the framework features such as filter criteria, you should follow some simple
+conventions in your report in the designer:
+
+====
+.Report Name Starts with Domain Name
+
+The report name should start with the core domain object that the report
+displays.  This is used in the optional <<Report Filter Panel>> created at the top of the report.
+This also helps identify which domain object forms the core of the report.
+====
+
+
+====
+.Report Name for Task Menu Lookup
+
+The report name is also used in building the entry for the main <<Task Menu>>.
+This allows you to define locale-specific menus/tooltips in the task menu
+for built-in reports.
+
+For example, the report _ArchiveLog.jrxml_ can use these _messages.properties_ entries:
+
+  taskMenu.ArchiveLog.label=Archive Log Report
+  taskMenu.ArchiveLog.tooltip=Archive Log Report
+
+If the labels do not exist in the _messages.properties_ file, then the file name
+(e.g. ArchiveLog) will be used for the menu and tooltip.
+====
+
+
+====
+.Parameter Name Matches Field
+
+<<Report Parameters>> are used with many reports to help filter the report to the specific
+records the user is interested in.  The framework provides a way for the user to change them
+and re-run the report.  The framework can use the standard input fields to be consistent with
+the application.
+
+If the parameter name matches a field in the domain object, then the framework will the input widgets
+for that field when needed. This includes use of enumeration drop-downs for filtering and
+date/time fields.
+
+For example, the report _ArchiveLog.jrxml_ might use the `className` parameter to provide a
+string input field with the correct labels in the <<Report Filter Panel>>.
+====
+
+====
+.Date Ranges
+
+Many reports use date ranges to filter their output.  These are implemented as <<Report Parameters>>
+with specific names:
+
+  reportTimeInterval
+  startDate/endDate
+     or
+  startDateTime/endDateTime
+
+The framework will provide filter fields with drop-downs to help the user select the right date/time
+range.
+
+The report will use the `reportTimeInterval` as a enum drop-down to select a generic date/time range
+(e.g. today, this week, etc).  If the interval is _'CUSTOM_RANGE'_, then the date/time range
+logic will let the user select a start and end date in the filter panel.
+
+If the `reportTimeInterval` is used, then the start and end date/times will be supressed in the
+filter panel.  These values are ignored by the report logic.
+
+Other parameter names may be used, but the special date range drop-downs will not be generated.
+In that case, simple date/time input fields will be used.
+
+====
+
+===== Built-in Reports
+
+Most <<Module Additions>> will provide built-in reports specific to the module.  These reports
+are delivered in the framework module in the _src/resources/reports_ folder.  These reports are
+automatically added to the standard main <<Task Menu>> and can be executed by the users.
+
+NOTE: The built-in reports should have unique file names to avoid conflicts with other
+      modules.  
+
+
+===== Add-on Reports
+
+Your users will want to create/modify their own reports.  This is typically done in the
+report designer studio and saved as a .jrxml file.
+To make these reports available, you will need to combine these reports into a .jar file,
+with the reports under the _'reports/'_ folder.  Then, you must add this .jar file
+to the run-time class path.
+
+WARNING: Do not add a simple folder to the production class path.  This is a huge
+         potential security hole.  Doing this for test/development is sometime Ok.
+         Use caution.
+
+====== Image Locations
+
+Images can be used in your reports.  You will need to specify the image location relative to
+a `BaseDir` parameter in the images properties field:
+
+  $P{BaseDir}+"/coffee.jpg"
+  $P{BaseDir}+"/images/background.png"
+
+This `BaseDir` will be set at run-time to the location of jrxml file.  This allows you to refer
+to images as as relative location.
+See <<Report Parameter BaseDir>> for details on the `BaseDir` parameter.
+
+====== Drill-Down Hyperlinks
+
+One great feature of most reporting tools is the ability to drill down into detail reports
+from a high-level report.  The report engine interface allows you to create hyperlinks to other
+reports.
+
+First, select the field you want to be a hyperlink in the report designer.  Then set the designer
+property `HyperLink Reference Expression` to a value like:
+
+  "loc="+$P{BaseDir}+"/ReportChild.jrxml&className="+$F{class_name}
+
+Also, you will need to set the Hyperlink `Link Type` value to 'Custom'.
+This creates a link to the _ReportChild.jrxml_ report, passing the `className` as a parameter
+for the report.
+
+These hyperlinks can be used in tabular reports and as links in charts.
+This is done in the designer studio in the 'Hyperlink' properties tab of the tabular column or the
+chart's Data set element.
+
+See <<Report Parameter BaseDir>> for details on the `BaseDir` parameter.
+
+
+
+===== Report Filter Panel
+
+If the report has any report parameters that are flagged as 'isForPrompting', then the
+HTML page will have a simple filter panel at the top of the report.  This panel will
+show the current filter values (parameters) and allow the user to change the values.
+
+This panel also has the ability to change output formats (e.g. to PDF).
+
+
+===== Report Parameters
+
+Most reports will need some sort of way to enter filter criteria for the report.  This can be a
+simple field, a drop-down or a complex date range.  You will need to design your report queries to
+use the parameters and to define the parameters as 'isForPrompting'.  See the report engine
+design studio for details on setting these properties.
+The framework will build the page with the report parameters listed at the top, with options to
+change them.
+
+
+====== Parameter Default Values
+
+It is best to define default values for the parameters in teh report designer.  This allows the
+framework to automatically fill in the data and display the report.  The framework will remember
+the user's last filter/search parameter values.  This will reduce the number of clicks needed
+for common/repeated reports.
+
+If all input parameters have default values, then the report will be automatically
+generated.
+
+====== Parameter Display Sequence
+
+Many reports will have multiple parameters.  It is sometimes important to have a consistent
+display order for the user.  You can control this in the report designer by adding a custom property
+to the parameter:
+
+  sequence
+
+This property is treated as the display order for the field. If no sequence is set on a field, then the
+sequence is assigned as:
+
+
+* reportTimeInterval - sequence = 100
+* startDateTime - sequence = 110
+* endDateTime - sequence = 120
+* all others - sequence = 50
+
+This default numbering scheme will make the reportTimeInterval and its date fields display in
+a consistent order.
+
+====== Parameter Provided on URL
+
+It is also possible to pass these parameters on the URL for the report.  This allows you to define
+common reports a links/bookmarks.  For the ArchiveLog report, the URL will look like this:
+
+  http://host/report?loc=reports/ArchiveLog.jrxml&className=sample.Order
+
+This will set the `className` report parameter to 'sample.Order' for the report display.
+
+
+
+===== Report Localization
+
+Most reports should display localized text.  To do this, you will frequently use text fields
+*(not static text)* to display values looked up from a properties file.  This is done with
+the text value such as _$R{report.ArchiveLog.title}_.  This will find the text in the report's
+properties file.  For example, the _eframe_labels.properties_ file might look like this:
+
+  report.ArchiveLog.title = Archive Log Report
+  report.ArchiveLog.subTitle = Archive Log Report
+
+To make this work, you need to create the above file in the reports directory with the correct
+bundle name (e.g. _eframe_labels.properties_).  Then you will need to reference this bundle
+in your report.  You will specify the resource bundle name (just _eframe_labels_) in the report
+designer for the top-level report element (e.g. _ArchiveLog.jrxml_).
+
+You will then need to make sure the report (jrxml) and properties file are in the _reports/_ directory.
+The ReportEngine logic will use this bundle  in the _reports/_ directory at runtime to find the
+correct properties.  These values will be localized with the request's locale.
+
+
+===== Report Row Limits
+
+Reports can be a huge performance drain on your application.  To reduce the chance of this happening,
+we limit the number of rows returned in reports to 1000 by default.  This reduces the chance of out
+of memory errors on huge report data sets.
+
+You can adjust this limit in the _applications.yml_ file:
+
+[source,yaml]
+.application.yml
+----
+eframe.report.rowLimit = 1000 <.>
+----
+<.> The default row limit for reports generated by the report engine.
+
+NOTE: There is *NO* absolute `maxRowLimit` used by the report engine.  Since the row limit is
+      NOT supported in the HTTP request parameters for reports.  There is no way for malicious code
+      to set this row limit to huge value from the HTTP request.
+
+
+===== Sub Reports
+
+The external report engine supports the concept of sub-reports.   These are reports embedded
+inside of a master report.  To support this, you will need to follow a specific naming convention
+for the sub-report definition.
+
+The sub-report itself should follow the normal conventions for images and hyperlinks.
+In the master report, you will need to define a parameter that starts with the prefix
+_SubReport_.  For example:
+
+
+[cols="2,4"]
+|===
+|Field|Value
+
+|*Parameter Name:* |SubReportComponents
+|*Class:* |java.lang.Object
+|*Default Value Expression:* |$P{BaseDir}+"/ComponentSubReport.jrxml"
+|===
+
+
+In the master report, you will add the sub-report to the right section (e.g. the detail section)
+and define the sub-report with this 'Expression':
+
+  P${SubReportComponents}
+
+This will be changed at run-time to the specific report from the parameter.
+
+
+You will also need to link up the resource bundle parameters from the parent to the sub-report.
+This is done in the main report's sub-report section.  You select the sub-report and in the
+properties designer, click the 'Edit Parameters' button.  This opens the 'SubReport Parameters'
+dialog.  You will need to 'Add' a new parameter and link _REPORT_RESOURCE_BUNDLE_ from the main
+report to _$P{REPORT_RESOURCE_BUNDLE}_ in the sub-report:
+
+image::guis/ReportEngineSubReportBundle.png[title="ReportEngine SubReport",align="center", width=50%]
+
+
+===== Designer Studio Setup
+
+The report engine has an open-source designer studio that you can use to create these reports.
+There are few setup guidelines, but if you need to use library methods from the framework,
+you will need to use the framework classes added to the designer studio's classpath.  This is
+easy to do.
+
+. Right-click on the top level element in the Project Explorer (typically _MyReports_).
+. Select _Properties_.
+. In the Properties dialog, select the _Java Build Path_ property.
+. Add a JAR file for the eframe plugin or add the class directories for the build area 
+  on your system.
+  
+image::guis/ReportStudioClassPath.png[title="ReportStudioClassPath",align="center", width=75%]
+
+This will make some useful classes available for your reports such as DateOnly and related data
+formatting methods.
+
+
+ 
+
+  
+
+
+
+

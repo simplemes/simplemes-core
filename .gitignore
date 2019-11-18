@@ -4,6 +4,8 @@ Thumbs.db
 build/
 target/
 out/
+tmp/
+staging/
 .idea
 *.iml
 *.ipr
@@ -13,7 +15,6 @@ out/
 .project
 .settings
 .classpath
-tmp/
 .asciidoctor/
 {imagesdir-build}/
 {imagesdir-src}/

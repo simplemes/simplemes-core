@@ -1,0 +1,109 @@
+
+=== File Archiver
+
+The link:groovydoc/org/simplemes/eframe/archive/FileArchiver.html[FileArchiver^] icon:share-square-o[role="link-blue"]
+mechanism built into the framework lets you archive domain objects to an JSON file and
+have the objects deleted from the production database.
+This is the default archiving mechanism in the framework.
+
+
+==== File Archiver Options
+
+This file archiver is fairly flexible in how it names the archive files and where it stores them.
+The full capability is covered in the Groovy doc
+link:groovydoc/org/simplemes/eframe/archive/FileArchiver.html[FileArchiver^] icon:share-square-o[role="link-blue"].
+
+NOTE: These configuration options all support the normal Groovy GString capabilities, but dollar signs ($) are
+always expanded in the _application.groovy_ file.  To get around this, the framework uses hash (#) as a temporary
+placeholder for dollar sign ($).  The # is replaced with a $ before evaluation of the string at run time.
+The $ is supported in the _application.yml_ file.
+
+
+The behavior of the file archiver can be tailored to your needs.  For example, the directory(s) the archives are
+stored in can be configured in your _application.yml_ file.  The defaults used  by the framework are shown below:
+
+[source,yaml]
+.application.yml
+----
+eframe.archive.topFolder = 'archives'
+eframe.archive.folderName = '#{year}-#{month}-#{day}'
+eframe.archive.fileName = '#{key}'
+----
+
+This makes the archive folder vary over time to avoid filling up a directory with too many files.
+This will create a top-level directory _archives_ with a sub-folder for every day:
+
+[source,groovy]
+.Archive Files
+----
+archives/2013-08-13/M1012.arc
+archives/2013-08-13/M1013.arc
+archives/2013-08-13/M1014.arc
+archives/2013-08-13/M1015.arc
+archives/2013-08-14/M1016.arc
+----
+
+The default file name for the archive is to use the `toString()` value from the first object
+(_M1012_, etc above) as the basic file name.  This assumes the `toString()` returns the key
+fields for your domain object and the value is
+unique.  If the file already exists, then a 'dash' number will be added to the end as needed:
+
+[source,groovy]
+.Archive Files
+----
+archives/2013-08-13/M1012.arc
+archives/2013-08-13/M1012-1.arc
+archives/2013-08-13/M1012-2.arc
+----
+
+==== Archive File Name
+
+It is also possible to use other elements from the archived object in the JSON file name/path.  See
+link:groovydoc/org/simplemes/eframe/archive/FileArchiver.html[FileArchiver^]
+icon:share-square-o[role="link-blue"] for details on the Config options.
+This could be used to create a folder structure with your customer ID in the path and use the order
+number in the file name.
+
+[source,yaml]
+.application.yml
+----
+# Define file/path for archiving based on customer ID and order number.
+eframe.archive.topFolder = '../archives'
+eframe.archive.folderName = '#{order.customer}/#{year}'
+eframe.archive.fileName = '#{order.orderNumber}'
+----
+
+This makes the archive folder vary over time and uses the customer and order number to
+organize your archives:
+
+[source,groovy]
+.Archive Files
+----
+../archives/ACME/2010/6571012.arc
+../archives/ACME/2010/6571013.arc
+../archives/ACME/2010/6571014.arc
+../archives/ACME/2010/6571015.arc
+../archives/ACME/2011/6571016.arc
+----
+
+For example, the default location for March 2016 is _/archives/2016-03_.
+
+The configurable values that can be used in the `folderName` option are:
+
+[cols="1,4", width=75%]
+|===
+|Value | Description
+
+|year | The current year (4 digits).
+|month | The current month (2 digits).
+|day | The current day of the month (2 digits).
+|hour | The current hour (2 digits, 24 hour notation).
+|key | The primary key of the object being archived (e.g. order).  The TypeUtils.toShortString() is used.
+|object | The object being archived (e.g. order).  The object's `toString()` method is used.
+|===
+
+If a filename already exists, then a sequence number will be added to the end to avoid conflicts.
+This means it is possible to have multiple archive files for a given order.  For example, for
+order _A0001_, it is possible to have two archive files such as
+_A0001.arc_ and _A0001-1.arc_.  This is one of the many reasons to avoid duplicate orders.
+

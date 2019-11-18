@@ -1,0 +1,34 @@
+
+[[eframe-add-arg-to-uri]]
+=== addArgToURI
+
+.addArgToURI(uri, argumentName, argumentValue)
+
+This Javascript function adds a single argument to the given page URI.
+This function adds the argument using the '?' or '&' separator as needed.
+This function is part of the <<eframe-js>> library.
+
+
+.Parameters
+[cols="1,1,5"]
+|===
+|Parameter|Type|Description
+
+|*uri*          |string| The URI to add the argument to as a URL parameter. (*Required*)
+|*argumentName* |string| The name of the argument. (*Required*)
+|*argumentValue*|string| The argument value. (*Required*)
+|===
+
+This function returns the adjusted URI.
+
+[source,javascript]
+.Example
+----
+var uri = eframe.addArgToURI('/dashboard/load','dashboard','MANAGER');
+uri = eframe.addArgToURI(uri,'mode','custom'); // <1>
+
+----
+<1> Returns a URI: '/dashboard/load?dashboard=MANAGER&mode=custom'.
+
+
+

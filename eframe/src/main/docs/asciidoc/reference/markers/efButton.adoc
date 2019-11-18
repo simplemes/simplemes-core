@@ -1,0 +1,90 @@
+=== efButton
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<ef-button-parameters>>#
+[inline-toc]#<<Button Examples>>#
+
+endif::[]
+
+
+
+Buttons are used in almost all applications.  This marker allows you to define a button that 
+looks consistent throughout your application with minimal code.
+
+The button can be a hyper-link variant (e.g. with a `url`) or a javascript button
+(with `click` handler code).
+
+This marker can produce several different types of buttons:
+
+* A general button with a javascript `click` handler.
+* Hyperlink button (has a `url` attribute).
+
+[[ef-button-parameters]]
+==== Parameters/Body
+
+The main parameters/body supported are:
+
+.Parameters
+[cols="1,6"]
+|===
+|Argument|Description
+
+|*(body)*      | Ignored.
+|*id*          | The element ID (e.g. the HTML ID).  Only used for Special button types (e.g. 'undo') (*Optional*).
+|*label*       | The label the button (*Optional*).
+|*tooltip*     | The tooltip for the button (*Optional*).
+|*click* | The javascript to execute when the button is clicked (`click` or `link` is *Required*).
+|*link* | The web-page link for the button to trigger when clicked (`click` or `link` is *Required*).
+|*size* | The relative size of the button (*default:* 1.0).
+|*css* | The css class(es) to add to the button.  Multiple classes are supported, using space as
+         a delimiter.
+|*type* | Special button types.  Includes 'undo' for a standard undo button (*Optional:*).
+|*spacer* | If 'after', then inserts a spacer element before/after the button (*Optional:*).
+|===
+
+
+.Built-in CSS Classes for Buttons
+[cols="1,6"]
+|===
+|Class|Description
+
+|*caution-button*  | A button with a yellow-ish background.
+|*bigger-text-button*   | A button with larger text size (1.5em).
+
+|===
+
+
+
+
+==== Button Examples
+
+[source,html]
+.Example - Button Types
+----
+<@efForm id="show">
+  <@efButton link='/' label='home.label'/>  // <.>
+  <@efButton click='logRMA();' label='logRMA.label'/> // <.>
+  <@efButton click='logFailure();' label='logFailure.label'
+             size='2.0' css='caution-button bigger-text-button'/> // <.>
+</@efForm>
+
+----
+<.> Opens the home page '/'.
+<.> Calls the `logRMA()` javascript function.
+<.> Logs a failure, with a larger button that is yellow.
+
+[source,html]
+.Example - Button to the Right of a Field
+----
+<@efForm id="logFailure" dashboard=true>
+    <@efField field="order" label="Order/LSN" value="M1008" width=20 labelWidth='35%'>  // <.>
+      <@efButton type='undo' click='dashboard.undoAction();' spacer='after'/>           // <.>
+  </@efField>
+</@efForm>
+
+----
+<.> Defines a normal field on the page.
+<.> Adds a button to the right of the field.  Alignment of the button places it close to the
+    field.  If no `spacer` is used, then the button is right-aligned on the page.
+

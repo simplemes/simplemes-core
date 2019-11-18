@@ -1,0 +1,170 @@
+
+[[field-order]]
+=== fieldOrder
+
+==== Field Ordering
+
+Frequently, the framework features will need to list or display your domain fields in a logical
+order. Framework markers such as <<efShow>> will show the fields in any order you like, but you
+would have to update the <<efShow>> marker for every new field added to the domain class.
+To simplify this maintenance task, the framework supports an optional `fieldOrder` static
+variable in domain classes.
+
+WARNING: Philosophical Discussion Ahead!
+
+
+Field ordering is not traditionally part of a domain class's definition.  Following the
+'Don't Repeat Yourself' philosophy, a central place to store the field ordering 'hints' is needed.
+We chose the domain class. This is optional. If you don't want to embed field ordering in your
+domain classes, then you can specify the field ordering on the respective
+<<efShow>>, <<efCreate>> and <<efEdit>> markers in your .ftl files.  This means updating 3 files
+whenever you add a new field to a domain class.  This is your choice.
+
+The field ordering can also be configured by a user to add
+<<guide.adoc#field-extension-gui,Field Extension GUI>>, move core fields and
+remove core fields from the GUI.
+
+===== Simple Ordering
+
+Most simple domain classes will use just a simple list of fields in the order to be displayed.
+Any fields not listed will *not* be displayed.
+
+[source,groovy]
+.Domain Class with fieldOrder
+----
+class Product {
+  String product
+  Status status
+  String description
+  BigDecimal lotSize
+
+  static fieldOrder = ['product', 'status', 'lotSize', 'description']
+}
+----
+
+The framework marker <<efShow>> can then be used to display these fields in the order you need:
+
+[source,html]
+.ftl Page Use
+----
+<@efShow fields="order,product,qtyToBuild,qtyDone,dateCompleted"/>
+----
+
+Now, you can add a new field to the domain without updating your .ftl files.  You only have to
+remember to add the new field(s) to the `fieldOrder` variable.  See the
+<<Testing fieldOrder Variable>> for details on how you can verify that all fields are
+listed in the `fieldOrder` variable.
+
+
+===== Grouping of Field (Panels)
+
+Simple grouping of fields is possible when you use a _'group:name'_ value in your
+`fieldOrder` variable.
+An example is shown below, with the `fieldOrder` setting needed for it.
+
+image::guis/show.png[Show,align="center",width="75%"]
+
+
+
+[source,groovy]
+.Domain Class with Grouping
+----
+class Product {
+  String name
+  String title
+  BigDecimal qty
+  Integer count
+  Boolean enabled
+  Date dateTime
+  DateOnly dueDate
+  String notes
+
+  static fieldOrder = ['name', 'title', 'qty', 'count', 'enabled', 'dueDate', 'dateTime',
+                       'group:details', 'notes']
+}
+----
+
+In the <<efShow>> marker, this will create two tabbed panels: 'Main' and 'Details'.  The titles for
+these tabs will be pulled from the _messages.properties_ file entry as shown below:
+
+[source,groovy]
+.messages.properties (Framework Tab Names)
+----
+custom.panel.label=Custom
+details.panel.label=Details
+main.panel.label=Main
+----
+
+Any other panel labels will need to be defined in your _messages.properties_ file.
+
+By default, if any group is defined, all fields up to the first 'group' entry will be placed in
+a panel titled _'Main'_. You can change the label for this first panel as you wish by specifying
+it in the `fieldOrder` variable:
+
+[source,groovy]
+----
+class Product {
+  static fieldOrder = ['group:first', 'product', 'status', 'lotSize',
+                       'group:details.label', 'assemblyData', 'routing']
+}
+----
+
+If the _'first'_ panel has no localized label, the text _'first'_ will be displayed.  This allows
+custom panels to use the label as-is.
+
+
+===== Testing fieldOrder Variable
+
+We recommend that you test to your domain class tests to ensure that all fields are
+accounted for in the `fieldOrder` variable.  The helper class
+link:groovydoc/org/simplemes/eframe/test/DomainTester.html[DomainTester^] icon:share-square-o[role="link-blue"]
+tests the `fieldOrder` by default:
+
+
+[source,groovy]
+.Example Domain Test
+----
+def "verify that user domain enforces constraints"() {
+  expect: 'the constraints are enforced'
+  DomainTester.test {
+    domain Order
+    requiredValues order: 'M1003', qty: 2.0       // <.>
+    maxSize 'order', FieldSizes.MAX_CODE_LENGTH   // <.>
+    maxSize 'password', 128
+    notNullCheck 'userName'                       // <.>
+    notNullCheck 'password'
+    notInFieldOrder (['authorities', 'password']) // <.>
+  }
+}
+----
+<.> Defines the required values for the domain record.
+<.> Verifies that the max length is enforced.
+<.> Verifies that null values are prevented.
+<.> Checks that the <<reference.adoc#field-order,fieldOrder>> is defined correctly for the
+    domain class. Verifies that all persistent fields are listed in the `fieldOrder` list.
+
+You can also disable the fieldOrder check with the option *'fieldOrderCheck false'*.
+
+===== fieldOrder and Sub-Classes
+
+When a parent class has a `fieldOrder` value, all the child classes should have `fieldOrder`,
+even if the list is empty:
+
+[source,groovy]
+----
+class FlexField {
+  // No added fields to be displayed.
+  // Parent AbstractField class has all of the fields needed.
+  static fieldOrder = []
+}
+----
+
+This happens often when the child class has only a reference to some containing class that is not
+displayed. The FlexField example above has only a reference to the containing _FlexType_ class,
+which we don't normally display.
+
+The link:groovydoc/org/simplemes/eframe/domain/DomainUtils.html[DomainUtils^] has methods to
+determine the effective field order for a domain that takes into account the super-classes.
+
+
+

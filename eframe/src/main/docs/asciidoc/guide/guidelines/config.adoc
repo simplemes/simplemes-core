@@ -1,0 +1,126 @@
+
+=== Configuration
+
+Micronaut and this framework have many configuration options defined at the application level.
+Your application needs to use a number of these settings to take full advantage of the
+enterprise framework.
+
+
+==== application.yml
+
+ifeval::["{backend}" != "pdf"]
+[inline-toc]#<<Hibernate>>#
+[inline-toc]#<<GORM>>#
+[inline-toc]#<<efBootstrap.yml>>#
+[inline-toc]#<<build-gradle>>#
+endif::[]
+
+
+
+The _application.yml_ file controls many of the features of your application.
+To avoid issues with the framework, you should use these settings:
+
+
+===== Hibernate
+
+A few framework domain classes rely on the second-level cache to keep performance high.
+In particular, the user <<GUI State Persistence>> are stored in the domain class
+link:groovydoc/org/simplemes/eframe/user/UserPreference.html[UserPreference^].
+These preferences are retrieved when a page is displayed, so caching is critical here.
+
+The recommended caching/hibernate settings are:
+
+[source,yaml]
+.application.yml
+----
+hibernate:
+  hbm2ddl:
+    auto: update
+  cache:
+    queries: false
+    use_second_level_cache: true
+    use_query_cache: true
+    # format_sql: true
+    # use_sql_comments: true
+    region:
+      factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
+  config_class: org.simplemes.eframe.data.EframeHibernateMappingContextConfiguration
+  session_factory:
+    interceptor: org.simplemes.eframe.data.EFrameHibernatePersistenceInterceptor
+dataSource:
+  url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE  // <1>
+  dbCreate: update
+  pooled: true
+  jmxExport: true
+  driverClassName: org.h2.Driver
+  username: sa
+  password: ''
+----
+<1> The database you use will depend on your development environment.  H2 is a common test database.
+
+NOTE: The _ehcache.xml_ file is configured to define the caches for the user preference
+      query cache.  You should make sure that the framework .xml file is used or
+      the .xml file contains the needed cache settings.
+
+The _ehcache.xml_ file is configured to use memory only (no disk cache) and a lifetime of
+approximately 300 seconds.  The following entries are defined:
+
+* _default-query-results-region_.
+* _default-update-timestamps-region_.
+* _org.simplemes.eframe.preference.domain.UserPreference_.
+
+This avoids errors such as:
+
+----
+WARN  o.h.c.e.AbstractEhcacheRegionFactory - HHH020003: Could not find a specific ehcache configuration for cache named [XYZ]; using defaults.
+----
+
+===== GORM
+
+The GORM (Grails Object Relational Mapping) library handles much of the interface
+to Hibernate.  There are a few required settings:
+
+[source,yaml]
+.application.yml
+----
+grails:
+  gorm:
+    failOnError: true     // <1>
+    failOnErrorPackages:  // <2>
+      - org.simplemes
+      - sample
+----
+<1> Works with GORM 6.1.8 and older
+<2> Works with GORM 6.1.9 and newer
+
+===== efBootstrap.yml
+
+The Micronaut startup triggers specific startup logic at various times.  Unfortunately, the
+Hibernate/GORM startup happens before the Micronaut bean infrastructure is started.  This means the
+_application.yml_ settings are not available for some early startup logic.
+
+Why a second _.yml_ file?  Mainly because of the Hibernate startup logic.  It needs the list
+of custom user-type's before the normal _application.yml_ is read.  This second _.yml_ file allows
+each module to provide additions and other early startup details.
+
+
+[source,yaml]
+.efBootstrap.yml
+----
+
+eframe:
+  additions: [org.simplemes.eframe.custom.InternalAddition] // <.>
+
+----
+<.> A list of addition classes for this module.  EFrame has one internal addition, used to test
+    discovery of additions.  It also provides the
+    link:groovydoc/org/simplemes/eframe/data/EncodedType.html[EncodedType^] icon:share-square-o[role="link-blue"]
+    and
+    link:groovydoc/org/simplemes/eframe/data/DateOnlyType.html[DateOnlyType^] icon:share-square-o[role="link-blue"]
+    for Hibernate.
+
+
+==== build.gradle
+
+See <<dependencies>> for details on the changes needed in _build.gradle_ for required plugins.
+

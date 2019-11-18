@@ -1,0 +1,34 @@
+
+=== focus
+
+.focus(fieldName)
+
+This Javascript function requests focus on the given field/button and will select all
+of the text in input field nodes. This is used mainly in dialogs to force focus to the first field.
+
+This function is part of the <<eframe_toolkit-js>> library.
+
+The arguments are:
+
+[cols=".^1,1,5"]
+|===
+|Parameter|Type|Description
+
+|fieldName|String| The field to place the focus in (*Required*).
+|===
+
+
+[source,html]
+.Example - Dialog using delayedFocusRequest.
+----
+  <@efForm id="addPanel" dashboard="true">
+    <@efField field="panel" value="custom" width=20/>  // <.>
+  </@efForm>
+
+  ${params._variable}.postScript = 'tk.focus("panel")'; // <.>
+----
+<.> Defines an input field panel.
+<.> Requests focus on the field and selects the text field's contents.
+
+
+

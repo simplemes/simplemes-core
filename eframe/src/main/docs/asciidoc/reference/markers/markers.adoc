@@ -1,0 +1,83 @@
+== Markers
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<efAsset>>#
+[inline-toc]#<<efButton>>#
+[inline-toc]#<<efButtonGroup>>#
+[inline-toc]#<<efCreate>>#
+[inline-toc]#<<efDashboard>>#
+[inline-toc]#<<efEdit>>#
+[inline-toc]#<<efField>>#
+[inline-toc]#<<efForm>>#
+[inline-toc]#<<efGUISetup>>#
+[inline-toc]#<<efList>>#
+[inline-toc]#<<efLanguage>>#
+[inline-toc]#<<efMessages>>#
+[inline-toc]#<<efPreloadMessages>>#
+[inline-toc]#<<efShow>>#
+[inline-toc]#<<efTitle>>#
+endif::[]
+
+
+These are the Freemarker markers (template directive models) provided by the framework.  They
+make building GUI simpler and provide the basic building blocks for most GUIs.
+
+NOTE: Most markers require the framework Javascript and CSS files.
+      See the common _views/includes/header.ftl_ for an example.
+
+=== Marker Terminology
+
+When describing the markers below, we use this terminology:
+
+[source,html]
+.Marker Terminology - Parameters
+----
+
+<@efTitle type="show" model="product"/>  // <.>
+
+----
+<.> This efTitle marker has two *'parameters'*: `show` and `model`.
+
+
+[source,html]
+.Marker Terminology - Body
+----
+
+<@efAsset "/assets/eframe.min.js"/>  // <.>
+
+----
+<.> This efAsset marker has *'body'*: _"/assets/eframe.min.js"_.
+
+NOTE: Unless otherwise noted, the body is generally not used.
+
+
+include::efAsset.adoc[]
+
+include::efButton.adoc[]
+
+include::efButtonGroup.adoc[]
+
+include::efCreate.adoc[]
+
+include::efDashboard.adoc[]
+
+include::efEdit.adoc[]
+
+include::efField.adoc[]
+
+include::efForm.adoc[]
+
+include::efList.adoc[]
+
+include::efGUISetup.adoc[]
+
+include::efLanguage.adoc[]
+
+include::efMessages.adoc[]
+
+include::efPreloadMessages.adoc[]
+
+include::efShow.adoc[]
+
+include::efTitle.adoc[]

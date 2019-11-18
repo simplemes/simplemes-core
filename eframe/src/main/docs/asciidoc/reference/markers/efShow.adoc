@@ -1,0 +1,82 @@
+=== efShow
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<ef-show-parameters>>#
+[inline-toc]#<<Show Examples>>#
+
+endif::[]
+
+
+
+The link:guide.html#efshow[efShow^] icon:share-square-o[role="link-blue"] marker
+is used to build a definition-style page that shows all of the desired fields.
+This provides the core for the standard definition show page.
+
+
+For an overview, see link:guide.html#efshow[efShow^] icon:share-square-o[role="link-blue"].
+See the groovydoc
+link:groovydoc/org/simplemes/eframe/web/ui/webix/marker/ShowMarker.html[ShowMarker^]
+icon:share-square-o[role="link-blue"] for additional details.
+
+
+[source,html]
+.efShow Example - Display an Order
+----
+<@efForm id="show">
+  <@efShow fields="order,product,qtyToBuild,qtyDone,dateCompleted"/>
+<@/efForm>
+----
+
+NOTE: This marker assumes the controller serving up this page is the same used for the
+      edit/create/list/delete actions.
+      Also, this marker must be used inside of an <<efForm>> marker pair.
+
+[[ef-show-parameters]]
+==== Parameters/Body
+
+The main parameters/body supported are:
+
+.Parameters
+[cols="1,6"]
+|===
+|Argument|Description
+
+| *(body)*    |Ignored.
+| *fields*    | A comma-delimited list of fields to display
+               (*Default:* The list from the domain's <<fieldOrder>>).
+| *labelWidth* | The width of the label section of the page.
+               (*Default:* '20%').
+
+
+|===
+
+
+This marker also supports most of the common features mentioned in
+link:guide.html#markers-and-field-lists[Markers and Options^] icon:share-square-o[role="link-blue"].
+This includes labels and sizes.
+
+
+==== Show Examples
+
+[source,html]
+.Standard Show Page - User Definition
+----
+<#assign title><@efTitle type='show'/></#assign>
+
+<#include "../includes/header.ftl" />
+<#include "../includes/definition.ftl" />
+
+<@efForm id="show">
+  <@efShow fields="user,title,email"            // <.>
+           title@label="customTitle.label"/>    // <.>
+</@efForm>
+
+<#include "../includes/footer.ftl" />
+----
+<.> Specific fields are displayed in the show page.
+<.> The title field has a custom title that is different from the default ('title.label').
+
+
+
+

@@ -1,0 +1,30 @@
+
+=== Security GUIs
+
+The framework comes with basic GUIs for creating/maintaining users and roles.  It also provides
+standard login/logout mechanisms.   The login page is automatically displayed by the Micronaut
+Security module.  The logout action is added
+to all GUIs in your by code in the _views/includes/header.ftl_ include file.
+
+[source,html]
+.Example use of header.ftl
+----
+<#assign title>Home Title</#assign> // <.>
+
+<#include "../includes/header.ftl" /> // <.>
+
+ . . .
+
+<#include "../includes/footer.ftl" />
+
+----
+<.> Sets the title for the header to use.
+<.> Starts the HTML page, including _<head>_ and _<body>_ blocks.
+
+
+This adds a form that submits the logout request with the POST method.  The logout link is only
+shown if a user is currently logged in.
+
+This POST/Form mechanism is needed for the default configuration for the
+security module.  
+

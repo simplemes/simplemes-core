@@ -1,0 +1,248 @@
+
+==== GUI State Persistence
+
+The standard GUI elements generally are configurable and remember the user's state between executions.  This means
+important settings like column ordering and column size are persisted between visits to the page.  Once a user
+resizes and gets the GUI just the way they want it, the framework will always display the GUI that way in the future.
+Also, users tend to move from work station to work station and having their GUI state preserved is a good idea.
+
+The elements that remember state are:
+
+* <<efShow>>
+* <<efCreate>>
+* <<efEdit>>
+* <<efList>>
+* <<Reports And Charts>>
+* <<Dashboards>>
+
+As the user changes the settings in the GUI, these changes are stored in the
+server-side database.  If the user is not logged in, then the changes are not saved.
+
+The link:groovydoc/org/simplemes/eframe/user/PreferenceHolder.html[PreferenceHolder^] provides
+access to this persisted state.
+Each major HTML element on the page has a settings object that is stored in XML in the database.
+These settings are used the next time the user displays the page.
+
+==== Philosophy
+
+Some people might ask: why not use HTML5's local storage mechanism?  Local storage is a great fit for a traditional
+web-app.  Any one user's GUI settings should not affect any others.  Enterprise apps tend to have many options,
+fields and toggles for the user to work through.  Generally, a system admin will need to configure the GUIs to
+hide the fields that are not important to that company.
+
+This means the GUI settings need to be pre-configurable.  This framework stores these pre-configured GUIs on the
+server as named user preferences (see TBD below) so that new users will get the company's 'standard' settings.
+If we stored the preferences on the client's local storage, then this 'named' setting feature would not work.
+
+Also, users can move from device to device.  We did not want to force the users to re-adjust
+their GUIs on each device.
+
+NOTE: In some cases, we do use HTML5's local storage.  For example, the current tab is
+      remembered for the tabbed panels (see <<efShow>>).  This is done when the user may
+      switch tabs frequently and we did not want to overload the server with updates
+      on each tab switch.
+
+===== Where to stored state?
+
+The initial idea we had was to store the GUI state in the session for quicker access.  This
+would tend to make the session much larger than it needed.  We wanted to keep the session small and
+allow you to store the user's session in a cookie to make it easier to switch servers.
+
+To do this, we decided to rely on the second level database cache to hold the user preferences for quicker
+access.  In simple testing, the DB access time for the user settings was less than 5% of the total
+response time.  This seemed like a reasonable performance hit for the ability to move a user
+between servers easily.
+
+
+==== GUI Preference Persistence
+
+Imagine a simple listing page that allows the user to sort, resize, re-order and choose the columns to display:
+
+image::guis/list.png[list,align="center",width="750"]
+
+
+The users will want to resize the columns and sort on import fields.  The framework allows the user to change these
+settings and it will remember them the next time the page is displayed.
+
+===== Object Model
+
+The user preferences are stored in a simple table with an XML representation of the preference
+details.  The model is shown below:
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-build}
+
+[plantuml,"preferencesERD",align="center"]
+----
+@startuml
+class UserPreference {
+  String page : '/order/list'
+  String user : 'admin'
+  List<Preference> preferences
+  String preferencesXML
+}
+note right: database table: USER_PREFERENCE\nPreference.name = HTML elementName
+
+
+class Preference {
+   String element : 'OrderList'
+   String name
+   List<PreferenceSettingInterface> settings
+}
+note right: stored as XML Map in preferenceXML
+
+interface PreferenceSettingInterface {
+   {field} String key : 'qtyToBuild' (column name)
+   {field}  (values)  : width = 237
+}
+note right: For example: ColumnPreference\nMust implement TypeableJSONInterface.
+
+UserPreference -- Preference
+Preference -- PreferenceSettingInterface
+
+
+@enduml
+----
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+
+The link:groovydoc/org/simplemes/eframe/user/UserPreference.html[UserPreference^] class is the
+main domain class that is saved for each user (or a default for all users). Inside of this domain
+class, the actual preferences are stored in various POGOs and saved in the `preferencesXML` column
+(typically a CLOB or large text object).
+
+In the example above, the column settings for a <<efList,list column>> are shown.
+The link:groovydoc/org/simplemes/eframe/user/Preference.html[Preference^]
+object is defined for each HTML element that needs preferences.  The _Preference_ object contains
+a List that holds a number of POGO elements with the actual preferences.  The _ColumnPreference_
+above is one example.
+
+The `settings` list contains the specific column width/sorting defined for the grid.  Each setting
+in this case has its `key` set to the column name. The
+link:groovydoc/org/simplemes/eframe/user/ColumnPreferenceSetting.html[ColumnPreferenceSetting^]
+objects, one for each column with a preference. This includes the display sequence, width and
+sorting details.
+
+NOTE: The POGO preference settings should implement the
+link:groovydoc/org/simplemes/eframe/json/TypeableJSONInterface.html[TypeableJSONInterface^]
+icon:share-square-o[role="link-blue"].  The base class
+link:groovydoc/org/simplemes/eframe/preference/BasePreferenceSetting.html[BasePreferenceSetting^]
+icon:share-square-o[role="link-blue"] does this for you.
+
+===== Setting and Using Preferences
+
+The GUI preferences is a complex data structure that is stored in the database
+The basic objects are shown below.  This includes an example of the values stored for
+the size of an Order grid column.
+
+
+You should use the link:groovydoc/org/simplemes/eframe/user/PreferenceHolder.html[PreferenceHolder^]
+DSL class to access the users preferences.  For example, to set a column size preference, the
+code would be:
+
+[source,groovy]
+.Example Set Preference
+----
+
+PreferenceHolder preference = PreferenceHolder.find {  // <1>
+  page '/app/testPage'
+  user 'admin'
+  element 'OrderList'
+}
+
+def columnPref = preference[column] ?: new ColumnPreference(column: column) // <2>
+columnPref.width = newSize  // <3>
+preference.setPreference(columnPref).save() // <4>
+
+----
+<1> Finds the right set of preferences by the key (column name in this case).
+<2> Finds existing preference for the column or creates a default preference for it.
+<3> Sets the new value.
+<4> Saves to database.  This will create a new record if needed.
+
+
+This finds the preference for the given page and user for the HTML element 'OrderList'.
+This preference contains a List of _ColumnPreference_ (objects).
+Each type of HTML element has different sets of preferences, but each one needs a unique key.
+
+
+Below is an example of retrieving the column size preference:
+
+[source,groovy]
+.Example Get Preference
+----
+
+PreferenceHolder preference = PreferenceHolder.find {  // <1>
+  page '/app/testPage'
+  user 'admin'
+  element 'OrderList'
+}
+
+def width = preference['orderDate']?.width // <2>
+
+----
+<1> Finds the right set of preferences by the key (column name in this case).
+<2> Gets the setting object for the column and grabs the `width` (if not null).
+
+
+
+===== GUI Preference Event Flow
+
+A typical preferences change flow from the GUI (browser) to the persisted preferences is
+shown below:
+
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-build}
+
+[plantuml,"ColumnResizeFlow",align="center"]
+----
+@startuml
+actor user #red
+user -> GUI: resize
+participant "UserPreference\nController" as UserPreferenceController
+GUI -> UserPreferenceController: columnResized()
+participant "UserPreference\nService" as UserPreferenceService
+UserPreferenceController -> UserPreferenceService: guiStateChanged()
+UserPreferenceService -> ColumnResized: handle()
+database UserPreference
+ColumnResized -> UserPreference: save()
+
+@enduml
+----
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+
+
+The steps in this flow are:
+
+. User resizes column in GUI.
+. Change event is sent to `UserPreferenceController.guiStateChanged()` method.  This includes
+  event-specific information such as the column name and the new size.
+. The change event is handled by the `UserPreferenceService` in a transactional method.
+. An event handler class (_ColumnResized_) is used to process the data from the GUI.  This
+  includes some validation. Most number parsing errors are ignored.
+. The _UserPreference_ class determines when to save the value to database (typically upon commit).
+
+When the GUI is re-displayed, the last column width set byt the user is used.
+
+==== Named Settings (TBD)
+
+The framework supports named settings.  A user may have several configurations that they want to save and re-use later.
+In the configuration pages, the user can pick one named setting as their default setting, or temporarily use another
+setting.
+
+These named settings can also be defined for the entire system (all users).  These can be the default setting for all users
+that can be overridden by specific users as needed.
+
+NOTE: Once a user makes a significant change to the GUI (e.g. adds a new column or changes the sort order), they will start using
+their own settings instead of the global settings. If the global default settings are changed later, then this user won't see
+those changes. The user can revert to the global settings by selecting it in the configuration page for the display element
+(e.g. grid).  Simple changes like column resizing won't cause this divergence from the global setting, but most other changes
+will.
+
+

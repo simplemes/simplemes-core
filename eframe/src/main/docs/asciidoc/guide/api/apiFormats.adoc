@@ -1,0 +1,177 @@
+
+=== API Formats
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Common Element Formats>>#
+[inline-toc]#<<ISO 8601 Date/Time Formats>>#
+[inline-toc]#<<Enumerations>>#
+[inline-toc]#<<References to Domain Objects>>#
+[inline-toc]#<<Custom Fields>>#
+
+endif::[]
+
+
+
+
+The REST APIs support JSON for the objects processed.  The formatting and parsing is handled by
+Jackson, with some help from framework logic. This section covers the common text formats supported
+for things like dates and numbers.  It also covers how references to
+domain objects are handled and specific limitations of various formats.
+
+==== Common Element Formats
+
+Since JSON is a text-based format, you must follow specific formats for some internal data types.
+A short example is shown below:
+
+[source,json]
+.JSON Format for Example Order Domain
+----
+{
+  "orderCode": "10102-23",
+  "qty": 12.2,
+  "enabled": false,
+  "dateOrdered": "2009-02-13T18:31:30.000-05:00",
+  "dateToBeDelivered": "2013-08-04"
+}
+----
+
+The normal JSON primitive field formats allowed are:
+
+[cols="1,4"]
+|=== 
+|Type|Description
+
+|Number|Numbers with fractions must use the decimal point as the decimal separator.
+|Booleans| Booleans are encoded as _true_ or _false_.
+|Dates| Dates are in ISO date format: yyyy-mm-dd.
+|DateTimes| Date/Times are in ISO date/time format: yyyy-mm-ddThh:mm:ss.sssZZZZZ.  (The Z is the timezone offset).
+|=== 
+
+==== ISO 8601 Date/Time Formats
+
+The framework can read and write ISO date/time formats.  There are a few variations supported:
+
+[cols="2,4"]
+|===
+|Format|Example
+
+|yyyy-mm-ddThh:mm:ss.sssZ| 2009-02-13T23:31:30.000Z  (Always in UTC Timezone)
+|yyyy-mm-ddThh:mm:ssZ| 2009-02-13T23:31:30Z  (Always in UTC Timezone)
+|yyyy-mm-ddThh:mm:ss.ssszzzzzz| 2009-02-13T18:31:30.000-05:00 (Format used when writing a date/time).
+|yyyy-mm-ddThh:mm:sszzzzzz| 2009-02-13T18:31:30-05:00
+|=== 
+
+The first format is used when writing date/times for JSON.
+
+
+==== Enumerations
+
+The Java Enums typically have an internal ID that is stored in the database and a `toString()`
+representation that is more human-readable.
+The framework expects both values to be unique within the enumeration.
+
+For JSON, the output is the human-readable format (not localized):
+
+[source,json]
+.JSON Format
+----
+
+"fieldFormat": "STRING"
+
+----
+
+
+==== References to Domain Objects
+
+
+Foreign keys within domain objects are stored with their IDs in a column in the database.
+The JSON format for these references can use the 'id' format:
+
+
+[source,json]
+.JSON Foreign Reference by ID
+----
+{
+  "orderCode": "10102-23",
+  "customer": {
+    "id": 1020405534  // <1>
+  }
+}
+----
+<1> The internal ID of the customer record.
+
+
+You can also use the key fields for these foreign references:
+
+[source,json]
+.JSON Foreign Reference by Key Field(s)
+----
+{
+  "orderCode": "10102-23",
+  "product": {
+    "product": "BIKE_27  // <1>
+  }
+}
+----
+<1> The primary key of the foreign record to reference.
+
+
+
+==== Custom Fields
+
+<<Field Extensions>> and <<Configurable Types>> are special fields that are added by
+your users and sometimes by module programmers.  These are accessed via the JSON like normal
+fields.
+
+For example, a custom `Order` with two custom fields ('promiseDate', 'caseColor') would be
+accessed like this:
+
+[source,json]
+.JSON Format for Field Extensions
+----
+{
+  "order": "M10102-23",
+  "qty": 12.2,
+  "promiseDate": "2009-02-13T18:31:30.000-05:00",
+  "caseColor": "BLUE"
+}
+----
+
+These will be stored in the normal storage location for <<Field Extensions>>.
+
+If you use <<Configurable Types>> for an RMA object, you might have a field that the uses
+<<Flex Types>> that lets the customer define their own data fields.  The RMA domain object
+might look like this:
+
+[source,groovy]
+.Example Flex Type Domain
+----
+@ExtensibleFields
+class RMA {
+  String rma
+  String product
+  BigDecimal qty
+  Date returnDate
+  FlexType rmaType  <.>
+}
+
+----
+<.> The field `rmaType` will hold the reference to the appropriate flex type.  The acutal
+    values will be stored as described in <<Configurable Type Persistent Storage>>.
+
+The API format for this type of data field would be:
+
+[source,json]
+.JSON Format for Configurable Type Fields
+----
+{
+  "rma": "R10102-23",
+  "qty": 12.2,
+  "rmaType_retailerID": "ACME-101",  <.>
+  "rmaType_returnCode": "DEFECTIVE"
+}
+----
+<.> The fields are stored with the <<Configurable Type Persistent Storage>> location with
+    the prefix of `'rmaType_'`.
+

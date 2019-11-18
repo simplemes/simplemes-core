@@ -1,0 +1,18 @@
+
+
+[[undo-actions]]
+=== undoAction
+
+.undoAction()
+
+This Javascript function is part of the Dashboard
+link:guide.html#undo[Undo^] icon:share-square-o[role="link-blue"] feature.
+This preforms the most recent undo action logged from the server.   This removes it from the undo
+stack. The next most recent action becomes the next undo action.  When there are no more undo actions
+available, then the undo button is disabled.
+
+This function is provided in the _dashboard.js_ library.
+
+NOTE: You will normally not need to call this directly.  The dashboard will usually call it for you.
+
+
