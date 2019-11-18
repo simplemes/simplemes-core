@@ -152,15 +152,21 @@ class BaseSpecification extends GebSpec {
    * The setup method.  This method writes the test in IDEA runner format to allow us to re-produce the
    * order of execution.  Writes each test suite to 'tmp/tests.txt'.
    */
-  @SuppressWarnings("Println")
+  @SuppressWarnings(["Println", "SystemOutPrint"])
   def setupSpec() {
-    // Uses -D writeTests to write the tests as they are executed to a text file for sequence testing.
-    if (Boolean.valueOf(System.getProperty('writeTests'))) {
-      if (!wroteTime) {
-        new File('tmp/tests.txt') << "\nTests ${new Date()}\n"
-        wroteTime = true
+    // Uses -DwriteTests=true to write the tests as they are executed to a text file for sequence testing.
+    // Supports DwriteTests=echo To write the test name to the output.
+    def writeTests = System.getProperty('writeTests')
+    if (writeTests) {
+      if (writeTests.equalsIgnoreCase('true')) {
+        if (!wroteTime) {
+          new File('tmp/tests.txt') << "\nTests ${new Date()}\n"
+          wroteTime = true
+        }
+        new File('tmp/tests.txt') << "${this.class.name}||"
+      } else if (writeTests.equalsIgnoreCase('echo')) {
+        System.out.println("${this.class.name}")
       }
-      new File('tmp/tests.txt') << "${this.class.name}||"
     }
   }
 
