@@ -12,6 +12,6 @@ jobs:
         with:
           java-version: 1.8
       - name: Build and Test
-        run: ./gradlew cleanAll testAll -DwriteTests=true
+        run: ./gradlew cleanAll testAll -DwriteTests=true --info
 #      - name: Upload
 #        run: ./gradlew bintrayUploadAll -Dbintray_key=${{ secrets.bintray_key }}
