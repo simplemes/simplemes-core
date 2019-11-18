@@ -37,6 +37,7 @@ class BaseAPISpecification extends BaseSpecification {
   /**
    * Makes sure the API tests have the embedded server (with GORM/Hibernate).
    */
+  @SuppressWarnings("unused")
   static specNeeds = [EMBEDDED, HIBERNATE]
 
   /**
@@ -92,14 +93,6 @@ class BaseAPISpecification extends BaseSpecification {
     if (passwordInput == null) {
       passwordInput = _userName
     }
-
-    //def config = Holders.applicationContext.getBean(SignatureConfiguration)
-    //println "config = $config ${config?.dump()}"
-    println "env = ${System.getenv()}"
-    //if (config) {
-    //  println "s = ${new String(config?.secret)}"
-    //}
-
 
     def client = getClient()
     Flowable<HttpResponse<Map>> flowable = Flowable.fromPublisher(client.exchange(
