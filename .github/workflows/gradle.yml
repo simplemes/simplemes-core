@@ -1,4 +1,4 @@
-name: PublishAll
+name: BuildAndTestAll
 
 on: [push]
 
