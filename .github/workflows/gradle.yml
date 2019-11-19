@@ -12,10 +12,6 @@ jobs:
         with:
           java-version: 1.8
       - name: Build and Test
-        env:
-          # A key to use for testing, not used in production.
-          eframe\.key: someKey890123456789012345678901234567890
-          eframeKey: othersomeKey890123456789012345678901234567890
-        run: ./gradlew cleanAll testAll -DwriteTests=false -Deframe_key=someKey890123456789012345678901234567890
+        run: ./gradlew cleanAll testAll -DwriteTests=false
 #      - name: Upload
 #        run: ./gradlew bintrayUploadAll -Dbintray_key=${{ secrets.bintray_key }}
