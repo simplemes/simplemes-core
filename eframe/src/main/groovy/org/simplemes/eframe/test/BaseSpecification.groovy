@@ -350,6 +350,7 @@ class BaseSpecification extends GebSpec {
         list = list.findAll() { !allowed?.contains(TypeUtils.toShortString(it)) }
         if (list) {
           def s = "${list.size()} records leftover in domain ${clazz.simpleName} for test ${this.class.simpleName}.  List: $list"
+          log.error(s)
           throw new IllegalStateException(s)
         }
       }

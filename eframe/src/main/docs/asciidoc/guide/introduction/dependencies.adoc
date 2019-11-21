@@ -18,5 +18,5 @@ NOTE: If you include these in your _build.gradle_ file, then you must make sure 
 consistent with the versions this framework requires. The specific versions needed are listed in
 the framework's _build.gradle_ file.
 
-
+See <<Modules>> for details on how to design your application's module layout.
 
