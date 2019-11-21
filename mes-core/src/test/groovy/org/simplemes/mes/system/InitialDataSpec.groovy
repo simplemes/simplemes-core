@@ -46,5 +46,9 @@ class InitialDataSpec extends BaseSpecification {
     then: 'the dashboards exist'
     DashboardConfig.findByDashboard('OPERATOR_DEFAULT')
     DashboardConfig.findByDashboard('MANAGER_DEFAULT')
+
+    cleanup: 'reset from test mode'
+    InitialData.forceDashboardLoad = false
+
   }
 }
