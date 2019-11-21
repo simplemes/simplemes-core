@@ -1,0 +1,47 @@
+=== Modules
+
+This framework is designed to let you build a modular web application.  You should
+break your application up into modules that are as independent as possible.  This also
+prepares your application for conversion to <<Microservices>> when that is supported by
+this framework.
+
+The Modules currently planned for the SimpleMES application include:
+
+
+
+[cols="1,4",width=75%]
+|===
+|module | Description
+
+| <<{mes-core-path}/guide.adoc#,mes-core>>| The core module for the SimpleMES application.
+| <<{mes-assy-path}/guide.adoc#,mes-assy>>| The component assembly module for the SimpleMES application.
+| <<{mes}/guide.adoc#,mes>>| The SimpleMES application itself.
+|
+|===
+
+
+
+
+
+==== Dependencies for Module Development
+
+You will be developing modules for this framework to provide application functionality.  
+To simplify your _build.gradle_ file, the framework lists most development-time
+dependencies as _compile_.  This means the dependencies section of your _build.gradle_
+file can be as simple as:
+
+[source,groovy]
+.Example - Dependencies for build.gradle
+----
+dependencies {
+  compile ("org.simplemes:eframe:0.5")  <.>
+  compileOnly "io.micronaut:micronaut-inject-groovy"  <.>
+}
+
+----
+<.> Use the correct version as needed.
+<.> This is needed to make your controllers and other beans visible to Micronaut.
+
+
+NOTE: The final application packaging will need remove development only dependencies.  This
+      is done in the MES application.

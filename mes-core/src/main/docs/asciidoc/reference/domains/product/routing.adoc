@@ -1,0 +1,80 @@
+
+=== Routing
+
+A link:groovydoc/org/simplemes/mes/product/domain/Routing.html[Routing^]
+icon:share-square-o[role="link-blue"] is a sequence of operations needed to manufacture a
+<<Product>>.
+These operations can be simple actions such as ASSEMBLE or TEST. They may also be a composite
+operation that is made up of several actions that are not tracked individually within SimpleMES.
+
+Some examples operations are:
+
+* 10 - Assemble
+* 20 - Paint
+* 30 - Pack
+* 40 - Test
+
+The routing may be a master routing that can be used on multiple products or it may be specific
+to a single product. This decision is made when defining the product.
+
+Operations can be optionally defined to execute within a <<WorkCenter>>.  This allows you to
+limit where specific operations can be performed.
+
+Routings can be imported, exported, changed and deleted using the standard SimpleMES REST <<API>>.
+The specific routing for a product can be imported as part of the product import.
+
+
+==== Fields
+
+The Routing object has two sub-classes:
+link:groovydoc/org/simplemes/mes/product/domain/ProductRouting.html[ProductRouting^]
+icon:share-square-o[role="link-blue"] and
+link:groovydoc/org/simplemes/mes/product/domain/MasterRouting.html[MasterRouting^]
+icon:share-square-o[role="link-blue"].
+
+The _ProductRouting_ is used as a child object of Product for product-specific routings.
+It has no `routing` or `title` fields. These product routings are maintained within the
+_Product_ definition GUIs.
+
+The _MasterRouting_ is a pre-defined routing that is used for more than one Product.  These
+have a `routing` key field and a `title` field.  These master routings are maintained in the
+Master Routing definition GUIs.
+
+
+
+.Important Fields - Routing
+[cols="1,4",width=75%]
+|===
+|Field | Description
+
+| *routing*| The routing name (*key field, MasterRouting Only*).
+| *title*| The title (short description) of the routing (*MasterRouting Only*).
+| *operations* | The list of sorted operations for this routing.  See <<RoutingOperation>> below.
+|=== 
+
+
+==== RoutingOperation
+
+A link:groovydoc/org/simplemes/mes/product/domain/RoutingOperation.html[RoutingOperation^]
+icon:share-square-o[role="link-blue"] is a single operation needed to manufacture a
+<<Product>>.
+These operations can be simple actions such as ASSEMBLE or TEST. They may also be a composite
+operation that is made up of several actions that are not tracked within SimpleMES.
+
+The primary key for the operation is the `sequence` (an integer).  The `title` is used mainly for
+display purposes.
+
+
+.Important Fields - RoutingOperation
+[cols="1,4",width=75%]
+|===
+|Field | Description
+
+| *sequence* | The sequence the operation should be performed in (*key field*, integer).
+| *title*    | The title (short description) of this operation.  This is usually visible to the production operator.
+| *routing*  | The Routing record this operation belongs to.
+|=== 
+
+
+
+

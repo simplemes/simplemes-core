@@ -1,0 +1,76 @@
+buildscript {
+  repositories {
+    mavenLocal()
+    mavenCentral()
+    jcenter()
+  }
+  dependencies {
+    classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
+    classpath 'com.github.jruby-gradle:jruby-gradle-plugin:0.1.17'
+    classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.11'
+    classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:1.4"
+  }
+
+}
+
+plugins {
+  id "io.spring.dependency-management" version "1.0.6.RELEASE"
+  id 'maven-publish'
+  id "com.jfrog.bintray" version "1.8.4"
+  id "com.bertramlabs.asset-pipeline" version "3.0.6"
+  id "org.owasp.dependencycheck" version "4.0.0.1"
+}
+
+// Temporarily roll back to Groovy 2.5.4 for compiling to avoid code coverage issue: https://issues.apache.org/jira/browse/GROOVY-9126
+ext['groovy.version'] = '2.5.4'
+
+
+repositories {
+  mavenLocal()
+  maven {
+    url  "https://dl.bintray.com/simplemes/simplemes-core"
+  }
+  mavenCentral()
+  jcenter()
+
+}
+
+version "0.5"
+group "org.simplemes"
+
+
+
+apply plugin: "application"
+apply plugin: "java"
+apply plugin: "groovy"
+apply plugin: 'com.github.jruby-gradle.base'
+apply plugin: 'org.asciidoctor.convert'
+apply plugin: "com.energizedwork.webdriver-binaries"
+
+// Common tasks from the overall common.gradle file provides: version, bintrayUpload, maven artifact creation.
+apply from: "../gradle/common.gradle"
+
+
+dependencyManagement {
+  imports {
+    mavenBom "io.micronaut:micronaut-bom:${micronautBomVersion}"
+  }
+}
+
+dependencies {
+  compile ("org.simplemes:eframe:0.5")
+  compileOnly("org.codehaus.groovy:groovy:${groovyDateUtilsVersions}")
+  compileOnly "io.micronaut:micronaut-inject-groovy"
+
+  // gems dependency configuration is added by jruby-gradle-plugin. Here we define
+  // the gems we need in our build.
+  // These are not listed in the eframe module, so we have to add them for each module build.
+  gems "rubygems:asciidoctor-diagram:$asciidoctorDiagramVersion"
+  gems "rubygems:asciidoctor-plantuml:$asciidoctorPlantumlVersion"  // Needs GraphViz dot.exe on PATH.
+
+}
+
+mainClassName = "org.simplemes.mes.application.Application"
+
+
+

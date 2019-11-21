@@ -1,0 +1,128 @@
+
+=== ScanService
+
+The link:groovydoc/org/simplemes/mes/system/service/ScanService.html[ScanService^]
+icon:share-square-o[role="link-blue"] is used
+process scanned input from the client, usually from a barcode scanner.
+This includes releasing an order to the shop floor.
+
+This service's methods are exposed by the
+link:groovydoc/org/simplemes/mes/system/controller/ScanController.html[ScanController^]
+icon:share-square-o[role="link-blue"].  This controller supports the request/response POGOs
+in JSON format.
+
+
+==== scan()
+
+.scan(<<ScanRequestInterface>>) returns <<ScanResponseInterface>>
+
+
+The `scan()` method handles the scan from the user.  This resolves the ID and will sometimes process the ID.
+This core module will attempt to start and order/LSN if it is in queue.
+
+NOTE: This method is part of the <<Stable API>> icon:balance-scale[role="link-blue"].
+
+
+===== ScanRequestInterface
+
+This is used to specify the barcode text to be processed.
+
+
+The fields defined for the link:groovydoc/org/simplemes/mes/system/ScanRequestInterface.html[ScanRequestInterface^]
+icon:share-square-o[role="link-blue"] include:
+
+
+.Important Fields - ScanRequestInterface
+[cols="1,4",width=75%]
+|===
+|Field | Description
+
+|*barcode* | The barcode input to process (*Required*).
+|===
+
+[[scan-response-interface]]
+===== ScanResponseInterface
+
+This is used to return what was processed for the barcode input.  This includes suggested client actions and any
+messages from the actions taken by the scan service on the server (e.g. Start, etc).
+
+The fields defined for the link:groovydoc/org/simplemes/mes/system/ScanResponseInterface.html[ScanResponseInterface^]
+icon:share-square-o[role="link-blue"] include:
+
+
+.Important Fields - ScanResponseInterface
+[cols="1,4",width=75%]
+|===
+|Field | Description
+
+|*barcode*           | The barcode input processed.
+|*resolved*          | True if the barcode matched a valid object and the object was processed (*Boolean*)
+|*order*             | The order the scan resolved to.
+|*lsn*               | The LSN the scan resolved to.
+|*operationSequence* | The operation sequence processed (if an operation was used).
+|*scanActions*       | The recommended actions the client will need to take to respond to the scan.
+                     This can include button presses or Dashboard event triggering (List<Map>).
+                     See link:groovydoc/org/simplemes/mes/system/ScanActionInterface.html[ScanActionInterface^]
+                     icon:share-square-o[role="link-blue"]
+|*messageHolder*     | Messages from the actions performed by the scan service logic (e.g. from the Start,
+                     Complete, etc).
+|===
+
+
+[[scan-service-example]]
+===== Example
+
+JSON is supported with the normal HTTP POST request for the scan, using this URI:
+
+   /scan/scan
+
+The request content in JSON format is shown below:
+
+[source,json]
+.JSON Scan Request
+----
+{
+  "scanRequest":{
+    "barcode":"M1001"
+  }
+}
+----
+
+The response in JSON format is shown below:
+
+[source,json]
+.JSON Scan Response
+----
+{
+  "scanResponse": {
+    "barcode": "M1001",
+    "operationSequence": 0,
+    "resolved": true,
+    "order": {  // <1>
+      "class": "org.simplemes.mes.demand.Order",
+      "id": 32,
+      "order": "M1001"
+    },
+    "messageHolder": {  // <2>
+      "level": "info",
+      "text": "Started quantity [1.0000] for [M1001]."
+    },
+    "scanActions": [   // <3>
+      {
+        "type": "REFRESH_ORDER_STATUS",
+        "order": "M1001"
+      },
+      {
+        "type": "ORDER_LSN_CHANGE",
+        "order": "M1001",
+        "qtyInQueue": 0.0000,
+        "qtyInWork": 1.0000
+      }
+    ]
+  }
+}
+----
+<1> The order that matches the requested barcode.
+<2> The messages from any server-side actions that were performed on scanned element (order).
+<3> The suggested client-side actions to perform.  This includes an update to the order status
+    and the current order was changed.

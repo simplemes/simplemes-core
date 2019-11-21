@@ -1,6 +1,7 @@
 package org.simplemes.eframe.dashboard.domain
 
 import grails.gorm.transactions.Rollback
+import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.test.BaseSpecification
@@ -36,6 +37,11 @@ class DashboardConfigSpec extends BaseSpecification {
       notNullCheck 'category'
       fieldOrderCheck false
     }
+  }
+
+  def "verify that domain has the right primary key"() {
+    expect: 'the correct key'
+    DomainUtils.instance.getPrimaryKeyField(DashboardConfig) == 'dashboard'
   }
 
   @Rollback

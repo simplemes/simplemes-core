@@ -56,6 +56,7 @@ class DashboardConfig {
   /**
    * The date this record was created
    */
+  @SuppressWarnings("unused")
   Date dateCreated
 
   /**
@@ -75,6 +76,9 @@ class DashboardConfig {
    */
   @SuppressWarnings("unused")
   static hasMany = [panels: AbstractDashboardPanel, buttons: DashboardButton]
+
+  @SuppressWarnings("unused")
+  static keys = ['dashboard']
 
   @SuppressWarnings("unused")
   def beforeUpdate() {
@@ -152,6 +156,7 @@ class DashboardConfig {
   /**
    * Internal constraints for this domain.
    */
+  @SuppressWarnings("unused")
   static constraints = {
     dashboard(nullable: false, blank: false, maxSize: FieldSizes.MAX_CODE_LENGTH, unique: true)
     category(nullable: false, blank: false, maxSize: FieldSizes.MAX_CODE_LENGTH)

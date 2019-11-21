@@ -1,5 +1,6 @@
 package org.simplemes.eframe.test
 
+import java.math.RoundingMode
 import java.text.SimpleDateFormat
 
 /*
@@ -12,13 +13,18 @@ import java.text.SimpleDateFormat
  * A utility class to report on the un-covered lines of a series of coverage reports by package.
  */
 class CoverageReportSummary {
-
+  //https://developers-dot-devsite-v2-prod.appspot.com/chart/interactive/docs/gallery/linechart.html#dual-y-charts
+  
   @SuppressWarnings(["GroovyAssignabilityCheck", "SystemOutPrint"])
   static void main(String[] argv) {
     def folders = new File('tmp').listFiles({ it.name.startsWith('coverage') } as FileFilter)
     folders = folders.sort { a, b -> a.lastModified() <=> b.lastModified() }
     //println "folders = $folders"
-
+    if (!folders) {
+      System.out.println("No coverage report folders in tmp folder.")
+      return
+    }
+    
     // Read each by Line coverage .html file
     def reports = []
     for (folder in folders) {
@@ -27,9 +33,10 @@ class CoverageReportSummary {
       //println "$f lines = ${lines.size()}"
 
       def sdf = new SimpleDateFormat('MMM dd')
-      def header = sdf.format(new Date(folder.lastModified()))
+      def date = new Date(folder.lastModified())
+      def header = sdf.format(date)
 
-      def oneReport = [fileName: folder.name, header: header]
+      def oneReport = [fileName: folder.name, header: header, date: date]
       reports << oneReport
       for (int i = 0; i < lines.size(); i++) {
         def line = lines[i]
@@ -51,10 +58,14 @@ class CoverageReportSummary {
           s = "(${percent(unCovered, total)})"
           oneReport[name] = unCovered
           oneReport["${name}Percent"] = s
-
+          if (name=='all classes') {
+            s = "(${percent(covered, total)})"
+            oneReport["${name}CPercent"] = s
+          }
           //println "  $name count ${s} "
         }
-      }
+
+        }
       //if (reports.size() > 5) {
       //break
       //}
@@ -107,6 +118,7 @@ class CoverageReportSummary {
       <html lang="en">
       <head>
         <title>Coverage Summary Report</title>
+        <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
         $style
       </head>
       <body>
@@ -114,8 +126,7 @@ class CoverageReportSummary {
       </body>  
     """
 
-    sb << "<table border=1>\n"
-
+    def allReports = reports
     // Just display the last 15 reports
     def start
     if (reports.size() > 15) {
@@ -138,6 +149,9 @@ class CoverageReportSummary {
         }
       }
     }
+
+    sb << generateChart(allReports)
+    sb << "<table border=1>\n"
 
 
     // Write the headers
@@ -181,8 +195,93 @@ class CoverageReportSummary {
 
   static String percent(int top, int bottom) {
     def percent = 100.0 * top / bottom
+    percent = percent.setScale(1, RoundingMode.HALF_UP)
 
-    return "${(int) percent}%"
+    return "${percent}"
 
+  }
+
+  /**
+   * Builds the chart for display.
+   * @return
+   */
+  static String generateChart(allReports) {
+
+    StringBuilder data = new StringBuilder()
+    for (report in allReports) {
+      println " $report"
+      def date = report.date
+      def year = new SimpleDateFormat("YYYY").format(date)
+      def month = new Integer(new SimpleDateFormat("MM").format(date)) -1
+      def day = new SimpleDateFormat("dd").format(date)
+      def percent = report["all classesCPercent"]
+      def lines = report["all classes"]
+      data << "[new Date($year,$month, $day),  ${percent},  ${lines}],\n"
+    }
+
+    def src = """
+ <br><br>
+  <div id="chart_div"></div>
+    <script>
+      google.charts.load('current', {'packages':['line', 'corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+      var chartDiv = document.getElementById('chart_div');
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('date', 'Month');
+      data.addColumn('number', "Coverage %");
+      data.addColumn('number', "Uncovered Lines");
+
+      data.addRows([
+        $data
+/*
+        [new Date(2014, 0),  -.5,  5.7],
+        [new Date(2014, 1),   .4,  8.7],
+        [new Date(2014, 2),   .5,   12],
+        [new Date(2014, 3),  2.9, 15.3],
+        [new Date(2014, 4),  6.3, 18.6],
+        [new Date(2014, 5),    9, 20.9],
+        [new Date(2014, 6), 10.6, 19.8],
+        [new Date(2014, 7), 10.3, 16.6],
+        [new Date(2014, 8),  7.4, 13.3],
+        [new Date(2014, 9),  4.4,  9.9],
+        [new Date(2014, 10), 1.1,  6.6],
+        [new Date(2014, 11), -.2,  4.5]
+*/
+      ]);
+
+      var materialOptions = {
+        chart: {
+          title: 'Code Coverage - EFrame Module'
+        },
+        width: 900,
+        height: 300,
+        series: {
+          // Gives each series an axis name that matches the Y-axis below.
+          0: {axis: 'percent'},
+          1: {axis: 'lines'}
+        },
+        axes: {
+          // Adds labels to each axis; they don't have to match the axis names.
+          y: {
+            percent: {label: 'Coverage %'},
+            lines: {label: 'Lines Not Covered'}
+          }
+        }
+      };
+
+      function drawMaterialChart() {
+        var materialChart = new google.charts.Line(chartDiv);
+        materialChart.draw(data, materialOptions);
+      }
+
+      drawMaterialChart();
+    }
+      </script>
+    """
+    return src
   }
 }

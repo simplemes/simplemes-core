@@ -1,0 +1,77 @@
+= Guide - MES Core
+doc@simplemes.org
+v0.5,
+:doctype: book
+:example-caption!:
+:compat-mode!:
+:experimental:
+:icons: font
+:revnumber: {project-version}
+:linkattrs:
+ifeval::["{backend}" != "pdf"]
+:toclevels: 1
+endif::[]
+ifeval::["{backend}" == "pdf"]
+:toclevels: 2
+endif::[]
+ifndef::demo-server[:demo-server: long:8080]
+//:demo-server: long:8080
+// Document specific and general custom
+// content files are used:
+:docinfo2:
+// Include general custom content files:
+//:docinfo1:
+// Include document specific content files:
+//:docinfo:
+// Some relative paths to other docs
+:mes-path: ../../mes/html5
+:mes-assy-path: ../../mes-assy/html5
+:eframe-path: ../../eframe/html5
+
+//workaround for issue 271 https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir-src: images
+ifndef::imagesdir[:imagesdir: {imagesdir-src}]
+//end workaround
+
+ifndef::imagesdir[:imagesdir: images]
+ifndef::sourcedir[:sourcedir: ../java]
+
+include::guide/introduction.adoc[]
+
+include::guide/guis/guis.adoc[]
+
+include::guide/controllers/controllers.adoc[]
+
+include::guide/dataModel/domains.adoc[]
+
+include::guide/services/services.adoc[]
+
+include::guide/security/security.adoc[]
+
+////
+include::guide/guis/guis.adoc[]
+
+
+include::guide/admin/admin.adoc[]
+
+include::guide/devGuidelines/devGuidelines.adoc[]
+////
+
+
+
+'''
+
+[cols="1,3",width=90%]
+
+.ASCIIDOCTOR Attributes
+|===
+|asciidoctor-version| {asciidoctor-version}
+|safe-mode-name| {safe-mode-name}
+|docdir| {docdir}
+|docfile| {docfile}
+|doctype| {doctype}
+|imagesdir-build| {imagesdir-build}
+|imagesdir-src| {imagesdir-src}
+|imagesdir| {imagesdir}
+|===
+

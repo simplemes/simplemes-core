@@ -24,9 +24,6 @@ plugins {
 // Temporarily roll back to Groovy 2.5.4 for compiling to avoid code coverage issue: https://issues.apache.org/jira/browse/GROOVY-9126
 ext['groovy.version'] = '2.5.4'
 
-version "0.5"
-group "org.simplemes"
-
 repositories {
   mavenLocal()
   mavenCentral()
@@ -40,7 +37,7 @@ apply plugin: 'com.github.jruby-gradle.base'
 apply plugin: 'org.asciidoctor.convert'
 apply plugin: "com.energizedwork.webdriver-binaries"
 
-// Common tasks from the overall common.gradle file provides: bintrayUpload, maven artifact creation.
+// Common tasks from the overall common.gradle file provides: version, bintrayUpload, maven artifact creation.
 apply from: "../gradle/common.gradle"
 
 
@@ -50,38 +47,37 @@ dependencyManagement {
     mavenBom "io.micronaut:micronaut-bom:${micronautBomVersion}"
   }
 }
-// TODO: Check pom for correct dependencies.
 
 dependencies {
-  implementation "io.micronaut:micronaut-http-client"
-  implementation "io.micronaut.configuration:micronaut-hibernate-validator"
-  implementation "io.micronaut.configuration:micronaut-hibernate-gorm"
-  implementation "io.micronaut:micronaut-http-server-netty"
-  implementation "io.micronaut:micronaut-runtime-groovy"
-  implementation "io.micronaut:micronaut-validation"
-  compileOnly "io.micronaut:micronaut-inject-groovy"
-  implementation "io.micronaut:micronaut-management"
-  implementation "io.micronaut:micronaut-views"
-  implementation "org.freemarker:freemarker:$freemarkerVersion"
-  implementation( "org.spockframework:spock-core") {
+  compile "io.micronaut:micronaut-http-client"
+  compile "io.micronaut.configuration:micronaut-hibernate-validator"
+  compile "io.micronaut.configuration:micronaut-hibernate-gorm"
+  compile "io.micronaut:micronaut-http-server-netty"
+  compile "io.micronaut:micronaut-runtime-groovy"
+  compile "io.micronaut:micronaut-validation"
+  compile "io.micronaut:micronaut-inject-groovy"
+  compile "io.micronaut:micronaut-management"
+  compile "io.micronaut:micronaut-views"
+  compile "org.freemarker:freemarker:$freemarkerVersion"
+  compile( "org.spockframework:spock-core") {
     exclude group: "org.codehaus.groovy", module: "groovy-all"
   }
-  implementation("org.spockframework:spock-core") {
+  compile("org.spockframework:spock-core") {
     exclude group: "org.codehaus.groovy", module: "groovy-all"
   }
-  implementation "ch.qos.logback:logback-classic:$logbackVersion"
+  compile "ch.qos.logback:logback-classic:$logbackVersion"
   runtime "com.h2database:h2"
   runtime "org.apache.tomcat:tomcat-jdbc"
 
   //println "Groovy version: " + GroovySystem.getVersion()
-  
-  implementation "org.codehaus.groovy:groovy-dateutil:$groovyDateUtilsVersions"
-  implementation "io.micronaut:micronaut-security-jwt"
+
+  compile "org.codehaus.groovy:groovy-dateutil:$groovyDateUtilsVersions"
+  compile "io.micronaut:micronaut-security-jwt"
   // TODO: Update asset pipeline to 3.0.10 ?
-  implementation ( "com.bertramlabs.plugins:asset-pipeline-micronaut:$assetPipelineVersion") {
+  compile ( "com.bertramlabs.plugins:asset-pipeline-micronaut:$assetPipelineVersion") {
     exclude group: "io.micronaut", module: "http-server-netty"
   }
-  implementation ( "com.bertramlabs.plugins:asset-pipeline-core:$assetPipelineVersion")
+  compile ( "com.bertramlabs.plugins:asset-pipeline-core:$assetPipelineVersion")
   compile "org.springframework.security:spring-security-crypto:${springSecurityCryptoVersion}"
   compile "org.hibernate:hibernate-ehcache:${hibernateEhcacheVersion}"
 
@@ -91,15 +87,15 @@ dependencies {
   gems "rubygems:asciidoctor-diagram:$asciidoctorDiagramVersion"
   gems "rubygems:asciidoctor-plantuml:$asciidoctorPlantumlVersion"  // Needs GraphViz dot.exe on PATH.
 
-  compileOnly("org.gebish:geb-spock:$gebVersion") {
+  compile("org.gebish:geb-spock:$gebVersion") {
     exclude group: "org.codehaus.groovy", module: "groovy-all"
   }
   testCompile("org.gebish:geb-spock:$gebVersion") {
     exclude group: "org.codehaus.groovy", module: "groovy-all"
   }
-  testRuntime "cglib:cglib-nodep:$cglibVersion"
-  testRuntime "org.objenesis:objenesis:$objenesisVersion"
-  testRuntime "net.bytebuddy:byte-buddy:$byteBuddyVersion"
+  compile "cglib:cglib-nodep:$cglibVersion"
+  compile "org.objenesis:objenesis:$objenesisVersion"
+  compile "net.bytebuddy:byte-buddy:$byteBuddyVersion"
   compileOnly "org.codehaus.groovy:groovy-templates" // Added for Groovydoc
 
 /*
@@ -115,10 +111,10 @@ dependencies {
 
   }
 */
-  testImplementation "org.seleniumhq.selenium:selenium-chrome-driver:$webDriversVersion"
-  testImplementation "org.seleniumhq.selenium:selenium-firefox-driver:$webDriversVersion"
-  implementation "org.seleniumhq.selenium:selenium-api:$webDriversVersion"
-  testImplementation ("org.seleniumhq.selenium:selenium-support:$webDriversVersion"){
+  compile "org.seleniumhq.selenium:selenium-chrome-driver:$webDriversVersion"
+  compile "org.seleniumhq.selenium:selenium-firefox-driver:$webDriversVersion"
+  compile "org.seleniumhq.selenium:selenium-api:$webDriversVersion"
+  compile ("org.seleniumhq.selenium:selenium-support:$webDriversVersion"){
     exclude group:  "net.bytebuddy", module: "byte-buddy"  // Conflicts with Spock
   }
 
@@ -147,7 +143,7 @@ dependencies {
   // https://mvnrepository.com/artifact/net.sourceforge.barbecue/barbecue
   compile group: 'net.sourceforge.barbecue', name: 'barbecue', version: barbecueVersion
 
-  implementation ("org.simplemes:webix:6.0.9") // { transitive = false}
+  compile ("org.simplemes:webix:6.0.9") // { transitive = false}
 
 }
 

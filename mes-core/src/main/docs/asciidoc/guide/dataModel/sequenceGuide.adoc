@@ -1,0 +1,36 @@
+
+=== CodeSequences
+
+Code Sequences are used to control the creating of unique codes (primary keys) within the MES.
+This is typically used for <<Order,Orders>> and <<LSN,LSNs>>.
+
+For example, a bicycle serial number based on the date can be generated using the formatString:
+
+[source]
+----
+${date.format('yyMMdd')}-$currentSequence
+----
+
+This will generate the serial numbers for March 14, 2016:
+
+[width=25%,align=center]
+|===
+|LSN
+
+| 160314-001
+| 160314-002
+| 160314-003
+|===
+
+
+
+Sequences are stored in the Database and have a specific set of objects they are used with.
+User-defined sequences are possible, but new functional behavior requires custom logic.
+The general features of the code sequences are covered in
+<<reference.adoc#codesequence,CodeSequence>>.
+
+The sequences used by the MES core module include:
+
+* link:groovydoc/org/simplemes/mes/demand/domain/OrderSequence.html[OrderSequence^] icon:share-square-o[role="link-blue"]
+* link:groovydoc/org/simplemes/mes/demand/domain/LSNSequence.html[LSNSequence^] icon:share-square-o[role="link-blue"]
+

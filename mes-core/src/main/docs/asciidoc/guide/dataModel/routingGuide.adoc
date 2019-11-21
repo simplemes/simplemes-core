@@ -1,0 +1,26 @@
+
+=== Routing
+
+A link:reference.html#routing[Routing^] icon:share-square-o[role="link-blue"]
+is a sequence of operations needed to manufacture a <<Product>>.
+These operations can be simple actions
+such as _ASSEMBLE_ or _TEST_. They may also be a composite operation that is made up of several
+actions that are not tracked within SimpleMES.
+
+Some examples are:
+
+* 10 - ASSEMBLE
+* 20 - PAINT
+* 30 - PACK
+* 40 - TEST
+
+The routing may be a master routing that can be used on multiple products or it may be specific
+to a single product. This decision is made when defining the product.
+
+Operations can be optionally defined to execute within a <<WorkCenter>>.  This is useful to
+limit where specific operations can be performed.
+
+For detailed field information, see the API Documentation at:
+link:groovydoc/org/simplemes/mes/product/domain/Routing.html[Routing^]
+icon:share-square-o[role="link-blue"].
+

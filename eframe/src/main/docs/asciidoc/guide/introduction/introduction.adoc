@@ -9,6 +9,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Folder Conventions>>#
 [inline-toc]#<<Naming Conventions>>#
 [inline-toc]#<<Common Notations>>#
+[inline-toc]#<<Modules>>#
 endif::[]
 
 
@@ -206,6 +207,8 @@ include::dependencies.adoc[]
 include::namingConventions.adoc[]
 
 include::commonNotations.adoc[]
+
+include::modules.adoc[]
 
 
 

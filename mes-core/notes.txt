@@ -1,0 +1,84 @@
+Scratch
+-------
+
+
+Tasks
+=====
+Migrate dashboard activities (Scan, wcSel, workList)
+Controller
+ tests:
+   Order, Scan,Work,WorkList
+   Demand: API (old Int) Tests+ GUI
+
+docs\asciidoc\guide
+  admin
+  devGuidelines
+  guis
+  security
+docs\asciidoc\reference
+  dashboards
+
+
+
+
+MES Plan
+========
+Docs
+  Guide
+    Domains
+      Guidelines
+      Overview - No fields
+      Screen-shot
+    Services
+      Overview
+        List of methods with links to ref?
+  Ref
+    Domains
+    Services
+      Methods with link to groovydoc arguments.
+
+  Guide
+    introduction.adoc[]
+    security.adoc[]
+    guis.adoc[]
+    domains.adoc[]
+     Demand
+      Order
+        Screen-shot
+        Overview
+      LSN
+     Product
+
+    services.adoc[]
+    admin.adoc[]
+    devGuidelines.adoc[]
+  Ref
+    General
+    Dashboards
+    API
+    Domains
+    Services (Method descriptions, no POGO details).
+      Demand
+        OrderService
+          Release
+            Example - JSON API
+
+
+Order (Status, qty processing)
+
+Setup
+=========
+GITHUB server
+  create repository mphouston/simplemes
+MN Create
+   cd documents\git\simplemes
+   mn create-app mes-core -l groovy -f spock,hibernate-gorm,management
+IDEA
+  New Project from Existing Sources (default for all)
+  Import Gradle (Use Auto Import).
+  Remove top-level eframe module in IDEA (the one with no dependencies from gradle).
+  Edit build.gradle (import sources).
+  Move Application.groovy to correct package (org.simplemes.mes.application).
+GIT Setup
+  cd documents\git\simplemes
+  git clone https://github.com/mphouston/simplemes.git

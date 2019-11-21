@@ -2,6 +2,9 @@
   Defines common gradle settings, properties and actions used by most builds.
  */
 
+version "0.5"
+group "org.simplemes"
+
 ext {
   //noinspection GroovyAssignabilityCheck
   springSecurityCryptoVersion='4.2.5.RELEASE'
@@ -210,8 +213,8 @@ bintray {
   publications = ['mavenPublication']
 
   dryRun = false //[Default: false] Whether to run this as dry-run, without deploying
-  publish = false //[Default: false] Whether version should be auto published after an upload
-  override = false //[Default: false] Whether to override version artifacts already published
+  publish = true //[Default: false] Whether version should be auto published after an upload
+  override = true //[Default: false] Whether to override version artifacts already published
 
   pkg {
     repo = bintrayRepoName
