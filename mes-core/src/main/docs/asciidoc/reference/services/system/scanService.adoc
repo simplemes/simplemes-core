@@ -20,7 +20,7 @@ in JSON format.
 The `scan()` method handles the scan from the user.  This resolves the ID and will sometimes process the ID.
 This core module will attempt to start and order/LSN if it is in queue.
 
-NOTE: This method is part of the <<Stable API>> icon:balance-scale[role="link-blue"].
+NOTE: This method is part of the <<Stable API>> icon:balance-scale[role="green"].
 
 
 ===== ScanRequestInterface

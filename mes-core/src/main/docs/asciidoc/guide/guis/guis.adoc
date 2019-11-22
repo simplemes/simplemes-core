@@ -26,7 +26,7 @@ endif::[]
 SimpleMES provides a number of user-level GUIs to help your users define, operate and
 monitor your shop floor.   This includes setup GUIs, operator GUIs and reports.
 
-image::guis/operatorDashboard.png[Operator Dashboard,align="center",width="75%"]
+image::guis/operatorDashboard.png[Operator Dashboard,align="center",width="750"]
 
 These dashboards are designed for operators to use on the shop floor.
 These provide the most common actions available to the operators.

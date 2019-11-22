@@ -38,6 +38,8 @@ include::reference/general/general.adoc[]
 
 // TODO: include::reference/dashboards/dashboards.adoc[]
 
+include::reference/dashboards/dashboards.adoc[]
+
 include::reference/api/api.adoc[]
 
 include::reference/domains/domains.adoc[]

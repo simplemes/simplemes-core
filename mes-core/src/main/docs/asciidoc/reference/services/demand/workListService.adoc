@@ -32,7 +32,7 @@ This method performs 4 queries to find all types of work needed:
 Most customers will use one of these combinations, but the MES will not limit you to just one.  This means
 all four queries will be executed and combined.
 
-NOTE: This method is part of the <<Stable API>> icon:balance-scale[role="link-blue"].
+NOTE: This method is part of the <<Stable API>> icon:balance-scale[role="green"].
 
 
 ==== FindWorkRequest

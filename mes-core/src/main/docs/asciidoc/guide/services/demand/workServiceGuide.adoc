@@ -77,7 +77,7 @@ calls the `startQty()` on that Workable.  This then validates that the Qty can b
 If everything passes the validation, then the WorkService will log the start via the ActionLog.
 There is a corresponding `reverseStart()` method to "un-start" the work.
 
-NOTE: This method is part of the <<Stable API>> icon:balance-scale[role="link-blue"].
+NOTE: This method is part of the <<Stable API>> icon:balance-scale[role="green"].
 
 
 [[work-service-complete,WorkService.complete()]]
@@ -89,7 +89,7 @@ and <<ProductionLog>>.
 
 This method returns the order/LSN that was completed.
 
-NOTE: This method is part of the <<Stable API>> icon:balance-scale[role="link-blue"].
+NOTE: This method is part of the <<Stable API>> icon:balance-scale[role="green"].
 
 The `complete()` finds the appropriate
 link:groovydoc/org/simplemes/mes/demand/WorkableInterface.html[Workable^] icon:share-square-o[role="link-blue"]

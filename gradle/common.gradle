@@ -100,7 +100,7 @@ def imagesBuildDir = 'images'
 if (hasProperty('backendProp') && backendProp == 'pdf') {
   //println "backendProp = $backendProp"
   backend = backendProp
-  imagesBuildDir = '../../../../../staging/docs/eframe/html5/images'
+  imagesBuildDir = "../../../../../staging/docs/${moduleName}/html5/images"
 }
 
 asciidoctor {

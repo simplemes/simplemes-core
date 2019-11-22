@@ -12,7 +12,7 @@ Controller
 
 docs\asciidoc\guide
   admin
-  devGuidelines
+  devGuidelines ?
   guis
   security
 docs\asciidoc\reference

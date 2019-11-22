@@ -20,7 +20,7 @@ The `release()` method is used to release an order to the shop floor for process
 of the order can be released.  Automatic LSN generation, if needed, occurs at release time.
 See <<lsn>> for details on when LSNs are automatically generated.
 
-NOTE: This method is part of the <<Stable API>> icon:balance-scale[role="link-blue"].
+NOTE: This method is part of the <<Stable API>> icon:balance-scale[role="green"].
 
 This method is exposed via HTTP in the `/order/release` URI.
 See link:groovydoc/org/simplemes/mes/demand/OrderController.html[OrderController^] icon:share-square[role="link-blue"].

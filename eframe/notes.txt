@@ -1,12 +1,13 @@
 Scratch
 =======
 
-Report Filter page
-<@efForm fieldDefinitions="reportFields"/>  -- Provides a FieldDefinitions value for the filter fields.
-FieldDefinitions
-  ReportFieldDefinition
-    populated by factory: Report
-
+Add <@efLookup>
+Support link in markers.  Content of <@efField>?
+<@efField >
+  <@efHTML><a href='./'>link</a> </@efHTML>
+</@efField >
+    or
+ Some other mechanism?
 
 
 Tasks

@@ -32,7 +32,7 @@ The <<StartRequest>> object is the main argument for the
 `start()`.  This is a simple POGO that you must populate before you perform the start.
 This method returns a list of the <<StartResponse>> objects with the results of the start action.
 
-NOTE: This method is part of the <<Stable API>> icon:balance-scale[role="link-blue"].
+NOTE: This method is part of the <<Stable API>> icon:balance-scale[role="green"].
 
 
 The basic flow for this `start()` method uses these key objects and methods.  These methods can be
@@ -144,7 +144,7 @@ The <<CompleteRequest>> object is the main argument for the
 `complete()`.  This is a simple POGO that you must populate before you perform the complete.
 This method returns a list of <<CompleteResponse>> objects with the results of the complete action.
 
-NOTE: This method is part of the <<Stable API>> icon:balance-scale[role="link-blue"].
+NOTE: This method is part of the <<Stable API>> icon:balance-scale[role="green"].
 
 
 The basic flow for this `complete()` method uses these key objects and methods.  These methods can be

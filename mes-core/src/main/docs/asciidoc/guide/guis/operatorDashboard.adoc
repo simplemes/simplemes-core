@@ -15,7 +15,7 @@ ifeval::["{backend}" != "pdf"]
 endif::[]
 
 
-image::guis/operatorDashboard.png[Operator Dashboard,align="center",width="75%"]
+image::guis/operatorDashboard.png[Operator Dashboard,align="center",width="750"]
 
 This dashboard provides easy access to the common tasks that a shop floor operator
 will need. It provide ways to work on orders/LSNs, setup resources and to view
@@ -91,7 +91,7 @@ This <<reference.adoc#dashboard-reverse-start-activity,Reverse Start>> activity 
 link:{eframe-path}/guide.html#dashboard-activity-non-gui[Non-GUI Activity^] icon:share-square[role="link-blue"].
 This means it normally does not display a GUI and just performs the reverse start action.
 This activity works with the
-link:groovydoc/org/simplemes/mes/demand/WorkController.html[WorkController^]
+link:groovydoc/org/simplemes/mes/demand/controller/WorkController.html[WorkController^]
 icon:share-square[role="link-blue"] `reverseStart()` method to perform the action.
 
 The reverse start activity uses the Order/LSN parameter from the <<Work Center Selection>>
@@ -109,7 +109,7 @@ operators to select the work center they are working in and enter an order or LS
 process.  The buttons that can be added to this activity will let the operator perform
 common actions on the entered work center, order or LSN.
 
-image::guis/dashboardWCSelection.png[Dashboard - Work Center Selection,align="center",width="50%"]
+image::guis/dashboardWCSelection.png[Dashboard - Work Center Selection,align="center",width="600"]
 
 In this dashboard activity, the operator can change the work center by clicking on the work center. This
 will open a dialog that lets the operator select the work center they are working in.  This work center
@@ -126,7 +126,7 @@ is used to display active or queued work for the operator.
 The current Work Center (<<Work Center Selection>>) is used to filter this work to
 manageable level, but it is not required.
 
-image::guis/dashboardWorkList.png[Dashboard - Work List,600,300,align="center"]
+image::guis/dashboardWorkList.png[Dashboard - Work List,align="center",width="750"]
 
 As the operator selects entries, the current selection is coordinated with the
 selection activity to keep the actions in synch.
