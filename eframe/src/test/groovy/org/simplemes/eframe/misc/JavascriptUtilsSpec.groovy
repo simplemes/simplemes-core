@@ -34,6 +34,7 @@ class JavascriptUtilsSpec extends BaseSpecification {
     "<"                    | "<"
     "\""                   | '\\"'
     ""                     | ""
+    null                   | ""
   }
 
   def "verify that escape works on supported cases - label mode"() {
@@ -97,13 +98,30 @@ class JavascriptUtilsSpec extends BaseSpecification {
 
   }
 
-  /*
-    static List coreValues = [,
-                            , ,
-                            , ,
-                             DomainReferenceFieldFormat,
-                            EnumFieldFormat, EncodedTypeFieldFormat,
-                            ChildListFieldFormat, DomainRefListFieldFormat]
+  def "verify that formatMultilineHTMLString works on supported cases"() {
+    expect: 'the HTML value to be escaped for safe display'
+    JavascriptUtils.formatMultilineHTMLString(input) == res
 
-   */
+    where:
+    input            | res
+    'abc'            | '"abc"'
+    '"abc'           | '"\\"abc"'
+    '''abc\nxyz'''   | '"abc"+\n"xyz"'
+    '''abc\n\rxyz''' | '"abc"+\n"xyz"'
+    'abc<script>'    | '"abc&lt;script&gt;"'
+  }
+
+  def "verify that escapeHTMLForJavascript works on supported cases"() {
+    expect: 'the HTML value to be escaped for safe display'
+    JavascriptUtils.escapeHTMLForJavascript(input) == res
+
+    where:
+    input          | res
+    null           | ''
+    ''             | ''
+    'abc'          | 'abc'
+    'abc<script>'  | 'abc&lt;script&gt;'
+    'abc<sCrIpT>'  | 'abc&lt;script&gt;'
+    'abc</script>' | 'abc&lt;/script&gt;'
+  }
 }

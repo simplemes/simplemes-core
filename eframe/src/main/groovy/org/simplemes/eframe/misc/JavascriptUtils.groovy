@@ -61,7 +61,7 @@ class JavascriptUtils {
 
   /**
    * Escape the string for safe use inside of a Javascript string variable.
-   * This escapes forward slash and double quotes.
+   * This escapes (less than + forward slash) and double quotes.
    * @param value The value to escape.
    * @param labelMode If true, then this is in label mode.  This means '<' will be converted to '&lt;' to work
    *                  around an issue with display labels in the toolkit.
@@ -79,6 +79,23 @@ class JavascriptUtils {
       // But the label mode (readOnly) needs to escape it.
       res = res?.replaceAll('<', '&lt;')
     }
+
+    return res
+  }
+
+  /**
+   * Escape the HTML string for safe use inside of a Javascript string variable.
+   * This escapes all script tags and double quotes.
+   * @param value The value to escape.
+   * @return The escaped value.
+   */
+  static String escapeHTMLForJavascript(String value) {
+    if (value == null) {
+      return ''
+    }
+    //def res = value?.replaceAll('</', '<\\\\/')?.replaceAll('"', '\\\\"')
+    def res = value?.replaceAll('<[sS][cC][rR][iI][pP][tT]>', '&lt;script&gt;')?.replaceAll('"', '\\\\"')
+    res = res?.replaceAll('</[sS][cC][rR][iI][pP][tT]>', '&lt;/script&gt;')
 
     return res
   }
@@ -104,5 +121,26 @@ class JavascriptUtils {
 
 
     return "[${sb.toString()}]"
+  }
+
+  /**
+   * Formats the given string as a Javascript string, with multi-line support and double quote escaping.
+   * @param s The input string.
+   * @return The string literal for use in Javascript (e.g. '"abc"').
+   */
+  static String formatMultilineHTMLString(String s) {
+    def sb = new StringBuilder()
+
+    def lines = s.tokenize('\n\r')
+    for (line in lines) {
+      if (sb) {
+        sb << "+\n"
+      }
+      sb << '"'
+      sb << escapeHTMLForJavascript(line)
+      sb << '"'
+    }
+
+    return sb.toString()
   }
 }

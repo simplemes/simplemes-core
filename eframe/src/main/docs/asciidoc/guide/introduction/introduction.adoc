@@ -18,7 +18,8 @@ a general introduction to the important features and behaviors of the framework.
 
 For a detailed explanation of the many options and features, see the <<reference.adoc#general,Reference>>.
 The Groovydoc (Javadoc) link:groovydoc/index.html[API^] icon:share-square-o[role="link-blue"]
-covers other details of the underlying classes.
+covers other details of the underlying classes.  The source code is at
+https://github.com/simplemes/simplemes-core.
 
 === Purpose
 

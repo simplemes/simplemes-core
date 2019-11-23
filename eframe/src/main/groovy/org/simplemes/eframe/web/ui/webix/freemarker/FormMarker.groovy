@@ -21,11 +21,19 @@ import org.simplemes.eframe.web.ui.WidgetFactory
 class FormMarker extends BaseMarker {
 
   /**
-   * The name of the element in the markerContext.markerCoordinator that holds the toolbar javascript.  This is usually
+   * The name of the element in the markerContext.markerCoordinator.others that holds the toolbar javascript.  This is usually
    * the javascript needed for the toolbar element in the form.  It is inserted in a javascript object section,
    * so it should be the format '{view: "toolbar", . . .}'.
    */
   public static final String COORDINATOR_TOOLBAR = 'toolbar'
+
+  /**
+   * The name of the element in the markerContext.markerCoordinator.others that holds a Boolean flag indicating
+   * this set of markers is working in snippet (or dashboard) mode.
+   * This means the content generated is in a Javascript object define in a script section.
+   * There is no HTML in the generated content.
+   */
+  public static final String COORDINATOR_SNIPPET_MODE = '_snippetMode'
 
   /**
    * Executes the directive, with the values passed by the setValues() method.
@@ -35,6 +43,12 @@ class FormMarker extends BaseMarker {
     def id = parameters.id ?: '_form'
     def divID = "${id}Content"
     markerContext.markerCoordinator.formID = id
+
+    // Check the dashboard mode parameter so any sub-markers can see this flag.
+    def dashboard = parameters.dashboard
+    if (dashboard) {
+      markerContext?.markerCoordinator?.others[COORDINATOR_SNIPPET_MODE] = true
+    }
 
     def content = renderContent()
 
@@ -51,8 +65,6 @@ class FormMarker extends BaseMarker {
     def preScript = markerContext?.markerCoordinator?.getPrescript() ?: ''
 
     def width = parameters.width ?: '90%'
-
-    def dashboard = parameters.dashboard
 
     if (dashboard) {
       def params = getModelValue('params')

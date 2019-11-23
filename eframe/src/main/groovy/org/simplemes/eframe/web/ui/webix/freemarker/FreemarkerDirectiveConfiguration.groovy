@@ -21,7 +21,7 @@ import org.simplemes.eframe.misc.TypeUtils
 class FreemarkerDirectiveConfiguration {
 
   static markers = ['Asset', 'Button', 'ButtonGroup', 'Create', 'Dashboard', 'Edit', 'Field', 'Form', 'GUISetup',
-                    'Language', 'List', 'Messages', 'PreloadMessages', 'Show', 'Title']
+                    'HTML', 'Lookup', 'Language', 'List', 'Messages', 'PreloadMessages', 'Show', 'Title']
 
   /**
    * Adds all of the framework markers to the freemarker configuration.

@@ -11,8 +11,10 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<efField>>#
 [inline-toc]#<<efForm>>#
 [inline-toc]#<<efGUISetup>>#
+[inline-toc]#<<efHTML>>#
 [inline-toc]#<<efList>>#
 [inline-toc]#<<efLanguage>>#
+[inline-toc]#<<efLookup>>#
 [inline-toc]#<<efMessages>>#
 [inline-toc]#<<efPreloadMessages>>#
 [inline-toc]#<<efShow>>#
@@ -72,7 +74,11 @@ include::efList.adoc[]
 
 include::efGUISetup.adoc[]
 
+include::efHTML.adoc[]
+
 include::efLanguage.adoc[]
+
+include::efLookup.adoc[]
 
 include::efMessages.adoc[]
 

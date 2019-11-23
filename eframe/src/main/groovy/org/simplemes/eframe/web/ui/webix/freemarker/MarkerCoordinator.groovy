@@ -44,7 +44,7 @@ class MarkerCoordinator {
 
   /**
    * A place to store other elements.  These are used when there the coordination is only needed between two markers.
-   * The key should be a constant in one the consuming marker.
+   * The key should be a constant in one of the markers.
    */
   Map others = [:]
 

@@ -1,0 +1,52 @@
+
+=== efHTML
+
+The `efHTML` marker is used for fringe cases where you need to insert HTML in the _.ftl_
+file output. The
+link:guide.html#gui-toolkit[GUI Toolkit^] icon:share-square-o[role="link-blue"]
+and markers used for some key features (e.g. dashboards)
+do not support directly inserting of HTML.  Instead, you will need to insert the HTML
+using this marker.
+
+Normal pages such as definition pages can use HTML directly in the _.ftl_ file.
+dashboards activities can't.  The dashboards build the elements to be displayed using
+javascript.  The dashboard _.ftl_ files may look like HTML, but they generate javascript
+for the toolkit to use when building panels.
+
+This example displays some text in the HTML page:
+
+[source,html]
+.Example - efHTML
+----
+<@efForm id="logFailure" dashboard='buttonHolder'>
+  <@efField field="order" id="order" label="Order/LSN" value="M1008" width=20 labelWidth='35%'>
+    <@efHTML spacer="before">  // <.>
+      <a href = './'>link</a>
+      <span id="workCenter${params._panel}">Work Center 1</span>  // <.>
+    </@efHTML>
+  </@efField>
+</@efForm>
+----
+<.> Multiple lines are supported.
+<.> Supports replaceable parameters, single and double-quoted content.
+
+The HTML is inserted using the standard toolkit `template` view.
+
+NOTE: This marker may only be used inside of an <<efForm>> marker with the
+      `dashboard='true'` set.
+
+==== Parameters/Body
+
+The main parameters/body supported are:
+
+.Parameters
+[cols="1,6"]
+|===
+|Argument|Description
+
+|*(body)*       | The HTML to insert into the display (*Required*).
+|*width*        | The width of the element to display (*Default*: 10%).
+|*spacer*       | If present, then a spacer will be insert before the HTML element.
+                  If *'after'*, then the spacer be inserted after the HTML.
+|===
+

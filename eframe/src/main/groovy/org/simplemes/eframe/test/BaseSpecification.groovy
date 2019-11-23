@@ -168,8 +168,6 @@ class BaseSpecification extends GebSpec {
         System.out.println("${this.class.name}")
       }
     }
-    System.out.println("XYZ ${this.class.name}")
-
   }
 
   /**
@@ -353,7 +351,6 @@ class BaseSpecification extends GebSpec {
         if (list) {
           def s = "${list.size()} records leftover in domain ${clazz.simpleName} for test ${this.class.simpleName}.  List: $list"
           log.error(s)
-          System.out.println("PDQ $s")
           throw new IllegalStateException(s)
         }
       }

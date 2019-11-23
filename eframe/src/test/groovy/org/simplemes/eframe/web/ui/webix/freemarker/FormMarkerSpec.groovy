@@ -156,6 +156,23 @@ class FormMarkerSpec extends BaseMarkerSpecification {
     page.contains('name: "title"')
   }
 
+  def "verify that the form marker handles the dashboard false option"() {
+    when: 'the marker is built'
+    def src = """
+      <@efForm dashboard=false>
+        <@efField field="title"/>
+      </@efForm>
+    """
+    def page = execute(source: src, controllerClass: SampleParentController,
+                       domainObject: new SampleParent(name: 'ABC'))
+
+    then: 'the javascript is legal'
+    checkPage(page)
+
+    and: 'the field created in non-dashboard mode'
+    page.contains('<div')
+  }
+
   def "verify that the form marker handles the dashboard buttonHolder case"() {
     when: 'the marker is built'
     def src = """
