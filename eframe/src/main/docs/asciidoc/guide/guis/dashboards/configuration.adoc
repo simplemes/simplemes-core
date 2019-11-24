@@ -48,7 +48,7 @@ image::guis/dashboardDetails.png[dashboardDetails,align="center",width="75%"]
 
 ===== Configurable Buttons
 
-You dashboard can have common buttons defined by you or your users.  Each button will trigger one
+Your dashboard can have common buttons defined by you or your users.  Each button will trigger one
 or more activities to be displayed in specific panels in the dashboard.  This can be used to string
 together several user actions with just a single click by your users.
 
@@ -58,15 +58,11 @@ activity page that is displayed at the top of the dashboard that looks like this
 
 [source,html]
 ----
-<div id="wcSelection">
-  <@efField model="SelectionCommand" field="workCenter"/>
-  <span id="DashboardButtons"></span>
-</div>
+<@efForm id="wcSelection" dashboard="buttonHolder">  // <.>
+  <@efField field="LSN.lsn" id="order" label="orderLsn.label"/>
+</@efForm>
 ----
-
-The first element with the ID _'DashboardButtons'_ will be replaced with the configurable
-buttons for this dashboard. You should only have one activity on the dashboard with this
-`DashboardButtons` ID.
+<.> This form will have the dashboard buttons added below the content.
 
 NOTE: These configurable buttons are optional.  You can have no buttons or create your
       own controls as needed.

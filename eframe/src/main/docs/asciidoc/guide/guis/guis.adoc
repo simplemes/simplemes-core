@@ -8,16 +8,18 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<GUI Layout>>#
 [inline-toc]#<<GUI Configuration>>#
 [inline-toc]#<<Definition Pages>>#
-[inline-toc]#<<Dashboards>>#
-[inline-toc]#<<Reports>>#
 [inline-toc]#<<GUI Field Types>>#
 [inline-toc]#<<Standard Keys>>#
 [inline-toc]#<<Task Menu>>#
-[inline-toc]#<<markers,Markers (Freemarker Directives)>>#
 [inline-toc]#<<Javascript Libraries>>#
 [inline-toc]#<<GUI State Persistence>>#
 [inline-toc]#<<GUI Testing>>#
 [inline-toc]#<<GUI Guidelines>>#
+
+[inline-toc]#<<Dashboards>>#
+[inline-toc]#<<Reports>>#
+[inline-toc]#<<markers,Markers (Freemarker Directives)>>#
+
 endif::[]
 
 
@@ -84,21 +86,21 @@ include::guiConfiguration.adoc[]
 
 include::guiOther/definitionPages.adoc[]
 
-include::dashboards/dashboards.adoc[]
-
-include::reports/reports.adoc[]
-
 include::guiOther/guiFieldTypes.adoc[]
 
 include::standardKeys.adoc[]
 
 include::taskMenu.adoc[]
 
-include::markers.adoc[]
-
 include::javascript/javascriptOverview.adoc[]
 
 include::guiOther/guiState.adoc[]
+
+include::dashboards/dashboards.adoc[]
+
+include::reports/reports.adoc[]
+
+include::markers.adoc[]
 
 
 

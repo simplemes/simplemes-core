@@ -371,7 +371,7 @@ ef.dashboard = function () {
       });
     },
     // Combines the given params and list of params objects into on Map.  The second list (paramsList) overwrites
-    // any values from the first list.
+    // any values from the first list.  Also adds any parameters from the dashboard's URI that are not already in the list.
     // paramBase - A Map with the basic params.
     // paramsList - An array of Maps with added params.
     _buildParams: function (paramBase, paramsList) {
@@ -392,6 +392,15 @@ ef.dashboard = function () {
         }
       }
 
+      // Now add any parameters from the dashboard's URI that are not already in the parameters.
+      var url = new URL(window.location.href);
+      for (const [key, value] of new URLSearchParams(url.search)) {
+        if (res[key] == undefined) {
+          res[key] = value;
+        }
+      }
+
+      console.log(res);
       return res;
     },
     // Loads a single page into a panel.
