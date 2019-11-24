@@ -81,7 +81,7 @@ class NumberFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(fieldLine, 'view') == "text"
     JavascriptTestUtils.extractProperty(fieldLine, 'value') == NumberUtils.formatNumber(12.2)
     JavascriptTestUtils.extractProperty(fieldLine, 'inputWidth') == """tk.pw("${
-      TextFieldWidget.calculateFieldWidth(10)
+      TextFieldWidget.adjustFieldCharacterWidth(10)
     }em")"""
 
     and: 'there is no max length on the field'

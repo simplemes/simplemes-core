@@ -61,7 +61,7 @@ class BaseLabeledFieldWidgetSpec extends BaseWidgetSpecification {
 
   def "verify that display width is calculated correctly for various field widths"() {
     expect: 'the calculated width is correct'
-    BaseLabeledFieldWidget.calculateFieldWidth(maxLength) == results
+    BaseLabeledFieldWidget.adjustFieldCharacterWidth(maxLength) == results
 
     where:
     maxLength | results

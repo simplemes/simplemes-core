@@ -55,7 +55,7 @@ class FieldMarkerSpec extends BaseMarkerSpecification {
     def titleFieldLine = TextUtils.findLine(page, 'id: "title"')
     JavascriptTestUtils.extractProperty(titleFieldLine, 'view') == "text"
     JavascriptTestUtils.extractProperty(titleFieldLine, 'value') == "ABC"
-    def width = """tk.pw("${TextFieldWidget.calculateFieldWidth(40)}em")"""
+    def width = """tk.pw("${TextFieldWidget.adjustFieldCharacterWidth(40)}em")"""
     JavascriptTestUtils.extractProperty(titleFieldLine, 'inputWidth') == width
 
     def fieldAttributes = JavascriptTestUtils.extractBlock(titleFieldLine, 'attributes:')
@@ -183,8 +183,7 @@ class FieldMarkerSpec extends BaseMarkerSpecification {
 
     and: 'the field width is correct'
     def titleFieldLine = TextUtils.findLine(page, 'id: "title"')
-    def width = TextFieldWidget.calculateFieldWidth(20)
-    JavascriptTestUtils.extractProperty(titleFieldLine, 'inputWidth') == """tk.pw("${width}em")"""
+    JavascriptTestUtils.extractProperty(titleFieldLine, 'inputWidth') == """tk.pw("20em")"""
   }
 
   def "verify that the marker generates the field - after field specified with efEdit"() {
@@ -236,7 +235,7 @@ class FieldMarkerSpec extends BaseMarkerSpecification {
     def titleFieldLine = TextUtils.findLine(page, 'id: "title"')
     JavascriptTestUtils.extractProperty(titleFieldLine, 'view') == "text"
     JavascriptTestUtils.extractProperty(titleFieldLine, 'value') == "ABC"
-    def width = """tk.pw("${TextFieldWidget.calculateFieldWidth(40)}em")"""
+    def width = """tk.pw("${TextFieldWidget.adjustFieldCharacterWidth(40)}em")"""
     JavascriptTestUtils.extractProperty(titleFieldLine, 'inputWidth') == width
 
     def fieldAttributes = JavascriptTestUtils.extractBlock(titleFieldLine, 'attributes:')

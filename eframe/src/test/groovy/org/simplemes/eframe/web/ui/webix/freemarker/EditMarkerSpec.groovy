@@ -61,7 +61,7 @@ class EditMarkerSpec extends BaseMarkerSpecification {
     def nameFieldLine = TextUtils.findLine(page, 'id: "name"')
     JavascriptTestUtils.extractProperty(nameFieldLine, 'view') == "text"
     JavascriptTestUtils.extractProperty(nameFieldLine, 'value') == "ABC"
-    def width = """tk.pw("${TextFieldWidget.calculateFieldWidth(40)}em")"""
+    def width = """tk.pw("${TextFieldWidget.adjustFieldCharacterWidth(40)}em")"""
     JavascriptTestUtils.extractProperty(nameFieldLine, 'inputWidth') == width
 
     def fieldAttributes = JavascriptTestUtils.extractBlock(nameFieldLine, 'attributes:')

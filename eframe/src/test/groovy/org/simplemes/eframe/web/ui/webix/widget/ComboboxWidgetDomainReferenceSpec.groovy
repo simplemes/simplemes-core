@@ -64,7 +64,7 @@ class ComboboxWidgetDomainReferenceSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(fieldLine, 'value') == afd.id.toString()
 
     and: 'the input width is the minimum width'
-    def width = TextFieldWidget.calculateFieldWidth(ComboboxWidget.MINIMUM_WIDTH)
+    def width = TextFieldWidget.adjustFieldCharacterWidth(ComboboxWidget.MINIMUM_WIDTH)
     JavascriptTestUtils.extractProperty(fieldLine, 'inputWidth') == """tk.pw("${width}em")"""
   }
 
@@ -99,7 +99,7 @@ class ComboboxWidgetDomainReferenceSpec extends BaseWidgetSpecification {
 
     and: 'the input width is the minimum width'
     def fieldLine = TextUtils.findLine(page, 'id: "aField"')
-    def width = TextFieldWidget.calculateFieldWidth(40)
+    def width = TextFieldWidget.adjustFieldCharacterWidth(40)
     JavascriptTestUtils.extractProperty(fieldLine, 'inputWidth') == """tk.pw("${width}em")"""
   }
 

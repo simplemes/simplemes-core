@@ -45,7 +45,7 @@ class ComboboxWidgetEncodedTypeSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(fieldLine, 'value') == EnabledStatus.instance.id
 
     and: 'the input width is the minimum width'
-    def width = TextFieldWidget.calculateFieldWidth(ComboboxWidget.MINIMUM_WIDTH)
+    def width = TextFieldWidget.adjustFieldCharacterWidth(ComboboxWidget.MINIMUM_WIDTH)
     JavascriptTestUtils.extractProperty(fieldLine, 'inputWidth') == """tk.pw("${width}em")"""
   }
 

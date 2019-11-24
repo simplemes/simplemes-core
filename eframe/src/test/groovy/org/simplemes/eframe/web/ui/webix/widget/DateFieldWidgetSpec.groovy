@@ -67,7 +67,7 @@ class DateFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(fieldLine, 'value') == DateUtils.formatForm(date)
 
     and: 'the input width is correct'
-    def width = TextFieldWidget.calculateFieldWidth(20)
+    def width = TextFieldWidget.adjustFieldCharacterWidth(20)
     JavascriptTestUtils.extractProperty(fieldLine, 'inputWidth') == """tk.pw("${width}em")"""
 
     where:

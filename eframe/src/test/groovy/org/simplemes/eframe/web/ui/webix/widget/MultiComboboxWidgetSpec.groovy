@@ -39,7 +39,7 @@ class MultiComboboxWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(fieldLine, 'value') == "${afd1.id},${afd3.id}"
 
     and: 'the input width is the minimum width'
-    def width = TextFieldWidget.calculateFieldWidth((int) (ComboboxWidget.MINIMUM_WIDTH * 1.5))
+    def width = TextFieldWidget.adjustFieldCharacterWidth((int) (ComboboxWidget.MINIMUM_WIDTH * 1.5))
     JavascriptTestUtils.extractProperty(fieldLine, 'inputWidth') == """tk.pw("${width}em")"""
 
     and: 'the valid values are in the correct order'

@@ -400,7 +400,6 @@ ef.dashboard = function () {
         }
       }
 
-      console.log(res);
       return res;
     },
     // Loads a single page into a panel.

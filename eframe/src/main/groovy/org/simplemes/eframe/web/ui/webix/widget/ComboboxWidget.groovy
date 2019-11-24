@@ -49,7 +49,7 @@ class ComboboxWidget extends TextFieldWidget {
         s = format.encode(value, widgetContext.fieldDefinition)
       }
       def values = buildValues()
-      def width = """,inputWidth: tk.pw("${calculateFieldWidth(inputWidth)}em")"""
+      def width = """,inputWidth: tk.pw("${adjustFieldCharacterWidth(inputWidth)}em")"""
       def options = """, editable: true"""
       def cssS = widgetContext.error ? ',css: "webix_invalid" ' : ''
       return """{view: "${view}", id: "$id", name: "$id", value: "$s" $options $cssS $width $values}"""

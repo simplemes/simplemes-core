@@ -100,7 +100,7 @@ class TextFieldWidgetSpec extends BaseWidgetSpecification {
     def fieldLine = TextUtils.findLine(page, 'id: "aField"')
     JavascriptTestUtils.extractProperty(fieldLine, 'view') == "text"
     JavascriptTestUtils.extractProperty(fieldLine, 'value') == "ABC"
-    def width = TextFieldWidget.calculateFieldWidth(40)
+    def width = TextFieldWidget.adjustFieldCharacterWidth(40)
     JavascriptTestUtils.extractProperty(fieldLine, 'inputWidth') == """tk.pw("${width}em")"""
 
     def fieldAttributes = JavascriptTestUtils.extractBlock(fieldLine, 'attributes:')
@@ -161,7 +161,7 @@ class TextFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(attributesBlock, 'autocomplete').contains('new-password')
   }
 
-  def "verify that the width can be passed in"() {
+  def "verify that the width can be passed in using no units "() {
     when: 'the UI element is built'
     def widgetContext = buildWidgetContext(parameters: [width: '20'])
     def page = new TextFieldWidget(widgetContext).build().toString()
@@ -171,8 +171,35 @@ class TextFieldWidgetSpec extends BaseWidgetSpecification {
 
     and: 'the width is used'
     def fieldLine = TextUtils.findLine(page, 'id: "aField"')
-    def width = TextFieldWidget.calculateFieldWidth(20)
-    JavascriptTestUtils.extractProperty(fieldLine, 'inputWidth') == """tk.pw("${width}em")"""
+    JavascriptTestUtils.extractProperty(fieldLine, 'inputWidth') == """tk.pw("20em")"""
+    JavascriptTestUtils.extractProperty(fieldLine, 'width') == """tk.pw("20em")"""
+  }
+
+  def "verify that the width can be passed in using em units "() {
+    when: 'the UI element is built'
+    def widgetContext = buildWidgetContext(parameters: [width: '20em'])
+    def page = new TextFieldWidget(widgetContext).build().toString()
+
+    then: 'the page is valid'
+    JavascriptTestUtils.checkScriptFragment(page)
+
+    and: 'the width is used'
+    def fieldLine = TextUtils.findLine(page, 'id: "aField"')
+    JavascriptTestUtils.extractProperty(fieldLine, 'inputWidth') == """tk.pw("20em")"""
+    JavascriptTestUtils.extractProperty(fieldLine, 'width') == """tk.pw("20em")"""
+  }
+
+  def "verify that the width can be passed in using percent"() {
+    when: 'the UI element is built'
+    def widgetContext = buildWidgetContext(parameters: [width: '20%'])
+    def page = new TextFieldWidget(widgetContext).build().toString()
+
+    then: 'the page is valid'
+    JavascriptTestUtils.checkScriptFragment(page)
+
+    and: 'the width is used'
+    def fieldLine = TextUtils.findLine(page, 'id: "aField"')
+    JavascriptTestUtils.extractProperty(fieldLine, 'inputWidth') == """tk.pw("20%")"""
   }
 
   def "verify that the field is flagged as required correctly"() {

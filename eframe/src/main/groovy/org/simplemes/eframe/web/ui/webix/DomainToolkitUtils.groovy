@@ -172,7 +172,7 @@ class DomainToolkitUtils {
         cb << """{id: "${choice.id}", value: "${JavascriptUtils.escapeForJavascript(s)}"}"""
       }
       // now, add some options to the suggest box that popups.
-      def calculateFieldWidth = BaseLabeledFieldWidget.calculateFieldWidth(maxValueWidth)
+      def calculateFieldWidth = BaseLabeledFieldWidget.adjustFieldCharacterWidth(maxValueWidth)
       sb << """,suggest: { fitMaster: false, width: tk.pw("${calculateFieldWidth}em")}"""
 
       sb << """, options: [${cb}] """

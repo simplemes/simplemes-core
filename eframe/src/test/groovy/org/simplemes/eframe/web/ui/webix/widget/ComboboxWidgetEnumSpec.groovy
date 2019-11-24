@@ -44,7 +44,7 @@ class ComboboxWidgetEnumSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(fieldLine, 'value') == ReportTimeIntervalEnum.LAST_7_DAYS.toString()
 
     and: 'the input width is the minimum width'
-    def width = TextFieldWidget.calculateFieldWidth(ComboboxWidget.MINIMUM_WIDTH)
+    def width = TextFieldWidget.adjustFieldCharacterWidth(ComboboxWidget.MINIMUM_WIDTH)
     JavascriptTestUtils.extractProperty(fieldLine, 'inputWidth') == """tk.pw("${width}em")"""
   }
 

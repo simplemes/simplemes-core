@@ -35,7 +35,7 @@ class DateFieldWidget extends TextFieldWidget {
       return super.buildWidget(id, value)
     } else {
       def s = formatForDisplay(value)
-      def width = """,inputWidth: tk.pw("${calculateFieldWidth(inputWidth)}em")"""
+      def width = """,inputWidth: tk.pw("${adjustFieldCharacterWidth(inputWidth)}em")"""
       def options = """, stringResult: true, editable: true, timepicker: ${displayingTime}"""
       def cssS = widgetContext.error ? ',css: "webix_invalid" ' : ''
       return """{view: "datepicker", id: "$id", name: "$id", value: "$s" $options $cssS $width}"""

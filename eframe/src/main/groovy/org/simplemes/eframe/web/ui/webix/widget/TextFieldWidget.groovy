@@ -44,14 +44,17 @@ class TextFieldWidget extends BaseLabeledFieldWidget {
       def iWidthS = ''
       def type = (String) widgetContext.parameters.type ?: ''
       if (getMaxLength()) {
-        def iWidth = calculateFieldWidth(getMaxLength())
-        iWidthS = """,inputWidth: tk.pw("${iWidth}em")"""
+        def iWidth = adjustFieldCharacterWidth(getMaxLength())
+        iWidthS = """,inputWidth: tk.pw("${iWidth}em"),width: tk.pw("${iWidth}em")"""
       }
       def attrs = buildAttributes(type)
       if (widgetContext.parameters.width) {
         // Override the input width above
-        def width = calculateFieldWidth(Integer.valueOf((String) widgetContext.parameters.width))
-        iWidthS = """,inputWidth: tk.pw("${width}em")"""
+        def width = (String) widgetContext.parameters.width
+        if (!width.contains('em') && !width.contains('%')) {
+          width += 'em'
+        }
+        iWidthS = """,inputWidth: tk.pw("${width}"),width: tk.pw("${width}")"""
       }
       def cssS = widgetContext.error ? ',css: "webix_invalid" ' : ''
       //def valueS = escape(formatForDisplay(value))

@@ -147,7 +147,7 @@ class DomainToolkitUtilsSpec extends BaseSpecification {
     and: 'the max width is correct'
     def suggestText = JavascriptTestUtils.extractBlock(columnText, 'suggest: {')
     JavascriptTestUtils.extractProperty(suggestText, 'fitMaster') == 'false'
-    def width = TextFieldWidget.calculateFieldWidth(15)
+    def width = TextFieldWidget.adjustFieldCharacterWidth(15)
     JavascriptTestUtils.extractProperty(suggestText, 'width') == """tk.pw("${width}em")"""
   }
 
@@ -167,7 +167,7 @@ class DomainToolkitUtilsSpec extends BaseSpecification {
     and: 'the max width is correct'
     def suggestText = JavascriptTestUtils.extractBlock(rtiText, 'suggest: {')
     JavascriptTestUtils.extractProperty(suggestText, 'fitMaster') == 'false'
-    def width = TextFieldWidget.calculateFieldWidth(15)
+    def width = TextFieldWidget.adjustFieldCharacterWidth(15)
     JavascriptTestUtils.extractProperty(suggestText, 'width') == """tk.pw("${width}em")"""
 
     and: 'the list of values is correct'

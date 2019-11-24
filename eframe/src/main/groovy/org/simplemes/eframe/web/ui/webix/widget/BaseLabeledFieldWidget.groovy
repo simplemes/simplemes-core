@@ -107,14 +107,13 @@ class BaseLabeledFieldWidget extends BaseWidget {
     return value?.toString() ?: ''
   }
 
-
   /**
    * Determine the display width (in characters) for the given maxLength of the input field.
    * This gradually reduces the display width as the maxLength increases up to a hard max.
    * @param maxLength
    * @return The adjust display width (in em characters).
    */
-  static int calculateFieldWidth(int maxLength) {
+  static int adjustFieldCharacterWidth(int maxLength) {
     def nChars = 60
     if (maxLength <= 3) {
       nChars = 3

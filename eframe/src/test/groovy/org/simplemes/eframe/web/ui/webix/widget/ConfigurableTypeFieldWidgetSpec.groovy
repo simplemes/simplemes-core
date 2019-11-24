@@ -51,7 +51,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     optionsBlock.contains('FLEX1')
 
     and: 'the input width is the minimum width'
-    def width = TextFieldWidget.calculateFieldWidth(ComboboxWidget.MINIMUM_WIDTH)
+    def width = TextFieldWidget.adjustFieldCharacterWidth(ComboboxWidget.MINIMUM_WIDTH)
     JavascriptTestUtils.extractProperty(fieldLine, 'inputWidth') == """tk.pw("${width}em")"""
 
     and: 'the holder area has the default input field'
