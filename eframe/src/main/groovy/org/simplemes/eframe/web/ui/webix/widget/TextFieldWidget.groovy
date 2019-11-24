@@ -65,7 +65,9 @@ class TextFieldWidget extends BaseLabeledFieldWidget {
       def req = required ? ',required: true' : ''
 
       def typeS = widgetContext.parameters.type ? """,type: "${type}" """ : ''
-      return """{view: "text", id: "$id", name: "$id", value: "$valueS" $cssS $iWidthS$attrs $typeS $req}"""
+      return """{view: "text", id: "$id", name: "$id", value: "$valueS" $cssS $iWidthS$attrs $typeS $req},{}"""
+      // The spacer above is added to make sure the field won't limit dialog sizes.  The spacer will
+      // expand as needed, so the dialog can be any size.
     }
   }
 

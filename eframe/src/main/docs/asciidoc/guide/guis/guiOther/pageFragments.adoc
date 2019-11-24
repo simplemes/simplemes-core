@@ -74,7 +74,7 @@ This _addPanelDialog.ftl_ looks something like this:
   <@efField field="panel" value="custom" width=20 required="true"/>
 </@efForm>
 
-${params._variable}.postScript = '$$("panel")getInputNode().focus()'; // <.>
+${params._variable}.postScript = '$$("panel").getInputNode().focus()'; // <.>
 
 ----
 <.> Defines the labels needed for localized content.

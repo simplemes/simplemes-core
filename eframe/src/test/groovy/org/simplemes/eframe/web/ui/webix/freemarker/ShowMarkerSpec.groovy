@@ -58,6 +58,9 @@ class ShowMarkerSpec extends BaseMarkerSpecification {
     and: 'the fields are created correctly'
     def titleFieldLine = TextUtils.findLine(page, 'id: "title"')
     JavascriptTestUtils.extractProperty(titleFieldLine, 'label') == "xyz"
+
+    and: 'the dialog preferences are loaded'
+    page.contains('ef.loadDialogPreferences();')
   }
 
   def "verify that the create toolbar is generated"() {

@@ -71,6 +71,7 @@ abstract class BaseDefinitionPageMarker extends BaseMarker {
     def post = """
       ${buildDefaultPanelSelection()}
       ${buildPostScript()}
+      ef.loadDialogPreferences();
     """
     markerContext?.markerCoordinator?.addPostscript(post)
 

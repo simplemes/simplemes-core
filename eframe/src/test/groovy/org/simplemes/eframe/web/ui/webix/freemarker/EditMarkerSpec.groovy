@@ -66,6 +66,9 @@ class EditMarkerSpec extends BaseMarkerSpecification {
 
     def fieldAttributes = JavascriptTestUtils.extractBlock(nameFieldLine, 'attributes:')
     fieldAttributes.contains('maxlength: 40')
+
+    and: 'the dialog preferences are loaded'
+    page.contains('ef.loadDialogPreferences();')
   }
 
   def "verify that the standard toolbar and bottom button is generated"() {

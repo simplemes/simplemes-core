@@ -460,3 +460,36 @@ _B.display = {
 Remove this extra comma to solve the problem.
 
 
+==== Some Container won't Expand to Full Size
+
+The <<GUI Toolkit>> library has some comprehensive tools for layout, but it does have some layout
+quirks.  One good example is that a container (e.g. dialog) might not expand to the
+given size (width) specified in the container creation.  
+
+
+[source,javascript]
+.Example - Dialog Size not Honored
+----
+ef.displayDialog({
+  title: "Title",
+  bodyURL: '/extension/dialog?dialog=extension/addPanelDialog',  // <.>
+  width: '85%',  // <.>
+  buttons: ['yes','no','cancel'],
+  yes: function (dialogID,button) {
+   return true;
+  }
+});
+----
+
+<.> The dialog has one field ('panel') that is about 400 pixels wide.
+<.> The user or developer has made the dialog 85% wide.
+
+This should result in a dialog that is 85% of the display width.  In some cases, it won't.
+Instead, the dialog is always displayed as about 400 pixels wide, which is the rough width
+of the 'panel' input field.
+
+To avoid this, we need to add a variable width element after the 'panel' input field.
+The normal <<efField>> mark does this for standard text fields by adding a spacer ({})
+after the field.  This spacer will expand as needed to make the window the desired width.
+
+
