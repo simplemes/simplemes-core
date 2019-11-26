@@ -227,6 +227,15 @@ class TextFieldWidgetSpec extends BaseWidgetSpecification {
     null     | 'aField.label'  | null
   }
 
+  def "verify that the onChange javascript can be passed in"() {
+    when: 'the UI element is built'
+    def widgetContext = buildWidgetContext(parameters: [onChange: 'someChangeLogic'])
+    def page = new TextFieldWidget(widgetContext).build().toString()
+
+    then: 'the onChange script is used'
+    def fieldLine = TextUtils.findLine(page, 'id: "aField"')
+    fieldLine.contains("""on:{onChange(newValue, oldValue){someChangeLogic}}}""")
+  }
 
   // GUI tests
   //  maxLength is enforced.

@@ -41,7 +41,7 @@ import java.security.Principal
  */
 @Slf4j
 @Secured(SecurityRule.IS_ANONYMOUS)
-@Requires(env = "test")
+@Requires(env = ["test", "dev"])
 @Controller("/test/dashboard")
 final class DashboardTestController extends BaseController {
 

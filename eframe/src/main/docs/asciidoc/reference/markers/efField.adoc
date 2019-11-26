@@ -49,6 +49,8 @@ The main parameters/body supported are:
             on the max field length.  Width can be a number (characters), em units ('20em')
             or percent ('15%'). (*Default:* Field's max length).
 | *after* | The field name to display this after.  Use only inside of edit/create/show fields.
+| *onChange* | Javascript to execute when the field changes (on field exit).
+               This javascript has two variables available (`newValue`, `oldValue`).
 
 |===
 

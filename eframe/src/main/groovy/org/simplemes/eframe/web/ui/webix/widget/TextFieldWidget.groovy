@@ -18,6 +18,7 @@ import org.simplemes.eframe.i18n.GlobalUtils
  * <ul>
  *   <li><b>type</b> - The field type.  Supported values: 'password'. </li>
  *   <li><b>readOnly</b> - If true, then the text field is not editable (<b>default</b>: false). </li>
+ *   <li><b>onChange</b> - The javascript to execute when the field is changed (one field exit). </li>
  * </ul>
  */
 class TextFieldWidget extends BaseLabeledFieldWidget {
@@ -64,8 +65,13 @@ class TextFieldWidget extends BaseLabeledFieldWidget {
       }
       def req = required ? ',required: true' : ''
 
+      def change = ''
+      if (widgetContext.parameters.onChange) {
+        change = ",on:{onChange(newValue, oldValue){$widgetContext.parameters.onChange}}"
+      }
+
       def typeS = widgetContext.parameters.type ? """,type: "${type}" """ : ''
-      return """{view: "text", id: "$id", name: "$id", value: "$valueS" $cssS $iWidthS$attrs $typeS $req},{}"""
+      return """{view: "text", id: "$id", name: "$id", value: "$valueS" $cssS $iWidthS$attrs $typeS $req $change},{}"""
       // The spacer above is added to make sure the field won't limit dialog sizes.  The spacer will
       // expand as needed, so the dialog can be any size.
     }
