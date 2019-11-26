@@ -14,7 +14,8 @@ for an overview of events and example event handlers.
 
 This event is triggered when the user changes the Order/LSN in the
 <<guide.adoc#dashboard-work-center-selection,Work Center Selection>> activity.
-This event can be used to synchronize all activities with the currently selected order/LSNs.
+This event can be used to synchronize all activities with the currently selected
+order/LSNs.
 
 This is typically used by many activities to update their display for the new selection.
 
@@ -41,9 +42,8 @@ The main properties of the event are:
 ** `qtyInWork` - The quantity in work.   Only populated from _WORK_LIST_SELECTED_.
    (*Number*)
 
-When the _WORK_LIST_SELECTED_ is received, this activity will use the selection to populate the
-order/LSN field.  This means some of these values are not populated when the user types or scans the
-order/LSN into the field.
+This event can be triggered by user input to the field or when the _WORK_LIST_SELECTED_
+is received.  Not all fields are populated when triggered by the user input.  
 
 ===== Event Sources
 
@@ -76,6 +76,31 @@ This event can be triggered by these activities:
 * <<Start Activity>>.
 * <<Complete Activity>>.
 * <<Reverse Start Activity>>.
+
+
+==== WORK_CENTER_CHANGED
+
+This event is triggered when the work center
+<<guide.adoc#dashboard-work-center-selection,Work Center Selection>> activity is changed.
+This event is be used to synchronize all activities with the currently selected
+order/LSNs.
+
+This is typically used by many activities to update their display for the new selection.
+
+===== Event Properties
+
+The main properties of the event are:
+
+* `type` - _'WORK_CENTER_CHANGED'_.
+* `source` - The source of the event.  Usually the name of the dashboard activity
+  (e.g. 'workCenterSelection').
+* `workCenter` - The new work center (*String*).
+
+===== Event Sources
+
+This event can be triggered by these activities:
+
+* <<Work Center Selection>>.
 
 
 

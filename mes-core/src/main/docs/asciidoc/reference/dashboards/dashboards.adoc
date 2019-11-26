@@ -16,7 +16,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc-header]#Events#
 [inline-toc]#<<ORDER_LSN_CHANGED>>#
 [inline-toc]#<<ORDER_LSN_STATUS_CHANGED>>#
-//[inline-toc]#<<WORK_CENTER_CHANGED>>#
+[inline-toc]#<<WORK_CENTER_CHANGED>>#
 [inline-toc]#<<WORK_LIST_SELECTED>>#
 
 [inline-toc-header]#Scan Actions#
