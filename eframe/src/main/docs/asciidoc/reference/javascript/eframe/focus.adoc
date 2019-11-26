@@ -6,7 +6,7 @@
 This Javascript function requests focus on the given field/button and will select all
 of the text in input field nodes. This is used mainly in dialogs to force focus to the first field.
 
-This function is part of the <<eframe_toolkit-js>> library.
+This function is part of the <<eframe-js>> library.
 
 The arguments are:
 
@@ -25,7 +25,7 @@ The arguments are:
     <@efField field="panel" value="custom" width=20/>  // <.>
   </@efForm>
 
-  ${params._variable}.postScript = 'tk.focus("panel")'; // <.>
+  ${params._variable}.postScript = 'ef.focus("panel")'; // <.>
 ----
 <.> Defines an input field panel.
 <.> Requests focus on the field and selects the text field's contents.

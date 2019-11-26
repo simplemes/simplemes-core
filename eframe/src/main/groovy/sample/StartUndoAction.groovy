@@ -19,7 +19,7 @@ class StartUndoAction implements UndoActionInterface {
   /**
    * The URI to submit the JSON content to in order to undo a previous action.
    */
-  String uri = '/sample/dashboard/undoStart'
+  String uri = '/test/dashboard/undoStart'
 
   /**
    * The JSON content to submit in order to undo a previous action.

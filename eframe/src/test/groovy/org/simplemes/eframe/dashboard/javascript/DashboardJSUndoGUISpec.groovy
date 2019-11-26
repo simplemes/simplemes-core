@@ -1,7 +1,7 @@
 package org.simplemes.eframe.dashboard.javascript
 
+import org.simplemes.eframe.dashboard.controller.DashboardTestController
 import org.simplemes.eframe.test.BaseDashboardSpecification
-import sample.controller.DashboardTestController
 import spock.lang.IgnoreIf
 
 /*
@@ -13,7 +13,7 @@ import spock.lang.IgnoreIf
 /**
  * Tests of the dashboard.js methods related to undo handling.
  * <p>
- * Uses the {@link sample.controller.DashboardTestController#echo(io.micronaut.http.HttpRequest, java.security.Principal)}
+ * Uses the {@link DashboardTestController#echo(io.micronaut.http.HttpRequest, java.security.Principal)}
  * server action to test the undo actions from the server.
  */
 @IgnoreIf({ !sys['geb.env'] })
@@ -23,7 +23,7 @@ class DashboardJSUndoGUISpec extends BaseDashboardSpecification {
     given: 'a dashboard with 1 non-gui activity that can be undone'
     def startActivity = '''
       <script>
-        dashboard.postActivity({order: "XYZZY"},'/sample/dashboard/start','${params._panel}', 
+        dashboard.postActivity({order: "XYZZY"},'/test/dashboard/start','${params._panel}', 
         {success: function(res) {ef.displayMessage({info: res})} });
       </script>
     '''
@@ -71,7 +71,7 @@ class DashboardJSUndoGUISpec extends BaseDashboardSpecification {
     def startActivity = '''
       <script>
         var order = document.getElementById('order').value; 
-        dashboard.postActivity({order: order},'/sample/dashboard/start','${params._panel}', 
+        dashboard.postActivity({order: order},'/test/dashboard/start','${params._panel}', 
         {success: function(res) {ef.displayMessage({info: res})} });
       </script>
     '''

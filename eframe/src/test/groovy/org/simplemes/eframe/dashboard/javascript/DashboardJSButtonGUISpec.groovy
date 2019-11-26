@@ -127,7 +127,7 @@ class DashboardJSButtonGUISpec extends BaseDashboardSpecification {
     given: 'a dashboard with 1 non-gui activity that throws a server-side exception'
     def activity = '''
       <script>
-        dashboard.postActivity({throwException: "An Exception Message"},'/sample/dashboard/echo','${params._panel}');
+        dashboard.postActivity({throwException: "An Exception Message"},'/test/dashboard/echo','${params._panel}');
       </script>
     '''
     buildDashboard(defaults: [BUTTON_PANEL, 'Content B'], buttons: [activity])

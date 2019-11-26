@@ -2,10 +2,10 @@ package org.simplemes.eframe.web.javascript
 
 import geb.navigator.Navigator
 import org.openqa.selenium.Keys
+import org.simplemes.eframe.dashboard.controller.DashboardTestController
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.test.BaseJSSpecification
 import org.simplemes.eframe.test.UnitTestUtils
-import sample.controller.DashboardTestController
 import spock.lang.IgnoreIf
 
 /*
@@ -567,7 +567,7 @@ class ToolkitJSDialogGUISpec extends BaseJSSpecification {
     DashboardTestController.setMemoryPages('sample', pageSrc)
 
     when: 'the JS is executed'
-    def jsSrc = "ef.displayDialog({bodyURL: '/sample/dashboard/memory?page=sample', title: 'Sample Title' }); "
+    def jsSrc = "ef.displayDialog({bodyURL: '/test/dashboard/memory?page=sample', title: 'Sample Title' }); "
     login()
     execute(jsSrc)
 

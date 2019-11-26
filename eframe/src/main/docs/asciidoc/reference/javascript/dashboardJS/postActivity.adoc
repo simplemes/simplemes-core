@@ -48,7 +48,7 @@ NOTE: This function uses the <<postAjaxForm>> method from the <<eframe-js>> libr
     <@efField field="product" value="CM3056857"/>
     <@efButtonGroup>
       <@efButton label="Log Failure"
-                 click="dashboard.postActivity('logFailure','/sample/dashboard/echo','${panel}');"/> // <.>
+                 click="dashboard.postActivity('logFailure','/test/dashboard/echo','${panel}');"/> // <.>
       <@efButton label="cancel.label" click="dashboard.finished('${panel}')"/>
     </@efButtonGroup>
   </@efForm>

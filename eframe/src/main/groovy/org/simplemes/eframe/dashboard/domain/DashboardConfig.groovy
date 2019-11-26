@@ -260,14 +260,14 @@ class DashboardConfig {
       dashboardConfig = new DashboardConfig(dashboard: 'OPERATOR_DEFAULT', category: 'OPERATOR', title: 'Operator')
       dashboardConfig.addToPanels(new DashboardPanelSplitter(panelIndex: 0, vertical: false))
       dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 1, parentPanelIndex: 0,
-                                                     defaultURL: '/sample/dashboard/page?view=sample/dashboard/wcSelection'))
+                                                     defaultURL: '/test/dashboard/page?view=sample/dashboard/wcSelection'))
       dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 2, parentPanelIndex: 0,
-                                                     defaultURL: '/sample/dashboard/page?view=sample/dashboard/workList'))
+                                                     defaultURL: '/test/dashboard/page?view=sample/dashboard/workList'))
       def button1 = new DashboardButton(label: 'pass.label', url: '/dashSample/display?page=pass', panel: 'A',
                                         title: 'pass.title', size: 1.5, buttonID: 'PASS')
-      def button2 = new DashboardButton(label: 'Complete', url: '/sample/dashboard/page?view=sample/dashboard/complete', panel: 'B',
+      def button2 = new DashboardButton(label: 'Complete', url: '/test/dashboard/page?view=sample/dashboard/complete', panel: 'B',
                                         buttonID: 'COMPLETE')
-      def button3 = new DashboardButton(label: 'Log Failure', url: '/sample/dashboard/page?view=sample/dashboard/logFailure', panel: 'B',
+      def button3 = new DashboardButton(label: 'Log Failure', url: '/test/dashboard/page?view=sample/dashboard/logFailure', panel: 'B',
                                         css: 'caution-button', buttonID: 'FAIL')
       def button4 = new DashboardButton(label: 'Reports', url: '/dashSample/display?page=fail', panel: 'B',
                                         buttonID: 'REPORTS')
@@ -279,12 +279,12 @@ class DashboardConfig {
 
       dashboardConfig = new DashboardConfig(dashboard: 'MANAGER_DEFAULT', category: 'MANAGER', title: 'Manager')
       dashboardConfig.addToPanels(new DashboardPanelSplitter(panelIndex: 0, vertical: false))
-      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 1, defaultURL: '/sample/dashboard/page?view=sample/dashboard/wcSelection', parentPanelIndex: 0))
+      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 1, defaultURL: '/test/dashboard/page?view=sample/dashboard/wcSelection', parentPanelIndex: 0))
       dashboardConfig.addToPanels(new DashboardPanelSplitter(panelIndex: 2, vertical: true, parentPanelIndex: 0))
-      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 3, defaultURL: '/sample/dashboard/page?view=sample/dashboard/workList', parentPanelIndex: 2))
+      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 3, defaultURL: '/test/dashboard/page?view=sample/dashboard/workList', parentPanelIndex: 2))
       dashboardConfig.addToPanels(new DashboardPanelSplitter(panelIndex: 4, vertical: true, parentPanelIndex: 2))
-      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 5, defaultURL: '/sample/dashboard/page?view=sample/dashboard/workList', parentPanelIndex: 4))
-      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 6, defaultURL: '/sample/dashboard/page?view=sample/dashboard/workList', parentPanelIndex: 4))
+      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 5, defaultURL: '/test/dashboard/page?view=sample/dashboard/workList', parentPanelIndex: 4))
+      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 6, defaultURL: '/test/dashboard/page?view=sample/dashboard/workList', parentPanelIndex: 4))
       dashboardConfig.save()
 
       //noinspection UnnecessaryQualifiedReference

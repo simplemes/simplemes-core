@@ -8,7 +8,7 @@
     <@efField field="rma" value="RMA1001" width=20/>
     <@efField field="product" value="CM3056857"/>
     <@efButtonGroup>
-      <@efButton label="Log Failure" click="dashboard.sendEvent({type: 'ABC',otherField: 'XYZZY'});dashboard.postActivity('logFailure','/sample/dashboard/echo','${panel}');"/>
+      <@efButton label="Log Failure" click="dashboard.sendEvent({type: 'ABC',otherField: 'XYZZY'});dashboard.postActivity('logFailure','/test/dashboard/echo','${panel}');"/>
       <@efButton label="cancel.label" click="dashboard.finished('${panel}')"/>
     </@efButtonGroup>
   </@efForm>

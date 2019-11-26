@@ -20,6 +20,6 @@
   </@efForm>
 
   // use id:
-  ${params._variable}.postScript = 'tk.focus("fieldName");$$("editField").setValues({id: "${params.id!''}"},true)';
+  ${params._variable}.postScript = 'ef.focus("fieldName");$$("editField").setValues({id: "${params.id!''}"},true)';
 
 </script>

@@ -2,7 +2,6 @@
 
 ifeval::["{backend}" != "pdf"]
 
-[inline-toc]#<<focus>>#
 [inline-toc]#<<eframe-toolkit-ph>>#
 [inline-toc]#<<eframe-toolkit-pw>>#
 [inline-toc]#<<findMaxGridValue>>#
@@ -18,9 +17,6 @@ NOTE: Any methods that start with an underscore (eg. `tk._alert()`) are internal
 
 
 === Functions
-
-
-include::focus.adoc[]
 
 
 include::pw_and_ph.adoc[]

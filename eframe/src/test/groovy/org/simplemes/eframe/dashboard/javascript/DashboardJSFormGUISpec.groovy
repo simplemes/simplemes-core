@@ -20,26 +20,30 @@ class DashboardJSFormGUISpec extends BaseDashboardSpecification {
   //static dirtyDomains = [DashboardConfig]
 
   def "verify that basic postActivity works - single panel scenario"() {
+    // Also tests some of BaseDashboardSpecification and DashboardPage elements.
     given: 'a dashboard with a simple submit page'
     def activity = """
       <@efForm id="logFailure" dashboard=true>
         <@efField field="rma" value="RMA1001" width=20/>
         <@efButtonGroup>
-          <@efButton id="FAIL" label="Log Failure" click="dashboard.postActivity('logFailure','/sample/dashboard/echo','A');"/>
+          <@efButton id="FAIL" label="Log Failure" click="dashboard.postActivity('logFailure','/test/dashboard/echo','A');"/>
         </@efButtonGroup>
       </@efForm>
     """
     buildDashboard(defaults: [activity])
 
-    when: 'the dashboard is displayed'
-    displayDashboard()
+    when: 'the dashboard is displayed - with a URI argument'
+    displayDashboard([workCenter: 'ABC'])
+
+    and: 'the RMA field is filled in - using the AbstractPage element with a dynamic field name'
+    textField('rma').input.value('RMA1002')
 
     and: 'the form is submitted'
     button('FAIL').click()
     waitForCompletion()
 
     then: 'the response is displayed'
-    messages.text().contains('RMA1001')
+    messages.text().contains('RMA1002')
   }
 
   def "verify that basic postActivity works - two panel scenario"() {
@@ -48,7 +52,7 @@ class DashboardJSFormGUISpec extends BaseDashboardSpecification {
       <@efForm id="logFailure" dashboard=true>
         <@efField field="rma" value="RMA1001" width=20/>
         <@efButtonGroup>
-          <@efButton id="FAIL" label="Log Failure" click="dashboard.postActivity('logFailure','/sample/dashboard/echo','B');"/>
+          <@efButton id="FAIL" label="Log Failure" click="dashboard.postActivity('logFailure','/test/dashboard/echo','B');"/>
         </@efButtonGroup>
       </@efForm>
     """

@@ -1,6 +1,7 @@
-package sample.controller
+package org.simplemes.eframe.dashboard.controller
 
 import groovy.util.logging.Slf4j
+import io.micronaut.context.annotation.Requires
 import io.micronaut.core.io.Writable
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
@@ -12,7 +13,6 @@ import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Produces
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
-import io.micronaut.views.View
 import io.micronaut.views.ViewsRenderer
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.controller.BaseController
@@ -33,39 +33,17 @@ import java.security.Principal
 */
 
 /**
- * Test controller for extension mechanism.
+ * Test controller for dashboard testing.  This is only exposed in test mode.
+ * Provides ability to display arbitrary dashboard activities and to handle request from the dashboard.
+ * <p>
+ * <b>Note:</b> This is only exposed as a controller in Test mode.
+ *
  */
 @Slf4j
 @Secured(SecurityRule.IS_ANONYMOUS)
-@Controller("/sample/dashboard")
-class DashboardTestController extends BaseController {
-
-  @Get("/")
-  @View("sample/dashboard/dashboardIndex")
-  @Produces(MediaType.TEXT_HTML)
-  StandardModelAndView index(@Nullable Principal principal) {
-    // TODO: Remove this and the .ftl file
-/*
-    Map<String, Object> data = new HashMap<>()
-    data.put(StandardModelAndView.LOGGED_IN, principal != null)
-    if (principal != null) {
-      data.put(StandardModelAndView.USER_NAME, principal.getName())
-    }
-    return data
-*/
-
-
-    def modelAndView = new StandardModelAndView("sample/dashboard/dashboardIndex", principal, this)
-
-    Map model = (Map) modelAndView.model.get()
-    model.put(StandardModelAndView.LOGGED_IN, principal != null)
-    if (principal != null) {
-      model.put(StandardModelAndView.USER_NAME, principal.getName())
-    }
-
-    return modelAndView
-
-  }
+@Requires(env = "test")
+@Controller("/test/dashboard")
+final class DashboardTestController extends BaseController {
 
   /**
    * Serves up a page for the dashboard testers. This is served from an .ftl file.
@@ -85,7 +63,7 @@ class DashboardTestController extends BaseController {
   HttpResponse page(HttpRequest request, @Nullable Principal principal) {
     def params = ControllerUtils.instance.convertToMap(request.parameters)
     if (!params.view) {
-      throw new IllegalArgumentException('Missing parameter page')
+      throw new IllegalArgumentException('Missing parameter view')
     }
     def modelAndView = new StandardModelAndView((String) params.view, principal, this)
     def renderer = Holders.applicationContext.getBean(ViewsRenderer)
@@ -116,7 +94,7 @@ class DashboardTestController extends BaseController {
     }
 
     def options = [source   : memory[(String) params.page], controllerClass: DashboardTestController,
-                   uri      : '/sample/dashboard/memory',
+                   uri      : '/test/dashboard/memory',
                    dataModel: [params: params]]
     log.trace('memory(): options {}', options)
     def s = new UnitTestRenderer(options).render()

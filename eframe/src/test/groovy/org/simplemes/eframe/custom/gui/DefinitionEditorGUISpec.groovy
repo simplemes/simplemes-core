@@ -445,8 +445,9 @@ class DefinitionEditorGUISpec extends BaseDefinitionEditorSpecification {
     then: 'the add field dialog is displayed'
     fieldName.label == lookupRequired('fieldName.label')
 
-    when: 'the values are filled in'
-    fieldName.input.value('custom1')
+    when: 'the values are filled in and the focus is in the fieldName field'
+    sendKey('custom1')
+    //fieldName.input.value('custom1')
     fieldLabel.input.value('Custom1')
     setCombobox((Object) fieldFormat, IntegerFieldFormat.instance.id)
     maxLength.input.value('237')

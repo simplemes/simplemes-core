@@ -149,6 +149,10 @@ _ef.eframe = function () {
     displayTextFieldDialog: function (dialogMap) {
       return tk._displayTextFieldDialog(dialogMap);
     },
+    // Finds the given field and sets focus on it.  Will also select the field if it has a select() method
+    focus: function (fieldName) {
+      tk.focus(fieldName);
+    },
     // Sends an AJAX GET request to the server and returns the results as a JSON object.
     get: function (url, args, success) {
       var uri = url;

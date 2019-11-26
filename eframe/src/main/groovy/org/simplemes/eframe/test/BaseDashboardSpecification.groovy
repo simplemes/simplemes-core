@@ -1,10 +1,10 @@
 package org.simplemes.eframe.test
 
 import groovy.util.logging.Slf4j
+import org.simplemes.eframe.dashboard.controller.DashboardTestController
 import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.test.page.DashboardPage
-import sample.controller.DashboardTestController
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.
@@ -21,7 +21,7 @@ import sample.controller.DashboardTestController
  * This allows you to test dashboard functions with minimal dependencies on other elements.
  * <p/>
  * This class depends on the main {@link org.simplemes.eframe.dashboard.controller.DashboardController} and
- * {@link sample.controller.DashboardTestController} to provide the page displays needed for the
+ * {@link DashboardTestController} to provide the page displays needed for the
  * dashboard itself and the content (test controller).<p/>
  * For example:
  * <pre>
@@ -30,6 +30,8 @@ import sample.controller.DashboardTestController
  *   displayDashboard()
  *   clickButton(0)  // Displays page3 in the Panel 'B'.
  * </pre>
+ * <p>
+ * <b>Note</b>: Some of this base class is tested in the DashboardJSFormGUISpec.
  */
 @Slf4j
 class BaseDashboardSpecification extends BaseGUISpecification {
@@ -143,7 +145,7 @@ class BaseDashboardSpecification extends BaseGUISpecification {
 
     // Needs a dynamic activity defined for this request.
     DashboardTestController.setMemoryPages(page, activity)
-    return "/sample/dashboard/memory?page=$page"
+    return "/test/dashboard/memory?page=$page"
   }
 
   /**
@@ -178,9 +180,29 @@ class BaseDashboardSpecification extends BaseGUISpecification {
    * @param dashboard The dashboard config to navigate to (<b>Default</b>: '_TEST').
    */
   void displayDashboard(String dashboard = '_TEST') {
-    login()
-    to DashboardPage, dashboard: dashboard
+    displayDashboard([dashboard: dashboard])
   }
+
+  /**
+   * Navigates to the dashboard page with the given options.
+   * <h3>Options</h3>
+   * <ul>
+   *   <li><b>dashboard</b> - The dashboard to display (<b>Default</b>: '_TEST'). </li>
+   *   <li><b>(other options)</b> - Passed as URL parameters to the dashboard. </li>
+   * </ul>
+
+   * @param options Supported options: dashboard - the dasboard nameThe dashboard config to navigate to (<b>Default</b>: '_TEST').
+   */
+  void displayDashboard(Map options) {
+    options = options ?: [:]
+    if (!options.dashboard) {
+      options.dashboard = '_TEST'
+    }
+
+    login()
+    to options, DashboardPage
+  }
+
 
   /**
    * Clicks a dashboard-defined button with the given view integer button number.  This

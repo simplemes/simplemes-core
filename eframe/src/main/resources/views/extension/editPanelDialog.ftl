@@ -8,6 +8,6 @@
   <@efField field="panel" value="${params.panel!''}" width=20 required="true"/>
   </@efForm>
 
-  ${params._variable}.postScript = 'tk.focus("panel");$$("editPanel").setValues({originalPanel: "${params.panel!''}"},true)';
+  ${params._variable}.postScript = 'ef.focus("panel");$$("editPanel").setValues({originalPanel: "${params.panel!''}"},true)';
 
 </script>

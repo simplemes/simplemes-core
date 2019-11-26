@@ -65,7 +65,7 @@ Javascript object:
   <@efField field="RMA.customerID" label="Customer ID"/>
   <@efButtonGroup>
     <@efButton label="Log Failure"
-               click="dashboard.postActivity('logFailure','/sample/dashboard/echo','${panel}');"/> // <.>
+               click="dashboard.postActivity('logFailure','/test/dashboard/echo','${panel}');"/> // <.>
     <@efButton label="cancel.label" click="dashboard.finished('${panel}',{cancel: true})"/> // <.>
   </@efButtonGroup>
 </@efForm>

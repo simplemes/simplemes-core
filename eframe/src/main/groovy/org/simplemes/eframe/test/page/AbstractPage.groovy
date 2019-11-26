@@ -39,6 +39,7 @@ class AbstractPage extends Page {
     messages { $("div#messages") }
     button { id -> $('div.webix_el_button', view_id: id) }
     buttonTooltip { id -> $('div.webix_el_button', view_id: id).find('div').@title }
+    textField { id -> module(new TextFieldModule(field: id)) }
     configButton(required: false) { $('div.webix_el_button', view_id: 'configButton') }
     logoutButton(required: false) { $('a', id: 'LogoutLink') }
     taskMenuButton { $('div.webix_el_button', view_id: "_taskMenuButton").find('button') }

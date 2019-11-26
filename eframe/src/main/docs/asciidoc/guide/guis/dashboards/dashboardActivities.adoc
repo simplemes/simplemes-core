@@ -51,7 +51,7 @@ HttpResponse start(HttpRequest request, @Nullable Principal principal) {
     <@efField field="product" value="CM3056857"/>
     <@efButtonGroup>
       <@efButton label="Log Failure"   // <.>
-        click="dashboard.postActivity('logFailure','/sample/dashboard/log','${params._panel}');"/> // <.>
+        click="dashboard.postActivity('logFailure','/test/dashboard/log','${params._panel}');"/> // <.>
       <@efButton label="cancel.label" click="dashboard.finished('${params._panel}')"/>  // <.>
     </@efButtonGroup>
   </@efForm>
@@ -130,7 +130,7 @@ unique names on the page.
 ----
 <script>
   ${params._variable}.done =  function() {  // <.>
-    dashboard.postActivity('logFailure','/sample/dashboard/log','${params._panel}');
+    dashboard.postActivity('logFailure','/test/dashboard/log','${params._panel}');
     ef.displaymessage({info: 'Finished.});
   }
   <@efForm id="logFailure" dashboard=true>
@@ -225,7 +225,7 @@ HttpResponse rma(HttpRequest request, @Nullable Principal principal) {  // <.>
     <@efField field="customer" value="ACME_101"/>
     <@efButtonGroup>
       <@efButton label="RMA"  // <.>
-                 click="dashboard.postActivity('logFailure','/sample/dashboard/rma','${panel}');"/>
+                 click="dashboard.postActivity('logFailure','/test/dashboard/rma','${panel}');"/>
       <@efButton label="cancel.label" click="dashboard.finished('${panel}')"/>
     </@efButtonGroup>
   </@efForm>
@@ -260,7 +260,7 @@ value from that field. When the button is pressed, the following non-GUI activit
 ----
 <script>  // <.>
   var order = document.getElementById('order').value;  // <.>
-  dashboard.postActivity({order: order},'/sample/dashboard/start','${params._panel}', // <.>
+  dashboard.postActivity({order: order},'/test/dashboard/start','${params._panel}', // <.>
                          {success: function(res) {ef.displayMessage({info: res})} });
 </script>
 

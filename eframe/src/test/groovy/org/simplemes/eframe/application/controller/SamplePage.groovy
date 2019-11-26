@@ -13,7 +13,7 @@ import geb.Page
  */
 class SamplePage extends Page {
 
-  static url = '/sample/dashboard'
+  static url = '/test/dashboard'
   //static url = '/'
 
   static at = { true  /*title.contains 'Dashboard'*/ }
