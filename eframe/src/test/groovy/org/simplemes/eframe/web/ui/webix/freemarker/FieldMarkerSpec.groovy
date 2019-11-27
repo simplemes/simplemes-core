@@ -186,6 +186,48 @@ class FieldMarkerSpec extends BaseMarkerSpecification {
     JavascriptTestUtils.extractProperty(titleFieldLine, 'inputWidth') == """tk.pw("20em")"""
   }
 
+  def "verify that the marker generates the field - maxLength specified quoted"() {
+    given: 'a mocked domain'
+    new MockDomainUtils(this, [SampleParent]).install()
+
+    when: 'the marker is built'
+    def src = """
+      <@efForm id="edit">
+        <@efField field="title" maxLength="23"/>
+      </@efForm>
+    """
+
+    def page = execute(source: src, controllerClass: SampleParentController)
+
+    then: 'the javascript is legal'
+    checkPage(page)
+
+    and: 'the field width is correct'
+    def titleFieldLine = TextUtils.findLine(page, 'id: "title"')
+    JavascriptTestUtils.extractProperty(titleFieldLine, 'attributes').contains('maxlength: 23')
+  }
+
+  def "verify that the marker generates the field - maxLength specified unquoted"() {
+    given: 'a mocked domain'
+    new MockDomainUtils(this, [SampleParent]).install()
+
+    when: 'the marker is built'
+    def src = """
+      <@efForm id="edit">
+        <@efField field="title" maxLength=43/>
+      </@efForm>
+    """
+
+    def page = execute(source: src, controllerClass: SampleParentController)
+
+    then: 'the javascript is legal'
+    checkPage(page)
+
+    and: 'the field width is correct'
+    def titleFieldLine = TextUtils.findLine(page, 'id: "title"')
+    JavascriptTestUtils.extractProperty(titleFieldLine, 'attributes').contains('maxlength: 43')
+  }
+
   def "verify that the marker generates the field - after field specified with efEdit"() {
     given: 'a mocked domain'
     new MockDomainUtils(this, [SampleParent]).install()

@@ -35,6 +35,7 @@ import java.security.Principal
 /**
  * Test controller for dashboard testing.  This is only exposed in test mode.
  * Provides ability to display arbitrary dashboard activities and to handle request from the dashboard.
+ * Also provides some simple dashboard activities that help with GUI testing.
  * <p>
  * <b>Note:</b> This is only exposed as a controller in Test mode.
  *
@@ -43,7 +44,82 @@ import java.security.Principal
 @Secured(SecurityRule.IS_ANONYMOUS)
 @Requires(env = ["test", "dev"])
 @Controller("/test/dashboard")
+@SuppressWarnings("unused")
 final class DashboardTestController extends BaseController {
+
+  /**
+   * A simple dashboard activity that will display dashboard events (as JSON) as they are received.
+   */
+  public static final EMPTY_ACTIVITY = '''
+      <@efForm id="empty" dashboard=true>
+      <@efHTML>
+        <h4"">Empty</h4>
+      </@efHTML>
+      </@efForm>
+    '''
+  /**
+   * A simple dashboard activity that will display dashboard events (as JSON) as they are received.
+   */
+  public static final DISPLAY_EVENT_ACTIVITY = '''
+      <@efForm id="eventDisplay" dashboard=true>
+      <@efHTML>
+        <h4"">Events</h4>
+        <span id="events"></span>
+      </@efHTML>
+      </@efForm>
+      ${params._variable}.handleEvent = function(event) { 
+        document.getElementById("events").innerHTML += JSON.stringify(event)+"<br>";
+      }
+    '''
+
+  /**
+   * A simple dashboard activity that will parameters provided by the dashboard when displayed.
+   * This is suitable for use as a button activity.
+   */
+  public static final DISPLAY_PARAMETERS_ACTIVITY = '''
+      <@efForm id="parameterDisplay" dashboard=true>
+      <@efHTML>
+        <h4"">Parameters</h4>
+        <span id="parameters">
+          <#list .data_model.params?keys as key>
+            ${key}=${params[key]}<br>
+          </#list>
+        </span>
+      </@efHTML>
+      </@efForm>
+    '''
+
+  /**
+   * A simple dashboard activity with a single input field that will trigger a dashboard event.
+   * The event is created from the content of the input field (JSON).
+   * Also displays any events received.
+   */
+  public static final TRIGGER_EVENT_ACTIVITY = '''
+      <@efForm id="eventTrigger" dashboard=true>
+        <@efHTML>
+          <h4"">Trigger Events</h4>
+        </@efHTML>
+        <@efField field="eventSource" id="eventSource" maxLength=999/>
+        <@efButtonGroup>
+          <@efButton id="triggerEvent" label="Trigger" click="${params._variable}.sendEvent()"/>
+        </@efButtonGroup>
+        <@efHTML>
+          <h4"">Events</h4>
+          <span id="events"></span>
+        </@efHTML>
+      </@efForm>
+      ${params._variable}.handleEvent = function(event) { 
+        document.getElementById("events").innerHTML += JSON.stringify(event)+"<br>";
+      }
+      ${params._variable}.sendEvent = function() {
+        var s = document.getElementById("eventSource").value;
+        document.getElementById("events").innerHTML += s+"new <br>";
+        var event = JSON.parse(s);  
+        dashboard.sendEvent(event);
+      }
+      
+    '''
+
 
   /**
    * Serves up a page for the dashboard testers. This is served from an .ftl file.

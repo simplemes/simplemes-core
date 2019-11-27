@@ -44,8 +44,13 @@ class FieldMarker extends BaseMarker {
     } else {
       // Not a domain reference, so assume some values.
       fieldName = fullFieldName
+      def max = parameters.maxLength ?: '40'
+      if (max instanceof BigDecimal) {
+        max = max.intValue()
+      }
       fieldDefinition = new SimpleFieldDefinition(name: fieldName, type: String,
-                                                  format: StringFieldFormat.instance, maxLength: 40)
+                                                  format: StringFieldFormat.instance,
+                                                  maxLength: Integer.valueOf(max))
     }
 
     def id = parameters.id ?: fieldName ?: 'unknown'
