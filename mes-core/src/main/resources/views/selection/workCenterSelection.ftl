@@ -33,6 +33,23 @@ ${variable}.orderLSNChangeByUser = function(newValue) {
   var list = [{order: newValue}];
   dashboard.sendEvent({type: 'ORDER_LSN_CHANGED',source: "/selection/workCenterSelection",  list: list});
 }
+${variable}.provideParameters = function() {
+  var wc= document.getElementById("workCenter").innerText;
+  var order= document.getElementById("order").value;
+  return {
+    workCenter: wc, order: order
+  }
+}
+${variable}.handleEvent = function(event) {
+  if (event.type == 'WORK_LIST_SELECTED') {
+    var list = event.list;
+    var order = list[0].order;
+    if (list.length>1) {
+      order = ef.lookup('multiplesSelected.label');
+    }
+    document.getElementById("order").value = order;
+  }
+}
 
 <@efForm id="wcSelection" dashboard="buttonHolder">
   <@efField field="LSN.lsn" id="order" label="orderLsn.label" onChange="${variable}.orderLSNChangeByUser(newValue)">
@@ -46,5 +63,6 @@ ${variable}.orderLSNChangeByUser = function(newValue) {
 </@efForm>
 
 
+<@efPreloadMessages codes="multiplesSelected.label"/>
 
 </script>
