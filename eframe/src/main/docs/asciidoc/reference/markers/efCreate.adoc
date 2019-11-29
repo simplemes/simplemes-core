@@ -18,7 +18,7 @@ This provides the core for the standard definition create page.
 
 For an overview, see link:guide.html#efcreate[efCreate^] icon:share-square-o[role="link-blue"].
 See the groovydoc
-link:groovydoc/org/simplemes/eframe/web/ui/webix/marker/CreateMarker.html[CreateMarker^]
+link:groovydoc/org/simplemes/eframe/web/ui/webix/freemarker/CreateMarker.html[CreateMarker^]
 icon:share-square-o[role="link-blue"] for additional details.
 
 

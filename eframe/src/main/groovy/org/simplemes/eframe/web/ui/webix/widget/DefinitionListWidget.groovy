@@ -18,7 +18,7 @@ import org.simplemes.eframe.web.ui.webix.DomainToolkitUtils
 
 /**
  * The base definition list widget class.  Produces the UI elements needed for a list definition page.
- * This includes a toolbar.  This is not suitable for use inside of a <pre>&lt;@efForm/&gt;</pre> marker.
+ * This includes a toolbar.  This is not suitable for use inside of a <code>&lt;@efForm/&gt;</code> marker.
  *
  */
 class DefinitionListWidget extends BaseWidget {

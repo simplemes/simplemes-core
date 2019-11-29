@@ -12,7 +12,7 @@ import org.simplemes.eframe.web.ui.webix.widget.DefinitionListWidget
 /**
  * Provides the efList Freemarker marker implementation.
  * This creates the HTML/JS needed to display a list of data (grid).
- * This works with the grid family of widgets.
+ * This delegates most of the work to the {@link DefinitionListWidget}.
  */
 class ListMarker extends BaseMarker {
   /**

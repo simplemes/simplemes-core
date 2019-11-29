@@ -15,7 +15,7 @@ This field marker currently must be used inside of an <<efForm>> marker.
 
 For an overview, see link:guide.html#effield[efField^] icon:share-square-o[role="link-blue"].
 For more details, see the groovydoc
-link:groovydoc/org/simplemes/eframe/web/ui/webix/marker/FieldMarker.html[FieldMarker^]
+link:groovydoc/org/simplemes/eframe/web/ui/webix/freemarker/FieldMarker.html[FieldMarker^]
 icon:share-square-o[role="link-blue"] or
 link:groovydoc/org/simplemes/eframe/web/ui/webix/widget/TextFieldWidget.html[TextFieldWidget^]
 icon:share-square-o[role="link-blue"].

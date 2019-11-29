@@ -16,7 +16,7 @@ This provides the core for the standard definition show page.
 
 For an overview, see link:guide.html#efshow[efShow^] icon:share-square-o[role="link-blue"].
 See the groovydoc
-link:groovydoc/org/simplemes/eframe/web/ui/webix/marker/ShowMarker.html[ShowMarker^]
+link:groovydoc/org/simplemes/eframe/web/ui/webix/freemarker/ShowMarker.html[ShowMarker^]
 icon:share-square-o[role="link-blue"] for additional details.
 
 

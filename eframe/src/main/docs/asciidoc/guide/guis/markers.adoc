@@ -12,6 +12,7 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc-header]#Support Elements#
 [inline-toc]#<<efAsset>>#
+[inline-toc]#<<efGrid>>#
 [inline-toc]#<<efGUISetup>>#
 [inline-toc]#<<efHTML>>#
 [inline-toc]#<<efLanguage>>#
@@ -65,6 +66,8 @@ include::markers/efEdit.adoc[]
 include::markers/efField.adoc[]
 
 include::markers/efForm.adoc[]
+
+include::markers/efGrid.adoc[]
 
 include::markers/efGUISetup.adoc[]
 

@@ -1,7 +1,7 @@
 ==== efList
 
 The link:reference.html#eflist[efList^] icon:share-square-o[role="link-blue"] marker
-is used to build a pageable GUI grid with one or more columns of data.
+is used to build a definition list page with one or more columns of data.
 By default, the row values are found by a controller `list()` method using the json format
 with toolkit-style controller parameters.
 This can be used to display domain classes or display any arbitrary POGO classes.

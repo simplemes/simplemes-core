@@ -6,7 +6,7 @@ with the asset pipeline.  This converts a simple URI to the digest form
 to allow proper caching of assets in the browse.
 
 For an overview, see link:guide.html#efasset[efAsset^] icon:share-square-o[role="link-blue"].
-See the groovydoc link:groovydoc/org/simplemes/eframe/web/ui/webix/marker/AssetMarker.html[AssetMarker^]
+See the groovydoc link:groovydoc/org/simplemes/eframe/web/ui/webix/freemarker/AssetMarker.html[AssetMarker^]
 icon:share-square-o[role="link-blue"] for additional details.
 
 ==== Parameters/Body

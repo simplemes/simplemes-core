@@ -16,7 +16,7 @@ page refresh.
 
 For an overview, see link:guide.html#efform[efForm^] icon:share-square-o[role="link-blue"].
 For more details, see the groovydoc
-link:groovydoc/org/simplemes/eframe/web/ui/webix/marker/FormMarker.html[FormMarker^]
+link:groovydoc/org/simplemes/eframe/web/ui/webix/freemarker/FormMarker.html[FormMarker^]
 icon:share-square-o[role="link-blue"].
 
 This will work with fields defined using other markers (inside of the

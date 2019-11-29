@@ -13,7 +13,7 @@ is used to build a horizontal group of buttons with reasonable spacing.
 
 For an overview, see link:guide.html#efbuttongroup[efButtonGroup^] icon:share-square-o[role="link-blue"].
 For more details, see the groovydoc
-link:groovydoc/org/simplemes/eframe/web/ui/webix/marker/ButtonGroupMarker.html[ButtonGroupMarker^]
+link:groovydoc/org/simplemes/eframe/web/ui/webix/freemarker/ButtonGroupMarker.html[ButtonGroupMarker^]
 icon:share-square-o[role="link-blue"].
 
 This `efButtonGroup` marker can only be used with the <<efButton>> marker.

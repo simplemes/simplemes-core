@@ -10,6 +10,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<efEdit>>#
 [inline-toc]#<<efField>>#
 [inline-toc]#<<efForm>>#
+[inline-toc]#<<efGrid>>#
 [inline-toc]#<<efGUISetup>>#
 [inline-toc]#<<efHTML>>#
 [inline-toc]#<<efList>>#
@@ -71,6 +72,8 @@ include::efField.adoc[]
 include::efForm.adoc[]
 
 include::efList.adoc[]
+
+include::efGrid.adoc[]
 
 include::efGUISetup.adoc[]
 
