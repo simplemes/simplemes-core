@@ -1,6 +1,6 @@
 name: BuildAndTestAll
 
-on: [pull]  # Should be push for build...
+on: [pull_request]  # Should be push for build...
 
 jobs:
   build:
