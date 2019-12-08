@@ -15,7 +15,7 @@ import groovy.transform.ToString
  * Fields include: orderId, sequence,qty,product, notes
  */
 @Entity
-@ToString(includePackage = false, includeNames = true, excludes = ['errors', 'attached', 'dirtyPropertyNames'])
+@ToString(includePackage = false, includeNames = true, includes = ['orderId', 'sequence', 'qty', 'product', 'notes', 'id', 'version'])
 @EqualsAndHashCode(includes = ['orderId', 'sequence'])
 class OrderLine {
   Long orderId

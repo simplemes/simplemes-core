@@ -6,8 +6,10 @@ import groovy.util.logging.Slf4j
 import io.micronaut.discovery.event.ServiceStartedEvent
 import io.micronaut.runtime.event.annotation.EventListener
 import io.micronaut.scheduling.annotation.Async
+import org.grails.orm.hibernate.HibernateDatastore
 import org.simplemes.eframe.date.EFrameDateFormat
 import org.simplemes.eframe.json.HibernateAwareJacksonModule
+import org.simplemes.eframe.test.EframePersistenceListener
 
 import javax.inject.Singleton
 
@@ -40,6 +42,8 @@ class StartupHandler {
   void onStartup(ServiceStartedEvent event) {
     log.debug('Server Started with configuration {}', Holders.configuration)
 
+    //configureHibernate()
+
     // Start Initial data load.
     def loader = Holders.applicationContext.getBean(InitialDataLoader)
     //println "loader = $loader"
@@ -55,6 +59,18 @@ class StartupHandler {
     // Modify the Object mapper
     def mapper = Holders.applicationContext.getBean(ObjectMapper)
     configureJacksonObjectMapper(mapper)
+    // TODO: Look at configuration https://stackoverflow.com/questions/59160012/get-micronaut-to-use-my-instance-of-jacksonconfiguration
+    // needs 1.3.0 or 1.2.8.
+
+  }
+
+  /**
+   * Configures the hibernate data store for use with the framework.
+   */
+  void configureHibernate() {
+    def hibernateDataStore = Holders.applicationContext.getBean(HibernateDatastore)
+    def listener = new EframePersistenceListener(hibernateDataStore)
+    hibernateDataStore.getApplicationEventPublisher().addApplicationListener(listener)
 
   }
 

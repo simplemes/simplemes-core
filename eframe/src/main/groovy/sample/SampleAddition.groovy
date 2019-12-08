@@ -56,7 +56,8 @@ class SampleAddition extends BaseAddition implements AdditionInterface {
         name 'orderLines'
         after 'dueDate'
       }
-      guiHints 'sequence@default="tk.findMaxGridValue(gridName, \'sequence\')+10"'
+      guiHints 'sequence@default="tk.findMaxGridValue(gridName, \'sequence\')+10"' +
+                 'product@default="\'P\'+tk.findMaxGridValue(gridName, \'sequence\')+10"'
     }
   }
 

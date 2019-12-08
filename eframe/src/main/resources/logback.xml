@@ -29,6 +29,7 @@
     <logger name="io.netty.handler.logging" level="warn"/>
 
     <logger name="org.simplemes.eframe" level="warn"/>
+    <logger name="org.simplemes.eframe.custom" level="trace"/>
     <logger name="org.simplemes.eframe.web.ui" level="warn"/>
     <logger name="org.simplemes.eframe.security" level="warn"/>
     <logger name="org.simplemes.eframe.test" level="warn"/>
