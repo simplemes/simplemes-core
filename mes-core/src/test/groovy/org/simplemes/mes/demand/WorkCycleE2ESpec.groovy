@@ -40,9 +40,11 @@ class WorkCycleE2ESpec extends BaseSpecification {
 
     when: 'the order is released and worked'
     def nTestsTotal = 100
-    long total1=0,total2=0,total3=0
+    long total1 = 0
+    long total2 = 0
+    long total3 = 0
     for (i in (1..nTestsTotal)) {
-      def order1=null
+      def order1 = null
       Order.withTransaction {
         order1 = new Order(order: "M100$i", qtyToBuild: 10).save()
       }
@@ -71,7 +73,7 @@ class WorkCycleE2ESpec extends BaseSpecification {
       file << "${ISODate.format(new DateOnly())},$elapsed1, $elapsed2, $elapsed3\n"
 
     }
-    System.out.println("averages = ${total1/nTestsTotal},${total2/nTestsTotal},${total3/nTestsTotal}")
+    System.out.println("averages = ${total1 / nTestsTotal},${total2 / nTestsTotal},${total3 / nTestsTotal}")
 
     then: ''
   }

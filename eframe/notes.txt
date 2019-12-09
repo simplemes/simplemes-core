@@ -10,6 +10,45 @@ Support link in markers.  Content of <@efField>?
  Some other mechanism?
 
 
+Micronaut Data Conversion Tasks
+===============================
+DateOnly conversion.
+@Entity replacement with GDSL.
+  Use GDSL to handle code completion.  See https://www.tothenew.com/blog/gdsl-awesomeness-introduction-to-gdsl-in-intellij-idea/
+  Adds these methods
+    getChildRecords, addToChildRecords, save logic.
+    Lazy load reference - uses txn.
+    save findByXYZ(),findById(), .delete()
+  Bypass explicit repository use for common U/C's
+  withTransaction {} ?
+  Validation support.
+  Version and opt locking (custom JDBCOperations).
+Convert to UUID's, called uuid.  Update docs for new terms (ID)
+
+Support cache in specific use cases:
+  UserPreferences - timed, any update for user flushed cache? done in PreferenceHolder?
+  FieldExtension - Already cached at the domainUtils level with FieldGUIExtension via ExtensibleFieldHelper
+  Others as needed.
+Fix BaseSpecification for new startup logic.
+Solve list() method ad-hoc sorting.
+  Add pagination support.
+  Find way to execute dynamic query and populate domain from result set.  Maybe use DomainBinder?
+Move business logic to services.  No longer in Domain.
+Use @CompileStatic for domains/services/controllers, if possible.  May conflict with dynamic @Entity support.
+Fix save/update/delete of custom OrderLine records. Generic hook mechanism?
+Add SQL DDL logic and Liquid-base support.
+  Find way to auto-generate core stuff.
+Add option to run tests against Postgres (manual only).
+
+Docs
+=================
+New Guidelines
+  Move all business logic to OrderService (populateLSNs).
+    Leave lazy loaders in domain (getLSNSequence()).
+  Use UUID for entities
+Update dependencies
+Add notes on why using MN-Data, not hibernate.
+
 Tasks
 =====
 Tasks left out

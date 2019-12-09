@@ -18,6 +18,9 @@ docs\asciidoc\guide
 docs\asciidoc\reference
   dashboards
 
+Performance
+------------
+WorkCycleE2ESpec - averages = 15.57,9.2,9.04 12/9/2019.
 
 
 
