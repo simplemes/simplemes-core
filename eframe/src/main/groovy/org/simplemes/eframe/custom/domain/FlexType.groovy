@@ -1,13 +1,14 @@
 package org.simplemes.eframe.custom.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
-import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
+
+//import grails.gorm.annotation.Entity
+
 import org.simplemes.eframe.custom.ConfigurableTypeFieldDefinition
 import org.simplemes.eframe.data.ChoiceListItemInterface
 import org.simplemes.eframe.data.ConfigurableTypeInterface
 import org.simplemes.eframe.data.FieldDefinitionInterface
-import org.simplemes.eframe.data.annotation.ExtensibleFields
 import org.simplemes.eframe.misc.FieldSizes
 
 /**
@@ -16,12 +17,16 @@ import org.simplemes.eframe.misc.FieldSizes
  * <p/>
  * The actual data values are typically stored in text fields.
  */
-@Entity
-@ExtensibleFields()
+//@Entity
+// TODO: Replace with non-hibernate alternative
+//@ExtensibleFields()
 @EqualsAndHashCode(includes = ["flexType"])
 @JsonIgnoreProperties(['value'])
 //@ToString(includePackage = false, includeNames = true)
 class FlexType implements ConfigurableTypeInterface, ChoiceListItemInterface {
+
+  Long getId() { return null }
+
   /**
    * The BASIC category type.
    */

@@ -16,7 +16,7 @@ import org.simplemes.eframe.test.UnitTestUtils
  */
 class ArchiverFactorySpec extends BaseSpecification {
 
-  static specNeeds = [EMBEDDED]
+  static specNeeds = [SERVER]
 
   def "verify that the default FileArchiver is returned"() {
     when: 'the archiver is triggered'

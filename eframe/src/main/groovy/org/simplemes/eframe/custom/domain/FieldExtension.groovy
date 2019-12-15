@@ -1,6 +1,6 @@
 package org.simplemes.eframe.custom.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import org.simplemes.eframe.misc.FieldSizes
 
@@ -9,7 +9,7 @@ import org.simplemes.eframe.misc.FieldSizes
  * by the Enterprise Framework plugin at startup or when the custom field is changed.
  *
  */
-@Entity
+//@Entity
 @EqualsAndHashCode
 class FieldExtension extends AbstractField {
 

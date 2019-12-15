@@ -1,6 +1,6 @@
 package sample.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.simplemes.eframe.data.annotation.ExtensibleFields
@@ -21,9 +21,10 @@ import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
  * <b>Fields</b> Include: name, title,
  *   qty, count, enabled, dateTime, dueDate, transientField, notes, reportTimeInterval, order, status, dateCreated, lastUpdated
  */
-@Entity
-@ToString(includePackage = false, includeNames = true, excludes = ['dateCreated', 'lastUpdated', 'errors', 'dirtyPropertyNames', 'attached', 'dirty'])
+//@Entity
+@ToString(includePackage = false, includeNames = true, excludes = ['dateCreated', 'lastUpdated'])
 @EqualsAndHashCode
+// TODO: Replace with non-hibernate alternative
 @ExtensibleFields(maxSize = 513, fieldName = 'anotherField')
 //@JsonIgnoreProperties(['hibernateLazyInitializer','handler', 'readOnly', 'dirty'])
 class AllFieldsDomain {

@@ -14,30 +14,24 @@ import io.micronaut.runtime.server.EmbeddedServer
 import org.junit.Rule
 import org.junit.rules.TestName
 import org.simplemes.eframe.application.Holders
-import org.simplemes.eframe.application.InitialDataLoader
 import org.simplemes.eframe.application.StartupHandler
 import org.simplemes.eframe.controller.ControllerUtils
-import org.simplemes.eframe.custom.AdditionHelper
 import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.custom.domain.FieldGUIExtension
 import org.simplemes.eframe.custom.gui.FieldInsertAdjustment
-import org.simplemes.eframe.data.DateOnlyType
-import org.simplemes.eframe.data.EFrameHibernatePersistenceInterceptor
-import org.simplemes.eframe.data.EncodedType
 import org.simplemes.eframe.data.format.BasicFieldFormat
 import org.simplemes.eframe.data.format.StringFieldFormat
-import org.simplemes.eframe.date.DateOnly
-import org.simplemes.eframe.domain.DomainFinder
 import org.simplemes.eframe.domain.DomainUtils
+import org.simplemes.eframe.domain.annotation.DomainEntityHelper
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.json.HibernateAwareJacksonModule
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.LogUtils
 import org.simplemes.eframe.misc.TypeUtils
-import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.security.SecurityUtils
-import org.simplemes.eframe.security.domain.User
 import spock.lang.Shared
+
+import javax.transaction.Transactional
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.
@@ -46,14 +40,14 @@ import spock.lang.Shared
 */
 
 /**
- * The base class for most non-GUI tests.  This supports starting an embedded server and the hibernate data store,
- * when needed.  These needs are flagged in your test classes with several static variables:
+ * The base class for most non-GUI tests.  This supports starting an embedded server and cleanup of the database tables.
+ * These needs are flagged in your test classes with several static variables:
  * <pre>
- *   static specNeeds = [EMBEDDED]
+ *   static specNeeds = [SERVER]
  *   static dirtyDomains = [User]
  * </pre>
  *
- * If the EMBEDDED server is needed, then it will be started once for the session.  This server will be shared with all
+ * If the SERVER server is needed, then it will be started once for the session.  This server will be shared with all
  * tests run during the session.<p>
  * The <code>dirtyDomains</code> value indicates that your test will be using GORM/Hibernate.  That sub-system will be started
  * for you and all records in the given domains will be deleted on cleanup.
@@ -84,20 +78,20 @@ class BaseSpecification extends GebSpec {
    * Declares that the spec needs the EmbeddedServer started.  
    * Possible value for the <code>specNeeds</code> list.        Use BaseAPISpecification for most embedded server tests.
    */
+  // TODO: Delete this constant
   static final String EMBEDDED = "EMBEDDED"
+
+  /**
+   * Declares that the spec needs the EmbeddedServer started.
+   * Possible value for the <code>specNeeds</code> list.        Use BaseAPISpecification for most embedded server tests.
+   */
+  static final String SERVER = "EMBEDDED"
 
   /**
    * Declares that the spec will be testing GUI features.  This forces EMBEDDED.
    * Possible value for the <code>specNeeds</code> list.
    */
   static final String GUI = "GUI"
-
-  /**
-   * Declares that the spec needs GORM/Hibernate data store started.  If the <code>dirtyDomains</code>
-   * is set, then you don't need to add this to the normal <code>specNeeds</code> list.
-   * Possible value for the <code>specNeeds</code> list.
-   */
-  static final String HIBERNATE = "HIBERNATE"
 
   /**
    * Declares that the spec needs the Jackson object mapper in the application context.
@@ -128,15 +122,7 @@ class BaseSpecification extends GebSpec {
   List<Class> otherDirtyDomains = []
 
   static EmbeddedServer embeddedServer
-  static hibernateDatastore
   static boolean threadFinished
-  static boolean headless = false
-  static boolean slowHibernateCheckCompleted = false
-  /**
-   * The number of ms to delay the startup of the hibernate or server.  Used for testing.
-   */
-  static long hibernateStartDelay = 0
-  static long serverStartDelay = 0
 
   /**
    * Used to track if a new time is needed for the tests.txt output.
@@ -152,8 +138,9 @@ class BaseSpecification extends GebSpec {
    * The setup method.  This method writes the test in IDEA runner format to allow us to re-produce the
    * order of execution.  Writes each test suite to 'tmp/tests.txt'.
    */
-  @SuppressWarnings(["Println", "SystemOutPrint"])
+  @SuppressWarnings(["SystemOutPrint"])
   def setupSpec() {
+    StartupHandler.preStart()
     // Uses -DwriteTests=true to write the tests as they are executed to a text file for sequence testing.
     // Supports DwriteTests=echo To write the test name to the output.
     def writeTests = System.getProperty('writeTests')
@@ -177,83 +164,13 @@ class BaseSpecification extends GebSpec {
    */
   @SuppressWarnings(["Println", "GroovyAssignabilityCheck", "SystemOutPrint"])
   def setup() {
-    // This method has some ugly logic to avoid a race condition between the hibernate startup and the embedded server
-    // startup.  Without it, the initial data load might not happen under all cases.
-    // This usually only applies to when test Spec is run by itself.
-    StartupHandler.preStart()
-    if (needsHibernate() && hibernateDatastore == null) {
-      // Start hibernate in a separate thread.
-      threadFinished = false
-      def t = new Thread(
-        {
-          if (!hibernateDatastore) {
-            try {
-              def start = System.currentTimeMillis()
-              if (hibernateStartDelay) {
-                log.info('setup() delay hibernate startup by {}ms', hibernateStartDelay)
-                sleep(hibernateStartDelay)
-              }
+    startServerIfNeeded()
 
-              // Build the std mappings for the encoded type and date only type from the additions
-              // (internal and others found in the bootstrap).
-              def typeMap = [:]
-              for (addition in AdditionHelper.instance.additions) {
-                for (clazz in addition.encodedTypes) {
-                  typeMap[clazz] = EncodedType
-                }
-              }
-              def mappings = {
-                typeMap.each { k, v ->
-                  mapping.userTypes[k] = v
-                }
-                // Add the standard DateOnly
-                mapping.userTypes[DateOnly] = DateOnlyType
-              }
-
-              Map configuration = [
-                'hibernate.cache.use_second_level_cache': false,
-                'hibernate.hbm2ddl.auto'                : 'update',
-                'hibernate.session_factory'             : EFrameHibernatePersistenceInterceptor,
-                'grails.gorm.failOnError'               : true,
-                'grails.gorm.failOnErrorPackages'       : ['org.simplemes', 'sample'],
-                'grails.gorm.default.mapping'           : mappings,
-              ]
-              def classes = DomainFinder.instance.topLevelDomainClasses
-              def packageList = classes*.package
-              hibernateDatastore = new EFrameHibernateDatastore(configuration, packageList as Package[])
-              Holders.hibernateDatastore = hibernateDatastore
-              def end = System.currentTimeMillis()
-              def s = hibernateStartDelay ? "- delayed ${hibernateStartDelay} for testing" : ""
-              System.out.println("  Hibernate Startup ${end - start} ms $s")
-              log.info("Hibernate startup {}ms", end - start)
-              if (!embeddedServer) {
-                // If hibernate beat the embedded server, then disable the work-around.
-                slowHibernateCheckCompleted = true
-              }
-            } catch (Exception e) {
-              log.error('Hibernate Startup {}', e)
-            }
-            threadFinished = true
-          }
-        } as Runnable)
-      t.start()
-    }
 
     //def x = new DefaultEnvironment('test')
     //println "x = $x"
 
     if (needsServer() && embeddedServer == null) {
-      if (hibernateDatastore) {
-        // Handle the case when hibernate was already running before this test (e.g. all test case).
-        slowHibernateCheckCompleted = true
-      }
-      //println "starting embedded"
-      def start = System.currentTimeMillis()
-      if (serverStartDelay) {
-        log.info('setup() delay server startup by {}ms', serverStartDelay)
-        sleep(serverStartDelay)
-      }
-      embeddedServer = ApplicationContext.run(EmbeddedServer)
 
 
       def end = System.currentTimeMillis()
@@ -261,62 +178,37 @@ class BaseSpecification extends GebSpec {
         log.debug('All Beans: {}', Holders.applicationContext.allBeanDefinitions*.name)
       }
 
-      def s = serverStartDelay ? "- delayed ${serverStartDelay} for testing" : ""
 
-      // Wait for the initial data loader to finish (up to 1 second).  Will check the count of rows in the User table.
-      // The committed data is not visible to other processes until about 100ms after the commit.
-      def waitStartTime = System.currentTimeMillis()
-      boolean done = false
-      while (!done) {
-        User.withTransaction {
-          done = User.count() > 0
-        }
-        // Make sure the wait does not go on too long.
-        def waitTime = (System.currentTimeMillis() - waitStartTime)
-        if (waitTime > 5000) {
-          System.out.println("  Waited too long for initial data load ($waitTime) ms.")
-          done = true
-        }
-        sleep(100)
+      // Finally, set the environment to test it not set already
+      if (!needsServer()) {
+        // Store a dummy environment for non-server tests.
+        Holders.fallbackEnvironment = Holders.fallbackEnvironment ?: new DefaultEnvironment('test')
       }
-      System.out.println("  Server Startup ${end - start} ms $s")
-      log.info("startup {}ms", end - start)
-    }
 
-    if (needsHibernate()) {
-      // Wait for hibernate to finish, but only if needed.
-      //sleep(100) // Disabled since this was executed for every hibernate test case.
-      while (!threadFinished) {
-        sleep(100)
+      // See if a mock Jackson ObjectMapper is needed and not already in an embedded server.
+      if ((!needsServer()) && needs(JSON) && embeddedServer == null) {
+        def objectMapper = new ObjectMapper()
+        objectMapper.registerModule(new HibernateAwareJacksonModule())
+        StartupHandler.configureJacksonObjectMapper(objectMapper)
+        new MockBean(this, ObjectMapper, objectMapper).install()  // Auto cleaned up
       }
-      // If the server finished first, then re-run the initial data load.
-      if (hibernateDatastore && embeddedServer && needsServer() && !slowHibernateCheckCompleted) {
-        slowHibernateCheckCompleted = true
-        def start = System.currentTimeMillis()
-        def loader = Holders.applicationContext.getBean(InitialDataLoader)
-        loader.dataLoad()
-        def end = System.currentTimeMillis()
-        System.out.println("Loaded Initial Data for slow Hibernate case ${end - start}ms")
+
+      // See if a mock extensible field helper is needed.
+      if (needs(EXTENSION_MOCK)) {
+        _mockFieldExtension = new MockFieldExtension(this).install()
       }
     }
+  }
 
-    // Finally, set the environment to test it not set already
-    if (!needsServer()) {
-      // Store a dummy environment for non-server tests.
-      Holders.fallbackEnvironment = Holders.fallbackEnvironment ?: new DefaultEnvironment('test')
-    }
-
-    // See if a mock Jackson ObjectMapper is needed and not already in an embedded server.
-    if ((!needsServer()) && needs(JSON) && embeddedServer == null) {
-      def objectMapper = new ObjectMapper()
-      objectMapper.registerModule(new HibernateAwareJacksonModule())
-      StartupHandler.configureJacksonObjectMapper(objectMapper)
-      new MockBean(this, ObjectMapper, objectMapper).install()  // Auto cleaned up
-    }
-
-    // See if a mock extensible field helper is needed.
-    if (needs(EXTENSION_MOCK)) {
-      _mockFieldExtension = new MockFieldExtension(this).install()
+  /**
+   * Starts an embedded server, if needed.
+   */
+  def startServerIfNeeded() {
+    if (needsServer() && embeddedServer == null) {
+      def start = System.currentTimeMillis()
+      embeddedServer = ApplicationContext.run(EmbeddedServer)
+      System.out.println("Started Server ${System.currentTimeMillis() - start}ms")
+      log.debug("All Beans = ${Holders.applicationContext.getAllBeanDefinitions()*.name}")
     }
   }
 
@@ -336,23 +228,22 @@ class BaseSpecification extends GebSpec {
    * Checks for any left-over records that may have been created by this test.
    * Checks all domains.
    */
+  @Transactional
   void checkForLeftoverRecords() {
-    if (!hibernateDatastore) {
+    if (!embeddedServer) {
       // No db, so nothing to check
       return
     }
     def start = System.currentTimeMillis()
     def allDomains = DomainUtils.instance.allDomains
     for (clazz in allDomains) {
-      User.withTransaction {
-        def allowed = InitialDataRecords.instance.records[clazz.simpleName]
-        def list = clazz.list()
-        list = list.findAll() { !allowed?.contains(TypeUtils.toShortString(it)) }
-        if (list) {
-          def s = "${list.size()} records leftover in domain ${clazz.simpleName} for test ${this.class.simpleName}.  List: $list"
-          log.error(s)
-          throw new IllegalStateException(s)
-        }
+      def allowed = InitialDataRecords.instance.records[clazz.simpleName]
+      def list = clazz.list()
+      list = list.findAll() { !allowed?.contains(TypeUtils.toShortString(it)) }
+      if (list) {
+        def s = "${list.size()} records leftover in domain ${clazz.simpleName} for test ${this.class.simpleName}.  List: $list"
+        log.error(s)
+        throw new IllegalStateException(s)
       }
     }
     def elapsed = System.currentTimeMillis() - start
@@ -364,7 +255,7 @@ class BaseSpecification extends GebSpec {
    * The common utility classes to check for a mocked instance.  Will reset them to their default (non-mocked) instance.
    * This typically includes {@link DomainUtils} and {@link ControllerUtils}.
    */
-  def utilityClassesToCheck = [DomainUtils, ControllerUtils]
+  def utilityClassesToCheck = [DomainUtils, ControllerUtils, DomainEntityHelper]
 
   /**
    * Cleans up any mocked .instance values in the common utility classes.
@@ -449,34 +340,17 @@ class BaseSpecification extends GebSpec {
   }
 
   /**
-   * Determines if this test class needs GORM/Hibernate.  Checks the <code>dirtyDomains</code> and
-   * <code>specNeeds</code> static values.
-   * @return True if needed.
-   */
-  boolean needsHibernate() {
-    if (needsServer()) {
-      // Make sure the server has hibernate for login and other DB needs.
-      // This won't slow startup by much.
-      return true
-    }
-    if (this.hasProperty('specNeeds')) {
-      if (this.specNeeds.contains(HIBERNATE)) {
-        return true
-      }
-    }
-    return this.hasProperty('dirtyDomains')
-  }
-
-  /**
    * Determines if this test class needs the servers started.
    * This is true if the <code>specNeeds</code> static values contain EMBEDDED or GUI.
    * @return True if needed.
    */
   boolean needsServer() {
     if (this.hasProperty('specNeeds')) {
-      return (this.specNeeds.contains(EMBEDDED) || this.specNeeds.contains(GUI))
+      return (this.specNeeds.contains(EMBEDDED) || this.specNeeds.contains(SERVER) || this.specNeeds.contains(GUI))
     }
-    return false
+
+    // dirtyDomains implies SERVER is needed.
+    return this.hasProperty('dirtyDomains')
   }
 
   /**
@@ -531,12 +405,11 @@ class BaseSpecification extends GebSpec {
    * Loads the initial data for the given domain class(s).  Also marks these domains as dirty.
    * @param classes The class(s).
    */
+  @Transactional
   void loadInitialData(Class... classes) {
     for (clazz in classes) {
-      clazz.withTransaction {
-        clazz.initialDataLoad()
-        otherDirtyDomains << clazz
-      }
+      clazz.initialDataLoad()
+      otherDirtyDomains << clazz
     }
   }
 
@@ -545,6 +418,7 @@ class BaseSpecification extends GebSpec {
    * array. Always cleans up UserPreference records.
    * @param tester The tester class <b>Required</b>.  Used to access the GEB features.
    */
+  static loggedOnce = false
   void cleanupDomainRecords() {
     if (this.hasProperty('dirtyDomains')) {
       for (domainClass in this.dirtyDomains) {
@@ -554,8 +428,13 @@ class BaseSpecification extends GebSpec {
     for (domainClass in otherDirtyDomains) {
       deleteAllRecords(domainClass)
     }
-    if (needs(HIBERNATE) || needs(GUI)) {
-      deleteAllRecords(UserPreference)
+    if (embeddedServer) {
+      if (!loggedOnce) {
+        println "Disabled UserPreference cleanup"
+        loggedOnce = true
+      }
+      // TODO: Re-enable when UserPreference is updated.
+      //deleteAllRecords(UserPreference)
     }
   }
 
@@ -564,23 +443,21 @@ class BaseSpecification extends GebSpec {
    * @param domainClass The domain to clean up.
    * @param ignoreInitialRecords If true, then the allowed initial data load records will nto be deleted.
    */
+  @Transactional
   @SuppressWarnings("GroovyAssignabilityCheck")
   void deleteAllRecords(Class domainClass, Boolean ignoreInitialRecords = true) {
-    domainClass.withTransaction {
-      def list = domainClass.list()
-      // Filter out any allowed records (usually from initial data load)
-      if (ignoreInitialRecords) {
-        def allowed = InitialDataRecords.instance.records[domainClass.simpleName]
-        list = list.findAll() { !(allowed?.contains(TypeUtils.toShortString(it))) }
-      }
-      if (list) {
-        log.debug("Deleting all({}) {} records", list.size(), domainClass.simpleName)
-      }
-      for (record in (list)) {
-        log.trace("  Deleting record '{}'", record)
-        //println "deleting record = $record"
-        record.delete(flush: true)
-      }
+    def list = domainClass.list()
+    // Filter out any allowed records (usually from initial data load)
+    if (ignoreInitialRecords) {
+      def allowed = InitialDataRecords.instance.records[domainClass.simpleName]
+      list = list.findAll() { !(allowed?.contains(TypeUtils.toShortString(it))) }
+    }
+    if (list) {
+      log.debug("Deleting all({}) {} records", list.size(), domainClass.simpleName)
+    }
+    for (record in (list)) {
+      log.trace("  Deleting record '{}'", record)
+      record.delete()
     }
   }
 
@@ -701,6 +578,7 @@ class BaseSpecification extends GebSpec {
     _mockFieldExtension.options << options
   }
 
+  // TODO: Move to a Test Utils method?
   /**
    * Convenience method to build a custom field for the given domain class.
    * @param options Contains: domainClass, fieldName, fieldFormat,valueClassName , afterFieldName or a 'list' of these elements.

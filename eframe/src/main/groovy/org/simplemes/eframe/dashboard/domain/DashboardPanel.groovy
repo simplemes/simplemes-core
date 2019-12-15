@@ -1,12 +1,12 @@
 package org.simplemes.eframe.dashboard.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import org.simplemes.eframe.misc.FieldSizes
 
 /**
  * Defines a single dashboard panel that displays contents.
  */
-@Entity
+//@Entity
 class DashboardPanel extends AbstractDashboardPanel {
 
   /**

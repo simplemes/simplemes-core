@@ -1,13 +1,11 @@
 package org.simplemes.eframe.web.ui.webix.freemarker
 
-import org.grails.datastore.mapping.validation.ValidationErrors
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.test.BaseMarkerSpecification
 import org.simplemes.eframe.test.JavascriptTestUtils
 import org.simplemes.eframe.test.MockDomainUtils
 import org.simplemes.eframe.test.MockFieldDefinitions
 import org.simplemes.eframe.test.UnitTestUtils
-import org.springframework.validation.FieldError
 import sample.controller.AllFieldsDomainController
 import sample.controller.SampleParentController
 import sample.domain.AllFieldsDomain
@@ -273,8 +271,8 @@ class BaseDefinitionPageMarkerSpec extends BaseMarkerSpecification {
     new MockDomainUtils(this, new MockFieldDefinitions(['name', 'title'])).install()
 
     and: 'a simulated domain record with an error on the title field'
-    def errors = new ValidationErrors('dummy')
-    errors.addError(new FieldError('sampleParent', 'title', 'bad'))
+    //def errors = new ValidationErrors('dummy')
+    //errors.addError(new FieldError('sampleParent', 'title', 'bad'))
     def sampleParent = new SampleParent(name: 'ABC', title: 'xyz', errors: errors)
 
     when: 'the marker is built'

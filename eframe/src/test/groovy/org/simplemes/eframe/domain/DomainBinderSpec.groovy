@@ -1,7 +1,6 @@
 package org.simplemes.eframe.domain
 
 import ch.qos.logback.classic.Level
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.data.format.BigDecimalFieldFormat
 import org.simplemes.eframe.data.format.DateFieldFormat
@@ -205,9 +204,9 @@ class DomainBinderSpec extends BaseSpecification {
     def src = """
     package sample
     import org.simplemes.eframe.date.DateOnly
-    //import grails.gorm.annotation.Entity
+    ////import grails.gorm.annotation.Entity
     
-    //@Entity
+    ////@Entity
     class SampleClass {
       Date dateTime
       DateOnly dueDate
@@ -240,9 +239,9 @@ class DomainBinderSpec extends BaseSpecification {
     given: 'a simple Domain class with a date field'
     def src = """
     package sample
-    import grails.gorm.annotation.Entity
+    //import grails.gorm.annotation.Entity
     
-    @Entity
+    //@Entity
     class SampleClass {
       Date dateTime
     }
@@ -292,7 +291,7 @@ class DomainBinderSpec extends BaseSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(mockAppender.message, ['WARN', 'ignoring', 'gibberish'])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that one level child bindings works on create"() {
     given: 'a domain object to bind to'
     def o = new SampleParent()
@@ -322,7 +321,7 @@ class DomainBinderSpec extends BaseSpecification {
     child2.sequence == 247
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that one level child bindings works on create - multiple rows in wrong order"() {
     given: 'a domain object to bind to'
     def o = new SampleParent()
@@ -414,7 +413,7 @@ class DomainBinderSpec extends BaseSpecification {
     !mockAppender.message
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that one level child bindings works when adding rows"() {
     given: 'a saved domain object to bind to'
     def child = new SampleChild(key: 'k1', title: 'title1', sequence: 147)
@@ -503,7 +502,7 @@ class DomainBinderSpec extends BaseSpecification {
     }
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that one level child bindings works with sparse list"() {
     def record = new SampleParent()
     // Mixed up order of the parameters is intentional.  Tests the index sorting for the rows.
@@ -533,7 +532,7 @@ class DomainBinderSpec extends BaseSpecification {
     child2.sequence == 347
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that one level child bindings works with map list input"() {
     when: 'the object params are bound'
     def record = new SampleParent()
@@ -581,7 +580,7 @@ class DomainBinderSpec extends BaseSpecification {
 
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that bind supports custom fields - API mode"() {
     given: 'a mocked FieldDefinitions for the domain'
     new FieldExtension(fieldName: 'abc', domainClassName: SampleParent.name,
@@ -595,7 +594,7 @@ class DomainBinderSpec extends BaseSpecification {
     record.getFieldValue('abc') == 1.2
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that bind supports custom fields - UI mode"() {
     given: 'a mocked FieldDefinitions for the domain'
     new FieldExtension(fieldName: 'abc', domainClassName: SampleParent.name,
@@ -725,7 +724,7 @@ class DomainBinderSpec extends BaseSpecification {
     }
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that bind supports Configurable Type field"() {
     given: 'a default flex type'
     def flexType = DataGenerator.buildFlexType()

@@ -1,6 +1,6 @@
 package org.simplemes.eframe.data.format
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.MockFieldDefinitions
@@ -111,7 +111,7 @@ class DomainReferenceFieldFormatSpec extends BaseSpecification {
     DomainReferenceFieldFormat.instance.getGridEditor(fieldDef) == 'combo'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the getValidValues provides the valid values"() {
     given: 'a domain record'
     DataGenerator.generate {

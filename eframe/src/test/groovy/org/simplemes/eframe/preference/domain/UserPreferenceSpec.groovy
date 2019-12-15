@@ -1,7 +1,6 @@
 package org.simplemes.eframe.preference.domain
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.preference.ColumnPreference
 import org.simplemes.eframe.preference.Preference
@@ -20,7 +19,7 @@ import org.simplemes.eframe.test.MockBean
  */
 class UserPreferenceSpec extends BaseSpecification {
 
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
   //static dirtyDomains = [UserPreference]
 
   def setup() {
@@ -40,7 +39,7 @@ class UserPreferenceSpec extends BaseSpecification {
     }
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that JSON conversions work for the persisted JSON format"() {
     given: 'a test preference'
     // Create a preference value
@@ -73,7 +72,7 @@ class UserPreferenceSpec extends BaseSpecification {
     pref.settings[0].width == 105
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that an empty preference can be saved"() {
     given: 'an empty preference'
     def userPreference = new UserPreference(page: '/app/test', userName: 'JOE')
@@ -90,7 +89,7 @@ class UserPreferenceSpec extends BaseSpecification {
     userPreference.preferences == []
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that preferences can be cleared"() {
     given: 'a record with preference values'
     def columnPref1 = new ColumnPreference(column: 'order', width: 105)
@@ -114,7 +113,7 @@ class UserPreferenceSpec extends BaseSpecification {
     userPreference2.preferences == []
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that preferences can be changed in memory and saved"() {
     given: 'a preference with multiple values'
     def columnPref1 = new ColumnPreference(column: 'order', width: 105)
@@ -151,7 +150,7 @@ class UserPreferenceSpec extends BaseSpecification {
     pref.settings[2].width == 108
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that large preferences can be saved quickly enough"() {
     given: 'a very large preference with more than 4K XML'
     int maxColumns = 40

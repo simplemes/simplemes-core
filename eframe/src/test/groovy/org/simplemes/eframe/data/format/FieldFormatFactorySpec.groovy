@@ -1,7 +1,6 @@
 package org.simplemes.eframe.data.format
 
 
-import org.grails.datastore.mapping.model.types.Association
 import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.system.BasicStatus

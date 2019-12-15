@@ -1,6 +1,6 @@
 package org.simplemes.eframe.controller
 
-import grails.gorm.transactions.Rollback
+
 import groovy.json.JsonSlurper
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpStatus
@@ -34,7 +34,7 @@ import sample.domain.SampleParent
 class BaseCrudControllerSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [HIBERNATE, JSON]
+  static specNeeds = [SERVER, JSON]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [RMA, FlexType]
@@ -56,7 +56,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
 
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify list checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller for SampleParent'
     Class clazz = buildSampleParentController()
@@ -72,7 +72,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     res.status == HttpStatus.FORBIDDEN
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify list works for basic case for the SampleParent domain and controller"() {
     given: 'a controller for SampleParent'
     Class clazz = buildSampleParentController()
@@ -97,7 +97,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     list[UIDefaults.PAGE_SIZE - 1].name == records[UIDefaults.PAGE_SIZE - 1].name
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify list works with simple sorting"() {
     given: 'some test data is created'
     def records = DataGenerator.generate {
@@ -117,7 +117,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     list[0].name == records[19].name
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify list works for basic paging case for the SampleParent domain and controller"() {
     given: 'some test data is created'
     def records = DataGenerator.generate {
@@ -182,7 +182,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     mock.view == 'sampleParent/index'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify index checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller for SampleParent'
     Class clazz = buildSampleParentController()
@@ -199,7 +199,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
   }
 
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify show creates the correct model and view"() {
     given: 'a domain record'
     def sampleParent = new SampleParent(name: 'ABC').save()
@@ -224,7 +224,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     model.sampleParent == sampleParent
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify show checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller for SampleParent'
     Class clazz = buildSampleParentController()
@@ -240,7 +240,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     res.status == HttpStatus.FORBIDDEN
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify create generates the correct model and view"() {
     given: 'a mock renderer'
     def mock = new MockRenderer(this).install()
@@ -262,7 +262,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     model.sampleParent.moreNotes == new SampleParent().moreNotes
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify create checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller for SampleParent'
     Class clazz = buildSampleParentController()
@@ -278,7 +278,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     res.status == HttpStatus.FORBIDDEN
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify createPost can save a record"() {
     when: 'the save is called from the controller'
     def controller = buildSampleParentController().newInstance()
@@ -322,7 +322,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
   }
 
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify createPost correctly handles a domain validation failure"() {
     given: 'a mock renderer'
     def mock = new MockRenderer(this).install()
@@ -342,7 +342,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     }
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify createPost correctly handles a child parsing exception"() {
     given: 'a mock renderer'
     def mock = new MockRenderer(this).install()
@@ -366,7 +366,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     }
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify createPost calls bind extension method on controller"() {
     given: 'a controller with the bind method for extension'
     def src = '''package sample
@@ -398,7 +398,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     }
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify createPost checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller for SampleParent'
     Class clazz = buildSampleParentController()
@@ -414,7 +414,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     res.status == HttpStatus.FORBIDDEN
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify edit generates the correct model and view"() {
     given: 'a mock renderer'
     def mock = new MockRenderer(this).install()
@@ -439,7 +439,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     model.sampleParent.moreNotes == sampleParent.moreNotes
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify edit checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller for SampleParent'
     Class clazz = buildSampleParentController()
@@ -455,7 +455,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     res.status == HttpStatus.FORBIDDEN
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify editPost can save a record"() {
     given: 'a mock renderer'
     new MockRenderer(this).install()
@@ -481,7 +481,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     res.headers.get(HttpHeaders.LOCATION) == "/sampleParent/show/${id}"
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify editPost works with a controller with all uppercase domain name"() {
     given: 'a mock renderer'
     new MockRenderer(this).install()
@@ -511,7 +511,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     res.headers.get(HttpHeaders.LOCATION) == "/rma/show/${id}"
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify editPost calls bind extension method on controller"() {
     given: 'a domain record'
     def sampleParent = new SampleParent(name: 'ABC', moreNotes: 'more note value').save()
@@ -547,7 +547,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     }
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify editPost correctly handles a domain validation failure"() {
     given: 'a mock renderer'
     def mock = new MockRenderer(this).install()
@@ -573,7 +573,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     }
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify editPost correctly handles a binder parse validation failure"() {
     given: 'a mock renderer'
     def mock = new MockRenderer(this).install()
@@ -602,7 +602,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     }
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify editPost checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller for SampleParent'
     Class clazz = buildSampleParentController()
@@ -643,7 +643,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     view == "someOtherPath/forViews/method1"
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify delete can delete a record"() {
     given: 'a domain record'
     def sampleParent = new SampleParent(name: 'ABC<script>').save()
@@ -666,7 +666,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     res.headers.get(HttpHeaders.LOCATION) == "/sampleParent?_info=$msg"
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify delete can work with a controller with an uppercase domain name"() {
     given: 'a default flex type'
     def flexType = DataGenerator.buildFlexType()
@@ -684,7 +684,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     res.headers.get(HttpHeaders.LOCATION).startsWith('/rma')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify delete handles related records"() {
     given: 'a domain with some related files - an AllFieldsDomain with the same key field'
     new AllFieldsDomain(name: 'SAMPLE').save()
@@ -703,7 +703,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     res.status == HttpStatus.FOUND
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify delete gracefully handles record not found"() {
     given: 'a bad id'
     def id = '94757876'
@@ -718,7 +718,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     res.headers.get(HttpHeaders.LOCATION) == "/sampleParent?_error=$msg"
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify delete checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller for SampleParent'
     def controller = buildSampleParentController().newInstance()

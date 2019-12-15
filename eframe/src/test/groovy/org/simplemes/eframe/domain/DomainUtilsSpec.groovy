@@ -1,7 +1,6 @@
 package org.simplemes.eframe.domain
 
-import grails.gorm.transactions.Rollback
-import org.hibernate.LazyInitializationException
+
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.custom.domain.FlexField
 import org.simplemes.eframe.custom.domain.FlexType
@@ -31,7 +30,7 @@ import sample.domain.SampleSubClass
 class DomainUtilsSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [HIBERNATE]
+  static specNeeds = [SERVER]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [User, SampleParent, AllFieldsDomain, RMA, FlexType]
@@ -363,7 +362,7 @@ class DomainUtilsSpec extends BaseSpecification {
     elapsed / 100.0 < 1.0
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getValidationMessages can build a message from a validation error"() {
     given: 'a domain record with multiple errors.'
     def badRecord = new AllFieldsDomain(name: 'ABC', count: 1000000)
@@ -380,7 +379,7 @@ class DomainUtilsSpec extends BaseSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(msg.text, ['count', '000', '999'])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getValidationMessages can handle multiple validation errors"() {
     given: 'a domain record with multiple errors.'
     def badRecord = new AllFieldsDomain(name: 'ABC', qty: 1000000.0, count: 1000000)
@@ -404,7 +403,7 @@ class DomainUtilsSpec extends BaseSpecification {
     notThrown(Exception)
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that fixChildParentReferences fixes errors with children"() {
     given: 'a domain record with several children added the wrong way - simple insert to list'
     def sampleParent = new SampleParent(name: 'ABC')
@@ -420,7 +419,7 @@ class DomainUtilsSpec extends BaseSpecification {
     sampleParent.sampleChildren[0].sampleParent.id == sampleParent.id
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that fixChildParentReferences fixes errors with grand children"() {
     given: 'a domain record with several children added the wrong way - simple insert to list'
     def sampleParent = new SampleParent(name: 'ABC')
@@ -437,7 +436,7 @@ class DomainUtilsSpec extends BaseSpecification {
     sampleParent.sampleChildren[0].sampleGrandChildren[0].sampleChild.id == sampleChild.id
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that findDomainRecord finds the record by ID"() {
     given: 'a domain record with several children added the wrong way - simple insert to list'
     def sampleParent = new SampleParent(name: 'ABC').save()
@@ -449,7 +448,7 @@ class DomainUtilsSpec extends BaseSpecification {
     sampleParent2 == sampleParent
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that findDomainRecord finds the record by key"() {
     given: 'a domain record with several children added the wrong way - simple insert to list'
     def sampleParent = new SampleParent(name: 'ABC').save()
@@ -461,7 +460,7 @@ class DomainUtilsSpec extends BaseSpecification {
     sampleParent2 == sampleParent
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that findDomainRecord gracefully fails when ID is not given"() {
     when: 'the record is found'
     def sampleParent2 = DomainUtils.instance.findDomainRecord(SampleParent, null)
@@ -470,7 +469,7 @@ class DomainUtilsSpec extends BaseSpecification {
     sampleParent2 == null
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that findDomainRecord gracefully fails when ID is not found"() {
     when: 'the record is found'
     def sampleParent2 = DomainUtils.instance.findDomainRecord(SampleParent, 'gibberish')
@@ -479,7 +478,7 @@ class DomainUtilsSpec extends BaseSpecification {
     sampleParent2 == null
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that findRelatedRecords works for a domain with the method implemented"() {
     given: 'a domain with some related files - an AllFieldsDomain with the same key field'
     def afd = new AllFieldsDomain(name: 'SAMPLE').save()
@@ -492,7 +491,7 @@ class DomainUtilsSpec extends BaseSpecification {
     list.contains(afd)
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that findRelatedRecords works for a domain without the method implemented"() {
     given: 'a domain with some related files - an AllFieldsDomain with the same key field'
     def afd = new AllFieldsDomain(name: 'SAMPLE').save()

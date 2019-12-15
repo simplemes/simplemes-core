@@ -1,6 +1,6 @@
 package org.simplemes.eframe.custom.domain
 
-import grails.gorm.transactions.Rollback
+
 import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.data.FieldDefinitionInterface
@@ -23,9 +23,9 @@ import org.simplemes.eframe.test.UnitTestUtils
 class FlexTypeSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that flex type can be serialized"() {
     given: 'an object with unicode values'
     def flexType = new FlexType(flexType: 'ABC')
@@ -60,7 +60,7 @@ class FlexTypeSpec extends BaseSpecification {
     }
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the minimum fields size constraint works"() {
     expect: 'the constraint is enforced'
     def flexType2 = new FlexType(flexType: 'PDQ')
@@ -69,7 +69,7 @@ class FlexTypeSpec extends BaseSpecification {
     error.codes.contains('minSize.notmet.fields')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that Unicode works"() {
     given: 'an object with unicode values'
     def flexType = new FlexType()
@@ -81,7 +81,7 @@ class FlexTypeSpec extends BaseSpecification {
     flexType.save()
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that auto-assignment of sequence works - create case"() {
     given: 'a domain with some fields'
     def flexType = new FlexType(flexType: 'ABC')
@@ -101,7 +101,7 @@ class FlexTypeSpec extends BaseSpecification {
     flexType.fields[2].sequence == 3
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that auto-assignment of sequence works - update case"() {
     given: 'a domain with some fields'
     FlexField field0 = new FlexField(fieldName: 'FIELD0')
@@ -148,7 +148,7 @@ class FlexTypeSpec extends BaseSpecification {
     new FlexType(flexType: 'ABC', category: 'XYZ') | new FlexType(flexType: 'ABC', category: 'PDQ') | true
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that determineInputFields works for basic types"() {
     given: 'a flex type'
     def flexType = new FlexType(flexType: 'ABC')
@@ -169,7 +169,7 @@ class FlexTypeSpec extends BaseSpecification {
     fieldDefinitions[1].format == BooleanFieldFormat.instance
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getFieldSummary works first and later calles"() {
     given: 'a flex type'
     def flexType = new FlexType(flexType: 'ABC')

@@ -1,6 +1,6 @@
 package org.simplemes.eframe.i18n
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.BaseSpecification
@@ -20,7 +20,7 @@ import org.simplemes.eframe.test.UnitTestUtils
 class GlobalUtilsSpec extends BaseSpecification {
 
 
-  static specNeeds = [HIBERNATE]
+  static specNeeds = [SERVER]
 
   /**
    * Save the original setting.
@@ -79,7 +79,7 @@ class GlobalUtilsSpec extends BaseSpecification {
     GlobalUtils.getRequestLocale(Locale.US) == Locale.US
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that lookupValidationErrors works with domain validation errors"() {
     given: 'a domain with validation errors'
     def user = new User(userName: 'ABC')

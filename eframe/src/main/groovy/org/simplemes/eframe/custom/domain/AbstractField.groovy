@@ -1,6 +1,6 @@
 package org.simplemes.eframe.custom.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import org.simplemes.eframe.data.format.BasicFieldFormat
 import org.simplemes.eframe.data.format.EnumFieldFormat
@@ -13,9 +13,11 @@ import org.simplemes.eframe.misc.TypeUtils
  * Defines the basic user-defined data field.  This defines the basic type of the field
  * and validations.  This is used for custom field extensions on domain objects.
  */
-@Entity
+//@Entity
 @EqualsAndHashCode(includes = ['fieldName'])
 abstract class AbstractField {
+
+  long id
   /**
    * The name of the field.  This follows the normal naming conventions for column names.
    */

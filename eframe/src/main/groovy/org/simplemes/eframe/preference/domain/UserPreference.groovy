@@ -1,7 +1,7 @@
 package org.simplemes.eframe.preference.domain
 
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import groovy.transform.ToString
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.misc.FieldSizes
@@ -23,7 +23,7 @@ import org.simplemes.eframe.preference.Preference
  * See <a href="http://www.simplemes.org/doc/latest/guide/single.html#gui-state-persistence">GUI State Persistence</a> for a more detailed
  * explanation.
  */
-@Entity
+//@Entity
 @ToString(includePackage = false, includeNames = true)
 class UserPreference {
   /**

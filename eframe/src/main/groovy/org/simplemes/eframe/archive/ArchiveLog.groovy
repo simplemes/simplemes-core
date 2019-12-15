@@ -1,6 +1,6 @@
 package org.simplemes.eframe.archive
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import org.simplemes.eframe.misc.FieldSizes
 
 /*
@@ -13,7 +13,7 @@ import org.simplemes.eframe.misc.FieldSizes
  * object that is archived.
  *
  */
-@Entity
+////@Entity
 class ArchiveLog {
   /**
    * The date/time this record was archived.

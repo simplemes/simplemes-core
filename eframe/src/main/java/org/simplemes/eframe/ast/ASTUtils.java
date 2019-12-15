@@ -42,7 +42,26 @@ public class ASTUtils {
    * @param sourceUnit   The compiler source unit being processed (used to errors).
    * @return A list containing the nodes created ([0] = fieldNode, [1] = getterMethod, [2] = settingMethod.
    */
-  public static List<ASTNode> addField(String fieldName, Class fieldType, int modifiers, int maxSize, Expression initialValue, ClassNode node, SourceUnit sourceUnit) {
+  public static List<ASTNode> addField(String fieldName, Class fieldType, int modifiers, int maxSize,
+                                       Expression initialValue, ClassNode node, SourceUnit sourceUnit) {
+    return addField(fieldName, fieldType, modifiers, maxSize, true, initialValue, node, sourceUnit);
+  }
+
+  /**
+   * Adds the given field to class.  Compile will fail if it already exists.
+   *
+   * @param fieldName          The name of the field.
+   * @param fieldType          The type of the field.
+   * @param modifiers          The modifiers (e.g. public or static).  See Modifier.public.
+   * @param maxSize            The max size of the field that will hold the custom values.  0 Means no constraint is added for this field.
+   * @param initialValue       The initial value expression.
+   * @param addGetterAndSetter If true, then add the gett/setter.
+   * @param node               The AST Class Node to add this field to.
+   * @param sourceUnit         The compiler source unit being processed (used to errors).
+   * @return A list containing the nodes created ([0] = fieldNode, [1] = getterMethod, [2] = settingMethod.
+   */
+  public static List<ASTNode> addField(String fieldName, Class fieldType, int modifiers, int maxSize, boolean addGetterAndSetter,
+                                       Expression initialValue, ClassNode node, SourceUnit sourceUnit) {
     //System.out.println("Adding " + fieldName+", maxSize="+maxSize);
     List<ASTNode> res = new ArrayList<>();
     if (node.getField(fieldName) == null) {
@@ -51,14 +70,17 @@ public class ASTUtils {
       ClassNode fieldTypeNode = new ClassNode(fieldType);
       FieldNode fieldNode = new FieldNode(fieldName, modifiers, fieldTypeNode, new ClassNode(node.getClass()), initialValue);
       node.addField(fieldNode);
-      MethodNode getter = addGetter(fieldNode, node, Modifier.PUBLIC, sourceUnit);
-      MethodNode setter = addSetter(fieldNode, node, Modifier.PUBLIC, sourceUnit);
       if (maxSize > 0) {
         addConstraint(node, fieldName, true, maxSize, sourceUnit);
       }
       res.add(fieldNode);
-      res.add(getter);
-      res.add(setter);
+      if (addGetterAndSetter) {
+        int methodModifier = (modifiers & Modifier.STATIC);
+        MethodNode getter = addGetter(fieldNode, node, Modifier.PUBLIC | methodModifier, sourceUnit);
+        MethodNode setter = addSetter(fieldNode, node, Modifier.PUBLIC | methodModifier, sourceUnit);
+        res.add(getter);
+        res.add(setter);
+      }
     } else {
       // Already exists, so fail with a compile error.
       sourceUnit.getErrorCollector().addError(new SimpleMessage(fieldName + " already exists in " + node, sourceUnit));

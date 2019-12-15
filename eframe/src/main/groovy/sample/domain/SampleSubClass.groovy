@@ -1,6 +1,6 @@
 package sample.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import groovy.transform.ToString
 
 /*
@@ -12,7 +12,7 @@ import groovy.transform.ToString
 /**
  * Tests of sub-class. Adds a field subTitle to the SampleParent.
  */
-@Entity
+//@Entity
 @ToString(includeNames = true, includePackage = false)
 class SampleSubClass extends SampleParent {
 

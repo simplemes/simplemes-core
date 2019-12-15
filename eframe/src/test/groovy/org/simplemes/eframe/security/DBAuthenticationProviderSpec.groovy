@@ -1,6 +1,6 @@
 package org.simplemes.eframe.security
 
-import grails.gorm.transactions.Rollback
+
 import io.micronaut.security.authentication.AuthenticationFailed
 import io.micronaut.security.authentication.UserDetails
 import io.micronaut.security.authentication.UsernamePasswordCredentials
@@ -20,9 +20,9 @@ import org.simplemes.eframe.test.UnitTestUtils
  */
 class DBAuthenticationProviderSpec extends BaseSpecification {
 
-  static specNeeds = [EMBEDDED]
+  static specNeeds = [SERVER]
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that authenticate works with User record in DB"() {
     given: 'a user record with roles'
     def role1 = new Role(authority: 'ROLE_1', title: '1').save()
@@ -44,7 +44,7 @@ class DBAuthenticationProviderSpec extends BaseSpecification {
     res.roles.contains(role2.authority)
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that authenticate detects missing user record"() {
     when: 'the authentication is checked'
     def res = new DBAuthenticationProvider().authenticate(new UsernamePasswordCredentials('ABC', 'XYZ')).call()
@@ -53,7 +53,7 @@ class DBAuthenticationProviderSpec extends BaseSpecification {
     res instanceof AuthenticationFailed
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that authenticate fails with disabled User record"() {
     given: 'a disabled record'
     def user = new User(userName: 'ABC', password: 'XYZ', enabled: false)
@@ -66,7 +66,7 @@ class DBAuthenticationProviderSpec extends BaseSpecification {
     res instanceof AuthenticationFailed
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that authenticate fails with the reason for supported cases - locked, expired, password expired"() {
     given: 'a disabled record'
     options.userName = 'ABC'

@@ -17,7 +17,7 @@ import sample.domain.SampleSubClass
  */
 class FieldFormatFactoryIntSpec extends BaseSpecification {
 
-  static specNeeds = [HIBERNATE]
+  static specNeeds = [SERVER]
 
 
   def "verify that the factory returns the right format for cases with a property passed in"() {

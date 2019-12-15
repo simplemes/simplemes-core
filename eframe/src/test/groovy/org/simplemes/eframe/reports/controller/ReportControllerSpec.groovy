@@ -31,7 +31,7 @@ import spock.lang.Shared
 class ReportControllerSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
   /**
    * The dummy sample report.

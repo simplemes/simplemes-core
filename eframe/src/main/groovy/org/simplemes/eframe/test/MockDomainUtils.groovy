@@ -1,7 +1,6 @@
 package org.simplemes.eframe.test
 
 import groovy.transform.ToString
-import org.grails.datastore.mapping.model.PersistentProperty
 import org.simplemes.eframe.data.FieldDefinitions
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.web.PanelUtils
@@ -9,6 +8,8 @@ import org.spockframework.mock.IDefaultResponse
 import org.spockframework.mock.IMockInvocation
 import org.spockframework.mock.ZeroOrNullResponse
 import spock.mock.DetachedMockFactory
+
+import java.lang.reflect.Field
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.
@@ -57,7 +58,7 @@ class MockDomainUtils implements AutoCleanupMockInterface, IDefaultResponse {
   /**
    * The persistent entities for the simulated domain.
    */
-  List<PersistentProperty> persistentProperties
+  List<Field> persistentProperties
 
   /**
    * Some mocked field definitions to return when getFieldDefinitions is called.
@@ -129,7 +130,7 @@ class MockDomainUtils implements AutoCleanupMockInterface, IDefaultResponse {
    * list in fieldOrder.
    * @return The list of persistent fields.
    */
-  List<PersistentProperty> getPersistentFields() {
+  List<Field> getPersistentFields() {
     if (!persistentProperties) {
       persistentProperties = []
       def clazz = domainClassList[0]
@@ -145,7 +146,7 @@ class MockDomainUtils implements AutoCleanupMockInterface, IDefaultResponse {
 
         def type = DomainUtils.instance.getFieldType(clazz, fieldName) ?: String
         //noinspection GroovyAssignabilityCheck
-        persistentProperties << new MockPersistentProperty(fieldName as String, type) as PersistentProperty
+        persistentProperties << new MockPersistentProperty(fieldName as String, type) as Field
       }
     }
 

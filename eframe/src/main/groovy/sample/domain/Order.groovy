@@ -1,6 +1,6 @@
 package sample.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.simplemes.eframe.data.annotation.ExtensibleFields
@@ -18,9 +18,9 @@ import org.simplemes.eframe.system.EnabledStatus
  * A sample domain class that simulates an order.
  * Fields include: order, qtyToBuild, product, status, dueDate
  */
-@Entity
+//@Entity
 @ExtensibleFields
-@ToString(includePackage = false, includeNames = true, excludes = ['dateCreated', 'lastUpdated', 'errors', 'dirtyPropertyNames', 'attached', 'dirty'])
+@ToString(includePackage = false, includeNames = true, excludes = ['dateCreated', 'lastUpdated'])
 @EqualsAndHashCode(includes = ['order'])
 class Order {
   String order

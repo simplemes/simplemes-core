@@ -1,6 +1,6 @@
 package org.simplemes.eframe.data
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.data.annotation.ExtensibleFields
 import org.simplemes.eframe.data.format.BigDecimalFieldFormat
@@ -35,9 +35,9 @@ import sample.domain.SampleParent
 class CustomFieldDefinitionSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that FieldExtension constructor works"() {
     given: 'a custom field on a domain'
     def fieldExtension = new FieldExtension(fieldName: 'abc', domainClassName: SampleParent.name,
@@ -54,7 +54,7 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
     field.label == "abc"
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that FieldExtension constructor works with a valueClassName"() {
     given: 'a custom field on a domain'
     def fieldExtension = new FieldExtension(fieldName: 'abc', domainClassName: SampleParent.name,
@@ -68,7 +68,7 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
     field.type == BasicStatus
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that FieldExtension constructor works with string length"() {
     given: 'a custom field on a domain'
     def fieldExtension = new FieldExtension(fieldName: 'xyz', domainClassName: SampleParent.name,
@@ -84,7 +84,7 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
     field.maxLength == 237
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that FieldExtension constructor works with unknown type"() {
     given: 'a custom field on a domain'
     def fieldExtension = new FieldExtension(fieldName: 'xyz', domainClassName: SampleParent.name,
@@ -108,7 +108,7 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
     field.type == Integer
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that get and setFieldValue works with a domain with ExtensibleFields annotation"() {
     given: 'a custom field on a domain'
     def fieldExtension = new FieldExtension(fieldName: 'xyz', domainClassName: SampleParent.name,
@@ -132,7 +132,7 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
   static aDate = new Date(UnitTestUtils.SAMPLE_TIME_MS)
   static aDateOnly = new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS)
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that get and setFieldValue works with custom fields on supported types"() {
     given: 'a custom field on a domain'
     def vcn = vc?.name
@@ -175,7 +175,7 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
     //DomainRefListFieldFormat   | MultiComboboxWidget
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that FieldExtension constructor uses a specified label if defined in the field extension"() {
     given: 'a custom field on a domain'
     def fieldExtension = new FieldExtension(fieldName: 'abc', domainClassName: SampleParent.name,

@@ -1,6 +1,6 @@
 package org.simplemes.eframe.custom.controller
 
-import grails.gorm.transactions.Rollback
+
 import groovy.json.JsonSlurper
 import io.micronaut.http.HttpStatus
 import org.simplemes.eframe.application.Holders
@@ -32,7 +32,7 @@ import spock.lang.Shared
 class ExtensionControllerSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [HIBERNATE, JSON]
+  static specNeeds = [SERVER, JSON]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [FieldExtension, FieldGUIExtension]
@@ -49,7 +49,7 @@ class ExtensionControllerSpec extends BaseSpecification {
     controller.extensionService = new ExtensionService()
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that configDialog defines the available and configured fields in the model for the page - no custom fields"() {
     when: 'a request with params is made'
     def modelAndView = controller.configDialog(mockRequest([domainURL: '/sampleParent/show']), new MockPrincipal('joe', 'ADMIN'))
@@ -61,7 +61,7 @@ class ExtensionControllerSpec extends BaseSpecification {
     configured.contains('"name":"name"')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that saveFieldOrder can save a custom field order"() {
     given: 'the desired field order'
     def desiredFieldOrder = ['name', 'title', 'custom1', 'notes', 'moreNotes', 'allFieldsDomain', 'allFieldsDomains',
@@ -82,7 +82,7 @@ class ExtensionControllerSpec extends BaseSpecification {
     json.message.text == GlobalUtils.lookup('definitionEditor.saved.message')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that saveFieldOrder detects missing URL"() {
     given: 'the desired field order'
     def desiredFieldOrder = ['name', 'title']
@@ -97,7 +97,7 @@ class ExtensionControllerSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['domainURL', 'not'])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that saveFieldOrder detects missing fields"() {
     given: 'the fields are missing'
     def body = [domainURL: '/sampleParent/show']
@@ -111,7 +111,7 @@ class ExtensionControllerSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['fields', 'not'])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that fieldDialog defines the default values for the field - add mode"() {
     when: 'a request with params is made'
     def modelAndView = controller.fieldDialog(mockRequest([domainURL: '/sampleParent/show']), new MockPrincipal('joe', 'ADMIN'))
@@ -123,7 +123,7 @@ class ExtensionControllerSpec extends BaseSpecification {
   }
 
   @SuppressWarnings("GrEqualsBetweenInconvertibleTypes")
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that saveField can create a custom field"() {
     when: 'a request with params is made'
     def body = [fieldName     : 'custom1', fieldLabel: 'abc',
@@ -144,7 +144,7 @@ class ExtensionControllerSpec extends BaseSpecification {
     fieldExtension.maxLength == 237
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that saveField can create a custom field with an empty label"() {
     when: 'a request with params is made'
     def body = [fieldName     : 'custom1',

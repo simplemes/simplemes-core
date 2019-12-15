@@ -1,6 +1,6 @@
 package org.simplemes.eframe.dashboard.controller
 
-import grails.gorm.transactions.Rollback
+
 import io.micronaut.security.rules.SecurityRule
 import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.dashboard.domain.DashboardPanel
@@ -20,7 +20,7 @@ import org.simplemes.eframe.web.ui.webix.freemarker.DashboardMarker
  */
 class DashboardControllerSpec extends BaseSpecification {
 
-  static specNeeds = [HIBERNATE]
+  static specNeeds = [SERVER]
 
   def "verify that controller follows standards - security etc"() {
     expect: 'the tester is run'
@@ -44,7 +44,7 @@ class DashboardControllerSpec extends BaseSpecification {
     otherParams.category == null
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that taskMenuItems uses the default dashboards for the menu items"() {
     given: 'some dashboards in non-sorted order, some are not the default dashboard for their category'
     new DashboardConfig(dashboard: 'XYZ', title: 'xyz', defaultConfig: true, category: 'CAT_X').addToPanels(new DashboardPanel()).save()
@@ -79,7 +79,7 @@ class DashboardControllerSpec extends BaseSpecification {
     notThrown(Throwable)
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getTaskMenuItems works cleanly with dashboards with no titles"() {
     given: 'a dashboard with no title'
     new DashboardConfig(dashboard: 'XYZ', defaultConfig: true, category: 'CAT_X').addToPanels(new DashboardPanel()).save()

@@ -1,6 +1,6 @@
 package org.simplemes.eframe.test
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.security.domain.Role
 import org.simplemes.eframe.security.domain.User
@@ -18,7 +18,7 @@ import sample.domain.SampleParent
  */
 class DataGeneratorSpec extends BaseSpecification {
 
-  //static specNeeds = [HIBERNATE]
+  //static specNeeds = [SERVER]
   static dirtyDomains = [SampleParent]
 
   def "verify that simple case works without rollback annotation"() {
@@ -39,7 +39,7 @@ class DataGeneratorSpec extends BaseSpecification {
     records[9].notes == 'XYZ010xyz001'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that simple case works with rollback annotation"() {
     when: 'some data is generated'
     def records = DataGenerator.generate {
@@ -52,7 +52,7 @@ class DataGeneratorSpec extends BaseSpecification {
     records[0].name == 'ABC001'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that various types can be incremented correctly"() {
     given: 'the starting values'
     def dateOnly = new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS)
@@ -88,7 +88,7 @@ class DataGeneratorSpec extends BaseSpecification {
 
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that generate gracefully handles no domain"() {
     when: 'some data is generated'
     DataGenerator.generate {
@@ -100,7 +100,7 @@ class DataGeneratorSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['domain'])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that a foreign domain reference can be used in the values"() {
     when: 'some data is generated'
     def (AllFieldsDomain allFieldsDomain) = DataGenerator.generate {
@@ -116,7 +116,7 @@ class DataGeneratorSpec extends BaseSpecification {
     sampleParent.allFieldsDomain == allFieldsDomain
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that buildTestUser works for the none user "() {
     when: 'some data is generated'
     DataGenerator.buildTestUser('none')
@@ -125,7 +125,7 @@ class DataGeneratorSpec extends BaseSpecification {
     User.findByUserName('none')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that buildTestUser works for a user with a role"() {
     given: 'a role for the user'
     def role = new Role(authority: 'DUMMY1', title: 'dummy1').save()

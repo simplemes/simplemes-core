@@ -1,6 +1,5 @@
 package org.simplemes.eframe.data.format
 
-import org.simplemes.eframe.data.DateOnlyType
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.ClassPathScanner

@@ -1,6 +1,6 @@
 package org.simplemes.eframe.custom.gui
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.custom.domain.FieldGUIExtension
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.test.BaseSpecification
@@ -17,9 +17,9 @@ import sample.domain.SampleSubClass
 class FieldAdjusterSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that applyUserAdjustments works for simple case of adjustments on a field order"() {
     given: 'a field order and adjustment'
     def originalFieldOrder = DomainUtils.instance.getStaticFieldOrder(SampleParent)
@@ -39,7 +39,7 @@ class FieldAdjusterSpec extends BaseSpecification {
     DomainUtils.instance.getStaticFieldOrder(SampleParent).size() == originalSize
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that applyUserAdjustments works when no adjustments are found"() {
     given: 'a field order with not adjustments'
     def originalFieldOrder = DomainUtils.instance.getStaticFieldOrder(SampleParent)
@@ -51,7 +51,7 @@ class FieldAdjusterSpec extends BaseSpecification {
     originalFieldOrder.is(fieldOrder)
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that applyUserAdjustments works with multiple adjustments"() {
     given: 'a field order and some adjustments'
     def originalFieldOrder = DomainUtils.instance.getStaticFieldOrder(SampleParent)
@@ -72,7 +72,7 @@ class FieldAdjusterSpec extends BaseSpecification {
     fieldOrder.findIndexOf { it == 'custom3' } == fieldOrder.size() - 1
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that applyUserAdjustments works with no fieldOrder in domain"() {
     given: 'a class with no fieldOrder'
     def src = """
@@ -96,7 +96,7 @@ class FieldAdjusterSpec extends BaseSpecification {
     fieldOrder.findIndexOf { it == 'custom1' } >= 0
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that applyUserAdjustments works with adjustments to sub-class domain"() {
     given: 'a field order and adjustment'
     def originalFieldOrder = DomainUtils.instance.getStaticFieldOrder(SampleSubClass)
@@ -113,7 +113,7 @@ class FieldAdjusterSpec extends BaseSpecification {
     fieldOrder.findIndexOf { it == 'custom1' } == fieldOrder.findIndexOf { it == 'subTitle' } + 1
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that applyUserAdjustments works with adjustments to parent class using a sub-class field"() {
     given: 'a field order and adjustment'
     def originalFieldOrder = DomainUtils.instance.getStaticFieldOrder(SampleSubClass)
@@ -165,7 +165,7 @@ class FieldAdjusterSpec extends BaseSpecification {
     return null
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that determineDifferences works for supported scenarios"() {
     expect:
     // Build some pretty message in case of failures for complex cases.

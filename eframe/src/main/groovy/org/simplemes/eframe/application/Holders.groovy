@@ -8,7 +8,6 @@ import io.micronaut.context.event.StartupEvent
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.context.ServerRequestContext
 import io.micronaut.runtime.event.annotation.EventListener
-import org.grails.orm.hibernate.HibernateDatastore
 
 import javax.inject.Singleton
 import javax.sql.DataSource
@@ -30,11 +29,6 @@ class Holders {
    * The current application context.
    */
   static ApplicationContext applicationContext
-
-  /**
-   * The current hibernate data store.
-   */
-  static HibernateDatastore hibernateDatastore
 
   /**
    * The current environment.  This field holds the real environment.  Null if not in a real server instance.
@@ -68,31 +62,11 @@ class Holders {
   }
 
   /**
-   * Returns the current hibernate data store. If hibernate is not started, then this will return null.
-   * @return The data store.
-   */
-  static HibernateDatastore getHibernateDatastore() {
-    if (hibernateDatastore == null) {
-      try {
-        hibernateDatastore = applicationContext?.getBean(HibernateDatastore)
-      } catch (Exception ignored) {
-        log.info('No hibernateDatastore bean found')
-      }
-    }
-    return hibernateDatastore
-  }
-
-  /**
    * Returns the current data source. If hibernate is not started, then this will return null.
    * @return The data store.
    */
   static DataSource getDataSource() {
-    try {
-      return applicationContext?.getBean(DataSource)
-    } catch (Exception ignored) {
-    }
-    log.info('Using hibernateDatastore to provide the DataSource {}', hibernateDatastore)
-    return hibernateDatastore?.dataSource
+    return applicationContext?.getBean(DataSource)
   }
 
   /**

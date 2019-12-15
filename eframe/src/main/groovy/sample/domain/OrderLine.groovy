@@ -1,6 +1,6 @@
 package sample.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 
@@ -14,8 +14,8 @@ import groovy.transform.ToString
  * A sample domain class that simulates an order.
  * Fields include: orderId, sequence,qty,product, notes
  */
-@Entity
-@ToString(includePackage = false, includeNames = true, includes = ['orderId', 'sequence', 'qty', 'product', 'notes', 'id', 'version'])
+//@Entity
+@ToString(includePackage = false, includeNames = true, includes = ['orderId', 'sequence', 'qty', 'product', 'notes'])
 @EqualsAndHashCode(includes = ['orderId', 'sequence'])
 class OrderLine {
   Long orderId

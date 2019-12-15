@@ -1,6 +1,6 @@
 package org.simplemes.eframe.custom.domain
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.custom.gui.FieldInsertAdjustment
 import org.simplemes.eframe.data.format.EnumFieldFormat
 import org.simplemes.eframe.misc.FieldSizes
@@ -19,7 +19,7 @@ import org.simplemes.eframe.test.DomainTester
 class FieldExtensionSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [FieldGUIExtension, FieldExtension]
@@ -41,7 +41,7 @@ class FieldExtensionSpec extends BaseSpecification {
     }
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that validation on fieldName prevents illegal values - non-java names"() {
     given: 'a field extension with invalid fieldName'
     def fieldExtension = new FieldExtension(fieldName: 'abc=2', domainClassName: FieldExtension.name)
@@ -71,7 +71,7 @@ class FieldExtensionSpec extends BaseSpecification {
     error.codes.contains('unique.domainClassName')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the constraint enforces valueClassName is required for Enumeration format types"() {
     given: 'a field extension with no valueClassName '
     def fieldExtension = new FieldExtension(fieldName: 'abc', domainClassName: FieldExtension.name, fieldFormat: EnumFieldFormat.instance)
@@ -83,7 +83,7 @@ class FieldExtensionSpec extends BaseSpecification {
     error.codes.contains('missingValueClassName.valueClassName')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the constraint enforces valueClassName is an Enumeration type"() {
     given: 'a field extension with a non-enum valueClassName '
     def fieldExtension = new FieldExtension(fieldName: 'abc', domainClassName: FieldExtension.name,
@@ -97,7 +97,7 @@ class FieldExtensionSpec extends BaseSpecification {
     error.toString().contains(String.name)
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the constraint enforces valueClassName is a valid class name"() {
     given: 'a field extension with bad valueClassName '
     def fieldExtension = new FieldExtension(fieldName: 'abc', domainClassName: FieldExtension.name,

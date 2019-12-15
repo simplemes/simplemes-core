@@ -1,6 +1,6 @@
 package sample.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import groovy.transform.ToString
 import org.simplemes.eframe.data.format.BasicFieldFormat
 import org.simplemes.eframe.date.DateOnly
@@ -19,8 +19,8 @@ import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
  *               qty, enabled, dateTime, dueDate, reportTimeInterval,sampleGrandChildren
  *
  */
-@Entity
-@ToString(includePackage = false, includeNames = true, excludes = ['errors', 'dirtyPropertyNames', 'attached', 'dirty', 'sampleParent'])
+//@Entity
+@ToString(includePackage = false, includeNames = true, excludes = ['sampleParent'])
 class SampleChild {
 
   // ********************************************************
@@ -28,6 +28,7 @@ class SampleChild {
   // *       These fields are used by many tests.
   // ********************************************************
 
+  SampleParent sampleParent
   static belongsTo = [sampleParent: SampleParent]
   String key
   Integer sequence = 10

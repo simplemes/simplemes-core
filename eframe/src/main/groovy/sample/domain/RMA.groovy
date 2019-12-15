@@ -1,6 +1,6 @@
 package sample.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
@@ -17,11 +17,11 @@ import org.simplemes.eframe.data.annotation.ExtensibleFields
  * A sample domain class that simulates an RMA approval.
  * Fields include: rma, status, product, qty, returnDate, rmaType
  */
-@Entity
+//@Entity
+// TODO: Replace with non-hibernate alternative
 @ExtensibleFields
 @ToString(includePackage = false, includeNames = true,
-  excludes = ['dateCreated', 'lastUpdated', 'errors', 'dirtyPropertyNames', 'attached', 'dirty',
-    '_complexCustomFields'])
+  excludes = ['dateCreated', 'lastUpdated'])
 @EqualsAndHashCode(includes = ['rma'])
 @SuppressWarnings("unused")
 class RMA {

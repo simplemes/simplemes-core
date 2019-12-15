@@ -1,6 +1,6 @@
 package org.simplemes.eframe.security.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
@@ -20,11 +20,11 @@ import org.simplemes.eframe.security.PasswordEncoderService
  * The framework/security User definition.
  */
 @Slf4j
-@Entity
+//@Entity
 @EqualsAndHashCode(includes = ['userName'])
 @SuppressWarnings("unused")
-@ToString(includePackage = false, includeNames = true, excludes = ['authoritySummary', 'errors',
-  'dirtyPropertyNames', 'attached', 'dirty'])
+@ToString(includePackage = false, includeNames = true, excludes = ['authoritySummary'])
+// TODO: Replace with non-hibernate alternative
 @ExtensibleFields
 class User {
   /**

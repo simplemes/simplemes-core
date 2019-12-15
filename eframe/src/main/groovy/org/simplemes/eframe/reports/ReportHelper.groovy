@@ -2,7 +2,7 @@ package org.simplemes.eframe.reports
 
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.data.FieldDefinitions
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver
+//import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 
 /*
  * Copyright (c) 2018 Simple MES, LLC.  All rights reserved.  See license.txt for license terms.
@@ -31,7 +31,8 @@ class ReportHelper {
   List<String> determineBuiltinReports() {
     def res = []
     // Check the built-in location first
-    PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver()
+    // TODO: Replace with non-hibernate alternative
+    //PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver()
     def resources = resolver.getResources('classpath*:reports/*.jrxml')
     for (resource in resources) {
       log.debug('determineBuiltinReports: resource: {}, file: ', resource, resource.filename)

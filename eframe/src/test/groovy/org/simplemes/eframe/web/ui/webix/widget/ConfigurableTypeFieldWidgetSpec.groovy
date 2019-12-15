@@ -1,6 +1,6 @@
 package org.simplemes.eframe.web.ui.webix.widget
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.data.format.ConfigurableTypeDomainFormat
 import org.simplemes.eframe.data.format.DateOnlyFieldFormat
@@ -22,9 +22,9 @@ import sample.domain.RMA
 class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the combobox is generated correctly - a value - editable case"() {
     given: 'a flex type with multiple fields'
     def flexType = DataGenerator.buildFlexType()
@@ -64,7 +64,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(field1Line, 'value') == ''
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the widget creates the list of possible choices correctly"() {
     given: 'a flex type with multiple fields'
     def flexType1 = DataGenerator.buildFlexType(flexType: 'FLEX1', fieldName: 'FIELD1')
@@ -91,7 +91,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     post.contains("""rmaTypeChoices["$flexType3.id"]""")
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the change handler on the main ct field"() {
     given: 'a flex type with multiple fields'
     def flexType1 = DataGenerator.buildFlexType(flexType: 'FLEX1', fieldName: 'FIELD1')
@@ -117,7 +117,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     handler.contains('$$("rmaTypeHolder").addView(choice, 0);')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the field format for input fields is correct"() {
     given: 'a flex type with multiple fields'
     def flexType1 = DataGenerator.buildFlexType(fieldFormat: DateOnlyFieldFormat.instance)
@@ -140,7 +140,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(fieldLine, 'view') == 'datepicker'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the widget handles the readOnly mode"() {
     given: 'a flex type with multiple fields'
     def flexType1 = DataGenerator.buildFlexType(fieldFormat: DateOnlyFieldFormat.instance)
@@ -167,7 +167,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(fieldLine, 'view') == 'label'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the widget handles quotes in the custom field value"() {
     given: 'a flex type with multiple fields'
     def flexType1 = DataGenerator.buildFlexType()
@@ -191,7 +191,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     fieldLine.contains('value: "abc\\"123"')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the widget sets the default Configurable Type field setting"() {
     given: 'a flex type with multiple fields'
     DataGenerator.buildFlexType(defaultFlexType: true)
@@ -214,7 +214,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(field1Line, 'view') == 'text'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the widget handles no current value for the Configurable Type drop-down"() {
     given: 'a flex type with multiple fields'
     DataGenerator.buildFlexType()

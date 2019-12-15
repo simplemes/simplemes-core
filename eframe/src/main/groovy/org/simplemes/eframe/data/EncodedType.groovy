@@ -1,15 +1,6 @@
 package org.simplemes.eframe.data
 
-import org.hibernate.HibernateException
-import org.hibernate.engine.spi.SharedSessionContractImplementor
-import org.hibernate.type.DateType
-import org.hibernate.type.StringType
-import org.hibernate.usertype.UserType
-import org.simplemes.eframe.domain.DomainUtils
-import org.simplemes.eframe.misc.NameUtils
 
-import java.sql.PreparedStatement
-import java.sql.ResultSet
 import java.sql.SQLException
 import java.sql.Types
 
@@ -22,8 +13,10 @@ import java.sql.Types
  * Provides a hibernate user type for EncodedTypeInterface elements.  Stores as a short ID in a varchar column.
  *
  */
+// TODO: Replace with non-hibernate alternative
+
 @SuppressWarnings("GrDeprecatedAPIUsage")
-class EncodedType implements UserType {
+class EncodedType /*implements UserType*/ {
 
   /**
    * The basic field type for this field.  Used to find the value from the ID stored in the DB column.
@@ -60,6 +53,7 @@ class EncodedType implements UserType {
    * @return The value (DateOnly).
    * @throws SQLException
    */
+/*
   Object nullSafeGet(ResultSet rs, String[] names, SharedSessionContractImplementor session, Object owner) throws HibernateException, SQLException {
     def clazz = returnedClass()
 
@@ -93,6 +87,7 @@ class EncodedType implements UserType {
 
     return null
   }
+*/
 
   /**
    * Implements the setter for hibernate.
@@ -101,6 +96,7 @@ class EncodedType implements UserType {
    * @param index The column index.
    * @throws SQLException
    */
+/*
   void nullSafeSet(PreparedStatement st, Object value, int index, SharedSessionContractImplementor session) throws HibernateException, SQLException {
     if (value == null) {
       DateType.INSTANCE.set(st, null, index, session)
@@ -109,6 +105,7 @@ class EncodedType implements UserType {
       StringType.INSTANCE.set(st, id, index, session)
     }
   }
+*/
 
 
   /**
@@ -118,84 +115,5 @@ class EncodedType implements UserType {
     return type
   }
 
-  /**
-   * Compares two DateOnly elements.
-   * @param o1 One Date.
-   * @param o2 Other Date.
-   * @return True if equal.
-   * @throws HibernateException
-   */
-  @Override
-  boolean equals(Object o1, Object o2) throws HibernateException {
-    return o1 == o2
-    //return false
-  }
-
-  /**
-   * Calculates the hash code for the date.
-   * @param o The date.
-   * @return The hash code.
-   * @throws HibernateException
-   */
-  int hashCode(Object o) throws HibernateException {
-    return o.hashCode()
-  }
-
-  /**
-   * Performs a deep copy.  Creates a new DateOnly with the same time.
-   * @param o The date only.
-   * @return The copy.
-   * @throws HibernateException
-   */
-
-  Object deepCopy(Object o) throws HibernateException {
-    if (o == null) {
-      return null
-    }
-    return o
-    //return null
-  }
-
-  /**
-   * Disassembles the object for storage.  Just does a deep copy.
-   * @param o The date only.
-   * @return The copy.
-   * @throws HibernateException
-   */
-  Serializable disassemble(Object o) throws HibernateException {
-    return (Serializable) deepCopy(o)
-  }
-
-  /**
-   * Assembles a DateOnly from storage. Just does a deep copy.
-   * @param serializable The object to assemble.
-   * @param owner The owner.
-   * @return The copy.
-   * @throws HibernateException
-   */
-  Object assemble(Serializable serializable, Object owner) throws HibernateException {
-    //println "serializable = ${serializable}"
-    return deepCopy(serializable)
-  }
-
-  /**
-   * During merge, replace the existing (target) value in the entity we are merging to with a new (original) value from the detached entity we are merging.
-   * @param original The original date.
-   * @param target The target date.
-   * @param owner The owner.
-   * @return A deep copy of the the original.
-   * @throws HibernateException
-   */
-  Object replace(Object original, Object target, Object owner) throws HibernateException {
-    return deepCopy(original)
-  }
-
-  /**
-   * DateOnly objects are mutable.
-   * @return True
-   */
-  boolean isMutable() {
-    return true
-  }
 
 }

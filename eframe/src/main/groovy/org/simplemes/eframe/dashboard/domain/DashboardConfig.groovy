@@ -1,6 +1,6 @@
 package org.simplemes.eframe.dashboard.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
@@ -13,9 +13,9 @@ import org.simplemes.eframe.misc.FieldSizes
  * and user-configurable dashboards.
  */
 @Slf4j
-@Entity
+//@Entity
 @EqualsAndHashCode(includes = ['dashboard'])
-@ToString(includePackage = false, includeNames = true, excludes = ['dateCreated', 'lastUpdated', 'errors', 'dirtyPropertyNames', 'attached', 'dirty'])
+@ToString(includePackage = false, includeNames = true, excludes = ['dateCreated', 'lastUpdated'])
 class DashboardConfig {
 
   /**

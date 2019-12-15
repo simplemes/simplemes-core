@@ -1,6 +1,6 @@
 package sample.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import groovy.transform.ToString
 import org.simplemes.eframe.data.annotation.ExtensibleFields
 
@@ -17,10 +17,11 @@ import org.simplemes.eframe.data.annotation.ExtensibleFields
  * <b>Fields</b> Include: name, title, notes, notDisplayed, moreNotes. allFieldsDomains, allFieldDomain, sampleChildren,
  * dateCreated, lastUpdated
  */
-@Entity
-@ToString(includePackage = false, includeNames = true, includes = ['name', 'title', 'id', 'notes', 'notDisplayed',
+//@Entity
+@ToString(includePackage = false, includeNames = true, includes = ['name', 'title', 'notes', 'notDisplayed',
   'moreNotes', 'dateCreated', 'lastUpdated', 'allFieldsDomain', 'allFieldsDomains', 'sampleChildren'])
 @SuppressWarnings("unused")
+// TODO: Replace with non-hibernate alternative
 @ExtensibleFields
 class SampleParent {
 

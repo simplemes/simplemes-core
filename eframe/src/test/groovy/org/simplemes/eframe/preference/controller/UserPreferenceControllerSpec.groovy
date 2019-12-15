@@ -26,7 +26,7 @@ import org.simplemes.eframe.test.UnitTestUtils
  */
 class UserPreferenceControllerSpec extends BaseSpecification {
 
-  static specNeeds = [HIBERNATE, JSON]
+  static specNeeds = [SERVER, JSON]
 
   UserPreferenceController controller = new UserPreferenceController()
 

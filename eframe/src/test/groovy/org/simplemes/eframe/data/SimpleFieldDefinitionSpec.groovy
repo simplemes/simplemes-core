@@ -22,7 +22,7 @@ import sample.domain.SampleSubClass
 class SimpleFieldDefinitionSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [HIBERNATE]
+  static specNeeds = [SERVER]
 
   def "verify that persistent property constructor works"() {
     when: 'the constructor is used'

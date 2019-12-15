@@ -19,7 +19,7 @@ import sample.domain.SampleParent
  */
 class DomainReferenceSpec extends BaseSpecification {
 
-  //static specNeeds = [HIBERNATE]
+  //static specNeeds = [SERVER]
 
   def "test buildDomainReference with no sub-object nesting"() {
     given: 'a domain class and object'

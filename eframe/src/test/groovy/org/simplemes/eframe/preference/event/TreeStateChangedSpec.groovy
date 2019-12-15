@@ -1,7 +1,6 @@
 package org.simplemes.eframe.preference.event
 
 import ch.qos.logback.classic.Level
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.preference.PreferenceHolder
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.security.SecurityUtils
@@ -19,9 +18,9 @@ import org.simplemes.eframe.test.UnitTestUtils
  * Tests.
  */
 class TreeStateChangedSpec extends BaseSpecification {
-  static specNeeds = [HIBERNATE, JSON]
+  static specNeeds = [SERVER, JSON]
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that handleEvent saves the state in the preferences"() {
     given: 'a session and state change request parameters'
     def params = [expandedKeys: 'A,B', pageURI: '/app/testPage', event: 'TreeStateChanged', element: '_tree']
@@ -41,7 +40,7 @@ class TreeStateChangedSpec extends BaseSpecification {
     preference[TreeStateChanged.KEY].expandedKeys == 'A,B'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that handleEvent works with multiple state changes"() {
     given: 'a session and an existing state in the preferences'
     def params = [expandedKeys: 'A,B', pageURI: '/app/testPage', event: 'TreeStateChanged', element: '_tree']
@@ -63,7 +62,7 @@ class TreeStateChangedSpec extends BaseSpecification {
     preference[TreeStateChanged.KEY].expandedKeys == 'D,A'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that handleEvent clears the preference when the full tree is collapsed"() {
     given: 'a session and an existing state in the preferences'
     def params = [expandedKeys: 'A,B', pageURI: '/app/testPage', event: 'TreeStateChanged', element: '_tree']
@@ -85,7 +84,7 @@ class TreeStateChangedSpec extends BaseSpecification {
     !preference[TreeStateChanged.KEY].expandedKeys
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that handleEvent gracefully handles no user in session"() {
     given: 'no user is in the simulated session'
     SecurityUtils.simulateNoUserInUnitTest = true
@@ -100,7 +99,7 @@ class TreeStateChangedSpec extends BaseSpecification {
     SecurityUtils.simulateNoUserInUnitTest = false
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that logging works for the handleEvent method"() {
     given: 'a mock appender for Trace level only'
     def mockAppender = MockAppender.mock(TreeStateChanged, Level.TRACE)

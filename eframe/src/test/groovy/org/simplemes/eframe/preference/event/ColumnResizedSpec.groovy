@@ -1,6 +1,6 @@
 package org.simplemes.eframe.preference.event
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.preference.PreferenceHolder
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.security.SecurityUtils
@@ -15,9 +15,9 @@ import org.simplemes.eframe.test.BaseSpecification
  */
 class ColumnResizedSpec extends BaseSpecification {
 
-  static specNeeds = [HIBERNATE, JSON]
+  static specNeeds = [SERVER, JSON]
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that column resize the first time works"() {
     given: 'the parameters for the GUI event handler'
     def params = [pageURI: '/app/testPage', event: 'ColumnResized', column: 'order', newSize: '109', element: 'OrderList']
@@ -37,7 +37,7 @@ class ColumnResizedSpec extends BaseSpecification {
     preference['order'].width == 109
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that column resize works after several resizes"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -61,7 +61,7 @@ class ColumnResizedSpec extends BaseSpecification {
     preference['order'].width == 137
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that column resize supports the URL format used for show pages"() {
     given: 'the parameters for the GUI event handler'
     def params = [pageURI: '/app/parent/show/11', event: 'ColumnResized', column: 'order', newSize: '109', element: 'OrderList']
@@ -81,7 +81,7 @@ class ColumnResizedSpec extends BaseSpecification {
     preference['order'].width == 109
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that column resize supports the URL format used for pages with arguments"() {
     given: 'the parameters for the GUI event handler'
     def params = [pageURI: '/app/parent/show?test=null', event: 'ColumnResized', column: 'order', newSize: '107', element: 'OrderList']
@@ -101,7 +101,7 @@ class ColumnResizedSpec extends BaseSpecification {
     preference['order'].width == 107
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that a column resize with no current user logged does not save any values"() {
     given: 'the parameters for the GUI event handler'
     def params = [pageURI: '/app/parent/show?test=null', event: 'ColumnResized', column: 'order', newSize: '107', element: 'OrderList']

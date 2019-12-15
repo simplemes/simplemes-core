@@ -1,12 +1,12 @@
 package org.simplemes.eframe.dashboard.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 
 /**
  * Defines a single dashboard panel splitter.  These splitters have two or more children panels that have the actual display
  * contents.
  */
-@Entity
+//@Entity
 class DashboardPanelSplitter extends AbstractDashboardPanel {
   /**
    * If true, then this splitter is split vertically.

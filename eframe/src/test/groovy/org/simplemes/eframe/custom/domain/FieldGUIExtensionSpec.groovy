@@ -1,6 +1,6 @@
 package org.simplemes.eframe.custom.domain
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.custom.gui.FieldInsertAdjustment
 import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.test.BaseSpecification
@@ -18,7 +18,7 @@ import org.simplemes.eframe.test.DomainTester
 class FieldGUIExtensionSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [FieldGUIExtension]
@@ -60,7 +60,7 @@ class FieldGUIExtensionSpec extends BaseSpecification {
     adjustments[2] == new FieldInsertAdjustment(fieldName: 'custom3', afterFieldName: 'title')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that record with no adjustments works can be saved"() {
     given: 'a record with no adjustments'
     def e = new FieldGUIExtension(domainName: 'com.test.FlexType')
@@ -76,7 +76,7 @@ class FieldGUIExtensionSpec extends BaseSpecification {
     extension.adjustments == []
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that clearing all adjustments works"() {
     given: 'some adjustments in a saved record'
     def adj1 = new FieldInsertAdjustment(fieldName: 'custom1', afterFieldName: 'title')
@@ -100,7 +100,7 @@ class FieldGUIExtensionSpec extends BaseSpecification {
     extension.adjustments == []
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that updating some adjustments works"() {
     given: 'some adjustments in a saved record'
     def adj1 = new FieldInsertAdjustment(fieldName: 'custom1', afterFieldName: 'title')

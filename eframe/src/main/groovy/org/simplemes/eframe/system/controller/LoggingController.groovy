@@ -1,7 +1,6 @@
 package org.simplemes.eframe.system.controller
 
 import ch.qos.logback.classic.Level
-import grails.gorm.transactions.Transactional
 import groovy.util.logging.Slf4j
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
@@ -29,6 +28,7 @@ import org.simplemes.eframe.service.ServiceUtils
 import org.simplemes.eframe.web.task.TaskMenuItem
 
 import javax.annotation.Nullable
+import javax.transaction.Transactional
 import java.security.Principal
 
 /*
@@ -226,7 +226,9 @@ class LoggingController {
    * @param userName The logged in user name.
    * @return The list of levels.
    */
-  @Transactional(readOnly = true)
+  // TODO: Replace with non-hibernate alternative
+  @Transactional
+  //(readOnly = true)
   protected List<String> getOtherLevels(String userName) {
     def res = []
     res.addAll(DEFAULT_OTHERS)
@@ -357,7 +359,9 @@ class LoggingController {
    * @param userName The logged in user name.
    * @return The list of open tree levels.
    */
-  @Transactional(readOnly = true)
+  // TODO: Replace with non-hibernate alternative
+  @Transactional
+  //(readOnly = true)
   protected List<String> getOpenLevels(String userName) {
     def res = []
     res.addAll(DEFAULT_OTHERS)

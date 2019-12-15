@@ -15,7 +15,7 @@ import org.simplemes.eframe.test.DomainTester
  * Tests.
  */
 class DashboardButtonSpec extends BaseSpecification {
-  static specNeeds = [HIBERNATE]
+  static specNeeds = [SERVER]
   //static dirtyDomains = [DashboardConfig]
 
   def "verify that domain enforces constraints"() {

@@ -1,7 +1,7 @@
 package org.simplemes.eframe.json
 
 
-import grails.gorm.transactions.Rollback
+
 import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseSpecification
@@ -20,9 +20,9 @@ import sample.domain.Order
  */
 class JSONByIDSpec extends BaseSpecification {
 
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that serializer works for simple case"() {
     given: 'a POGO with the annotation on a field'
     def src = """
@@ -57,7 +57,7 @@ class JSONByIDSpec extends BaseSpecification {
     json.barcode == 'XYZ'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that serializer/deserializer work on round-trip for simple case"() {
     given: 'a POGO with the annotation on a field'
     def src = """
@@ -93,7 +93,7 @@ class JSONByIDSpec extends BaseSpecification {
     o2.barcode == o.barcode
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that record not found is handled gracefully"() {
     given: 'a POGO with the annotation on a field'
     def src = """
@@ -124,7 +124,7 @@ class JSONByIDSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['@JSONByID', 'not', 'record', 'order', '989896', 'sample.SampleClass'])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that using the wrong field name is detected gracefully"() {
     given: 'a POGO with a bad field reference'
     def src = """
@@ -154,7 +154,7 @@ class JSONByIDSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['@JSONByID', 'not', 'domain', 'orderX', 'sample.SampleClass'])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that deserialize using a domain field name with the wrong field type fails gracefully"() {
     given: 'a POGO with a bad field reference'
     def src = """
@@ -187,7 +187,7 @@ class JSONByIDSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['String', 'type', 'mismatch', 'order', Order.name, 'sample.SampleClass'])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that serialize using a domain field name with the wrong field type fails gracefully"() {
     given: 'a POGO with a bad field reference'
     def src = """

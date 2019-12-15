@@ -1,6 +1,6 @@
 package org.simplemes.eframe.security.domain
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
@@ -17,7 +17,7 @@ import org.simplemes.eframe.test.DomainTester
 @SuppressWarnings("unused")
 class RoleSpec extends BaseSpecification {
 
-  static specNeeds = [HIBERNATE]
+  static specNeeds = [SERVER]
 
   def "verify that Role domain enforces constraints"() {
     expect: 'the constraints are enforced'
@@ -33,7 +33,7 @@ class RoleSpec extends BaseSpecification {
   }
 
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the load initial data  works"() {
     given: 'all user records are deleted'
     deleteAllRecords(User, false)

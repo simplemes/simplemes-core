@@ -1,8 +1,6 @@
 package org.simplemes.eframe.i18n
 
-import org.springframework.context.support.ReloadableResourceBundleMessageSource
-import org.springframework.core.io.Resource
-import org.springframework.core.io.support.PathMatchingResourcePatternResolver
+import io.micronaut.context.i18n.ResourceBundleMessageSource
 
 import javax.inject.Singleton
 
@@ -19,17 +17,19 @@ import javax.inject.Singleton
  * <p>
  * This is a thin wrapper on the Spring MessageSource
  */
+// TODO: Replace with non-hibernate alternative
 @Singleton
-class MessageSource extends ReloadableResourceBundleMessageSource {
+class MessageSource extends ResourceBundleMessageSource {
   private static final String PROPERTIES_SUFFIX = ".properties"
-  private PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver()
+  //private PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver()
 
   /**
    * Basic constructor.
    */
   MessageSource() {
-    setDefaultEncoding("UTF-8")
-    setBasenames('classpath*:i18n/messages', 'i18n/messages', 'i18n/sample')
+    super()
+    //setDefaultEncoding("UTF-8")
+    //setBasenames('classpath*:i18n/messages', 'i18n/messages', 'i18n/sample')
   }
 
   /**
@@ -40,11 +40,11 @@ class MessageSource extends ReloadableResourceBundleMessageSource {
    * @param locale the locale
    * @return the List of filenames to check
    */
-  @Override
   protected List<String> calculateAllFilenames(String basename, Locale locale) {
     def filenames = super.calculateAllFilenames(basename, locale)
     def res = []
 
+/*
     for (filename in filenames) {
       if (filename.startsWith(PathMatchingResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX)) {
         try {
@@ -59,6 +59,7 @@ class MessageSource extends ReloadableResourceBundleMessageSource {
         res << filename
       }
     }
+*/
 
     return res
   }

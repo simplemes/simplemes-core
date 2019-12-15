@@ -1,7 +1,6 @@
 package org.simplemes.eframe.data
 
 
-import org.grails.datastore.mapping.model.PersistentProperty
 import org.simplemes.eframe.misc.ArgumentUtils
 
 import java.lang.reflect.Field
@@ -21,10 +20,13 @@ class FieldDefinitionFactory {
    * Builds the correct field definition for a persistent GORM entity property.
    * @param property The GORM property.
    */
+  // TODO: Replace with non-hibernate alternative
+/*
   static FieldDefinitionInterface buildFieldDefinition(PersistentProperty property) {
     ArgumentUtils.checkMissing(property, 'property')
     return new SimpleFieldDefinition(property)
   }
+*/
 
   /**
    * Builds the correct field definition for a normal Java field.

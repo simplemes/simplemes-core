@@ -1,6 +1,6 @@
 package org.simplemes.eframe.json
 
-import grails.gorm.transactions.Rollback
+
 import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.data.format.BigDecimalFieldFormat
@@ -35,9 +35,9 @@ import sample.domain.SampleParent
 class CustomFieldSerializerSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that serialize handles multiple custom fields"() {
     given: 'a domain object with custom fields'
     buildCustomField([[fieldName: 'custom1', domainClass: SampleParent],
@@ -58,7 +58,7 @@ class CustomFieldSerializerSpec extends BaseSpecification {
     json.custom2 == 'xyz'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that serialize handles empty values"() {
     given: 'a domain object with custom fields'
     buildCustomField(fieldName: 'custom1', domainClass: SampleParent)
@@ -75,7 +75,7 @@ class CustomFieldSerializerSpec extends BaseSpecification {
     json.custom1 == null
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that serialize handles supported field types"() {
     given: 'a domain object with custom fields'
     buildCustomField(fieldName: 'custom1', domainClass: SampleParent, fieldFormat: format.instance,

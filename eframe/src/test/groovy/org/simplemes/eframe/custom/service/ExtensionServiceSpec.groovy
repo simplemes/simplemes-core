@@ -1,6 +1,6 @@
 package org.simplemes.eframe.custom.service
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.custom.domain.FieldGUIExtension
@@ -30,12 +30,12 @@ import sample.domain.SampleParent
 class ExtensionServiceSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [HIBERNATE, JSON]
+  static specNeeds = [SERVER, JSON]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [FieldExtension, FieldGUIExtension]
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getExtensionConfiguration works with normal domain and no custom fields"() {
     when: 'the configuration is found'
     def (List available, List configured) = new ExtensionService().getExtensionConfiguration(SampleParent)
@@ -51,7 +51,7 @@ class ExtensionServiceSpec extends BaseSpecification {
     f == [name: 'notDisplayed', type: 'textField', label: lookup('notDisplayed.label'), custom: false]
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getExtensionConfiguration handles panels in the fieldOrder"() {
     when: 'the configuration is found'
     //noinspection GroovyUnusedAssignment
@@ -64,7 +64,7 @@ class ExtensionServiceSpec extends BaseSpecification {
     !f1.custom
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getExtensionConfiguration handles custom panel in the fieldOrder"() {
     given: 'a custom panel added to the list'
     def fg = new FieldGUIExtension(domainName: SampleParent.name)
@@ -82,7 +82,7 @@ class ExtensionServiceSpec extends BaseSpecification {
     f1.custom
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getExtensionConfiguration works with custom fields - not configured for display"() {
     given: 'a custom field for the domain'
     def fieldExtension = new FieldExtension(fieldName: 'custom1', domainClassName: SampleParent.name,
@@ -103,7 +103,7 @@ class ExtensionServiceSpec extends BaseSpecification {
     f2 == [name: 'custom1', type: 'textField', label: 'custom1', custom: true, recordID: fieldExtension.id]
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getExtensionConfiguration works with custom fields - configured for display"() {
     given: 'a custom field for the domain'
     def fieldExtension = new FieldExtension(fieldName: 'custom1', domainClassName: SampleParent.name,
@@ -145,7 +145,7 @@ class ExtensionServiceSpec extends BaseSpecification {
     null                       | 'group:main' | 'tabbedPanels'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that saveFieldOrder can save the new field order - create case"() {
     given: 'a new fieldOrder with the field added after the title'
     def newFieldOrder = DomainUtils.instance.getStaticFieldOrder(SampleParent)
@@ -159,7 +159,7 @@ class ExtensionServiceSpec extends BaseSpecification {
     adjustedFieldOrder.indexOf('title') < adjustedFieldOrder.indexOf('custom1')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that saveFieldOrder can save the new field order - update case"() {
     given: 'an existing custom field added to the list'
     def fg = new FieldGUIExtension(domainName: SampleParent.name)
@@ -182,7 +182,7 @@ class ExtensionServiceSpec extends BaseSpecification {
     adjustedFieldOrder.indexOf('custom0') < 0
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that saveFieldOrder can save the new field order when moving the location of a custom field"() {
     given: 'an existing custom field added to the list'
     def fg = new FieldGUIExtension(domainName: SampleParent.name)

@@ -38,7 +38,7 @@ class BaseAPISpecification extends BaseSpecification {
    * Makes sure the API tests have the embedded server (with GORM/Hibernate).
    */
   @SuppressWarnings("unused")
-  static specNeeds = [EMBEDDED, HIBERNATE]
+  static specNeeds = [SERVER]
 
   /**
    * The client to send requests to the embedded server.

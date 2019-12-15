@@ -1,6 +1,6 @@
 package org.simplemes.eframe.data.format
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.data.CustomFieldDefinition
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DataGenerator
@@ -19,7 +19,7 @@ import sample.domain.OrderLine
 class CustomCustomChildListFieldFormatSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [HIBERNATE]
+  static specNeeds = [SERVER]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [OrderLine, Order]
@@ -64,7 +64,7 @@ class CustomCustomChildListFieldFormatSpec extends BaseSpecification {
     thrown(UnsupportedOperationException)
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the readList method finds child records"() {
     given: 'a field definition'
     def fieldDefinition = new CustomFieldDefinition(name: 'orderLine', format: CustomChildListFieldFormat.instance,

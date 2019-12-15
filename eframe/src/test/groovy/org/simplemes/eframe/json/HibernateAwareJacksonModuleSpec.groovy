@@ -1,7 +1,6 @@
 package org.simplemes.eframe.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import grails.gorm.transactions.Rollback
 import groovy.json.JsonSlurper
 import org.simplemes.eframe.system.DisabledStatus
 import org.simplemes.eframe.test.BaseSpecification
@@ -22,13 +21,13 @@ import sample.domain.SampleParent
 class HibernateAwareJacksonModuleSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [SampleParent, AllFieldsDomain]
 
   @SuppressWarnings("GroovyAssignabilityCheck")
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the introspector will allow child records to be generated"() {
     given: 'a domain with a foreign reference'
     def afd1 = new AllFieldsDomain(name: 'ABC-01').save()
@@ -52,7 +51,7 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
   }
 
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the round trip with foreign reference in domain object works"() {
     given: 'a simple domain'
     def afd1 = new AllFieldsDomain(name: 'ABC-01', title: 'orig').save(flush: true)
@@ -94,7 +93,7 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
     afd.title == 'new'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that foreign reference in simple format can be read and saved in the domain object"() {
     given: 'a simple domain'
     def afd = new AllFieldsDomain(name: 'ABC-01', title: 'orig').save(flush: true)
@@ -136,7 +135,7 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
     AllFieldsDomain.count() == 1
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that a foreign reference is serialized to simple format - just key and ID"() {
     given: 'a simple domain'
     def afd = new AllFieldsDomain(name: 'ABC-01', title: 'orig').save(flush: true)
@@ -157,7 +156,7 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
     json.allFieldsDomain.title == null
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the round trip with domain object works"() {
     given: 'a simple domain'
     def p = new SampleParent(name: 'SAMPLE', title: 'Sample')
@@ -182,7 +181,7 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
     p2.id != originalID
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the enum serializer works"() {
     given: 'a domain with an enum'
     def afd = new AllFieldsDomain(name: 'ABC-01', reportTimeInterval: ReportTimeIntervalEnum.LAST_30_DAYS)
@@ -198,7 +197,7 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
     json._reportTimeIntervalDisplay_ == ReportTimeIntervalEnum.LAST_30_DAYS.toStringLocalized()
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the enum serializer works - round trip"() {
     given: 'a domain with an enum'
     def afd = new AllFieldsDomain(name: 'ABC-01', reportTimeInterval: ReportTimeIntervalEnum.LAST_30_DAYS)
@@ -215,7 +214,7 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
     o.reportTimeInterval == ReportTimeIntervalEnum.LAST_30_DAYS
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the encoded type serializer works"() {
     given: 'a domain with an enum'
     def afd = new AllFieldsDomain(name: 'ABC-01', status: DisabledStatus.instance)
@@ -232,7 +231,7 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
   }
 
   @SuppressWarnings("GrEqualsBetweenInconvertibleTypes")
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the encoded type serializer works for round trips"() {
     given: 'a domain with an encoded type'
     def afd = new AllFieldsDomain(name: 'ABC-01', status: DisabledStatus.instance)
@@ -249,7 +248,7 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
     o.status == DisabledStatus.instance
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that serialize does not create an entry for the holder itself"() {
     given: 'a domain object with custom fields'
     buildCustomField(fieldName: 'custom1', domainClass: SampleParent)

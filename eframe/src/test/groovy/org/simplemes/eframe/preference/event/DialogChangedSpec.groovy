@@ -1,6 +1,6 @@
 package org.simplemes.eframe.preference.event
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.preference.PreferenceHolder
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.security.SecurityUtils
@@ -15,9 +15,9 @@ import org.simplemes.eframe.test.BaseSpecification
  */
 class DialogChangedSpec extends BaseSpecification {
 
-  static specNeeds = [HIBERNATE, JSON]
+  static specNeeds = [SERVER, JSON]
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that dialog resize event creates the preference correctly"() {
     given: 'the parameters for the GUI event handler'
     def params = [pageURI: '/app/testPage',
@@ -46,7 +46,7 @@ class DialogChangedSpec extends BaseSpecification {
     preference[DialogChanged.KEY].top == 27.8
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that dialog can be resized twice"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -77,7 +77,7 @@ class DialogChangedSpec extends BaseSpecification {
     preference[DialogChanged.KEY].top == 37.8
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that handler can gracefully deal with bad values"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -108,7 +108,7 @@ class DialogChangedSpec extends BaseSpecification {
     preference[DialogChanged.KEY].top == 27.8
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that a dialog changed event with no current user logged does not save any values"() {
     given: 'no current user'
     SecurityUtils.simulateNoUserInUnitTest = true

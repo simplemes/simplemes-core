@@ -37,7 +37,7 @@ import sample.domain.SampleParent
  */
 class LoggingControllerSpec extends BaseSpecification {
 
-  static specNeeds = [HIBERNATE]
+  static specNeeds = [SERVER]
 
   /**
    * A dummy logger for testing.

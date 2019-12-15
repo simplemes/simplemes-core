@@ -1,7 +1,6 @@
 package org.simplemes.eframe.data.annotation
 
 import com.fasterxml.jackson.annotation.JsonProperty
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.domain.ConstraintUtils
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.misc.NameUtils
@@ -26,7 +25,7 @@ import java.lang.reflect.Modifier
 class ExtensibleFieldsTransformationSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
   /**
    * Convenience method that compiles a class for testing. The class is called TestClass.
@@ -153,7 +152,7 @@ class ExtensibleFieldsTransformationSpec extends BaseSpecification {
     clazz.transients.contains('code')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "test basic annotation creates configurable type field accessor methods"() {
     given: 'a clazz with the Configurable Type field'
     def clazz = CompilerTestUtils.compileSimpleClass(annotation: '@ExtensibleFields', contents: 'FlexType rmaType')

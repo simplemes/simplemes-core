@@ -16,14 +16,17 @@ DateOnly conversion.
 @Entity replacement with GDSL.
   Use GDSL to handle code completion.  See https://www.tothenew.com/blog/gdsl-awesomeness-introduction-to-gdsl-in-intellij-idea/
   Adds these methods
-    getChildRecords, addToChildRecords, save logic.
-    Lazy load reference - uses txn.
-    save findByXYZ(),findById(), .delete()
+    Lazy load
+      reference - uses txn.
+      getChildRecords, addToChildRecords, save logic.
+    done - save, list, delete.save findByXYZ(),findById()
   Bypass explicit repository use for common U/C's
   withTransaction {} ?
   Validation support.
   Version and opt locking (custom JDBCOperations).
 Convert to UUID's, called uuid.  Update docs for new terms (ID)
+Update code when issue is fixed:
+  https://github.com/micronaut-projects/micronaut-data/issues/323
 
 Support cache in specific use cases:
   UserPreferences - timed, any update for user flushed cache? done in PreferenceHolder?

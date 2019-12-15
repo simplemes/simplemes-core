@@ -21,7 +21,7 @@ import sample.domain.SampleParent
 class ConfigurableTypeFieldDefinitionSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
   def "verify that the field constructor works"() {
     given: 'a flex field'

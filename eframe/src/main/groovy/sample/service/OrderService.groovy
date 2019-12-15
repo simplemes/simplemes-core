@@ -1,10 +1,10 @@
 package sample.service
 
 
-import grails.gorm.transactions.Transactional
 import sample.domain.Order
 
 import javax.inject.Singleton
+import javax.transaction.Transactional
 
 /*
  * Copyright Michael Houston 2017. All rights reserved.

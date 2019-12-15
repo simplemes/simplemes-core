@@ -77,9 +77,9 @@ dependencies {
   }
   compile ( "com.bertramlabs.plugins:asset-pipeline-core:$assetPipelineVersion")
   compile "org.springframework.security:spring-security-crypto:${springSecurityCryptoVersion}"
-  compile "io.micronaut.configuration:micronaut-hibernate-validator"
-  compile "io.micronaut.configuration:micronaut-hibernate-gorm"
-  compile "org.hibernate:hibernate-ehcache:${hibernateEhcacheVersion}"
+  //compile "io.micronaut.configuration:micronaut-hibernate-validator"
+  //compile "io.micronaut.configuration:micronaut-hibernate-gorm"
+  //compile "org.hibernate:hibernate-ehcache:${hibernateEhcacheVersion}"
 
   compileOnly "jakarta.persistence:jakarta.persistence-api:${jakartaJPAVersion}"
   compileOnly "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
@@ -93,6 +93,7 @@ dependencies {
   gems "rubygems:asciidoctor-diagram:$asciidoctorDiagramVersion"
   gems "rubygems:asciidoctor-plantuml:$asciidoctorPlantumlVersion"  // Needs GraphViz dot.exe on PATH.
 
+  testImplementation "io.micronaut.test:micronaut-test-spock"
   compile("org.gebish:geb-spock:$gebVersion") {
     exclude group: "org.codehaus.groovy", module: "groovy-all"
   }

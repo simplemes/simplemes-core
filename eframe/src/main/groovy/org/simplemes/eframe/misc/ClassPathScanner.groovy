@@ -1,10 +1,7 @@
 package org.simplemes.eframe.misc
 
-import groovy.transform.CompileStatic
+
 import groovy.util.logging.Slf4j
-import org.springframework.beans.factory.config.BeanDefinition
-import org.springframework.context.annotation.ClassPathScanningCandidateComponentProvider
-import org.springframework.core.type.filter.AssignableTypeFilter
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.
@@ -15,7 +12,7 @@ import org.springframework.core.type.filter.AssignableTypeFilter
 /**
  * Utility to scan the class path for specific implementations of an interface/parent class.
  */
-@CompileStatic
+//@CompileStatic
 @Slf4j
 class ClassPathScanner {
   // look at https://github.com/grails/grails-data-mapping/blob/ef1730a42bc515cfb96cf9175d81e344d8a08a61/grails-datastore-gorm/src/main/groovy/org/grails/datastore/gorm/utils/ClasspathEntityScanner.groovy
@@ -43,6 +40,7 @@ class ClassPathScanner {
    * @return The entities
    */
   Class[] scan(Package... packages) {
+/*
     ClassPathScanningCandidateComponentProvider componentProvider = new ClassPathScanningCandidateComponentProvider(false)
     //componentProvider.setMetadataReaderFactory(new AnnotationMetadataReaderFactory(classLoader))
     componentProvider.addIncludeFilter(new AssignableTypeFilter(searchForClass))
@@ -59,6 +57,7 @@ class ClassPathScanner {
         }
       }
     }
-    return classes as Class[]
+*/
+    return [] as Class[]
   }
 }

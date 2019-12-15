@@ -1,6 +1,6 @@
 package org.simplemes.eframe.dashboard.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import org.simplemes.eframe.misc.FieldSizes
 
 /**
@@ -9,7 +9,7 @@ import org.simplemes.eframe.misc.FieldSizes
  * These buttons are displayed one after another in the appropriate area
  * of the page.  The buttons have configurable labels, styling, title (tooltip) and display sequence.
  */
-@Entity
+//@Entity
 class DashboardButton {
   /**
    * The parent dashboard this button is a child of. <b>Required.</b>

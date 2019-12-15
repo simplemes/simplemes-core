@@ -1,12 +1,12 @@
 package org.simplemes.eframe.dashboard.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 
 /**
  * Defines a single dashboard panel generic type.  The sub-classes implement the content or a splitter to display
  * multiple panels.
  */
-@Entity
+//@Entity
 abstract class AbstractDashboardPanel {
   /**
    * The parent dashboard this is a child of. <b>Required.</b>

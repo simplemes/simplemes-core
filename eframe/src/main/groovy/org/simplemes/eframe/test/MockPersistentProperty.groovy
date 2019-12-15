@@ -1,7 +1,6 @@
 package org.simplemes.eframe.test
 
 import groovy.transform.ToString
-import org.grails.datastore.mapping.model.PersistentProperty
 import org.spockframework.mock.IDefaultResponse
 import org.spockframework.mock.IMockInvocation
 import org.spockframework.mock.ZeroOrNullResponse

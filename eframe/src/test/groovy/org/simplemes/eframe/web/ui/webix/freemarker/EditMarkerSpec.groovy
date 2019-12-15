@@ -1,7 +1,6 @@
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import com.fasterxml.jackson.databind.ObjectMapper
-import org.grails.datastore.mapping.validation.ValidationErrors
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.data.SimpleFieldDefinition
 import org.simplemes.eframe.data.format.ChildListFieldFormat
@@ -13,7 +12,6 @@ import org.simplemes.eframe.test.MockFieldDefinitions
 import org.simplemes.eframe.test.MockPreferenceHolder
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.web.ui.webix.widget.TextFieldWidget
-import org.springframework.validation.FieldError
 import sample.controller.SampleParentController
 import sample.domain.SampleChild
 import sample.domain.SampleParent
@@ -204,8 +202,8 @@ class EditMarkerSpec extends BaseMarkerSpecification {
     new MockDomainUtils(this, new MockFieldDefinitions(['name', 'title'])).install()
 
     and: 'a simulated domain record with an error on the title field'
-    def errors = new ValidationErrors('dummy')
-    errors.addError(new FieldError('sampleParent', 'title', 'bad'))
+    //def errors = new ValidationErrors('dummy')
+    //errors.addError(new FieldError('sampleParent', 'title', 'bad'))
     def sampleParent = new SampleParent(name: 'ABC', title: 'xyz', errors: errors)
 
     when: 'the marker is built'

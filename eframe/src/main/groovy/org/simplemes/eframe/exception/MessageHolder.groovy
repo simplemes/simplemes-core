@@ -2,7 +2,6 @@ package org.simplemes.eframe.exception
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import groovy.transform.ToString
-import org.grails.datastore.mapping.validation.ValidationErrors
 import org.simplemes.eframe.i18n.GlobalUtils
 
 /*
@@ -125,7 +124,8 @@ class MessageHolder {
    * Builds a message holder with the given messages.  All messages are marked as errors.
    * @param errors The validation errors from a domain object that failed validation.
    */
-  MessageHolder(ValidationErrors errors) {
+  // TODO: Replace with non-hibernate alternative
+  MessageHolder(Object errors) {
     def map = GlobalUtils.lookupValidationErrors(errors)
     for (fieldName in map.keySet()) {
       for (msg in map[fieldName]) {

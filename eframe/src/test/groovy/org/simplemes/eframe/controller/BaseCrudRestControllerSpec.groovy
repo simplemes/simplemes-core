@@ -1,6 +1,6 @@
 package org.simplemes.eframe.controller
 
-import grails.gorm.transactions.Rollback
+
 import groovy.json.JsonSlurper
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
@@ -33,7 +33,7 @@ import sample.domain.SampleParent
 class BaseCrudRestControllerSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [SampleParent]
@@ -90,7 +90,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
   }
 
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restGet works for basic case "() {
     given: 'a controller for the base class'
     Class clazz = buildAllFieldsDomainController()
@@ -113,7 +113,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     json.reportTimeInterval == ReportTimeIntervalEnum.YESTERDAY.toString()
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restGet works with record ID"() {
     given: 'a controller for the base class for SampleParent'
     def controller = buildSampleParentController().newInstance()
@@ -131,7 +131,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     json.title == 'abc'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restGet works with records with child proxy records"() {
     given: 'a controller for the base class for SampleParent'
     Class clazz = buildSampleParentController()
@@ -165,7 +165,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     children[2].key == 'C3'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restGet works with custom fields"() {
     given: 'a controller for the base class'
     Class clazz = buildAllFieldsDomainController()
@@ -189,7 +189,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     json.custom1 == 'xyzzy'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restGet works with custom child list field added via addition"() {
     given: 'a controller for the base class'
     Class clazz = buildOrderController()
@@ -221,7 +221,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     orderLines2[2].product == 'PROD3'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restGet gracefully handles record not found case"() {
     given: 'a controller for the base class for SampleParent'
     Class clazz = buildSampleParentController()
@@ -235,7 +235,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     res.status() == HttpStatus.NOT_FOUND
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restGet gracefully handles ID is not a long"() {
     given: 'a controller for the base class for SampleParent'
     Class clazz = buildSampleParentController()
@@ -249,7 +249,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     res.status() == HttpStatus.NOT_FOUND
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restGet gracefully handles ID missing"() {
     given: 'a controller for the base class for SampleParent'
     Class clazz = buildSampleParentController()
@@ -263,7 +263,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     res.status() == HttpStatus.NOT_FOUND
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restGet checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller'
     Object controller = buildAllFieldsDomainController().newInstance()
@@ -279,7 +279,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
   }
 
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restPost can create simple record"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -329,7 +329,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     json.id == record.id
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restPost can create a record with child records"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildSampleParentController()
@@ -377,7 +377,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     jsonChildren[2].key == 'C2'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restPost can create a record with custom fields"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -411,7 +411,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     record2.getFieldValue('custom1') == 'custom_abc'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restPost can create a record with custom child records"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildOrderController()
@@ -464,7 +464,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     jsonChildren[2].product == 'C3'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restPost fails with validation errors"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -491,7 +491,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     json.message.text.contains('000')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restPost fails with no request body"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -509,7 +509,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['empty', 'body'])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restPost checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller'
     Object controller = buildAllFieldsDomainController().newInstance()
@@ -524,7 +524,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     res.status == HttpStatus.FORBIDDEN
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restPut can update a simple record"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -575,7 +575,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     json.id == record.id
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restPut can update a simple record with child records added"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildSampleParentController()
@@ -622,7 +622,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     jsonChildren[2].key == 'C2'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restPut can update a simple record with child records that are replaced"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildSampleParentController()
@@ -666,7 +666,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     jsonChildren[0].key == 'C3'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restPut can update a record with custom child records"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildOrderController()
@@ -729,7 +729,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     jsonChildren[2].product == 'C3A'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restPut can update will leave child records un-touched if they are not in the update JSON"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildSampleParentController()
@@ -772,7 +772,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     jsonChildren[1].key == 'C2'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restPut can update a record with custom fields"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -811,7 +811,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     record2.getFieldValue('custom1') == 'xyzzy'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restPut fails with validation errors"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -840,7 +840,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     json.message.text.contains('000')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restPut fails with no request body"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -859,7 +859,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
   }
 
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restPut fails with no record found"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -873,7 +873,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     res.status() == HttpStatus.NOT_FOUND
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restPut checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller'
     Object controller = buildAllFieldsDomainController().newInstance()
@@ -888,7 +888,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     res.status == HttpStatus.FORBIDDEN
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restDelete can delete a simple record"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -908,7 +908,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     AllFieldsDomain.findByName('ABC-021') == null
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restDelete can delete a record with children"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildSampleParentController()
@@ -932,7 +932,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     SampleChild.count() == 0
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restDelete can delete a record with related records"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildSampleParentController()
@@ -954,7 +954,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     AllFieldsDomain.count() == 0
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restDelete fails with no record found"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -968,7 +968,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     res.status() == HttpStatus.NOT_FOUND
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify restDelete checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller'
     Object controller = buildAllFieldsDomainController().newInstance()

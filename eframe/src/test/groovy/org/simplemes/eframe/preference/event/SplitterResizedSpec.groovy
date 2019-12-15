@@ -1,6 +1,6 @@
 package org.simplemes.eframe.preference.event
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.preference.PreferenceHolder
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.security.SecurityUtils
@@ -15,9 +15,9 @@ import org.simplemes.eframe.test.BaseSpecification
  */
 class SplitterResizedSpec extends BaseSpecification {
 
-  static specNeeds = [HIBERNATE, JSON]
+  static specNeeds = [SERVER, JSON]
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that dialog resize event creates the preference correctly"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -38,7 +38,7 @@ class SplitterResizedSpec extends BaseSpecification {
     preference.resizerA.size == 23.4
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that two resize events saves the latest size correctly"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -64,7 +64,7 @@ class SplitterResizedSpec extends BaseSpecification {
     preference.resizerA.size == 33.4
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that dialog resize event handles URI with arguments"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -85,7 +85,7 @@ class SplitterResizedSpec extends BaseSpecification {
     preference.resizerA.size == 13.4
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that splitter resize gracefully handles bad size"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -101,7 +101,7 @@ class SplitterResizedSpec extends BaseSpecification {
     UserPreference.list().size() == 0
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that a splitter resize event with no current user logged does not save any values"() {
     given: 'no current user'
     SecurityUtils.simulateNoUserInUnitTest = true

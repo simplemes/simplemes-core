@@ -1,6 +1,5 @@
 package org.simplemes.eframe.preference.service
 
-import grails.gorm.transactions.Transactional
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.TypeUtils
@@ -12,6 +11,7 @@ import org.simplemes.eframe.preference.event.GUIEventInterface
 import org.simplemes.eframe.security.SecurityUtils
 
 import javax.inject.Singleton
+import javax.transaction.Transactional
 
 /*
  * Copyright Michael Houston. All rights reserved.
@@ -58,7 +58,8 @@ class UserPreferenceService {
    * @param preferenceType The preference type to return.  For example, 'DialogPreference' (<b>Optional</b>).
    * @return The list of matching preference(s).
    */
-  @Transactional(readOnly = true)
+  @Transactional
+//(readOnly = true)
   Map findPreferences(String pageURI, String desiredElement = null, String preferenceType = null) {
     def res = [:]
 
@@ -126,7 +127,8 @@ class UserPreferenceService {
    * @param elementParam The page element (or preference name).
    * @return value The value.  Can be a POGO or a simple element.
    */
-  @Transactional(readOnly = true)
+  // TODO: Replace with non-hibernate alternative
+  @Transactional(/*readOnly = true*/)
   Object findSimplePreference(String pageParam, String elementParam) {
     String userParam = SecurityUtils.currentUserName
     PreferenceHolder holder = PreferenceHolder.find {

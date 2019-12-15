@@ -1,8 +1,7 @@
 package org.simplemes.eframe.domain
 
+import java.lang.reflect.Field
 
-import org.grails.datastore.gorm.validation.constraints.eval.DefaultConstraintEvaluator
-import org.grails.datastore.mapping.model.PersistentProperty
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.
@@ -25,7 +24,7 @@ class ConstraintUtils {
    * @param property The GORM property. (If null, then this method returns null).
    * @return The maxSize (can be null).
    */
-  Integer getPropertyMaxSize(PersistentProperty property) {
+  Integer getPropertyMaxSize(Field property) {
     if (property == null) {
       return null
     }
@@ -33,12 +32,15 @@ class ConstraintUtils {
     //  https://github.com/grails/grails-data-mapping/blob/347001e1e7a28e1b5b0b1cf888328ad51139764c/grails-datastore-gorm-validation/src/main/groovy/grails/gorm/validation/PersistentEntityValidator.groovy
     //  https://github.com/grails/grails-data-mapping/blob/347001e1e7a28e1b5b0b1cf888328ad51139764c/grails-datastore-gorm-validation/src/main/groovy/org/grails/datastore/gorm/validation/constraints/eval/DefaultConstraintEvaluator.java
     //  https://github.com/grails/grails-data-mapping/blob/347001e1e7a28e1b5b0b1cf888328ad51139764c/grails-datastore-gorm-validation/src/main/groovy/grails/gorm/validation/DefaultConstrainedProperty.groovy
+    // TODO: Replace with non-hibernate alternative
+/*
     if (property.type == String) {
       def constraintsEvaluator = new DefaultConstraintEvaluator()
       def evaluated = constraintsEvaluator.evaluate(property.owner.javaClass)
       def single = evaluated[property.name]
       return single.maxSize
     }
+*/
     return null
   }
 
@@ -47,16 +49,19 @@ class ConstraintUtils {
    * @param property The property (typically a BigDecimal property).
    * @return The scale (decimal precision for the DB).  Null if no constraint found.
    */
-  Integer getPropertyScale(PersistentProperty property) {
+  Integer getPropertyScale(Field property) {
     if (property == null) {
       return null
     }
+    // TODO: Replace with non-hibernate alternative
+/*
     if (property.type == BigDecimal) {
       def constraintsEvaluator = new DefaultConstraintEvaluator()
       def evaluated = constraintsEvaluator.evaluate(property.owner.javaClass)
       def single = evaluated[property.name]
       return single.scale
     }
+*/
     return null
   }
 
@@ -66,16 +71,19 @@ class ConstraintUtils {
    * @param constraintName The constraint to return (e.g. 'nullable').
    * @return The constraint setting.  Can be null.
    */
-  Object getProperty(PersistentProperty property, String constraintName) {
+  Object getProperty(Field property, String constraintName) {
     if (property == null) {
       return null
     }
+    // TODO: Replace with non-hibernate alternative
+/*
     def constraintsEvaluator = new DefaultConstraintEvaluator()
     def evaluated = constraintsEvaluator.evaluate(property.owner.javaClass)
     def single = evaluated[property.name]
     if (!single) {
       return false
     }
+*/
     return single[constraintName]
   }
 

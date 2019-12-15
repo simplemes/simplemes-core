@@ -1,6 +1,5 @@
 package org.simplemes.eframe.custom.service
 
-import grails.gorm.transactions.Transactional
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.custom.domain.FieldExtension
@@ -18,6 +17,7 @@ import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.web.PanelUtils
 
 import javax.inject.Singleton
+import javax.transaction.Transactional
 
 /*
  * Copyright Michael Houston. All rights reserved.
@@ -49,7 +49,8 @@ class ExtensionService {
    * @return A list of available fields and a list of configured fields.
    *
    */
-  @Transactional(readOnly = true)
+  @Transactional()
+// TODO: readOnly = true)
   Tuple2<List<Map>, List<Map>> getExtensionConfiguration(Class domainClass) {
     ArgumentUtils.checkMissing(domainClass, 'domainClass')
     def available = []

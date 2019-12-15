@@ -2,9 +2,7 @@ package org.simplemes.eframe.exception
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.json.JsonSlurper
-import org.grails.datastore.mapping.validation.ValidationErrors
 import org.simplemes.eframe.test.BaseSpecification
-import org.springframework.validation.FieldError
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.

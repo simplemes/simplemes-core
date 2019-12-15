@@ -16,11 +16,9 @@ import io.micronaut.http.annotation.Produces
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import io.micronaut.views.ViewsRenderer
-import org.grails.datastore.mapping.validation.ValidationErrors
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.domain.DomainBinder
 import org.simplemes.eframe.domain.DomainUtils
-import org.simplemes.eframe.exception.MessageHolder
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.TypeUtils
@@ -196,6 +194,8 @@ abstract class BaseCrudController extends BaseController {
       record = domainClass.newInstance()
       DomainBinder.build().bind(record, bodyParams, true)
       bindEvent(record, bodyParams)
+      // TODO: Replace with non-hibernate alternative
+/*
       ValidationErrors bindErrors = record.errors
       if (record.validate() && !(bindErrors.allErrors)) {
         log.debug('Creating {}', record)
@@ -203,6 +203,7 @@ abstract class BaseCrudController extends BaseController {
       } else {
         error = true
       }
+*/
       DomainUtils.instance.resolveProxies(record)
     }
 
@@ -210,7 +211,8 @@ abstract class BaseCrudController extends BaseController {
 
     if (error) {
       def modelAndView = new StandardModelAndView(getView('create'), principal, this)
-      modelAndView[StandardModelAndView.MESSAGES] = new MessageHolder((ValidationErrors) record.errors)
+      // TODO: Replace with non-hibernate alternative
+      //modelAndView[StandardModelAndView.MESSAGES] = new MessageHolder((ValidationErrors) record.errors)
       def renderer = Holders.applicationContext.getBean(ViewsRenderer)
 
       // Store the domain record in the model for the view/markers.
@@ -289,7 +291,9 @@ abstract class BaseCrudController extends BaseController {
       record = DomainUtils.instance.findDomainRecord(domainClass, id)
       DomainBinder.build().bind(record, bodyParams, true)
       bindEvent(record, bodyParams)
-      ValidationErrors bindErrors = record.errors
+      // TODO: Replace with non-hibernate alternative
+      //ValidationErrors bindErrors = record.errors
+/*
       if (record.validate() && !(bindErrors.allErrors)) {
         // Force the save by changing a field in the parent.
         // If we don't force this, then changes to the child records may not trigger the actual save.
@@ -301,6 +305,7 @@ abstract class BaseCrudController extends BaseController {
       } else {
         error = true
       }
+*/
       DomainUtils.instance.resolveProxies(record)
     }
 
@@ -308,7 +313,8 @@ abstract class BaseCrudController extends BaseController {
 
     if (error) {
       def modelAndView = new StandardModelAndView(getView('edit'), principal, this)
-      modelAndView[StandardModelAndView.MESSAGES] = new MessageHolder((ValidationErrors) record.errors)
+      // TODO: Replace with non-hibernate alternative
+      //modelAndView[StandardModelAndView.MESSAGES] = new MessageHolder((ValidationErrors) record.errors)
       def renderer = Holders.applicationContext.getBean(ViewsRenderer)
 
       // Store the domain record in the model for the view/markers.

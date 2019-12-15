@@ -1,6 +1,6 @@
 package org.simplemes.eframe.custom.domain
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.FieldSizes
@@ -20,7 +20,7 @@ import org.simplemes.eframe.test.DomainTester
 class FlexFieldSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [HIBERNATE]
+  static specNeeds = [SERVER]
 
   def "verify that default values are set correctly"() {
     expect: 'the right defaults are used'
@@ -41,7 +41,7 @@ class FlexFieldSpec extends BaseSpecification {
     }
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that invalid field names are detected"() {
     expect: 'the right defaults are used'
     def flexType = new FlexType(flexType: 'XYZ')
@@ -53,7 +53,7 @@ class FlexFieldSpec extends BaseSpecification {
     errorsByField['fieldName'][0].contains('BAD')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that equals and hash code work"() {
     given: 'a flex type'
     def flexType = DataGenerator.buildFlexType()

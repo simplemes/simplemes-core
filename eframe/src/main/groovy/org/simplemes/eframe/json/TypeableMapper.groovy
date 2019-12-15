@@ -1,10 +1,12 @@
 package org.simplemes.eframe.json
 
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.TypeUtils
+
+import javax.persistence.Entity
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.
@@ -33,7 +35,7 @@ import org.simplemes.eframe.misc.TypeUtils
  *
  * This mapper only supports a specific white-list of allowed classes.  The allowed classes include: <p>
  * <ul>
- *   <li><b>GORM/Hibernate Entities</b> - Must have the @Entity annotation. </li>
+ *   <li><b>GORM/Hibernate Entities</b> - Must have the //@Entity annotation. </li>
  *   <li><b>Implements TypeableJSONInterface</b> - Specific classes marked with this interface </li>
  * </ul>
  * <p>
@@ -62,7 +64,7 @@ class TypeableMapper {
     for (o in list) {
       ArgumentUtils.checkMissing(o, 'o')
       if (!isValidClass(o.getClass())) {
-        throw new IllegalArgumentException("Class ${o.getClass()} is not allowed in a TypeableMapper.  Only Hibernate @Entity or TypeableJSONInterface class allowed.")
+        throw new IllegalArgumentException("Class ${o.getClass()} is not allowed in a TypeableMapper.  Only Hibernate //@Entity or TypeableJSONInterface class allowed.")
       }
       listWithTypes << o.getClass().name
       listWithTypes << o
@@ -135,7 +137,7 @@ class TypeableMapper {
       String className = list[i]
       def clazz = TypeUtils.loadClass(className)
       if (!isValidClass(clazz)) {
-        throw new IllegalArgumentException("Class ${clazz.name} is not allowed in a TypeableMapper.  Only Hibernate @Entity or TypeableJSONInterface class allowed.")
+        throw new IllegalArgumentException("Class ${clazz.name} is not allowed in a TypeableMapper.  Only Hibernate //@Entity or TypeableJSONInterface class allowed.")
       }
       def o = mapper.convertValue(list[i + 1], clazz)
       res << o
@@ -150,6 +152,7 @@ class TypeableMapper {
    * @return True if this class is valid.
    */
   static boolean isValidClass(Class clazz) {
+    // TODO: Replace with non-hibernate alternative - was Entity
     return (clazz.isAnnotationPresent(Entity)) || (TypeableJSONInterface.isAssignableFrom(clazz))
   }
 

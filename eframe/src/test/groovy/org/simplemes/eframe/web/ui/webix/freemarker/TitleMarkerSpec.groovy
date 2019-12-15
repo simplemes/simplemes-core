@@ -1,6 +1,6 @@
 package org.simplemes.eframe.web.ui.webix.freemarker
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.dashboard.domain.DashboardPanel
@@ -21,7 +21,7 @@ import sample.domain.SampleParent
 class TitleMarkerSpec extends BaseMarkerSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [HIBERNATE]
+  static specNeeds = [SERVER]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [DashboardConfig]
@@ -118,7 +118,7 @@ class TitleMarkerSpec extends BaseMarkerSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['No controller', 'label='])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that marker works for the dashboard type - category scenario"() {
     given: 'a dashboard'
     DashboardConfig dashboardConfig = new DashboardConfig(category: 'MANAGER', dashboard: 'MANAGER', title: 'Manager')

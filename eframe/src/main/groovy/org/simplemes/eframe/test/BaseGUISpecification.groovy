@@ -25,7 +25,7 @@ class BaseGUISpecification extends BaseSpecification {
   /**
    * Makes sure the GUI test has GEB GUI, embedded server and hibernate.
    */
-  static specNeeds = [GUI, HIBERNATE]
+  static specNeeds = [GUI]
 
   /**
    * Tracks the current user logged in.

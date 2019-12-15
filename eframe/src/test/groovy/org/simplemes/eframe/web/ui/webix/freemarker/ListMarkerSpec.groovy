@@ -15,7 +15,7 @@ import sample.controller.SampleParentController
  */
 class ListMarkerSpec extends BaseMarkerSpecification {
 
-  static specNeeds = [HIBERNATE]
+  static specNeeds = [SERVER]
 
   def "verify that this marker uses the handlebar options correctly"() {
     when: 'the marker is built'

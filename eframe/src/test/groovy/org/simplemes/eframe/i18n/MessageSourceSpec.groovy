@@ -13,7 +13,7 @@ import org.simplemes.eframe.test.BaseSpecification
  */
 class MessageSourceSpec extends BaseSpecification {
 
-  //static specNeeds = [EMBEDDED]
+  //static specNeeds = [SERVER]
 
   def "verify that getMessage works for default locale"() {
     when: 'the lookup is made'

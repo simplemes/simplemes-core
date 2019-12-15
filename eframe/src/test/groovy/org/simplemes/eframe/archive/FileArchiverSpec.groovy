@@ -1,7 +1,6 @@
 package org.simplemes.eframe.archive
 
 import ch.qos.logback.classic.Level
-import grails.gorm.transactions.Rollback
 import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.EFrameConfiguration
 import org.simplemes.eframe.application.Holders
@@ -343,7 +342,7 @@ class FileArchiverSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(e, ['string', 'not', 'domain'])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that attempts to save same object twice generates a different file name each time"() {
     given: 'a domain object is created'
     def sample = new SampleParent(name: 'ABC').save()
@@ -365,7 +364,7 @@ class FileArchiverSpec extends BaseSpecification {
     reference1 != reference2
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the verification of the archive can be disabled"() {
     given: 'a domain object is created'
     def sample = new SampleParent(name: 'ABC').save()
@@ -382,7 +381,7 @@ class FileArchiverSpec extends BaseSpecification {
     !archiver.verified
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the verification of the archive can be enabled"() {
     given: 'a domain object is created'
     def sample = new SampleParent(name: 'ABC').save()
@@ -399,7 +398,7 @@ class FileArchiverSpec extends BaseSpecification {
     archiver.verified
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the ArchiveLog record creation can be disabled"() {
     given: 'a domain object is created'
     def sample = new SampleParent(name: 'ABC').save()
@@ -416,7 +415,7 @@ class FileArchiverSpec extends BaseSpecification {
     ArchiveLog.list().size() == 0
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that cancel preserves records and does not leave file partially created"() {
     given: 'a domain object is created'
     def sample = new SampleParent(name: 'XYZ').save()
@@ -438,7 +437,7 @@ class FileArchiverSpec extends BaseSpecification {
     FileFactory.instance.lastFileCreated.deleted
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the debug logging works"() {
     given: 'a mock appender for Info level only'
     def mockAppender = MockAppender.mock(FileArchiver, Level.DEBUG)
@@ -463,7 +462,7 @@ class FileArchiverSpec extends BaseSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(mockAppender.message, ['DEBUG', 'unarchived', TypeUtils.toShortString(sample)])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that a write error preserves records and does not leave file partially created"() {
     given: 'a domain object is created'
     def sample = new SampleParent(name: 'XYZ').save()

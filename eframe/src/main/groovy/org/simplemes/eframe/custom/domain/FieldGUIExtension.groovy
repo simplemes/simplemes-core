@@ -1,6 +1,6 @@
 package org.simplemes.eframe.custom.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import org.simplemes.eframe.custom.gui.FieldAdjustmentInterface
 import org.simplemes.eframe.json.TypeableMapper
 import org.simplemes.eframe.misc.FieldSizes
@@ -10,7 +10,7 @@ import org.simplemes.eframe.misc.FieldSizes
  * This mainly adjusts the order of fields on the standard definition GUIs and lists.
  * This can also add custom fields to those GUIs.
  */
-@Entity
+//@Entity
 class FieldGUIExtension {
   String domainName
 

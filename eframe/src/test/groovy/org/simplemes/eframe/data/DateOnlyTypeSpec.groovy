@@ -1,6 +1,6 @@
 package org.simplemes.eframe.data
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.test.BaseSpecification
@@ -20,7 +20,7 @@ class DateOnlyTypeSpec extends BaseSpecification {
 
   static dirtyDomains = [AllFieldsDomain]
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that DateOnly survives round trip to db without changes"() {
     given: 'a domain'
     def dueDate = new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS)
@@ -33,7 +33,7 @@ class DateOnlyTypeSpec extends BaseSpecification {
     object.dueDate == dueDate
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that DateOnly null values work"() {
     given: 'a domain'
     def o = new AllFieldsDomain(name: 'ABC').save()
@@ -47,7 +47,7 @@ class DateOnlyTypeSpec extends BaseSpecification {
 
   def "test simple methods for DateOnlyType"() {
     given: 'an instance'
-    def type = new DateOnlyType()
+    def type = null //new DateOnlyType()
     def dueDate1 = new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS)
     def dueDate1a = new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS)
     def dueDate2 = new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS + DateUtils.MILLIS_PER_DAY)

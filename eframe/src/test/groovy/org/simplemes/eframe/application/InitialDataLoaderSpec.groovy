@@ -22,7 +22,7 @@ import sample.domain.SampleParent
  */
 class InitialDataLoaderSpec extends BaseSpecification {
 
-  //static specNeeds = [EMBEDDED]
+  //static specNeeds = [SERVER]
   static dirtyDomains = [User, Role]
 
   def "verify that initial data from real domains is loaded correctly"() {

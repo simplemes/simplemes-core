@@ -1,7 +1,6 @@
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import ch.qos.logback.classic.Level
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.preference.PreferenceHolder
@@ -24,10 +23,10 @@ import org.simplemes.eframe.test.MockAppender
 class DashboardMarkerSpec extends BaseMarkerSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the tag can handle a two panel vertical dashboard"() {
     given: 'a dashboard config'
     DashboardUnitTestUtils.buildDashboardConfig('TEST', ['vertical0', '/page0', '/page1'])
@@ -68,7 +67,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
     page.contains('dashboard.currentCategory="NONE";')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the tag can handle a two panel horizontal dashboard"() {
     given: 'a dashboard config'
     DashboardUnitTestUtils.buildDashboardConfig('TEST', ['horizontal0', 'page0', 'page1'])
@@ -86,7 +85,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
     rowText.contains('id: "PanelB"')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the tag detects no configuration correctly - by category"() {
     when: 'the HTML is generated'
     def page = execute(source: '<@efDashboard category="TEST"/>', uri: '/dashboard?arg=value')
@@ -102,7 +101,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
     errorText.contains(new BusinessException(112, ['TEST']).toString())
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the tag detects no configuration correctly - dashboard name"() {
     when: 'the HTML is generated'
     def page = execute(source: '<@efDashboard dashboard="TEST"/>', uri: '/dashboard?arg=value')
@@ -118,7 +117,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
     errorText.contains(new BusinessException(121, ['TEST']).toString())
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the tag can handle a one dashboard panel"() {
     given: 'a dashboard config'
     DashboardUnitTestUtils.buildDashboardConfig('TEST', ['/page0'])
@@ -142,7 +141,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
     panelsText.contains('defaultURL: "/page0"')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the tag can handle loading a specific dashboard"() {
     given: 'a non-default dashboard config'
     def dashboardConfig = DashboardUnitTestUtils.buildDashboardConfig('TEST', ['/page0'])
@@ -160,7 +159,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
     page.contains('dashboard.currentDashboard="TEST";')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the tag can handle three panel vertical"() {
     given: 'a dashboard config'
     DashboardUnitTestUtils.buildDashboardConfig('TEST', ['vertical0', 'page0', 'horizontal1', 'page1', 'page2'])
@@ -188,7 +187,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
     page.indexOf('PanelB') < page.indexOf('PanelC')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the tag can use splitter sizes from the user preferences"() {
     given: 'a dashboard config'
     DashboardUnitTestUtils.buildDashboardConfig('DASHBOARD', ['vertical0', 'page0', 'horizontal1', 'page1', 'page2'])
@@ -220,7 +219,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
     JavascriptTestUtils.extractProperty(panelBText, 'height') == 'tk.ph("24.5%")'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the tag can handle all of the supported button fields"() {
     given: 'a dashboard config'
     def buttons = [[label: 'b10', url: '/page10', panel: 'A', title: 'title10', css: 'caution-button', size: 1.2, buttonID: 'B10']]
@@ -243,7 +242,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
     buttonText.contains('panel: "A"')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the tag can handle multiple buttons"() {
     given: 'a dashboard config'
     def button1a = [label: 'b10', url: '/page11', panel: 'A', buttonID: 'ID10']
@@ -277,7 +276,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
     button2Text.contains('id: "ID20"')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the tag can handle supported URLs formats"() {
     given: 'a dashboard config'
     DashboardUnitTestUtils.buildDashboardConfig('TEST', ['vertical0', '/page0', 'vertical1', 'Page1',
@@ -297,7 +296,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
     TextUtils.findLine(panelsText, '"D":').contains('defaultURL: "https://server:81/page3"')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the marker can handle additional URL arguments added as activityParams"() {
     given: 'a dashboard config and model for the marker'
     def dataModel = [:]
@@ -315,7 +314,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
     page.contains("""dashboard._addActivityParameter("location","loc_ABC");""")
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the mark can handle quotes in the additional activity parameters"() {
     given: 'a dashboard config and model for the marker'
     def dataModel = [:]
@@ -332,7 +331,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
     page.contains("""dashboard._addActivityParameter("workCenter","WC\\\"227");""")
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the tag logs the hierarchy with trace logging"() {
     given: 'a dashboard config'
     DashboardUnitTestUtils.buildDashboardConfig('TEST', ['horizontal0', 'page0', 'page1'])

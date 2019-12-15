@@ -1,14 +1,15 @@
 package org.simplemes.eframe.data
 
 import groovy.transform.ToString
-import org.grails.datastore.mapping.model.PersistentProperty
-import org.grails.datastore.mapping.model.types.Association
+import io.micronaut.data.model.Association
 import org.simplemes.eframe.data.format.FieldFormatFactory
 import org.simplemes.eframe.data.format.FieldFormatInterface
 import org.simplemes.eframe.domain.ConstraintUtils
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.TypeUtils
+
+import java.lang.reflect.Field
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.
@@ -95,7 +96,8 @@ class SimpleFieldDefinition implements FieldDefinitionInterface {
   /**
    * The persistent property for the definition.  May be null.
    */
-  PersistentProperty property
+  // TODO: Replace with non-hibernate alternative
+  Field property
 
 
   /**
@@ -120,11 +122,12 @@ class SimpleFieldDefinition implements FieldDefinitionInterface {
    * Basic constructor for persistent property.
    * @param options The options.
    */
-  SimpleFieldDefinition(PersistentProperty property) {
+  SimpleFieldDefinition(Field property) {
     ArgumentUtils.checkMissing(property, 'property')
     name = property.name
     type = property.type
     this.property = property
+    // TODO: Replace with non-hibernate alternative
     if (property instanceof Association) {
       reference = true
       child = DomainUtils.instance.isOwningSide(property)

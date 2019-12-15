@@ -1,6 +1,6 @@
 package org.simplemes.eframe.json
 
-import grails.gorm.transactions.Rollback
+
 import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseSpecification
@@ -19,9 +19,9 @@ import sample.domain.OrderLine
 class ComplexCustomFieldSerializerSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that serialize handles custom child list from addition"() {
     given: 'a domain object with custom fields'
     def order = new Order(order: 'M1001')
@@ -48,7 +48,7 @@ class ComplexCustomFieldSerializerSpec extends BaseSpecification {
     orderLines2[2].product == 'PROD3'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that serialize handles empty custom child list from addition"() {
     given: 'a domain object with custom fields'
     def order = new Order(order: 'M1001')

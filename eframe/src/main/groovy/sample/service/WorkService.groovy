@@ -1,6 +1,5 @@
 package sample.service
 
-import grails.gorm.transactions.Transactional
 import org.simplemes.eframe.application.Holders
 import sample.ProductionInterface
 import sample.StartRequest
@@ -8,6 +7,7 @@ import sample.StartResponse
 import sample.domain.Order
 
 import javax.inject.Singleton
+import javax.transaction.Transactional
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.

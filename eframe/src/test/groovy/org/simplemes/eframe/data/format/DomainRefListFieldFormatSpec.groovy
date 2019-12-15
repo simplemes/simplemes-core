@@ -1,6 +1,6 @@
 package org.simplemes.eframe.data.format
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.MockFieldDefinitions
@@ -60,7 +60,7 @@ class DomainRefListFieldFormatSpec extends BaseSpecification {
   }
 
   @SuppressWarnings("GroovyAssignabilityCheck")
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the parse method handles list of 1 value"() {
     given: 'a field definition'
     def fieldDefinitions = new MockFieldDefinitions([allFieldsDomain: AllFieldsDomain])
@@ -78,7 +78,7 @@ class DomainRefListFieldFormatSpec extends BaseSpecification {
     list[0].id == allFieldsDomain.id
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the parse method handles list of multiple values"() {
     given: 'a field definition'
     def fieldDefinitions = new MockFieldDefinitions([allFieldsDomain: AllFieldsDomain])
@@ -130,7 +130,7 @@ class DomainRefListFieldFormatSpec extends BaseSpecification {
     s == ''
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the decode method decodes a list of IDs correctly"() {
     given: 'a field definition'
     def fieldDefinitions = new MockFieldDefinitions([allFieldsDomain: AllFieldsDomain])
@@ -153,7 +153,7 @@ class DomainRefListFieldFormatSpec extends BaseSpecification {
     list2 == list
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the getValidValues provides the valid values"() {
     given: 'domain records'
     DataGenerator.generate {

@@ -1,6 +1,6 @@
 package org.simplemes.eframe.custom.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 
 /*
@@ -14,11 +14,12 @@ import groovy.transform.EqualsAndHashCode
  * This is normally a child of the FlexType to group related items together.  The actual values are stored in a
  * a user definable field (<b>flexFields</b>).
  */
-@Entity
+//@Entity
 //@ToString(includePackage = false, includeNames = true)
 @EqualsAndHashCode(includes = ['flexType'], callSuper = true)
 class FlexField extends AbstractField {
 
+  String flexType
   /**
    * This is a child of a parent FlexType
    */

@@ -1,10 +1,8 @@
 package org.simplemes.eframe.i18n
 
-import org.grails.datastore.mapping.validation.ValidationErrors
+import io.micronaut.context.exceptions.NoSuchMessageException
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.misc.ArgumentUtils
-import org.springframework.context.NoSuchMessageException
-import org.springframework.validation.FieldError
 
 /**
  * Miscellaneous globalization utils.  Most are static methods for convenience but work with
@@ -98,7 +96,7 @@ class GlobalUtils {
    * @param locale The locale to use for the message.
    * @return The map of field/error values.  This is a map for each field that failed with a list of error codes for each.
    */
-  static Map<String, List<String>> lookupValidationErrors(ValidationErrors errors, Locale locale = null) {
+  static Map<String, List<String>> lookupValidationErrors(Map errors, Locale locale = null) {
     locale = locale ?: getRequestLocale()
     def stringsByField = [:]
     for (fieldErrors in errors) {
@@ -109,7 +107,7 @@ class GlobalUtils {
           resolved = []
           stringsByField[field] = resolved
         }
-        error = enhanceErrorArguments((FieldError) error)
+        error = enhanceErrorArguments((Object) error)
 
         def messageSource = getMessageSource()
         //messageSource.setBasename('messages')
@@ -132,7 +130,8 @@ class GlobalUtils {
    * @param error The error to enhance.
    * @return A new error with the argument added.
    */
-  static FieldError enhanceErrorArguments(FieldError error) {
+  // TODO: Replace with non-hibernate alternative
+  static Object enhanceErrorArguments(Object error) {
     // Attempt to lookup the first argument as a field label.
     if (error.arguments) {
       def labelKey = error.arguments[0] + '.label'
@@ -154,8 +153,10 @@ class GlobalUtils {
     Object[] newArray = new Object[error.arguments.length + 1]
     System.arraycopy(error.arguments, 0, newArray, 0, error.arguments.length)
     newArray[error.arguments.length] = simpleName
+/*
     return new FieldError(error.objectName, error.field, error.rejectedValue, error.isBindingFailure(),
                           error.codes, newArray, error.defaultMessage)
+*/
 
   }
 

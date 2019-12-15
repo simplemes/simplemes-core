@@ -1,20 +1,19 @@
 package org.simplemes.eframe.domain
 
-import grails.gorm.annotation.Entity
-import org.grails.datastore.mapping.model.PersistentProperty
-import org.grails.datastore.mapping.validation.ValidationErrors
-import org.grails.orm.hibernate.cfg.GrailsHibernateUtil
-import org.hibernate.proxy.HibernateProxy
+import io.micronaut.data.model.PersistentProperty
 import org.simplemes.eframe.application.Holders
+
+//import grails.gorm.annotation.Entity
+
 import org.simplemes.eframe.data.FieldDefinitionFactory
 import org.simplemes.eframe.data.FieldDefinitions
 import org.simplemes.eframe.data.annotation.ExtensibleFields
+import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.exception.MessageHolder
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.misc.TypeUtils
-import org.springframework.validation.FieldError
 
 import java.lang.reflect.Field
 
@@ -282,8 +281,11 @@ class DomainUtils {
    * @return
    */
   List<Class> getAllDomains() {
-    def pe = Holders.hibernateDatastore?.mappingContext?.persistentEntities
-    return pe*.javaClass
+    def definitions = Holders.applicationContext.getBeanDefinitions(DomainEntityInterface)
+    //println "x = ${definitions[0].dump()}"
+    //println "x = ${definitions*.declaringType}"
+    //def pe = Holders.hibernateDatastore?.mappingContext?.persistentEntities
+    return definitions*.declaringType*.get()
   }
 
   /**
@@ -305,6 +307,8 @@ class DomainUtils {
    * @param object The object.
    */
   def resolveProxies(Object object) {
+    // TODO: Replace with non-hibernate alternative
+/*
     if (object == null) {
       return
     }
@@ -350,6 +354,7 @@ class DomainUtils {
       }
 
     }
+*/
   }
 
   /**
@@ -438,6 +443,8 @@ class DomainUtils {
    * @param domainObject The domain object to add the error to.
    */
   void addValidationError(Object domainObject, String fieldName, Object value, String messageKey) {
+    // TODO: Replace with non-hibernate alternative
+/*
     def errors = domainObject.errors
     if (errors == null) {
       domainObject.errors = new ValidationErrors(domainObject)
@@ -446,6 +453,7 @@ class DomainUtils {
     errors.addError(new FieldError(clazz.simpleName, fieldName, value, true, [messageKey] as String[],
                                    [fieldName, clazz, value] as Object[], '{0} failed validation on {1}.'))
 
+*/
   }
 
   /**

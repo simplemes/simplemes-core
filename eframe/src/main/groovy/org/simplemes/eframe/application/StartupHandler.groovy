@@ -6,10 +6,8 @@ import groovy.util.logging.Slf4j
 import io.micronaut.discovery.event.ServiceStartedEvent
 import io.micronaut.runtime.event.annotation.EventListener
 import io.micronaut.scheduling.annotation.Async
-import org.grails.orm.hibernate.HibernateDatastore
 import org.simplemes.eframe.date.EFrameDateFormat
 import org.simplemes.eframe.json.HibernateAwareJacksonModule
-import org.simplemes.eframe.test.EframePersistenceListener
 
 import javax.inject.Singleton
 
@@ -68,9 +66,6 @@ class StartupHandler {
    * Configures the hibernate data store for use with the framework.
    */
   void configureHibernate() {
-    def hibernateDataStore = Holders.applicationContext.getBean(HibernateDatastore)
-    def listener = new EframePersistenceListener(hibernateDataStore)
-    hibernateDataStore.getApplicationEventPublisher().addApplicationListener(listener)
 
   }
 

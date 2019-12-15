@@ -9,9 +9,7 @@ import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Error
 import io.micronaut.views.ViewsRenderer
-import org.grails.datastore.mapping.validation.ValidationErrors
 import org.simplemes.eframe.application.Holders
-import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.exception.MessageHolder
 import org.simplemes.eframe.misc.HTMLUtils
 import org.simplemes.eframe.misc.LogUtils
@@ -149,12 +147,15 @@ abstract class BaseController {
    * @return If any errors are found, then return a response with the standard error message formatted for JSON.
    */
   HttpResponse checkForValidationErrors(Object record) {
+    // TODO: Fix.
+/*
     ValidationErrors bindErrors = record.errors
     if (!record.validate() || bindErrors.allErrors) {
       def msg = DomainUtils.instance.getValidationMessages(record)
       def s = Holders.objectMapper.writeValueAsString(msg)
       return HttpResponse.status(HttpStatus.BAD_REQUEST).body(s)
     }
+*/
     return null
   }
 }

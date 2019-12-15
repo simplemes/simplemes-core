@@ -15,7 +15,7 @@ import org.simplemes.eframe.test.DomainTester
  */
 class ArchiveLogSpec extends BaseSpecification {
 
-  static specNeeds = [HIBERNATE]
+  static specNeeds = [SERVER]
 
   def "verify that user domain enforces constraints"() {
     expect: 'the constraints are enforced'

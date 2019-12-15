@@ -1,6 +1,6 @@
 package org.simplemes.eframe.security.domain
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.misc.FieldSizes
@@ -16,7 +16,7 @@ import org.simplemes.eframe.misc.FieldSizes
  * can have access to the system.
  */
 @Slf4j
-@Entity
+//@Entity
 @EqualsAndHashCode(includes = ['authority'])
 @SuppressWarnings("unused")
 class Role {

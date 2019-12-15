@@ -1,6 +1,6 @@
 package org.simplemes.eframe.security.domain
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.data.annotation.ExtensibleFields
 import org.simplemes.eframe.data.format.DomainRefListFieldFormat
 import org.simplemes.eframe.domain.DomainUtils
@@ -21,7 +21,7 @@ import org.simplemes.eframe.test.UnitTestUtils
 @SuppressWarnings("unused")
 class UserSpec extends BaseSpecification {
 
-  static specNeeds = [HIBERNATE]
+  static specNeeds = [SERVER]
   static dirtyDomains = [User, Role]
 
   def "verify that user domain enforces constraints"() {
@@ -37,7 +37,7 @@ class UserSpec extends BaseSpecification {
     }
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that user record can be saved"() {
     when: 'a user is saved'
     def user = new User(userName: 'ABC', password: 'XYZ')
@@ -47,7 +47,7 @@ class UserSpec extends BaseSpecification {
     User.findByUserName('ABC')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that user domain encrypts the password on create"() {
     when: 'a user is saved'
     def user = new User(userName: 'ABC', password: 'XYZ')
@@ -96,7 +96,7 @@ class UserSpec extends BaseSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(ex, ['password'])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the load initial data  works"() {
     given: 'all user records are deleted'
     deleteAllRecords(User, false)
@@ -114,7 +114,7 @@ class UserSpec extends BaseSpecification {
     user.userRoles.size() == Role.list().size()
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the child userRoles can be populated"() {
     given: 'some roles'
     def role1 = new Role(authority: '1', title: '1').save()

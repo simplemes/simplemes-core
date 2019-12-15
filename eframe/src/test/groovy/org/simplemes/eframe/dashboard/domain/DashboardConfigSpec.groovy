@@ -1,6 +1,6 @@
 package org.simplemes.eframe.dashboard.domain
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.FieldSizes
@@ -18,7 +18,7 @@ import org.simplemes.eframe.test.UnitTestUtils
  * Tests.
  */
 class DashboardConfigSpec extends BaseSpecification {
-  static specNeeds = [HIBERNATE]
+  static specNeeds = [SERVER]
   static dirtyDomains = [DashboardConfig]
 
   def "verify that domain enforces constraints"() {
@@ -44,7 +44,7 @@ class DashboardConfigSpec extends BaseSpecification {
     DomainUtils.instance.getPrimaryKeyField(DashboardConfig) == 'dashboard'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that unique panel ID constraint error is detected"() {
     when: 'a dashboard with invalid setting is validated'
     def dashboard = new DashboardConfig(dashboard: 'XYZ')
@@ -59,7 +59,7 @@ class DashboardConfigSpec extends BaseSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(errors.panels[0], ['panel', 'abc', 'unique'])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that invalid panel for a button is detected"() {
     when: 'a dashboard with invalid setting is validated'
     def dashboard = new DashboardConfig(dashboard: 'XYZ')
@@ -74,7 +74,7 @@ class DashboardConfigSpec extends BaseSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(errors.buttons[0], ['button', '123', 'invalid', 'PDQ'])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that too many splitter children error is detected"() {
     when: 'a dashboard with invalid setting is validated'
     def dashboard = new DashboardConfig(dashboard: 'XYZ')
@@ -92,7 +92,7 @@ class DashboardConfigSpec extends BaseSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(errors.panels[0], ['splitter', '47', 'child', '2', '3'])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that too few splitter children error is detected"() {
     when: 'a dashboard with invalid setting is validated'
     def dashboard = new DashboardConfig(dashboard: 'XYZ')
@@ -158,7 +158,7 @@ class DashboardConfigSpec extends BaseSpecification {
   }
 
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the default panel IDs are assigned to new panels - create"() {
     when: 'a dashboard is saved'
     def dashboard = new DashboardConfig(dashboard: 'XYZ')
@@ -173,7 +173,7 @@ class DashboardConfigSpec extends BaseSpecification {
     dashboard.panels[1].panel == 'B'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the default panel IDs are assigned to new panels - update"() {
     given: 'a saved dashboard'
     def dashboardConfig = new DashboardConfig(dashboard: 'XYZ')
@@ -207,7 +207,7 @@ class DashboardConfigSpec extends BaseSpecification {
     }
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the default button sequences are assigned to new button"() {
     when: 'a dashboard is saved'
     def dashboard = new DashboardConfig(dashboard: 'XYZ')
@@ -227,7 +227,7 @@ class DashboardConfigSpec extends BaseSpecification {
 
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that hierarchyToString works"() {
     when: 'a dashboard with a complex hierarchy is written to a string'
     def dashboard = new DashboardConfig(dashboard: 'XYZ')

@@ -1,6 +1,6 @@
 package org.simplemes.eframe.preference.event
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.preference.PreferenceHolder
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.security.SecurityUtils
@@ -15,9 +15,9 @@ import org.simplemes.eframe.test.BaseSpecification
  */
 class ConfigButtonToggledSpec extends BaseSpecification {
 
-  static specNeeds = [HIBERNATE, JSON]
+  static specNeeds = [SERVER, JSON]
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that button toggled to visible works"() {
     given: 'the parameters for the GUI event handler'
     def params = [pageURI: ConfigButtonToggled.PAGE, event: ConfigButtonToggled.EVENT,
@@ -38,7 +38,7 @@ class ConfigButtonToggledSpec extends BaseSpecification {
     preference[ConfigButtonToggled.KEY].visible == true
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that button toggled to not visible works"() {
     given: 'the parameters for the GUI event handler'
     def params = [pageURI: ConfigButtonToggled.PAGE, event: ConfigButtonToggled.EVENT,
@@ -59,7 +59,7 @@ class ConfigButtonToggledSpec extends BaseSpecification {
     preference[ConfigButtonToggled.KEY].visible == false
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that button toggled twice works"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -81,7 +81,7 @@ class ConfigButtonToggledSpec extends BaseSpecification {
     preference[ConfigButtonToggled.KEY].visible == true
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that a toggle config button event with no current user logged does not save any values"() {
     given: 'the parameters for the GUI event handler'
     def params = [pageURI: ConfigButtonToggled.PAGE, event: ConfigButtonToggled.EVENT,

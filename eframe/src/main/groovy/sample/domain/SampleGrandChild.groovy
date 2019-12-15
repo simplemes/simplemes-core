@@ -1,7 +1,7 @@
 package sample.domain
 
 
-import grails.gorm.annotation.Entity
+//import grails.gorm.annotation.Entity
 import groovy.transform.ToString
 
 /*
@@ -13,8 +13,8 @@ import groovy.transform.ToString
 /**
  * A test/Sample grand child domain class.
  */
-@Entity
-@ToString(includePackage = false, includeNames = true, excludes = ['errors', 'dirtyPropertyNames', 'attached', 'dirty', 'sampleChild'])
+//@Entity
+@ToString(includePackage = false, includeNames = true, excludes = ['sampleChild'])
 class SampleGrandChild {
 
   // ********************************************************
@@ -22,6 +22,7 @@ class SampleGrandChild {
   // *       These fields are used by many tests.
   // ********************************************************
 
+  SampleChild sampleChild
   static belongsTo = [sampleChild: SampleChild]
   String grandKey
   String title

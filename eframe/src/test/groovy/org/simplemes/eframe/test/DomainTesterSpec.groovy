@@ -1,6 +1,6 @@
 package org.simplemes.eframe.test
 
-import grails.gorm.transactions.Rollback
+
 import sample.domain.SampleChild
 import sample.domain.SampleParent
 
@@ -15,9 +15,9 @@ import sample.domain.SampleParent
  */
 class DomainTesterSpec extends BaseSpecification {
 
-  static specNeeds = HIBERNATE
+  static specNeeds = SERVER
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that child required values are added to the list for save properly."() {
     given: 'a child record'
     def sampleChild = new SampleChild(key: 'ABC1')

@@ -1,6 +1,6 @@
 package org.simplemes.eframe.web.ui.webix.widget
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.data.format.DomainRefListFieldFormat
 import org.simplemes.eframe.misc.JavascriptUtils
 import org.simplemes.eframe.misc.TextUtils
@@ -21,7 +21,7 @@ class MultiComboboxWidgetSpec extends BaseWidgetSpecification {
 
   static dirtyDomains = [AllFieldsDomain]
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the field is generated correctly - editable case"() {
     when: 'the UI element is built'
     def afd1 = new AllFieldsDomain(name: 'ABC1', title: 'xyz').save()
@@ -57,7 +57,7 @@ class MultiComboboxWidgetSpec extends BaseWidgetSpecification {
     page.contains('view: "multiComboEF"')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that the field is generated correctly - readOnly case"() {
     when: 'the UI element is built'
     def afd1 = new AllFieldsDomain(name: 'ABC1', title: 'xyz').save()

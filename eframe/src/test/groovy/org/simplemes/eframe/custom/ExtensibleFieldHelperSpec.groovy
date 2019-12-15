@@ -1,7 +1,6 @@
 package org.simplemes.eframe.custom
 
 import ch.qos.logback.classic.Level
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.custom.domain.FieldGUIExtension
 import org.simplemes.eframe.custom.domain.FlexField
@@ -49,12 +48,12 @@ import sample.domain.SampleParent
 class ExtensibleFieldHelperSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [OrderLine, Order]
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getEffectiveFieldDefinitions finds custom fields"() {
     given: 'a custom field on a domain'
     new FieldExtension(fieldName: 'abc', domainClassName: SampleParent.name, fieldFormat: DateFieldFormat.instance).save()
@@ -69,7 +68,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     fieldDefs['name'].type == String
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getEffectiveFieldDefinitions logs the fields added - trace logging"() {
     given: 'a custom field on a domain'
     new FieldExtension(fieldName: 'xyzzy', domainClassName: SampleParent.name, fieldFormat: DateFieldFormat.instance).save()
@@ -84,7 +83,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(mockAppender.message, ['DEBUG', 'add', 'xyzzy', SampleParent.name])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getEffectiveFieldDefinitions finds fields added by additions"() {
     given: 'a simple mocked addition with a custom field'
     def src = """
@@ -122,7 +121,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     fieldDefs['name'].type == String
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getEffectiveFieldOrder finds custom fields GUI definitions"() {
     given: 'a custom field GUI extension on a domain'
     def originalFieldOrder = DomainUtils.instance.getStaticFieldOrder(SampleParent)
@@ -141,7 +140,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     originalFieldOrder == DomainUtils.instance.getStaticFieldOrder(SampleParent)
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getEffectiveFieldOrder supports optional fieldOrder passed in"() {
     given: 'a custom field GUI extension on a domain'
     def originalFieldOrder = ['name', 'title']
@@ -168,7 +167,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     notThrown(Exception)
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getEffectiveFieldOrder finds field order changes made by additions"() {
     given: 'a simple mocked addition with a custom field'
     def src = """
@@ -220,7 +219,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     ExtensibleFieldHelper.instance.getFieldValue(object, 'field1') == 'ABC'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that set and getFieldValue handles supported field types"() {
     given: 'a domain object with a custom field'
     def src = """
@@ -257,7 +256,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     ReportTimeIntervalEnum.LAST_7_DAYS | EnumFieldFormat        | ReportTimeIntervalEnum
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that set and getFieldValue handles domain reference"() {
     given: 'a domain object with a custom field'
     def object = new SampleParent()
@@ -279,7 +278,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     ExtensibleFieldHelper.instance.getFieldValue(object, 'field1') == allFieldsDomain
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that setFieldValue logs the value"() {
     given: 'a domain object with a custom field'
     def object = new SampleParent()
@@ -300,7 +299,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(mockAppender.message, ['TRACE', 'setFieldValue', 'XYZZY', 'field1', object.toString()])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getFieldValue logs the value"() {
     given: 'a domain object with a custom field'
     def object = new SampleParent()
@@ -322,7 +321,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(mockAppender.message, ['TRACE', 'getFieldValue', 'XYZZY', 'field1', object.toString()])
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that set and getFieldValue supports a prefix for the field name"() {
     given: 'a domain object with a custom field'
     def object = new SampleParent()
@@ -469,7 +468,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     object.testCustom.contains('ABC')
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that set and getFieldValue handles prefix option"() {
     given: 'a flex type with a field'
     def flexType = DataGenerator.buildFlexType()
@@ -486,7 +485,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     rma.getRmaTypeValue('FIELD1') == 'XYZ'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getFieldValue handles custom child list scenario"() {
     given: 'a parent record'
     def (Order order) = DataGenerator.generate {
@@ -673,7 +672,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     }
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that addConfigurableTypeFields adds the configurable fields to the field definitions"() {
     given: 'a flex type with a field'
     def flexType = new FlexType(flexType: 'XYZ')
@@ -698,7 +697,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     fieldDefinition instanceof ConfigurableTypeFieldDefinition
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getFieldValue supports the configurable field elements"() {
     given: 'a flex type with a field'
     def flexType = new FlexType(flexType: 'XYZ')
@@ -716,7 +715,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     rma.getRmaTypeValue('Field1') == new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS)
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that formatConfigurableTypeValues handles supported cases"() {
     given: 'a domain object with the given field values'
     def flexType = DataGenerator.buildFlexType(fieldCount: fieldCount)
@@ -737,7 +736,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     2          | ['AAA', 'BBB']        | [maxLength: 10]   | 'FIELD1: AAA ...'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that formatConfigurableTypeValues handles localized labels"() {
     given: 'a domain object with the given field values'
     def flexType = DataGenerator.buildFlexType(fieldLabel: 'order.label')

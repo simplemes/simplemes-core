@@ -1,6 +1,6 @@
 package org.simplemes.eframe.data.format
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.custom.domain.FlexField
 import org.simplemes.eframe.custom.domain.FlexType
@@ -19,7 +19,7 @@ import sample.domain.RMA
 class ConfigurableTypeDomainFormatSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
   def "verify that id and toString work and the format is registered in the BasicFieldFormat class"() {
     expect:
@@ -28,7 +28,7 @@ class ConfigurableTypeDomainFormatSpec extends BaseSpecification {
     BasicFieldFormat.coreValues.contains(ConfigurableTypeDomainFormat)
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that Configurable Type fields can be saved"() {
     given: 'a flex type with a field'
     def flexType = new FlexType(flexType: 'XYZ')
@@ -46,7 +46,7 @@ class ConfigurableTypeDomainFormatSpec extends BaseSpecification {
     ExtensibleFieldHelper.instance.getFieldValue(rma, 'Field1') == 'XYZZY'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getCurrentFields returns the list of fields for a flex type"() {
     given: 'a flex type with a field'
     def flexType = new FlexType(flexType: 'XYZ')
@@ -64,7 +64,7 @@ class ConfigurableTypeDomainFormatSpec extends BaseSpecification {
     fields[0].configTypeFieldName == 'rmaType'
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getCurrentFields handles null field value gracefully"() {
     when: 'the current fields are returned'
     def rma = new RMA(rma: 'ABC')
@@ -74,7 +74,7 @@ class ConfigurableTypeDomainFormatSpec extends BaseSpecification {
     fields.size() == 0
   }
 
-  @Rollback
+  //TODO: Find alternative to @Rollback
   def "verify that getCurrentFields handles null object value gracefully"() {
     when: 'the current fields are returned'
     def fields = ConfigurableTypeDomainFormat.instance.getCurrentFields(null, 'rmaType')
