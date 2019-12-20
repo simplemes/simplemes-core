@@ -19,7 +19,7 @@ DateOnly conversion.
     Lazy load
       reference - uses txn.
       getChildRecords, addToChildRecords, save logic.
-    done - save, list, delete.save findByXYZ(),findById()
+    done - save, list, delete.save findByXYZ(),findById(), @Rollback
   Bypass explicit repository use for common U/C's
   withTransaction {} ?
   Validation support.
@@ -51,6 +51,10 @@ New Guidelines
   Use UUID for entities
 Update dependencies
 Add notes on why using MN-Data, not hibernate.
+
+Vue Investigation
+=================
+Use tables, with full-time editable cells.
 
 Tasks
 =====

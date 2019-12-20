@@ -146,7 +146,6 @@ class DomainEntityTransformationSpec extends BaseSpecification {
 
     then: 'the record is in the DB'
     def o3 = Order2.findById(order.uuid)
-    println "o3 = $o3"
     o3.uuid == order.uuid
   }
 
