@@ -6,11 +6,15 @@ package org.simplemes.eframe.domain.annotation;
  *
  */
 
+import edu.umd.cs.findbugs.annotations.NonNull;
+import edu.umd.cs.findbugs.annotations.Nullable;
+import groovy.lang.Closure;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.data.repository.CrudRepository;
 import io.micronaut.data.repository.GenericRepository;
 import io.micronaut.transaction.SynchronousTransactionManager;
 import io.micronaut.transaction.TransactionCallback;
+import io.micronaut.transaction.TransactionStatus;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -222,10 +226,19 @@ public class DomainEntityHelper {
   /**
    * Start a transaction and rollback when finished.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "unused"})
   public void executeWrite(TransactionCallback closure) {
     SynchronousTransactionManager manager = getTransactionManager();
     manager.executeWrite(closure);
+  }
+
+  /**
+   * Start a transaction and rollback when finished.
+   */
+  @SuppressWarnings("unchecked")
+  public void executeWriteClosure(Class delegate, Closure closure) {
+    SynchronousTransactionManager manager = getTransactionManager();
+    manager.executeWrite(new TransactionCallbackWrapper(closure));
   }
 
 
@@ -235,5 +248,40 @@ public class DomainEntityHelper {
 
   public static void setInstance(DomainEntityHelper instance) {
     DomainEntityHelper.instance = instance;
+  }
+
+  /**
+   * Local class used to call the closure from the as a TransactionCallback.
+   */
+  protected static class TransactionCallbackWrapper implements TransactionCallback {
+
+    Closure closure;
+
+    public TransactionCallbackWrapper(Closure closure) {
+      this.closure = closure;
+    }
+
+    /**
+     * Code that runs within the context of a transaction will implement this method.
+     *
+     * @param status The transaction status.
+     * @return The return value
+     */
+    @Nullable
+    @Override
+    public Object call(@NonNull TransactionStatus status) {
+      return closure.call(status);
+    }
+
+    /**
+     * Applies this function to the given argument.
+     *
+     * @param o the function argument
+     * @return the function result
+     */
+    @Override
+    public Object apply(Object o) {
+      return null;
+    }
   }
 }

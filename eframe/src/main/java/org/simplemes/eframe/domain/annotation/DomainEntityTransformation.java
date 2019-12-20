@@ -1,5 +1,6 @@
 package org.simplemes.eframe.domain.annotation;
 
+import groovy.lang.Closure;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.data.repository.GenericRepository;
 import org.codehaus.groovy.ast.*;
@@ -57,7 +58,8 @@ public class DomainEntityTransformation implements ASTTransformation {
           addRepositoryField(classNode, sourceUnit);
           addDelegatedMethod("save", "save", false, null, classNode, sourceUnit);
           addDelegatedMethod("delete", "delete", false, null, classNode, sourceUnit);
-          //addDelegatedMethod("list","list",  true,null,classNode, sourceUnit );
+          Parameter[] withTransactionParameters = {new Parameter(new ClassNode(Closure.class), "closure")};
+          addDelegatedMethod("withTransaction", "executeWriteClosure", true, withTransactionParameters, classNode, sourceUnit);
           Parameter[] parameters = {
               new Parameter(new ClassNode(String.class), "name"),
               new Parameter(new ClassNode(Object.class), "args")};

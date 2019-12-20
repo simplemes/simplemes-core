@@ -32,6 +32,7 @@ contribute(allContext) {
     method name: "delete", type: classType?.getQualifiedName(), params: [:]
     method name: "findById", type: "${classType?.getQualifiedName()}", params: [uuid: UUID], isStatic: true
     method name: "list", type: "List<${classType?.getQualifiedName()}>", params: [:], isStatic: true
+    method name: "withTransaction", params: [closure: Closure], isStatic: true
     // TODO: Check the annotation for the repository name in case of overrides.
     method name: "getRepository", type: "${classType?.getQualifiedName()}Repository", params: [:], isStatic: true
     // TODO: Filter findBy() with methods from repository?

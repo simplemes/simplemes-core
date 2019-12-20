@@ -1,6 +1,6 @@
 package org.simplemes.eframe.domain.annotation
 
-
+import io.micronaut.transaction.TransactionStatus
 import org.simplemes.eframe.domain.annotation.DomainEntityHelper
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.test.BaseSpecification
@@ -103,7 +103,6 @@ class DomainEntityTransformationSpec extends BaseSpecification {
     def list = Order2.list()
     list.size() == 1
     list[0].uuid == order.uuid
-    def o3 = Order2.getRepository().findByOrder('M1001')
   }
 
   def "verify that delete works"() {
@@ -149,4 +148,68 @@ class DomainEntityTransformationSpec extends BaseSpecification {
     o3.uuid == order.uuid
   }
 
+  def "verify that withTransaction works"() {
+    when: ' a record is saved'
+    def order = null
+    Order2.withTransaction { status ->
+      order = new Order2('M1001').save()
+      assert status instanceof TransactionStatus
+    }
+
+    then: 'the record is in the DB'
+    def o3 = Order2.findById((UUID) order.uuid)
+    o3.uuid == order.uuid
+  }
+
+  def "verify that withTransaction works - Compile within the test"() {
+    given:
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import sample.domain.Order2
+      
+      @DomainEntity
+      class TestClass {
+        UUID uuid
+        
+        static aMethod() {
+          TestClass.withTransaction {status ->
+            new Order2('M1001').save()
+          }
+        }
+      }
+    """
+    def clazz = CompilerTestUtils.compileSource(src)
+
+    when: 'the method is called'
+    clazz.newInstance().aMethod()
+
+    then: 'the record is in the DB'
+    Order2.findByOrder('M1001') != null
+  }
+
+  def "verify that withTransaction rolls back the transaction on failure"() {
+    given:
+    def src = """
+      import sample.domain.Order2
+      
+      class TestClass {
+        def aMethod() {
+          Order2.withTransaction {status ->
+            new Order2('M1001').save()
+            throw new IllegalArgumentException('bad code')
+          }
+        }
+      }
+    """
+    def clazz = CompilerTestUtils.compileSource(src)
+
+    when: 'the method is called'
+    clazz.newInstance().aMethod()
+
+    then: 'the right exception is thrown'
+    thrown(IllegalArgumentException)
+
+    and: 'no records are in the DB'
+    Order2.findByOrder('M1001') == null
+  }
 }
