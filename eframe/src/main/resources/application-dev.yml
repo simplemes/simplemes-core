@@ -1,0 +1,21 @@
+#
+# application-dev.yml for dev mode.  Needs the MICRONAUT_CONFIG_FILES=dev.yml environment variable.
+#
+micronaut:
+  application:
+    name: seframe
+
+---
+datasources:
+  default:
+    url: "jdbc:postgresql://s:5432/eframe"
+    driverClassName: "org.postgresql.Driver"
+    username: "mph"
+    password: "mh1234"
+    dialect: POSTGRES
+    schema-generate: CREATE_DROP
+    autoCommit: true
+
+---
+eframe:
+  cacheStableResources: 120

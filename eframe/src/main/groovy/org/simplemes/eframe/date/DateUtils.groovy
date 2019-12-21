@@ -70,6 +70,18 @@ class DateUtils {
    * @return The date string.
    */
   static String formatDate(Date date, Locale locale = null) {
+    def dateFormatter = getDateFormat(GlobalUtils.getRequestLocale(GlobalUtils.getRequestLocale(locale)))
+    dateFormatter.setTimeZone(Holders.globals.timeZone)
+    return dateFormatter.format(date)
+  }
+
+  /**
+   * Formats the given DateOnly for GUI display.  Uses the standard Java SHORT and MEDIUM time format.
+   * @param date The date or DateOnly to format.
+   * @param locale The locale to use for formatting the date (default is the request Locale). (<b>Optional</b>)
+   * @return The date string.
+   */
+  static String formatDate(DateOnly date, Locale locale = null) {
     def dateFormatter
     if (date instanceof DateOnly) {
       dateFormatter = getDateOnlyFormat(GlobalUtils.getRequestLocale(GlobalUtils.getRequestLocale(locale)))

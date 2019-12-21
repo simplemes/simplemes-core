@@ -1,7 +1,11 @@
 package org.simplemes.eframe.date
 
+import groovy.transform.EqualsAndHashCode
+import io.micronaut.data.annotation.TypeDef
+import io.micronaut.data.model.DataType
 
-import java.text.SimpleDateFormat
+import java.time.Instant
+import java.time.temporal.ChronoUnit
 
 /*
  * Copyright Michael Houston. All rights reserved.
@@ -9,28 +13,22 @@ import java.text.SimpleDateFormat
 */
 
 /**
- * Date only class.  Provides most of the functions of a Date, but with the time set to midnight (in UTC).
+ * Date only class.  Provides basic date-related functions.
  */
-class DateOnly extends Date {
+@TypeDef(type = DataType.DATE)
+@EqualsAndHashCode(includes = ['time'])
+class DateOnly {
 
   /**
-   * The UTC Timezone.
+   * The raw time (milliseconds since 1970).
    */
-  private static final TimeZone TIMEZONE_UTC = TimeZone.getTimeZone('UTC')
+  long time
 
   /**
    * Constructs a date for the current date.
    */
   DateOnly() {
-    setTimeToMidnightUTC()
-  }
-
-  /**
-   * Constructs a date from the given ISO date string.
-   * @param isoDate The ISO date.
-   */
-  DateOnly(String isoDate) {
-    super(ISODate.parseDateOnly(isoDate).time)
+    time = System.currentTimeMillis()
     setTimeToMidnightUTC()
   }
 
@@ -39,33 +37,31 @@ class DateOnly extends Date {
    * @param timeInMillis The time in milliseconds.  This must correspond to midnight in UTC.
    */
   DateOnly(long timeInMillis) {
-    // This is a bit of a kludge to make DateOnly work with different timezones.
-    super(timeInMillis)
+    time = timeInMillis
     setTimeToMidnightUTC()
-    if (timeInMillis != time) {
-      throw new IllegalArgumentException("timeInMillis ($timeInMillis) must correspond to midnight in UTC.")
-    }
-    assert timeInMillis == time
+  }
+
+  /**
+   * Returns the number of milliseconds since January 1, 1970, 00:00:00 GMT
+   * represented by this <tt>Date</tt> object.
+   *
+   * @return the number of milliseconds since January 1, 1970, 00:00:00 GMT
+   *          represented by this date.
+   */
+  long getTime() {
+    return time
   }
 
   /**
    * Sets the time part of this  DateOnly to midnight, UTC.
    */
-  @SuppressWarnings("SimpleDateFormatMissingLocale")
   protected void setTimeToMidnightUTC() {
-    SimpleDateFormat isoFormat = new SimpleDateFormat("yyyy-MM-dd")
-    isoFormat.setTimeZone(TIMEZONE_UTC)
-    def s = isoFormat.format(this)
-    Date date = isoFormat.parse(s)
-    time = date.time
+    def instant = Instant.ofEpochMilli(time).truncatedTo(ChronoUnit.DAYS)
+    time = instant.toEpochMilli()
   }
 
-  /**
-   * Build a human-readable version of this object.
-   * @return The human-readable string.
-   */
   @Override
   String toString() {
-    return DateUtils.formatDate(this)
+    return Instant.ofEpochMilli(time).toString()[0..9]
   }
 }

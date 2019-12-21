@@ -11,7 +11,7 @@ import java.lang.annotation.Target;
 /**
  * This annotation can be used to mark a method to force a rollback when the test ends.
  * <p>
- * <b>Note</b>: This should only be used in tests.
+ * <b>Note</b>: This should only be used in tests.  It does not support the use of the Spock 'where' clause.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.METHOD})

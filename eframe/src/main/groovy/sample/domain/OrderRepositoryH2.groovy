@@ -1,9 +1,9 @@
 package sample.domain
 
 import io.micronaut.context.annotation.Requires
+import io.micronaut.context.env.Environment
 import io.micronaut.data.jdbc.annotation.JdbcRepository
 import io.micronaut.data.model.query.builder.sql.Dialect
-import io.micronaut.data.repository.CrudRepository
 
 /*
  * Copyright Michael Houston 2019. All rights reserved.
@@ -15,6 +15,6 @@ import io.micronaut.data.repository.CrudRepository
  * The H2-Specific version of the repo.
  */
 @JdbcRepository(dialect = Dialect.H2)
-@Requires(env = ["test"])
-interface Order2RepositoryH2 extends Order2Repository, CrudRepository<Order, UUID> {
+@Requires(env = [Environment.TEST])
+interface OrderRepositoryH2 extends OrderRepository {
 }

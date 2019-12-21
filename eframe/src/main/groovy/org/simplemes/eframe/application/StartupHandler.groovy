@@ -44,7 +44,6 @@ class StartupHandler {
 
     // Start Initial data load.
     def loader = Holders.applicationContext.getBean(InitialDataLoader)
-    //println "loader = $loader"
     loader.dataLoad()
 
     if (log.debugEnabled) {
@@ -74,6 +73,8 @@ class StartupHandler {
    * It initializes some settings that must be in place before Hibernate and Micronaut startup.
    */
   static void preStart() {
+    // We set the default to UTC to make sure the timestamps are stored in the DB with UTC timezone.
+    // All display's use the Globals.timeZone when rendering on the page.
     TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
   }
 

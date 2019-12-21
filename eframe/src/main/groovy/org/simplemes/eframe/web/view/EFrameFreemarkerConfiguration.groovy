@@ -33,12 +33,12 @@ class EFrameFreemarkerConfiguration extends FreemarkerViewsRendererConfiguration
    * @param version The minimum version
    * @param resourceLoader The resource loader
    */
-  public EFrameFreemarkerConfiguration(
+  EFrameFreemarkerConfiguration(
     ViewsConfiguration viewsConfiguration,
     @Property(name = "micronaut.views.freemarker.incompatible-improvements") @Nullable String version,
     @Nullable ClassPathResourceLoader resourceLoader) {
     super(viewsConfiguration, version, resourceLoader)
-    println "EFrameFreemarkerConfiguration viewsConfiguration = $viewsConfiguration"
+    //println "EFrameFreemarkerConfiguration viewsConfiguration = $viewsConfiguration"
     setSharedVariable("abc", 'xyz')
     FreemarkerDirectiveConfiguration.addSharedVariables(this)
     //this.setClassLoaderForTemplateLoading(environment.getClassLoader(), "/" + viewsConfiguration.getFolder())

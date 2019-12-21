@@ -6,9 +6,11 @@ import org.codehaus.groovy.ast.stmt.BlockStatement;
 import org.codehaus.groovy.ast.stmt.ExpressionStatement;
 import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
+import org.codehaus.groovy.syntax.SyntaxException;
 import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.simplemes.eframe.domain.annotation.DomainEntityHelper;
+import org.spockframework.runtime.model.FeatureMetadata;
 
 import java.util.List;
 
@@ -46,7 +48,7 @@ public class RollbackTransformation implements ASTTransformation {
           // All methods are returned by getAllDeclaredMethods(), even super-class methods.
           // We will use the line number to determine if this method is really in the source file being compiled.
           if (methodNode.getLineNumber() >= 0) {
-            wrapWithRollback(methodNode);
+            wrapWithRollback(methodNode, sourceUnit);
           }
         }
       }
@@ -70,7 +72,7 @@ public class RollbackTransformation implements ASTTransformation {
    *
    * @param method The method to wrap.
    */
-  protected void wrapWithRollback(MethodNode method) {
+  protected void wrapWithRollback(MethodNode method, SourceUnit sourceUnit) {
 
     /*
     Wraps the code with this logic:
@@ -85,6 +87,23 @@ public class RollbackTransformation implements ASTTransformation {
     // Add the setRollbackOnly as the first statement in the closure.
     BlockStatement originalBlock = (BlockStatement) method.getCode();
     BlockStatement closureBlock = new BlockStatement();
+
+    // Make sure this is not used in a method with a where clause.
+    for (AnnotationNode ann : method.getAnnotations(new ClassNode(FeatureMetadata.class))) {
+      if (ann.getMembers().get("parameterNames") != null) {
+        ListExpression parameterNames = (ListExpression) ann.getMembers().get("parameterNames");
+        if (parameterNames.getExpressions().size() > 0) {
+          ConstantExpression nameExpr = (ConstantExpression) ann.getMembers().get("name");
+          String methodName = nameExpr.getText();
+          String message = "@Rollback does not support Spock 'where:' features.  Method '" + methodName + "'.";
+          sourceUnit.addError(new SyntaxException(message, method));
+        }
+      }
+      ListExpression blocks = (ListExpression) ann.getMembers().get("blocks");
+      for (Object o : blocks.getExpressions()) {
+        AnnotationConstantExpression ace = (AnnotationConstantExpression) o;
+      }
+    }
 
     MethodCallExpression setRollbackMethod = new MethodCallExpression(new VariableExpression("status"),
         "setRollbackOnly", new ArgumentListExpression(Parameter.EMPTY_ARRAY));

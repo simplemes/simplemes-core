@@ -40,7 +40,7 @@ contribute(allContext) {
       def params = [:]
       //new File('c:\\tmp\\out.log') << "A${it.dump()}\n"
       //new File('c:\\tmp\\out.log') << "B${it.getTypeElementGroovy().getType().getCanonicalText()}\n"
-      params."$it.name" = it.getTypeElementGroovy().getType().getCanonicalText()
+      params."$it.name" = it.getTypeElementGroovy()?.getType()?.getCanonicalText()
       def methodName = "findBy${Verifier.capitalize(it.name)}".toString()
       //params."${it.name}" = it.getQualifiedName()
       method name: methodName, params: params, type: classType?.getQualifiedName(), isStatic: true

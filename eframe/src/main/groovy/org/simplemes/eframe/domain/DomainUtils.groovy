@@ -1,15 +1,17 @@
 package org.simplemes.eframe.domain
 
+import io.micronaut.core.beans.BeanIntrospection
+import io.micronaut.core.beans.BeanIntrospector
+import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.model.PersistentProperty
-import org.simplemes.eframe.application.Holders
-
-//import grails.gorm.annotation.Entity
-
 import org.simplemes.eframe.data.FieldDefinitionFactory
 import org.simplemes.eframe.data.FieldDefinitions
 import org.simplemes.eframe.data.annotation.ExtensibleFields
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.exception.MessageHolder
+
+//import grails.gorm.annotation.Entity
+
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.NumberUtils
@@ -106,21 +108,7 @@ class DomainUtils {
       return false
     }
 
-    // Check for a proxy class
-    if (HibernateProxy.isAssignableFrom(c)) {
-      return true
-    }
-
-    def isGormEntity = c.isAnnotationPresent(Entity)
-    if (!isGormEntity) {
-      return false
-    }
-
-    // For unit tests without GORM active, we will check to make sure the entity is defined in GORM
-    if (Holders.environmentDev || Holders.environmentTest) {
-      isGormEntity = getAllDomains()?.contains(c)
-    }
-    return isGormEntity
+    return DomainEntityInterface.isAssignableFrom(c)
   }
 
   /**
@@ -281,11 +269,12 @@ class DomainUtils {
    * @return
    */
   List<Class> getAllDomains() {
-    def definitions = Holders.applicationContext.getBeanDefinitions(DomainEntityInterface)
-    //println "x = ${definitions[0].dump()}"
-    //println "x = ${definitions*.declaringType}"
-    //def pe = Holders.hibernateDatastore?.mappingContext?.persistentEntities
-    return definitions*.declaringType*.get()
+    //PerformanceUtils.elapsedPrint()
+    Collection<BeanIntrospection<Object>> introspections = BeanIntrospector.SHARED.findIntrospections(MappedEntity.class)
+    //PerformanceUtils.elapsedPrint('introspections')
+    //println "introspections = ${introspections*.getBeanType()}"
+    // TODO: Need to cache this?
+    return introspections*.getBeanType()
   }
 
   /**

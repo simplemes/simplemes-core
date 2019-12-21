@@ -235,7 +235,7 @@ public class DomainEntityHelper {
   /**
    * Start a transaction and rollback when finished.
    */
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings({"unchecked", "unused"})
   public void executeWriteClosure(Class delegate, Closure closure) {
     SynchronousTransactionManager manager = getTransactionManager();
     manager.executeWrite(new TransactionCallbackWrapper(closure));

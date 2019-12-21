@@ -20,11 +20,20 @@ DateOnly conversion.
       reference - uses txn.
       getChildRecords, addToChildRecords, save logic.
     done - save, list, delete.save findByXYZ(),findById(), @Rollback
-  Bypass explicit repository use for common U/C's
-  withTransaction {} ?
+  done - withTransaction {} ?
   Validation support.
+    validate() optional method (throws exception).
+    DomainEntityHelper.validate()
+    MessageSource fix.
+    Sub-classes of BusinessException
+      String too long for {0} in {1}.  Length {2} > Max length {3}.
+      Invalid value {0} for field {1} in {2}.
+      Missing value for field {0} in {1}.
   Version and opt locking (custom JDBCOperations).
 Convert to UUID's, called uuid.  Update docs for new terms (ID)
+Converters needed
+  DateOnly
+  EncodedTypes.
 Update code when issue is fixed:
   https://github.com/micronaut-projects/micronaut-data/issues/323
 
