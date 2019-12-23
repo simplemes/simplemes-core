@@ -12,10 +12,9 @@ import io.micronaut.data.model.query.builder.sql.Dialect
 */
 
 /**
- * The sample order repository base interface.  Provides the methods for the repo,
- * for production or dev (POSTGRES)
+ * The H2-Specific version of the repo.
  */
-@JdbcRepository(dialect = Dialect.POSTGRES)
-@Requires(env = ["prod", Environment.DEVELOPMENT])
-interface OrderRepositoryPostgres extends OrderRepository {
+@JdbcRepository(dialect = Dialect.H2)
+@Requires(env = [Environment.TEST])
+interface OrderLineRepositoryH2 extends OrderLineRepository {
 }

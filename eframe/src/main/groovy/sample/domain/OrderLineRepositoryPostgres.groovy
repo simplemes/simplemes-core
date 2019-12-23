@@ -17,5 +17,5 @@ import io.micronaut.data.model.query.builder.sql.Dialect
  */
 @JdbcRepository(dialect = Dialect.POSTGRES)
 @Requires(env = ["prod", Environment.DEVELOPMENT])
-interface OrderRepositoryPostgres extends OrderRepository {
+interface OrderLineRepositoryPostgres extends OrderLineRepository {
 }

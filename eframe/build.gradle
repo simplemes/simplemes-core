@@ -81,7 +81,7 @@ dependencies {
   //compile "io.micronaut.configuration:micronaut-hibernate-gorm"
   //compile "org.hibernate:hibernate-ehcache:${hibernateEhcacheVersion}"
 
-  compileOnly "jakarta.persistence:jakarta.persistence-api:${jakartaJPAVersion}"
+  implementation "jakarta.persistence:jakarta.persistence-api:${jakartaJPAVersion}"
   compileOnly "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
   compile "io.micronaut.data:micronaut-data-jdbc:$micronautDataVersion"
   runtime 'io.micronaut.configuration:micronaut-jdbc-hikari'

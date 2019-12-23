@@ -15,6 +15,7 @@ import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.simplemes.eframe.ast.ASTUtils;
 
+import javax.persistence.OneToMany;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,18 +55,68 @@ public class DomainEntityTransformation implements ASTTransformation {
         List<AnnotationNode> annotations = classNode.getAnnotations(ourAnnotationNode);
         if (annotations.size() > 0) {
           //System.out.println("found");
-          classNode.addInterface(new ClassNode(DomainEntityInterface.class));
-          addRepositoryField(classNode, sourceUnit);
-          addDelegatedMethod("save", "save", false, null, classNode, sourceUnit);
-          addDelegatedMethod("delete", "delete", false, null, classNode, sourceUnit);
-          Parameter[] withTransactionParameters = {new Parameter(new ClassNode(Closure.class), "closure")};
-          addDelegatedMethod("withTransaction", "executeWriteClosure", true, withTransactionParameters, classNode, sourceUnit);
-          Parameter[] parameters = {
-              new Parameter(new ClassNode(String.class), "name"),
-              new Parameter(new ClassNode(Object.class), "args")};
-          addDelegatedMethod("$static_methodMissing", "staticMethodMissingHandler", true, parameters, classNode, sourceUnit);
+          transformClass(classNode, sourceUnit);
         }
       }
+    }
+  }
+
+  /**
+   * Transform the given domain class with added features for the @DomainEntity annotation.
+   *
+   * @param classNode  The class to transform.
+   * @param sourceUnit The source the class came from.
+   */
+  private void transformClass(ClassNode classNode, SourceUnit sourceUnit) {
+    classNode.addInterface(new ClassNode(DomainEntityInterface.class));
+    addRepositoryField(classNode, sourceUnit);
+    addDelegatedMethod("save", "save", false, null, null, classNode, sourceUnit);
+    addDelegatedMethod("delete", "delete", false, null, null, classNode, sourceUnit);
+
+    Parameter[] withTransactionParameters = {new Parameter(new ClassNode(Closure.class), "closure")};
+    List<Expression> withTxnArgs = new ArrayList<>();
+    withTxnArgs.add(new VariableExpression("closure"));
+    addDelegatedMethod("withTransaction", "executeWriteClosure", true, withTransactionParameters, withTxnArgs, classNode, sourceUnit);
+
+    Parameter[] parameters = {
+        new Parameter(new ClassNode(String.class), "name"),
+        new Parameter(new ClassNode(Object.class), "args")};
+    List<Expression> mmArgs = new ArrayList<>();
+    mmArgs.add(new VariableExpression("name"));
+    mmArgs.add(new VariableExpression("args"));
+    addDelegatedMethod("$static_methodMissing", "staticMethodMissingHandler", true, parameters, mmArgs, classNode, sourceUnit);
+
+    addLazyChildLoaders(classNode, sourceUnit);
+  }
+
+  /**
+   * Adds the lazy loader methods for the child lists.
+   *
+   * @param classNode  The class to transform.
+   * @param sourceUnit The source the class came from.
+   */
+  private void addLazyChildLoaders(ClassNode classNode, SourceUnit sourceUnit) {
+    // Find all fields with a @OneToMany annotation.
+    for (FieldNode fieldNode : classNode.getFields()) {
+      for (AnnotationNode annotationNode : fieldNode.getAnnotations(new ClassNode(OneToMany.class))) {
+        //System.out.println(fieldNode.getName()+" ann:" + annotationNode+" "+annotationNode.getClassNode()+" mappedBy:"+annotationNode.getMembers());
+        String mappedByFieldName = annotationNode.getMember("mappedBy").getText();
+        ClassNode childDomainClassNode = fieldNode.getType();
+        GenericsType[] genericsTypes = childDomainClassNode.getGenericsTypes();
+        ClassNode childDomainTypeNode = null;
+        if (genericsTypes.length > 0) {
+          childDomainTypeNode = genericsTypes[0].getType();
+        }
+        String getterName = "get" + StringUtils.capitalize(fieldNode.getName());
+        //(order,'orderLines','order',OrderLine)
+        //  public List lazyChildLoad(Object object,String fieldName, String mappedByFieldName, Class childDomainClazz)
+        List<Expression> delegateArgs = new ArrayList<>();
+        delegateArgs.add(new ConstantExpression(fieldNode.getName()));
+        delegateArgs.add(new ConstantExpression(mappedByFieldName));
+        delegateArgs.add(new ClassExpression(childDomainTypeNode));
+        addDelegatedMethod(getterName, "lazyChildLoad", false, null, delegateArgs, classNode, sourceUnit);
+      }
+
     }
   }
 
@@ -138,23 +189,32 @@ public class DomainEntityTransformation implements ASTTransformation {
    * Adds the a method to the class, delegating the actual work to the DomainEntityHelper class.
    * Currently only supports zero arguments.
    *
-   * @param methodName       The name of the method to add and the name in the delegated class.
-   * @param helperMethodName The name of the helper method to delegate the call to.
-   * @param isStatic         If true, then the method is created as a static method.
-   * @param args             The args for the method and helper method (can be null).
-   * @param node             The AST Class Node to add this field to.
-   * @param sourceUnit       The compiler source unit being processed (used to errors).
+   * @param methodName        The name of the method to add and the name in the delegated class.
+   * @param helperMethodName  The name of the helper method to delegate the call to.
+   * @param isStatic          If true, then the method is created as a static method.
+   * @param args              The args for the method added to the current class (can be null).
+   * @param delegateArguments The arguments passed to the delegate method (this is added as first argument).
+   * @param node              The AST Class Node to add this field to.
+   * @param sourceUnit        The compiler source unit being processed (used to errors).
    */
   private void addDelegatedMethod(String methodName, String helperMethodName, boolean isStatic,
-                                  Parameter[] args, ClassNode node, SourceUnit sourceUnit) {
+                                  Parameter[] args, List<Expression> delegateArguments,
+                                  ClassNode node, SourceUnit sourceUnit) {
+    //System.out.println("methodName:" + methodName);
     // Make sure the method doesn't exist already
     if (ASTUtils.methodExists(node, methodName, Parameter.EMPTY_ARRAY)) {
       sourceUnit.getErrorCollector().addError(new SimpleMessage(methodName + "() already exists in " + node, sourceUnit));
     }
 
-    // return = DomainEntityHelper.instance.XYZ(Object)
+    // return = DomainEntityHelper.instance.XYZ(Object,)
+
+    // Build the argument list for the call to the delegate.  We add this as the first argument.
     List<Expression> argumentList = new ArrayList<>();
     argumentList.add(new VariableExpression("this"));
+    if (delegateArguments != null) {
+      argumentList.addAll(delegateArguments);
+    }
+/*
     if (args != null) {
       for (Parameter arg : args) {
         argumentList.add(new VariableExpression(arg.getName()));
@@ -162,6 +222,7 @@ public class DomainEntityTransformation implements ASTTransformation {
     } else {
       args = Parameter.EMPTY_ARRAY;
     }
+*/
     MethodCallExpression method = new MethodCallExpression(
         new PropertyExpression(new ClassExpression(new ClassNode(DomainEntityHelper.class)), "instance"),
         helperMethodName,
@@ -173,6 +234,10 @@ public class DomainEntityTransformation implements ASTTransformation {
     int modifier = Modifier.PUBLIC;
     if (isStatic) {
       modifier = modifier | Modifier.STATIC;
+    }
+
+    if (args == null) {
+      args = Parameter.EMPTY_ARRAY;
     }
     MethodNode methodNode = new MethodNode(methodName,
         modifier,

@@ -12,7 +12,6 @@ Support link in markers.  Content of <@efField>?
 
 Micronaut Data Conversion Tasks
 ===============================
-DateOnly conversion.
 @Entity replacement with GDSL.
   Use GDSL to handle code completion.  See https://www.tothenew.com/blog/gdsl-awesomeness-introduction-to-gdsl-in-intellij-idea/
   Adds these methods
@@ -32,10 +31,14 @@ DateOnly conversion.
   Version and opt locking (custom JDBCOperations).
 Convert to UUID's, called uuid.  Update docs for new terms (ID)
 Converters needed
-  DateOnly
+  done - DateOnly
   EncodedTypes.
 Update code when issue is fixed:
   https://github.com/micronaut-projects/micronaut-data/issues/323
+
+
+done - DateOnly conversion.
+
 
 Support cache in specific use cases:
   UserPreferences - timed, any update for user flushed cache? done in PreferenceHolder?
@@ -58,6 +61,9 @@ New Guidelines
   Move all business logic to OrderService (populateLSNs).
     Leave lazy loaders in domain (getLSNSequence()).
   Use UUID for entities
+  Standard/Required methods
+    findById(uuid)
+    list(pagination)
 Update dependencies
 Add notes on why using MN-Data, not hibernate.
 

@@ -4,7 +4,9 @@ package org.simplemes.eframe.domain.annotation
 import io.micronaut.transaction.TransactionStatus
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.Order
+import sample.domain.OrderLine
 import sample.domain.OrderRepository
 
 /*
@@ -38,6 +40,9 @@ class DomainEntityTransformationSpec extends BaseSpecification {
 
     then: 'the instance has the marker interface'
     o instanceof DomainEntityInterface
+
+    and: 'the transformation can be instantiated'
+    new DomainEntityTransformation()
   }
 
   def "verify that the annotation adds the static repository holder and getter method"() {
@@ -210,5 +215,75 @@ class DomainEntityTransformationSpec extends BaseSpecification {
 
     and: 'no records are in the DB'
     Order.findByOrder('M1001') == null
+  }
+
+  @Rollback
+  def "verify that lazy load getter for child record is added to the domain"() {
+    given: 'a mocked domainEntityHelper for the lazy method call'
+    def domainEntityHelper = Mock(DomainEntityHelper)
+    DomainEntityHelper.instance = domainEntityHelper
+
+    and: 'a compiled domain class'
+    def src = """
+      import sample.domain.OrderLine
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import io.micronaut.data.annotation.MappedEntity
+      import io.micronaut.data.annotation.MappedProperty
+      import groovy.transform.EqualsAndHashCode
+      import javax.persistence.CascadeType
+      import javax.persistence.Column
+      import javax.persistence.OneToMany
+      
+      @DomainEntity
+      @MappedEntity()
+      @EqualsAndHashCode(includes = ['uuid'])
+      class Order2 {
+        UUID uuid
+        
+        @OneToMany(cascade= CascadeType.ALL, mappedBy="order")
+        List<OrderLine> orderLines
+      }
+    """
+    def clazz = CompilerTestUtils.compileSource(src)
+
+
+    when: 'the method is available'
+    def instance = clazz.newInstance()
+    instance.uuid = UUID.randomUUID()
+    def orderLines = instance.getOrderLines()
+
+    then: 'the right exception is thrown'
+    orderLines.size() == 1
+    orderLines == ["ABC"]
+
+    and: 'the method is called correctly'
+    1 * domainEntityHelper.lazyChildLoad(_, 'orderLines', 'order', OrderLine) >> { args ->
+      //println "args = $args";
+      // For some reason, Spock does not match the instance variable in the DSL above.  Instead, we need to do this manually.
+      //noinspection GroovyAssignabilityCheck
+      assert instance.is(args[0])
+      return ["ABC"]
+    }
+
+
+    cleanup:
+    DomainEntityHelper.instance = new DomainEntityHelper()
+
+  }
+
+  @Rollback
+  def "verify that lazy load of child records works"() {
+    given: 'a domain record with children'
+    def order = new Order(order: 'M1001')
+    order.save()
+    new OrderLine(order: order, product: 'BIKE', sequence: 1).save()
+    new OrderLine(order: order, qty: 2.0, product: 'WHEEL', sequence: 2).save()
+
+    when: 'the get and join method is called to read the value'
+    //def order2 = Order.get(order.uuid)
+    def order2 = Order.findByUuid(order.uuid)
+
+    then: 'the orderLines are populated'
+    order2.orderLines.size() == 2
   }
 }

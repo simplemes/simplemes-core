@@ -10,12 +10,14 @@ import edu.umd.cs.findbugs.annotations.NonNull;
 import edu.umd.cs.findbugs.annotations.Nullable;
 import groovy.lang.Closure;
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.core.util.StringUtils;
 import io.micronaut.data.repository.CrudRepository;
 import io.micronaut.data.repository.GenericRepository;
 import io.micronaut.transaction.SynchronousTransactionManager;
 import io.micronaut.transaction.TransactionCallback;
 import io.micronaut.transaction.TransactionStatus;
 
+import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -241,6 +243,39 @@ public class DomainEntityHelper {
     manager.executeWrite(new TransactionCallbackWrapper(closure));
   }
 
+
+  /**
+   * Performs the lazy load of the given field from the child domain class using the given mapped by
+   * field name.  Calls the findAllByXYZ() method on the child repository.
+   * After the list is first read, it will be saved in the field and re-used on later calls to the loader.
+   *
+   * @param object            The parent domain object to load the child from.
+   * @param fieldName         The field to store the list in.  Used by later calls.
+   * @param mappedByFieldName The field in the child that references the parent element.
+   * @param childDomainClazz  The child domain class.
+   * @return The list.
+   */
+  public List lazyChildLoad(Object object, String fieldName, String mappedByFieldName, Class childDomainClazz)
+      throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    //System.out.println("object:" + object+" fieldName:" + fieldName+" mappedByFieldName:" + mappedByFieldName+" childDomainClazz:" + childDomainClazz);
+    // Find the current value.  Use reflection to access the field, even if not public.
+    Field field = object.getClass().getDeclaredField(fieldName);
+    //System.out.println("field:" + field);
+    field.setAccessible(true);  // Allow direct access.
+    List list = (List) field.get(object);
+    if (list == null) {
+      GenericRepository repository = getRepository(childDomainClazz);
+      if (repository != null) {
+        String finderName = "findAllBy" + StringUtils.capitalize(mappedByFieldName);
+        Method method = repository.getClass().getMethod(finderName, object.getClass());
+        method.setAccessible(true);  // For some reason, Micronaut-data creates the method that is not accessible.
+        list = (List) method.invoke(repository, object);
+        field.set(object, list);
+      }
+    }
+
+    return list;
+  }
 
   public static DomainEntityHelper getInstance() {
     return instance;

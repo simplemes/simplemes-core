@@ -5,6 +5,8 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<Domain Packages>>#
 [inline-toc]#<<Reserved Domain Names>>#
+[inline-toc]#<<Repository Method Requirements>>#
+[inline-toc]#<<Field Requirements>>#
 [inline-toc]#<<Field Types>>#
 [inline-toc]#<<Field Names>>#
 [inline-toc]#<<Reserved Field Names>>#
@@ -49,6 +51,27 @@ This framework has features that slightly restrict the name of the domain classe
 This is mainly because of the way <<Markers and Models>> work.  A few names are used
 to store elements in the marker model (a Map).  You should avoid the names
 used by the <<StandardModelAndView>>.
+
+==== Repository Method Requirements
+
+Micronaut-Data provides access to the database records using a number of naming patterns.
+If your repository interface has a method that matches one of these patterns, then the SQL
+will be generated automatically.
+
+Some of the standard method expected include:
+
+* `Optional<Order> findByUuid(UUID uuid)` - Reads a single record for the given ID.
+  Used by many framework functions to find related records.
+
+
+==== Field Requirements
+
+The fields in your domain need to follow some specific patterns too.
+
+* Child Lists Default to null - The child lists should default to null, not an empty list.
+  This allows the lazy loader to know that no child records are defined when an empty list is found.
+
+
 
 ==== Field Names
 
@@ -194,32 +217,22 @@ static mapping = {
 [[parent-child-one-to-many]]
 ==== Parent/Child Relationships (One-To-Many)
 
-Parent/Child relationships are quite common in enterprise applications.  The children are fully-owned by the parent.  Deleting
-the parent also deletes the children.  A typical parent/child relationship should be defined as:
+Parent/Child relationships are quite common in enterprise applications.  The children are
+fully-owned by the parent.  Updates and deleting on the parent should update/delete the children.
+A typical parent/child relationship should be defined as:
 
 [source,groovy]
 ----
 class Parent {
-  List<Child> children = []
-  static hasMany = [children: Child]
+  @OneToMany(cascade= CascadeType.ALL, mappedBy="parent")
+  List<Child> children
 }
 
 class Child {
-  static belongsTo = [parent: Parent]
+  @ManyToOne
+  Parent parent
 }
 ----
-
-The use of a _List_ preserves the order of the child elements and allows updates using inline
-grids within the GUI markers in the framework.  When a user deletes an entry from the list in the
-GUI, the controller must be able to determine that
-a record was removed.  If you leave out the _List_, then a Set is used.  In that case, the
-framework can't handle all update scenarios using inline grids. If a _Set_ must be used,
-then you can't use the inline grid options.
-
-For these updates to work, you will have to adjust the generated controller code for these
-scenarios.  See <<controllers>> for details.
-
-// TODO: Investigate issues with GORM bug 874.  See domain.adoc in grails eframe.  Also break into multiple docs.
 
 
 [[list-object-references]]

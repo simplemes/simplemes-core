@@ -1,6 +1,6 @@
 package sample.domain
 
-import io.micronaut.data.annotation.Join
+
 import io.micronaut.data.repository.CrudRepository
 import org.simplemes.eframe.domain.BaseRepository
 
@@ -15,18 +15,12 @@ import org.simplemes.eframe.domain.BaseRepository
  * but sub-classes need to implement the dialect needed.  The sub-classes will be the concrete
  * beans generated for the runtime.
  */
-interface OrderRepository extends BaseRepository, CrudRepository<Order, UUID> {
+interface OrderLineRepository extends BaseRepository, CrudRepository<OrderLine, UUID> {
 
-  Optional<Order> findByOrder(String order)
+  List<OrderLine> findAllByOrder(Order order)
 
-  Optional<Order> findById(UUID uuid)
+  Optional<OrderLine> findById(UUID uuid)
 
-  Optional<Order> findByUuid(UUID uuid)
-
-  List<Order> list()
-
-  @Join(value = "orderLines", type = Join.Type.LEFT_FETCH, alias = "ol_")
-  Order get(UUID uuid)
-
+  List<OrderLine> list()
 
 }
