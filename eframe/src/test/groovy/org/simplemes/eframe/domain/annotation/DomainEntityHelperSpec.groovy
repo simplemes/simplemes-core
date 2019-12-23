@@ -1,5 +1,6 @@
 package org.simplemes.eframe.domain.annotation
 
+import io.micronaut.data.exceptions.DataAccessException
 import io.micronaut.transaction.SynchronousTransactionManager
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
@@ -20,7 +21,7 @@ import sample.domain.OrderRepository
 class DomainEntityHelperSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static dirtyDomains = [Order]
+  static dirtyDomains = [Order, OrderLine]
   //static specNeeds= SERVER
 
   def "verify that getRepository works for simple case"() {
@@ -108,7 +109,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
     def orderLine2 = new OrderLine(order: order, qty: 2.0, product: 'WHEEL', sequence: 2).save()
 
     when: 'the lazy load is used'
-    def list = (List<OrderLine>) DomainEntityHelper.instance.lazyChildLoad(order, 'orderLines', 'order', OrderLine)
+    def list = (List<OrderLine>) DomainEntityHelper.instance.lazyChildLoad((DomainEntityInterface) order, 'orderLines', 'order', OrderLine)
 
     then: 'the record is in the DB'
     list.size() == 2
@@ -116,7 +117,32 @@ class DomainEntityHelperSpec extends BaseSpecification {
     list[1].uuid == orderLine2.uuid
 
     and: 'the field has the list - the list is the same on later calls'
-    DomainEntityHelper.instance.lazyChildLoad(order, 'orderLines', 'order', OrderLine).is(list)
+    DomainEntityHelper.instance.lazyChildLoad((DomainEntityInterface) order, 'orderLines', 'order', OrderLine).is(list)
   }
 
+  @Rollback
+  def "verify that lazyChildLoad gracefully handles when the parent record is not saved yet"() {
+    when: 'a domain record with children is not saved'
+    def order = new Order(order: 'M1001')
+    order.orderLines << new OrderLine(order: order, product: 'BIKE', sequence: 1)
+    order.orderLines << new OrderLine(order: order, qty: 2.0, product: 'WHEEL', sequence: 2)
+
+    then: 'the record is unsaved in memory'
+    order.orderLines.size() == 2
+
+    when: 'the record is finally saved'
+    order.save()
+
+    then: 'the child records are saved too.'
+    def order2 = Order.findByUuid(order.uuid)
+    order2.orderLines.size() == 2
+  }
+
+  def "verify that SQL exception during lazyChildLoad is unwrapped for the caller"() {
+    when: 'a bad order is saved'
+    new Order(order: "A" * 500).save()
+
+    then: 'the right exception is thrown'
+    thrown(DataAccessException)
+  }
 }

@@ -5,12 +5,12 @@ import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.DateCreated
 import io.micronaut.data.annotation.DateUpdated
-
-//import grails.gorm.annotation.Entity
-
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
+
+//import grails.gorm.annotation.Entity
+
 import io.micronaut.data.model.DataType
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.annotation.DomainEntity
@@ -95,25 +95,32 @@ class Order {
   @SuppressWarnings("UnnecessaryQualifiedReference")
   static Map<String, List<String>> initialDataLoad() {
     def products = ['BIKE-24','BIKE-27','SEAT','WHEEL','FRAME-24','FRAME-27']
-    def statuses = [EnabledStatus.instance, DisabledStatus.instance]
+    //def statuses = [EnabledStatus.instance, DisabledStatus.instance]
     Order.withTransaction {
       if (Order.list().size()==0) {
         def random = new Random()
         for (i in 1901..1902) {
-          def date = new DateOnly(new DateOnly().time-DateUtils.MILLIS_PER_DAY* (300-random.nextInt(300)))
-          new Order(order: "M$i",
-            product: products[random.nextInt(products.size())],
-            // TODO: Restore status: statuses[random.nextInt(statuses.size())],
-            dueDate: date,
-            qtyToBuild: new BigDecimal(random.nextInt(99)+1)
-          ).save()
+          def date = new DateOnly(new DateOnly().time - DateUtils.MILLIS_PER_DAY * (300 - random.nextInt(300)))
+          def order = new Order(order: "M$i",
+                                product: products[random.nextInt(products.size())],
+                                // TODO: Restore status: statuses[random.nextInt(statuses.size())],
+                                dueDate: date,
+                                qtyToBuild: new BigDecimal(random.nextInt(99) + 1)
+          )
+          order.orderLines << new OrderLine(order: order, product: 'BIKE', sequence: 1)
+          order.orderLines << new OrderLine(order: order, product: 'WHEEL', sequence: 2, qty: 2.0)
+          order.save()
+          for (orderLine in order.orderLines) {
+            orderLine.order = order
+            orderLine.save()
+          }
         }
       }
       //println "order.list() = ${Order.list()*.dateCreated}"
     }
     return null
   }
-
 */
+
 
 }

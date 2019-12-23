@@ -20,9 +20,11 @@ import io.micronaut.transaction.TransactionStatus;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.lang.reflect.UndeclaredThrowableException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 /**
  * Support methods for the @DomainEntity annotation.  Provides much of the logic injected into the domain
@@ -255,8 +257,8 @@ public class DomainEntityHelper {
    * @param childDomainClazz  The child domain class.
    * @return The list.
    */
-  public List lazyChildLoad(Object object, String fieldName, String mappedByFieldName, Class childDomainClazz)
-      throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+  public List lazyChildLoad(DomainEntityInterface object, String fieldName, String mappedByFieldName, Class childDomainClazz)
+      throws Throwable {
     //System.out.println("object:" + object+" fieldName:" + fieldName+" mappedByFieldName:" + mappedByFieldName+" childDomainClazz:" + childDomainClazz);
     // Find the current value.  Use reflection to access the field, even if not public.
     Field field = object.getClass().getDeclaredField(fieldName);
@@ -264,18 +266,46 @@ public class DomainEntityHelper {
     field.setAccessible(true);  // Allow direct access.
     List list = (List) field.get(object);
     if (list == null) {
+      // Set the list to empty to avoid stack overflow in case of exception calling the getter over and over.
+      // This happens when the parent object is not saved yet.
+      list = new ArrayList();
+      field.set(object, list);
       GenericRepository repository = getRepository(childDomainClazz);
-      if (repository != null) {
+      UUID uuid = object.getUuid();
+      if (repository != null && uuid != null) {
         String finderName = "findAllBy" + StringUtils.capitalize(mappedByFieldName);
         Method method = repository.getClass().getMethod(finderName, object.getClass());
         method.setAccessible(true);  // For some reason, Micronaut-data creates the method that is not accessible.
-        list = (List) method.invoke(repository, object);
-        field.set(object, list);
+        try {
+          list = (List) method.invoke(repository, object);
+          field.set(object, list);
+        } catch (Throwable e) {
+          // Most exceptions are wrapped in invocation target exceptions, so we can remove them.
+          throw unwrapException(e);
+        }
       }
     }
 
     return list;
   }
+
+  /**
+   * Unwraps the given exception to find the root cause.  This unwraps  InvocationTargetException and
+   * UndeclaredThrowableException to find the real cause (SQL or micronaut exception).
+   *
+   * @param e The exception to unwrap.
+   * @return The unwrapped exception or the original exception if not unwrap-able.
+   */
+  Throwable unwrapException(Throwable e) {
+    if (e instanceof UndeclaredThrowableException) {
+      e = e.getCause();
+    }
+    if (e instanceof InvocationTargetException) {
+      e = e.getCause();
+    }
+    return e;
+  }
+
 
   public static DomainEntityHelper getInstance() {
     return instance;

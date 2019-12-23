@@ -150,7 +150,7 @@ class AlterableAnnotationMetadata implements AnnotationMetadata {
   @Override
   Optional<String> stringValue(@Nonnull Class<? extends Annotation> annotation) {
     def res = originalAnnotationMetadata.stringValue(annotation)
-    if (annotation == Query) {
+    if (annotation == Query && operation.entity.hasProperty("version")) {
       def version = incrementVersion(operation.entity)
       def query = res.orElse(null)
       def quote = '`'
