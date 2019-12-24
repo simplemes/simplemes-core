@@ -17,14 +17,9 @@ import io.micronaut.transaction.SynchronousTransactionManager;
 import io.micronaut.transaction.TransactionCallback;
 import io.micronaut.transaction.TransactionStatus;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.UndeclaredThrowableException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import javax.persistence.OneToMany;
+import java.lang.reflect.*;
+import java.util.*;
 
 /**
  * Support methods for the @DomainEntity annotation.  Provides much of the logic injected into the domain
@@ -44,9 +39,8 @@ public class DomainEntityHelper {
    * @param clazz The domain class to check for a repository.
    * @return The repository bean.
    */
-  @SuppressWarnings("unchecked")
   GenericRepository determineRepository(Class clazz) throws ClassNotFoundException {
-    Class repoClazz = getRepositoryFromAnnotation(clazz);
+    Class<?> repoClazz = getRepositoryFromAnnotation(clazz);
     if (repoClazz == Object.class) {
       String className = clazz.getName() + "Repository";
       repoClazz = Class.forName(className);
@@ -78,7 +72,7 @@ public class DomainEntityHelper {
    * @param object The domain object to save.
    * @return The object after saving.
    */
-  Object save(DomainEntityInterface object) {
+  Object save(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException {
     CrudRepository repo = (CrudRepository) getRepository(object.getClass());
     if (repo == null) {
       throw new IllegalArgumentException("Missing repository for " + object.getClass());
@@ -88,6 +82,7 @@ public class DomainEntityHelper {
     } else {
       repo.update(object);
     }
+    saveChildren(object);
 
     return object;
   }
@@ -99,12 +94,14 @@ public class DomainEntityHelper {
    * @return The object that was deleted.
    */
   Object delete(DomainEntityInterface object) {
-    CrudRepository repo = (CrudRepository) getRepository(object.getClass());
+    GenericRepository<DomainEntityInterface, UUID> repo = getRepository(object.getClass());
     if (repo == null) {
       throw new IllegalArgumentException("Missing repository for " + object.getClass());
     }
-    //noinspection unchecked
-    repo.delete(object);
+    if (repo instanceof CrudRepository) {
+      CrudRepository<DomainEntityInterface, UUID> repo2 = (CrudRepository<DomainEntityInterface, UUID>) repo;
+      repo2.delete(object);
+    }
 
     return object;
   }
@@ -116,13 +113,16 @@ public class DomainEntityHelper {
    * @return The repository.
    */
   @SuppressWarnings("unchecked")
-  GenericRepository getRepository(Class clazz) {
+  GenericRepository<DomainEntityInterface, UUID> getRepository(Class clazz) {
     if (clazz != null) {
       try {
         //Class[] args = {};
-        Method method = clazz.getMethod("getRepository");
+        Method method = ((Class<?>) clazz).getMethod("getRepository");
         if (method != null) {
-          return (GenericRepository) method.invoke(null);
+          Object res = method.invoke(null);
+          if (res instanceof GenericRepository) {
+            return (GenericRepository<DomainEntityInterface, UUID>) res;
+          }
         }
       } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
         // Intentionally ignored.
@@ -140,11 +140,10 @@ public class DomainEntityHelper {
    * @param domainClazz The domain class to read from.
    * @return The list.
    */
-  @SuppressWarnings("unchecked")
-  public List list(Class domainClazz) {
+  public List<Object> list(Class domainClazz) {
     CrudRepository repo = (CrudRepository) getRepository(domainClazz);
     Iterable iter = repo.findAll();
-    List list = new ArrayList();
+    List<Object> list = new ArrayList<>();
     for (Object record : iter) {
       list.add(record);
     }
@@ -182,8 +181,7 @@ public class DomainEntityHelper {
     Object res = method.invoke(repo, args);
     if (methodName.startsWith("findBy") && res instanceof Optional) {
       // Strip the Optional wrapper for the findBy() case.
-      //noinspection unchecked
-      res = ((Optional) res).orElse(null);
+      res = ((Optional<?>) res).orElse(null);
     }
     return res;
   }
@@ -198,14 +196,13 @@ public class DomainEntityHelper {
    *
    * @return The context.
    */
-  @SuppressWarnings("unchecked")
   public ApplicationContext getApplicationContext() {
     if (applicationContext == null) {
       // Use reflection to access the Holders.getApplicationContext() at run time since the Groovy
       // classes are not visible when this .java class is compiled.
       try {
         Class holdersClass = Class.forName("org.simplemes.eframe.application.Holders");
-        Method method = holdersClass.getMethod("getApplicationContext");
+        Method method = ((Class<?>) holdersClass).getMethod("getApplicationContext");
         if (method != null) {
           applicationContext = (ApplicationContext) method.invoke(null);
         }
@@ -240,9 +237,62 @@ public class DomainEntityHelper {
    * Start a transaction and rollback when finished.
    */
   @SuppressWarnings({"unchecked", "unused"})
-  public void executeWriteClosure(Class delegate, Closure closure) {
+  public void executeWriteClosure(Class delegate, Closure<Object> closure) {
     SynchronousTransactionManager manager = getTransactionManager();
-    manager.executeWrite(new TransactionCallbackWrapper(closure));
+    TransactionCallbackWrapper callback = new TransactionCallbackWrapper(closure);
+    manager.executeWrite(callback);
+  }
+
+
+  /**
+   * Save the children for the given parent object.
+   *
+   * @param object The parent domain object.
+   */
+  void saveChildren(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException {
+    // Check all properties for (List) child properties.
+    for (Field field : object.getClass().getDeclaredFields()) {
+      // Performance: Consider moving the reflection logic to the Transformation to avoid run-time cost.
+      OneToMany ann = field.getAnnotation(OneToMany.class);
+      if (ann != null && Collection.class.isAssignableFrom(field.getType())) {
+        field.setAccessible(true);  // Need to bypass the getter, since that would trigger a read in some cases.
+        Collection list = (Collection) field.get(object);
+        System.out.println("field:" + field + " list:" + list);
+        String mappedByFieldName = ann.mappedBy();
+        Class<?> childClass = getGenericType(field);
+        //System.out.println("childClass:" + childClass);
+        Field parentField = childClass.getDeclaredField(mappedByFieldName);
+        parentField.setAccessible(true);  // Need to bypass any setters.
+        //System.out.println("  parentField:" + parentField+" ");
+        if (list != null) {
+          for (Object child : list) {
+            if (child instanceof DomainEntityInterface && mappedByFieldName.length() > 0) {
+              //System.out.println("  child:" + child);
+              // Make sure the parent element is set before the save.
+              if (parentField.get(child) == null) {
+                parentField.set(child, object);
+              }
+              ((DomainEntityInterface) child).save();
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Gets the (first) generic type for the given field.  Works for fields like: List&lt;XYZ&gt;.
+   *
+   * @param field The field.
+   * @return The underlying type (from the generic definition).  Can be null.
+   */
+  Class<?> getGenericType(Field field) {
+    Type childType = field.getGenericType();
+    if (!(childType instanceof ParameterizedType)) {
+      return null;
+    }
+    ParameterizedType childParameterizedType = (ParameterizedType) childType;
+    return (Class<?>) childParameterizedType.getActualTypeArguments()[0];
   }
 
 
@@ -320,9 +370,9 @@ public class DomainEntityHelper {
    */
   protected static class TransactionCallbackWrapper implements TransactionCallback {
 
-    Closure closure;
+    Closure<Object> closure;
 
-    public TransactionCallbackWrapper(Closure closure) {
+    public TransactionCallbackWrapper(Closure<Object> closure) {
       this.closure = closure;
     }
 

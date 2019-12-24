@@ -21,4 +21,11 @@ public interface DomainEntityInterface {
    */
   UUID getUuid();
 
+  /**
+   * Saves the record.
+   *
+   * @return The record.
+   */
+  Object save();
+
 }

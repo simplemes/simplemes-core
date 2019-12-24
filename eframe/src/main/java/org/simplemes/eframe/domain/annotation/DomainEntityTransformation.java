@@ -103,12 +103,14 @@ public class DomainEntityTransformation implements ASTTransformation {
         String mappedByFieldName = annotationNode.getMember("mappedBy").getText();
         ClassNode childDomainClassNode = fieldNode.getType();
         GenericsType[] genericsTypes = childDomainClassNode.getGenericsTypes();
-        ClassNode childDomainTypeNode = null;
-        if (genericsTypes.length > 0) {
-          childDomainTypeNode = genericsTypes[0].getType();
+        if (genericsTypes == null || genericsTypes.length == 0) {
+          String fqName = classNode.getName();
+          String s = "Child field " + fieldNode.getName() + " must be have a parameterized type (e.g. List<XYZ>) in " + fqName;
+          sourceUnit.getErrorCollector().addError(new SimpleMessage(s, sourceUnit));
+          return;
         }
+        ClassNode childDomainTypeNode = genericsTypes[0].getType();
         String getterName = "get" + StringUtils.capitalize(fieldNode.getName());
-        //(order,'orderLines','order',OrderLine)
         //  public List lazyChildLoad(Object object,String fieldName, String mappedByFieldName, Class childDomainClazz)
         List<Expression> delegateArgs = new ArrayList<>();
         delegateArgs.add(new ConstantExpression(fieldNode.getName()));
@@ -147,6 +149,7 @@ public class DomainEntityTransformation implements ASTTransformation {
     // Make sure the method doesn't exist already
     if (ASTUtils.methodExists(node, getterName, Parameter.EMPTY_ARRAY)) {
       sourceUnit.getErrorCollector().addError(new SimpleMessage(getterName + "() already exists in " + node, sourceUnit));
+      return;
     }
     //      if (repository!=null) {
     VariableExpression variableExpression = new VariableExpression(fieldNode);
@@ -206,7 +209,7 @@ public class DomainEntityTransformation implements ASTTransformation {
       sourceUnit.getErrorCollector().addError(new SimpleMessage(methodName + "() already exists in " + node, sourceUnit));
     }
 
-    // return = DomainEntityHelper.instance.XYZ(Object,)
+    // return = DomainEntityHelper.instance.XYZ(Object,delegateArgs)
 
     // Build the argument list for the call to the delegate.  We add this as the first argument.
     List<Expression> argumentList = new ArrayList<>();
@@ -214,15 +217,6 @@ public class DomainEntityTransformation implements ASTTransformation {
     if (delegateArguments != null) {
       argumentList.addAll(delegateArguments);
     }
-/*
-    if (args != null) {
-      for (Parameter arg : args) {
-        argumentList.add(new VariableExpression(arg.getName()));
-      }
-    } else {
-      args = Parameter.EMPTY_ARRAY;
-    }
-*/
     MethodCallExpression method = new MethodCallExpression(
         new PropertyExpression(new ClassExpression(new ClassNode(DomainEntityHelper.class)), "instance"),
         helperMethodName,

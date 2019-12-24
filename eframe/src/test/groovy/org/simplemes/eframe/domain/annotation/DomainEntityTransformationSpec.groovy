@@ -4,6 +4,7 @@ package org.simplemes.eframe.domain.annotation
 import io.micronaut.transaction.TransactionStatus
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
+import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.Order
 import sample.domain.OrderLine
@@ -286,4 +287,89 @@ class DomainEntityTransformationSpec extends BaseSpecification {
     then: 'the orderLines are populated'
     order2.orderLines.size() == 2
   }
+
+  def "verify that OneToMany mappings require a parameterized type on the child list"() {
+    given: 'a class with an error'
+    def src = """
+      package dummy.pack
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import javax.persistence.OneToMany
+
+      @DomainEntity    
+      class TestClass {
+        UUID uuid
+        
+        @OneToMany(mappedBy = "order")
+        List orderLines
+      }
+    """
+
+    and: 'no need to print the failing source to the console'
+    CompilerTestUtils.printCompileFailureSource = false
+
+    when: 'the domain is compiled'
+    CompilerTestUtils.compileSource(src)
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['Child', 'List', 'parameterized', 'type', 'dummy.pack.TestClass'])
+
+    cleanup: 'reset the the console printing'
+    CompilerTestUtils.printCompileFailureSource = true
+  }
+
+  def "verify that an existing repository getter method will fails compilation failure"() {
+    given: 'a class with an error'
+    def src = """
+      package dummy.pack
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+
+      @DomainEntity    
+      class TestClass {
+        def getRepository() {
+        }
+      }
+    """
+
+    and: 'no need to print the failing source to the console'
+    CompilerTestUtils.printCompileFailureSource = false
+
+    when: 'the domain is compiled'
+    CompilerTestUtils.compileSource(src)
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['getRepository', 'exists', 'dummy.pack.TestClass'])
+
+    cleanup: 'reset the the console printing'
+    CompilerTestUtils.printCompileFailureSource = true
+  }
+
+  def "verify that an existing delegated method will fails compilation failure"() {
+    given: 'a class with an error'
+    def src = """
+      package dummy.pack
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+
+      @DomainEntity    
+      class TestClass {
+        def save() {
+        }
+      }
+    """
+
+    and: 'no need to print the failing source to the console'
+    CompilerTestUtils.printCompileFailureSource = false
+
+    when: 'the domain is compiled'
+    CompilerTestUtils.compileSource(src)
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['save', 'exists', 'dummy.pack.TestClass'])
+
+    cleanup: 'reset the the console printing'
+    CompilerTestUtils.printCompileFailureSource = true
+  }
+
 }

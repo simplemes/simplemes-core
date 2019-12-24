@@ -6,6 +6,7 @@ import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.Transient
 import org.simplemes.eframe.domain.annotation.DomainEntity
 
 import javax.annotation.Nullable
@@ -37,6 +38,9 @@ class OrderLine {
   @Nullable String notes
 
   @Id @AutoPopulated UUID uuid
+
+  @Transient
+  UUID _order_id = UUID.randomUUID()
 
   static fieldOrder = ['sequence', 'product', 'qty', 'notes']
   static keys = ['orderId', 'sequence']

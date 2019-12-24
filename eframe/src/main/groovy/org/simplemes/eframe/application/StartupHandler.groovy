@@ -6,6 +6,7 @@ import groovy.util.logging.Slf4j
 import io.micronaut.discovery.event.ServiceStartedEvent
 import io.micronaut.runtime.event.annotation.EventListener
 import io.micronaut.scheduling.annotation.Async
+import org.simplemes.eframe.application.issues.WorkArounds
 import org.simplemes.eframe.date.EFrameDateFormat
 import org.simplemes.eframe.json.HibernateAwareJacksonModule
 
@@ -58,6 +59,11 @@ class StartupHandler {
     configureJacksonObjectMapper(mapper)
     // TODO: Look at configuration https://stackoverflow.com/questions/59160012/get-micronaut-to-use-my-instance-of-jacksonconfiguration
     // needs 1.3.0 or 1.2.8.
+
+    if (WorkArounds.list()) {
+      log.warn('WorkArounds in use {}', WorkArounds.list())
+    }
+
 
   }
 

@@ -11,17 +11,23 @@ import io.micronaut.core.annotation.AnnotationMetadata
 import io.micronaut.data.annotation.Query
 import io.micronaut.data.exceptions.DataAccessException
 import io.micronaut.data.intercept.annotation.DataMethod
+import io.micronaut.data.jdbc.mapper.JdbcQueryStatement
 import io.micronaut.data.jdbc.operations.DefaultJdbcRepositoryOperations
 import io.micronaut.data.model.runtime.InsertOperation
 import io.micronaut.data.model.runtime.UpdateOperation
+import io.micronaut.data.runtime.mapper.QueryStatement
 import io.micronaut.http.codec.MediaTypeCodec
 import io.micronaut.transaction.TransactionOperations
+import org.simplemes.eframe.application.issues.WorkArounds
+import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 
 import javax.annotation.Nonnull
 import javax.inject.Named
 import javax.sql.DataSource
 import java.lang.annotation.Annotation
+import java.lang.reflect.Field
 import java.sql.Connection
+import java.sql.PreparedStatement
 import java.util.concurrent.ExecutorService
 
 /*
@@ -43,7 +49,22 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
                                  @Named("io") @Nullable ExecutorService executorService,
                                  BeanContext beanContext, List<MediaTypeCodec> codecs) {
     super(dataSourceName, dataSource, transactionOperations, executorService, beanContext, codecs)
+
+    workAround264()
   }
+
+  /**
+   * See {@link WorkArounds}.
+   */
+  private void workAround264() {
+    if (WorkArounds.workAround264) {
+      Field field = this.getClass().superclass.superclass.getDeclaredField('preparedStatementWriter')
+      field.setAccessible(true)
+      field.set(this, new WorkAround264PreparedStatement())
+      //preparedStatementWriter = new WorkAround269PreparedStatement()
+    }
+  }
+
 
   /**
    * Read an entity using the given prefix to be passes to result set lookups.
@@ -56,6 +77,7 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
   <T> T persist(@NonNull InsertOperation<T> operation) {
     //AnnotationMetadata annotationMetadata = operation.getAnnotationMetadata()
     //String[] params = annotationMetadata.stringValues(DataMethod.class, DataMethod.META_MEMBER_PARAMETER_BINDING_PATHS)
+    //println "params = $params ${operation.entity.getProperties()}"
     //String query = annotationMetadata.stringValue(Query.class).orElse(null)
     //println "query = $query"
     return super.persist(operation)
@@ -77,7 +99,6 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
   }
 }
 
-// TODO: Find out why this won't compile with @Delegate
 class AlterableUpdateOperation implements UpdateOperation {
   UpdateOperation originalOperation
   AnnotationMetadata annotationMetadata
@@ -92,10 +113,10 @@ class AlterableUpdateOperation implements UpdateOperation {
   AnnotationMetadata getAnnotationMetadata() {
     return annotationMetadata
   }
-/**
- * @return The entity to insert.
- */
 
+  /**
+   * @return The entity to insert.
+   */
   @Override
   Object getEntity() {
     return originalOperation.getEntity()
@@ -164,10 +185,11 @@ class AlterableAnnotationMetadata implements AnnotationMetadata {
       if (query.endsWith(whereClause)) {
         def loc = query.indexOf(whereClause) - 1
         query = query[0..loc] + "$whereClause and (${quote}version${quote} = ${version - 1})"
-        println "altered query for optimistic locking= $query"
+        System.out.println "altered query for optimistic locking= $query"
         res = Optional.of(query)
       }
     }
+    //println "query = ${res.get()}"
 
     return res
   }
@@ -183,14 +205,14 @@ class AlterableAnnotationMetadata implements AnnotationMetadata {
   String[] stringValues(@Nonnull Class<? extends Annotation> annotation, @Nonnull String member) {
     def values = originalAnnotationMetadata.stringValues(annotation, member)
 
-    // TODO: Remove temporary fix for issue with using uuid in update.
-    // See issue: https://github.com/micronaut-projects/micronaut-data/issues/323
-    if (annotation == DataMethod && member == DataMethod.META_MEMBER_PARAMETER_BINDING_PATHS) {
-      if (values.contains('id')) {
-        // Convert 'id' 'uuid'.
-        for (int i = 0; i < values.length; i++) {
-          if (values[i] == 'id') {
-            values[i] = 'uuid'
+    if (WorkArounds.workAround323) {
+      if (annotation == DataMethod && member == DataMethod.META_MEMBER_PARAMETER_BINDING_PATHS) {
+        if (values.contains('id')) {
+          // Convert 'id' 'uuid'.
+          for (int i = 0; i < values.length; i++) {
+            if (values[i] == 'id') {
+              values[i] = 'uuid'
+            }
           }
         }
       }
@@ -207,3 +229,17 @@ class AlterableAnnotationMetadata implements AnnotationMetadata {
 
 }
 
+/**
+ * See {@link WorkArounds}.
+ */
+class WorkAround264PreparedStatement extends JdbcQueryStatement {
+
+  @Override
+  QueryStatement<PreparedStatement, Integer> setValue(PreparedStatement statement, Integer index, Object value) throws DataAccessException {
+    if (value && value instanceof DomainEntityInterface) {
+      // For issue 264, we need to use the uuid value.
+      return super.setValue(statement, index, value.uuid)
+    }
+    return super.setValue(statement, index, value)
+  }
+}

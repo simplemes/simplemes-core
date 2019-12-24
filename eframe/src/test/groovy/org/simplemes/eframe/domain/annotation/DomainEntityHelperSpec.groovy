@@ -47,6 +47,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
     clazz.repository instanceof OrderRepository
   }
 
+  @SuppressWarnings("GroovyAssignabilityCheck")
   def "verify that save will create a record"() {
     when: ' the record is saved'
     def order = new Order('M1001')
@@ -120,12 +121,20 @@ class DomainEntityHelperSpec extends BaseSpecification {
     DomainEntityHelper.instance.lazyChildLoad((DomainEntityInterface) order, 'orderLines', 'order', OrderLine).is(list)
   }
 
+  def "verify that SQL exception during lazyChildLoad is unwrapped for the caller"() {
+    when: 'a bad order is saved'
+    new Order(order: "A" * 500).save()
+
+    then: 'the right exception is thrown'
+    thrown(DataAccessException)
+  }
+
   @Rollback
-  def "verify that lazyChildLoad gracefully handles when the parent record is not saved yet"() {
+  def "verify that save and lazyChildLoad gracefully handles when the parent record is not saved yet"() {
     when: 'a domain record with children is not saved'
     def order = new Order(order: 'M1001')
-    order.orderLines << new OrderLine(order: order, product: 'BIKE', sequence: 1)
-    order.orderLines << new OrderLine(order: order, qty: 2.0, product: 'WHEEL', sequence: 2)
+    order.orderLines << new OrderLine(product: 'BIKE', sequence: 1)
+    order.orderLines << new OrderLine(qty: 2.0, product: 'WHEEL', sequence: 2)
 
     then: 'the record is unsaved in memory'
     order.orderLines.size() == 2
@@ -138,11 +147,89 @@ class DomainEntityHelperSpec extends BaseSpecification {
     order2.orderLines.size() == 2
   }
 
-  def "verify that SQL exception during lazyChildLoad is unwrapped for the caller"() {
-    when: 'a bad order is saved'
-    new Order(order: "A" * 500).save()
+  @Rollback
+  def "verify that save works with added records"() {
+    when: 'a domain record with children is saved'
+    def order = new Order(order: 'M1001')
+    order.orderLines << new OrderLine(product: 'BIKE', sequence: 1)
+    order.orderLines << new OrderLine(qty: 2.0, product: 'WHEEL', sequence: 2)
+    order.save()
 
-    then: 'the right exception is thrown'
-    thrown(DataAccessException)
+    then: 'the child records are saved too.'
+    def order2 = Order.findByUuid(order.uuid)
+    order2.orderLines.size() == 2
   }
+
+  @Rollback
+  def "verify that save works with updated child record"() {
+    when: 'a domain record with children is saved'
+    def order = new Order(order: 'M1001')
+    order.orderLines << new OrderLine(product: 'BIKE', sequence: 1)
+    order.save()
+
+    and: 'the records are changed and new ones added for a second save'
+    order.orderLines[0].qty = 10.0
+    order.save()
+
+    then: 'the child records are saved too.'
+    def order2 = Order.findByUuid(order.uuid)
+    order2.orderLines[0].qty == 10.0
+    order2.orderLines.size() == 1
+
+    and: 'no duplicate records exist'
+    OrderLine.list().size() == 1
+  }
+
+  @Rollback
+  def "verify that save works with mix of updated and added records"() {
+    when: 'a domain record with children is saved'
+    def order = new Order(order: 'M1001')
+    order.orderLines << new OrderLine(product: 'BIKE', sequence: 1)
+    order.orderLines << new OrderLine(qty: 2.0, product: 'WHEEL', sequence: 2)
+    order.save()
+
+    and: 'the records are changed and new ones added for a second save'
+    order.orderLines << new OrderLine(qty: 3.0, product: 'SPOKE', sequence: 3)
+    order.orderLines[0].qty = 10.0
+    order.save()
+
+    then: 'the child records are saved too.'
+    def order2 = Order.findByUuid(order.uuid)
+    order2.orderLines[0].qty == 10.0
+    order2.orderLines.size() == 3
+
+    and: 'no duplicate records exist'
+    OrderLine.list().size() == 3
+  }
+
+  @Rollback
+  def "verify that save works with some deleted records"() {
+    when: 'a domain record with children is saved'
+    def order = new Order(order: 'M1001')
+    order.orderLines << new OrderLine(product: 'BIKE', sequence: 1)
+    order.orderLines << new OrderLine(qty: 2.0, product: 'WHEEL', sequence: 2)
+    order.save()
+
+    and: 'a record is removed and new ones added for a second save'
+    order.orderLines << new OrderLine(qty: 3.0, product: 'SPOKE', sequence: 3)
+    order.orderLines.remove(0)
+    order.save()
+    //println "OrderLine.list() = ${OrderLine.list()*.product}"
+
+    then: 'the child records are saved too.'
+    def order2 = Order.findByUuid(order.uuid)
+    order2.orderLines.size() == 2
+
+    and: 'the delete record is gone'
+    !order2.orderLines.findAll { it.product == 'BIKE' }
+
+    and: 'the updated record is correct'
+    order2.orderLines.findAll { it.product == 'SPOKE' }
+    order2.orderLines.findAll { it.product == 'WHEEL' }
+
+    and: 'no duplicate records exist'
+    OrderLine.list().size() == 2
+  }
+
+
 }

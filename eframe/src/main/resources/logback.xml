@@ -29,6 +29,7 @@
 
   <logger name="org.simplemes.eframe" level="warn"/>
   <logger name="org.simplemes.eframe.application" level="warn"/>
+  <logger name="org.simplemes.eframe.application.StartupHandler" level="error"/>  <!--warn for workaround warnings.-->
   <logger name="org.simplemes.eframe.custom" level="warn"/>
   <logger name="org.simplemes.eframe.web.ui" level="warn"/>
   <logger name="org.simplemes.eframe.security" level="warn"/>
