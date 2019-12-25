@@ -22,10 +22,24 @@ public interface DomainEntityInterface {
   UUID getUuid();
 
   /**
+   * Sets the record UUID.
+   *
+   * @param uuid The UUID.
+   */
+  void setUuid(UUID uuid);
+
+  /**
    * Saves the record.
    *
    * @return The record.
    */
   Object save();
+
+  /**
+   * Deletes the record.
+   *
+   * @return The record.
+   */
+  Object delete();
 
 }

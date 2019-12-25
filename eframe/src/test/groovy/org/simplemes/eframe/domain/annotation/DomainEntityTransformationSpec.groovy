@@ -372,4 +372,29 @@ class DomainEntityTransformationSpec extends BaseSpecification {
     CompilerTestUtils.printCompileFailureSource = true
   }
 
+  def "verify that a holder for domain settings is added as a field - not a property"() {
+    given: 'a class with the annotation'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import groovy.transform.ToString
+      
+      @DomainEntity
+      @ToString(includeNames = true)
+      class TestClass {
+        UUID uuid
+      }
+    """
+
+    when: 'the domain is compiled and a new value is used'
+    def object = CompilerTestUtils.compileSource(src).newInstance()
+
+    then: 'the holder is in the object'
+    object[DomainEntityHelper.DOMAIN_SETTINGS_FIELD_NAME] instanceof Map
+
+    and: 'there is no getter or setter for the object'
+    def methods = object.getClass().getDeclaredMethods()
+    !methods.find { it.name == "get$DomainEntityHelper.DOMAIN_SETTINGS_FIELD_NAME" }
+    !methods.find { it.name == "set$DomainEntityHelper.DOMAIN_SETTINGS_FIELD_NAME" }
+  }
+
 }

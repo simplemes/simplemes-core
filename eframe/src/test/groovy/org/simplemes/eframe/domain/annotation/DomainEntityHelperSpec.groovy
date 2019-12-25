@@ -121,6 +121,26 @@ class DomainEntityHelperSpec extends BaseSpecification {
     DomainEntityHelper.instance.lazyChildLoad((DomainEntityInterface) order, 'orderLines', 'order', OrderLine).is(list)
   }
 
+  @Rollback
+  def "verify that lazyChildLoad keeps a list of the record loaded for later update checks"() {
+    given: 'a domain record with children'
+    def order = new Order(order: 'M1001')
+    order.orderLines << new OrderLine(order: order, product: 'BIKE', sequence: 1)
+    order.orderLines << new OrderLine(order: order, qty: 2.0, product: 'WHEEL', sequence: 2)
+    order.save()
+
+    when: 'the lazy load is used on a fresh read'
+    def order2 = Order.findByUuid(order.uuid)
+    DomainEntityHelper.instance.lazyChildLoad((DomainEntityInterface) order2, 'orderLines', 'order', OrderLine)
+
+    then: 'the list of loaded children is in the domain settings holder'
+    def holder = order2[DomainEntityHelper.DOMAIN_SETTINGS_FIELD_NAME]
+    List loadedList = holder["${DomainEntityHelper.SETTINGS_LOADED_CHILDREN_PREFIX}orderLines"] as List
+    loadedList.size() == 2
+    loadedList.contains(order.orderLines[0].uuid)
+    loadedList.contains(order.orderLines[1].uuid)
+  }
+
   def "verify that SQL exception during lazyChildLoad is unwrapped for the caller"() {
     when: 'a bad order is saved'
     new Order(order: "A" * 500).save()
@@ -231,5 +251,71 @@ class DomainEntityHelperSpec extends BaseSpecification {
     OrderLine.list().size() == 2
   }
 
+  @Rollback
+  def "verify that save detects deleted child record"() {
+    when: 'a domain record with children is saved'
+    def order = new Order(order: 'M1001')
+    order.orderLines << new OrderLine(product: 'BIKE', sequence: 1)
+    order.orderLines << new OrderLine(product: 'SEAT', sequence: 2)
+    order.orderLines << new OrderLine(product: 'WHEEL', sequence: 3)
+    order.save()
 
+    and: 'a record is removed from the children list'
+    order.orderLines.remove(1)
+    order.save()
+
+    then: 'the child records are saved too.'
+    def order2 = Order.findByUuid(order.uuid)
+    order2.orderLines.size() == 2
+    order2.orderLines.find { it.product == 'BIKE' }
+    order2.orderLines.find { it.product == 'WHEEL' }
+    !order2.orderLines.find { it.product == 'SEAT' }
+
+    and: 'the deleted record is removed from the DB'
+    OrderLine.list().size() == 2
+  }
+
+  @Rollback
+  def "verify that save handles multiple remove and save cycles"() {
+    when: 'a domain record with children is saved'
+    def order = new Order(order: 'M1001')
+    order.orderLines << new OrderLine(product: 'BIKE', sequence: 1)
+    order.save()
+
+    then: 'add and remove a record for several cycles with the same parent domain object instance'
+    for (i in (1..9)) {
+      // Delete the original row.
+      order.orderLines.remove(0)
+      // Add a child and save
+      def orderLine = new OrderLine(product: "BIKE$i", sequence: i)
+      order.orderLines << orderLine
+      order.save()
+
+      // Now, verify that the database is correct.
+      assert order.orderLines.size() == 1
+      def order2 = Order.findByUuid(order.uuid)
+      assert order2.orderLines.size() == 1
+      assert order2.orderLines.find { it.product == "BIKE$i" }
+      true
+    }
+  }
+
+  @Rollback
+  def "verify that delete removes child record"() {
+    when: 'a domain record with children is saved'
+    def order = new Order(order: 'M1001')
+    order.orderLines << new OrderLine(product: 'BIKE', sequence: 1)
+    order.orderLines << new OrderLine(product: 'SEAT', sequence: 2)
+    order.orderLines << new OrderLine(product: 'WHEEL', sequence: 3)
+    order.save()
+
+    and: 'a record is removed from the children list'
+    order.orderLines.remove(1)
+
+    and: 'the parent record is deleted'
+    order.delete()
+
+    then: 'the child records are delete too'
+    OrderLine.list().size() == 0
+  }
 }

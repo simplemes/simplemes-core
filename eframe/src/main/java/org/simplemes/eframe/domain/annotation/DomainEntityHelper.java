@@ -33,6 +33,18 @@ public class DomainEntityHelper {
   protected static DomainEntityHelper instance = new DomainEntityHelper();
 
   /**
+   * The name of the transient holder for internal domain settings.
+   * This Map holds things like lists of records to be deleted on update.
+   */
+  public static final String DOMAIN_SETTINGS_FIELD_NAME = "_domainSettings";
+
+  /**
+   * The name of the element in the domain settings holder that will contain the list of loaded children.
+   * The element name is this prefix plus the child field's name (e.g. loadedChildren+'orderLines').
+   */
+  public static final String SETTINGS_LOADED_CHILDREN_PREFIX = "loadedChildren";
+
+  /**
    * Determine the repository associated with the given domain class. This is not for public access.
    * This is used only in the code inserted into the domain by the @DomainEntity annotation.
    *
@@ -72,7 +84,7 @@ public class DomainEntityHelper {
    * @param object The domain object to save.
    * @return The object after saving.
    */
-  Object save(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException {
+  Object save(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
     CrudRepository repo = (CrudRepository) getRepository(object.getClass());
     if (repo == null) {
       throw new IllegalArgumentException("Missing repository for " + object.getClass());
@@ -93,7 +105,7 @@ public class DomainEntityHelper {
    * @param object The domain object to delete.
    * @return The object that was deleted.
    */
-  Object delete(DomainEntityInterface object) {
+  Object delete(DomainEntityInterface object) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
     GenericRepository<DomainEntityInterface, UUID> repo = getRepository(object.getClass());
     if (repo == null) {
       throw new IllegalArgumentException("Missing repository for " + object.getClass());
@@ -102,6 +114,7 @@ public class DomainEntityHelper {
       CrudRepository<DomainEntityInterface, UUID> repo2 = (CrudRepository<DomainEntityInterface, UUID>) repo;
       repo2.delete(object);
     }
+    deleteChildren(object);
 
     return object;
   }
@@ -249,22 +262,24 @@ public class DomainEntityHelper {
    *
    * @param object The parent domain object.
    */
-  void saveChildren(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException {
+  @SuppressWarnings("unchecked")
+  void saveChildren(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
     // Check all properties for (List) child properties.
+    Map domainSettings = getDomainSettings(object);
     for (Field field : object.getClass().getDeclaredFields()) {
       // Performance: Consider moving the reflection logic to the Transformation to avoid run-time cost.
       OneToMany ann = field.getAnnotation(OneToMany.class);
       if (ann != null && Collection.class.isAssignableFrom(field.getType())) {
         field.setAccessible(true);  // Need to bypass the getter, since that would trigger a read in some cases.
         Collection list = (Collection) field.get(object);
-        System.out.println("field:" + field + " list:" + list);
         String mappedByFieldName = ann.mappedBy();
-        Class<?> childClass = getGenericType(field);
+        Class<DomainEntityInterface> childClass = (Class<DomainEntityInterface>) getGenericType(field);
         //System.out.println("childClass:" + childClass);
         Field parentField = childClass.getDeclaredField(mappedByFieldName);
         parentField.setAccessible(true);  // Need to bypass any setters.
         //System.out.println("  parentField:" + parentField+" ");
         if (list != null) {
+          List<Object> newRecordList = new ArrayList();
           for (Object child : list) {
             if (child instanceof DomainEntityInterface && mappedByFieldName.length() > 0) {
               //System.out.println("  child:" + child);
@@ -273,6 +288,58 @@ public class DomainEntityHelper {
                 parentField.set(child, object);
               }
               ((DomainEntityInterface) child).save();
+              newRecordList.add(((DomainEntityInterface) child).getUuid());
+            }
+          }
+          // Now, delete any removed records from the previous read.
+          if (domainSettings != null) {
+            List<UUID> previouslyLoadedList = (List) domainSettings.get(SETTINGS_LOADED_CHILDREN_PREFIX + field.getName());
+
+            for (UUID uuid : previouslyLoadedList) {
+              if (!newRecordList.contains(uuid)) {
+                // The child record is no longer in the ths list, so delete it.
+                DomainEntityInterface childObject = childClass.newInstance();
+                childObject.setUuid(uuid);
+                childObject.delete();
+              }
+            }
+          }
+
+          // Finally, use the new list of updated records.
+          List loadedList = new ArrayList();
+          if (domainSettings != null) {
+            domainSettings.put(SETTINGS_LOADED_CHILDREN_PREFIX + field.getName(), loadedList);
+            for (Object child : list) {
+              if (child instanceof DomainEntityInterface) {
+                loadedList.add(((DomainEntityInterface) child).getUuid());
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Deletes the children for the given parent object.
+   *
+   * @param object The parent domain object.
+   */
+  @SuppressWarnings("unchecked")
+  void deleteChildren(DomainEntityInterface object) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+    // Check all properties for (List) child properties.
+    for (Field field : object.getClass().getDeclaredFields()) {
+      OneToMany ann = field.getAnnotation(OneToMany.class);
+      if (ann != null && Collection.class.isAssignableFrom(field.getType())) {
+        field.setAccessible(true);  // Need to bypass the getter, since that would trigger a read in some cases.
+        field.set(object, null);
+        Method getterMethod = object.getClass().getMethod("get" + StringUtils.capitalize(field.getName()));
+        Collection list = (Collection) getterMethod.invoke(object);
+        if (list != null) {
+          List<Object> newRecordList = new ArrayList();
+          for (Object child : list) {
+            if (child instanceof DomainEntityInterface) {
+              ((DomainEntityInterface) child).delete();
             }
           }
         }
@@ -307,6 +374,7 @@ public class DomainEntityHelper {
    * @param childDomainClazz  The child domain class.
    * @return The list.
    */
+  @SuppressWarnings("unchecked")
   public List lazyChildLoad(DomainEntityInterface object, String fieldName, String mappedByFieldName, Class childDomainClazz)
       throws Throwable {
     //System.out.println("object:" + object+" fieldName:" + fieldName+" mappedByFieldName:" + mappedByFieldName+" childDomainClazz:" + childDomainClazz);
@@ -320,6 +388,11 @@ public class DomainEntityHelper {
       // This happens when the parent object is not saved yet.
       list = new ArrayList();
       field.set(object, list);
+      Map domainSettings = getDomainSettings(object);
+      List loadedList = new ArrayList();
+      if (domainSettings != null) {
+        domainSettings.put(SETTINGS_LOADED_CHILDREN_PREFIX + fieldName, loadedList);
+      }
       GenericRepository repository = getRepository(childDomainClazz);
       UUID uuid = object.getUuid();
       if (repository != null && uuid != null) {
@@ -329,6 +402,12 @@ public class DomainEntityHelper {
         try {
           list = (List) method.invoke(repository, object);
           field.set(object, list);
+          // Store the UUID's for later checks on update.
+          for (Object child : list) {
+            if (child instanceof DomainEntityInterface) {
+              loadedList.add(((DomainEntityInterface) child).getUuid());
+            }
+          }
         } catch (Throwable e) {
           // Most exceptions are wrapped in invocation target exceptions, so we can remove them.
           throw unwrapException(e);
@@ -337,6 +416,22 @@ public class DomainEntityHelper {
     }
 
     return list;
+  }
+
+  /**
+   * Finds the domain settings holder for given domain object.
+   *
+   * @param object The domain object.
+   * @return The settings holder.
+   */
+  private Map<?, ?> getDomainSettings(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException {
+    // Uses reflection since the element is a field and that is difficult to implement in an interface.
+    Field field = object.getClass().getDeclaredField(DOMAIN_SETTINGS_FIELD_NAME);
+    Object o = field.get(object);
+    if (o instanceof Map) {
+      return (Map) o;
+    }
+    return null;
   }
 
   /**

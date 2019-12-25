@@ -17,7 +17,7 @@ Micronaut Data Conversion Tasks
   Adds these methods
     Lazy load
       reference - uses txn.
-      getChildRecords, addToChildRecords, save logic.
+      done - getChildRecords, addToChildRecords, save logic.
     done - save, list, delete.save findByXYZ(),findById(), @Rollback
   done - withTransaction {} ?
   Validation support.

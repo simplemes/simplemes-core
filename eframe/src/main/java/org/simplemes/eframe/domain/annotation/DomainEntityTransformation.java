@@ -19,6 +19,7 @@ import javax.persistence.OneToMany;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -87,6 +88,11 @@ public class DomainEntityTransformation implements ASTTransformation {
     addDelegatedMethod("$static_methodMissing", "staticMethodMissingHandler", true, parameters, mmArgs, classNode, sourceUnit);
 
     addLazyChildLoaders(classNode, sourceUnit);
+
+    Expression init = new MapExpression();
+    ASTUtils.addField(DomainEntityHelper.DOMAIN_SETTINGS_FIELD_NAME, Map.class, Modifier.PUBLIC | Modifier.TRANSIENT, 0, false, init,
+        classNode, sourceUnit);
+
   }
 
   /**
