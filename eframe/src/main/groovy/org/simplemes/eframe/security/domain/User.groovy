@@ -1,14 +1,25 @@
 package org.simplemes.eframe.security.domain
 
-//import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.DateCreated
+import io.micronaut.data.annotation.DateUpdated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.annotation.Transient
+import io.micronaut.data.model.DataType
 import io.micronaut.security.authentication.providers.PasswordEncoder
 import org.simplemes.eframe.application.Holders
-import org.simplemes.eframe.data.annotation.ExtensibleFields
+import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.security.PasswordEncoderService
+
+import javax.annotation.Nullable
+import javax.persistence.Column
+import javax.persistence.ManyToMany
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.
@@ -20,27 +31,34 @@ import org.simplemes.eframe.security.PasswordEncoderService
  * The framework/security User definition.
  */
 @Slf4j
-//@Entity
+@MappedEntity('usr')
+@DomainEntity
 @EqualsAndHashCode(includes = ['userName'])
-@SuppressWarnings("unused")
-@ToString(includePackage = false, includeNames = true, excludes = ['authoritySummary'])
-// TODO: Replace with non-hibernate alternative
-@ExtensibleFields
+@ToString(includePackage = false, includeNames = true, excludes = ['authoritySummary', 'password', 'encodedPassword'])
 class User {
   /**
    * The user name (e.g. logon ID).
    */
+  @Column(length = FieldSizes.MAX_CODE_LENGTH)   // TODO: Add unique to DDL.
   String userName
 
   /**
    * The title (short) of this user.  Used for many displays/lists.
    */
-  String title
+  @Column(length = FieldSizes.MAX_TITLE_LENGTH)
+  @Nullable String title
+
+  /**
+   * The raw password (un-encrypted, not saved).  Uses only when the password changes.
+   */
+  @Transient
+  String password
 
   /**
    * The password (encrypted).
    */
-  String password
+  @Column(length = 128)
+  String encodedPassword
 
   /**
    * If true, then this user is enabled.
@@ -65,73 +83,49 @@ class User {
   /**
    * This user's email.
    */
+  @Nullable @Column(length = FieldSizes.MAX_URL_LENGTH)
   String email
 
   /**
    * A list of the user roles this user has assigned in a comma-delimited form.
    * This is a transient value and is read from the roles and uses the title for display.
    */
+  @Transient
   String authoritySummary
 
+  @ManyToMany(mappedBy = "userRole")
+  List<Role> userRoles
 
-/**
- * The date this record was last updated.
- */
-  Date lastUpdated
+  Integer version = 0
 
-  /**
-   * The date this record was created
-   */
+  @DateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateCreated
 
-
-  static hasMany = [userRoles: Role]
+  @DateUpdated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateUpdated
 
   /**
-   * Internal field constraints.
+   * The internal unique ID for this record.
    */
-  static constraints = {
-    userName(maxSize: FieldSizes.MAX_CODE_LENGTH, blank: false, unique: true)
-    password(maxSize: 128, blank: false)
-    title(maxSize: FieldSizes.MAX_TITLE_LENGTH, nullable: true, blank: true)
-    email(maxSize: FieldSizes.MAX_URL_LENGTH, nullable: true, blank: true, email: true)
-  }
+  @Id @AutoPopulated UUID uuid
+
 
   /**
    * Defines the order the fields are shown in the edit/show/etc GUIs.
    */
+  @SuppressWarnings("unused")
   static fieldOrder = ['userName', 'title', 'enabled', 'accountExpired', 'accountLocked', 'passwordExpired',
                        'email', 'userRoles']
-
-  /**
-   * Internal mappings.  This object is stored in the USR table.  
-   */
-  @SuppressWarnings("SpellCheckingInspection")
-  static mapping = {
-    table 'usr'
-    password column: 'passwd'
-    userRoles lazy: false
-  }
-  /**
-   * Internal transient field list.
-   */
-  static transients = ['authoritySummary']
 
 
   /**
    * Called before new records are created.
    */
-  def beforeInsert() {
+  @SuppressWarnings("unused")
+  def beforeSave() {
     encodePassword()
-  }
-
-  /**
-   * Called before a record is updated.
-   */
-  def beforeUpdate() {
-    if (isDirty('password')) {
-      encodePassword()
-    }
   }
 
   /**
@@ -156,8 +150,9 @@ class User {
         adminUser.passwordExpired = true
       }
       // Add all roles to admin
+      adminUser.userRoles = []
       for (role in Role.list()) {
-        adminUser.addToUserRoles(role)
+        adminUser.userRoles << role
       }
 
       adminUser.save()
@@ -185,10 +180,14 @@ class User {
   }
 
   /**
-   * Encodes the password before saving.
+   * Encodes the raw password before saving, if needed.
    */
   protected void encodePassword() {
-    password = getPasswordEncoder().encode(password)
+    if (password) {
+      encodedPassword = getPasswordEncoder().encode(password)
+      // Clear the raw password so it is not in memory.
+      password = null
+    }
   }
 
   /**
@@ -197,7 +196,7 @@ class User {
    * @return true if it matches.
    */
   boolean passwordMatches(String secret) {
-    return getPasswordEncoder().matches(secret, password)
+    return getPasswordEncoder().matches(secret, encodedPassword)
   }
 
   /**

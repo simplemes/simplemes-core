@@ -1,9 +1,14 @@
 package org.simplemes.eframe.security.domain
 
-//import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import groovy.util.logging.Slf4j
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.FieldSizes
+
+import javax.persistence.Column
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.
@@ -16,28 +21,27 @@ import org.simplemes.eframe.misc.FieldSizes
  * can have access to the system.
  */
 @Slf4j
-//@Entity
+@MappedEntity()
+@DomainEntity
 @EqualsAndHashCode(includes = ['authority'])
-@SuppressWarnings("unused")
 class Role {
 
   /**
    * The Role name (authority).  Example: 'ADMIN'.
    */
+  @Column(length = FieldSizes.MAX_CODE_LENGTH)  // TODO: Add unique to DDL.
   String authority
 
   /**
    * The short title of this object.
    */
+  @Column(length = FieldSizes.MAX_TITLE_LENGTH)
   String title
 
   /**
-   * Internal field constraints.
+   * The internal unique ID for this record.
    */
-  static constraints = {
-    authority(maxSize: FieldSizes.MAX_CODE_LENGTH, blank: false, unique: true)
-    title(maxSize: FieldSizes.MAX_TITLE_LENGTH, blank: false, nullable: false)
-  }
+  @Id @AutoPopulated UUID uuid
 
   /**
    *  Build a human-readable version of this object.
@@ -51,6 +55,7 @@ class Role {
   /**
    * Defines the domain(s) this initial data must be loaded before/after.
    */
+  @SuppressWarnings("unused")
   static initialDataLoadBefore = [User]
 
   /**

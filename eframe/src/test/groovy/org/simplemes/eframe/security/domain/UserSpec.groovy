@@ -8,6 +8,7 @@ import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.
@@ -18,10 +19,9 @@ import org.simplemes.eframe.test.UnitTestUtils
 /**
  * Tests.
  */
-@SuppressWarnings("unused")
 class UserSpec extends BaseSpecification {
 
-  static specNeeds = [SERVER]
+  @SuppressWarnings("unused")
   static dirtyDomains = [User, Role]
 
   def "verify that user domain enforces constraints"() {
@@ -37,17 +37,18 @@ class UserSpec extends BaseSpecification {
     }
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that user record can be saved"() {
     when: 'a user is saved'
     def user = new User(userName: 'ABC', password: 'XYZ')
     user.save()
 
-    then: 'the record is saved'
-    User.findByUserName('ABC')
+    then: 'the record is in the DB'
+    def user2 = User.findByUserName('ABC')
+    user2.userName
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that user domain encrypts the password on create"() {
     when: 'a user is saved'
     def user = new User(userName: 'ABC', password: 'XYZ')
@@ -56,7 +57,6 @@ class UserSpec extends BaseSpecification {
     then: 'the password is encrypted correctly'
     def user2 = User.findByUserName('ABC')
     user2.passwordMatches('XYZ')
-    //new PasswordEncoderService().matches('XYZ', user2.password)
   }
 
   def "verify that user domain encrypts the password on update"() {
@@ -66,13 +66,15 @@ class UserSpec extends BaseSpecification {
       user.save()
       user.password = 'PDQ'
       user.save()
+      user.save()
     }
 
-    then: 'the password is encrypted correctly'
+    then: 'the password is encrypted correctly and the raw password is not in the record'
     User.withTransaction {
       def user = User.findByUserName('ABC')
       //assert new PasswordEncoderService().matches('PDQ', user.password)
       assert user.passwordMatches('PDQ')
+      assert !user.password
       return true
     }
 
@@ -96,7 +98,7 @@ class UserSpec extends BaseSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(ex, ['password'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the load initial data  works"() {
     given: 'all user records are deleted'
     deleteAllRecords(User, false)
@@ -114,7 +116,7 @@ class UserSpec extends BaseSpecification {
     user.userRoles.size() == Role.list().size()
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the child userRoles can be populated"() {
     given: 'some roles'
     def role1 = new Role(authority: '1', title: '1').save()

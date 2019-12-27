@@ -241,19 +241,19 @@ public class DomainEntityHelper {
    * Start a transaction and rollback when finished.
    */
   @SuppressWarnings({"unchecked", "unused"})
-  public void executeWrite(TransactionCallback closure) {
+  public Object executeWrite(TransactionCallback closure) {
     SynchronousTransactionManager manager = getTransactionManager();
-    manager.executeWrite(closure);
+    return manager.executeWrite(closure);
   }
 
   /**
    * Start a transaction and rollback when finished.
    */
   @SuppressWarnings({"unchecked", "unused"})
-  public void executeWriteClosure(Class delegate, Closure<Object> closure) {
+  public Object executeWriteClosure(Class delegate, Closure<Object> closure) {
     SynchronousTransactionManager manager = getTransactionManager();
     TransactionCallbackWrapper callback = new TransactionCallbackWrapper(closure);
-    manager.executeWrite(callback);
+    return manager.executeWrite(callback);
   }
 
 

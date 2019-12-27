@@ -78,7 +78,7 @@ class BaseSpecification extends GebSpec {
    * Declares that the spec needs the EmbeddedServer started.  
    * Possible value for the <code>specNeeds</code> list.        Use BaseAPISpecification for most embedded server tests.
    */
-  // TODO: Delete this constant
+  // TODO: Delete this constant and EXTENSION_MOCK
   static final String EMBEDDED = "EMBEDDED"
 
   /**
@@ -122,7 +122,6 @@ class BaseSpecification extends GebSpec {
   List<Class> otherDirtyDomains = []
 
   static EmbeddedServer embeddedServer
-  static boolean threadFinished
 
   /**
    * Used to track if a new time is needed for the tests.txt output.
@@ -173,7 +172,7 @@ class BaseSpecification extends GebSpec {
     if (needsServer() && embeddedServer == null) {
 
 
-      def end = System.currentTimeMillis()
+      //def end = System.currentTimeMillis()
       if (log.debugEnabled) {
         log.debug('All Beans: {}', Holders.applicationContext.allBeanDefinitions*.name)
       }
@@ -208,6 +207,21 @@ class BaseSpecification extends GebSpec {
       def start = System.currentTimeMillis()
       embeddedServer = ApplicationContext.run(EmbeddedServer)
       System.out.println("Started Server ${System.currentTimeMillis() - start}ms")
+/*    // Probably not needed in most cases.
+      // Wait for the initial user record to be committed
+      def adminUser = null
+      start = System.currentTimeMillis()
+      while(!adminUser) {
+        adminUser = User.findByUserName('admin')
+        println "adminUser = $adminUser"
+        if (!adminUser) {
+          sleep(50)
+        }
+      }
+      System.out.println("  Waited ${System.currentTimeMillis() - start}ms for IDAT to finish")
+      //println "admin = ${User.list()*.userName} $adminUser "
+*/
+
       log.debug("All Beans = ${Holders.applicationContext.getAllBeanDefinitions()*.name}")
     }
   }
