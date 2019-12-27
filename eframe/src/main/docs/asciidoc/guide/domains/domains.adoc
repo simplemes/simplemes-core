@@ -12,8 +12,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Reserved Field Names>>#
 [inline-toc]#<<Key Fields>>#
 [inline-toc]#<<Unlimited Length String Fields>>#
-[inline-toc]#<<parent-child-one-to-many>>#
-[inline-toc]#<<list-object-references>>#
+[inline-toc]#<<Relationships>>#
 [inline-toc]#<<Encoded Types>>#
 [inline-toc]#<<Choice List>>#
 [inline-toc]#<<Field Ordering>>#
@@ -215,6 +214,22 @@ static mapping = {
 
 
 
+==== Relationships
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<parent-child-one-to-many>>#
+[inline-toc]#<<list-object-references>>#
+[inline-toc]#<<Many-to-Many Relationships>>#
+
+endif::[]
+
+
+Domain relationships are generally defined in the domain classes and handled with the
+_@DomainEntity_ annotation.  This annotation adds the correct save(), delete and lazy loader
+methods for some of the more common relationships.
+
+
 [[parent-child-one-to-many]]
 ==== Parent/Child Relationships (One-To-Many)
 
@@ -225,7 +240,7 @@ A typical parent/child relationship should be defined as:
 [source,groovy]
 ----
 class Parent {
-  @OneToMany(cascade= CascadeType.ALL, mappedBy="parent")
+  @OneToMany(mappedBy="parent")
   List<Child> children
 }
 
@@ -234,7 +249,6 @@ class Child {
   Parent parent
 }
 ----
-
 
 [[list-object-references]]
 ==== Lists of Object References (One-To-Many)
@@ -261,6 +275,34 @@ The JSON import/output of these references uses the key fields or IDs to create 
 NOTE: You should use _List_ to define most collections in your domains.  This ensures the
       order is preserved when saved.  The framework does not support all scenarios with
       _Set/Collection_.
+
+==== Many-to-Many Relationships
+
+Many-to-Many relationships are implemented using a join table that contains a reference
+to the parent and to the related record.  You must use the _@ManyToMany_ annotation (from Jakarta)
+and add a _@Join_ annotation to the `findByXYZ()` method in your repository.
+
+Also, the _@DomainEntity_ annotation adds the save() and delete() logic to handle this join table.
+
+An example is shown below:
+
+[source,groovy]
+.Example - User Many-to-Many Relationship
+----
+class User {
+  @ManyToMany(mappedBy = "userRole")
+  List<Role> userRoles = [] // <.>
+}
+
+interface UserRepository extends BaseRepository, CrudRepository<User, UUID> {
+  @Join(value = "userRoles", type = Join.Type.LEFT_FETCH)
+  Optional<User> findByUserName(String userName)
+}
+----
+<.> An empty list is defined for new instances.  The findByUserName() method will create
+    the correct array if the finder is correct.
+
+This will create a `users_role` table with a user_id and role_id field to link the two records.
 
 ==== Choice List
 

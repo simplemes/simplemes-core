@@ -11,14 +11,22 @@ import edu.umd.cs.findbugs.annotations.Nullable;
 import groovy.lang.Closure;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.util.StringUtils;
+import io.micronaut.data.annotation.MappedEntity;
+import io.micronaut.data.model.naming.NamingStrategy;
 import io.micronaut.data.repository.CrudRepository;
 import io.micronaut.data.repository.GenericRepository;
 import io.micronaut.transaction.SynchronousTransactionManager;
 import io.micronaut.transaction.TransactionCallback;
 import io.micronaut.transaction.TransactionStatus;
+import io.micronaut.transaction.jdbc.DataSourceUtils;
 
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.sql.DataSource;
 import java.lang.reflect.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -84,7 +92,7 @@ public class DomainEntityHelper {
    * @param object The domain object to save.
    * @return The object after saving.
    */
-  Object save(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
+  Object save(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException, InstantiationException, SQLException {
     CrudRepository repo = (CrudRepository) getRepository(object.getClass());
     if (repo == null) {
       throw new IllegalArgumentException("Missing repository for " + object.getClass());
@@ -94,6 +102,7 @@ public class DomainEntityHelper {
     } else {
       repo.update(object);
     }
+    saveManyToMany(object);
     saveChildren(object);
 
     return object;
@@ -105,7 +114,7 @@ public class DomainEntityHelper {
    * @param object The domain object to delete.
    * @return The object that was deleted.
    */
-  Object delete(DomainEntityInterface object) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
+  Object delete(DomainEntityInterface object) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, SQLException, InstantiationException {
     GenericRepository<DomainEntityInterface, UUID> repo = getRepository(object.getClass());
     if (repo == null) {
       throw new IllegalArgumentException("Missing repository for " + object.getClass());
@@ -114,6 +123,7 @@ public class DomainEntityHelper {
       CrudRepository<DomainEntityInterface, UUID> repo2 = (CrudRepository<DomainEntityInterface, UUID>) repo;
       repo2.delete(object);
     }
+    deleteAllManyToMany(object);
     deleteChildren(object);
 
     return object;
@@ -325,7 +335,6 @@ public class DomainEntityHelper {
    *
    * @param object The parent domain object.
    */
-  @SuppressWarnings("unchecked")
   void deleteChildren(DomainEntityInterface object) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException {
     // Check all properties for (List) child properties.
     for (Field field : object.getClass().getDeclaredFields()) {
@@ -336,7 +345,6 @@ public class DomainEntityHelper {
         Method getterMethod = object.getClass().getMethod("get" + StringUtils.capitalize(field.getName()));
         Collection list = (Collection) getterMethod.invoke(object);
         if (list != null) {
-          List<Object> newRecordList = new ArrayList();
           for (Object child : list) {
             if (child instanceof DomainEntityInterface) {
               ((DomainEntityInterface) child).delete();
@@ -346,6 +354,103 @@ public class DomainEntityHelper {
       }
     }
   }
+
+  /**
+   * Save the many-to-many references.
+   *
+   * @param object The parent domain object.
+   */
+  @SuppressWarnings("unchecked")
+  void saveManyToMany(DomainEntityInterface object) throws IllegalAccessException, InstantiationException, SQLException {
+    for (Field field : object.getClass().getDeclaredFields()) {
+      // Performance: Consider moving the reflection logic to the Transformation to avoid run-time cost.
+      ManyToMany ann = field.getAnnotation(ManyToMany.class);
+      if (ann != null && Collection.class.isAssignableFrom(field.getType())) {
+        field.setAccessible(true);  // Need to bypass the getter, since that would trigger a read in some cases.
+        Collection list = (Collection) field.get(object);
+        String tableName = getNamingStrategy(object).mappedName(ann.mappedBy());
+        Class<DomainEntityInterface> childClass = (Class<DomainEntityInterface>) getGenericType(field);
+        String fromIDName = getNamingStrategy(object).mappedName(object.getClass().getSimpleName()) + "_id";
+        String toIDName = getNamingStrategy(object).mappedName(childClass.getSimpleName()) + "_id";
+        // Remove current list.
+        deleteAllManyToMany(object.getUuid(), tableName, fromIDName);
+        // Performance: Consider storing the list of records from previous read and just doing a specific delete.
+        if (list != null) {
+          for (Object child : list) {
+            if (child instanceof DomainEntityInterface && ann.mappedBy().length() > 0) {
+              // Make sure the parent element is set before the save.
+              String sql = "INSERT INTO " + tableName + " (" + fromIDName + "," + toIDName + ") VALUES (?,?)";
+
+              PreparedStatement ps = getPreparedStatement(sql);
+              ps.setString(1, object.getUuid().toString());
+              ps.setString(2, ((DomainEntityInterface) child).getUuid().toString());
+              ps.execute();
+
+              ((DomainEntityInterface) child).save();
+            }
+          }
+        }
+      }
+    }
+  }
+
+  /**
+   * Delete all many-to-many lists from the DB.
+   *
+   * @param object The domain object.
+   */
+  private void deleteAllManyToMany(DomainEntityInterface object) throws SQLException, IllegalAccessException, InstantiationException {
+    for (Field field : object.getClass().getDeclaredFields()) {
+      // Performance: Consider moving the reflection logic to the Transformation to avoid run-time cost.
+      ManyToMany ann = field.getAnnotation(ManyToMany.class);
+      if (ann != null && Collection.class.isAssignableFrom(field.getType())) {
+        field.setAccessible(true);  // Need to bypass the getter, since that would trigger a read in some cases.
+        String tableName = getNamingStrategy(object).mappedName(ann.mappedBy());
+        String fromIDName = getNamingStrategy(object).mappedName(object.getClass().getSimpleName()) + "_id";
+        // Remove current records.
+        deleteAllManyToMany(object.getUuid(), tableName, fromIDName);
+      }
+    }
+  }
+
+  /**
+   * Deletes all records in the many to many JOIN table.
+   *
+   * @param uuid       The parent record.
+   * @param tableName  The table
+   * @param fromIDName The parent column name
+   */
+  private void deleteAllManyToMany(UUID uuid, String tableName, String fromIDName) throws SQLException {
+    String sql = "DELETE FROM " + tableName + " WHERE " + fromIDName + "=?";
+    PreparedStatement ps = getPreparedStatement(sql);
+    ps.setString(1, uuid.toString());
+    ps.execute();
+
+  }
+
+  /**
+   * Creates a prepared SQL statement.
+   *
+   * @param sql The SQL.
+   * @return The statement.
+   */
+  private PreparedStatement getPreparedStatement(String sql) throws SQLException {
+    DataSource dataSource = getApplicationContext().getBean(DataSource.class);
+    Connection connection = DataSourceUtils.getConnection(dataSource);
+    return connection.prepareStatement(sql);
+  }
+
+  /**
+   * Returns the naming strategy in use for the given Mapped entity.
+   *
+   * @param object The domain object (a @MappedEntity).
+   * @return The strategy.
+   */
+  NamingStrategy getNamingStrategy(DomainEntityInterface object) throws IllegalAccessException, InstantiationException {
+    Class<? extends NamingStrategy> namingStrategy = object.getClass().getAnnotation(MappedEntity.class).namingStrategy();
+    return namingStrategy.newInstance();
+  }
+
 
   /**
    * Gets the (first) generic type for the given field.  Works for fields like: List&lt;XYZ&gt;.

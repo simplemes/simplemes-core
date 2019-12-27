@@ -8,26 +8,35 @@ import io.micronaut.context.BeanContext
 import io.micronaut.context.annotation.EachBean
 import io.micronaut.context.annotation.Parameter
 import io.micronaut.core.annotation.AnnotationMetadata
+import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.Query
 import io.micronaut.data.exceptions.DataAccessException
 import io.micronaut.data.intercept.annotation.DataMethod
 import io.micronaut.data.jdbc.mapper.JdbcQueryStatement
 import io.micronaut.data.jdbc.operations.DefaultJdbcRepositoryOperations
+import io.micronaut.data.model.naming.NamingStrategy
 import io.micronaut.data.model.runtime.InsertOperation
+import io.micronaut.data.model.runtime.PreparedQuery
 import io.micronaut.data.model.runtime.UpdateOperation
 import io.micronaut.data.runtime.mapper.QueryStatement
 import io.micronaut.http.codec.MediaTypeCodec
 import io.micronaut.transaction.TransactionOperations
+import io.micronaut.transaction.jdbc.DataSourceUtils
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.application.issues.WorkArounds
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 
 import javax.annotation.Nonnull
 import javax.inject.Named
+import javax.persistence.ManyToMany
 import javax.sql.DataSource
 import java.lang.annotation.Annotation
 import java.lang.reflect.Field
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
 import java.sql.Connection
 import java.sql.PreparedStatement
+import java.sql.SQLException
 import java.util.concurrent.ExecutorService
 
 /*
@@ -93,6 +102,84 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
     executeBeforeSave(operation.entity)
     return super.persist(operation)
   }
+
+  @Override
+  <T, R> R findOne(@NonNull PreparedQuery<T, R> preparedQuery) {
+    // This is overridden only for workAround192.
+    def res = super.findOne(preparedQuery)
+    if (WorkArounds.workAround192 && preparedQuery.query.contains("JOIN") && res != null) {
+      res = fixJoinQueryResultsWorkAround192(preparedQuery, res)
+    }
+    return res
+  }
+
+  /**
+   * Fix the data for the failed JOIN.  This is only used for JOINs triggered by ManyToMany elements.
+   * @param preparedQuery
+   * @param object
+   * @return The object.
+   */
+  @SuppressWarnings("unused")
+  @CompileDynamic
+  <R> R fixJoinQueryResultsWorkAround192(PreparedQuery preparedQuery, R object) {
+    Class<? extends NamingStrategy> namingStrategyClass = object.getClass().getAnnotation(MappedEntity.class).namingStrategy()
+    def namingStrategy = namingStrategyClass.newInstance()
+    for (Field field : object.getClass().getDeclaredFields()) {
+      // Performance: Consider moving the reflection logic to the Transformation to avoid run-time cost.
+      ManyToMany ann = field.getAnnotation(ManyToMany.class)
+      if (ann != null && Collection.class.isAssignableFrom(field.getType())) {
+        field.setAccessible(true)  // Need to bypass the getter, since that would trigger a read in some cases.
+        List<Object> newRecordList = new ArrayList()
+        field.set(object, newRecordList)
+
+        String tableName = namingStrategy.mappedName(ann.mappedBy())
+        Class<DomainEntityInterface> childClass = (Class<DomainEntityInterface>) getGenericType192(field)
+        String fromIDName = namingStrategy.mappedName(object.getClass().getSimpleName()) + "_id"
+        String toIDName = namingStrategy.mappedName(childClass.getSimpleName()) + "_id"
+
+        // Find all the JOIN records that were missed due to the bug.
+        String sql = "SELECT " + toIDName + " FROM " + tableName + " WHERE " + fromIDName + "=?"
+        PreparedStatement ps = getPreparedStatement192(sql)
+        ps.setString(1, ((DomainEntityInterface) object).getUuid().toString())
+        ps.execute()
+        def resultSet = ps.getResultSet()
+        while (resultSet.next()) {
+          def uuid = UUID.fromString(resultSet.getString(1))
+          def child = childClass.findById(uuid)
+          newRecordList << child
+        }
+      }
+    }
+    return object
+  }
+
+
+  /**
+   * Creates a prepared SQL statement.
+   * @param sql The SQL.
+   * @return The statement.
+   */
+  private PreparedStatement getPreparedStatement192(String sql) throws SQLException {
+    DataSource dataSource = Holders.getApplicationContext().getBean(DataSource.class)
+    Connection connection = DataSourceUtils.getConnection(dataSource)
+    return connection.prepareStatement(sql)
+  }
+
+  /**
+   * Gets the (first) generic type for the given field.  Works for fields like: List&lt;XYZ&gt;.
+   *
+   * @param field The field.
+   * @return The underlying type (from the generic definition).  Can be null.
+   */
+  Class<?> getGenericType192(Field field) {
+    Type childType = field.getGenericType()
+    if (!(childType instanceof ParameterizedType)) {
+      return null
+    }
+    ParameterizedType childParameterizedType = (ParameterizedType) childType
+    return (Class<?>) childParameterizedType.getActualTypeArguments()[0]
+  }
+
 
   @Override
   <T> T update(@NonNull UpdateOperation<T> operation) {

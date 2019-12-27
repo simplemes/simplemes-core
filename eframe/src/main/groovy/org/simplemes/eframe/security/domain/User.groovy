@@ -94,7 +94,7 @@ class User {
   String authoritySummary
 
   @ManyToMany(mappedBy = "userRole")
-  List<Role> userRoles
+  List<Role> userRoles = []
 
   Integer version = 0
 

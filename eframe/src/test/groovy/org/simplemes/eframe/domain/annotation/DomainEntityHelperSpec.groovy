@@ -2,12 +2,19 @@ package org.simplemes.eframe.domain.annotation
 
 import io.micronaut.data.exceptions.DataAccessException
 import io.micronaut.transaction.SynchronousTransactionManager
+import io.micronaut.transaction.jdbc.DataSourceUtils
+import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.security.domain.Role
+import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.Order
 import sample.domain.OrderLine
 import sample.domain.OrderRepository
+
+import javax.sql.DataSource
+import java.sql.Connection
 
 /*
  * Copyright Michael Houston 2019. All rights reserved.
@@ -318,4 +325,68 @@ class DomainEntityHelperSpec extends BaseSpecification {
     then: 'the child records are delete too'
     OrderLine.list().size() == 0
   }
+
+  @Rollback
+  def "verify that save handles many-to-many relationship on creation"() {
+    when: 'a domain record with the relationship is saved'
+    def user = new User(userName: 'ABC', password: 'ABC')
+    user.userRoles << Role.findByAuthority('ADMIN')
+    user.userRoles << Role.findByAuthority('MANAGER')
+    user.save()
+
+    then: 'the record and relationships can be read'
+    def user2 = User.findByUserName('ABC')
+    user2.userRoles.size() == 2
+    user2.userRoles.contains(Role.findByAuthority('ADMIN'))
+    user2.userRoles.contains(Role.findByAuthority('MANAGER'))
+    !user2.userRoles.contains(Role.findByAuthority('CUSTOMIZER'))
+  }
+
+  @Rollback
+  def "verify that save handles many-to-many relationship on update"() {
+    when: 'a domain record with the relationship is saved'
+    def user = new User(userName: 'ABC', password: 'ABC')
+    user.userRoles << Role.findByAuthority('ADMIN')
+    user.userRoles << Role.findByAuthority('MANAGER')
+    user.save()
+
+    and: 'one reference is removed'
+    user.userRoles.remove(1)
+    user.save()
+
+    then: 'the record and relationships can be read'
+    def user2 = User.findByUserName('ABC')
+    user2.userRoles.size() == 1
+    user2.userRoles.contains(Role.findByAuthority('ADMIN'))
+    !user2.userRoles.contains(Role.findByAuthority('MANAGER'))
+  }
+
+  @Rollback
+  def "verify that delete handles many-to-many relationship"() {
+    when: 'a domain record with the relationship is saved'
+    def user = new User(userName: 'ABC', password: 'ABC')
+    user.userRoles << Role.findByAuthority('ADMIN')
+    user.userRoles << Role.findByAuthority('MANAGER')
+    user.save()
+
+    and: 'then the top-level record is deleted'
+    user.delete()
+
+    then: 'the record and relationships can be read'
+    User.findByUserName('ABC') == null
+
+    and: 'the join table is empty for the deleted user'
+    DataSource dataSource = Holders.getApplicationContext().getBean(DataSource.class)
+    Connection connection = DataSourceUtils.getConnection(dataSource)
+    def ps = connection.prepareStatement("SELECT * from user_role where user_id=?")
+    ps.setString(1, user.uuid.toString())
+    ps.execute()
+    def resultSet = ps.getResultSet()
+    def list = []
+    while (resultSet.next()) {
+      list << UUID.fromString(resultSet.getString(1))
+    }
+    list.size() == 0
+  }
+
 }

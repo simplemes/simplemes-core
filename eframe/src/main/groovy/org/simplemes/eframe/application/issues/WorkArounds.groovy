@@ -23,6 +23,13 @@ class WorkArounds {
   static boolean workAround264 = true
 
   /**
+   * Workaround for micronaut-data issue 192.  Join only finds the first child element.
+   * https://github.com/micronaut-projects/micronaut-data/issues/192
+   *
+   */
+  static boolean workAround192 = true
+
+  /**
    * Workaround for micronaut-data issue 323.  Fails on update, uses 'id' instead 'uuid' for the identifier.
    * https://github.com/micronaut-projects/micronaut-data/issues/323
    *

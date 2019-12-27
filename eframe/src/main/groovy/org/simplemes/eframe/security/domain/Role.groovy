@@ -19,6 +19,8 @@ import javax.persistence.Column
 /**
  * Defines a Role for security.  These roles are used by the access points (controllers) to determine which users
  * can have access to the system.
+ * <p>
+ * The default roles include: 'ADMIN','CUSTOMIZER','MANAGER','DESIGNER'.
  */
 @Slf4j
 @MappedEntity()
