@@ -177,13 +177,6 @@ class BaseSpecification extends GebSpec {
         log.debug('All Beans: {}', Holders.applicationContext.allBeanDefinitions*.name)
       }
 
-
-      // Finally, set the environment to test it not set already
-      if (!needsServer()) {
-        // Store a dummy environment for non-server tests.
-        Holders.fallbackEnvironment = Holders.fallbackEnvironment ?: new DefaultEnvironment('test')
-      }
-
       // See if a mock Jackson ObjectMapper is needed and not already in an embedded server.
       if ((!needsServer()) && needs(JSON) && embeddedServer == null) {
         def objectMapper = new ObjectMapper()
@@ -196,6 +189,14 @@ class BaseSpecification extends GebSpec {
       if (needs(EXTENSION_MOCK)) {
         _mockFieldExtension = new MockFieldExtension(this).install()
       }
+    } else {
+      // No server needed.
+      // Finally, set the environment to test it not set already
+      if (!needsServer()) {
+        // Store a dummy environment for non-server tests.
+        Holders.fallbackEnvironment = Holders.fallbackEnvironment ?: new DefaultEnvironment('test')
+      }
+
     }
   }
 
@@ -444,7 +445,6 @@ class BaseSpecification extends GebSpec {
     }
     if (embeddedServer) {
       if (!loggedOnce) {
-        println "Disabled UserPreference cleanup"
         loggedOnce = true
       }
       // TODO: Re-enable when UserPreference is updated.

@@ -1,8 +1,6 @@
 package org.simplemes.eframe.i18n
 
-
 import org.simplemes.eframe.application.Holders
-import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.UnitTestUtils
@@ -77,20 +75,6 @@ class GlobalUtilsSpec extends BaseSpecification {
 
     expect: 'the fallback is used'
     GlobalUtils.getRequestLocale(Locale.US) == Locale.US
-  }
-
-  //TODO: Find alternative to @Rollback
-  def "verify that lookupValidationErrors works with domain validation errors"() {
-    given: 'a domain with validation errors'
-    def user = new User(userName: 'ABC')
-
-    when: 'the object is validated and the errors are looked up'
-    user.validate()
-    def errors = GlobalUtils.lookupValidationErrors(user)
-
-    then: 'the right error text is shown - with the enhanced values'
-    //println "errors = $errors"
-    errors['password'][0] == lookup('nullable', null, 'Password', User, User.simpleName)
   }
 
   def "verify that toStringLocalized works safely with all cases"() {

@@ -8,7 +8,7 @@ on the label itself.   The elements are looked up in the normal _messages.proper
 This example displays some HTML in dashboard form:
 
 [source,html]
-.Example - efHTML in a Dashboard Activity
+.Example - efLookup 
 ----
 <@efLookup key="addLogger.title"/>
 ----

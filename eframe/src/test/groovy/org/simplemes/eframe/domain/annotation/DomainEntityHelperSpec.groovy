@@ -8,6 +8,7 @@ import org.simplemes.eframe.security.domain.Role
 import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
+import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.Order
 import sample.domain.OrderLine
@@ -389,4 +390,51 @@ class DomainEntityHelperSpec extends BaseSpecification {
     list.size() == 0
   }
 
+  def "verify that validate detects the domains validate() method returns the wrong value"() {
+    given: 'a domain with the wrong type of return'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      
+      @DomainEntity
+      class TestClass {
+        UUID uuid
+        def validate() {
+          return "ABC"
+        }
+      }
+    """
+    def object = CompilerTestUtils.compileSource(src).newInstance()
+
+    when: 'the object is validated'
+    DomainEntityHelper.instance.validate((DomainEntityInterface) object)
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['TestClass.validate()', 'ValidationError', 'list'])
+  }
+
+  def "verify that validate calls validate method in domain - if defined"() {
+    given: 'a domain'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import org.simplemes.eframe.domain.validate.ValidationError
+      
+      @DomainEntity
+      class TestClass {
+        UUID uuid
+        def validate() {
+          return new ValidationError(100,"ABC")
+        }
+      }
+    """
+    def object = CompilerTestUtils.compileSource(src).newInstance()
+
+    when: 'the object is validated'
+    def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) object)
+
+    then: 'the validation error is correct'
+    errors.size() == 1
+    errors[0].code == 100
+    errors[0].fieldName == 'ABC'
+  }
 }

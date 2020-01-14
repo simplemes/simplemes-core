@@ -40,15 +40,19 @@ class GlobalUtils {
   @SuppressWarnings('UnnecessaryGetter')
   static String lookup(String key, Locale locale = null, Object... args) {
     locale = locale ?: getRequestLocale()
+    def res = null
     try {
-      return getMessageSource().getMessage(key, args, locale)
+      res = getMessageSource().getMessage(key, locale, args)
     } catch (NoSuchMessageException | MissingResourceException ignored) {
-      def res = key
+    }
+    if (!res) {
+      res = key
       if (key.contains('.') && Holders.configuration.localizationTest) {
         res = "-==$key==-"
       }
-      return res
     }
+    return res
+
   }
 
   /**
@@ -79,87 +83,6 @@ class GlobalUtils {
 
     return [label, tooltip]
   }
-
-  /**
-   * Loops through the validation errors for the domain object and creates the human readable string for display.
-   * @param domainObject The domain object with validation errors.
-   * @param locale The locale to use for the message.
-   * @return The map of field/error values.  This is a map for each field that failed with a list of error codes for each.
-   */
-  static Map<String, List<String>> lookupValidationErrors(Object domainObject, Locale locale = null) {
-    return lookupValidationErrors(domainObject.errors, locale)
-  }
-
-  /**
-   * Loops through the validation errors for the domain object and creates the human readable string for display.
-   * @param errors The errors from the domain object that failed validation.
-   * @param locale The locale to use for the message.
-   * @return The map of field/error values.  This is a map for each field that failed with a list of error codes for each.
-   */
-  static Map<String, List<String>> lookupValidationErrors(Map errors, Locale locale = null) {
-    locale = locale ?: getRequestLocale()
-    def stringsByField = [:]
-    for (fieldErrors in errors) {
-      for (error in fieldErrors.allErrors) {
-        def field = error.hasProperty('field') ? error.field : error.objectName
-        def resolved = stringsByField[field]
-        if (!resolved) {
-          resolved = []
-          stringsByField[field] = resolved
-        }
-        error = enhanceErrorArguments((Object) error)
-
-        def messageSource = getMessageSource()
-        //messageSource.setBasename('messages')
-        try {
-          def s = messageSource.getMessage(error, locale)
-          resolved << s
-        } catch (NoSuchMessageException ignored) {
-          resolved << "${error.toString()} - $field"
-        }
-      }
-    }
-    return stringsByField
-  }
-
-  /**
-   * Enhance the error arguments by adding a short version of the domain class name to the end of the
-   * arguments array.  This short name can be used in the error messages.
-   * This method also adjusts the first argument by looking up the value in the messages.properties as if
-   * it was a field name (e.g. adds '.label' and uses that as the argument, if found).
-   * @param error The error to enhance.
-   * @return A new error with the argument added.
-   */
-  // TODO: Replace with non-hibernate alternative
-  static Object enhanceErrorArguments(Object error) {
-    // Attempt to lookup the first argument as a field label.
-    if (error.arguments) {
-      def labelKey = error.arguments[0] + '.label'
-      def s = lookup(labelKey, null)
-      if (s != labelKey) {
-        error.arguments[0] = s
-      }
-    }
-
-    def simpleName = null
-    for (arg in error.arguments) {
-      if (arg instanceof Class) {
-        simpleName = arg.simpleName
-      }
-    }
-    if (!simpleName) {
-      return error
-    }
-    Object[] newArray = new Object[error.arguments.length + 1]
-    System.arraycopy(error.arguments, 0, newArray, 0, error.arguments.length)
-    newArray[error.arguments.length] = simpleName
-/*
-    return new FieldError(error.objectName, error.field, error.rejectedValue, error.isBindingFailure(),
-                          error.codes, newArray, error.defaultMessage)
-*/
-
-  }
-
 
   /**
    * Determines the locale to be used from the request.  This relies on the ThreadLocal Spring

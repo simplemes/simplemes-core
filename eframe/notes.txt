@@ -1,14 +1,19 @@
 Scratch
 =======
 
-Add <@efLookup>
-Support link in markers.  Content of <@efField>?
-<@efField >
-  <@efHTML><a href='./'>link</a> </@efHTML>
-</@efField >
-    or
- Some other mechanism?
-
+Validation
+  save()
+    calls DomainEntityHelper.validate()
+      throws exception with all errors listed.
+  DomainEntityHelper.validate()
+    returns List<ValidationError>
+    calls def validate() - can return single ValidationError or List<>
+    checks columns that are @Nullable
+  ValidationErrorInterface - Interface implemented by ValidationError.
+    new ValidationError(code,fieldName, args).
+    new ValidationMissingValueError(fieldName).
+  MessageSource fix
+  GlobalUtils.lookupValidationErrors
 
 Micronaut Data Conversion Tasks
 ===============================
@@ -35,7 +40,7 @@ Converters needed
   EncodedTypes.
 Update code when issue is fixed:
   https://github.com/micronaut-projects/micronaut-data/issues/323
-
+Vaerify Jackson handlers for domain entities.
 
 done - DateOnly conversion.
 

@@ -36,7 +36,6 @@
   <logger name="org.simplemes.eframe.security" level="warn"/>
   <logger name="org.simplemes.eframe.test" level="warn"/>
   <logger name="org.simplemes.eframe.preference" level="warn"/>
-  <logger name="org.simplemes.eframe.i18n.MessageSource" level="error"/>
   <logger name="sample" level="warn"/>
   <logger name="client.to-server" level="warn"/>
   <logger name="client.dashboard" level="warn"/>

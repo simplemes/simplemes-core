@@ -25,6 +25,7 @@ class WorkArounds {
   /**
    * Workaround for micronaut-data issue 192.  Join only finds the first child element.
    * https://github.com/micronaut-projects/micronaut-data/issues/192
+   * Fixed on 1/13/2020 for 1.0.0.M6?
    *
    */
   static boolean workAround192 = true

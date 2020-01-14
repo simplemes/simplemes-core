@@ -19,6 +19,7 @@ import io.micronaut.transaction.SynchronousTransactionManager;
 import io.micronaut.transaction.TransactionCallback;
 import io.micronaut.transaction.TransactionStatus;
 import io.micronaut.transaction.jdbc.DataSourceUtils;
+import org.simplemes.eframe.domain.validate.ValidationErrorInterface;
 
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
@@ -556,6 +557,29 @@ public class DomainEntityHelper {
     return e;
   }
 
+  /**
+   * Performs the validations on the given domain object and returns a list of errors related to the problem.
+   *
+   * @param object The domain object.
+   * @return The list of validation errors.
+   */
+  List<ValidationErrorInterface> validate(DomainEntityInterface object) throws InvocationTargetException, IllegalAccessException {
+    List<ValidationErrorInterface> res = new ArrayList<>();
+    try {
+      Method validateMethod = object.getClass().getDeclaredMethod("validate");
+      Object methodRes = validateMethod.invoke(object);
+      if (methodRes instanceof ValidationErrorInterface) {
+        res.add((ValidationErrorInterface) methodRes);
+      } else {
+        throw new IllegalArgumentException(object.getClass().getName() + ".validate() must return a ValidationErrorInterface or list.");
+      }
+    } catch (NoSuchMethodException ignored) {
+      //e.printStackTrace();
+    }
+
+
+    return res;
+  }
 
   public static DomainEntityHelper getInstance() {
     return instance;
