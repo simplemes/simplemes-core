@@ -390,6 +390,46 @@ class DomainEntityHelperSpec extends BaseSpecification {
     list.size() == 0
   }
 
+  def "verify that getPersistentProperties finds the correct fields"() {
+    given: 'a domain'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import org.simplemes.eframe.domain.validate.ValidationError
+      import javax.annotation.Nullable
+  
+      @DomainEntity
+      class TestClass {
+        UUID uuid
+        String notNullableField
+        @Nullable String title
+      }
+    """
+    def clazz = CompilerTestUtils.compileSource(src)
+
+    when: 'the props are found'
+    def properties = DomainEntityHelper.instance.getPersistentProperties(clazz)
+
+    then: 'the props are correct'
+    properties.size() == 3
+    properties[0].name == 'uuid'
+    properties[0].type == UUID
+    !properties[0].nullable
+    properties[1].name == 'notNullableField'
+    properties[1].type == String
+    !properties[1].nullable
+    properties[2].name == 'title'
+    properties[2].type == String
+    properties[2].nullable
+  }
+
+  def "verify that getPersistentProperties handles fields marked as Transient - annotation from micronaut-data"() {
+    when: 'the props are found'
+    def properties = DomainEntityHelper.instance.getPersistentProperties(User)
+
+    then: 'the transient field is not in the list'
+    !properties.find { it.name == 'password' }
+  }
+
   def "verify that validate detects the domains validate() method returns the wrong value"() {
     given: 'a domain with the wrong type of return'
     def src = """
@@ -437,4 +477,144 @@ class DomainEntityHelperSpec extends BaseSpecification {
     errors[0].code == 100
     errors[0].fieldName == 'ABC'
   }
+
+  def "verify that validate calls validate method in domain - multiple errors returned"() {
+    given: 'a domain'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import org.simplemes.eframe.domain.validate.ValidationError
+      
+      @DomainEntity
+      class TestClass {
+        UUID uuid
+        def validate() {
+          return [new ValidationError(10,"ABC"),new ValidationError(11,"XYZ")]
+        }
+      }
+    """
+    def object = CompilerTestUtils.compileSource(src).newInstance()
+
+    when: 'the object is validated'
+    def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) object)
+
+    then: 'the validation errors are correct'
+    errors.size() == 2
+    errors[0].code == 10
+    errors[0].fieldName == 'ABC'
+    errors[1].code == 11
+    errors[1].fieldName == 'XYZ'
+  }
+
+  def "verify that validate detects null values in non-nullable fields"() {
+    given: 'a domain'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import org.simplemes.eframe.domain.validate.ValidationError
+      import javax.annotation.Nullable
+  
+      @DomainEntity
+      class TestClass {
+        UUID uuid
+        String notNullableField
+        @Nullable String title
+      }
+    """
+    def object = CompilerTestUtils.compileSource(src).newInstance()
+
+    when: 'the object is validated'
+    def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) object)
+
+    then: 'the validation error is correct'
+    //error.1.message=Required value is missing {0}.
+    errors.size() == 1
+    errors[0].code == 1
+    errors[0].fieldName == 'notNullableField'
+  }
+
+  def "verify that validate passes when a non-nullable field has a value"() {
+    given: 'a domain'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import org.simplemes.eframe.domain.validate.ValidationError
+      import javax.annotation.Nullable
+  
+      @DomainEntity
+      class TestClass {
+        UUID uuid
+        String notNullableField
+        @Nullable String title
+      }
+    """
+    def object = CompilerTestUtils.compileSource(src).newInstance()
+
+    when: 'the object is validated'
+    object.notNullableField = "ABC"
+    def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) object)
+
+    then: 'the validation passes'
+    errors.size() == 0
+  }
+
+  def "verify that validate detects value too long for column"() {
+    given: 'a domain'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import org.simplemes.eframe.domain.validate.ValidationError
+      import javax.persistence.Column
+  
+      @DomainEntity
+      class TestClass {
+        UUID uuid
+        @Column(length = 128)
+        String title
+      }
+    """
+    def object = CompilerTestUtils.compileSource(src).newInstance()
+    object.title = "A" * 500
+
+    when: 'the object is validated'
+    def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) object)
+
+    then: 'the validation error is correct'
+    //error.2.message=Value is too long (max={2}, length={1}) for field {0}.
+    errors.size() == 1
+    errors[0].code == 2
+    errors[0].fieldName == 'title'
+    UnitTestUtils.assertContainsAllIgnoreCase(errors[0].toString(), ["long", "128", "500", "title"])
+  }
+
+  def "verify that validate handles column length passing and edge cases"() {
+    given: 'a domain'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import org.simplemes.eframe.domain.validate.ValidationError
+      import javax.persistence.Column
+  
+      @DomainEntity
+      class TestClass {
+        UUID uuid
+        @Column(length = 128)
+        String title
+      }
+    """
+    def object = CompilerTestUtils.compileSource(src).newInstance()
+    object.title = "A" * sLength
+
+    when: 'the object is validated'
+    def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) object)
+
+    then: 'the validation fails, if expected'
+    fails == errors.size() > 0
+
+    where:
+    sLength | fails
+    0       | false
+    1       | false
+    127     | false
+    128     | false
+    229     | true
+  }
+
+
+  // test save throws exception when validation fails.
 }

@@ -6,8 +6,6 @@ package org.simplemes.eframe.domain.annotation;
  *
  */
 
-import edu.umd.cs.findbugs.annotations.NonNull;
-import edu.umd.cs.findbugs.annotations.Nullable;
 import groovy.lang.Closure;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.util.StringUtils;
@@ -19,6 +17,8 @@ import io.micronaut.transaction.SynchronousTransactionManager;
 import io.micronaut.transaction.TransactionCallback;
 import io.micronaut.transaction.TransactionStatus;
 import io.micronaut.transaction.jdbc.DataSourceUtils;
+import org.simplemes.eframe.domain.PersistentProperty;
+import org.simplemes.eframe.domain.validate.ValidationError;
 import org.simplemes.eframe.domain.validate.ValidationErrorInterface;
 
 import javax.persistence.ManyToMany;
@@ -561,15 +561,21 @@ public class DomainEntityHelper {
    * Performs the validations on the given domain object and returns a list of errors related to the problem.
    *
    * @param object The domain object.
-   * @return The list of validation errors.
+   * @return The list of validation errors.  Never null.
    */
   List<ValidationErrorInterface> validate(DomainEntityInterface object) throws InvocationTargetException, IllegalAccessException {
-    List<ValidationErrorInterface> res = new ArrayList<>();
+    List<ValidationErrorInterface> res = validateColumns(object);
     try {
       Method validateMethod = object.getClass().getDeclaredMethod("validate");
       Object methodRes = validateMethod.invoke(object);
       if (methodRes instanceof ValidationErrorInterface) {
         res.add((ValidationErrorInterface) methodRes);
+      } else if (methodRes instanceof Collection<?>) {
+        for (Object error : (Collection<?>) methodRes) {
+          if (error instanceof ValidationErrorInterface) {
+            res.add((ValidationErrorInterface) error);
+          }
+        }
       } else {
         throw new IllegalArgumentException(object.getClass().getName() + ".validate() must return a ValidationErrorInterface or list.");
       }
@@ -577,9 +583,90 @@ public class DomainEntityHelper {
       //e.printStackTrace();
     }
 
-
     return res;
   }
+
+  /**
+   * A list of field names to ignore for the internal validations (e.g. null and length).
+   */
+  String[] ignoreFieldsForValidation = {"uuid", "dateCreated", "dateUpdated"};
+
+  /**
+   * Determines if the given field should be ignored from the core validations (e.g. null and length).
+   *
+   * @param fieldName The field to check.
+   * @return True if the field should be ignored.
+   */
+  protected boolean ignoreFieldForValidation(String fieldName) {
+    for (String s : ignoreFieldsForValidation) {
+      if (s.equals(fieldName)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * Performs the validations on the given domain object and returns a list of errors related to the problem.
+   *
+   * @param object The domain object.
+   * @return The list of validation errors.  Never null.
+   */
+  protected List<ValidationErrorInterface> validateColumns(DomainEntityInterface object) {
+    List<ValidationErrorInterface> res = new ArrayList<>();
+    for (PersistentProperty property : getPersistentProperties(object.getClass())) {
+      if (!ignoreFieldForValidation(property.getName())) {
+        if (!property.isNullable()) {
+          try {
+            property.getField().setAccessible(true);  // Use work around to make this code simpler.  Should call getter().
+            Object value = property.getField().get(object);
+            if (value == null) {
+              //error.1.message=Required value is missing {0}.
+              res.add(new ValidationError(1, property.getName()));
+            }
+          } catch (IllegalAccessException ignored) {
+            // Will always be accessible.
+          }
+        }
+        if (property.getType() == String.class && property.getMaxLength() > 0) {
+          try {
+            property.getField().setAccessible(true);  // Use work around to make this code simpler.  Should call getter().
+            String value = (String) property.getField().get(object);
+            if (value != null) {
+              if (value.length() > property.getMaxLength()) {
+                //error.2.message=Value is too long (max={2}, length={1}) for field {0}.
+                res.add(new ValidationError(2, property.getName(), value.length(), property.getMaxLength()));
+              }
+            }
+          } catch (IllegalAccessException ignored) {
+            // Will always be accessible.
+          }
+        }
+      }
+    }
+    return res;
+  }
+
+  /**
+   * Returns the list of persistent properties (columns) for the given domain class.
+   *
+   * @param domainClass The domain class.
+   * @return The list of persistent properties.  Never null.
+   */
+  public List<PersistentProperty> getPersistentProperties(Class domainClass) {
+    List<PersistentProperty> res = new ArrayList<>();
+    for (Field field : domainClass.getDeclaredFields()) {
+      if (!Modifier.isStatic(field.getModifiers()) && !Modifier.isTransient(field.getModifiers())) {
+        // Weed out any fields the use @Transient too
+        io.micronaut.data.annotation.Transient transAnn = field.getAnnotation(io.micronaut.data.annotation.Transient.class);
+        if (transAnn == null) {
+          res.add(new PersistentProperty(field));
+        }
+      }
+    }
+    return res;
+  }
+
 
   public static DomainEntityHelper getInstance() {
     return instance;
@@ -606,9 +693,9 @@ public class DomainEntityHelper {
      * @param status The transaction status.
      * @return The return value
      */
-    @Nullable
+    @edu.umd.cs.findbugs.annotations.Nullable
     @Override
-    public Object call(@NonNull TransactionStatus status) {
+    public Object call(@edu.umd.cs.findbugs.annotations.NonNull TransactionStatus status) {
       return closure.call(status);
     }
 

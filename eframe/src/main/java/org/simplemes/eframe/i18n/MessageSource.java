@@ -1,4 +1,6 @@
-package org.simplemes.eframe.i18n;/*
+package org.simplemes.eframe.i18n;
+
+/*
  * Copyright Michael Houston 2019. All rights reserved.
  * Original Author: mph
  *

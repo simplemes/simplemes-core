@@ -23,7 +23,8 @@ class ValidationErrorSpec extends BaseSpecification {
 
     and: 'the toString works'
     //error.1.message=Required value is missing {0}.
-    error.toString() == lookup('1.message', null, 'XYZ')
+    error.toString() == lookup('error.1.message', null, 'XYZ')
+    error.toString().contains('XYZ')
   }
 
   def "verify that simple constructor works - arguments"() {
@@ -37,7 +38,9 @@ class ValidationErrorSpec extends BaseSpecification {
 
     and: 'the toString works'
     //error.104.message=Could not create {0} due to error {1}
-    error.toString() == lookup('104.message', null, 'XYZ', 'ABC')
+    error.toString() == lookup('error.104.message', null, 'XYZ', 'ABC')
+    error.toString().contains('ABC')
+    error.toString().contains('XYZ')
   }
 
 
