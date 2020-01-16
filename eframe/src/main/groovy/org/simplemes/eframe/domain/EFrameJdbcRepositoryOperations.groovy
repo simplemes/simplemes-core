@@ -74,16 +74,18 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
     }
   }
 
-  /**
+  /*
    * Calls the beforeSave() method, if it exists on the object.
    * @param entity The domain entity.
    */
+/*
   @CompileDynamic
   protected void executeBeforeSave(Object entity) {
     if (entity?.metaClass?.respondsTo(entity, "beforeSave")) {
       entity.beforeSave()
     }
   }
+*/
 
   /**
    * Read an entity using the given prefix to be passes to result set lookups.
@@ -99,7 +101,7 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
     //println "params = $params ${operation.entity.getProperties()}"
     //String query = annotationMetadata.stringValue(Query.class).orElse(null)
     //println "query = $query"
-    executeBeforeSave(operation.entity)
+    //executeBeforeSave(operation.entity)
     return super.persist(operation)
   }
 
@@ -193,7 +195,7 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
     //println "operation = $operation"
 
     //return super.update(operation)
-    executeBeforeSave(operation.entity)
+    //executeBeforeSave(operation.entity)
     return super.update(new AlterableUpdateOperation(operation))
   }
 }

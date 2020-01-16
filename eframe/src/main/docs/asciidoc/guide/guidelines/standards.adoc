@@ -3,7 +3,6 @@
 
 ifeval::["{backend}" != "pdf"]
 
-[inline-toc-header]#Floor#
 [inline-toc]#<<Class/Method Design (Fluid API)>>#
 [inline-toc]#<<ENUMs>>#
 [inline-toc]#<<Current User>>#

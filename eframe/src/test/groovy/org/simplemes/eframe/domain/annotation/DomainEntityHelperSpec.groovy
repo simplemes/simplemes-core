@@ -4,6 +4,7 @@ import io.micronaut.data.exceptions.DataAccessException
 import io.micronaut.transaction.SynchronousTransactionManager
 import io.micronaut.transaction.jdbc.DataSourceUtils
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.exception.MessageBasedException
 import org.simplemes.eframe.security.domain.Role
 import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.BaseSpecification
@@ -615,6 +616,43 @@ class DomainEntityHelperSpec extends BaseSpecification {
     229     | true
   }
 
+  def "verify that save detects missing column and throws an exception"() {
+    given: 'a domain'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import org.simplemes.eframe.domain.validate.ValidationError
+      import javax.persistence.Column
+  
+      @DomainEntity(repository=sample.domain.OrderRepository)
+      class TestClass {
+        UUID uuid
+        String title
+      }
+    """
+    def object = CompilerTestUtils.compileSource(src).newInstance()
 
-  // test save throws exception when validation fails.
+    when: 'the object is saved'
+    DomainEntityHelper.instance.save((DomainEntityInterface) object)
+
+    then: 'the right exception is thrown'
+    def ex = thrown(MessageBasedException)
+    UnitTestUtils.assertExceptionIsValid(ex, ['title', 'missing'])
+
+    and: 'the exception values are correct'
+    ex.code == 3
+    ex.params.size() > 0
+  }
+
+  @Rollback
+  def "verify that save calls the beforeSave method on the domain"() {
+    when: 'the domain is saved'
+    def order = new Order(order: 'ABC')
+    order.product = 'XYZZY'
+    order.save()
+
+    then: 'the product field is altered by the beforeSave method'
+    order.product == "XYZZYAlteredByBeforeSave"
+  }
+
+
 }

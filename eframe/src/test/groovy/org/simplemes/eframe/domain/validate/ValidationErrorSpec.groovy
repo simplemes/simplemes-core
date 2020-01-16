@@ -43,5 +43,11 @@ class ValidationErrorSpec extends BaseSpecification {
     error.toString().contains('XYZ')
   }
 
+  def "verify that toString with locale works"() {
+    expect: 'the german message does not match the english message'
+    def error = new ValidationError(100, 'PDQ')
+    error.toString(Locale.GERMAN) != error.toString(Locale.US)
+  }
+
 
 }

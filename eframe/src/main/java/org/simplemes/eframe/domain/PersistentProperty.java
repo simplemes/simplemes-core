@@ -82,7 +82,7 @@ public class PersistentProperty {
     this.name = name;
   }
 
-  public Class getType() {
+  public Class<?> getType() {
     return type;
   }
 

@@ -8,11 +8,11 @@ import io.micronaut.data.annotation.DateUpdated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
+import org.simplemes.eframe.date.DateOnly
 
 //import grails.gorm.annotation.Entity
 
-import io.micronaut.data.model.DataType
-import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.annotation.DomainEntity
 
 import javax.annotation.Nullable
@@ -87,6 +87,15 @@ class Order {
   }
 
   static fieldOrder = ['order', 'product', 'qtyToBuild', 'status', 'dueDate']
+
+  /**
+   * Sample beforeSave method.  Will alter the product is set to XYZZY.
+   */
+  def beforeSave() {
+    if (product == 'XYZZY') {
+      product = "XYZZYAlteredByBeforeSave"
+    }
+  }
 
   /**
    * Load initial records - test data.

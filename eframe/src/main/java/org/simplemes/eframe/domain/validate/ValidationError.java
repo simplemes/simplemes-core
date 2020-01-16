@@ -8,6 +8,8 @@ package org.simplemes.eframe.domain.validate;
 
 import org.simplemes.eframe.i18n.GlobalUtils;
 
+import java.util.Locale;
+
 /**
  * A single validation error on a field.  The display value (toString()) uses the messages.properties file
  * to find the matching error string, with replaceable parameters.  The key in the .properties file is
@@ -62,11 +64,15 @@ public class ValidationError implements ValidationErrorInterface {
     return code;
   }
 
-  @Override
-  public String toString() {
+  public String toString(Locale locale) {
     Object[] argsWithFieldName = new Object[args.length + 1];
     argsWithFieldName[0] = fieldName;
     System.arraycopy(args, 0, argsWithFieldName, 1, args.length);
-    return GlobalUtils.lookup("error." + code + ".message", null, argsWithFieldName);
+    return GlobalUtils.lookup("error." + code + ".message", locale, argsWithFieldName);
+  }
+
+  @Override
+  public String toString() {
+    return toString(null);
   }
 }

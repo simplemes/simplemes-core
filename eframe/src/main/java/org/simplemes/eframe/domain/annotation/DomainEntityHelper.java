@@ -93,11 +93,13 @@ public class DomainEntityHelper {
    * @param object The domain object to save.
    * @return The object after saving.
    */
-  Object save(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException, InstantiationException, SQLException {
+  Object save(DomainEntityInterface object) throws Exception {
     CrudRepository repo = (CrudRepository) getRepository(object.getClass());
     if (repo == null) {
       throw new IllegalArgumentException("Missing repository for " + object.getClass());
     }
+    executeBeforeSave(object);
+    validateForSave(object);
     if (object.getUuid() == null) {
       repo.save(object);
     } else {
@@ -107,6 +109,35 @@ public class DomainEntityHelper {
     saveChildren(object);
 
     return object;
+  }
+
+
+  /**
+   * Executes the domain's beforeSave() method, if defined.
+   *
+   * @param object The object.
+   */
+  protected void executeBeforeSave(DomainEntityInterface object) {
+    try {
+      Method method = object.getClass().getDeclaredMethod("beforeSave");
+      method.invoke(object);
+    } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException ignored) {
+    }
+  }
+
+  /**
+   * Validates the domain object before a save.
+   *
+   * @param object The object.
+   * @throws Exception An exception is thrown if the validation fails.
+   */
+  protected void validateForSave(DomainEntityInterface object) throws Exception {
+    List<ValidationErrorInterface> errors = validate(object);
+    if (errors.size() > 0) {
+      // Use reflection to find the ValidationError class from the groovy world.
+      Class<?> exceptionClass = Class.forName("org.simplemes.eframe.exception.ValidationException");
+      throw (Exception) exceptionClass.getConstructor(List.class).newInstance(errors);
+    }
   }
 
   /**
@@ -593,17 +624,18 @@ public class DomainEntityHelper {
 
   /**
    * Determines if the given field should be ignored from the core validations (e.g. null and length).
+   * Also ignores checks on Collection fields.
    *
-   * @param fieldName The field to check.
-   * @return True if the field should be ignored.
+   * @param property The property to check.
+   * @return True if the property should be ignored.
    */
-  protected boolean ignoreFieldForValidation(String fieldName) {
+  protected boolean ignoreFieldForValidation(PersistentProperty property) {
     for (String s : ignoreFieldsForValidation) {
-      if (s.equals(fieldName)) {
+      if (s.equals(property.getName())) {
         return true;
       }
     }
-    return false;
+    return Collection.class.isAssignableFrom(property.getType());
   }
 
   /**
@@ -615,7 +647,7 @@ public class DomainEntityHelper {
   protected List<ValidationErrorInterface> validateColumns(DomainEntityInterface object) {
     List<ValidationErrorInterface> res = new ArrayList<>();
     for (PersistentProperty property : getPersistentProperties(object.getClass())) {
-      if (!ignoreFieldForValidation(property.getName())) {
+      if (!ignoreFieldForValidation(property)) {
         if (!property.isNullable()) {
           try {
             property.getField().setAccessible(true);  // Use work around to make this code simpler.  Should call getter().

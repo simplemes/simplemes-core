@@ -26,14 +26,14 @@ Micronaut Data Conversion Tasks
       done - getChildRecords, addToChildRecords, save logic.
     done - save, list, delete.save findByXYZ(),findById(), @Rollback
   done - withTransaction {} ?
-  Validation support.
+  done - Validation support.
     done - validate() returns ValidationError(s).
-    DomainEntityHelper.validate()
-    MessageSource fix.
-    Sub-classes of BusinessException
-      String too long for {0} in {1}.  Length {2} > Max length {3}.
-      Invalid value {0} for field {1} in {2}.
-      Missing value for field {0} in {1}.
+    done - DomainEntityHelper.validate()
+    done - MessageSource fix.
+    done - Sub-classes of BusinessException
+      done - String too long for {0} in {1}.  Length {2} > Max length {3}.
+      done - Invalid value {0} for field {1} in {2}.
+      done - Missing value for field {0} in {1}.
   Version and opt locking (custom JDBCOperations).
 Convert to UUID's, called uuid.  Update docs for new terms (ID)
 Converters needed

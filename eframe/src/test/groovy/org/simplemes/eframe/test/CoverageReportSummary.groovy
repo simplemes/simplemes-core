@@ -209,9 +209,9 @@ class CoverageReportSummary {
 
     StringBuilder data = new StringBuilder()
     for (report in allReports) {
-      println " $report"
+      //println " $report"
       def date = report.date
-      def year = new SimpleDateFormat("YYYY").format(date)
+      def year = new SimpleDateFormat("yyyy").format(date)
       def month = new Integer(new SimpleDateFormat("MM").format(date)) -1
       def day = new SimpleDateFormat("dd").format(date)
       def percent = report["all classesCPercent"]
