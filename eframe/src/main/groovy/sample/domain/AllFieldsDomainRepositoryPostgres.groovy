@@ -2,7 +2,7 @@
  * Copyright (c) Michael Houston 2020. All rights reserved.
  */
 
-package org.simplemes.eframe.security.domain
+package sample.domain
 
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
@@ -11,10 +11,10 @@ import io.micronaut.data.model.query.builder.sql.Dialect
 import org.simplemes.eframe.misc.EFEnvironments
 
 /**
- * The sample order repository base interface.  Provides the methods for the repo,
+ * The sample repository base interface.  Provides the methods for the repo,
  * for production or dev (POSTGRES)
  */
 @JdbcRepository(dialect = Dialect.POSTGRES)
 @Requires(env = [EFEnvironments.PRODUCTION, Environment.DEVELOPMENT])
-interface RoleRepositoryPostgres extends RoleRepository {
+interface AllFieldsDomainRepositoryPostgres extends AllFieldsDomainRepository {
 }

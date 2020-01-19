@@ -3,30 +3,39 @@
 
 ifeval::["{backend}" != "pdf"]
 
+[inline-toc-header]#General#
 [inline-toc]#<<Domain Packages>>#
 [inline-toc]#<<Reserved Domain Names>>#
-[inline-toc]#<<Repository Method Requirements>>#
-[inline-toc]#<<Field Requirements>>#
+
+[inline-toc-header]#Fields#
 [inline-toc]#<<Field Types>>#
 [inline-toc]#<<Field Names>>#
 [inline-toc]#<<Reserved Field Names>>#
 [inline-toc]#<<Key Fields>>#
 [inline-toc]#<<Unlimited Length String Fields>>#
+[inline-toc]#<<Field Ordering>>#
+
+[inline-toc-header]#Persistence#
+[inline-toc]#<<Repository Requirements>>#
+[inline-toc]#<<beforeSave Method>>#
+[inline-toc]#<<Transactions>>#
+[inline-toc]#<<Initial Data Load>>#
+
+
+[inline-toc-header]#Relationships/Encoding#
 [inline-toc]#<<Relationships>>#
 [inline-toc]#<<Encoded Types>>#
 [inline-toc]#<<Choice List>>#
-[inline-toc]#<<Field Ordering>>#
-[inline-toc]#<<toStringLocalized()>>#
-[inline-toc]#<<beforeValidate Method>>#
 [inline-toc]#<<Dates and Timezones>>#
-[inline-toc]#<<Transactions>>#
-[inline-toc]#<<beforeSave Method>>#
-[inline-toc]#<<Field Definitions>>#
-[inline-toc]#<<Initial Data Load>>#
 [inline-toc]#<<Configurable Types>>#
+
+[inline-toc-header]#Others#
+[inline-toc]#<<Field Definitions>>#
+[inline-toc]#<<toStringLocalized()>>#
 
 endif::[]
 
+// General
 === Domain Introduction
 
 Your domain classes have a few requirements to be easily used by various pieces of the framework.
@@ -52,27 +61,8 @@ This is mainly because of the way <<Markers and Models>> work.  A few names are 
 to store elements in the marker model (a Map).  You should avoid the names
 used by the <<StandardModelAndView>>.
 
-==== Repository Method Requirements
 
-Micronaut-Data provides access to the database records using a number of naming patterns.
-If your repository interface has a method that matches one of these patterns, then the SQL
-will be generated automatically.
-
-Some of the standard method expected include:
-
-* `Optional<Order> findByUuid(UUID uuid)` - Reads a single record for the given ID.
-  Used by many framework functions to find related records.
-
-
-==== Field Requirements
-
-The fields in your domain need to follow some specific patterns too.
-
-* Child Lists Default to null - The child lists should default to null, not an empty list.
-  This allows the lazy loader to know that no child records are defined when an empty list is found.
-
-
-
+// Fields
 ==== Field Names
 
 Almost every piece of text displayed in a web-based GUI should be translatable to the user's language.
@@ -212,12 +202,148 @@ static mapping = {
 }
 ----
 
+==== Field Ordering
+
+Frequently, the framework features will need to list or display your domain fields in a logical order.
+Framework markers such as <<ef-show>> will show the fields in any order you like, but you would have to
+update the `<@efShow/>` marker for every new field added to the domain class.
+To simplify this maintenance task, the framework supports an optional
+link:reference.html#field-order[fieldOrder^] icon:share-square-o[role="link-blue"]
+static variable in domain classes.
+
+WARNING: Philosophical Discussion Ahead!
+
+Field ordering is not traditionally part of a domain class's definition.  Following the
+'Don't Repeat Yourself' philosophy, a central place to store the field ordering
+'hints' is needed.  We chose the domain class. This is optional. If you don't want to embed field
+ordering in your domain classes, then you can specify the field ordering on the respective
+<<reference.adoc#ef-show,efShow>> markers in your HTML files.  This means updating 3  files
+whenever you add a new field to a domain class.  This is your choice.
+
+See <<reference.adoc#field-order,fieldOrder >> for details.
+
+// Persistence
+==== Repository Requirements
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Support for H2 and Production Database>>#
+[inline-toc]#<<Routing>>#
+
+endif::[]
 
 
+
+Micronaut-Data provides access to the database records using a number of naming patterns.
+If your repository interface has a method that matches one of these patterns, then the SQL
+will be generated automatically.
+
+Some of the standard method expected include:
+
+* `Optional<Order> findByUuid(UUID uuid)` - Reads a single record for the given ID.
+  Used by many framework functions to find related records.
+
+Other Requirements:
+
+* Extends: BaseRepository, CrudRepository<__Domain__, UUID>
+
+===== Support for H2 and Production Database
+
+Micronaut-Data requires that you define your database dialect in your repository (mostly).  The framework supports
+using H2 (in memory) for testing and Postgres for production use.  To make this work you will need to define 3 separate
+Micronaut-Data interfaces for access to these databases:
+
+* __XYZ__Repository - Defines the methods common to all.
+* __XYZ__RepositoryH2 - The test repository. Extends __XYZ__Repository.
+* __XYZ__RepositoryPostgres - The production repository. Extends __XYZ__Repository.
+
+The _XYZ_ domain will use the H2 repository for tests and the Postgres repository for production/dev.
+
+Most of the method definitions will go in the base class.
+
+[source,groocy]
+.Example - Repositories
+----
+interface OrderRepository extends BaseRepository, CrudRepository<Order, UUID> {
+  Optional<Order> findByOrder(String order)
+  Optional<Order> findByUuid(UUID uuid)  <.>
+  List<Order> list()  <.>
+}
+
+@JdbcRepository(dialect = Dialect.H2)
+@Requires(env = [Environment.TEST]) <.>
+interface OrderRepositoryH2 extends OrderRepository {
+}
+
+@JdbcRepository(dialect = Dialect.POSTGRES)
+@Requires(env = [EFEnvironments.PRODUCTION, Environment.DEVELOPMENT]) <.>
+interface OrderRepositoryPostgres extends OrderRepository {
+}
+
+----
+<.> Required.
+<.> Recommended for testing/diagnostics.  No row limits on results.
+<.> Used only for Test environment.
+<.> Uses Postgres for production and dev environments.
+
+===== FindByUuid and Foreign References
+
+
+
+==== beforeSave Method
+
+Sometimes you need to execute some logic in your domain class before every `save()`.  For example,
+you need to encrypt a password on save.  If you define a `beforeSave()` method on your
+domain, then it will be executed by the domain's `save()` method.  For example:
+
+[source,groovy]
+.Example - beforeSave Method on User
+----
+def beforeSave() {
+  encryptPassword()
+}
+----
+
+This will call the `encryptPassword()` before every save.  If you need to detect insert vs. update
+you should look at the object's uuid.  If null, then it is an insert scenario.
+
+==== Transactions
+
+Database transactions are critical to enterprise applications.  The data must be saved in a
+consistent state across several domains.  To support this, the framework uses GORM/Hibernate
+for database access and uses transactions around all database accesses.
+
+Most transactions are initiated at the <<Services>> layer, but also sometimes in the controllers.
+Since many services are called by passing other domain objects to the service methods, you will
+probably need to create the transaction using the _withTransaction_ method:
+
+[source,groovy]
+.Example Transaction Usage
+----
+Order.withTransaction {  // <.>
+  def order = Order.findByOrder('1234')  // <.>
+  ResolveWorkableRequest req = new ResolveWorkableRequest(lsn: order.lsns[0], order: order)
+  def workable = resolveService.resolveWorkable(req)[0]  // <.>
+}
+----
+<.> Starts the transaction, if not already in a DB transaction.  This reads a domain that is passed
+    to the service method.
+<.> The domain object(s) used by the service must be read within the current session to
+    avoid Hibernate session issues (e.g. NonUniqueObjectException and DuplicateKeyException).
+<.> The service method may be a _@Transactional_ method.  This is fine for most scenarios.
+
+Since the _ResolveService_ method expects domain objects as inputs, you need to make sure they are
+passed while a session/transaction is active for the current thread.  Domain object proxies
+(generated by hibernate) can only be processed inside of a session.
+
+
+
+// Relationships/Encoding
 ==== Relationships
 
 ifeval::["{backend}" != "pdf"]
 
+[inline-toc]#<<Simple Foreign Reference>>#
 [inline-toc]#<<parent-child-one-to-many>>#
 [inline-toc]#<<list-object-references>>#
 [inline-toc]#<<Many-to-Many Relationships>>#
@@ -229,6 +355,32 @@ Domain relationships are generally defined in the domain classes and handled wit
 _@DomainEntity_ annotation.  This annotation adds the correct save(), delete and lazy loader
 methods for some of the more common relationships.
 
+==== Simple Foreign Reference
+
+A simple foreign reference is handled by Micronaut-Data in different ways depending on whether
+the reference is nullable.  Nullable references require the use of the SQL OUTER _@Join_ option,
+which is not supported by H2 (in memory) database.  Non-nullable references can use the LEFT join
+logic:
+
+[source,groocy]
+.Example - Non-nullable Foreign Reference
+----
+interface OrderRepository extends BaseRepository, CrudRepository<Order, UUID> {
+  @Join(value = "product", type = Join.Type.LEFT)  <.>
+  Optional<Order> findByUuid(UUID uuid)
+}
+----
+<.> This will read the Product record using an SQL join.  It can be accessed with _order.product..._.
+
+This works fine for non-nullable fields.  To make it work for nullable fields, we would need
+to use the OUTER join mechanism.  Unfortunately, H2 does not support this.  To access
+the Product record in that case, you would need to add `findByUuid()` calls in your code.
+
+To avoid this extra code, the enterprise framework will add a simple lazy-loading
+getter method to your domain class. This will load the foreign reference on its first access.
+
+If you do use _@Join_ with your finders, then this lazy loading will avoid an extra DB read
+as long as you have a `dateCreated` property in your domain class.
 
 [[parent-child-one-to-many]]
 ==== Parent/Child Relationships (One-To-Many)
@@ -249,6 +401,11 @@ class Child {
   Parent parent
 }
 ----
+
+NOTE: The child lists must default to null, not an empty list.
+  This allows the lazy loader to know that no child records are defined when an empty list is found.
+
+
 
 [[list-object-references]]
 ==== Lists of Object References (One-To-Many)
@@ -531,61 +688,6 @@ This type of relationship will usually be displayed as a single-selection combob
 the normal edit/create pages.
 
 
-==== Field Ordering
-
-Frequently, the framework features will need to list or display your domain fields in a logical order.
-Framework markers such as <<ef-show>> will show the fields in any order you like, but you would have to
-update the `<@efShow/>` marker for every new field added to the domain class.
-To simplify this maintenance task, the framework supports an optional
-link:reference.html#field-order[fieldOrder^] icon:share-square-o[role="link-blue"]
-static variable in domain classes.
-
-WARNING: Philosophical Discussion Ahead!
-
-Field ordering is not traditionally part of a domain class's definition.  Following the
-'Don't Repeat Yourself' philosophy, a central place to store the field ordering
-'hints' is needed.  We chose the domain class. This is optional. If you don't want to embed field
-ordering in your domain classes, then you can specify the field ordering on the respective
-<<reference.adoc#ef-show,efShow>> markers in your HTML files.  This means updating 3  files
-whenever you add a new field to a domain class.  This is your choice.
-
-See <<reference.adoc#field-order,fieldOrder >> for details.
-
-==== toStringLocalized()
-
-A number of places in the framework rely on the `toStringLocalized()` in the
-link:groovydoc/org/simplemes/eframe/i18n/GlobalUtils.html[GlobalUtils^]
-icon:share-square-o[role="link-blue"] utility class.
-This allows the framework to provide a human-readable representation of your domain record for display.
-For example, this is used in the <<reference.adoc#eflist,efList>> marker to build the
-hyper-link text for the links generated.  Also, drop-down lists and archiving use this short
-string format.
-
-Most domains will not need to implement this method.  You won't need to implement this methods
-if your domain has a single key and it is the first field in the <<Field Ordering,fieldOrder>>
-static value.
-
-
-==== beforeValidate Method
-
-The `beforeValidate()` event method is trigger by GORM when a domain is validated.  It is a
-common place to put complex logic to default values in the domain.  Because this method is
-called during the hibernate flush logic, you need to be careful with database updates during
-this action.  If your domain needs to update
-other records, then you will need to do this inside of a _withNewSession_ block:
-
-[source,groovy]
-.Example withNewSession Use
-----
-withNewSession {session ->  // <1>
-  someMethodWithDBUpdates()
-}
-----
-<1> This creates a new session that allows updates during the `beforeValidate()` logic.
-
-If you don't do this, then you will have hard-to-debug _NonUniqueObjectException_ and _DuplicateKeyException_
-exceptions.
-
 ==== Dates and Timezones
 
 Dates and timezones are a common problems with enterprise systems.  Most common SQL databases
@@ -606,51 +708,20 @@ the Javascript time is created by discarding the timezone offset.  This means th
 displayed by the toolkit with no adjustments.
 
 
-==== Transactions
+==== toStringLocalized()
 
-Database transactions are critical to enterprise applications.  The data must be saved in a
-consistent state across several domains.  To support this, the framework uses GORM/Hibernate
-for database access and uses transactions around all database accesses.
+A number of places in the framework rely on the `toStringLocalized()` in the
+link:groovydoc/org/simplemes/eframe/i18n/GlobalUtils.html[GlobalUtils^]
+icon:share-square-o[role="link-blue"] utility class.
+This allows the framework to provide a human-readable representation of your domain record for display.
+For example, this is used in the <<reference.adoc#eflist,efList>> marker to build the
+hyper-link text for the links generated.  Also, drop-down lists and archiving use this short
+string format.
 
-Most transactions are initiated at the <<Services>> layer, but also sometimes in the controllers.
-Since many services are called by passing other domain objects to the service methods, you will
-probably need to create the transaction using the _withTransaction_ method:
+Most domains will not need to implement this method.  You won't need to implement this methods
+if your domain has a single key and it is the first field in the <<Field Ordering,fieldOrder>>
+static value.
 
-[source,groovy]
-.Example Transaction Usage
-----
-Order.withTransaction {  // <.>
-  def order = Order.findByOrder('1234')  // <.>
-  ResolveWorkableRequest req = new ResolveWorkableRequest(lsn: order.lsns[0], order: order)
-  def workable = resolveService.resolveWorkable(req)[0]  // <.>
-}
-----
-<.> Starts the transaction, if not already in a DB transaction.  This reads a domain that is passed
-    to the service method.
-<.> The domain object(s) used by the service must be read within the current session to
-    avoid Hibernate session issues (e.g. NonUniqueObjectException and DuplicateKeyException).
-<.> The service method may be a _@Transactional_ method.  This is fine for most scenarios.
-
-Since the _ResolveService_ method expects domain objects as inputs, you need to make sure they are
-passed while a session/transaction is active for the current thread.  Domain object proxies
-(generated by hibernate) can only be processed inside of a session.
-
-==== beforeSave Method
-
-Sometimes you need to execute some logic in your domain class before every `save()`.  For example,
-you need to encrypt a password on save.  If you define a `beforeSave()` method on your
-domain, then it will be executed by the domain's `save()` method.  For example:
-
-[source,groovy]
-.Example - beforeSave Method on User
-----
-def beforeSave() {
-  encryptPassword()
-}
-----
-
-This will call the `encryptPassword()` before every save.  If you need to detect inset vs. update
-you should look at the object's uuid.  If null, then it is an insert scenario.
 
 
 include::configurableTypes.adoc[]

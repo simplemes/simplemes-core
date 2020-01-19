@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.domain.annotation
 
 
@@ -9,12 +13,6 @@ import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.Order
 import sample.domain.OrderLine
 import sample.domain.OrderRepository
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -286,6 +284,57 @@ class DomainEntityTransformationSpec extends BaseSpecification {
 
     then: 'the orderLines are populated'
     order2.orderLines.size() == 2
+  }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  @Rollback
+  def "verify that simple reference lazy load getter is added to the domain"() {
+    given: 'a mocked domainEntityHelper for the lazy method call'
+    def domainEntityHelper = Mock(DomainEntityHelper)
+    DomainEntityHelper.instance = domainEntityHelper
+
+    and: 'a compiled domain class'
+    def src = """
+      import sample.domain.OrderLine
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import io.micronaut.data.annotation.MappedEntity
+      import io.micronaut.data.annotation.MappedProperty
+      import groovy.transform.EqualsAndHashCode
+      import javax.persistence.CascadeType
+      import javax.persistence.Column
+      import javax.persistence.OneToMany
+      
+      @DomainEntity
+      @MappedEntity()
+      @EqualsAndHashCode(includes = ['uuid'])
+      class Order2 {
+        UUID uuid
+        
+        OrderLine orderLine
+      }
+    """
+    def clazz = CompilerTestUtils.compileSource(src)
+
+
+    when: 'the method is available'
+    def order = clazz.newInstance()
+    def orderLine = new OrderLine()
+    order.orderLine = orderLine
+    order.getOrderLine()
+
+    then: 'the method is called correctly'
+    1 * domainEntityHelper.lazyReferenceLoad(_, 'orderLine', _) >> { args ->
+      //println "args = $args";
+      // For some reason, Spock does not match the instance variable in the DSL above.  Instead, we need to do this manually.
+      //noinspection GroovyAssignabilityCheck
+      assert order.is(args[0])
+      assert orderLine.is(args[2])
+      return args[2]
+    }
+
+    cleanup:
+    DomainEntityHelper.instance = new DomainEntityHelper()
+
   }
 
   def "verify that OneToMany mappings require a parameterized type on the child list"() {

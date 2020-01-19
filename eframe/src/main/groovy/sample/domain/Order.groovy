@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package sample.domain
 
 import groovy.transform.EqualsAndHashCode
@@ -10,20 +14,14 @@ import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
 import org.simplemes.eframe.date.DateOnly
-
-//import grails.gorm.annotation.Entity
-
 import org.simplemes.eframe.domain.annotation.DomainEntity
 
 import javax.annotation.Nullable
 import javax.persistence.Column
-import javax.persistence.OneToMany
 
-/*
- * Copyright Michael Houston 2017. All rights reserved.
- * Original Author: mph
- *
-*/
+//import grails.gorm.annotation.Entity
+
+import javax.persistence.OneToMany
 
 /**
  * A sample domain class that simulates an order.
@@ -33,8 +31,9 @@ import javax.persistence.OneToMany
 @MappedEntity('ordr')
 @DomainEntity
 @ToString(includeNames = true)
-@EqualsAndHashCode(includes = ['uuid'])
+@EqualsAndHashCode(includes = ['order'])
 //@CompileStatic
+@SuppressWarnings("unused")
 class Order {
   @Column(name = 'ordr', length = 30)
   String order
@@ -63,6 +62,10 @@ class Order {
 
   @OneToMany(mappedBy = "order")
   List<OrderLine> orderLines
+
+  @Column(length = 800)
+  // Larger than the default for H2 to allow SQL error generation in unit tests.  See DomainEntityHelperSpec.
+  @Nullable String notes
 
   @Id @AutoPopulated UUID uuid
 

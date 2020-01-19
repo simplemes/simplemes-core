@@ -1,21 +1,20 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.security.domain
 
 import io.micronaut.context.annotation.Requires
 import io.micronaut.context.env.Environment
 import io.micronaut.data.jdbc.annotation.JdbcRepository
 import io.micronaut.data.model.query.builder.sql.Dialect
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
+import org.simplemes.eframe.misc.EFEnvironments
 
 /**
  * The sample order repository base interface.  Provides the methods for the repo,
  * for production or dev (POSTGRES)
  */
 @JdbcRepository(dialect = Dialect.POSTGRES)
-@Requires(env = ["prod", Environment.DEVELOPMENT])
+@Requires(env = [EFEnvironments.PRODUCTION, Environment.DEVELOPMENT])
 interface UserRepositoryPostgres extends UserRepository {
 }

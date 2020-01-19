@@ -1,10 +1,8 @@
-package org.simplemes.eframe.domain.annotation;
-
 /*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
+ * Copyright (c) Michael Houston 2020. All rights reserved.
  */
+
+package org.simplemes.eframe.domain.annotation;
 
 import groovy.lang.Closure;
 import io.micronaut.context.ApplicationContext;
@@ -17,6 +15,7 @@ import io.micronaut.transaction.SynchronousTransactionManager;
 import io.micronaut.transaction.TransactionCallback;
 import io.micronaut.transaction.TransactionStatus;
 import io.micronaut.transaction.jdbc.DataSourceUtils;
+import org.simplemes.eframe.application.Holders;
 import org.simplemes.eframe.domain.PersistentProperty;
 import org.simplemes.eframe.domain.validate.ValidationError;
 import org.simplemes.eframe.domain.validate.ValidationErrorInterface;
@@ -52,6 +51,13 @@ public class DomainEntityHelper {
    * The element name is this prefix plus the child field's name (e.g. loadedChildren+'orderLines').
    */
   public static final String SETTINGS_LOADED_CHILDREN_PREFIX = "loadedChildren";
+
+  /**
+   * The name of the element in the domain settings holder that will contain the already loaded
+   * flag for a foreign reference.
+   * The element name is this prefix plus the field's name (e.g. loadedRef+'order').
+   */
+  public static final String SETTINGS_LOADED_REFERENCE = "loadedRef";
 
   /**
    * Determine the repository associated with the given domain class. This is not for public access.
@@ -556,17 +562,127 @@ public class DomainEntityHelper {
   }
 
   /**
+   * Records the last lazy reference loaded (in test mode only).  Used to testing to verify that
+   * the lazy records are loaded at the right time.
+   */
+  protected UUID lastLazyRefLoaded = null;
+
+  /**
+   * Performs the lazy read of the given domain object, if it has not already been loaded.
+   *
+   * @param parentObject     The parent domain object thet the simple reference is part of.
+   * @param fieldName        The field to store the list in.  Used by later calls.
+   * @param referencedObject The domain object to read, if not already populated.
+   * @return The referencedObject.
+   */
+  @SuppressWarnings("ConstantConditions")
+  public DomainEntityInterface lazyReferenceLoad(DomainEntityInterface parentObject, String fieldName, DomainEntityInterface referencedObject)
+      throws Throwable {
+    /*
+    General cases supported (ref):
+      No value in the database (ref!=null; ref.uuid==null)  No read needed.  Sets ref to null.
+      Foreign Ref no read yet (ref!=null; ref.uuid!=null) Read once, populates the ref and prevents later reads.
+      Already Read by @JOIN (LEFT, required) (ref!=null; ref.uuid!=null) No read needed.  No change.
+     */
+
+    // See if we already checked for a value.
+    Map<String, Object> domainSettings = getDomainSettings(parentObject);
+    String alreadyLoadedName = SETTINGS_LOADED_REFERENCE + fieldName;
+    Boolean alreadyLoaded = (Boolean) domainSettings.get(alreadyLoadedName);
+    if (alreadyLoaded != null && alreadyLoaded) {
+      return referencedObject;
+    }
+    //System.out.println(fieldName+"referencedObject:" + referencedObject);
+
+    if (referencedObject != null && !wasLoadedByJoin(referencedObject)) {
+      UUID uuid = referencedObject.getUuid();
+      if (uuid != null) {
+        // Need to read a value.
+        referencedObject = findByUuid(referencedObject.getClass(), uuid);
+        if (referencedObject == null) {
+          String s = parentObject.getClass().getName() + "(uuid: " + parentObject.getUuid() + ") foreign reference (" + fieldName + ", uuid: " + uuid + ") not found in DB. ";
+          throw new IllegalArgumentException(s);
+        }
+        if (Holders.isEnvironmentTest()) {
+          // Record the last uuid read, so we can test the lazy loading behavior.
+          lastLazyRefLoaded = uuid;
+          domainSettings.put(alreadyLoadedName, true);
+        }
+      } else {
+        // A null UUID, so we need to clear the value in the parent object.
+        referencedObject = null;
+        domainSettings.put(alreadyLoadedName, true);
+      }
+      // Make sure the property is set in parent domain so we can avoid this lookup later.
+      if (referencedObject != null) {
+        Method setterMethod = parentObject.getClass().getMethod("set" + StringUtils.capitalize(fieldName), referencedObject.getClass());
+        //noinspection RedundantArrayCreation
+        setterMethod.invoke(parentObject, new Object[]{referencedObject});
+      }
+    }
+
+    return referencedObject;
+  }
+
+  /**
+   * Detects if the given object is already loaded.  Will check the dateCreated to see if the details
+   * were loaded already by a @Join annotation in the repository.
+   *
+   * @param referencedObject The object to check.
+   * @return True if the object was loaded already.
+   */
+  private boolean wasLoadedByJoin(DomainEntityInterface referencedObject) {
+    try {
+      Method getter = referencedObject.getClass().getDeclaredMethod("getDateCreated");
+      return getter.invoke(referencedObject) != null;
+    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
+      // If the dateCreated field does not exist, then this will just force a read from the DB.
+    }
+    return false;
+  }
+
+  /**
+   * Reads the given record from the database.
+   *
+   * @param clazz The domain class for the record to be read.
+   * @param uuid  The record's uuid.
+   * @return The read value.  Can be null.
+   */
+  protected DomainEntityInterface findByUuid(Class clazz, UUID uuid) throws Throwable {
+    GenericRepository repository = getRepository(clazz);
+    DomainEntityInterface record = null;
+    if (repository != null && uuid != null) {
+      String finderName = "findByUuid";
+      Method method = repository.getClass().getMethod(finderName, UUID.class);
+      method.setAccessible(true);  // For some reason, Micronaut-data creates the method that is not accessible.
+      try {
+        Optional optional = (Optional) method.invoke(repository, uuid);
+        if (optional.isPresent()) {
+          record = (DomainEntityInterface) optional.get();
+        }
+      } catch (Throwable e) {
+        // Most exceptions are wrapped in invocation target exceptions, so we can remove them.
+        throw unwrapException(e);
+      }
+    }
+
+    return record;
+  }
+
+
+  /**
    * Finds the domain settings holder for given domain object.
    *
    * @param object The domain object.
    * @return The settings holder.
    */
-  private Map<?, ?> getDomainSettings(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException {
+  @SuppressWarnings("unchecked")
+  private Map<String, Object> getDomainSettings(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException {
     // Uses reflection since the element is a field and that is difficult to implement in an interface.
     Field field = object.getClass().getDeclaredField(DOMAIN_SETTINGS_FIELD_NAME);
     Object o = field.get(object);
     if (o instanceof Map) {
-      return (Map) o;
+      return (Map<String, Object>) o;
     }
     return null;
   }

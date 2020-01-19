@@ -8,7 +8,7 @@ domain class:
 [source,groovy]
 .Example Domain
 ----
-@Entity
+@MappedEntity
 class Order {
   String order
   BigDecimal qty = 1.0

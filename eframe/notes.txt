@@ -1,24 +1,28 @@
 Scratch
 =======
 
-Validation
-  save()
-    calls DomainEntityHelper.validate()
-      throws exception with all errors listed.
-  DomainEntityHelper.validate()
-    returns List<ValidationError>
-    calls def validate() - can return single ValidationError or List<>
-    checks columns that are @Nullable
-  ValidationErrorInterface - Interface implemented by ValidationError.
-    new ValidationError(code,fieldName, args).
-    new ValidationMissingValueError(fieldName).
-  MessageSource fix
-  GlobalUtils.lookupValidationErrors
-
 Micronaut Data Conversion Tasks
 ===============================
 @Entity replacement with GDSL.
-  Verify @JOIN and single/multiple foreign references.
+  Convert Domains
+    AllFieldsDomain
+    SampleParent
+    FlexField/AbstractField
+    FlexType
+    UserPreference
+    SampleChild
+    SampleGrandChild
+    SampleSubClass
+    RMA
+    ArchiveLog
+    FieldGUIExtension
+    Dashboard*
+  done - Verify @JOIN and single/multiple foreign references. - fails for optionals.
+    done - @JOIN does not work for H2 OUTER join when foreign ref is null.
+      done - - Add getter that lazy loads the value.
+      done - - Add .adoc note on lazy loader.
+  Verify sub-class works AbstractField
+  EncodedTypes - Status on Order?
   Use GDSL to handle code completion.  See https://www.tothenew.com/blog/gdsl-awesomeness-introduction-to-gdsl-in-intellij-idea/
   Adds these methods
     Lazy load
@@ -55,7 +59,7 @@ Solve list() method ad-hoc sorting.
   Add pagination support.
   Find way to execute dynamic query and populate domain from result set.  Maybe use DomainBinder?
 Move business logic to services.  No longer in Domain.
-Use @CompileStatic for domains/services/controllers, if possible.  May conflict with dynamic @Entity support.
+Use @CompileStatic for domains/services/controllers, if possible.  May conflict with dynamic @MappedEntity support.
 Fix save/update/delete of custom OrderLine records. Generic hook mechanism?
 Add SQL DDL logic and Liquid-base support.
   Find way to auto-generate core stuff.

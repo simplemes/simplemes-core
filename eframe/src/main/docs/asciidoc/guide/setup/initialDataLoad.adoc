@@ -109,7 +109,7 @@ Below are two examples of their use:
 [source,groovy]
 .Example - initialDataLoadAfter
 ----
-@Entity
+@MappedEntity
 class User {
   static initialDataLoadAfter = [Role]  // <.>
   . . .
@@ -127,7 +127,7 @@ static initialDataLoadBefore = ['org.simplemes.eframe.security.domain.User']
 [source,groovy]
 .Example - initialDataLoadBefore
 ----
-@Entity
+@MappedEntity
 class Role {
   static initialDataLoadBefore = [User]  // <.>
   . . .

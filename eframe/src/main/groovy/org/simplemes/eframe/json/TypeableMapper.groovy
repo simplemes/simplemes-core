@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.json
 
 
@@ -7,12 +11,6 @@ import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.TypeUtils
 
 import javax.persistence.Entity
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * The JSON formatter/parser that handles arbitrary list or map of objects in a single JSON string.
@@ -35,7 +33,7 @@ import javax.persistence.Entity
  *
  * This mapper only supports a specific white-list of allowed classes.  The allowed classes include: <p>
  * <ul>
- *   <li><b>GORM/Hibernate Entities</b> - Must have the //@Entity annotation. </li>
+ *   <li><b>Domain Entities</b> - Must have the @MappedEntity annotation. </li>
  *   <li><b>Implements TypeableJSONInterface</b> - Specific classes marked with this interface </li>
  * </ul>
  * <p>
@@ -64,7 +62,7 @@ class TypeableMapper {
     for (o in list) {
       ArgumentUtils.checkMissing(o, 'o')
       if (!isValidClass(o.getClass())) {
-        throw new IllegalArgumentException("Class ${o.getClass()} is not allowed in a TypeableMapper.  Only Hibernate //@Entity or TypeableJSONInterface class allowed.")
+        throw new IllegalArgumentException("Class ${o.getClass()} is not allowed in a TypeableMapper.  Only @MappedEntity or TypeableJSONInterface class allowed.")
       }
       listWithTypes << o.getClass().name
       listWithTypes << o
@@ -137,7 +135,7 @@ class TypeableMapper {
       String className = list[i]
       def clazz = TypeUtils.loadClass(className)
       if (!isValidClass(clazz)) {
-        throw new IllegalArgumentException("Class ${clazz.name} is not allowed in a TypeableMapper.  Only Hibernate //@Entity or TypeableJSONInterface class allowed.")
+        throw new IllegalArgumentException("Class ${clazz.name} is not allowed in a TypeableMapper.  Only @MappedEntity or TypeableJSONInterface class allowed.")
       }
       def o = mapper.convertValue(list[i + 1], clazz)
       res << o

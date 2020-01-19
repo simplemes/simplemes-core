@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.domain.annotation
 
 import io.micronaut.data.exceptions.DataAccessException
@@ -11,18 +15,13 @@ import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
+import sample.domain.AllFieldsDomain
 import sample.domain.Order
 import sample.domain.OrderLine
 import sample.domain.OrderRepository
 
 import javax.sql.DataSource
 import java.sql.Connection
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -152,7 +151,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
 
   def "verify that SQL exception during lazyChildLoad is unwrapped for the caller"() {
     when: 'a bad order is saved'
-    new Order(order: "A" * 500).save()
+    new Order(order: 'ABC', notes: "A" * 500).save()
 
     then: 'the right exception is thrown'
     thrown(DataAccessException)
@@ -654,5 +653,107 @@ class DomainEntityHelperSpec extends BaseSpecification {
     order.product == "XYZZYAlteredByBeforeSave"
   }
 
+  @Rollback
+  def "verify that lazyReferenceLoad handles unloaded case with a valid foreign reference"() {
+    given: 'a foreign reference'
+    def order = new Order(order: 'ABC').save()
+    DomainEntityHelper.instance.lastLazyRefLoaded = null
+
+    when: 'the simple reference is set'
+    def afd = new AllFieldsDomain(order: new Order(uuid: order.uuid))
+
+    then: 'the foreign domain object is retrieved'
+    afd.order.order == 'ABC'
+
+    and: 'the query is made for the first call'
+    DomainEntityHelper.instance.lastLazyRefLoaded == order.uuid
+
+    when: 'the getter is called a second time'
+    DomainEntityHelper.instance.lastLazyRefLoaded = null
+    afd.order.order == 'ABC'
+
+    then: 'no query is made'
+    DomainEntityHelper.instance.lastLazyRefLoaded == null
+  }
+
+  @Rollback
+  def "verify that lazyReferenceLoad handles null foreign reference"() {
+    given: 'set the last loaded uuid to a value for testing'
+    DomainEntityHelper.instance.lastLazyRefLoaded = UUID.randomUUID()
+
+    when: 'the simple reference is set'
+    def afd = new AllFieldsDomain()
+
+    then: 'the foreign domain object is retrieved and is null'
+    afd.order == null
+
+    and: 'no read was attempted'
+    DomainEntityHelper.instance.lastLazyRefLoaded != null
+  }
+
+  @Rollback
+  def "verify that lazyReferenceLoad handles empty foreign reference"() {
+    // This is the way Micronaut-data initializes the value when it is null.
+    given: 'set the last loaded uuid to a value for testing'
+    def uuid = UUID.randomUUID()
+    DomainEntityHelper.instance.lastLazyRefLoaded = uuid
+
+    when: 'the simple reference is set'
+    def afd = new AllFieldsDomain(order: new Order())
+
+    then: 'the foreign domain object is retrieved and is null'
+    afd.order == null
+
+    and: 'no read was attempted'
+    DomainEntityHelper.instance.lastLazyRefLoaded == uuid
+  }
+
+  @Rollback
+  def "verify that lazyReferenceLoad handles invalid foreign reference"() {
+    given: 'set the last loaded uuid to a value for testing'
+    def uuid = UUID.randomUUID()  // The uuid for a non-existent reference.
+    DomainEntityHelper.instance.lastLazyRefLoaded = null
+
+    when: 'the simple reference is set to simulate a JOIN style read from DB with an invalid uuid'
+    def afd = new AllFieldsDomain(name: 'ABC').save()
+    afd.order = new Order(uuid: uuid)
+
+    and: 'the foreign domain object is retrieved and is null'
+    afd.order == null
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['AllFieldsDomain', 'order', uuid.toString(), afd.uuid.toString()])
+  }
+
+  @Rollback
+  def "verify that lazyReferenceLoad handles foreign reference loaded by a standard join annotation"() {
+    given: 'a domain with a valid foreign reference'
+    def order = new Order(order: 'XYZ').save()
+    new AllFieldsDomain(name: 'ABC', title: 'ABX', order: order).save()
+
+    and: 'the last record read is cleared'
+    DomainEntityHelper.instance.lastLazyRefLoaded = null
+
+    when: 'the find is used with the join syntax'
+    def afd2 = AllFieldsDomain.getRepository().findByTitle('ABX').get()
+
+    then: 'the foreign reference is populated without a read from the DB'
+    afd2.order.order == 'XYZ'
+    DomainEntityHelper.instance.lastLazyRefLoaded == null
+  }
+
+  @Rollback
+  def "verify that find will retrieve foreign references"() {
+    given: 'a domain with a foreign reference'
+    def order = new Order(order: 'ABC').save()
+    def afd = new AllFieldsDomain(name: 'XYZ', order: order).save()
+
+    when: 'the domain is read'
+    def afd2 = AllFieldsDomain.findByUuid(afd.uuid)
+
+    then: 'the foreign reference is populated'
+    afd2.order.order == order.order
+  }
 
 }

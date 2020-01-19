@@ -161,7 +161,7 @@ that will handle these scenarios.
 
 To avoid security issues, this mapper will only read objects that are:
 
- *   GORM/Hibernate Entities - Must have the @Entity annotation.
+ *   Domain Entities - Must have the @MappedEntity annotation.
  *   Implements link:groovydoc/org/simplemes/eframe/json/TypeableJSONInterface.html[TypeableJSONInterface^]
      icon:share-square-o[role="link-blue"] - Specific classes marked with this interface
 

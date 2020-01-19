@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.domain
 
 import edu.umd.cs.findbugs.annotations.NonNull
@@ -38,12 +42,6 @@ import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.SQLException
 import java.util.concurrent.ExecutorService
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  *
@@ -108,6 +106,7 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
   @Override
   <T, R> R findOne(@NonNull PreparedQuery<T, R> preparedQuery) {
     // This is overridden only for workAround192.
+    //println "Query = ${preparedQuery.query}"
     def res = super.findOne(preparedQuery)
     if (WorkArounds.workAround192 && preparedQuery.query.contains("JOIN") && res != null) {
       res = fixJoinQueryResultsWorkAround192(preparedQuery, res)

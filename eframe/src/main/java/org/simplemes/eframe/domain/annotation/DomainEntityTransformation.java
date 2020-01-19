@@ -1,7 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.domain.annotation;
 
 import groovy.lang.Closure;
 import io.micronaut.core.util.StringUtils;
+import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.repository.GenericRepository;
 import org.codehaus.groovy.ast.*;
 import org.codehaus.groovy.ast.expr.*;
@@ -15,6 +20,7 @@ import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.simplemes.eframe.ast.ASTUtils;
 
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -71,13 +77,13 @@ public class DomainEntityTransformation implements ASTTransformation {
   private void transformClass(ClassNode classNode, SourceUnit sourceUnit) {
     classNode.addInterface(new ClassNode(DomainEntityInterface.class));
     addRepositoryField(classNode, sourceUnit);
-    addDelegatedMethod("save", "save", false, null, null, classNode, sourceUnit);
-    addDelegatedMethod("delete", "delete", false, null, null, classNode, sourceUnit);
+    addDelegatedMethod("save", "save", false, null, null, null, classNode, sourceUnit);
+    addDelegatedMethod("delete", "delete", false, null, null, null, classNode, sourceUnit);
 
     Parameter[] withTransactionParameters = {new Parameter(new ClassNode(Closure.class), "closure")};
     List<Expression> withTxnArgs = new ArrayList<>();
     withTxnArgs.add(new VariableExpression("closure"));
-    addDelegatedMethod("withTransaction", "executeWriteClosure", true, withTransactionParameters, withTxnArgs, classNode, sourceUnit);
+    addDelegatedMethod("withTransaction", "executeWriteClosure", true, withTransactionParameters, withTxnArgs, null, classNode, sourceUnit);
 
     Parameter[] parameters = {
         new Parameter(new ClassNode(String.class), "name"),
@@ -85,9 +91,10 @@ public class DomainEntityTransformation implements ASTTransformation {
     List<Expression> mmArgs = new ArrayList<>();
     mmArgs.add(new VariableExpression("name"));
     mmArgs.add(new VariableExpression("args"));
-    addDelegatedMethod("$static_methodMissing", "staticMethodMissingHandler", true, parameters, mmArgs, classNode, sourceUnit);
+    addDelegatedMethod("$static_methodMissing", "staticMethodMissingHandler", true, parameters, mmArgs, null, classNode, sourceUnit);
 
     addLazyChildLoaders(classNode, sourceUnit);
+    addLazyReferenceLoaders(classNode, sourceUnit);
 
     Expression init = new MapExpression();
     ASTUtils.addField(DomainEntityHelper.DOMAIN_SETTINGS_FIELD_NAME, Map.class, Modifier.PUBLIC | Modifier.TRANSIENT, 0, false, init,
@@ -122,9 +129,33 @@ public class DomainEntityTransformation implements ASTTransformation {
         delegateArgs.add(new ConstantExpression(fieldNode.getName()));
         delegateArgs.add(new ConstantExpression(mappedByFieldName));
         delegateArgs.add(new ClassExpression(childDomainTypeNode));
-        addDelegatedMethod(getterName, "lazyChildLoad", false, null, delegateArgs, classNode, sourceUnit);
+        addDelegatedMethod(getterName, "lazyChildLoad", false, null, delegateArgs, null, classNode, sourceUnit);
       }
 
+    }
+  }
+
+  /**
+   * Adds the lazy loader methods for simple child references.
+   *
+   * @param classNode  The class to transform.
+   * @param sourceUnit The source the class came from.
+   */
+  private void addLazyReferenceLoaders(ClassNode classNode, SourceUnit sourceUnit) {
+    // Find all fields that are simple references to another domain entity.
+    for (FieldNode fieldNode : classNode.getFields()) {
+      ClassNode typeNode = fieldNode.getType();
+      boolean parentReference = fieldNode.getAnnotations(new ClassNode(ManyToOne.class)).size() > 0;
+      boolean mappedEntity = typeNode.getAnnotations(new ClassNode(MappedEntity.class)).size() > 0;
+      if (mappedEntity && !parentReference) {
+        String getterName = "get" + StringUtils.capitalize(fieldNode.getName());
+        //  public List lazyReferenceLoad(Object object)
+        List<Expression> delegateArgs = new ArrayList<>();
+        delegateArgs.add(new ConstantExpression(fieldNode.getName()));
+        delegateArgs.add(new VariableExpression(fieldNode.getName()));
+        addDelegatedMethod(getterName, "lazyReferenceLoad", false, null, delegateArgs, typeNode, classNode, sourceUnit);
+        System.out.println("getter:" + getterName);
+      }
     }
   }
 
@@ -203,17 +234,23 @@ public class DomainEntityTransformation implements ASTTransformation {
    * @param isStatic          If true, then the method is created as a static method.
    * @param args              The args for the method added to the current class (can be null).
    * @param delegateArguments The arguments passed to the delegate method (this is added as first argument).
+   * @param returnType        The method return type.
    * @param node              The AST Class Node to add this field to.
    * @param sourceUnit        The compiler source unit being processed (used to errors).
    */
   private void addDelegatedMethod(String methodName, String helperMethodName, boolean isStatic,
                                   Parameter[] args, List<Expression> delegateArguments,
-                                  ClassNode node, SourceUnit sourceUnit) {
+                                  ClassNode returnType, ClassNode node, SourceUnit sourceUnit) {
     //System.out.println("methodName:" + methodName);
     // Make sure the method doesn't exist already
     if (ASTUtils.methodExists(node, methodName, Parameter.EMPTY_ARRAY)) {
       sourceUnit.getErrorCollector().addError(new SimpleMessage(methodName + "() already exists in " + node, sourceUnit));
     }
+
+    if (returnType == null) {
+      returnType = new ClassNode(Object.class);
+    }
+
 
     // return = DomainEntityHelper.instance.XYZ(Object,delegateArgs)
 
@@ -241,7 +278,7 @@ public class DomainEntityTransformation implements ASTTransformation {
     }
     MethodNode methodNode = new MethodNode(methodName,
         modifier,
-        new ClassNode(Object.class),
+        returnType,
         args,
         null,
         blockStatement);
