@@ -1,10 +1,8 @@
-import org.codehaus.groovy.classgen.Verifier
-
 /*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
+import org.codehaus.groovy.classgen.Verifier
 
 /**
  *
@@ -30,7 +28,7 @@ contribute(allContext) {
   if (classType?.hasAnnotation("org.simplemes.eframe.domain.annotation.DomainEntity")) {
     method name: "save", type: classType?.getQualifiedName(), params: [:]
     method name: "delete", type: classType?.getQualifiedName(), params: [:]
-    method name: "findById", type: "${classType?.getQualifiedName()}", params: [uuid: UUID], isStatic: true
+    //method name: "findById", type: "${classType?.getQualifiedName()}", params: [uuid: UUID], isStatic: true
     method name: "list", type: "List<${classType?.getQualifiedName()}>", params: [:], isStatic: true
     method name: "withTransaction", params: [closure: Closure], isStatic: true
     // TODO: Check the annotation for the repository name in case of overrides.

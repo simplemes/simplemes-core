@@ -1,10 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+import io.micronaut.data.annotation.TypeDef
+import io.micronaut.data.model.DataType
 
 /**
  * Flags a basic type that is stored as an encoded value in the database.  Each concrete class
@@ -18,6 +19,7 @@ package org.simplemes.eframe.data
  * See <a href='http://docs.simplemes.org'>http://docs.simplemes.org</a>
  *    <p>
  */
+@TypeDef(type = DataType.STRING)
 @SuppressWarnings("GroovyDocCheck")
 interface EncodedTypeInterface {
   /**

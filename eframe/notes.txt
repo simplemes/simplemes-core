@@ -22,7 +22,7 @@ Micronaut Data Conversion Tasks
       done - - Add getter that lazy loads the value.
       done - - Add .adoc note on lazy loader.
   Verify sub-class works AbstractField
-  EncodedTypes - Status on Order?
+  done - EncodedTypes - Status on Order?
   Use GDSL to handle code completion.  See https://www.tothenew.com/blog/gdsl-awesomeness-introduction-to-gdsl-in-intellij-idea/
   Adds these methods
     Lazy load
