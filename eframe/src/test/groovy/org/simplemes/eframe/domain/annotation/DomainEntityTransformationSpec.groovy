@@ -446,4 +446,25 @@ class DomainEntityTransformationSpec extends BaseSpecification {
     !methods.find { it.name == "set$DomainEntityHelper.DOMAIN_SETTINGS_FIELD_NAME" }
   }
 
+  def "verify that a sub domain class can be used as a domain entity"() {
+    given: 'a class with the annotation'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import groovy.transform.ToString
+      import sample.domain.SampleParent
+      
+      @ToString(includeNames = true)
+      @DomainEntity(repository=sample.domain.OrderRepository)
+      class TestClass extends SampleParent {
+        String subTitle
+      }
+    """
+
+    when: 'the domain is compiled and a new value is used'
+    def object = CompilerTestUtils.compileSource(src).newInstance()
+
+    then: 'the holder is in the object'
+    object.repository instanceof OrderRepository
+  }
+
 }

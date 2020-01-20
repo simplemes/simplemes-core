@@ -19,9 +19,7 @@ This allows the URLs that displays a given dashboard to be simpler
 
 Your application will probably need to provide some default dashboard configurations as examples
 for your users. These are generally meant to be starting places for your users to rearrange into
-suitable dashboards. You can define sub-classes of the DashboardConfig domain class and implement
-your own initial data load for whatever categories and default configurations you need.
-The framework does not provide a default configuration.
+suitable dashboards. The framework does not provide a default configuration.
 
 ===== Dashboard Editor
 

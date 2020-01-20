@@ -439,10 +439,6 @@ NOTE: The `lastUpdated` field is automatically change by the BaseCrudController 
       If you save the records in a service or other controller, then you should make sure the parent
       record is changed to force an update on your custom child records.
 
-NOTE: If your parent domain (e.g. _Product_) has any sub-classes, then be sure to include all of the
-      parent IDs for these sub-classes in your custom sub domain object.
-      This is needed to handle any queries that are triggered from the sub-class.
-
 When testing using GUI/GEB testing, remember to delete your custom child classes first.
 There is a bug in the GUI testing support classes that triggers a strange proxy error
 from Hibernate. See the <<Potholes>> for details.  Also, you probably can't run your

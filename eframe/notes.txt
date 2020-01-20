@@ -23,9 +23,21 @@ Micronaut Data Conversion Tasks
       done - - Add .adoc note on lazy loader.
   Verify sub-class works AbstractField
     Needs:
-      AbstractField >> FlexField
-      Routing >> ProductRouting, MasterRouting
+      AbstractField >> FlexField, FieldExtension
+      Routing >> ProductRouting, MasterRouting - RoutingService?
+        Routing
+          List<RoutingOperation> operations
+          checkOperations()
+          determineNextOperation()
+        MasterRouting
+          String routing
+          String title
+        ProductRouting
+          Product product
+        OrderRouting
+          Order order
       Operation >>
+      CodeSequence >> LSNSequence, OrderSequence (Logic in Service?)
   Convert ExtensibleFields?
   done - EncodedTypes - Status on Order?
   done - Use GDSL to handle code completion.  See https://www.tothenew.com/blog/gdsl-awesomeness-introduction-to-gdsl-in-intellij-idea/
@@ -69,6 +81,7 @@ Fix save/update/delete of custom OrderLine records. Generic hook mechanism?
 Add SQL DDL logic and Liquid-base support.
   Find way to auto-generate core stuff.
 Add option to run tests against Postgres (manual only).
+Micronaut-data does not support traits or sub-classes in most cases.
 
 Docs
 =================

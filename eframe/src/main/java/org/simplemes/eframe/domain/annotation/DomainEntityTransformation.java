@@ -129,7 +129,8 @@ public class DomainEntityTransformation implements ASTTransformation {
         delegateArgs.add(new ConstantExpression(fieldNode.getName()));
         delegateArgs.add(new ConstantExpression(mappedByFieldName));
         delegateArgs.add(new ClassExpression(childDomainTypeNode));
-        addDelegatedMethod(getterName, "lazyChildLoad", false, null, delegateArgs, null, classNode, sourceUnit);
+        ClassNode returnTypeNode = new ClassNode(List.class);
+        addDelegatedMethod(getterName, "lazyChildLoad", false, null, delegateArgs, returnTypeNode, classNode, sourceUnit);
       }
 
     }
@@ -170,7 +171,9 @@ public class DomainEntityTransformation implements ASTTransformation {
     String fieldName = DomainEntity.DEFAULT_REPOSITORY_FIELD_NAME;
 
     List list = ASTUtils.addField(fieldName, GenericRepository.class, Modifier.STATIC, 0, false, null, node, sourceUnit);
-    addRepositoryGetter((FieldNode) list.get(0), node, sourceUnit);
+    if (list.size() > 0) {
+      addRepositoryGetter((FieldNode) list.get(0), node, sourceUnit);
+    }
   }
 
 

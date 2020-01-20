@@ -7,10 +7,10 @@ package sample.domain
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.DateCreated
 
 //import grails.gorm.annotation.Entity
 
-import io.micronaut.data.annotation.DateCreated
 import io.micronaut.data.annotation.DateUpdated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
@@ -36,7 +36,7 @@ import javax.persistence.OneToMany
   'moreNotes', 'dateCreated', 'dateUpdated', 'allFieldsDomain', 'allFieldsDomains', 'sampleChildren'])
 @EqualsAndHashCode(includes = ['name'])
 @SuppressWarnings("unused")
-class SampleParent {
+class SampleParent implements SampleParentInterface {
 
   // ********************************************************
   // * Note: Do not change these without running all tests.

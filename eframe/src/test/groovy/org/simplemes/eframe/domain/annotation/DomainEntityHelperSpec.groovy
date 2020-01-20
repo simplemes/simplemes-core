@@ -19,6 +19,9 @@ import sample.domain.AllFieldsDomain
 import sample.domain.Order
 import sample.domain.OrderLine
 import sample.domain.OrderRepository
+import sample.domain.SampleChild
+import sample.domain.SampleGrandChild
+import sample.domain.SampleParent
 
 import javax.sql.DataSource
 import java.sql.Connection
@@ -754,6 +757,28 @@ class DomainEntityHelperSpec extends BaseSpecification {
 
     then: 'the foreign reference is populated'
     afd2.order.order == order.order
+  }
+
+  @Rollback
+  def "verify that lazyChildLoad will work with grand-children"() {
+    given: 'a domain with grand children'
+    def sampleParent = new SampleParent(name: 'ABC').save()
+    def sampleChild = new SampleChild(sampleParent: sampleParent, key: 'XYZ').save()
+    def sampleGrandChild1 = new SampleGrandChild(sampleChild: sampleChild, grandKey: 'PDQ1').save()
+    def sampleGrandChild2 = new SampleGrandChild(sampleChild: sampleChild, grandKey: 'PDQ2').save()
+
+    when: 'the domain is read'
+    def sampleParent2 = SampleParent.findByUuid(sampleParent.uuid)
+
+    then: 'the child list is correct'
+    sampleParent2.sampleChildren.size() == 1
+    sampleParent2.sampleChildren[0] == sampleChild
+
+    and: 'the grand child list is correct'
+    def sampleChild2 = sampleParent2.sampleChildren[0]
+    sampleChild2.sampleGrandChildren.size() == 2
+    sampleChild2.sampleGrandChildren[0] == sampleGrandChild1
+    sampleChild2.sampleGrandChildren[1] == sampleGrandChild2
   }
 
 }

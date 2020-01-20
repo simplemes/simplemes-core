@@ -1,11 +1,9 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.ast;
 
-
-/*
- * Copyright Michael Houston 2016. All rights reserved.
- * Original Author: mph
- *
- */
 
 import io.micronaut.core.util.StringUtils;
 import org.codehaus.groovy.ast.*;
@@ -64,7 +62,7 @@ public class ASTUtils {
                                        Expression initialValue, ClassNode node, SourceUnit sourceUnit) {
     //System.out.println("Adding " + fieldName+", maxSize="+maxSize);
     List<ASTNode> res = new ArrayList<>();
-    if (node.getField(fieldName) == null) {
+    if (!hasField(node, fieldName)) {
       //System.out.println("adding fieldName = " + fieldName);
       // Only set if not defined.  Assume the user defined it correctly.
       ClassNode fieldTypeNode = new ClassNode(fieldType);
@@ -86,6 +84,24 @@ public class ASTUtils {
       sourceUnit.getErrorCollector().addError(new SimpleMessage(fieldName + " already exists in " + node, sourceUnit));
     }
     return res;
+  }
+
+  /**
+   * Checks for the existence of the given field.  If the field exists in a parent class, then this
+   * method returns false.
+   *
+   * @param classNode The class to check.
+   * @param fieldName The field to check.
+   * @return True if the class already as the field.
+   */
+  static boolean hasField(ClassNode classNode, String fieldName) {
+    FieldNode f = classNode.getField(fieldName);
+    if (f == null) {
+      return false;
+    }
+    //System.out.println(fieldName+" f:" + f.getOwner()+(f.getOwner().equals(classNode)));
+
+    return f.getOwner().equals(classNode);
   }
 
   /**

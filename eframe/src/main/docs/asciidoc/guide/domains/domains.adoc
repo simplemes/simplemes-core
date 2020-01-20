@@ -6,6 +6,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc-header]#General#
 [inline-toc]#<<Domain Packages>>#
 [inline-toc]#<<Reserved Domain Names>>#
+[inline-toc]#<<Duplicate Data (Sub-Classes)>>#
 
 [inline-toc-header]#Fields#
 [inline-toc]#<<Field Types>>#
@@ -61,6 +62,26 @@ This is mainly because of the way <<Markers and Models>> work.  A few names are 
 to store elements in the marker model (a Map).  You should avoid the names
 used by the <<StandardModelAndView>>.
 
+==== Duplicate Data (Sub-Classes)
+
+Sometimes, you have common features that have the same fields in two or more related domains.
+Normally, you could use inheritance to define a common base class with the common fields.
+This would reduce the duplicate code to define the fields in multiple places.
+The enterprise framework needs this with the common fields used by the
+link:groovydoc/org/simplemes/eframe/custom/domain/FlexField.html[FlexField^] icon:share-square-o[role="link-blue"]
+and
+link:groovydoc/org/simplemes/eframe/custom/domain/FieldExtension.html[FieldExtension^] icon:share-square-o[role="link-blue"].
+
+Micronaut-data currently does not really support use of sub-classes as domain classes.
+This means you will have to duplicate the fields in both domains.
+
+This duplication is not as bad as it seems.  Domains are usually simple data objects
+with no real behavior.  Any common logic should be placed in a common service that can act
+on the related domains.   You should use a normal interface to define the getters/setters for
+the common fields. This will let the service work with all of the related domains.
+
+This also has one other side-effect: the domains will be stored in separate tables.  This could be
+avoided with some annotations, if needed.
 
 // Fields
 ==== Field Names
