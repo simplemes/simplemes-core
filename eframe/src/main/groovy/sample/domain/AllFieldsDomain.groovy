@@ -17,6 +17,8 @@ import io.micronaut.data.annotation.Transient
 import io.micronaut.data.model.DataType
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.annotation.DomainEntity
+import org.simplemes.eframe.system.BasicStatus
+import org.simplemes.eframe.system.EnabledStatus
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
 import javax.annotation.Nullable
@@ -54,7 +56,7 @@ class AllFieldsDomain {
   @Nullable String notes
   @Nullable ReportTimeIntervalEnum reportTimeInterval
   @Nullable Order order
-  // TODO: Restore @Nullable BasicStatus status = EnabledStatus.instance
+  @Nullable BasicStatus status = EnabledStatus.instance
 
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')

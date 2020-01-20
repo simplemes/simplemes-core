@@ -1,16 +1,26 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package sample.domain
 
-//import grails.gorm.annotation.Entity
+import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+
+//import grails.gorm.annotation.Entity
+
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
 import org.simplemes.eframe.data.format.BasicFieldFormat
 import org.simplemes.eframe.date.DateOnly
+import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+import javax.annotation.Nullable
+import javax.persistence.Column
+import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
 
 /**
  * A test/Sample child domain class.
@@ -20,7 +30,10 @@ import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
  *
  */
 //@Entity
+@MappedEntity
+@DomainEntity
 @ToString(includePackage = false, includeNames = true, excludes = ['sampleParent'])
+@EqualsAndHashCode(includes = ['sampleParent', 'key'])
 class SampleChild {
 
   // ********************************************************
@@ -28,45 +41,30 @@ class SampleChild {
   // *       These fields are used by many tests.
   // ********************************************************
 
+  @ManyToOne
   SampleParent sampleParent
-  static belongsTo = [sampleParent: SampleParent]
+
+  @Column(name = 'key_value', length = 30)
   String key
-  Integer sequence = 10
-  String title
-  BasicFieldFormat format
-  BigDecimal qty
-  Boolean enabled
-  Date dateTime
-  DateOnly dueDate
-  ReportTimeIntervalEnum reportTimeInterval
-  Order order
+  @Nullable Integer sequence = 10
+  @Nullable String title
+  @Nullable BasicFieldFormat format
+  @Nullable BigDecimal qty
+  @Nullable Boolean enabled
+  @Nullable Date dateTime
+  @Nullable DateOnly dueDate
+  @Nullable ReportTimeIntervalEnum reportTimeInterval
+  @Nullable Order order
 
   /**
    * A list of grand children.
    */
-  List<SampleGrandChild> sampleGrandChildren = []
-  static hasMany = [sampleGrandChildren: SampleGrandChild]
+  @OneToMany(mappedBy = "sampleChild")
+  List<SampleGrandChild> sampleGrandChildren
 
-  static constraints = {
-    key nullable: false, blank: false, maxSize: 40
-    sequence nullable: true
-    title nullable: true, blank: true, maxSize: 20
-    format nullable: true, length: 2
-    qty nullable: true
-    enabled nullable: true
-    dateTime nullable: true
-    dueDate nullable: true
-    reportTimeInterval nullable: true
-    order nullable: true
-  }
+  @Id @AutoPopulated UUID uuid
 
-  /**
-   * Internal mappings.   
-   */
-  static mapping = {
-    key column: 'key_value'
-  }
-
+  @SuppressWarnings("unused")
   static fieldOrder = ['key', 'sequence', 'title', 'qty', 'enabled', 'dueDate', 'dateTime', 'format',
                        'reportTimeInterval', 'order']
 

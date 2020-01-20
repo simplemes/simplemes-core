@@ -1,20 +1,30 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package sample.domain
+
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
 
 
 //import grails.gorm.annotation.Entity
-import groovy.transform.ToString
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import org.simplemes.eframe.domain.annotation.DomainEntity
+
+import javax.annotation.Nullable
+import javax.persistence.ManyToOne
 
 /**
  * A test/Sample grand child domain class.
  */
-//@Entity
+@MappedEntity
+@DomainEntity
 @ToString(includePackage = false, includeNames = true, excludes = ['sampleChild'])
+@EqualsAndHashCode(includes = ['sampleChild', 'grandKey'])
 class SampleGrandChild {
 
   // ********************************************************
@@ -22,16 +32,14 @@ class SampleGrandChild {
   // *       These fields are used by many tests.
   // ********************************************************
 
+  @ManyToOne
   SampleChild sampleChild
-  static belongsTo = [sampleChild: SampleChild]
   String grandKey
-  String title
+  @Nullable String title
+  @Id @AutoPopulated UUID uuid
 
-  static constraints = {
-    grandKey nullable: false, blank: false, maxSize: 40
-    title nullable: true, blank: true, maxSize: 20
-  }
 
+  @SuppressWarnings("unused")
   static fieldOrder = ['grandKey', 'title']
 
 }

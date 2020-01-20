@@ -17,7 +17,8 @@ interface AllFieldsDomainRepository extends BaseRepository, CrudRepository<AllFi
 
   Optional<AllFieldsDomain> findByName(String name)
 
-  //@Join(value = "order", type = Join.Type.OUTER)  Not supported in H2
+  List<AllFieldsDomain> findAllByName(String name)
+
   Optional<AllFieldsDomain> findByUuid(UUID uuid)
 
   List<AllFieldsDomain> list()

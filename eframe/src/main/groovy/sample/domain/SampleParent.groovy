@@ -1,14 +1,26 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package sample.domain
 
-//import grails.gorm.annotation.Entity
+import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-import org.simplemes.eframe.data.annotation.ExtensibleFields
+import io.micronaut.data.annotation.AutoPopulated
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+//import grails.gorm.annotation.Entity
+
+import io.micronaut.data.annotation.DateCreated
+import io.micronaut.data.annotation.DateUpdated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
+import org.simplemes.eframe.domain.annotation.DomainEntity
+
+import javax.annotation.Nullable
+import javax.persistence.ManyToMany
+import javax.persistence.OneToMany
 
 /**
  * A test/Sample parent domain class.
@@ -17,12 +29,13 @@ import org.simplemes.eframe.data.annotation.ExtensibleFields
  * <b>Fields</b> Include: name, title, notes, notDisplayed, moreNotes. allFieldsDomains, allFieldDomain, sampleChildren,
  * dateCreated, lastUpdated
  */
-//@Entity
+// TODO: Replace with non-hibernate alternative @ExtensibleFields
+@MappedEntity
+@DomainEntity
 @ToString(includePackage = false, includeNames = true, includes = ['name', 'title', 'notes', 'notDisplayed',
-  'moreNotes', 'dateCreated', 'lastUpdated', 'allFieldsDomain', 'allFieldsDomains', 'sampleChildren'])
+  'moreNotes', 'dateCreated', 'dateUpdated', 'allFieldsDomain', 'allFieldsDomains', 'sampleChildren'])
+@EqualsAndHashCode(includes = ['name'])
 @SuppressWarnings("unused")
-// TODO: Replace with non-hibernate alternative
-@ExtensibleFields
 class SampleParent {
 
   // ********************************************************
@@ -31,40 +44,41 @@ class SampleParent {
   // ********************************************************
 
   String name
-  String title
-  String notes
-  String notDisplayed
-  String moreNotes = 'Default Notes'
-  Date dateCreated
-  Date lastUpdated
+  @Nullable String title
+  @Nullable String notes
+  @Nullable String notDisplayed
+  @Nullable String moreNotes = 'Default Notes'
+
+  @DateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE') Date dateCreated
+
+  @DateUpdated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateUpdated
+
 
   /**
    * A reference to another domain object.
    */
-  AllFieldsDomain allFieldsDomain
+  @Nullable AllFieldsDomain allFieldsDomain
 
   /**
    * A list of foreign references.
    */
-  List allFieldsDomains
+  @ManyToMany(mappedBy = "sample_parent_afd")
+  List<AllFieldsDomain> allFieldsDomains = []
 
   /**
    * A list of children.
    */
-  List<SampleChild> sampleChildren = []
-  static hasMany = [sampleChildren: SampleChild, allFieldsDomains: AllFieldsDomain]
+  @OneToMany(mappedBy = "sampleParent")
+  List<SampleChild> sampleChildren
 
-  static constraints = {
-    name nullable: false, blank: false, maxSize: 40, unique: true
-    title nullable: true, blank: true, maxSize: 20
-    notes nullable: true, blank: true, maxSize: 200
-    moreNotes nullable: true, blank: true, maxSize: 200
-    notDisplayed nullable: true, blank: true, maxSize: 200
-    allFieldsDomain nullable: true
-  }
+  @Id @AutoPopulated UUID uuid
 
   static fieldOrder = ['name', 'title', 'notes', 'moreNotes', 'allFieldsDomain', 'allFieldsDomains',
                        'sampleChildren',]
+
   static keys = ['name']
 
   /**

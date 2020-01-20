@@ -15,13 +15,14 @@ import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.annotation.DomainEntity
+import org.simplemes.eframe.system.BasicStatus
+import org.simplemes.eframe.system.EnabledStatus
 
 import javax.annotation.Nullable
 import javax.persistence.Column
+import javax.persistence.OneToMany
 
 //import grails.gorm.annotation.Entity
-
-import javax.persistence.OneToMany
 
 /**
  * A sample domain class that simulates an order.
@@ -32,7 +33,6 @@ import javax.persistence.OneToMany
 @DomainEntity
 @ToString(includeNames = true)
 @EqualsAndHashCode(includes = ['order'])
-//@CompileStatic
 @SuppressWarnings("unused")
 class Order {
   @Column(name = 'ordr', length = 30)
@@ -41,10 +41,7 @@ class Order {
 
   @Nullable String product
 
-/*
-  @MappedProperty(type = DataType.STRING)
   BasicStatus status = EnabledStatus.instance
-*/
 
   @Nullable
   //@MappedProperty(type = DataType.DATE)

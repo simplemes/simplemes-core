@@ -5,7 +5,7 @@ Micronaut Data Conversion Tasks
 ===============================
 @Entity replacement with GDSL.
   Convert Domains
-    AllFieldsDomain
+    done - AllFieldsDomain
     SampleParent
     FlexField/AbstractField
     FlexType
@@ -22,8 +22,13 @@ Micronaut Data Conversion Tasks
       done - - Add getter that lazy loads the value.
       done - - Add .adoc note on lazy loader.
   Verify sub-class works AbstractField
+    Needs:
+      AbstractField >> FlexField
+      Routing >> ProductRouting, MasterRouting
+      Operation >>
+  Convert ExtensibleFields?
   done - EncodedTypes - Status on Order?
-  Use GDSL to handle code completion.  See https://www.tothenew.com/blog/gdsl-awesomeness-introduction-to-gdsl-in-intellij-idea/
+  done - Use GDSL to handle code completion.  See https://www.tothenew.com/blog/gdsl-awesomeness-introduction-to-gdsl-in-intellij-idea/
   Adds these methods
     Lazy load
       reference - uses txn.
@@ -40,9 +45,9 @@ Micronaut Data Conversion Tasks
       done - Missing value for field {0} in {1}.
   Version and opt locking (custom JDBCOperations).
 Convert to UUID's, called uuid.  Update docs for new terms (ID)
-Converters needed
+done- Converters needed
   done - DateOnly
-  EncodedTypes.
+  done - EncodedTypes.
 Update code when issue is fixed:
   https://github.com/micronaut-projects/micronaut-data/issues/323
 Vaerify Jackson handlers for domain entities.
