@@ -1,15 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data
 
-
+import org.simplemes.eframe.domain.PersistentProperty
 import org.simplemes.eframe.misc.ArgumentUtils
 
 import java.lang.reflect.Field
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Builds the correct field definition for a given property of class field.
@@ -18,15 +16,12 @@ class FieldDefinitionFactory {
 
   /**
    * Builds the correct field definition for a persistent GORM entity property.
-   * @param property The GORM property.
+   * @param property The presisted property.
    */
-  // TODO: Replace with non-hibernate alternative
-/*
   static FieldDefinitionInterface buildFieldDefinition(PersistentProperty property) {
     ArgumentUtils.checkMissing(property, 'property')
     return new SimpleFieldDefinition(property)
   }
-*/
 
   /**
    * Builds the correct field definition for a normal Java field.

@@ -1,7 +1,7 @@
 
 === Potholes
 
-Micronaut, GORM and the other tools are great, but they have some pot holes you need to avoid.
+Micronaut and the other tools are great, but they have some pot holes you need to avoid.
 These pot holes are not terribly bad problems, but we have lost some time discovering them and
 working around them.  This section is meant to help you avoid some of those pot holes.
 
@@ -228,92 +228,17 @@ Move the Java source files to the Groovy directory.  The groovy compiler can han
 Don't call Groovy code from Java in application code.
 
 
-==== Hibernate NonUniqueObjectException and DuplicateKeyException
-
-These exceptions will happen when the hibernate sessions get out of synch.  This happens when you do unusual
-things in GORM.  Most simple read, update cycles will not cause this problem.  This will happen when
-you try to make database updates in a hibernate event (e.g. beforeInsert, beforeValidate, etc).
-These event methods are called when hibernate is flushing the session.
-Trying to change the database during these methods will cause the session to get out of synch and
-cause unpredictable errors.
-
-For example, doing database updates in the <<beforeValidate Method>> can cause these
-exceptions.  Using _withNewSession_ can fix this in some cases.  Other cases might be fixable by
-re-reading the value.  See <<Custom Child List - Integration/GUI Testing>> for an example in testing.
-
-==== HibernateSystemException Proxy for Two Open Sessions when GUI Testing
-
-  HibernateSystemException: illegally attempted to associate a proxy with two open Sessions
-
-This is caused by attempting to delete a custom child record in the cleanup section of the GUI test.
-The custom child cleanup logic that deletes records is triggered in a different session.  This causes the
-error in the GUI/GEB testing.  This is not an issue in production since one session is in use for most deletes.
-
-This is probably due to code like this in your GUI test:
-
-  static dirtyDomains = [Parent, CustomChild]
-
-To fix this, use this order:
-
-  static dirtyDomains = [CustomChild, Parent]
-
-This exception can also be caused by loading a list of objects in one session and attempting to delete them
-in another session.  See notes in `FieldExtensionHelper.handlePostDeleteEvent()`.
-
-
-==== rejected value null on hasHone relationship
-
-In GORM, a new quirk appeared.  If you have a one-to-one relationship between two objects and
-you use the `belongsTo` with the `hasOne` relationship, you will get an error on save like this:
-
-
-[source]
-----
-Field error in object 'Product' on field 'productRouting.product': rejected value [null];
-----
-
-This means the unit test mocks are not setting both ends of the one-to-on relationship for you.
-The fix is simple: convert the `belongsTo` notation to a simple reference:
-
-[source,groovy]
-----
-Product product
-----
-
-This is the way GORM expects these relationships to work.
-
-==== Hibernate Does Not Save Unchanged Records
-
-Hibernate is generally great, but these is one pothole that we fall into frequently.  This causes a lot of trouble
-in testing if your forget about this.  Sometimes, we have to force an update by changing a value.  One common
-approach is to change the `lastUpdated` field:
-
-[source,groovy]
-----
- order.lastUpdated = new Date(System.currentTimeMillis()+1)  // <.>
-----
-<.> Use the current time
-
-====  org.hibernate.NonUniqueObjectException
-
-Sometimes, when doing integration testing, the tests will fail with a NonUniqueObjectException exception such as:
-
-  Caused by: org.hibernate.NonUniqueObjectException: A different object with the same identifier value was already associated with the session : [org.simplemes.mes.demand.Order#1]
-
-This can sometimes be fixed by `withNewSession` or by re-reading the object using `get()`.  See
-<<Custom Child List - Integration/GUI Testing>> for an example.
-
 ==== StackOverflowException and _StackOverflowError_
 
 *Symptom:*
 
 A stack overflow exception is thrown in unit tests and production when validating a
-top-level object with a _hasOne_ child.  You can also get a _StackOverflowError_ in a unit test
+top-level object with a parent reference.  You can also get a _StackOverflowError_ in a unit test
 when toString() is used by debugging or other testing mechanisms (e.g. Spock or IDE-based testing).
 
 This can happen under these conditions:
 
-* Both child and parent have `hashCode()` methods.  This can be the _@EqualsAndHashCode_ annotation or a normal method.
+* Both child and parent have `hashCode()` or `toString()` methods.  This can be the _@EqualsAndHashCode_ annotation or a normal method.
 * The child uses the parent reference as part of its hash code.
 * The parent uses the child reference as part of its hash code.
 
@@ -321,12 +246,12 @@ This can happen if you use the simple _@EqualsAndHashCode_ or _@ToString_:
 
 [source,groovy]
 ----
-
 @EqualsAndHashCode
 @ToString
 class Parent {
   String code
-  static hasOne = [child: Child]
+  @OneToMany(mappedBy = "parent")
+  List<Child> children
   . . .
 }
 
@@ -334,6 +259,7 @@ class Parent {
 @EqualsAndHashCode
 @ToString
 class Child {
+  @ManyToOne
   Parent parent
   . . .
 }
@@ -354,13 +280,15 @@ The solution is to make sure the parent hash code does not depend on the child's
 @ToString
 class Parent {
   String code
-  static hasOne = [child: Child]
+  @OneToMany(mappedBy = "parent")
+  List<Child> children
   . . .
 }
 
 @EqualsAndHashCode(includes=['parent'])  // <1>
 @ToString(excludes = ['parent'])
 class Child {
+  @ManyToOne
   Parent parent
   . . .
 }
@@ -372,67 +300,6 @@ class Child {
 
 NOTE: This can also happen with _@ToString()_.  You may need to add the option _excludes = ['order']_
       to the _@ToString()_ annotation.
-
-==== Updates on Domains not Happening in GORM
-
-*Symptom:*
-
-A domain has a simple update to a field.  It makes the update with a simple assignment in the domain class
-itself.  The save() does not actually update the database.
-
-This is caused by the new GORM approach to dirty record checking.  As a side-effect of this change, simple
-assignments don't seem to trigger the dirty record flag correctly.  For example:
-
-
-[source,groovy]
-----
-
-@EqualsAndHashCode(includes=['code'])
-class Parent {
-  String code
-  BigDecimal qty = 0.0
-
-  def doSomeUpdates() {
-    qty = 1.0               // <1>
-    save()
-  }
-  . . .
-}
-
-----
-<1> The change to the record is done with a simple assignment, not with the `setQty()` method.
-
-This will not trigger the SQL update since GORM does not think the record changed.  To avoid this, you will
-need to use this approach:
-
-[source,groovy]
-----
-
-@EqualsAndHashCode(includes=['code'])
-class Parent {
-  String code
-  BigDecimal qty = 0.0
-
-  def doSomeUpdates() {
-    setQty(1.0)               // <1>
-    save()
-  }
-  . . .
-}
-
-----
-<1> This will trigger the dirty record logic and force an update.
-
-==== org.hibernate.MappingException on EncodedType
-
-When starting the server, it will register all <<Encoded Types>>
-with Hibernate.  If your module has not registered the types, then you will get the error:
-
-----
-  Caused by: org.hibernate.MappingException: Could not determine type for: org.simplemes.mes.demand.OrderStatus, at table: ordr, for columns: [org.hibernate.mapping.Column(overall_status)]
-----
-
-You will need to define the encoded types as noted in <<Encoded Types>>
 
 ==== Cannot set property 'Q' of undefined
 
@@ -458,38 +325,5 @@ _B.display = {
 
 <.> This extra comma causes problems with the parsing of the object and the toolkit attempts to use an undefined GUI element.
 Remove this extra comma to solve the problem.
-
-
-==== Some Container won't Expand to Full Size
-
-The <<GUI Toolkit>> library has some comprehensive tools for layout, but it does have some layout
-quirks.  One good example is that a container (e.g. dialog) might not expand to the
-given size (width) specified in the container creation.  
-
-
-[source,javascript]
-.Example - Dialog Size not Honored
-----
-ef.displayDialog({
-  title: "Title",
-  bodyURL: '/extension/dialog?dialog=extension/addPanelDialog',  // <.>
-  width: '85%',  // <.>
-  buttons: ['yes','no','cancel'],
-  yes: function (dialogID,button) {
-   return true;
-  }
-});
-----
-
-<.> The dialog has one field ('panel') that is about 400 pixels wide.
-<.> The user or developer has made the dialog 85% wide.
-
-This should result in a dialog that is 85% of the display width.  In some cases, it won't.
-Instead, the dialog is always displayed as about 400 pixels wide, which is the rough width
-of the 'panel' input field.
-
-To avoid this, we need to add a variable width element after the 'panel' input field.
-The normal <<efField>> mark does this for standard text fields by adding a spacer ({})
-after the field.  This spacer will expand as needed to make the window the desired width.
 
 

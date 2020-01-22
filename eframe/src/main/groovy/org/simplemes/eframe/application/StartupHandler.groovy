@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.application
 
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -8,15 +12,9 @@ import io.micronaut.runtime.event.annotation.EventListener
 import io.micronaut.scheduling.annotation.Async
 import org.simplemes.eframe.application.issues.WorkArounds
 import org.simplemes.eframe.date.EFrameDateFormat
-import org.simplemes.eframe.json.HibernateAwareJacksonModule
+import org.simplemes.eframe.json.EFrameJacksonModule
 
 import javax.inject.Singleton
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * This bean is executed on startup.  This is used to load initial data and handle similar actions.
@@ -41,7 +39,11 @@ class StartupHandler {
   void onStartup(ServiceStartedEvent event) {
     log.debug('Server Started with configuration {}', Holders.configuration)
 
-    //configureHibernate()
+    // Modify the Object mapper
+    def mapper = Holders.applicationContext.getBean(ObjectMapper)
+    configureJacksonObjectMapper(mapper)
+    // TODO: Look at configuration https://stackoverflow.com/questions/59160012/get-micronaut-to-use-my-instance-of-jacksonconfiguration
+    // needs 1.3.0 or 1.2.8.
 
     // Start Initial data load.
     def loader = Holders.applicationContext.getBean(InitialDataLoader)
@@ -54,23 +56,10 @@ class StartupHandler {
     //println "ds = $ds, ${ds.getClass()}"
 
 
-    // Modify the Object mapper
-    def mapper = Holders.applicationContext.getBean(ObjectMapper)
-    configureJacksonObjectMapper(mapper)
-    // TODO: Look at configuration https://stackoverflow.com/questions/59160012/get-micronaut-to-use-my-instance-of-jacksonconfiguration
-    // needs 1.3.0 or 1.2.8.
-
     if (WorkArounds.list()) {
       log.warn('WorkArounds in use {}', WorkArounds.list())
     }
 
-
-  }
-
-  /**
-   * Configures the hibernate data store for use with the framework.
-   */
-  void configureHibernate() {
 
   }
 
@@ -94,7 +83,7 @@ class StartupHandler {
     def format = new EFrameDateFormat()
     format.setTimeZone(Holders.globals.timeZone)
     mapper.setDateFormat(format)
-    mapper.registerModule(new HibernateAwareJacksonModule())
+    mapper.registerModule(new EFrameJacksonModule())
 
 /*  // Don't use Hibernate5Module for Jackson.  Seems to not solve the infinite recursion problem when serializing parent/child.
     // Also, doesn't help with child creation/update for REST POST cases.

@@ -39,12 +39,12 @@ Most standard objects will have these typical fields:
 |===
 |Field|Description
 
-|id| The internal database record ID (a long integer).  Usually not visible to the user.
+|uuid| The internal database record UUID (a unique string).  Usually not visible to the user.
 |key(s)/name | One or more primary key fields for the object.
                These are usually unique and provided by the user.  The user will typically
                retrieve the records by these key fields.  The first key field is usually
                named the same as the object (e.g. _Order_ has a key field of `order`).
-               Sometimes, the word 'name' is used in place of key field.
+               Sometimes, the word 'id' or 'name' is used in place of key field.
 |title| The single line title.  This is usually a short description displayed in lists.
 |description| A multi-line description.  Typically limited to 255 characters to reduce database size.
 |dateCreated| The date/time this record was created.

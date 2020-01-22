@@ -130,6 +130,13 @@ class DomainEntityHelperSpec extends BaseSpecification {
 
     and: 'the field has the list - the list is the same on later calls'
     DomainEntityHelper.instance.lazyChildLoad((DomainEntityInterface) order, 'orderLines', 'order', OrderLine).is(list)
+
+    when: 'the loaded is called again'
+    DomainEntityHelper.instance.lastLazyChildParentLoaded = null
+    DomainEntityHelper.instance.lazyChildLoad((DomainEntityInterface) order, 'orderLines', 'order', OrderLine)
+
+    then: 'the value is not re-read from the DB'
+    DomainEntityHelper.instance.lastLazyChildParentLoaded == null
   }
 
   @Rollback
@@ -481,6 +488,36 @@ class DomainEntityHelperSpec extends BaseSpecification {
     errors[0].fieldName == 'ABC'
   }
 
+  def "verify that validate supports non-fail return values from validate method in domain"() {
+    given: 'a domain'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import org.simplemes.eframe.domain.validate.ValidationError
+      
+      @DomainEntity
+      class TestClass {
+        UUID uuid
+        def validate() {
+          $returnClaus
+        }
+      }
+    """
+    def object = CompilerTestUtils.compileSource(src).newInstance()
+
+    when: 'the object is validated'
+    def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) object)
+
+    then: 'no errors are found'
+    errors.size() == 0
+
+    where:
+    returnClaus   | _
+    'return []'   | _
+    'return null' | _
+    ''            | _
+
+  }
+
   def "verify that validate calls validate method in domain - multiple errors returned"() {
     given: 'a domain'
     def src = """
@@ -532,6 +569,28 @@ class DomainEntityHelperSpec extends BaseSpecification {
     errors.size() == 1
     errors[0].code == 1
     errors[0].fieldName == 'notNullableField'
+  }
+
+  def "verify that validate handles nullable in the JPA column annotation"() {
+    given: 'a domain'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import org.simplemes.eframe.domain.validate.ValidationError
+      import javax.persistence.Column
+
+      @DomainEntity
+      class TestClass {
+        UUID uuid
+        @Column(nullable=true) String title
+      }
+    """
+    def object = CompilerTestUtils.compileSource(src).newInstance()
+
+    when: 'the object is validated'
+    def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) object)
+
+    then: 'there are no validation errors'
+    errors.size() == 0
   }
 
   def "verify that validate passes when a non-nullable field has a value"() {
@@ -771,14 +830,29 @@ class DomainEntityHelperSpec extends BaseSpecification {
     def sampleParent2 = SampleParent.findByUuid(sampleParent.uuid)
 
     then: 'the child list is correct'
-    sampleParent2.sampleChildren.size() == 1
-    sampleParent2.sampleChildren[0] == sampleChild
+    def sampleChildren = sampleParent2.sampleChildren
+    sampleChildren.size() == 1
+    sampleChildren[0] == sampleChild
 
     and: 'the grand child list is correct'
-    def sampleChild2 = sampleParent2.sampleChildren[0]
+    def sampleChild2 = sampleChildren[0]
     sampleChild2.sampleGrandChildren.size() == 2
     sampleChild2.sampleGrandChildren[0] == sampleGrandChild1
     sampleChild2.sampleGrandChildren[1] == sampleGrandChild2
+  }
+
+  @Rollback
+  def "verify that single foreign reference relationships are null when not found"() {
+    given: 'a domain with no list of foreign references'
+    def sampleParent = new SampleParent(name: 'ABC').save()
+
+    when: 'the domain is read and the field is accessed'
+    def sampleParent2 = SampleParent.findByUuid(sampleParent.uuid)
+    sampleParent2.getAllFieldsDomain()
+    //println "sampleParent2 = $sampleParent2"
+
+    then: 'the reference list is correct'
+    sampleParent2.allFieldsDomain == null
   }
 
 }

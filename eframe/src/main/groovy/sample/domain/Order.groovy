@@ -60,9 +60,10 @@ class Order {
   @OneToMany(mappedBy = "order")
   List<OrderLine> orderLines
 
-  @Column(length = 800)
+  @Column(length = 800, nullable = true)
+  // Uses nullable option on @Column for unit tests.  See PersistentPropertySpec.
   // Larger than the default for H2 to allow SQL error generation in unit tests.  See DomainEntityHelperSpec.
-  @Nullable String notes
+  String notes
 
   @Id @AutoPopulated UUID uuid
 

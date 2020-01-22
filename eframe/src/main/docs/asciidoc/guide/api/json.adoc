@@ -4,7 +4,7 @@
 
 ifeval::["{backend}" != "pdf"]
 
-[inline-toc]#<<Hibernate Aware Module for Jackson>>#
+[inline-toc]#<<Persistence Aware Module for Jackson>>#
 [inline-toc]#<<json-by-key,@JSONByKey>>#
 [inline-toc]#<<json-by-id,@JSONByID>>#
 [inline-toc]#<<typeablemapper, Mapping Generic Objects to JSON (TypeableMapper)>>#
@@ -16,10 +16,10 @@ endif::[]
 The enterprise framework uses JSON for external API access over HTTP.  We use the
 https://github.com/FasterXML/jackson-docs[Jackson^] library for creating and reading JSON data.
 
-==== Hibernate Aware Module for Jackson
+==== Persistence Aware Module for Jackson
 
 The
-link:groovydoc/org/simplemes/eframe/json/HibernateAwareJacksonModule.html[HibernateAwareJacksonModule^]
+link:groovydoc/org/simplemes/eframe/json/EFrameJacksonModule.html[EFrameJacksonModule^]
 icon:share-square-o[role="link-blue"] provides a number of features that your application will
 use automatically:
 

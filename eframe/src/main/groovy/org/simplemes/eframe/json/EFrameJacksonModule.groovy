@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.json
 
 import com.fasterxml.jackson.core.Version
@@ -13,17 +17,11 @@ import org.simplemes.eframe.data.annotation.ExtensibleFields
 import org.simplemes.eframe.data.format.EncodedTypeFieldFormat
 import org.simplemes.eframe.domain.DomainUtils
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
- * Provides extra features for Hibernate's use of the Jackson object mapper.
+ * Provides extra features for Micronaut Data's use of the Jackson object mapper.
  * This alters the property serializer for specific cases, such as parent references and foreign domain references.
  */
-class HibernateAwareJacksonModule extends Module {
+class EFrameJacksonModule extends Module {
 
   /**
    * Method that returns a display that can be used by Jackson
@@ -32,7 +30,7 @@ class HibernateAwareJacksonModule extends Module {
    */
   @Override
   String getModuleName() {
-    return 'HibernateAwareJacksonModule'
+    return this.getClass().simpleName
   }
 
   /**
@@ -51,15 +49,13 @@ class HibernateAwareJacksonModule extends Module {
    */
   @Override
   void setupModule(SetupContext context) {
-    //context.setClassIntrospector(new HibernateAwareClassIntrospector())
-    context.addBeanSerializerModifier(new HibernateBeanSerializerModifier())
-    //context.addBeanDeserializerModifier(new HibernateBeanDeserializerModifier())
+    context.addBeanSerializerModifier(new EFrameBeanSerializerModifier())
     context.addDeserializationProblemHandler(new DeserializationProblemHandler())
   }
 }
 
 @Slf4j
-class HibernateBeanSerializerModifier extends BeanSerializerModifier {
+class EFrameBeanSerializerModifier extends BeanSerializerModifier {
   /**
    * Method called by BeanSerializerFactory after constructing default
    * bean serializer instance with properties collected and ordered earlier.
@@ -88,13 +84,13 @@ class HibernateBeanSerializerModifier extends BeanSerializerModifier {
     def clazz = beanDesc.type.rawClass
     List<String> fieldsToRemove = []
 
-    //println "clazz = $clazz"
     def fieldDefinitions = DomainUtils.instance.getFieldDefinitions(clazz)
     for (int i = 0; i < beanProperties.size(); i++) {
       BeanPropertyWriter w = beanProperties.get(i)
       //println "beanPropertyWriter = ${w?.dump()}"
       def fieldName = w.getName()
       def fieldDef = fieldDefinitions?.get(fieldName)
+      println "fieldDef = $fieldDef"
       if (fieldDef?.isReference()) {
         if ((!fieldDef.isChild()) && (!Collection.isAssignableFrom(fieldDef.type))) {
           def keys = DomainUtils.instance.getKeyFields(fieldDef.type)

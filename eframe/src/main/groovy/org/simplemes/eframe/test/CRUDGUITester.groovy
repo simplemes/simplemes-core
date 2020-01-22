@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import geb.navigator.Navigator
@@ -29,12 +33,6 @@ import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.web.PanelUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * A full-scale GUI tester to test a standardized set of definition pages for a single domain/controller.
@@ -1001,7 +999,7 @@ class CRUDGUITester {
       object = NumberUtils.formatNumber((Number) object, currentLocale, true)
     } else if (EncodedTypeInterface.isAssignableFrom(object.getClass())) {
       object = object.toStringLocalized()
-    } else if (DomainUtils.instance.isGormEntity(object.getClass())) {
+    } else if (DomainUtils.instance.isDomainEntity(object.getClass())) {
       object = TypeUtils.toShortString(object, true)
     }
     return object

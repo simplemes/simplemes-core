@@ -1,10 +1,8 @@
-package org.simplemes.eframe.data
-
 /*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
+package org.simplemes.eframe.data
 
 /**
  * Defines a single instance of the possible choices for a class.
@@ -33,7 +31,7 @@ interface ChoiceListItemInterface {
   String toStringLocalized()
 
   /**
-   * Returns the value for the choice list (e.g. a domain record of enum element).
+   * Returns the value for the choice list (e.g. a domain record or enum element).
    * @return The value.
    */
   Object getValue()

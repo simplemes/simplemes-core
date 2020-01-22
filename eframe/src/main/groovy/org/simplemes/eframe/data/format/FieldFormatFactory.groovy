@@ -1,18 +1,15 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data.format
 
 import org.simplemes.eframe.data.ConfigurableTypeInterface
 import org.simplemes.eframe.data.EncodedTypeInterface
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.DomainUtils
+import org.simplemes.eframe.domain.PersistentProperty
 import org.simplemes.eframe.misc.ArgumentUtils
-
-import java.lang.reflect.Field
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Builds the correct field format for the given object class.
@@ -24,8 +21,7 @@ class FieldFormatFactory {
    * @param clazz The clazz to build the format for.  Can be null.
    * @param property The property definition for this field.  Cane be null.
    */
-  // TODO: Replace with non-hibernate alternative
-  static FieldFormatInterface build(Class clazz, Field property = null) {
+  static FieldFormatInterface build(Class clazz, PersistentProperty property = null) {
     ArgumentUtils.checkMissing(clazz, 'clazz')
     switch (clazz) {
       case String:
@@ -55,16 +51,13 @@ class FieldFormatFactory {
    * @param property The property definition for this field.  Cane be null.
    * @return The format for the field.
    */
-  static FieldFormatInterface checkOtherTypes(Class clazz, Field property = null) {
+  static FieldFormatInterface checkOtherTypes(Class clazz, PersistentProperty property = null) {
     if (clazz.isEnum()) {
       return EnumFieldFormat.instance
     } else if (Collection.isAssignableFrom(clazz)) {
-      if (property) {
-        // TODO: Replace with non-hibernate alternative
-        if (property instanceof Object /*Association*/) {
-          if (!(DomainUtils.instance.isOwningSide(property))) {
-            return DomainRefListFieldFormat.instance
-          }
+      if (property?.referenceType) {
+        if (!(property.child)) {
+          return DomainRefListFieldFormat.instance
         }
       }
       return ChildListFieldFormat.instance
@@ -72,7 +65,7 @@ class FieldFormatFactory {
       return ConfigurableTypeDomainFormat.instance
     } else if (EncodedTypeInterface.isAssignableFrom(clazz)) {
       return EncodedTypeFieldFormat.instance
-    } else if (DomainUtils.instance.isGormEntity(clazz)) {
+    } else if (DomainUtils.instance.isDomainEntity(clazz)) {
       return DomainReferenceFieldFormat.instance
     }
     return null

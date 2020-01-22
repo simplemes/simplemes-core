@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.application
 
 
@@ -11,12 +15,6 @@ import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.InitialDataRecords
 
 import javax.inject.Singleton
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Loads any initial data records needed for a new system.
@@ -182,7 +180,7 @@ class InitialDataLoader {
 
     void load() {
       def clazz = domainClass
-      if (!DomainUtils.instance.isGormEntity(clazz)) {
+      if (!DomainUtils.instance.isDomainEntity(clazz)) {
         // Fallback to a known domain for non-domain loaders.
         clazz = User
       }

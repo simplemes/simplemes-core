@@ -1,29 +1,28 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.domain
 
 import io.micronaut.core.beans.BeanIntrospection
 import io.micronaut.core.beans.BeanIntrospector
 import io.micronaut.data.annotation.MappedEntity
-import io.micronaut.data.model.PersistentProperty
+import io.micronaut.data.annotation.Transient
 import org.simplemes.eframe.data.FieldDefinitionFactory
 import org.simplemes.eframe.data.FieldDefinitions
 import org.simplemes.eframe.data.annotation.ExtensibleFields
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.exception.MessageHolder
+import org.simplemes.eframe.i18n.GlobalUtils
+import org.simplemes.eframe.misc.NameUtils
 
 //import grails.gorm.annotation.Entity
 
-import org.simplemes.eframe.i18n.GlobalUtils
-import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.misc.TypeUtils
 
 import java.lang.reflect.Field
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+import java.lang.reflect.Modifier
 
 /**
  * Domain Object manipulation utilities.
@@ -39,12 +38,23 @@ class DomainUtils {
   static DomainUtils instance = new DomainUtils()
 
   /**
-   * Gets the persistent fields for the given GORM entity class.
-   * @param c The class to find the fields in.
+   * Gets the persistent fields for the given Domain entity class.
+   * @param domainClass The class to find the fields in.
    * @return A list of field, which includes a name and a type (class).
    */
-  List<PersistentProperty> getPersistentFields(Class c) {
-    return c.gormPersistentEntity.persistentProperties
+  List<PersistentProperty> getPersistentFields(Class domainClass) {
+    List<PersistentProperty> res = new ArrayList<>()
+    for (field in domainClass.getDeclaredFields()) {
+      if (!Modifier.isStatic(field.getModifiers()) && !Modifier.isTransient(field.getModifiers())) {
+        // Weed out any fields the use @Transient too
+        def transAnn = field.getAnnotation(Transient.class)
+        if (!transAnn) {
+          res << new PersistentProperty(field)
+        }
+      }
+    }
+    return res
+
   }
 
   /**
@@ -103,7 +113,7 @@ class DomainUtils {
    * @param c The class to check for GORM injection.
    * @return True if this is a real GORM entity.
    */
-  boolean isGormEntity(Class c) {
+  boolean isDomainEntity(Class c) {
     if (!c) {
       return false
     }
@@ -118,7 +128,7 @@ class DomainUtils {
    */
   FieldDefinitions getFieldDefinitions(Class c) {
     def res = new FieldDefinitions()
-    if (isGormEntity(c)) {
+    if (isDomainEntity(c)) {
       def properties = getPersistentFields(c)
       for (property in properties) {
         if (!isPropertySpecial(c, property.name)) {
@@ -193,40 +203,6 @@ class DomainUtils {
   }
 
   /**
-   * Finds the real owning side setting for the given property.
-   * This is needed since children of sub-classes are not flagged by GORM with the correct owningSide.
-   * @param property The property to check.
-   * @return True if property is a special property.
-   */
-  boolean isOwningSide(PersistentProperty property) {
-    def owningSide = property.owningSide
-    if (!owningSide) {
-      // Not all child cases are flagged correctly by GORM.
-      // We need to check the other side to see if it has a belongsTo for the property.
-      // This mainly happens with sub-classes of a domain that has the belongsTo element.
-      def domainClass = property.associatedEntity?.javaClass
-      if (domainClass) {
-        def belongsToList = TypeUtils.getStaticPropertyInSuperClasses(domainClass, 'belongsTo')
-        // Check each belongsTo for the property
-        def owner = property.owner?.javaClass
-        def possibleOwnerClasses = TypeUtils.getSuperClasses(owner)
-        possibleOwnerClasses << owner
-        for (list in belongsToList) {
-          for (key in list.keySet()) {
-            if (possibleOwnerClasses.contains(list[key])) {
-              // Force the child to true for this case.
-              owningSide = true
-            }
-          }
-        }
-      }
-    }
-
-
-    return owningSide
-  }
-
-  /**
    * Determines the default sort field for the domain.  Uses the first field in the primary key list.
    * @param c The class to find the sort field for.
    * @return The primary sort field name.
@@ -285,65 +261,6 @@ class DomainUtils {
     domainName = domainName.toLowerCase()
     def allDomains = getAllDomains()
     return allDomains.find { it.simpleName.toLowerCase() == domainName }
-  }
-
-  /**
-   * Resolves all proxies for the given domain class.  This allows the domain to be used outside of an hibernate session
-   * if needed.  This will check all fields and sub-objects for proxies.
-   * <p>
-   * <b>Note:</b> This will usually force a read of all referenced objects.  This only works with a List of objects in most scenarios.
-   *              Set/Collection does not support all scenarios.
-   * @param object The object.
-   */
-  def resolveProxies(Object object) {
-    // TODO: Replace with non-hibernate alternative
-/*
-    if (object == null) {
-      return
-    }
-
-    for (property in getPersistentFields(object.class)) {
-      def value = object[property.name]
-      //println "$property.name ($property.type) = $value $property"
-      if (List.isAssignableFrom(property.type) && value) {
-        // A List, so we can update the entry in the list with the un-proxied value.
-        def list = (List) value
-        for (int i = 0; i < list?.size(); i++) {
-          def item = list[i]
-          if (item != null) {
-            if (item instanceof HibernateProxy) {
-              // Replace the whole element if it is a proxy.
-              list[i] = GrailsHibernateUtil.unwrapIfProxy(item)
-            }
-            // Resolved any sub-objects too.
-            resolveProxies(item)
-          }
-        }
-      } else if (Collection.isAssignableFrom(property.type) && value) {
-        // Not a List, so we can't update the entry in the list with the un-proxied value.
-        // All we can do is resolve any child proxies.
-        for (item in value) {
-          if (item != null) {
-            // Resolved any sub-objects too.
-            resolveProxies(item)
-          }
-        }
-      } else {
-        if (value instanceof HibernateProxy) {
-          // A simple reference, so un-proxy it the GORM way.
-          object[property.name] = GrailsHibernateUtil.unwrapIfProxy(value)
-        }
-        value = object[property.name]
-        if (isGormEntity(value?.getClass()) && !property.referencedPropertyName) {
-          // Finally resolve any sub-domain elements that are not parent references.
-          // This uses a pattern in the property that sets the referencedPropertyName when the
-          // belongsTo is used for a parent reference.
-          resolveProxies(object[property.name])
-        }
-      }
-
-    }
-*/
   }
 
   /**

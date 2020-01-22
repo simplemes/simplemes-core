@@ -155,7 +155,6 @@ public class DomainEntityTransformation implements ASTTransformation {
         delegateArgs.add(new ConstantExpression(fieldNode.getName()));
         delegateArgs.add(new VariableExpression(fieldNode.getName()));
         addDelegatedMethod(getterName, "lazyReferenceLoad", false, null, delegateArgs, typeNode, classNode, sourceUnit);
-        System.out.println("getter:" + getterName);
       }
     }
   }

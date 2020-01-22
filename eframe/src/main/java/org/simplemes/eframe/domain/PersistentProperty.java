@@ -1,12 +1,23 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.domain;/*
  * Copyright Michael Houston 2020. All rights reserved.
  * Original Author: mph
  *
  */
 
+import io.micronaut.data.annotation.MappedEntity;
+
 import javax.annotation.Nullable;
 import javax.persistence.Column;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import java.lang.reflect.Field;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
+import java.util.Collection;
 
 /**
  * Defines a single persistent property for a given domain object.
@@ -31,12 +42,33 @@ public class PersistentProperty {
   /**
    * The max length (String only fields).  Defaults to 255 if @Column is not defined.
    */
-  int maxLength = 0;
+  Integer maxLength;
 
   /**
    * The Field from the Class definition.
    */
   Field field;
+
+  /**
+   * Defines the ultimate object this property references.  This is always a DomainEntity.
+   * In some cases, the type is Collection and this referencedType indicates the type the list
+   * contains.
+   * Requires a Field to work.
+   */
+  public Class referenceType;
+
+  /**
+   * Defines if this property is parent reference in a child for a parent/child relationship.
+   * Requires a Field to work.
+   */
+  public boolean isParentReference = false;
+
+  /**
+   * Defines if this property is child reference in a parent for a parent/child relationship.
+   * Defines if this is the child side of parent/child relationship.
+   * Requires a Field to work.
+   */
+  public boolean isChild = false;
 
   /**
    * Empty constructor.
@@ -53,14 +85,44 @@ public class PersistentProperty {
     this.name = field.getName();
     this.type = field.getType();
     nullable = (field.getAnnotation(Nullable.class) != null);
+    Column column = field.getAnnotation(Column.class);
     if (type == String.class) {
-      maxLength = 255;
-      Column column = field.getAnnotation(Column.class);
-      if (column != null && column.length() > 0) {
-        maxLength = column.length();
+      if (column != null) {
+        maxLength = 255;
+        if (column.length() > 0) {
+          maxLength = column.length();
+        }
+      } else {
+        // A simple string, so treat it as a limited length string.
+        maxLength = 255;
       }
     }
+    if (column != null) {
+      nullable = column.nullable();
+    }
     this.field = field;
+
+    //  Figure out if this is a domain reference of any type or parent/child.
+    // First, find the referenced type (if a domain).
+    Class reference = type;
+    if (Collection.class.isAssignableFrom(type)) {
+      // Use the ultimate type for a collection.
+      Type fieldType = field.getGenericType();
+      if (fieldType instanceof ParameterizedType) {
+        reference = (Class) ((ParameterizedType) fieldType).getActualTypeArguments()[0];
+      }
+    }
+    if (reference != null && reference.getAnnotation(MappedEntity.class) != null) {
+      referenceType = reference;
+    }
+
+    // Now, figure out the parent/child cases.
+    OneToMany oneToMany = field.getAnnotation(OneToMany.class);
+    ManyToOne manyToOne = field.getAnnotation(ManyToOne.class);
+    isParentReference = (manyToOne != null);
+    if (!isParentReference) {
+      isChild = (oneToMany != null);
+    }
   }
 
   @Override
@@ -70,6 +132,9 @@ public class PersistentProperty {
         "name='" + name + '\'' +
         ", type=" + type +
         ", nullable=" + nullable +
+        ", referenceType=" + referenceType +
+        ", parent=" + isParentReference +
+        ", child=" + isChild +
         col +
         '}';
   }
@@ -98,11 +163,11 @@ public class PersistentProperty {
     this.nullable = nullable;
   }
 
-  public int getMaxLength() {
+  public Integer getMaxLength() {
     return maxLength;
   }
 
-  public void setMaxLength(int maxLength) {
+  public void setMaxLength(Integer maxLength) {
     this.maxLength = maxLength;
   }
 
@@ -112,5 +177,29 @@ public class PersistentProperty {
 
   public void setField(Field field) {
     this.field = field;
+  }
+
+  public Class getReferenceType() {
+    return referenceType;
+  }
+
+  public void setReferenceType(Class referenceType) {
+    this.referenceType = referenceType;
+  }
+
+  public boolean isParentReference() {
+    return isParentReference;
+  }
+
+  public void setParentReference(boolean parentReference) {
+    isParentReference = parentReference;
+  }
+
+  public boolean isChild() {
+    return isChild;
+  }
+
+  public void setChild(boolean child) {
+    isChild = child;
   }
 }

@@ -1,28 +1,22 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.domain
 
 
-import org.simplemes.eframe.application.Holders
-import org.simplemes.eframe.custom.domain.FlexField
 import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.data.annotation.ExtensibleFields
 import org.simplemes.eframe.security.domain.Role
 import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
-import org.simplemes.eframe.test.MockObjectMapper
 import org.simplemes.eframe.test.UnitTestUtils
 import sample.domain.AllFieldsDomain
 import sample.domain.RMA
 import sample.domain.SampleChild
 import sample.domain.SampleGrandChild
 import sample.domain.SampleParent
-import sample.domain.SampleSubClass
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -63,7 +57,7 @@ class DomainUtilsSpec extends BaseSpecification {
 
     then: 'all of the expected fields are found'
     def names = fields*.name
-    names.containsAll(['name', 'title', 'notes', 'dateCreated', 'lastUpdated'])
+    names.containsAll(['name', 'title', 'notes', 'dateCreated', 'dateUpdated'])
 
   }
 
@@ -121,159 +115,6 @@ class DomainUtilsSpec extends BaseSpecification {
 
     expect: ''
     DomainUtils.instance.getFieldType(clazz, 'count') == Integer
-  }
-
-  def "verify that getFieldType works with field from a trait"() {
-    given: 'a simple domain'
-    def src = """
-    package sample
-    
-    import sample.controller.SampleTrait
-    
-    class SampleClass implements SampleTrait{
-    }
-    """
-    def clazz = CompilerTestUtils.compileSource(src)
-
-    expect: ''
-    DomainUtils.instance.getFieldType(clazz, 'count') == Integer
-  }
-
-  def "verify that resolveProxies handles a list of child records"() {
-    given: 'a domain with possible sub-proxies'
-    SampleParent.withTransaction {
-      def sampleParent = new SampleParent(name: 'ABC')
-      sampleParent.addToSampleChildren(new SampleChild(key: 'CHILD_1'))
-      sampleParent.save()
-    }
-
-    when: 'the record is read without eager fetching'
-    SampleParent sampleParent = null
-    SampleParent.withTransaction {
-      sampleParent = SampleParent.findByName('ABC')
-      DomainUtils.instance.resolveProxies(sampleParent)
-    }
-
-    then: 'the child records can be processed'
-    for (sampleChild in sampleParent.sampleChildren) {
-      sampleChild.toString()
-    }
-  }
-
-  def "verify that if resolveProxies is not called that the use outside of transaction will fail"() {
-    given: 'a domain with possible sub-proxies'
-    SampleParent.withTransaction {
-      def sampleParent = new SampleParent(name: 'ABC')
-      sampleParent.addToSampleChildren(new SampleChild(key: 'CHILD_1'))
-      sampleParent.save()
-    }
-
-    when: 'the record is read without eager fetching and resolveProxies is not used'
-    SampleParent sampleParent = null
-    SampleParent.withTransaction {
-      sampleParent = SampleParent.findByName('ABC')
-      //DomainUtils.instance.resolveProxies(sampleParent)
-    }
-
-    and: 'the child record is accessed outside of the transaction'
-    sampleParent.sampleChildren[0].toString()
-
-    then: 'an exception is triggered by hibernate'
-    thrown(LazyInitializationException)
-  }
-
-  def "verify that resolveProxies handles simple reference to other record - parent reference"() {
-    given: 'a domain with a reference to another domain'
-    SampleParent.withTransaction {
-      def sampleParent = new SampleParent(name: 'ABC')
-      sampleParent.addToSampleChildren(new SampleChild(key: 'CHILD_1'))
-      sampleParent.save()
-    }
-
-    and: 'the object mapper is mocked for the test'
-    new MockObjectMapper(this).install()
-
-    when: 'the record is read without eager fetching'
-    def sampleParent = null
-    SampleParent.withTransaction {
-      sampleParent = SampleParent.findByName('ABC')
-      DomainUtils.instance.resolveProxies(sampleParent)
-    }
-
-    then: 'the reference to the other domain can be processed by the Jackson JSON mapper'
-    def s = Holders.objectMapper.writeValueAsString(sampleParent)
-    s.contains('CHILD_1')
-  }
-
-  def "verify that resolveProxies handles simple reference to other record - foreign reference"() {
-    given: 'a domain with a reference to another domain'
-    SampleParent.withTransaction {
-      def allFieldsDomain = new AllFieldsDomain(name: 'ABC').save()
-      new SampleParent(name: 'ABC', allFieldsDomain: allFieldsDomain).save()
-    }
-
-    and: 'the object mapper is mocked for the test'
-    new MockObjectMapper(this).install()
-
-    when: 'the record is read without eager fetching'
-    SampleParent sampleParent = null
-    SampleParent.withTransaction {
-      sampleParent = SampleParent.findByName('ABC')
-      DomainUtils.instance.resolveProxies(sampleParent)
-    }
-
-    then: 'the reference to the other domain can be processed by the Jackson JSON mapper'
-    Holders.objectMapper.writeValueAsString(sampleParent)
-  }
-
-  def "verify that resolveProxies handles simple reference with child references"() {
-    given: 'a domain with a reference to another domain'
-    FlexType.withTransaction {
-      def flexType = new FlexType(flexType: 'ABC')
-      flexType.addToFields(new FlexField(fieldName: 'FIELD1'))
-      flexType.save()
-      new RMA(rma: 'XYZ', rmaType: flexType).save()
-    }
-
-    and: 'the object mapper is mocked for the test'
-    new MockObjectMapper(this).install()
-
-    when: 'the record is read without eager fetching'
-    RMA rma = null
-    RMA.withTransaction {
-      rma = RMA.findByRma('XYZ')
-      DomainUtils.instance.resolveProxies(rma)
-    }
-
-    then: 'the children records are accessible without a transaction'
-    for (field in rma.rmaType.fields) {
-      // Just make sure they can be accessed
-      field.toString()
-    }
-  }
-
-  def "verify that resolveProxies handles a list of foreign references"() {
-    given: 'a domain with possible sub-proxies'
-    SampleParent.withTransaction {
-      def afd = new AllFieldsDomain(name: 'AFD1').save()
-      def sampleParent = new SampleParent(name: 'ABC')
-      sampleParent.addToSampleChildren(new SampleChild(key: 'CHILD_1'))
-      sampleParent.addToAllFieldsDomains(afd)
-      sampleParent.save()
-    }
-
-    and: 'the object mapper is mocked for the test'
-    new MockObjectMapper(this).install()
-
-    when: 'the record is read without eager fetching'
-    SampleParent sampleParent = null
-    SampleParent.withTransaction {
-      sampleParent = SampleParent.findByName('ABC')
-      DomainUtils.instance.resolveProxies(sampleParent)
-    }
-
-    then: 'the child foreign key records can be processed'
-    Holders.objectMapper.writeValueAsString(sampleParent)
   }
 
   def "verify that getFieldDefinitions works for domain class"() {
@@ -506,7 +347,7 @@ class DomainUtilsSpec extends BaseSpecification {
   def "verify that isGormEntity works with supported GORM entities"() {
     expect: 'the entity is detected'
     AllFieldsDomain.withTransaction {
-      assert DomainUtils.instance.isGormEntity(clazz) == results
+      assert DomainUtils.instance.isDomainEntity(clazz) == results
       true
     }
 
@@ -527,21 +368,10 @@ class DomainUtilsSpec extends BaseSpecification {
     expect: 'the loaded value is a proxy and it is detected as a GORM entity'
     AllFieldsDomain.withTransaction {
       def clazz = AllFieldsDomain.load(record.id).getClass()
-      assert DomainUtils.instance.isGormEntity(clazz)
+      assert DomainUtils.instance.isDomainEntity(clazz)
       assert clazz != AllFieldsDomain
       true
     }
-  }
-
-  def "verify isOwningSide supported cases"() {
-    expect: 'the method works'
-    def property = DomainUtils.instance.getPersistentField(clazz, propertyName)
-    DomainUtils.instance.isOwningSide(property) == results
-
-    where:
-    clazz          | propertyName     | results
-    SampleParent   | 'sampleChildren' | true
-    SampleSubClass | 'sampleChildren' | true
   }
 
   def "verify that getDomain works for supported cases"() {

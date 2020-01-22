@@ -4,6 +4,7 @@
 ifeval::["{backend}" != "pdf"]
 
 [inline-toc-header]#General#
+[inline-toc]#<<Micronaut Data>>#
 [inline-toc]#<<Domain Packages>>#
 [inline-toc]#<<Reserved Domain Names>>#
 [inline-toc]#<<Duplicate Data (Sub-Classes)>>#
@@ -15,6 +16,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Key Fields>>#
 [inline-toc]#<<Unlimited Length String Fields>>#
 [inline-toc]#<<Field Ordering>>#
+[inline-toc]#<<Supported Annotations>>#
 
 [inline-toc-header]#Persistence#
 [inline-toc]#<<Repository Requirements>>#
@@ -42,6 +44,63 @@ endif::[]
 Your domain classes have a few requirements to be easily used by various pieces of the framework.
 Your domain classes should be in proper packages, but that is not required.
 See <<domain-testing>> for details on testing.
+
+
+==== Micronaut Data
+
+The https://micronaut-projects.github.io/micronaut-data/latest/guide/[Micronaut Data^]
+icon:share-square-o[role="link-blue"]
+persistence module is used by this framework to help you persist your data.
+We use the https://micronaut-projects.github.io/micronaut-data/latest/guide/#jdbc[Micronaut Data JDBC^]
+icon:share-square-o[role="link-blue"]
+approach to avoid bringing in Hibernate or too many JPA modules.
+
+Why Micronaut Data?  Simply, the GORM/Hibernate approach is very complex and brings in many
+dependencies.  The most important problems include:
+
+* *Sessions* - Hibernate sessions are needed to access the database.  Micronaut/Jackson tends to
+             access the fields/proxies in other threads, outside of sessions.  This triggers the
+             common 'no session for current thread' exceptions.  This problem forced us to add many
+             work-arounds to add sessions to many locations.
+
+* *Interceptor* Issues - GORM/Hibernate supports a save interceptor.  The problem is that it was
+             not very reliable.
+
+* *Session Cache* - The session cache is awesome and painful. Just search the web for
+             "why I hate Hibernate".  We don't hate hibernate, but the session cache can easily
+             get out of synch with reality.  That causes data corruption issues or bewildering
+             exceptions. _NonUniqueObjectException_, _DuplicateKeyException_ and
+             _HibernateSystemException_ are just a few of the hard-to-debug issues.
+
+* *Unsaved Data* - Hibernate has a great feature that skips updates if no columns are changed.
+             This causes problems when the changes are made that Hibernate is not aware of.
+             This forced us to change fields, just to trigger the update and the event interceptor.
+
+Because of these fragility issues, we decided to move closer to JDBC/SQL by using Micronaut Data.
+This means we had to add some usability features (e.g. `save()` methods on _@DomainEntity_, etc).
+But, the odd and bewildering exceptions for Hibernate are gone.
+
+We found that very few of the Hibernate features were very important.  This includes:
+
+* Lazy Loading or Proxying of Associations - Important, but we added work-arounds for
+  the key cases (<<Simple Foreign Reference>> and <<parent-child-one-to-many>>.
+
+* Optimistic Locking - We implemented a work-around for this too.
+
+
+The features we did not really need include:
+
+* Dirty Checking - Not important for most application scenarios.
+
+* Persistence Contexts / Sessions - More of a problem than a feature.
+
+* First Level Caching - Useful, but not as critical as originally thought.
+  This lack makes the application code a little more complex to pass around the values.
+
+* Second Level Caching - Only used in a few places, so we decided to implement in those places
+  specifically (e.g. UserPreference).
+
+The drawbacks for Hibernate out-weighed the benefits, so we migrated to a simpler solution.
 
 
 ==== Domain Packages
@@ -243,13 +302,38 @@ whenever you add a new field to a domain class.  This is your choice.
 
 See <<reference.adoc#field-order,fieldOrder >> for details.
 
+==== Supported Annotations
+
+There are many annotations that the enterprise framework has been tested with <<Micronaut Data>>.
+This includes:
+
+[cols="1,2,4",width=95%]
+|===
+|Annotation|Source | Description
+
+| *@MappedEntity*|Micronaut| Defines a domain object.
+| *@Transactional*|JPA/Jakarta| Specifies a method (or all methods) are transactional.
+| *@Column*|JPA/Jakarta| Defines the column name, length and nullable flag.
+| *@Nullable*|Java| Marks a field as nullable.  @Column is a better choice.
+| *@ManyToMany*|JPA/Jakarta| Defines a link between two domains in a many-to-many relationship.  Uses a join table.
+| *@ManyToOne*|JPA/Jakarta| Defines the child side of a <<parent-child-one-to-many>>.
+| *@OneToMany*|JPA/Jakarta| Defines the parent side of a <<parent-child-one-to-many>>.
+| *@Join*|Micronaut| Defines the join logic for a query.  Suggested to only use on required foreign reference fields.
+| *@ID*|Micronaut| Marks a field as the ID field.  UUID is supported.
+| *@GeneratedValue*|Micronaut| Marks the field as auto-generated by the <<Micronaut Data>> layer.
+| *@DateCreated*|Micronaut| Defines the date/time the record was created.
+| *@DateUpdated*|Micronaut| Defines the date/time the record was last updated.
+| *@MappedProperty*|Micronaut| Specifies the SQL type for the column.
+|
+|===
+
+
 // Persistence
 ==== Repository Requirements
 
 ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<Support for H2 and Production Database>>#
-[inline-toc]#<<Routing>>#
 
 endif::[]
 
@@ -366,7 +450,6 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<Simple Foreign Reference>>#
 [inline-toc]#<<parent-child-one-to-many>>#
-[inline-toc]#<<list-object-references>>#
 [inline-toc]#<<Many-to-Many Relationships>>#
 
 endif::[]
@@ -408,51 +491,41 @@ as long as you have a `dateCreated` property in your domain class.
 
 Parent/Child relationships are quite common in enterprise applications.  The children are
 fully-owned by the parent.  Updates and deleting on the parent should update/delete the children.
-A typical parent/child relationship should be defined as:
+
+The _@DomainEntity_ annotation will add a lazy loader method (e.g. `getChildren()` in the example
+below).  This loader uses the `findAllByParent()` method in the repository.
+
 
 [source,groovy]
+.Example - Parent/Child Relationships (One-to-Many)
 ----
+@MappedEntity
+@DomainEntity
 class Parent {
   @OneToMany(mappedBy="parent")
-  List<Child> children
+  List<Child> children  <.>
 }
 
+@MappedEntity
+@DomainEntity
 class Child {
   @ManyToOne
-  Parent parent
+  Parent parent  <.>
 }
-----
 
-NOTE: The child lists must default to null, not an empty list.
-  This allows the lazy loader to know that no child records are defined when an empty list is found.
-
-
-
-[[list-object-references]]
-==== Lists of Object References (One-To-Many)
-
-Another common relationship is a list (or set) of simple references to another object.
-This is usually created with a one-sided `hasMany` relationship in the domain class:
-
-[source,groovy]
-----
-class Product {
-  List flexTypes
-
-  static hasMany = [flexTypes: FlexType]
+interface ChildRepository extends BaseRepository, CrudRepository<Child, UUID> {
+  List<Child> findAllByParent(Parent parent) <.>
+  Optional<Child> findById(UUID uuid)
+  List<Child> list()
 }
+
 ----
+<.> The child list must default to null, not an empty list. The lazy loader sets the field
+    to an empty list when no records are found in the DB.
+<.> The reference to the parent record is one of the primary keys in the child record.
+<.> The finder `findByXYZ()` must be defined to find the child records.  This is used by the lazy
+    loader.
 
-This relationship is used when the _Many_ side of the relationship is not a wholly-owned child of
-the domain class.  In the example above, the _Product_ can have many _FlexType_ references.
-The _FlexType_ exists, even if the all _Products_ that reference them are deleted.
-
-In this type of relationship, saves, updates and deletes are not cascaded to the _FlexType_ records.
-The JSON import/output of these references uses the key fields or IDs to create the reference.
-
-NOTE: You should use _List_ to define most collections in your domains.  This ensures the
-      order is preserved when saved.  The framework does not support all scenarios with
-      _Set/Collection_.
 
 ==== Many-to-Many Relationships
 
@@ -461,6 +534,8 @@ to the parent and to the related record.  You must use the _@ManyToMany_ annotat
 and add a _@Join_ annotation to the `findByXYZ()` method in your repository.
 
 Also, the _@DomainEntity_ annotation adds the save() and delete() logic to handle this join table.
+
+NOTE: This is sometimes referred to as a list of foreign references.
 
 An example is shown below:
 
@@ -477,7 +552,7 @@ interface UserRepository extends BaseRepository, CrudRepository<User, UUID> {
   Optional<User> findByUserName(String userName)
 }
 ----
-<.> An empty list is defined for new instances.  The findByUserName() method will create
+<.> An empty list is defined for new instances.  The `findByUserName()` method will create
     the correct array if the finder is correct.
 
 This will create a `users_role` table with a user_id and role_id field to link the two records.

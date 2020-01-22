@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -5,13 +9,7 @@ import com.fasterxml.jackson.databind.SerializationFeature
 import groovy.transform.ToString
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.date.EFrameDateFormat
-import org.simplemes.eframe.json.HibernateAwareJacksonModule
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+import org.simplemes.eframe.json.EFrameJacksonModule
 
 /**
  * Mocks the Jackson ObjectMapper instance in the Holders for use in tests.
@@ -50,7 +48,7 @@ class MockObjectMapper extends ObjectMapper implements AutoCleanupMockInterface 
     format.setTimeZone(Holders.globals.timeZone)
     setDateFormat(format)
     enable(SerializationFeature.INDENT_OUTPUT)
-    registerModule(new HibernateAwareJacksonModule())
+    registerModule(new EFrameJacksonModule())
   }
 
   /**

@@ -505,6 +505,11 @@ public class DomainEntityHelper {
     return (Class<?>) childParameterizedType.getActualTypeArguments()[0];
   }
 
+  /**
+   * Records the last parent loaded for a lazy child loader (in test mode only).  Used to testing to verify that
+   * the lazy records are loaded at the right time and not re-read over and over.
+   */
+  protected UUID lastLazyChildParentLoaded = null;
 
   /**
    * Performs the lazy load of the given field from the child domain class using the given mapped by
@@ -520,10 +525,8 @@ public class DomainEntityHelper {
   @SuppressWarnings("unchecked")
   public List lazyChildLoad(DomainEntityInterface object, String fieldName, String mappedByFieldName, Class childDomainClazz)
       throws Throwable {
-    //System.out.println("object:" + object+" fieldName:" + fieldName+" mappedByFieldName:" + mappedByFieldName+" childDomainClazz:" + childDomainClazz);
     // Find the current value.  Use reflection to access the field, even if not public.
     Field field = object.getClass().getDeclaredField(fieldName);
-    //System.out.println("field:" + field);
     field.setAccessible(true);  // Allow direct access.
     List list = (List) field.get(object);
     if (list == null) {
@@ -532,12 +535,13 @@ public class DomainEntityHelper {
       list = new ArrayList();
       field.set(object, list);
       Map domainSettings = getDomainSettings(object);
-      List loadedList = new ArrayList();
+      List loadedUuidList = new ArrayList();
       if (domainSettings != null) {
-        domainSettings.put(SETTINGS_LOADED_CHILDREN_PREFIX + fieldName, loadedList);
+        domainSettings.put(SETTINGS_LOADED_CHILDREN_PREFIX + fieldName, loadedUuidList);
       }
       GenericRepository repository = getRepository(childDomainClazz);
       UUID uuid = object.getUuid();
+      //System.out.println("uuid:" + uuid + object);
       if (repository != null && uuid != null) {
         String finderName = "findAllBy" + StringUtils.capitalize(mappedByFieldName);
         Method method = repository.getClass().getMethod(finderName, object.getClass());
@@ -548,14 +552,23 @@ public class DomainEntityHelper {
           // Store the UUID's for later checks on update.
           for (Object child : list) {
             if (child instanceof DomainEntityInterface) {
-              loadedList.add(((DomainEntityInterface) child).getUuid());
+              loadedUuidList.add(((DomainEntityInterface) child).getUuid());
+              // Force the parent reference to work around issue with children and grand children.
+              Method m1 = child.getClass().getDeclaredMethod("set" + StringUtils.capitalize(mappedByFieldName), object.getClass());
+              m1.invoke(child, object);
+              //System.out.println("  parent:" + parent);
             }
+          }
+          if (Holders.isEnvironmentTest()) {
+            // Record the last uuid read, so we can test the lazy loading behavior.
+            lastLazyChildParentLoaded = uuid;
           }
         } catch (Throwable e) {
           // Most exceptions are wrapped in invocation target exceptions, so we can remove them.
           throw unwrapException(e);
         }
       }
+      //System.out.println("  getter " + fieldName + " list: " + list);
     }
 
     return list;
@@ -592,7 +605,7 @@ public class DomainEntityHelper {
     if (alreadyLoaded != null && alreadyLoaded) {
       return referencedObject;
     }
-    //System.out.println(fieldName+"referencedObject:" + referencedObject);
+    //System.out.println(fieldName + " referencedObject:" + referencedObject);
 
     if (referencedObject != null && !wasLoadedByJoin(referencedObject)) {
       UUID uuid = referencedObject.getUuid();
@@ -606,19 +619,19 @@ public class DomainEntityHelper {
         if (Holders.isEnvironmentTest()) {
           // Record the last uuid read, so we can test the lazy loading behavior.
           lastLazyRefLoaded = uuid;
-          domainSettings.put(alreadyLoadedName, true);
         }
+        domainSettings.put(alreadyLoadedName, true);
       } else {
         // A null UUID, so we need to clear the value in the parent object.
         referencedObject = null;
         domainSettings.put(alreadyLoadedName, true);
       }
       // Make sure the property is set in parent domain so we can avoid this lookup later.
-      if (referencedObject != null) {
-        Method setterMethod = parentObject.getClass().getMethod("set" + StringUtils.capitalize(fieldName), referencedObject.getClass());
-        //noinspection RedundantArrayCreation
-        setterMethod.invoke(parentObject, new Object[]{referencedObject});
-      }
+      Field field = parentObject.getClass().getDeclaredField(fieldName);
+      Class referencedClass = field.getType();
+      Method setterMethod = parentObject.getClass().getMethod("set" + StringUtils.capitalize(fieldName), referencedClass);
+      //noinspection RedundantArrayCreation
+      setterMethod.invoke(parentObject, new Object[]{referencedObject});
     }
 
     return referencedObject;
@@ -723,11 +736,10 @@ public class DomainEntityHelper {
             res.add((ValidationErrorInterface) error);
           }
         }
-      } else {
-        throw new IllegalArgumentException(object.getClass().getName() + ".validate() must return a ValidationErrorInterface or list.");
+      } else if (methodRes != null) {
+        throw new IllegalArgumentException(object.getClass().getName() + ".validate() must return a ValidationErrorInterface, null or list.");
       }
     } catch (NoSuchMethodException ignored) {
-      //e.printStackTrace();
     }
 
     return res;

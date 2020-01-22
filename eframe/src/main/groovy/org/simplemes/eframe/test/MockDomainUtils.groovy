@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import groovy.transform.ToString
@@ -10,12 +14,6 @@ import org.spockframework.mock.ZeroOrNullResponse
 import spock.mock.DetachedMockFactory
 
 import java.lang.reflect.Field
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Builds a very simple mock/stub version of DomainUtils that returns the given domain(s) classes as possible domains.
@@ -168,7 +166,7 @@ class MockDomainUtils implements AutoCleanupMockInterface, IDefaultResponse {
    * DomainUtils handle them.
    */
   static List<String> delegateToOriginal = ['getStaticFieldOrder', 'getPrimaryKeyField', 'getKeyFields',
-                                            'getFieldType', 'getFieldDefinitions', 'isOwningSide']
+                                            'getFieldType', 'getFieldDefinitions']
 
   /**
    * A real domain utils class for delegation.

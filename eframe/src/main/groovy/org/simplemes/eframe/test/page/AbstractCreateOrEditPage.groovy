@@ -1,15 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test.page
 
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.TypeUtils
-
-/*
- * Copyright Michael Houston. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * The general base class for create or edit definition pages tested in the framework.
@@ -92,7 +90,7 @@ class AbstractCreateOrEditPage extends AbstractPage {
   String convertToPath(Object[] args) {
     // Convert domain entry argument to an ID
     for (int i = 0; i < args.size(); i++) {
-      if (DomainUtils.instance.isGormEntity(args[i].getClass())) {
+      if (DomainUtils.instance.isDomainEntity(args[i].getClass())) {
         domainObject = args[i]
         args[i] = args[i].id
       }

@@ -6,11 +6,11 @@ package sample.domain
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.Id
 
 //import grails.gorm.annotation.Entity
 
-import io.micronaut.data.annotation.AutoPopulated
-import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import org.simplemes.eframe.data.format.BasicFieldFormat
 import org.simplemes.eframe.date.DateOnly
@@ -29,7 +29,6 @@ import javax.persistence.OneToMany
  *               qty, enabled, dateTime, dueDate, reportTimeInterval,sampleGrandChildren
  *
  */
-//@Entity
 @MappedEntity
 @DomainEntity
 @ToString(includePackage = false, includeNames = true, excludes = ['sampleParent'])

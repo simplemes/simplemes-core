@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -5,20 +9,16 @@ import groovy.json.JsonSlurper
 import org.simplemes.eframe.system.DisabledStatus
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DataGenerator
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
+import sample.domain.SampleChild
 import sample.domain.SampleParent
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
- * Tests the HibernateAware Jackson additions.
+ * Tests the Persistence Aware Jackson additions.
  */
-class HibernateAwareJacksonModuleSpec extends BaseSpecification {
+class EFrameJacksonModuleSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
   static specNeeds = [JSON, SERVER]
@@ -26,20 +26,17 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static dirtyDomains = [SampleParent, AllFieldsDomain]
 
-  @SuppressWarnings("GroovyAssignabilityCheck")
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the introspector will allow child records to be generated"() {
     given: 'a domain with a foreign reference'
     def afd1 = new AllFieldsDomain(name: 'ABC-01').save()
-    def p = new SampleParent(name: 'SAMPLE', title: 'Sample', allFieldsDomain: afd1)
-    p.addToSampleChildren(key: '123')
-    p.save()
-    //println "p = $p.version"
+    def p = new SampleParent(name: 'SAMPLE', title: 'Sample', allFieldsDomain: afd1).save()
+    p.sampleChildren << new SampleChild(sampleParent: p, key: '123').save()
 
     when: 'the entity is serialized to JSON'
-    def s = new ObjectMapper().registerModule(new HibernateAwareJacksonModule()).writeValueAsString(p)
-    //println "s = $s"
-    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+    def s = new ObjectMapper().registerModule(new EFrameJacksonModule()).writeValueAsString(p)
+    println "s = $s"
+    println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
     then: 'the correct JSON is created'
     def json = new JsonSlurper().parse(s.bytes)
@@ -51,33 +48,33 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
   }
 
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the round trip with foreign reference in domain object works"() {
     given: 'a simple domain'
-    def afd1 = new AllFieldsDomain(name: 'ABC-01', title: 'orig').save(flush: true)
+    def afd1 = new AllFieldsDomain(name: 'ABC-01', title: 'orig').save()
     def p = new SampleParent(name: 'SAMPLE', title: 'Sample', allFieldsDomain: afd1)
-    p.save(flush: true)
+    p.save()
     def originalID = p.id
     //println "p = $p.version"
     //println "p1 = $p.version, $p.id"
 
 
     when: 'the entity is serialized to JSON'
-    def objectMapper = new ObjectMapper().registerModule(new HibernateAwareJacksonModule())
+    def objectMapper = new ObjectMapper().registerModule(new EFrameJacksonModule())
     def s = objectMapper.writeValueAsString(p)
     //println "s = $s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
     and: 'the original record is deleted'
-    p.delete(flush: true)
+    p.delete()
 
     and: 'update the foreign record'
     afd1.title = 'new'
-    afd1.save(flush: true)
+    afd1.save()
 
     and: 'the object is re-created from the JSON'
     def p2 = objectMapper.readValue(s, SampleParent)
-    p2.save(flush: true)
+    p2.save()
     //println "p2 = $p2"
 
     then: 'the new record exists'
@@ -93,13 +90,13 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
     afd.title == 'new'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that foreign reference in simple format can be read and saved in the domain object"() {
     given: 'a simple domain'
-    def afd = new AllFieldsDomain(name: 'ABC-01', title: 'orig').save(flush: true)
+    def afd = new AllFieldsDomain(name: 'ABC-01', title: 'orig').save()
 
     when: 'the entity is de-serialized to JSON'
-    def objectMapper = new ObjectMapper().registerModule(new HibernateAwareJacksonModule())
+    def objectMapper = new ObjectMapper().registerModule(new EFrameJacksonModule())
     def s = """
     {
       "name": "SAMPLE",
@@ -122,7 +119,7 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
 
     and: 'the object is created from the JSON'
     def p1 = objectMapper.readValue(s, SampleParent)
-    p1.save(flush: true)
+    p1.save()
     //println "p2 = $p2"
 
     then: 'the new record exists'
@@ -135,14 +132,14 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
     AllFieldsDomain.count() == 1
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that a foreign reference is serialized to simple format - just key and ID"() {
     given: 'a simple domain'
-    def afd = new AllFieldsDomain(name: 'ABC-01', title: 'orig').save(flush: true)
+    def afd = new AllFieldsDomain(name: 'ABC-01', title: 'orig').save()
     def p = new SampleParent(name: 'SAMPLE', allFieldsDomain: afd)
 
     when: 'the entity is de-serialized to JSON'
-    def objectMapper = new ObjectMapper().registerModule(new HibernateAwareJacksonModule())
+    def objectMapper = new ObjectMapper().registerModule(new EFrameJacksonModule())
     def s = objectMapper.writeValueAsString(p)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
@@ -156,38 +153,38 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
     json.allFieldsDomain.title == null
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the round trip with domain object works"() {
     given: 'a simple domain'
     def p = new SampleParent(name: 'SAMPLE', title: 'Sample')
-    p.save(flush: true)
+    p.save()
     def originalID = p.id
 
     when: 'the entity is serialized to JSON'
-    def objectMapper = new ObjectMapper().registerModule(new HibernateAwareJacksonModule())
+    def objectMapper = new ObjectMapper().registerModule(new EFrameJacksonModule())
     def s = objectMapper.writeValueAsString(p)
     //println "s = $s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
     and: 'the original record is deleted'
-    p.delete(flush: true)
+    p.delete()
 
     and: 'the object is re-created from the JSON'
     def p2 = objectMapper.readValue(s, SampleParent)
-    p2.save(flush: true)
+    p2.save()
     //println "p2 = $p2"
 
     then: 'the new record exists'
     p2.id != originalID
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the enum serializer works"() {
     given: 'a domain with an enum'
     def afd = new AllFieldsDomain(name: 'ABC-01', reportTimeInterval: ReportTimeIntervalEnum.LAST_30_DAYS)
 
     when: 'the entity is serialized to JSON'
-    def s = new ObjectMapper().registerModule(new HibernateAwareJacksonModule()).writeValueAsString(afd)
+    def s = new ObjectMapper().registerModule(new EFrameJacksonModule()).writeValueAsString(afd)
     //println "s = $s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
@@ -197,30 +194,30 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
     json._reportTimeIntervalDisplay_ == ReportTimeIntervalEnum.LAST_30_DAYS.toStringLocalized()
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the enum serializer works - round trip"() {
     given: 'a domain with an enum'
     def afd = new AllFieldsDomain(name: 'ABC-01', reportTimeInterval: ReportTimeIntervalEnum.LAST_30_DAYS)
 
     when: 'the entity is serialized to JSON'
-    def s = new ObjectMapper().registerModule(new HibernateAwareJacksonModule()).writeValueAsString(afd)
+    def s = new ObjectMapper().registerModule(new EFrameJacksonModule()).writeValueAsString(afd)
     //println "s = $s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
     and: 'the value is de-serialized'
-    AllFieldsDomain o = new ObjectMapper().registerModule(new HibernateAwareJacksonModule()).readValue(s, AllFieldsDomain)
+    AllFieldsDomain o = new ObjectMapper().registerModule(new EFrameJacksonModule()).readValue(s, AllFieldsDomain)
 
     then: 'status us set correctly'
     o.reportTimeInterval == ReportTimeIntervalEnum.LAST_30_DAYS
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the encoded type serializer works"() {
     given: 'a domain with an enum'
     def afd = new AllFieldsDomain(name: 'ABC-01', status: DisabledStatus.instance)
 
     when: 'the entity is serialized to JSON'
-    def s = new ObjectMapper().registerModule(new HibernateAwareJacksonModule()).writeValueAsString(afd)
+    def s = new ObjectMapper().registerModule(new EFrameJacksonModule()).writeValueAsString(afd)
     //println "s = $s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
@@ -231,24 +228,24 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
   }
 
   @SuppressWarnings("GrEqualsBetweenInconvertibleTypes")
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the encoded type serializer works for round trips"() {
     given: 'a domain with an encoded type'
     def afd = new AllFieldsDomain(name: 'ABC-01', status: DisabledStatus.instance)
 
     when: 'the entity is serialized to JSON'
-    def s = new ObjectMapper().registerModule(new HibernateAwareJacksonModule()).writeValueAsString(afd)
+    def s = new ObjectMapper().registerModule(new EFrameJacksonModule()).writeValueAsString(afd)
     //println "s = $s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
     and: 'the value is de-serialized'
-    AllFieldsDomain o = new ObjectMapper().registerModule(new HibernateAwareJacksonModule()).readValue(s, AllFieldsDomain)
+    AllFieldsDomain o = new ObjectMapper().registerModule(new EFrameJacksonModule()).readValue(s, AllFieldsDomain)
 
     then: 'status us set correctly'
     o.status == DisabledStatus.instance
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that serialize does not create an entry for the holder itself"() {
     given: 'a domain object with custom fields'
     buildCustomField(fieldName: 'custom1', domainClass: SampleParent)
@@ -258,7 +255,7 @@ class HibernateAwareJacksonModuleSpec extends BaseSpecification {
 
     when: 'the JSON is created'
     sampleParent.setFieldValue('custom1', 'abc')
-    def s = new ObjectMapper().registerModule(new HibernateAwareJacksonModule()).writeValueAsString(sampleParent)
+    def s = new ObjectMapper().registerModule(new EFrameJacksonModule()).writeValueAsString(sampleParent)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
     then: 'the JSON has the correct field name for the holder'

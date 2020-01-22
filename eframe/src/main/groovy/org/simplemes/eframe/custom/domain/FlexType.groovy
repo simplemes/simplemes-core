@@ -1,15 +1,33 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.DateCreated
+import io.micronaut.data.annotation.DateUpdated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.annotation.Transient
+import io.micronaut.data.model.DataType
+import org.simplemes.eframe.custom.ConfigurableTypeFieldDefinition
+import org.simplemes.eframe.data.ChoiceListItemInterface
 
 //import grails.gorm.annotation.Entity
 
-import org.simplemes.eframe.custom.ConfigurableTypeFieldDefinition
-import org.simplemes.eframe.data.ChoiceListItemInterface
 import org.simplemes.eframe.data.ConfigurableTypeInterface
 import org.simplemes.eframe.data.FieldDefinitionInterface
+import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.FieldSizes
+
+import javax.annotation.Nullable
+import javax.persistence.Column
+import javax.persistence.OneToMany
 
 /**
  * Defines the basic user-defined data types.
@@ -17,15 +35,14 @@ import org.simplemes.eframe.misc.FieldSizes
  * <p/>
  * The actual data values are typically stored in text fields.
  */
-//@Entity
 // TODO: Replace with non-hibernate alternative
 //@ExtensibleFields()
+@MappedEntity
+@DomainEntity
 @EqualsAndHashCode(includes = ["flexType"])
 @JsonIgnoreProperties(['value'])
-//@ToString(includePackage = false, includeNames = true)
+@ToString(includePackage = false, includeNames = true, excludes = ['flexType'])
 class FlexType implements ConfigurableTypeInterface, ChoiceListItemInterface {
-
-  Long getId() { return null }
 
   /**
    * The BASIC category type.
@@ -38,32 +55,28 @@ class FlexType implements ConfigurableTypeInterface, ChoiceListItemInterface {
    * A default Category of 'BASIC' is provided by the framework, but it should not be used frequently.
    * (<b>Default:</b>'BASIC').  <b>Required.</b>
    */
+  @Column(length = FieldSizes.MAX_CODE_LENGTH)
   String category = CATEGORY_BASIC
 
   /**
    * The flexible type name.
    * <b>Required.</b>
    */
+  @Column(length = FieldSizes.MAX_CODE_LENGTH)
   String flexType
 
   /**
    * The title (short) of this flex type.  Used for many displays/lists.
    */
-  String title
+  @Column(length = FieldSizes.MAX_TITLE_LENGTH)
+  @Nullable String title
 
   /**
    * A list of data entry fields for this flex type.<p/>
    * <b>Required.</b>
    */
-  List<FlexField> fields = []
-
-  /**
-   * A transient list of the fields defined for this flex type.
-   */
-  String fieldSummary
-
-  @SuppressWarnings("unused")
-  static hasMany = [fields: FlexField]
+  @OneToMany(mappedBy = "flexType")
+  List<FlexField> fields
 
   /**
    * If true, then this is the default FlexType to use if one is not specified.
@@ -71,35 +84,20 @@ class FlexType implements ConfigurableTypeInterface, ChoiceListItemInterface {
   boolean defaultFlexType = false
 
   /**
-   * The date this record was last updated.
+   * A transient list of the fields defined for this flex type.
    */
-  Date lastUpdated
+  @Transient String fieldSummary
 
-  /**
-   * The date this record was created
-   */
-  @SuppressWarnings("unused")
-  Date dateCreated
+  @DateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE') Date dateCreated
 
-  @SuppressWarnings("unused")
-  static mapping = {
-    sort "flexType"
-    fields lazy: 'join'
-    cache true
-  }
+  @DateUpdated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateUpdated
 
-  @SuppressWarnings("unused")
-  static constraints = {
-    flexType(maxSize: FieldSizes.MAX_CODE_LENGTH, blank: false, unique: true)
-    category(maxSize: FieldSizes.MAX_CODE_LENGTH, blank: false)
-    title(maxSize: FieldSizes.MAX_TITLE_LENGTH, nullable: true, blank: true)
-    fields(minSize: 1)
-  }
+  Integer version = 0
 
-  /**
-   * The primary keys for this object.
-   */
-  //static keys = ['flexType', 'category']
+  @Id @AutoPopulated UUID uuid
 
   /**
    * Defines the order the fields are shown in the edit/show/etc GUIs.
@@ -107,16 +105,16 @@ class FlexType implements ConfigurableTypeInterface, ChoiceListItemInterface {
   @SuppressWarnings("unused")
   static fieldOrder = ['flexType', 'category', 'title', 'defaultFlexType', 'fields']
 
-  /**
-   * Internal transient field list.
-   */
-  static transients = ['fieldSummary']
+  def validate() {
+    // TODO: fields.size()<=0 minSize
+    return null
+  }
 
   /**
    * Called before validate happens.
    */
   @SuppressWarnings("unused")
-  def beforeValidate() {
+  def beforeSave() {
     // Now, auto-assign Sequences to the fields if needed.
     for (int i = 0; i < fields.size(); i++) {
       if (fields[i].sequence == 0 || fields[i].sequence == null) {
@@ -155,12 +153,23 @@ class FlexType implements ConfigurableTypeInterface, ChoiceListItemInterface {
   }
 
   /**
-   * Returns the value for the choice list (e.g. a domain record of enum element).
+   * Returns the value for the choice list (e.g. a domain record or enum element).
    * @return The value.
    */
   @Override
+  @Transient
   Object getValue() {
     return this
+  }
+
+  /**
+   * Returns internal ID for this choice.
+   * @return The ID.
+   */
+  @Override
+  @Transient
+  Object getId() {
+    return uuid
   }
 
   /**

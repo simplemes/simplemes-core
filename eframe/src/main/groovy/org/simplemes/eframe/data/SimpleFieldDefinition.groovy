@@ -1,21 +1,14 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data
 
 import groovy.transform.ToString
-import io.micronaut.data.model.Association
 import org.simplemes.eframe.data.format.FieldFormatFactory
 import org.simplemes.eframe.data.format.FieldFormatInterface
-import org.simplemes.eframe.domain.ConstraintUtils
-import org.simplemes.eframe.domain.DomainUtils
+import org.simplemes.eframe.domain.PersistentProperty
 import org.simplemes.eframe.misc.ArgumentUtils
-import org.simplemes.eframe.misc.TypeUtils
-
-import java.lang.reflect.Field
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * A simple field definition.  Typically corresponds to String, Integer, etc fields in a domain/POGO.
@@ -97,7 +90,7 @@ class SimpleFieldDefinition implements FieldDefinitionInterface {
    * The persistent property for the definition.  May be null.
    */
   // TODO: Replace with non-hibernate alternative
-  Field property
+  PersistentProperty property
 
 
   /**
@@ -122,32 +115,24 @@ class SimpleFieldDefinition implements FieldDefinitionInterface {
    * Basic constructor for persistent property.
    * @param options The options.
    */
-  SimpleFieldDefinition(Field property) {
+  SimpleFieldDefinition(PersistentProperty property) {
     ArgumentUtils.checkMissing(property, 'property')
     name = property.name
     type = property.type
     this.property = property
-    // TODO: Replace with non-hibernate alternative
-    if (property instanceof Association) {
+    referenceType = property.referenceType
+    reference = (property.referenceType != null)
+    if (property.referenceType) {
       reference = true
-      child = DomainUtils.instance.isOwningSide(property)
+      child = property.child
       if (!child) {
-        // Identify the parent references.
-        def domainClass = property.owner.getJavaClass()
-        def belongsTo = TypeUtils.getStaticProperty(domainClass, 'belongsTo')
-        if (belongsTo) {
-          // Check the containing entity's belongsTo list.
-          parentReference = (belongsTo[name] != null)
-        }
-      }
-      if (type == List || reference) {
-        referenceType = property.associatedEntity.javaClass
+        parentReference = property.parentReference
       }
     }
     if (type == String) {
-      maxLength = ConstraintUtils.instance.getPropertyMaxSize(property)
+      maxLength = property.maxLength
     }
-    required = !ConstraintUtils.instance.getProperty(property, 'nullable')
+    required = !property.nullable
     setDefaultValues()
   }
 

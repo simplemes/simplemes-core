@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.archive
 
 
@@ -18,12 +22,6 @@ import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.misc.TypeUtils
 
 import javax.inject.Singleton
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Archives one or more domain objects to a file and removes them from the database.
@@ -71,7 +69,7 @@ class FileArchiver implements ArchiverInterface {
   @Override
   void archive(Object domainObject) {
     ArgumentUtils.checkMissing(domainObject, 'domainObject')
-    if (!DomainUtils.instance.isGormEntity(domainObject.class)) {
+    if (!DomainUtils.instance.isDomainEntity(domainObject.class)) {
       throw new IllegalArgumentException("Cannot archive a ${domainObject.class}.  It is not a Hibernate domain class.")
     }
 

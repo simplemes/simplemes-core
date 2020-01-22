@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import ch.qos.logback.classic.Level
@@ -24,7 +28,7 @@ import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.domain.annotation.DomainEntityHelper
 import org.simplemes.eframe.i18n.GlobalUtils
-import org.simplemes.eframe.json.HibernateAwareJacksonModule
+import org.simplemes.eframe.json.EFrameJacksonModule
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.LogUtils
 import org.simplemes.eframe.misc.TypeUtils
@@ -32,12 +36,6 @@ import org.simplemes.eframe.security.SecurityUtils
 import spock.lang.Shared
 
 import javax.transaction.Transactional
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * The base class for most non-GUI tests.  This supports starting an embedded server and cleanup of the database tables.
@@ -180,7 +178,7 @@ class BaseSpecification extends GebSpec {
       // See if a mock Jackson ObjectMapper is needed and not already in an embedded server.
       if ((!needsServer()) && needs(JSON) && embeddedServer == null) {
         def objectMapper = new ObjectMapper()
-        objectMapper.registerModule(new HibernateAwareJacksonModule())
+        objectMapper.registerModule(new EFrameJacksonModule())
         StartupHandler.configureJacksonObjectMapper(objectMapper)
         new MockBean(this, ObjectMapper, objectMapper).install()  // Auto cleaned up
       }
