@@ -1,15 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.json
 
 import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.SerializerProvider
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * A serializer for writing foreign domain references with a simple format: just the key field(s) and an ID.
@@ -43,7 +41,7 @@ class ForeignReferenceSerializer extends JsonSerializer<Object> {
       def s = value[key]?.toString() ?: ''
       gen.writeStringField(key, s)
     }
-    gen.writeNumberField('id', (long) value.id)
+    gen.writeStringField('uuid', value.uuid.toString())
     gen.writeEndObject()
 
   }

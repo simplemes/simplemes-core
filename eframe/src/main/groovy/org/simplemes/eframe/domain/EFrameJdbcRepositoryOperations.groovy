@@ -22,6 +22,7 @@ import io.micronaut.data.model.naming.NamingStrategy
 import io.micronaut.data.model.runtime.InsertOperation
 import io.micronaut.data.model.runtime.PreparedQuery
 import io.micronaut.data.model.runtime.UpdateOperation
+import io.micronaut.data.runtime.date.DateTimeProvider
 import io.micronaut.data.runtime.mapper.QueryStatement
 import io.micronaut.http.codec.MediaTypeCodec
 import io.micronaut.transaction.TransactionOperations
@@ -54,8 +55,9 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
   EFrameJdbcRepositoryOperations(@Parameter String dataSourceName, DataSource dataSource,
                                  @Parameter TransactionOperations<Connection> transactionOperations,
                                  @Named("io") @Nullable ExecutorService executorService,
-                                 BeanContext beanContext, List<MediaTypeCodec> codecs) {
-    super(dataSourceName, dataSource, transactionOperations, executorService, beanContext, codecs)
+                                 BeanContext beanContext, List<MediaTypeCodec> codecs,
+                                 @NonNull DateTimeProvider dateTimeProvider) {
+    super(dataSourceName, dataSource, transactionOperations, executorService, beanContext, codecs, dateTimeProvider)
 
     workAround264()
   }
@@ -184,18 +186,20 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
 
   @Override
   <T> T update(@NonNull UpdateOperation<T> operation) {
-    //AnnotationMetadata annotationMetadata = operation.getAnnotationMetadata()
-    //String[] params = annotationMetadata.stringValues(DataMethod.class, DataMethod.META_MEMBER_PARAMETER_BINDING_PATHS)
-    //String query = annotationMetadata.stringValue(Query.class).orElse(null)
-    //println "thread = ${Thread.currentThread()} ${Thread.currentThread().dump()}"
-    //operation.entity.version = operation.entity.version + 1
-    //println "query2 = $query $params $annotationMetadata"
-    //println "update2() operation = $operation ${operation.entity} ${operation.method}"
-    //println "operation = $operation"
+    if (WorkArounds.workAround323 || WorkArounds.workAroundOptimistic) {
+      //AnnotationMetadata annotationMetadata = operation.getAnnotationMetadata()
+      //String[] params = annotationMetadata.stringValues(DataMethod.class, DataMethod.META_MEMBER_PARAMETER_BINDING_PATHS)
+      //String query = annotationMetadata.stringValue(Query.class).orElse(null)
+      //println "thread = ${Thread.currentThread()} ${Thread.currentThread().dump()}"
+      //operation.entity.version = operation.entity.version + 1
+      //println "update2() operation = $operation ${operation.entity} ${operation.method}"
+      //println "operation = $operation"
+      return super.update(new AlterableUpdateOperation(operation))
+    } else {
+      return super.update(operation)
+    }
 
-    //return super.update(operation)
     //executeBeforeSave(operation.entity)
-    return super.update(new AlterableUpdateOperation(operation))
   }
 }
 
@@ -305,6 +309,7 @@ class AlterableAnnotationMetadata implements AnnotationMetadata {
   String[] stringValues(@Nonnull Class<? extends Annotation> annotation, @Nonnull String member) {
     def values = originalAnnotationMetadata.stringValues(annotation, member)
 
+    println "values = $values"
     if (WorkArounds.workAround323) {
       if (annotation == DataMethod && member == DataMethod.META_MEMBER_PARAMETER_BINDING_PATHS) {
         if (values.contains('id')) {

@@ -1,13 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.application.issues
 
 import java.lang.reflect.Modifier
 
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Various work-around flags to solve issues in libraries used.
@@ -20,7 +18,7 @@ class WorkArounds {
    * https://github.com/micronaut-projects/micronaut-data/issues/264
    *
    */
-  static boolean workAround264 = true
+  static boolean workAround264 = false
 
   /**
    * Workaround for micronaut-data issue 192.  Join only finds the first child element.
@@ -28,15 +26,20 @@ class WorkArounds {
    * Fixed on 1/13/2020 for 1.0.0.M6?
    *
    */
-  static boolean workAround192 = true
+  static boolean workAround192 = false
 
   /**
    * Workaround for micronaut-data issue 323.  Fails on update, uses 'id' instead 'uuid' for the identifier.
    * https://github.com/micronaut-projects/micronaut-data/issues/323
    *
    */
-  // See issue:
-  static boolean workAround323 = true
+  static boolean workAround323 = false
+
+  /**
+   * Workaround for micronaut-data missing optimistic locking.  Probably will be permanent.
+   *
+   */
+  static boolean workAroundOptimistic = false
 
   /**
    * Lists the current work arounds enabled.
