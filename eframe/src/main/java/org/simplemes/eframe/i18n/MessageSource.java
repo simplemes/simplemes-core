@@ -1,12 +1,10 @@
-package org.simplemes.eframe.i18n;
-
 /*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
+ * Copyright (c) Michael Houston 2020. All rights reserved.
  */
 
-import org.simplemes.eframe.application.Holders;
+package org.simplemes.eframe.i18n;
+
+import org.simplemes.eframe.domain.annotation.DomainEntityHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,13 +39,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 @Singleton
 public class MessageSource {
   private static final Logger log = LoggerFactory.getLogger(MessageSource.class);
-
-  /* TODO: Delete
-  Sources
-  PathMatchingResourcePatternResolver.java https://github.com/spring-projects/spring-framework/blob/3a0f309e2c9fdbbf7fb2d348be861528177f8555/spring-core/src/main/java/org/springframework/core/io/support/PathMatchingResourcePatternResolver.java
-  AbstractMessageSource.java https://github.com/spring-projects/spring-framework/blob/master/spring-context/src/main/java/org/springframework/context/support/AbstractMessageSource.java
-  Caching of bundles https://github.com/spring-projects/spring-framework/blob/master/spring-context/src/main/java/org/springframework/context/support/ResourceBundleMessageSource.java
-   */
 
   /**
    * Cache to hold loaded ResourceBundles.   Stored by base file name, then a map of stored by locale.
@@ -85,7 +76,7 @@ public class MessageSource {
     baseNames.add("i18n/messages");
     baseNames.add("i18n/sample");
 
-    if (Holders.isEnvironmentDev() || Holders.isEnvironmentTest()) {
+    if (DomainEntityHelper.isEnvironmentDev() || DomainEntityHelper.isEnvironmentTest()) {
       clearCacheOnFileChanged = true;
     }
   }

@@ -22,6 +22,7 @@ import org.simplemes.eframe.system.EnabledStatus
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
 import javax.annotation.Nullable
+import javax.persistence.ManyToOne
 
 /**
  * A test/Sample domain class with all field types as optional fields.
@@ -55,7 +56,7 @@ class AllFieldsDomain {
   @Nullable String displayOnlyText = 'Display Only'
   @Nullable String notes
   @Nullable ReportTimeIntervalEnum reportTimeInterval
-  @Nullable Order order
+  @Nullable @ManyToOne(targetEntity = Order) Order order
   @Nullable BasicStatus status = EnabledStatus.instance
 
   @DateCreated

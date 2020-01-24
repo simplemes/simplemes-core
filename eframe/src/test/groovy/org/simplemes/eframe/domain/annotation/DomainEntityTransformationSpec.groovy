@@ -303,6 +303,7 @@ class DomainEntityTransformationSpec extends BaseSpecification {
       import javax.persistence.CascadeType
       import javax.persistence.Column
       import javax.persistence.OneToMany
+      import javax.persistence.ManyToOne
       
       @DomainEntity
       @MappedEntity()
@@ -310,11 +311,11 @@ class DomainEntityTransformationSpec extends BaseSpecification {
       class Order2 {
         UUID uuid
         
-        OrderLine orderLine
+        @ManyToOne(targetEntity=OrderLine) OrderLine orderLine
+        @ManyToOne OrderLine orderLineNoTarget
       }
     """
     def clazz = CompilerTestUtils.compileSource(src)
-
 
     when: 'the method is available'
     def order = clazz.newInstance()
@@ -334,7 +335,56 @@ class DomainEntityTransformationSpec extends BaseSpecification {
 
     cleanup:
     DomainEntityHelper.instance = new DomainEntityHelper()
+  }
 
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  @Rollback
+  def "verify that parent reference lazy load getter is not added for parent-style references"() {
+    given: 'a mocked domainEntityHelper for the lazy method call'
+    def domainEntityHelper = Mock(DomainEntityHelper)
+    DomainEntityHelper.instance = domainEntityHelper
+
+    and: 'a compiled domain class with a parent-style reference - no targetEntity'
+    def src = """
+      import sample.domain.OrderLine
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import io.micronaut.data.annotation.MappedEntity
+      import io.micronaut.data.annotation.MappedProperty
+      import groovy.transform.EqualsAndHashCode
+      import javax.persistence.CascadeType
+      import javax.persistence.Column
+      import javax.persistence.OneToMany
+      import javax.persistence.ManyToOne
+      
+      @DomainEntity
+      @MappedEntity()
+      @EqualsAndHashCode(includes = ['uuid'])
+      class Order2 {
+        UUID uuid
+        
+        @ManyToOne OrderLine orderLine
+      }
+    """
+    def clazz = CompilerTestUtils.compileSource(src)
+
+    when: 'the method is available'
+    def order = clazz.newInstance()
+    def orderLine = new OrderLine()
+    order.orderLine = orderLine
+    order.getOrderLine()
+
+    then: 'the method is called correctly'
+    0 * domainEntityHelper.lazyReferenceLoad(_, 'orderLine', _) >> { args ->
+      //println "args = $args";
+      // For some reason, Spock does not match the instance variable in the DSL above.  Instead, we need to do this manually.
+      //noinspection GroovyAssignabilityCheck
+      assert order.is(args[0])
+      assert orderLine.is(args[2])
+      return args[2]
+    }
+
+    cleanup:
+    DomainEntityHelper.instance = new DomainEntityHelper()
   }
 
   def "verify that OneToMany mappings require a parameterized type on the child list"() {

@@ -309,7 +309,6 @@ class AlterableAnnotationMetadata implements AnnotationMetadata {
   String[] stringValues(@Nonnull Class<? extends Annotation> annotation, @Nonnull String member) {
     def values = originalAnnotationMetadata.stringValues(annotation, member)
 
-    println "values = $values"
     if (WorkArounds.workAround323) {
       if (annotation == DataMethod && member == DataMethod.META_MEMBER_PARAMETER_BINDING_PATHS) {
         if (values.contains('id')) {

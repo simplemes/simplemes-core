@@ -1,13 +1,11 @@
-package org.simplemes.eframe.domain.validate;
-
 /*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
+ * Copyright (c) Michael Houston 2020. All rights reserved.
  */
 
-import org.simplemes.eframe.i18n.GlobalUtils;
+package org.simplemes.eframe.domain.validate;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Locale;
 
 /**
@@ -68,11 +66,54 @@ public class ValidationError implements ValidationErrorInterface {
     Object[] argsWithFieldName = new Object[args.length + 1];
     argsWithFieldName[0] = fieldName;
     System.arraycopy(args, 0, argsWithFieldName, 1, args.length);
-    return GlobalUtils.lookup("error." + code + ".message", locale, argsWithFieldName);
+    return lookup("error." + code + ".message", locale, argsWithFieldName);
   }
 
   @Override
   public String toString() {
     return toString(null);
+  }
+
+  /**
+   * The cached lookup method.
+   */
+  private static Method lookupMethod;
+
+  /**
+   * A convenience method to access the GlobalUtils from the groovy code-base.  Uses reflection
+   * to avoid Java compile errors.
+   *
+   * @param key    The lookup key.
+   * @param locale The locale.
+   * @param args   The arguments.
+   * @return The looked up value.
+   */
+  @SuppressWarnings("JavaReflectionMemberAccess")
+  private String lookup(String key, Locale locale, Object[] args) {
+    // return GlobalUtils.lookup(key, locale, args);
+    if (lookupMethod == null) {
+      // Cache the lookup method
+      try {
+        Class<?> clazz = Class.forName("org.simplemes.eframe.i18n.GlobalUtils");
+        Class<?>[] paramTypes = new Class<?>[args.length];
+        paramTypes[0] = String.class;
+        paramTypes[1] = Locale.class;
+        paramTypes[2] = Object[].class;
+        lookupMethod = clazz.getDeclaredMethod("lookup", paramTypes);
+
+      } catch (ClassNotFoundException | NoSuchMethodException ignored) {
+      }
+
+    }
+    Object[] args2 = new Object[3];
+    args2[0] = key;
+    args2[1] = locale;
+    args2[2] = args;
+
+    try {
+      return (String) lookupMethod.invoke(null, args2);
+    } catch (IllegalAccessException | InvocationTargetException ignored) {
+      return "Could not find GlobalUtils for message key " + key;
+    }
   }
 }

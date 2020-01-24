@@ -15,7 +15,6 @@ import io.micronaut.transaction.SynchronousTransactionManager;
 import io.micronaut.transaction.TransactionCallback;
 import io.micronaut.transaction.TransactionStatus;
 import io.micronaut.transaction.jdbc.DataSourceUtils;
-import org.simplemes.eframe.application.Holders;
 import org.simplemes.eframe.domain.PersistentProperty;
 import org.simplemes.eframe.domain.validate.ValidationError;
 import org.simplemes.eframe.domain.validate.ValidationErrorInterface;
@@ -343,12 +342,14 @@ public class DomainEntityHelper {
           if (domainSettings != null) {
             List<UUID> previouslyLoadedList = (List) domainSettings.get(SETTINGS_LOADED_CHILDREN_PREFIX + field.getName());
 
-            for (UUID uuid : previouslyLoadedList) {
-              if (!newRecordList.contains(uuid)) {
-                // The child record is no longer in the ths list, so delete it.
-                DomainEntityInterface childObject = childClass.newInstance();
-                childObject.setUuid(uuid);
-                childObject.delete();
+            if (previouslyLoadedList != null) {
+              for (UUID uuid : previouslyLoadedList) {
+                if (!newRecordList.contains(uuid)) {
+                  // The child record is no longer in the ths list, so delete it.
+                  DomainEntityInterface childObject = childClass.newInstance();
+                  childObject.setUuid(uuid);
+                  childObject.delete();
+                }
               }
             }
           }
@@ -559,7 +560,7 @@ public class DomainEntityHelper {
               //System.out.println("  parent:" + parent);
             }
           }
-          if (Holders.isEnvironmentTest()) {
+          if (isEnvironmentTest()) {
             // Record the last uuid read, so we can test the lazy loading behavior.
             lastLazyChildParentLoaded = uuid;
           }
@@ -583,7 +584,7 @@ public class DomainEntityHelper {
   /**
    * Performs the lazy read of the given domain object, if it has not already been loaded.
    *
-   * @param parentObject     The parent domain object thet the simple reference is part of.
+   * @param parentObject     The parent domain object that the simple reference is part of.
    * @param fieldName        The field to store the list in.  Used by later calls.
    * @param referencedObject The domain object to read, if not already populated.
    * @return The referencedObject.
@@ -616,7 +617,7 @@ public class DomainEntityHelper {
           String s = parentObject.getClass().getName() + "(uuid: " + parentObject.getUuid() + ") foreign reference (" + fieldName + ", uuid: " + uuid + ") not found in DB. ";
           throw new IllegalArgumentException(s);
         }
-        if (Holders.isEnvironmentTest()) {
+        if (isEnvironmentTest()) {
           // Record the last uuid read, so we can test the lazy loading behavior.
           lastLazyRefLoaded = uuid;
         }
@@ -825,6 +826,63 @@ public class DomainEntityHelper {
       }
     }
     return res;
+  }
+
+
+  /**
+   * A cached copy of the the result of the isEnvironmentTest() method.
+   */
+  private static Boolean isEnvironmentTest;
+
+  /**
+   * Determines if the current run environment is the test environment.
+   *
+   * @return True if in test mode.
+   */
+  public static boolean isEnvironmentTest() {
+    if (isEnvironmentTest == null) {
+      // Use reflection to access the Holders.isEnvironmentTest() at run time since the Groovy
+      // classes are not visible when this .java class is compiled.
+      try {
+        Class holdersClass = Class.forName("org.simplemes.eframe.application.Holders");
+        Method method = ((Class<?>) holdersClass).getMethod("isEnvironmentTest");
+        if (method != null) {
+          isEnvironmentTest = (boolean) method.invoke(null);
+        }
+      } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | ClassNotFoundException ignored) {
+        // Intentionally ignored.
+        //ignored.printStackTrace();
+      }
+    }
+    return isEnvironmentTest;
+  }
+
+  /**
+   * A cached copy of the the result of the isEnvironmentDev() method.
+   */
+  private static Boolean isEnvironmentDev;
+
+  /**
+   * Determines if the current run environment is the test environment.
+   *
+   * @return True if in test mode.
+   */
+  public static boolean isEnvironmentDev() {
+    if (isEnvironmentDev == null) {
+      // Use reflection to access the Holders.isEnvironmentTest() at run time since the Groovy
+      // classes are not visible when this .java class is compiled.
+      try {
+        Class holdersClass = Class.forName("org.simplemes.eframe.application.Holders");
+        Method method = ((Class<?>) holdersClass).getMethod("isEnvironmentDev");
+        if (method != null) {
+          isEnvironmentDev = (boolean) method.invoke(null);
+        }
+      } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | ClassNotFoundException ignored) {
+        // Intentionally ignored.
+        //ignored.printStackTrace();
+      }
+    }
+    return isEnvironmentDev;
   }
 
 

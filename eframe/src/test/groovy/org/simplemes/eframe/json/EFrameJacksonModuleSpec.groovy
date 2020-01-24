@@ -6,14 +6,17 @@ package org.simplemes.eframe.json
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.json.JsonSlurper
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.system.DisabledStatus
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
+import sample.domain.AllFieldsDomainRepository
 import sample.domain.SampleChild
 import sample.domain.SampleParent
+import sample.domain.SampleParentRepository
 
 /**
  * Tests the Persistence Aware Jackson additions.
@@ -35,8 +38,6 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
 
     when: 'the entity is serialized to JSON'
     def s = new ObjectMapper().registerModule(new EFrameJacksonModule()).writeValueAsString(p)
-    println "s = $s"
-    println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
     then: 'the correct JSON is created'
     def json = new JsonSlurper().parse(s.bytes)
@@ -51,13 +52,16 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
   @Rollback
   def "verify that the round trip with foreign reference in domain object works"() {
     given: 'a simple domain'
-    def afd1 = new AllFieldsDomain(name: 'ABC-01', title: 'orig').save()
+    AllFieldsDomainRepository allFieldsDomainRepository = Holders.applicationContext.getBean(AllFieldsDomainRepository)
+    println "allFieldsDomainRepository = $allFieldsDomainRepository"
+    def afd1 = new AllFieldsDomain(name: 'ABC-01', title: 'orig')
+    allFieldsDomainRepository.save(afd1)
+    SampleParentRepository sampleParentRepository = Holders.applicationContext.getBean(SampleParentRepository)
     def p = new SampleParent(name: 'SAMPLE', title: 'Sample', allFieldsDomain: afd1)
-    p.save()
-    def originalID = p.id
+    sampleParentRepository.save(p)
+    def originalID = p.uuid
     //println "p = $p.version"
     //println "p1 = $p.version, $p.id"
-
 
     when: 'the entity is serialized to JSON'
     def objectMapper = new ObjectMapper().registerModule(new EFrameJacksonModule())
@@ -74,16 +78,17 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
 
     and: 'the object is re-created from the JSON'
     def p2 = objectMapper.readValue(s, SampleParent)
+    println "p2 = $p2"
     p2.save()
-    //println "p2 = $p2"
+    println "p2 = $p2"
 
     then: 'the new record exists'
-    p2.id != originalID
+    p2.uuid != originalID
     p2.allFieldsDomain == afd1
     //println "p2 = $p2.version, $p2.id"
 
     and: 'no new records for the foreign domain is created'
-    AllFieldsDomain.count() == 1
+    AllFieldsDomain.list().size() == 1
     def afd = AllFieldsDomain.findByName('ABC-01')
     //println "afd = ${afd.dirty}, $afd"
     //println "afd = ${AllFieldsDomain.list()}"

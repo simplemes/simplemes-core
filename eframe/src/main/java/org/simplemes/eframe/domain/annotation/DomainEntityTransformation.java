@@ -146,9 +146,8 @@ public class DomainEntityTransformation implements ASTTransformation {
     // Find all fields that are simple references to another domain entity.
     for (FieldNode fieldNode : classNode.getFields()) {
       ClassNode typeNode = fieldNode.getType();
-      boolean parentReference = fieldNode.getAnnotations(new ClassNode(ManyToOne.class)).size() > 0;
       boolean mappedEntity = typeNode.getAnnotations(new ClassNode(MappedEntity.class)).size() > 0;
-      if (mappedEntity && !parentReference) {
+      if (mappedEntity && isForeignReference(fieldNode)) {
         String getterName = "get" + StringUtils.capitalize(fieldNode.getName());
         //  public List lazyReferenceLoad(Object object)
         List<Expression> delegateArgs = new ArrayList<>();
@@ -157,6 +156,21 @@ public class DomainEntityTransformation implements ASTTransformation {
         addDelegatedMethod(getterName, "lazyReferenceLoad", false, null, delegateArgs, typeNode, classNode, sourceUnit);
       }
     }
+  }
+
+  private boolean isForeignReference(FieldNode fieldNode) {
+    List<AnnotationNode> annotations = fieldNode.getAnnotations(new ClassNode(ManyToOne.class));
+    if (annotations.size() > 0) {
+      AnnotationNode annotationNode = annotations.get(0);
+      if (annotationNode != null) {
+        Expression targetEntity = annotationNode.getMember("targetEntity");
+        if (targetEntity instanceof ClassExpression) {
+          String target = targetEntity.getText();
+          return target.equals(fieldNode.getType().getText());
+        }
+      }
+    }
+    return false;
   }
 
   /**

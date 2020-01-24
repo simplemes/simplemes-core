@@ -90,7 +90,7 @@ class EFrameBeanSerializerModifier extends BeanSerializerModifier {
       //println "beanPropertyWriter = ${w?.dump()}"
       def fieldName = w.getName()
       def fieldDef = fieldDefinitions?.get(fieldName)
-      println "fieldDef = $fieldDef"
+      //println "fieldDef = $fieldDef"
       if (fieldDef?.isReference()) {
         if ((!fieldDef.isChild()) && (!Collection.isAssignableFrom(fieldDef.type))) {
           def keys = DomainUtils.instance.getKeyFields(fieldDef.type)

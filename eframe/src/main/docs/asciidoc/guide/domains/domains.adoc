@@ -461,6 +461,44 @@ methods for some of the more common relationships.
 
 ==== Simple Foreign Reference
 
+Simple foreign references are supported by the framework.  This means your domains can refer
+to other domains and access the other domain's members as needed.  To do this, you have
+to define your domain in a very specific way:
+
+[source,groovy]
+.Example - Simple Foreign Reference
+----
+@MappedEntity
+@DomainEntity
+class Order {
+  @ManyToOne(targetEntity=Product)  // <.>
+  Product product
+}
+
+class OrderService {
+  void validate(Order order) {
+    if (order.product.lotSize> 1.0) {  // <.>
+      thrown new Exception(...)
+    }
+  }
+}
+
+----
+<.> Defines the reference as a simple foreign reference.  Not as a <<parent-child-one-to-many>>
+    relationship.
+<.> Reads the product record on first access.
+
+This adds a lazy loader mechanism in the `getProduct()` method.  On first access, this will read
+the Product (if not-null).
+
+NOTE: This _targetEntity_ is used as a marker for a simple foreign reference.  Do not use
+      for this _targetEntity_ option for <<parent-child-one-to-many>> relationships.
+      This is the mechanism for distinguishing between simple references and the
+      parent side in parent/child relations.
+
+
+===== Join and Nullable References
+
 A simple foreign reference is handled by Micronaut-Data in different ways depending on whether
 the reference is nullable.  Nullable references require the use of the SQL OUTER _@Join_ option,
 which is not supported by H2 (in memory) database.  Non-nullable references can use the LEFT join

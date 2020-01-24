@@ -16,6 +16,7 @@ import org.simplemes.eframe.domain.annotation.DomainEntity
 
 import javax.annotation.Nullable
 import javax.persistence.ManyToMany
+import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 
 /**
@@ -45,7 +46,7 @@ class SampleSubClass implements SampleParentInterface {
   /**
    * A reference to another domain object.
    */
-  @Nullable AllFieldsDomain allFieldsDomain
+  @Nullable @ManyToOne(targetEntity = AllFieldsDomain) AllFieldsDomain allFieldsDomain
 
   /**
    * A list of foreign references.

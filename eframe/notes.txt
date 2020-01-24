@@ -3,6 +3,7 @@ Scratch
 
 Micronaut Data Conversion Tasks
 ===============================
+Undo workarounds that were fixed (323).
 @Entity replacement with GDSL.
   Convert Domains
     done - AllFieldsDomain

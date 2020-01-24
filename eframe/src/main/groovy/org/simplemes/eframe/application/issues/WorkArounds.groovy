@@ -18,7 +18,7 @@ class WorkArounds {
    * https://github.com/micronaut-projects/micronaut-data/issues/264
    *
    */
-  static boolean workAround264 = false
+  static boolean workAround264 = true
 
   /**
    * Workaround for micronaut-data issue 192.  Join only finds the first child element.
@@ -26,20 +26,20 @@ class WorkArounds {
    * Fixed on 1/13/2020 for 1.0.0.M6?
    *
    */
-  static boolean workAround192 = false
+  static boolean workAround192 = true
 
   /**
    * Workaround for micronaut-data issue 323.  Fails on update, uses 'id' instead 'uuid' for the identifier.
    * https://github.com/micronaut-projects/micronaut-data/issues/323
    *
    */
-  static boolean workAround323 = false
+  static boolean workAround323 = true
 
   /**
    * Workaround for micronaut-data missing optimistic locking.  Probably will be permanent.
    *
    */
-  static boolean workAroundOptimistic = false
+  static boolean workAroundOptimistic = true
 
   /**
    * Lists the current work arounds enabled.

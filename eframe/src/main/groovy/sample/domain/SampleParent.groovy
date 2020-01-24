@@ -10,10 +10,10 @@ import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.DateCreated
 import io.micronaut.data.annotation.DateUpdated
 import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
 
 //import grails.gorm.annotation.Entity
 
-import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
 import org.simplemes.eframe.domain.annotation.DomainEntity
@@ -21,6 +21,7 @@ import org.simplemes.eframe.domain.annotation.DomainEntity
 import javax.annotation.Nullable
 import javax.persistence.Column
 import javax.persistence.ManyToMany
+import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 
 /**
@@ -34,7 +35,7 @@ import javax.persistence.OneToMany
 @MappedEntity
 @DomainEntity
 @ToString(includePackage = false, includeNames = true, includes = ['name', 'title', 'notes', 'notDisplayed',
-  'moreNotes', 'dateCreated', 'dateUpdated', 'allFieldsDomain', 'allFieldsDomains', 'sampleChildren'])
+  'moreNotes', 'dateCreated', 'dateUpdated', 'allFieldsDomain', 'allFieldsDomains', 'sampleChildren', 'uuid'])
 @EqualsAndHashCode(includes = ['name'])
 @SuppressWarnings("unused")
 class SampleParent implements SampleParentInterface {
@@ -61,7 +62,7 @@ class SampleParent implements SampleParentInterface {
   /**
    * A reference to another domain object.
    */
-  @Nullable AllFieldsDomain allFieldsDomain
+  @Nullable @ManyToOne(targetEntity = AllFieldsDomain) AllFieldsDomain allFieldsDomain
 
   /**
    * A list of foreign references.
