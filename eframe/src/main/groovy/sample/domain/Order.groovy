@@ -35,7 +35,7 @@ import javax.persistence.OneToMany
 @EqualsAndHashCode(includes = ['order'])
 @SuppressWarnings("unused")
 class Order {
-  @Column(name = 'ordr', length = 30)
+  @Column(name = 'ordr', length = 30, nullable = false)
   String order
   BigDecimal qtyToBuild = 1.0
 

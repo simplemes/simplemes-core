@@ -1,17 +1,8 @@
-package org.simplemes.eframe.test
 /*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
-/**
- * General test support utilities.  These methods make common checks of unit tests easier.
- * <p/>
- * Copyright Michael Houston. All rights reserved.
- * Original Author: mph
- *
+ * Copyright (c) Michael Houston 2020. All rights reserved.
  */
+
+package org.simplemes.eframe.test
 class UnitTestUtils {
 
   /**
@@ -48,7 +39,7 @@ class UnitTestUtils {
   /**
    * Sample unicode strings useful for testing Unicode support in a key field.
    */
-  static final UNICODE_KEY_TEST_STRING = "\u00C0\u0370\u0400\u0530\u3040\u3300"
+  static final String UNICODE_KEY_TEST_STRING = "\u00C0\u0370\u0400\u0530\u3040\u3300"
 /*
   static final UNICODE_ACCENT_UPPER_A = "\u00C0"
   static final UNICODE_ACCENT_LOWER_A = "\u00E0"

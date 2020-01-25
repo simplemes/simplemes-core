@@ -724,7 +724,7 @@ public class DomainEntityHelper {
    * @param object The domain object.
    * @return The list of validation errors.  Never null.
    */
-  List<ValidationErrorInterface> validate(DomainEntityInterface object) throws InvocationTargetException, IllegalAccessException {
+  public List<ValidationErrorInterface> validate(DomainEntityInterface object) throws InvocationTargetException, IllegalAccessException {
     List<ValidationErrorInterface> res = validateColumns(object);
     try {
       Method validateMethod = object.getClass().getDeclaredMethod("validate");

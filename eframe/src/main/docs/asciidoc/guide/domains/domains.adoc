@@ -313,8 +313,9 @@ This includes:
 
 | *@MappedEntity*|Micronaut| Defines a domain object.
 | *@Transactional*|JPA/Jakarta| Specifies a method (or all methods) are transactional.
-| *@Column*|JPA/Jakarta| Defines the column name, length and nullable flag.
-| *@Nullable*|Java| Marks a field as nullable.  @Column is a better choice.
+| *@Column*|JPA/Jakarta| Defines the column name, length and nullable flag (*nullable default*: true).
+                         *Note:* If this is used with _@Nullable_, then the _@Column_ setting takes precedence.
+| *@Nullable*|Java| Marks a field as nullable.  _@Column_ is a better choice.
 | *@ManyToMany*|JPA/Jakarta| Defines a link between two domains in a many-to-many relationship.  Uses a join table.
 | *@ManyToOne*|JPA/Jakarta| Defines the child side of a <<parent-child-one-to-many>>.
 | *@OneToMany*|JPA/Jakarta| Defines the parent side of a <<parent-child-one-to-many>>.

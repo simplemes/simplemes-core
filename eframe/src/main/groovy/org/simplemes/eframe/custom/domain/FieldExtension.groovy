@@ -7,12 +7,12 @@ package org.simplemes.eframe.custom.domain
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
-
-//import grails.gorm.annotation.Entity
-
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import org.simplemes.eframe.data.format.BasicFieldFormat
+
+//import grails.gorm.annotation.Entity
+
 import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.FieldSizes
@@ -36,7 +36,7 @@ class FieldExtension implements FieldInterface {
    * The domain class name this field is applied to (full package name and class).
    */
   // TODO: DDL Add unique constraint on domainClassName+fieldName
-  @Column(length = FieldSizes.MAX_CLASS_NAME_LENGTH)
+  @Column(length = FieldSizes.MAX_CLASS_NAME_LENGTH, nullable = false)
   String domainClassName
 
   /**

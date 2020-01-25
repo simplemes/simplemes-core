@@ -41,7 +41,7 @@ class FlexField implements FieldInterface {
   /**
    * The name of the field.  This follows the normal naming conventions for column names.
    */
-  @Column(length = FieldSizes.MAX_CODE_LENGTH)
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String fieldName
 
   /**

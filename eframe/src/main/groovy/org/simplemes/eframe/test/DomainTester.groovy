@@ -1,20 +1,17 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.data.format.ChildListFieldFormat
 import org.simplemes.eframe.domain.DomainUtils
-import org.simplemes.eframe.i18n.GlobalUtils
+import org.simplemes.eframe.domain.validate.ValidationErrorInterface
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.web.PanelUtils
-
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Helps tests common features of domain classes, such as constraints and field order.
@@ -147,25 +144,30 @@ class DomainTester {
     }
 
     _domain.withTransaction() {
+      // Make sure it passes for valid value.
       obj[fieldName] = sb.toString()
-      obj.validate()
-      def errors = null
-      if (obj.errors.errorCount) {
-        errors = GlobalUtils.lookupValidationErrors(obj)
-      }
-      assert obj.errors.errorCount == 0, "Expected No Failure on  $_domain.simpleName($obj) for field '$fieldName', size = ${maxLength}. Errors = $errors"
-      assert obj.validate()
+      def errors = DomainUtils.instance.validate(obj)
+      assert errors.size() == 0, "Expected No Failure on  $_domain.simpleName($obj) for field '$fieldName', size = ${maxLength}. Errors = $errors"
 
       // Make sure it fails for one char too big.
       sb.append('X')
       obj[fieldName] = sb.toString()
-      assert !obj.validate(), "Expected Validation Failure on  $_domain.simpleName($obj) for field '$fieldName', size = ${maxLength + 1}"
-      assert obj.errors.errorCount == 1
-      //noinspection GroovyAssignabilityCheck
-      def error = obj.errors.allErrors[0]
-      assert error.codes.contains('maxSize.exceeded')
+      def msg = "Expected Validation Failure on  $_domain.simpleName($obj) for field '$fieldName', size = ${maxLength + 1}"
+      // error.2.message=Value is too long (max={2}, length={1}) for field {0}.
+      assertErrorIsPresent(DomainUtils.instance.validate(obj), fieldName, 2, msg)
     }
+  }
 
+  /**
+   * Verifies that the given code/fieldName pair is in the list of validation errors.
+   * @param errors The validation errors.
+   * @param fieldName The field Name.
+   * @param code The error code.
+   * @param msg The Assertion message that indicates what the error is.
+   */
+  protected void assertErrorIsPresent(List<ValidationErrorInterface> errors, String fieldName, int code, String msg) {
+    assert errors.size() > 0, msg
+    assert errors.find { it.code == code && it.fieldName == fieldName }, msg
   }
 
   /**
@@ -184,11 +186,9 @@ class DomainTester {
 
     _domain.withTransaction() {
       // and make sure it fails
-      assert !obj.validate(), "Nulls allowed on field '$fieldName' in $_domain.simpleName for $obj.  Expected a validation failure on the null field"
-      assert obj.errors.errorCount == 1
-      //noinspection GroovyAssignabilityCheck
-      def error = obj.errors.allErrors[0]
-      assert error.codes.contains("nullable.$fieldName")
+      def msg = "Nulls allowed on field '$fieldName' in $_domain.simpleName for $obj.  Expected a validation failure on the null field"
+      //error.1.message=Required value is missing {0}.
+      assertErrorIsPresent(DomainUtils.instance.validate(obj), fieldName, 1, msg)
     }
   }
 

@@ -17,12 +17,13 @@ import io.micronaut.data.annotation.Transient
 import io.micronaut.data.model.DataType
 import org.simplemes.eframe.custom.ConfigurableTypeFieldDefinition
 import org.simplemes.eframe.data.ChoiceListItemInterface
-
-//import grails.gorm.annotation.Entity
-
 import org.simplemes.eframe.data.ConfigurableTypeInterface
 import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.domain.annotation.DomainEntity
+
+//import grails.gorm.annotation.Entity
+
+import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.misc.FieldSizes
 
 import javax.annotation.Nullable
@@ -55,14 +56,15 @@ class FlexType implements ConfigurableTypeInterface, ChoiceListItemInterface {
    * A default Category of 'BASIC' is provided by the framework, but it should not be used frequently.
    * (<b>Default:</b>'BASIC').  <b>Required.</b>
    */
-  @Column(length = FieldSizes.MAX_CODE_LENGTH)
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String category = CATEGORY_BASIC
+  // TODO: DDL Add unique constraint and non null and flexType.
 
   /**
    * The flexible type name.
    * <b>Required.</b>
    */
-  @Column(length = FieldSizes.MAX_CODE_LENGTH)
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String flexType
 
   /**
@@ -106,7 +108,10 @@ class FlexType implements ConfigurableTypeInterface, ChoiceListItemInterface {
   static fieldOrder = ['flexType', 'category', 'title', 'defaultFlexType', 'fields']
 
   def validate() {
-    // TODO: fields.size()<=0 minSize
+    if (fields?.size() <= 0) {
+      //error.200.message=The list value ({0}) must have at least one entry in it.
+      return new ValidationError(200, 'fields')
+    }
     return null
   }
 

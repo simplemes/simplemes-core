@@ -11,17 +11,19 @@ import io.micronaut.data.annotation.Transient
 import org.simplemes.eframe.data.FieldDefinitionFactory
 import org.simplemes.eframe.data.FieldDefinitions
 import org.simplemes.eframe.data.annotation.ExtensibleFields
+import org.simplemes.eframe.domain.annotation.DomainEntityHelper
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
+import org.simplemes.eframe.domain.validate.ValidationErrorInterface
 import org.simplemes.eframe.exception.MessageHolder
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.misc.TypeUtils
 
-//import grails.gorm.annotation.Entity
-
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
+
+//import grails.gorm.annotation.Entity
 
 /**
  * Domain Object manipulation utilities.
@@ -171,7 +173,7 @@ class DomainUtils {
   /**
    * The names for special properties that are not considered normal domain fields.
    */
-  static specialProperties = ['id', 'version', 'dateCreated', 'dateUpdated',
+  static specialProperties = ['uuid', 'version', 'dateCreated', 'dateUpdated',
                               ExtensibleFields.DEFAULT_FIELD_NAME, ExtensibleFields.COMPLEX_CUSTOM_FIELD_NAME]
 
   /**
@@ -315,15 +317,22 @@ class DomainUtils {
     if (method) {
       // Must be a domain object, so call the method.
       method.invoke(domainObject, child)
-/*
     } else {
       // No method found, so try adding using std List calls.
       domainObject."${collectionName}" << child
-*/
     }
     //println "after ${methodName}, child = $child, ${child.parent}"
   }
 
+
+  /**
+   * Validates the given domain object.
+   * @param domainObject The domain object to validate.
+   * @return The list of validation errors.  Never null.
+   */
+  List<ValidationErrorInterface> validate(Object domainObject) {
+    return DomainEntityHelper.instance.validate(domainObject as DomainEntityInterface)
+  }
 
   /**
    * Converts the domain object's errors into readable messages and stores them in a MessageHolder,

@@ -95,7 +95,7 @@ public class ValidationError implements ValidationErrorInterface {
       // Cache the lookup method
       try {
         Class<?> clazz = Class.forName("org.simplemes.eframe.i18n.GlobalUtils");
-        Class<?>[] paramTypes = new Class<?>[args.length];
+        Class<?>[] paramTypes = new Class<?>[args.length + 2];
         paramTypes[0] = String.class;
         paramTypes[1] = Locale.class;
         paramTypes[2] = Object[].class;

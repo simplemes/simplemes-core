@@ -10,6 +10,7 @@ import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.data.format.BigDecimalFieldFormat
 import org.simplemes.eframe.data.format.BooleanFieldFormat
+import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
@@ -62,9 +63,12 @@ class FlexTypeSpec extends BaseSpecification {
   def "verify that the minimum fields size constraint works"() {
     expect: 'the constraint is enforced'
     def flexType2 = new FlexType(flexType: 'PDQ')
-    !flexType2.validate()
-    def error = flexType2.errors["fields"]
-    error.codes.contains('minSize.notmet.fields')
+    def errors = DomainUtils.instance.validate(flexType2)
+    errors.size() > 0
+    errors[0].fieldName == 'fields'
+    errors[0].code == 200
+    //error.200.message=The list value ({0}) must have at least one entry in it.
+    UnitTestUtils.assertContainsAllIgnoreCase(errors[0].toString(), ['fields', 'list', 'one'])
   }
 
   @Rollback
@@ -73,19 +77,25 @@ class FlexTypeSpec extends BaseSpecification {
     def flexType = new FlexType()
     flexType.flexType = UnitTestUtils.UNICODE_KEY_TEST_STRING
     flexType.title = UnitTestUtils.UNICODE_KEY_TEST_STRING
-    flexType.addToFields(new FlexField(fieldName: 'TEST'))
+    flexType.fields << new FlexField(fieldName: 'TEST')
 
-    expect: 'the save works'
+    when: 'the record is saved'
     flexType.save()
+
+    and: 'the record is read'
+    def flexType2 = FlexType.findByFlexType(UnitTestUtils.UNICODE_KEY_TEST_STRING)
+
+    then: 'the unicode is correct.'
+    flexType2.title == UnitTestUtils.UNICODE_KEY_TEST_STRING
   }
 
   @Rollback
   def "verify that auto-assignment of sequence works - create case"() {
     given: 'a domain with some fields'
     def flexType = new FlexType(flexType: 'ABC')
-    flexType.addToFields(new FlexField(fieldName: 'FIELD1'))
-    flexType.addToFields(new FlexField(fieldName: 'FIELD2'))
-    flexType.addToFields(new FlexField(fieldName: 'FIELD3'))
+    flexType.fields << new FlexField(fieldName: 'FIELD1')
+    flexType.fields << new FlexField(fieldName: 'FIELD2')
+    flexType.fields << new FlexField(fieldName: 'FIELD3')
 
     when: 'the record is saved'
     flexType.save()
@@ -105,9 +115,9 @@ class FlexTypeSpec extends BaseSpecification {
     FlexField field0 = new FlexField(fieldName: 'FIELD0')
     FlexField field4 = new FlexField(fieldName: 'FIELD4')
     def flexType = new FlexType(flexType: 'ABC')
-    flexType.addToFields(new FlexField(fieldName: 'FIELD1'))
-    flexType.addToFields(new FlexField(fieldName: 'FIELD2'))
-    flexType.addToFields(new FlexField(fieldName: 'FIELD3'))
+    flexType.fields << new FlexField(fieldName: 'FIELD1')
+    flexType.fields << new FlexField(fieldName: 'FIELD2')
+    flexType.fields << new FlexField(fieldName: 'FIELD3')
 
     when: 'the record is initially saved'
     flexType.save()
@@ -123,7 +133,7 @@ class FlexTypeSpec extends BaseSpecification {
     when: 'a new field is added at the end and beginning'
     field0.flexType = flexType
     flexType.fields.add(0, field0)
-    flexType.addToFields(field4)
+    flexType.fields << field4
     flexType.save()
 
     then: 'the new records have a sequence'
@@ -150,8 +160,8 @@ class FlexTypeSpec extends BaseSpecification {
   def "verify that determineInputFields works for basic types"() {
     given: 'a flex type'
     def flexType = new FlexType(flexType: 'ABC')
-    flexType.addToFields(new FlexField(fieldName: 'NUMBER', fieldFormat: BigDecimalFieldFormat.instance))
-    flexType.addToFields(new FlexField(fieldName: 'Boolean', fieldFormat: BooleanFieldFormat.instance))
+    flexType.fields << new FlexField(fieldName: 'NUMBER', fieldFormat: BigDecimalFieldFormat.instance)
+    flexType.fields << new FlexField(fieldName: 'Boolean', fieldFormat: BooleanFieldFormat.instance)
     flexType.save()
 
     when: 'the field definitions are extracted'
@@ -168,11 +178,11 @@ class FlexTypeSpec extends BaseSpecification {
   }
 
   @Rollback
-  def "verify that getFieldSummary works first and later calles"() {
+  def "verify that getFieldSummary works first and later calls"() {
     given: 'a flex type'
     def flexType = new FlexType(flexType: 'ABC')
-    flexType.addToFields(new FlexField(fieldName: 'NUMBER', fieldFormat: BigDecimalFieldFormat.instance))
-    flexType.addToFields(new FlexField(fieldName: 'Boolean', fieldFormat: BooleanFieldFormat.instance))
+    flexType.fields << new FlexField(fieldName: 'NUMBER', fieldFormat: BigDecimalFieldFormat.instance)
+    flexType.fields << new FlexField(fieldName: 'Boolean', fieldFormat: BooleanFieldFormat.instance)
 
     expect: 'the getFieldSummary works'
     flexType.getFieldSummary().contains('NUMBER')

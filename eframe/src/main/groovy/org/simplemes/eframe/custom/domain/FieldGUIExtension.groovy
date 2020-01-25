@@ -15,13 +15,12 @@ import io.micronaut.data.annotation.Transient
 import io.micronaut.data.model.DataType
 import org.simplemes.eframe.custom.gui.FieldAdjustmentInterface
 import org.simplemes.eframe.domain.annotation.DomainEntity
-
-//import grails.gorm.annotation.Entity
-
 import org.simplemes.eframe.json.TypeableMapper
 import org.simplemes.eframe.misc.FieldSizes
 
 import javax.persistence.Column
+
+//import grails.gorm.annotation.Entity
 
 /**
  * This defines the field extensions added to the GUI for a given domain class.
@@ -39,7 +38,7 @@ class FieldGUIExtension {
    * The domain these GUI extensions are defined for.
    */
   // TODO: DDL Add unique constraint on domainName
-  @Column(length = FieldSizes.MAX_CLASS_NAME_LENGTH)
+  @Column(length = FieldSizes.MAX_CLASS_NAME_LENGTH, nullable = false)
   String domainName
 
   /**

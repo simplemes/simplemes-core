@@ -8,12 +8,12 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.Id
-
-//import grails.gorm.annotation.Entity
-
 import io.micronaut.data.annotation.MappedEntity
 import org.simplemes.eframe.data.format.BasicFieldFormat
 import org.simplemes.eframe.date.DateOnly
+
+//import grails.gorm.annotation.Entity
+
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
@@ -43,7 +43,7 @@ class SampleChild {
   @ManyToOne
   SampleParent sampleParent
 
-  @Column(name = 'key_value', length = 30)
+  @Column(name = 'key_value', length = 30, nullable = false)
   String key
   @Nullable Integer sequence = 10
   @Nullable String title

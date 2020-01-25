@@ -109,10 +109,12 @@ class PersistentPropertySpec extends BaseSpecification {
 
     where:
     annotations                         | nullable
+    '@Column'                           | true
     '@Column(nullable=true)'            | true
     '@Column(nullable=false)'           | false
-    '@Nullable @Column(nullable=true)'  | true
-    '@Nullable @Column(nullable=false)' | false  // When both are given, the @Column takes precedence.
+    '@Nullable @Column(nullable=true)'  | true   // When both are given, the @Column takes precedence.
+    '@Nullable @Column(nullable=false)' | false
+    '@Nullable @Column'                 | true
     ''                                  | false
   }
 

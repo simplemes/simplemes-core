@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.security.domain
 
 import groovy.transform.EqualsAndHashCode
@@ -21,12 +25,6 @@ import javax.annotation.Nullable
 import javax.persistence.Column
 import javax.persistence.ManyToMany
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * The framework/security User definition.
  */
@@ -39,7 +37,7 @@ class User {
   /**
    * The user name (e.g. logon ID).
    */
-  @Column(length = FieldSizes.MAX_CODE_LENGTH)   // TODO: Add unique to DDL.
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)   // TODO: Add unique to DDL.
   String userName
 
   /**

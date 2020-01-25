@@ -1,16 +1,15 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom
 
 import groovy.transform.ToString
-import org.simplemes.eframe.custom.domain.AbstractField
+import org.simplemes.eframe.custom.domain.FieldInterface
 import org.simplemes.eframe.data.SimpleFieldDefinition
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.misc.TypeUtils
-
-/*
- * Copyright Michael Houston. All rights reserved.
- *
-*/
 
 /**
  * Holds the basic definition needed for a single field in a configurable type field element.  This provides the
@@ -31,7 +30,7 @@ class ConfigurableTypeFieldDefinition extends SimpleFieldDefinition {
    * @param field The field definition. Copies properties such as type, field, label, etc.
    * @param configTypeFieldName The name of the Configurable Type that this field belongs to.
    */
-  ConfigurableTypeFieldDefinition(AbstractField field, String configTypeFieldName = null) {
+  ConfigurableTypeFieldDefinition(FieldInterface field, String configTypeFieldName = null) {
     super()
     this.name = field.fieldName
     if (configTypeFieldName) {

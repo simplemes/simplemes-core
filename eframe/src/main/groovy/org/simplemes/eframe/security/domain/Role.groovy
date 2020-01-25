@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.security.domain
 
 import groovy.transform.EqualsAndHashCode
@@ -9,12 +13,6 @@ import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.FieldSizes
 
 import javax.persistence.Column
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Defines a Role for security.  These roles are used by the access points (controllers) to determine which users
@@ -31,13 +29,13 @@ class Role {
   /**
    * The Role name (authority).  Example: 'ADMIN'.
    */
-  @Column(length = FieldSizes.MAX_CODE_LENGTH)  // TODO: Add unique to DDL.
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)  // TODO: Add unique to DDL.
   String authority
 
   /**
    * The short title of this object.
    */
-  @Column(length = FieldSizes.MAX_TITLE_LENGTH)
+  @Column(length = FieldSizes.MAX_TITLE_LENGTH, nullable = false)
   String title
 
   /**
