@@ -15,11 +15,10 @@ import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.exception.MessageHolder
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.NameUtils
-
-//import grails.gorm.annotation.Entity
-
 import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.misc.TypeUtils
+
+//import grails.gorm.annotation.Entity
 
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
@@ -172,7 +171,7 @@ class DomainUtils {
   /**
    * The names for special properties that are not considered normal domain fields.
    */
-  static specialProperties = ['id', 'version', 'dateCreated', 'lastUpdated',
+  static specialProperties = ['id', 'version', 'dateCreated', 'dateUpdated',
                               ExtensibleFields.DEFAULT_FIELD_NAME, ExtensibleFields.COMPLEX_CUSTOM_FIELD_NAME]
 
   /**

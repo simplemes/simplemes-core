@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data
 
 import org.simplemes.eframe.dashboard.domain.DashboardConfig
@@ -9,12 +13,6 @@ import sample.domain.AllFieldsDomain
 import sample.domain.SampleChild
 import sample.domain.SampleParent
 import sample.domain.SampleSubClass
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -115,6 +113,17 @@ class SimpleFieldDefinitionSpec extends BaseSpecification {
     SampleParent | 'allFieldsDomain'  | false
     SampleParent | 'allFieldsDomains' | false
     SampleParent | 'sampleChildren'   | false
+  }
+
+  def "verify that isPrimaryUuid works for supported field types"() {
+    expect: 'the isParentReference method works'
+    new SimpleFieldDefinition(DomainUtils.instance.getPersistentField(clazz, name)).primaryUuid == results
+
+    where:
+    clazz        | name           | results
+    SampleChild  | 'uuid'         | true
+    SampleChild  | 'sampleParent' | false
+    SampleParent | 'title'        | false
   }
 
   def "verify that maxLength is set correctly"() {

@@ -174,6 +174,7 @@ class PersistentPropertySpec extends BaseSpecification {
     definition                                  | parentReference
     '@OneToMany(mappedBy="dummy") List<Order> ' | false
     '@ManyToOne Order '                         | true
+    '@ManyToOne(targetEntity=Order) Order ' | false
     'Order '                                    | false
     'String'                                    | false
   }

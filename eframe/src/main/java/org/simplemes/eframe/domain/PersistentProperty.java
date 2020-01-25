@@ -119,7 +119,10 @@ public class PersistentProperty {
     // Now, figure out the parent/child cases.
     OneToMany oneToMany = field.getAnnotation(OneToMany.class);
     ManyToOne manyToOne = field.getAnnotation(ManyToOne.class);
-    isParentReference = (manyToOne != null);
+    if (manyToOne != null) {
+      Class target = manyToOne.targetEntity();
+      isParentReference = !(target.equals(type));
+    }
     if (!isParentReference) {
       isChild = (oneToMany != null);
     }
@@ -128,14 +131,15 @@ public class PersistentProperty {
   @Override
   public String toString() {
     String col = (type == String.class) ? ", maxLength=" + maxLength : "";
+    String owner = (field != null) ? ", owner=" + field.getDeclaringClass() : "";
     return "PersistentProperty{" +
         "name='" + name + '\'' +
         ", type=" + type +
         ", nullable=" + nullable +
         ", referenceType=" + referenceType +
-        ", parent=" + isParentReference +
+        ", parentReference=" + isParentReference +
         ", child=" + isChild +
-        col +
+        col + owner +
         '}';
   }
 

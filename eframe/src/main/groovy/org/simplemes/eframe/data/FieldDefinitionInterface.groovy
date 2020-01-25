@@ -1,12 +1,10 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data
 
 import org.simplemes.eframe.data.format.FieldFormatInterface
-
-/*
- * Copyright Michael Houston 2017. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Defines fields used by the framework.
@@ -68,6 +66,11 @@ interface FieldDefinitionInterface {
    * If true, then this field is a reference the parent entity.
    */
   boolean isParentReference()
+
+  /**
+   * If true, then this field the primary key UUID for the record.
+   */
+  boolean isPrimaryUuid()
 
   /**
    * If true, then this field is flagged as required.

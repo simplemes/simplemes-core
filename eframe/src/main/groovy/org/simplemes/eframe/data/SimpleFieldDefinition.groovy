@@ -72,6 +72,12 @@ class SimpleFieldDefinition implements FieldDefinitionInterface {
   boolean child = false
 
   /**
+   * If true, then this field is the primary key UUID (for the DB).
+   * Only valid for persistent properties cases.
+   */
+  boolean primaryUuid = false
+
+  /**
    * If true, then this field marked as required.
    */
   boolean required = false
@@ -89,7 +95,6 @@ class SimpleFieldDefinition implements FieldDefinitionInterface {
   /**
    * The persistent property for the definition.  May be null.
    */
-  // TODO: Replace with non-hibernate alternative
   PersistentProperty property
 
 
@@ -133,6 +138,7 @@ class SimpleFieldDefinition implements FieldDefinitionInterface {
       maxLength = property.maxLength
     }
     required = !property.nullable
+    primaryUuid = (name == 'uuid' && type == UUID)
     setDefaultValues()
   }
 
