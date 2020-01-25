@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom.domain
 
 
@@ -6,12 +10,7 @@ import org.simplemes.eframe.data.format.EnumFieldFormat
 import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
+import org.simplemes.eframe.test.annotation.Rollback
 
 /**
  * Tests.
@@ -41,7 +40,7 @@ class FieldExtensionSpec extends BaseSpecification {
     }
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that validation on fieldName prevents illegal values - non-java names"() {
     given: 'a field extension with invalid fieldName'
     def fieldExtension = new FieldExtension(fieldName: 'abc=2', domainClassName: FieldExtension.name)
@@ -71,7 +70,7 @@ class FieldExtensionSpec extends BaseSpecification {
     error.codes.contains('unique.domainClassName')
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the constraint enforces valueClassName is required for Enumeration format types"() {
     given: 'a field extension with no valueClassName '
     def fieldExtension = new FieldExtension(fieldName: 'abc', domainClassName: FieldExtension.name, fieldFormat: EnumFieldFormat.instance)
@@ -83,7 +82,7 @@ class FieldExtensionSpec extends BaseSpecification {
     error.codes.contains('missingValueClassName.valueClassName')
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the constraint enforces valueClassName is an Enumeration type"() {
     given: 'a field extension with a non-enum valueClassName '
     def fieldExtension = new FieldExtension(fieldName: 'abc', domainClassName: FieldExtension.name,
@@ -97,7 +96,7 @@ class FieldExtensionSpec extends BaseSpecification {
     error.toString().contains(String.name)
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the constraint enforces valueClassName is a valid class name"() {
     given: 'a field extension with bad valueClassName '
     def fieldExtension = new FieldExtension(fieldName: 'abc', domainClassName: FieldExtension.name,

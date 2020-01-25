@@ -1,70 +1,80 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom.domain
 
-//import grails.gorm.annotation.Entity
+import groovy.transform.EqualsAndHashCode
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.DateCreated
+import io.micronaut.data.annotation.DateUpdated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.annotation.Transient
+import io.micronaut.data.model.DataType
 import org.simplemes.eframe.custom.gui.FieldAdjustmentInterface
+import org.simplemes.eframe.domain.annotation.DomainEntity
+
+//import grails.gorm.annotation.Entity
+
 import org.simplemes.eframe.json.TypeableMapper
 import org.simplemes.eframe.misc.FieldSizes
+
+import javax.persistence.Column
 
 /**
  * This defines the field extensions added to the GUI for a given domain class.
  * This mainly adjusts the order of fields on the standard definition GUIs and lists.
  * This can also add custom fields to those GUIs.
  */
-//@Entity
+// TODO: Replace with non-hibernate alternative
+//@ExtensibleFields()
+@MappedEntity
+@DomainEntity
+@EqualsAndHashCode(includes = ["domainName"])
 class FieldGUIExtension {
+
+  /**
+   * The domain these GUI extensions are defined for.
+   */
+  // TODO: DDL Add unique constraint on domainName
+  @Column(length = FieldSizes.MAX_CLASS_NAME_LENGTH)
   String domainName
 
   /**
    * A non-persisted List of adjustments (<b>transient</b>).
    * Always set to an empty list on construction.
    */
+  @Transient
   List<FieldAdjustmentInterface> adjustments = []
 
   /**
    * The JSON form of the adjustments.  This is the value persisted to the database.
    */
+  @Column(nullable = true)
+  @MappedProperty(type = DataType.STRING, definition = 'TEXT')
   String adjustmentsText
 
   /**
    * If true, then the JSON of the adjustments has been parsed (after retrieval).  (<b>transient</b>).
    * This is used to make sure the JSON is only parsed once, after retrieval.
    */
+  @Transient
   boolean textHasBeenParsed = false
 
-  /**
-   * The date this record was last updated.
-   */
-  Date lastUpdated
-
-  /**
-   * The date this record was created
-   */
   @SuppressWarnings("unused")
-  Date dateCreated
+  @DateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE') Date dateCreated
 
-  /**
-   * Internal Mapping of fields to columns.
-   */
   @SuppressWarnings("unused")
-  static mapping = {
-    adjustmentsText type: 'text'
-    cache true
-  }
+  @DateUpdated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE') Date dateUpdated
 
-  /**
-   * Internal constraints.
-   */
-  @SuppressWarnings("unused")
-  static constraints = {
-    domainName(maxSize: FieldSizes.MAX_CLASS_NAME_LENGTH, blank: false, unique: true)
-    adjustmentsText(nullable: true)
-  }
+  Integer version = 0
 
-  /**
-   * Internal field transients.
-   */
-  @SuppressWarnings("unused")
-  static transients = ['adjustments', 'textHasBeenParsed']
+  @Id @AutoPopulated UUID uuid
+
 
   /**
    * Get the Adjustments.  Converts from the persisted JSON format if this is the first call to getAdjustments() after a load.
@@ -128,36 +138,32 @@ class FieldGUIExtension {
    * @param fieldName The field name to remove.
    */
   static void removeReferencesToField(String domainName, String fieldName) {
-    withNewSession {
-      withTransaction {
-        //noinspection UnnecessaryQualifiedReference
-        def list = FieldGUIExtension.findByDomainName(domainName)
-        // Fully qualified call to findBy() is needed in new session
-        for (fieldGUIExtension in list) {
-          def removeList = []
-          for (adj in fieldGUIExtension.adjustments) {
-            // Remove the field from the adjustment.
-            if (adj.removeField(fieldName)) {
-              // and remember this to remove the adjustment from the list, later.
-              removeList << adj
-            }
-          }
-          // Now, remove any adjustments inside of another loop to avoid concurrent update issues.
-          for (adj in removeList) {
-            fieldGUIExtension.adjustments.remove((Object) adj)
-          }
-          if (fieldGUIExtension.adjustments.size()) {
-            fieldGUIExtension.lastUpdated = new Date(new Date().time + 1)
-            // Must change a simple field to force hibernate to update the record.
-            fieldGUIExtension.persistAdjustmentsInText() // Make sure the new list is in JSON
-            //println "save fieldGUIExtension = $fieldGUIExtension, JSON = ${fieldGUIExtension.adjustmentsText}"
-            fieldGUIExtension.save(flush: false)
-          } else {
-            //println "deleting the whole FGE = $fieldGUIExtension"
-            fieldGUIExtension.delete(flush: false)
-            //FieldExtensionHelper.deleteCustomChild(fieldGUIExtension)
-          }
+    //noinspection UnnecessaryQualifiedReference
+    def list = FieldGUIExtension.findByDomainName(domainName)
+    // Fully qualified call to findBy() is needed in new session
+    for (fieldGUIExtension in list) {
+      def removeList = []
+      for (adj in fieldGUIExtension.adjustments) {
+        // Remove the field from the adjustment.
+        if (adj.removeField(fieldName)) {
+          // and remember this to remove the adjustment from the list, later.
+          removeList << adj
         }
+      }
+      // Now, remove any adjustments inside of another loop to avoid concurrent update issues.
+      for (adj in removeList) {
+        fieldGUIExtension.adjustments.remove((Object) adj)
+      }
+      if (fieldGUIExtension.adjustments.size()) {
+        fieldGUIExtension.lastUpdated = new Date(new Date().time + 1)
+        // Must change a simple field to force hibernate to update the record.
+        fieldGUIExtension.persistAdjustmentsInText() // Make sure the new list is in JSON
+        //println "save fieldGUIExtension = $fieldGUIExtension, JSON = ${fieldGUIExtension.adjustmentsText}"
+        fieldGUIExtension.save()
+      } else {
+        //println "deleting the whole FGE = $fieldGUIExtension"
+        fieldGUIExtension.delete()
+        //FieldExtensionHelper.deleteCustomChild(fieldGUIExtension)
       }
     }
   }

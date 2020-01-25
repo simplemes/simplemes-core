@@ -51,9 +51,10 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
 
   @Rollback
   def "verify that the round trip with foreign reference in domain object works"() {
+    // TODO: Remove repo references?
     given: 'a simple domain'
     AllFieldsDomainRepository allFieldsDomainRepository = Holders.applicationContext.getBean(AllFieldsDomainRepository)
-    println "allFieldsDomainRepository = $allFieldsDomainRepository"
+    //println "allFieldsDomainRepository = $allFieldsDomainRepository"
     def afd1 = new AllFieldsDomain(name: 'ABC-01', title: 'orig')
     allFieldsDomainRepository.save(afd1)
     SampleParentRepository sampleParentRepository = Holders.applicationContext.getBean(SampleParentRepository)
@@ -67,7 +68,7 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
     def objectMapper = new ObjectMapper().registerModule(new EFrameJacksonModule())
     def s = objectMapper.writeValueAsString(p)
     //println "s = $s"
-    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+    println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
     and: 'the original record is deleted'
     p.delete()
@@ -78,9 +79,11 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
 
     and: 'the object is re-created from the JSON'
     def p2 = objectMapper.readValue(s, SampleParent)
+    p2.uuid = null // Force the record to be inserted
+    // TODO: Is this required by caller of should we do it in the save() method?  A new _exists field?
     println "p2 = $p2"
     p2.save()
-    println "p2 = $p2"
+    //println "p2 = $p2"
 
     then: 'the new record exists'
     p2.uuid != originalID

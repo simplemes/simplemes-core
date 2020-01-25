@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom.domain
 
 //import grails.gorm.annotation.Entity
@@ -14,6 +18,7 @@ import org.simplemes.eframe.misc.TypeUtils
  * and validations.  This is used for custom field extensions on domain objects.
  */
 //@Entity
+// TODO: Delete when finished with FieldExtension
 @EqualsAndHashCode(includes = ['fieldName'])
 abstract class AbstractField {
 

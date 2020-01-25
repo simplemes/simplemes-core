@@ -7,13 +7,14 @@ Undo workarounds that were fixed (323).
 @Entity replacement with GDSL.
   Convert Domains
     done - AllFieldsDomain
-    SampleParent
-    FlexField/AbstractField
-    FlexType
+    done - SampleParent
+    done - FlexField/AbstractField
+    done - FlexType
+    FieldExtension
     UserPreference
-    SampleChild
-    SampleGrandChild
-    SampleSubClass
+    done - SampleChild
+    done - SampleGrandChild
+    done - SampleSubClass
     RMA
     ArchiveLog
     FieldGUIExtension
