@@ -10,12 +10,16 @@ import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import org.simplemes.eframe.data.format.BasicFieldFormat
+import org.simplemes.eframe.data.format.EnumFieldFormat
+import org.simplemes.eframe.data.format.StringFieldFormat
+import org.simplemes.eframe.domain.annotation.DomainEntity
+import org.simplemes.eframe.domain.validate.ValidationError
 
 //import grails.gorm.annotation.Entity
 
-import org.simplemes.eframe.data.format.StringFieldFormat
-import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.FieldSizes
+import org.simplemes.eframe.misc.NameUtils
+import org.simplemes.eframe.misc.TypeUtils
 
 import javax.persistence.Column
 
@@ -42,7 +46,7 @@ class FieldExtension implements FieldInterface {
   /**
    * The name of the field.  This follows the normal naming conventions for column names.
    */
-  @Column(length = FieldSizes.MAX_CODE_LENGTH)
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String fieldName
 
   /**
@@ -98,6 +102,42 @@ class FieldExtension implements FieldInterface {
    */
   @SuppressWarnings("unused")
   static keys = ['flexType', 'fieldName']
+
+  /**
+   * Validates this 
+   */
+  def validate() {
+    if (fieldName && !NameUtils.isLegalIdentifier(fieldName)) {
+      //error.201.message="{1}" is not a legal custom field name.  Must be a legal Java variable name.
+      return new ValidationError(201, 'fieldName', fieldName)
+    }
+    return validateValueClassName()
+  }
+
+  /**
+   * Validates that the class name is correct for the current FieldFormat and is legal.
+   */
+  def validateValueClassName() {
+    //noinspection GrEqualsBetweenInconvertibleTypes
+    if (fieldFormat == EnumFieldFormat.instance) {
+      if (!valueClassName) {
+        //error.1.message=Required value is missing "{0}".
+        return new ValidationError(1, 'valueClassName')
+      }
+      try {
+        def clazz = TypeUtils.loadClass(valueClassName)
+        if (!clazz.isEnum()) {
+          //error.202.message={0} ({1}) is not an enumeration.
+          return new ValidationError(202, 'valueClassName', valueClassName)
+        }
+      } catch (ClassNotFoundException ignored) {
+        //error.4.message=Invalid "{0}" class.  Class "{1}" not found.
+        return new ValidationError(4, 'valueClassName', valueClassName)
+      }
+    }
+    return null
+  }
+
 
   /**
    * Delete will remove any references to this field from any FieldGUIExtensions

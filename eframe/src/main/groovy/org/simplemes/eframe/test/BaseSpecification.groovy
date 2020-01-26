@@ -15,6 +15,7 @@ import io.micronaut.http.HttpRequest
 import io.micronaut.http.simple.SimpleHttpHeaders
 import io.micronaut.http.simple.SimpleHttpParameters
 import io.micronaut.runtime.server.EmbeddedServer
+import io.micronaut.transaction.jdbc.DataSourceUtils
 import org.junit.Rule
 import org.junit.rules.TestName
 import org.simplemes.eframe.application.Holders
@@ -35,7 +36,9 @@ import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.security.SecurityUtils
 import spock.lang.Shared
 
+import javax.sql.DataSource
 import javax.transaction.Transactional
+import java.sql.Connection
 
 /**
  * The base class for most non-GUI tests.  This supports starting an embedded server and cleanup of the database tables.
@@ -206,6 +209,7 @@ class BaseSpecification extends GebSpec {
       def start = System.currentTimeMillis()
       embeddedServer = ApplicationContext.run(EmbeddedServer)
       System.out.println("Started Server ${System.currentTimeMillis() - start}ms")
+      executeTestDDLStatements()
 /*    // Probably not needed in most cases.
       // Wait for the initial user record to be committed
       def adminUser = null
@@ -223,6 +227,35 @@ class BaseSpecification extends GebSpec {
 
       log.debug("All Beans = ${Holders.applicationContext.getAllBeanDefinitions()*.name}")
     }
+  }
+
+  /**
+   * Executes any DDL Statements needed for a test database (H2).
+   * Checks all loaded modules (via classpath) for 'ddl/_testH2.sql' files.
+   */
+  void executeTestDDLStatements() {
+    def resources = getClass().classLoader.getResources('ddl/_testH2.sql')
+    for (url in resources) {
+      def inputStream = null
+      try {
+        log.debug("executeTestDDLStatements(): Executing statements from {} ", url)
+        inputStream = url.openStream()
+        inputStream.eachLine { line ->
+          if (line.contains(';')) {
+            line = line - ';'
+            log.debug("executeTestDDLStatements(): Executing {} ", line)
+            DataSource dataSource = Holders.getApplicationContext().getBean(DataSource.class)
+            Connection connection = DataSourceUtils.getConnection(dataSource)
+            def ps = connection.prepareStatement(line)
+            ps.execute()
+          }
+          false
+        }
+      } finally {
+        inputStream?.close()
+      }
+    }
+
   }
 
   /**
@@ -633,6 +666,25 @@ class BaseSpecification extends GebSpec {
       }
     }
     return res
+  }
+
+  /**
+   * Runs the validation on the given domain object and verifies that the given validation (code/fieldName)
+   * are found.  Also checks the message for the presence of the expectedStrings.
+   * @param object The domain object to validate.
+   * @param code The expected error code.
+   * @param fieldName The expected error field.
+   * @param expectedStrings The expected strings the in the message.
+   * @return True if passes.  Throws assertion exception if not.
+   */
+  boolean assertValidationFails(Object object, int code, String fieldName, List<String> expectedStrings) {
+    //error.4.message=Invalid "{0}" class.  Class "{1}" not found.
+    def errors = DomainUtils.instance.validate(object)
+    errors.size() > 0
+    errors[0].fieldName == fieldName
+    errors[0].code == code
+    UnitTestUtils.assertContainsAllIgnoreCase(errors[0].toString(), expectedStrings)
+    return true
   }
 
 

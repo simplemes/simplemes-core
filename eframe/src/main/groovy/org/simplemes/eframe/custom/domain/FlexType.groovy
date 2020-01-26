@@ -20,13 +20,13 @@ import org.simplemes.eframe.data.ChoiceListItemInterface
 import org.simplemes.eframe.data.ConfigurableTypeInterface
 import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.domain.annotation.DomainEntity
-
-//import grails.gorm.annotation.Entity
-
 import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.misc.FieldSizes
 
 import javax.annotation.Nullable
+
+//import grails.gorm.annotation.Entity
+
 import javax.persistence.Column
 import javax.persistence.OneToMany
 
@@ -65,6 +65,7 @@ class FlexType implements ConfigurableTypeInterface, ChoiceListItemInterface {
    * <b>Required.</b>
    */
   @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
+  @MappedProperty(type = DataType.STRING, definition = 'VARCHAR(30) UNIQUE')
   String flexType
 
   /**

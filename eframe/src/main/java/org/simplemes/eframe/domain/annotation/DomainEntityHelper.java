@@ -8,6 +8,7 @@ import groovy.lang.Closure;
 import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.data.annotation.MappedEntity;
+import io.micronaut.data.exceptions.DataAccessException;
 import io.micronaut.data.model.naming.NamingStrategy;
 import io.micronaut.data.repository.CrudRepository;
 import io.micronaut.data.repository.GenericRepository;
@@ -98,22 +99,26 @@ public class DomainEntityHelper {
    * @param object The domain object to save.
    * @return The object after saving.
    */
-  Object save(DomainEntityInterface object) throws Exception {
-    CrudRepository repo = (CrudRepository) getRepository(object.getClass());
-    if (repo == null) {
-      throw new IllegalArgumentException("Missing repository for " + object.getClass());
-    }
-    executeBeforeSave(object);
-    validateForSave(object);
-    if (object.getUuid() == null) {
-      repo.save(object);
-    } else {
-      repo.update(object);
-    }
-    saveManyToMany(object);
-    saveChildren(object);
+  Object save(DomainEntityInterface object) throws Throwable {
+    try {
+      CrudRepository repo = (CrudRepository) getRepository(object.getClass());
+      if (repo == null) {
+        throw new IllegalArgumentException("Missing repository for " + object.getClass());
+      }
+      executeBeforeSave(object);
+      validateForSave(object);
+      if (object.getUuid() == null) {
+        repo.save(object);
+      } else {
+        repo.update(object);
+      }
+      saveManyToMany(object);
+      saveChildren(object);
 
-    return object;
+      return object;
+    } catch (Exception e) {
+      throw unwrapAndSimplifyException(e);
+    }
   }
 
 
@@ -566,7 +571,7 @@ public class DomainEntityHelper {
           }
         } catch (Throwable e) {
           // Most exceptions are wrapped in invocation target exceptions, so we can remove them.
-          throw unwrapException(e);
+          throw unwrapAndSimplifyException(e);
         }
       }
       //System.out.println("  getter " + fieldName + " list: " + list);
@@ -676,7 +681,7 @@ public class DomainEntityHelper {
         }
       } catch (Throwable e) {
         // Most exceptions are wrapped in invocation target exceptions, so we can remove them.
-        throw unwrapException(e);
+        throw unwrapAndSimplifyException(e);
       }
     }
 
@@ -702,19 +707,45 @@ public class DomainEntityHelper {
   }
 
   /**
+   * A cached copy of the SimplifiedSQLException constructor.  Used to avoid direct dependency on the groovy code.
+   */
+  private static Constructor<?> simplifiedSQLExceptionConstructor;
+
+
+  /**
    * Unwraps the given exception to find the root cause.  This unwraps  InvocationTargetException and
-   * UndeclaredThrowableException to find the real cause (SQL or micronaut exception).
+   * UndeclaredThrowableException and DataAccessException to find the real cause (SQL or micronaut exception).
+   * This will also wrap it with a SimplifiedSQLException if the error is an SQL exception.
    *
-   * @param e The exception to unwrap.
+   * @param e The exception to unwrap and simplify.
    * @return The unwrapped exception or the original exception if not unwrap-able.
    */
-  Throwable unwrapException(Throwable e) {
+  @SuppressWarnings("unchecked")
+  Throwable unwrapAndSimplifyException(Throwable e) {
     if (e instanceof UndeclaredThrowableException) {
       e = e.getCause();
     }
     if (e instanceof InvocationTargetException) {
       e = e.getCause();
     }
+    if (e instanceof DataAccessException) {
+      e = e.getCause();
+    }
+    if (e instanceof SQLException) {
+      try {
+        if (simplifiedSQLExceptionConstructor == null) {
+          Class c = getClass().getClassLoader().loadClass("org.simplemes.eframe.exception.SimplifiedSQLException");
+          simplifiedSQLExceptionConstructor = c.getConstructor(Exception.class);
+        }
+        if (simplifiedSQLExceptionConstructor != null) {
+          e = (Throwable) simplifiedSQLExceptionConstructor.newInstance(e);
+        }
+      } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ignored) {
+        //System.out.println("ignored:" + ignored);
+      }
+    }
+
+
     return e;
   }
 

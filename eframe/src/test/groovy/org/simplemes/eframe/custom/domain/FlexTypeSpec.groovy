@@ -4,13 +4,11 @@
 
 package org.simplemes.eframe.custom.domain
 
-
 import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.data.format.BigDecimalFieldFormat
 import org.simplemes.eframe.data.format.BooleanFieldFormat
-import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
@@ -63,12 +61,8 @@ class FlexTypeSpec extends BaseSpecification {
   def "verify that the minimum fields size constraint works"() {
     expect: 'the constraint is enforced'
     def flexType2 = new FlexType(flexType: 'PDQ')
-    def errors = DomainUtils.instance.validate(flexType2)
-    errors.size() > 0
-    errors[0].fieldName == 'fields'
-    errors[0].code == 200
     //error.200.message=The list value ({0}) must have at least one entry in it.
-    UnitTestUtils.assertContainsAllIgnoreCase(errors[0].toString(), ['fields', 'list', 'one'])
+    assertValidationFails(flexType2, 200, 'fields', ['fields', 'list', 'one'])
   }
 
   @Rollback

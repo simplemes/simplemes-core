@@ -8,7 +8,9 @@ import io.micronaut.data.exceptions.DataAccessException
 import io.micronaut.transaction.SynchronousTransactionManager
 import io.micronaut.transaction.jdbc.DataSourceUtils
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.exception.MessageBasedException
+import org.simplemes.eframe.exception.SimplifiedSQLException
 import org.simplemes.eframe.security.domain.Role
 import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.BaseSpecification
@@ -24,6 +26,7 @@ import sample.domain.SampleGrandChild
 import sample.domain.SampleParent
 
 import javax.sql.DataSource
+import java.lang.reflect.Field
 import java.sql.Connection
 
 /**
@@ -137,6 +140,33 @@ class DomainEntityHelperSpec extends BaseSpecification {
 
     then: 'the value is not re-read from the DB'
     DomainEntityHelper.instance.lastLazyChildParentLoaded == null
+  }
+
+  @Rollback
+  def "verify that lazyChildLoad is called after the find completes"() {
+    given: 'a domain record with children'
+    def order = new Order(order: 'M1001')
+    order.orderLines << new OrderLine(order: order, product: 'BIKE', sequence: 1)
+    order.orderLines << new OrderLine(order: order, qty: 2.0, product: 'WHEEL', sequence: 2)
+    order.save()
+    assert OrderLine.list().size() == 2
+
+    when: 'the record is re-read'
+    def order2 = Order.findByUuid(order.uuid)
+
+    then: 'the list is not in memory yet'
+    // Use direct access to the field to avoid triggering the lazy loader
+    Field field = Order.getDeclaredField('orderLines')
+    field.setAccessible(true)  // Ignore the private state
+    def lines = field.get(order2)
+    lines == null
+
+    when: 'the lazy loader is triggered by the get'
+    order2.orderLines.size() == 2
+
+    then: 'the lazy loader was triggered and works'
+    def lines2 = field.get(order2)
+    lines2.size() == 2
   }
 
   @Rollback
@@ -316,6 +346,19 @@ class DomainEntityHelperSpec extends BaseSpecification {
       assert order2.orderLines.find { it.product == "BIKE$i" }
       true
     }
+  }
+
+  @Rollback
+  def "verify that save provides a user-friendly exception on unique constraint violations"() {
+    given: 'an existing field extension'
+    new FieldExtension(fieldName: 'abc', domainClassName: FieldExtension.name).save()
+
+    when: 'a duplicate field extension is validated'
+    new FieldExtension(fieldName: 'abc', domainClassName: FieldExtension.name).save()
+
+    then: 'the right exception is thrown'
+    def ex = thrown(SimplifiedSQLException)
+    UnitTestUtils.assertExceptionIsValid(ex, ['Unique'])
   }
 
   @Rollback

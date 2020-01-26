@@ -88,14 +88,14 @@ public class ValidationError implements ValidationErrorInterface {
    * @param args   The arguments.
    * @return The looked up value.
    */
-  @SuppressWarnings("JavaReflectionMemberAccess")
+  //@SuppressWarnings("JavaReflectionMemberAccess")
   private String lookup(String key, Locale locale, Object[] args) {
     // return GlobalUtils.lookup(key, locale, args);
     if (lookupMethod == null) {
       // Cache the lookup method
       try {
         Class<?> clazz = Class.forName("org.simplemes.eframe.i18n.GlobalUtils");
-        Class<?>[] paramTypes = new Class<?>[args.length + 2];
+        Class<?>[] paramTypes = new Class<?>[3];
         paramTypes[0] = String.class;
         paramTypes[1] = Locale.class;
         paramTypes[2] = Object[].class;
