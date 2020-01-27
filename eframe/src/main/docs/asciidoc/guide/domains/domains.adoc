@@ -377,23 +377,25 @@ interface OrderRepository extends BaseRepository, CrudRepository<Order, UUID> {
 }
 
 @JdbcRepository(dialect = Dialect.H2)
-@Requires(env = [Environment.TEST]) <.>
+@Requires(env = [Environment.TEST]) // <.>
+@Replaces(OrderRepository.class)    // <.>
 interface OrderRepositoryH2 extends OrderRepository {
 }
 
 @JdbcRepository(dialect = Dialect.POSTGRES)
-@Requires(env = [EFEnvironments.PRODUCTION, Environment.DEVELOPMENT]) <.>
-interface OrderRepositoryPostgres extends OrderRepository {
+interface OrderRepositoryPostgres extends OrderRepository {  // <.>
 }
 
 ----
 <.> Required.
 <.> Recommended for testing/diagnostics.  No row limits on results.
 <.> Used only for Test environment.
-<.> Uses Postgres for production and dev environments.
+<.> Replaces the Postgres version of the repository.
+<.> Uses Postgres for all non-test environments.
 
-===== FindByUuid and Foreign References
-
+NOTE: The H2 version of the repository is normally defined in the production src.  This allows
+      other modules to use these repositories in their test scenarios.  This bloats the
+      .jar files somewhat, but is unavoidable.
 
 
 ==== beforeSave Method

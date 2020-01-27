@@ -4,7 +4,7 @@
 
 package org.simplemes.eframe.domain.annotation
 
-import io.micronaut.data.exceptions.DataAccessException
+
 import io.micronaut.transaction.SynchronousTransactionManager
 import io.micronaut.transaction.jdbc.DataSourceUtils
 import org.simplemes.eframe.application.Holders
@@ -194,7 +194,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
     new Order(order: 'ABC', notes: "A" * 500).save()
 
     then: 'the right exception is thrown'
-    thrown(DataAccessException)
+    thrown(SimplifiedSQLException)
   }
 
   @Rollback
