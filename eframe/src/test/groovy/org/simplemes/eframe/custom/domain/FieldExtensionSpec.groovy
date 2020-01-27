@@ -6,6 +6,7 @@ package org.simplemes.eframe.custom.domain
 
 import org.simplemes.eframe.custom.gui.FieldInsertAdjustment
 import org.simplemes.eframe.data.format.EnumFieldFormat
+import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.exception.SimplifiedSQLException
 import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.test.BaseSpecification
@@ -23,6 +24,12 @@ class FieldExtensionSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
   static dirtyDomains = [FieldGUIExtension, FieldExtension]
+
+  def "verify that default values are set correctly"() {
+    expect: 'the right defaults are used'
+    FieldExtension field = new FieldExtension()
+    field.fieldFormat == StringFieldFormat.instance
+  }
 
   def "verify that domain enforces constraints"() {
     expect: 'the constraints are enforced'

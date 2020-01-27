@@ -1,18 +1,15 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom.domain
 
-
+import org.simplemes.eframe.data.format.EnumFieldFormat
 import org.simplemes.eframe.data.format.StringFieldFormat
-import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.test.BaseSpecification
-import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.DomainTester
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
+import org.simplemes.eframe.test.annotation.Rollback
 
 /**
  * Tests.
@@ -41,22 +38,18 @@ class FlexFieldSpec extends BaseSpecification {
     }
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that invalid field names are detected"() {
     expect: 'the right defaults are used'
     def flexType = new FlexType(flexType: 'XYZ')
-    FlexField field = new FlexField(flexType: flexType, fieldName: ' BAD')
-    !field.validate()
-    def error = field.errors["fieldName"]
-    error.codes.contains('invalidFieldName')
-    def errorsByField = GlobalUtils.lookupValidationErrors(field)
-    errorsByField['fieldName'][0].contains('BAD')
+    FlexField field = new FlexField(flexType: flexType, fieldName: ' 2BAD')
+    assertValidationFails(field, 201, 'fieldName', ['legal', ' 2BAD'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that equals and hash code work"() {
     given: 'a flex type'
-    def flexType = DataGenerator.buildFlexType()
+    def flexType = new FlexType(flexType: 'XYZ')
 
     and: 'some flex fields to compare'
     def field1a = new FlexField(flexType: flexType, fieldName: 'ABC')
@@ -71,4 +64,16 @@ class FlexFieldSpec extends BaseSpecification {
     field1a != field2
     field1a.hashCode() != field2.hashCode()
   }
+
+  @Rollback
+  def "verify that the constraint enforces valueClassName is a valid class name"() {
+    given: 'a field extension with bad valueClassName '
+    def flexField = new FlexField(fieldName: 'abc', flexType: new FlexType(),
+                                  fieldFormat: EnumFieldFormat.instance, valueClassName: 'gibberish')
+
+    expect: 'invalid valueClassName check is enforced'
+    //error.4.message=Invalid "{0}" class.  Class "{1}" not found.
+    assertValidationFails(flexField, 4, 'valueClassName', ['valueClassName', 'gibberish', 'invalid', 'class'])
+  }
+
 }

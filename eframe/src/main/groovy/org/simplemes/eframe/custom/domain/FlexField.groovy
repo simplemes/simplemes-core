@@ -10,11 +10,9 @@ import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import org.simplemes.eframe.data.format.BasicFieldFormat
-import org.simplemes.eframe.data.format.EnumFieldFormat
 import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.FieldSizes
-import org.simplemes.eframe.misc.TypeUtils
 
 import javax.persistence.Column
 import javax.persistence.ManyToOne
@@ -30,7 +28,7 @@ import javax.persistence.ManyToOne
 @EqualsAndHashCode(includes = ['flexType', 'fieldName'])
 @ToString(includePackage = false, includeNames = true, excludes = ['flexType'])
 @SuppressWarnings("unused")
-class FlexField implements FieldInterface {
+class FlexField implements FieldInterface, FieldTrait {
 
   /**
    * The parent flex type this field is a child of.
@@ -97,29 +95,6 @@ class FlexField implements FieldInterface {
   static keys = ['flexType', 'fieldName']
 
 
-  // TODO: Move to common logic with FieldExtension and Use this in validate() method
-  /**
-   * Validates that the class name is correct for the current FieldFormat and is legal.
-   * @param className The class name to validate
-   * @param fieldObject The entire field object to be validated against.
-   */
-  static validateValueClassName(String className, AbstractField fieldObject) {
-    //noinspection GrEqualsBetweenInconvertibleTypes
-    if (fieldObject.fieldFormat == EnumFieldFormat.instance) {
-      if (!className) {
-        return ['missingValueClassName']
-      }
-      try {
-        def clazz = TypeUtils.loadClass(className)
-        if (!clazz.isEnum()) {
-          return ['invalidValueClassName']
-        }
-      } catch (ClassNotFoundException ignored) {
-        return ['classNotFound']
-      }
-    }
-    return null
-  }
 
 
 }

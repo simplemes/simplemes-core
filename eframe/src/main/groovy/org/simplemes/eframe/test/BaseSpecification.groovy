@@ -680,9 +680,9 @@ class BaseSpecification extends GebSpec {
   boolean assertValidationFails(Object object, int code, String fieldName, List<String> expectedStrings) {
     //error.4.message=Invalid "{0}" class.  Class "{1}" not found.
     def errors = DomainUtils.instance.validate(object)
-    errors.size() > 0
-    errors[0].fieldName == fieldName
-    errors[0].code == code
+    assert errors.size() > 0, "Expected error on object $object"
+    assert errors[0].fieldName == fieldName
+    assert errors[0].code == code
     UnitTestUtils.assertContainsAllIgnoreCase(errors[0].toString(), expectedStrings)
     return true
   }
