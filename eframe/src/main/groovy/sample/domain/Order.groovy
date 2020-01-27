@@ -99,6 +99,15 @@ class Order {
   }
 
   /**
+   * Sample beforeSave method.  Will alter the product is set to XYZZY.
+   */
+  def beforeDelete() {
+    if (product == 'XYZZY') {
+      product = "PDQAlteredByBeforeSave"
+    }
+  }
+
+  /**
    * Load initial records - test data.
    */
 /*

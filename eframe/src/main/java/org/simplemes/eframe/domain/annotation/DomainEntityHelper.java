@@ -105,7 +105,7 @@ public class DomainEntityHelper {
       if (repo == null) {
         throw new IllegalArgumentException("Missing repository for " + object.getClass());
       }
-      executeBeforeSave(object);
+      executeDomainMethod(object, "beforeSave");
       validateForSave(object);
       if (object.getUuid() == null) {
         repo.save(object);
@@ -121,15 +121,16 @@ public class DomainEntityHelper {
     }
   }
 
-
   /**
-   * Executes the domain's beforeSave() method, if defined.
+   * Executes the domain's XYZ method, if defined.
+   * Executes the no argument version of the method.
    *
-   * @param object The object.
+   * @param object     The object.
+   * @param methodName The method to execute.
    */
-  protected void executeBeforeSave(DomainEntityInterface object) {
+  protected void executeDomainMethod(DomainEntityInterface object, String methodName) {
     try {
-      Method method = object.getClass().getDeclaredMethod("beforeSave");
+      Method method = object.getClass().getDeclaredMethod(methodName);
       method.invoke(object);
     } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException ignored) {
     }
@@ -157,6 +158,7 @@ public class DomainEntityHelper {
    * @return The object that was deleted.
    */
   Object delete(DomainEntityInterface object) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, SQLException, InstantiationException {
+    executeDomainMethod(object, "beforeDelete");
     GenericRepository<DomainEntityInterface, UUID> repo = getRepository(object.getClass());
     if (repo == null) {
       throw new IllegalArgumentException("Missing repository for " + object.getClass());

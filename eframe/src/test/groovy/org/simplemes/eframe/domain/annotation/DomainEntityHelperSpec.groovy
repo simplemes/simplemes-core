@@ -759,6 +759,18 @@ class DomainEntityHelperSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that delete calls the beforeDelete method on the domain"() {
+    when: 'the domain is saved'
+    def order = new Order(order: 'ABC')
+    order.save()
+    order.product = 'XYZZY'
+    order.delete()
+
+    then: 'the product field is altered by the beforeDelete method'
+    order.product == "PDQAlteredByBeforeSave"
+  }
+
+  @Rollback
   def "verify that lazyReferenceLoad handles unloaded case with a valid foreign reference"() {
     given: 'a foreign reference'
     def order = new Order(order: 'ABC').save()

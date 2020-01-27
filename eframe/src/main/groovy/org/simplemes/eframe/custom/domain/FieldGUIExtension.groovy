@@ -154,8 +154,6 @@ class FieldGUIExtension {
         fieldGUIExtension.adjustments.remove((Object) adj)
       }
       if (fieldGUIExtension.adjustments.size()) {
-        fieldGUIExtension.lastUpdated = new Date(new Date().time + 1)
-        // Must change a simple field to force hibernate to update the record.
         fieldGUIExtension.persistAdjustmentsInText() // Make sure the new list is in JSON
         //println "save fieldGUIExtension = $fieldGUIExtension, JSON = ${fieldGUIExtension.adjustmentsText}"
         fieldGUIExtension.save()

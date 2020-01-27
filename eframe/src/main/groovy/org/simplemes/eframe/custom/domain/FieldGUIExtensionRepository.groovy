@@ -14,6 +14,6 @@ import org.simplemes.eframe.domain.BaseRepository
  */
 interface FieldGUIExtensionRepository extends BaseRepository, CrudRepository<FieldGUIExtension, UUID> {
   Optional<FieldGUIExtension> findByUuid(UUID uuid)
-
+  Optional<FieldGUIExtension> findByDomainName(String domainName)
   List<FieldGUIExtension> list()
 }

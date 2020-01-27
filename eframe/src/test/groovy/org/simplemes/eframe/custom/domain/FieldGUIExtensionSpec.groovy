@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom.domain
 
 
@@ -5,12 +9,7 @@ import org.simplemes.eframe.custom.gui.FieldInsertAdjustment
 import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
-
-/*
- * Copyright Michael Houston 2016. All rights reserved.
- * Original Author: mph
- *
-*/
+import org.simplemes.eframe.test.annotation.Rollback
 
 /**
  * Tests.
@@ -38,11 +37,10 @@ class FieldGUIExtensionSpec extends BaseSpecification {
   def "verify that JSON conversions work - in a proper transaction"() {
     given: 'some adjustments in a saved record'
     FieldGUIExtension.withTransaction {
-      def adj1 = new FieldInsertAdjustment(fieldName: 'custom1', afterFieldName: 'title')
-      def adj2 = new FieldInsertAdjustment(fieldName: 'custom2', afterFieldName: 'title')
-      def adj3 = new FieldInsertAdjustment(fieldName: 'custom3', afterFieldName: 'title')
+      def adj1 = new FieldInsertAdjustment(fieldName: 'c1', afterFieldName: 'title')
+      def adj2 = new FieldInsertAdjustment(fieldName: 'c2', afterFieldName: 'title')
       def e = new FieldGUIExtension(domainName: 'com.test.FlexType')
-      e.adjustments = [adj1, adj2, adj3]
+      e.adjustments = [adj1, adj2]
       e.save()
     }
 
@@ -54,13 +52,12 @@ class FieldGUIExtensionSpec extends BaseSpecification {
     }
 
     then: 'the JSON is converted correctly to the field adjustment POGOs'
-    adjustments.size() == 3
-    adjustments[0] == new FieldInsertAdjustment(fieldName: 'custom1', afterFieldName: 'title')
-    adjustments[1] == new FieldInsertAdjustment(fieldName: 'custom2', afterFieldName: 'title')
-    adjustments[2] == new FieldInsertAdjustment(fieldName: 'custom3', afterFieldName: 'title')
+    adjustments.size() == 2
+    adjustments[0] == new FieldInsertAdjustment(fieldName: 'c1', afterFieldName: 'title')
+    adjustments[1] == new FieldInsertAdjustment(fieldName: 'c2', afterFieldName: 'title')
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that record with no adjustments works can be saved"() {
     given: 'a record with no adjustments'
     def e = new FieldGUIExtension(domainName: 'com.test.FlexType')
@@ -76,14 +73,13 @@ class FieldGUIExtensionSpec extends BaseSpecification {
     extension.adjustments == []
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that clearing all adjustments works"() {
     given: 'some adjustments in a saved record'
-    def adj1 = new FieldInsertAdjustment(fieldName: 'custom1', afterFieldName: 'title')
-    def adj2 = new FieldInsertAdjustment(fieldName: 'custom2', afterFieldName: 'title')
-    def adj3 = new FieldInsertAdjustment(fieldName: 'custom3', afterFieldName: 'title')
+    def adj1 = new FieldInsertAdjustment(fieldName: 'c1', afterFieldName: 'title')
+    def adj2 = new FieldInsertAdjustment(fieldName: 'c2', afterFieldName: 'title')
     def e = new FieldGUIExtension(domainName: 'com.test.FlexType')
-    e.adjustments = [adj1, adj2, adj3]
+    e.adjustments = [adj1, adj2]
     e.save()
 
     when: 'the extension is forced to re-parse the JSON - simulates a a fresh record from the DB'
@@ -100,19 +96,18 @@ class FieldGUIExtensionSpec extends BaseSpecification {
     extension.adjustments == []
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that updating some adjustments works"() {
     given: 'some adjustments in a saved record'
-    def adj1 = new FieldInsertAdjustment(fieldName: 'custom1', afterFieldName: 'title')
-    def adj2 = new FieldInsertAdjustment(fieldName: 'custom2', afterFieldName: 'title')
-    def adj3 = new FieldInsertAdjustment(fieldName: 'custom3', afterFieldName: 'title')
+    def adj1 = new FieldInsertAdjustment(fieldName: 'c1', afterFieldName: 'title')
+    def adj2 = new FieldInsertAdjustment(fieldName: 'c2', afterFieldName: 'title')
     def e = new FieldGUIExtension(domainName: 'com.test.FlexType')
-    e.adjustments = [adj1, adj2, adj3]
+    e.adjustments = [adj1, adj2]
     e.save()
 
     when: 'one adjustment is changed'
-    adj2 = new FieldInsertAdjustment(fieldName: 'custom2x', afterFieldName: 'titleX')
-    e.adjustments = [adj1, adj2, adj3]
+    adj2 = new FieldInsertAdjustment(fieldName: 'c2x', afterFieldName: 'titleX')
+    e.adjustments = [adj1, adj2]
     e.save()
 
     and: 'the extension is forced to re-parse the JSON - simulates a a fresh record from the DB'
@@ -121,9 +116,8 @@ class FieldGUIExtensionSpec extends BaseSpecification {
 
     then: 'the re-loaded record has the correct adjustments'
     def extension = FieldGUIExtension.findByDomainName('com.test.FlexType')
-    extension.adjustments[0] == new FieldInsertAdjustment(fieldName: 'custom1', afterFieldName: 'title')
-    extension.adjustments[1] == new FieldInsertAdjustment(fieldName: 'custom2x', afterFieldName: 'titleX')
-    extension.adjustments[2] == new FieldInsertAdjustment(fieldName: 'custom3', afterFieldName: 'title')
+    extension.adjustments[0] == new FieldInsertAdjustment(fieldName: 'c1', afterFieldName: 'title')
+    extension.adjustments[1] == new FieldInsertAdjustment(fieldName: 'c2x', afterFieldName: 'titleX')
   }
 
   def "verify that removeReferencesToField deletes entire record when removing references"() {

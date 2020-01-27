@@ -100,8 +100,7 @@ class FieldExtension implements FieldInterface, FieldTrait {
    * Delete will remove any references to this field from any FieldGUIExtensions
    */
   @SuppressWarnings("unused")
-  def afterDelete() {
-    // TODO: Support afterDelete() method?
+  def beforeDelete() {
     FieldGUIExtension.removeReferencesToField(domainClassName, fieldName)
   }
 
