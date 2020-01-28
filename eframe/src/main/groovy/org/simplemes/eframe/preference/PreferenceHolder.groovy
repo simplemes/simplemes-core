@@ -1,14 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.preference
 
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.controller.ControllerUtils
-import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.preference.domain.UserPreference
-
-/*
- * Copyright (c) 2018 Simple MES, LLC.  All rights reserved.  See license.txt for license terms.
- */
 
 /**
  * Defines a user preference object for given user, page and HTML element.  This includes
@@ -117,7 +116,9 @@ class PreferenceHolder {
     UserPreference.withTransaction {
       // Try to find the preference in the DB, with cache support.
       def basePage = ControllerUtils.instance.determineBaseURI(_page)
-      userPreference = UserPreference.findByPageAndUserName(basePage, _user, [cache: true])
+      if (_user && basePage) {
+        userPreference = UserPreference.findByUserNameAndPage((String) _user, basePage)
+      }
       if (!userPreference) {
         // No record found, so create it.
         userPreference = new UserPreference(page: basePage, userName: _user)
@@ -173,10 +174,7 @@ class PreferenceHolder {
    * @return This holder.
    */
   PreferenceHolder save() {
-    // force update of the record.
-    DateUtils.forceUpdatedDate(userPreference)
     userPreference.save()
-
     return this
   }
 

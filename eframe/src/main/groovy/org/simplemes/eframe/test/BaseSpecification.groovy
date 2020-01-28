@@ -216,7 +216,7 @@ class BaseSpecification extends GebSpec {
       start = System.currentTimeMillis()
       while(!adminUser) {
         adminUser = User.findByUserName('admin')
-        println "adminUser = $adminUser"
+        //println "adminUser = $adminUser"
         if (!adminUser) {
           sleep(50)
         }

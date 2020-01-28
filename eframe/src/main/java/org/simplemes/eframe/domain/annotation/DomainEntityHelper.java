@@ -235,6 +235,7 @@ public class DomainEntityHelper {
     if (args.length > 0) {
       paramTypes = new Class<?>[args.length];
       for (int i = 0; i < args.length; i++) {
+        //System.out.println("args[i]:" + args[i]);
         paramTypes[i] = args[i].getClass();
       }
       //System.out.println("paramTypes:" + paramTypes[0]);

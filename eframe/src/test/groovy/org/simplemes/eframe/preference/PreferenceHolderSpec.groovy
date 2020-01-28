@@ -1,15 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.preference
 
 
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.test.BaseSpecification
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -51,7 +49,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preference.save()
 
     then: 'the value is in the database'
-    def userPreference = UserPreference.findByPageAndUserName('/app/testPage', SecurityUtils.API_TEST_USER)
+    def userPreference = UserPreference.findByUserNameAndPage(SecurityUtils.API_TEST_USER, '/app/testPage')
     userPreference.preferences.find { it.element == 'OrderList' } != null
   }
 
@@ -67,7 +65,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preference.save()
 
     then: 'the value is in the database'
-    def userPreference = UserPreference.findByPageAndUserName('/app/testPage', SecurityUtils.API_TEST_USER)
+    def userPreference = UserPreference.findByUserNameAndPage(SecurityUtils.API_TEST_USER, '/app/testPage')
     def orderListPreference = userPreference.preferences.find { it.element == 'OrderList' }
     orderListPreference != null
     orderListPreference.settings[0].width == 437
@@ -170,7 +168,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preference.save()
 
     then: 'the value is in the database'
-    def userPreference = UserPreference.findByPageAndUserName('/app/testPage/show', SecurityUtils.API_TEST_USER)
+    def userPreference = UserPreference.findByUserNameAndPage(SecurityUtils.API_TEST_USER, '/app/testPage/show')
     userPreference.preferences.find { it.element == 'OrderList' } != null
   }
 
@@ -188,7 +186,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preference.setPreference(columnPreference).save()
 
     then: 'the value is in the database'
-    def userPreference = UserPreference.findByPageAndUserName('/app/testPage', SecurityUtils.API_TEST_USER)
+    def userPreference = UserPreference.findByUserNameAndPage(SecurityUtils.API_TEST_USER, '/app/testPage')
     def orderListPreference = userPreference.preferences.find { it.element == 'OrderList' }
     orderListPreference.settings.contains(columnPreference)
   }
@@ -521,7 +519,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preference.userPreference.textHasBeenParsed = false
 
     then: 'the value is in the database'
-    def userPreference = UserPreference.findByPageAndUserName('/app/testPage', SecurityUtils.API_TEST_USER)
+    def userPreference = UserPreference.findByUserNameAndPage(SecurityUtils.API_TEST_USER, '/app/testPage')
     def pref = userPreference.preferences.find { it.element == badElement }
     pref != null
     pref.settings[0].width == 437

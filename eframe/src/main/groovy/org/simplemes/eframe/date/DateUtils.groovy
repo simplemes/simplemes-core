@@ -1,6 +1,10 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.date
 
-import groovy.transform.CompileDynamic
+
 import groovy.transform.CompileStatic
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.i18n.GlobalUtils
@@ -10,12 +14,6 @@ import java.text.SimpleDateFormat
 import java.time.Instant
 import java.time.ZonedDateTime
 import java.time.temporal.ChronoUnit
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Various date manipulation utility methods.  Includes formatting and parsing for display.
@@ -271,22 +269,6 @@ class DateUtils {
   static Date subtractDays(Date date, BigDecimal days) {
     long millis = (long) (date.time - days * MILLIS_PER_DAY)
     return new Date(millis)
-  }
-
-  /**
-   * Forces a change to the record's lastUpdated field to force a save of the record.
-   * This will make sure the date is changed.
-   * @param object The domain object.  Must have a 'lastUpdated' field.
-   */
-  @CompileDynamic
-  static void forceUpdatedDate(object) {
-    def oldDate = object.lastUpdated
-    def newDate = new Date()
-    if (oldDate == newDate) {
-      // The date has not changed, so force a 1 ms change.
-      newDate = new Date(newDate.time + 1)
-    }
-    object.lastUpdated = newDate
   }
 
 }

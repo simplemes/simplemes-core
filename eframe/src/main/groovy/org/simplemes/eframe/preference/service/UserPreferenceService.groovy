@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.preference.service
 
 import groovy.util.logging.Slf4j
@@ -12,12 +16,6 @@ import org.simplemes.eframe.security.SecurityUtils
 
 import javax.inject.Singleton
 import javax.transaction.Transactional
-
-/*
- * Copyright Michael Houston. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Provides access to the user preferences that are used to save GUI settings and related objects.
@@ -63,8 +61,12 @@ class UserPreferenceService {
   Map findPreferences(String pageURI, String desiredElement = null, String preferenceType = null) {
     def res = [:]
 
-    log.debug('findPreferences(): uri {}, element {}, type {}, user {}', pageURI, desiredElement, preferenceType, SecurityUtils.currentUserName)
-    def userPreference = UserPreference.findByUserNameAndPage(SecurityUtils.currentUserName, pageURI, [cache: true])
+    def user = SecurityUtils.currentUserName
+    log.debug('findPreferences(): uri {}, element {}, type {}, user {}', pageURI, desiredElement, preferenceType, user)
+    def userPreference = null
+    if (user && pageURI) {
+      userPreference = UserPreference.findByUserNameAndPage(user, pageURI)
+    }
     for (preference in userPreference?.preferences) {
       for (detail in preference.settings) {
         // Filter out any that don't match the optional criteria

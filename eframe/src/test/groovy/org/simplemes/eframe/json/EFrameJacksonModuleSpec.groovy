@@ -29,6 +29,7 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static dirtyDomains = [SampleParent, AllFieldsDomain]
 
+  @SuppressWarnings("GroovyAssignabilityCheck")
   @Rollback
   def "verify that the introspector will allow child records to be generated"() {
     given: 'a domain with a foreign reference'
@@ -68,7 +69,7 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
     def objectMapper = new ObjectMapper().registerModule(new EFrameJacksonModule())
     def s = objectMapper.writeValueAsString(p)
     //println "s = $s"
-    println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
     and: 'the original record is deleted'
     p.delete()
@@ -81,7 +82,7 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
     def p2 = objectMapper.readValue(s, SampleParent)
     p2.uuid = null // Force the record to be inserted
     // TODO: Is this required by caller of should we do it in the save() method?  A new _exists field?
-    println "p2 = $p2"
+    //println "p2 = $p2"
     p2.save()
     //println "p2 = $p2"
 

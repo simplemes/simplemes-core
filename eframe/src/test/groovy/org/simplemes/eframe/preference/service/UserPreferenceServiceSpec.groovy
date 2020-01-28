@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.preference.service
 
 
@@ -8,13 +12,8 @@ import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import sample.pogo.SamplePOGO
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -32,14 +31,14 @@ class UserPreferenceServiceSpec extends BaseSpecification {
    * @return The first setting.  Can be null.
    */
   Object firstSetting(String element) {
-    def userPreference = UserPreference.findByPageAndUserName('/app/testPage', SecurityUtils.TEST_USER)
+    def userPreference = UserPreference.findByUserNameAndPage(SecurityUtils.TEST_USER, '/app/testPage')
     userPreference.textHasBeenParsed = false
     def simple = userPreference.preferences.find { it.element == element }
     return simple?.settings[0]
   }
 
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "test basic saveSimplePreference with String value"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -51,7 +50,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     firstSetting('workCenterDefault').value == 'WC237'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "test basic saveSimplePreference with POGO value"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -64,7 +63,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     firstSetting('pogoPref') == pogo
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "test saveSimplePreference when merging with an existing preference on page"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -81,7 +80,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     firstSetting('pogoPref') == pogo
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "test saveSimplePreference with a new empty value"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -93,7 +92,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     firstSetting('workCenterDefault').value == ''
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "test saveSimplePreference update"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -108,7 +107,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     firstSetting('workCenterDefault').value == 'new'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "test saveSimplePreference update with empty string"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -123,7 +122,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     firstSetting('workCenterDefault').value == ''
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "test simplePreference round trip with a string"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -135,7 +134,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     new UserPreferenceService().findSimplePreference('/app/testPage', 'workCenterDefault') == 'orig'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "test simplePreference round trip with a POGO"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -151,13 +150,16 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     foundPOGO == pogo
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "test findSimplePreference with no preference"() {
+    given: 'a simulated current user is set'
+    setCurrentUser()
+
     expect: 'no preference is found '
     new UserPreferenceService().findSimplePreference('/app/testPage', 'workCenterDefault') == null
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that guiStateChanged gracefully handles missing event"() {
     when: 'the guiStateChanged is called without an event'
     new UserPreferenceService().guiStateChanged([:])
@@ -167,7 +169,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['params.event', 'allowed'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that guiStateChanged gracefully handles bad event"() {
     when: 'the guiStateChanged is called with bad event'
     new UserPreferenceService().guiStateChanged([event: 'ColumnResizedX'])
@@ -178,7 +180,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['ColumnResizedX'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that guiStateChanged supports first column resize"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -196,7 +198,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     preference['order'].width == 125
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that findPreferences can find existing preferences"() {
     given: 'a few preferences'
     PreferenceHolder preference = PreferenceHolder.find {
@@ -240,7 +242,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     preferences['_dialogX'].top == 26.7
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that findPreferences can find existing preferences with a type passed in"() {
     given: 'a few preferences'
     PreferenceHolder preference = PreferenceHolder.find {
@@ -286,7 +288,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     !preferences['list1']
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that findPreferences handles empty scenario"() {
     when: 'the findPreferences is called'
     def preferences = new UserPreferenceService().findPreferences('/app/test', null, 'DialogPreference')

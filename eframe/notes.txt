@@ -13,7 +13,7 @@ Enforce Transaction for insert/update/delete actions.
     done - FlexType
     done - FieldExtension
     done - FieldGUIExtension
-    UserPreference
+    done - UserPreference
     done - SampleChild
     done - SampleGrandChild
     done - SampleSubClass
