@@ -1,12 +1,25 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.preference.domain
 
-
-//import grails.gorm.annotation.Entity
-import groovy.transform.ToString
+import groovy.transform.EqualsAndHashCode
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.DateCreated
+import io.micronaut.data.annotation.DateUpdated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.annotation.Transient
+import io.micronaut.data.model.DataType
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.misc.LogUtils
 import org.simplemes.eframe.preference.Preference
+
+import javax.persistence.Column
 
 /**
  * This domain class allows the persistence of various user preferences.  This class can also be used to save
@@ -23,61 +36,54 @@ import org.simplemes.eframe.preference.Preference
  * See <a href="http://www.simplemes.org/doc/latest/guide/single.html#gui-state-persistence">GUI State Persistence</a> for a more detailed
  * explanation.
  */
-//@Entity
-@ToString(includePackage = false, includeNames = true)
+@MappedEntity
+@DomainEntity
+@EqualsAndHashCode(includes = ["userName", "page"])
 class UserPreference {
   /**
    * The user this preference is for.
    */
+  // TODO: DDL Add unique constraint on userName+page
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String userName
 
   /**
    * The Page (URI) these preferences are for.
    */
+  @Column(length = FieldSizes.MAX_PATH_LENGTH, nullable = false)
   String page
 
   /**
    * A non-persisted List of preferences (<b>transient</b>).
    */
+  @Transient
   List<Preference> preferences = []
 
   /**
    * The JSON form of the preferences.  This is the value persisted to the database.
    */
+  @Column(nullable = true)
+  @MappedProperty(type = DataType.STRING, definition = 'TEXT')
   String preferencesText
 
   /**
    * If true, then the text of the preferences has been parsed (after retrieval).  (<b>transient</b>).
    * This is used to make sure the JSON text is only parsed once, after retrieval.
    */
+  @Transient
   boolean textHasBeenParsed = false
 
-  /**
-   * The date this record was last updated.
-   */
-  Date lastUpdated
+  @SuppressWarnings("unused")
+  @DateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE') Date dateCreated
 
-  /**
-   * The date this record was created
-   */
-  Date dateCreated
+  @SuppressWarnings("unused")
+  @DateUpdated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE') Date dateUpdated
 
-  /**
-   * Internal field constraints.
-   */
-  static constraints = {
-    userName(maxSize: FieldSizes.MAX_CODE_LENGTH, nullable: false, blank: false)
-    page(maxSize: FieldSizes.MAX_PATH_LENGTH, nullable: false)
-    preferencesText(nullable: true)
-  }
+  Integer version = 0
 
-  /**
-   * Internal Mapping of fields to columns.
-   */
-  static mapping = {
-    preferencesText type: 'text'
-    cache true
-  }
+  @Id @AutoPopulated UUID uuid
 
 
   /**
@@ -93,6 +99,8 @@ class UserPreference {
     if (preferences) {
       def mapper = Holders.objectMapper
       preferencesText = mapper.writeValueAsString(preferences)
+      //println "preferencesText = $preferencesText"
+      //println "JSON = ${groovy.json.JsonOutput.prettyPrint(preferencesText)}"
     } else {
       preferencesText = null
     }
@@ -103,7 +111,7 @@ class UserPreference {
    * Called before a save() happens.  Calls persistPreferencesInXML().
    */
   @SuppressWarnings("unused")
-  def beforeValidate() {
+  def beforeSave() {
     persistPreferencesInText()
   }
 
@@ -151,7 +159,7 @@ class UserPreference {
   @Override
   String toString() {
     StringBuilder sb = new StringBuilder("UserPreference{")
-    sb.append("id=").append(id)
+    sb.append("uuid=").append(uuid)
     sb.append(", userName='").append(userName).append('\'')
     sb.append(", page='").append(page).append('\'')
     sb.append(", preferences=").append(preferences)

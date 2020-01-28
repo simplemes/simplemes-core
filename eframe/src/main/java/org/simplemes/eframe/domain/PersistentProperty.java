@@ -9,6 +9,7 @@ package org.simplemes.eframe.domain;/*
  */
 
 import io.micronaut.data.annotation.MappedEntity;
+import io.micronaut.data.annotation.MappedProperty;
 
 import javax.annotation.Nullable;
 import javax.persistence.Column;
@@ -40,7 +41,7 @@ public class PersistentProperty {
   boolean nullable = false;
 
   /**
-   * The max length (String only fields).  Defaults to 255 if @Column is not defined.
+   * The max length (String only fields).  Defaults to 255 if @Column is not defined.  0 Means no max length.
    */
   Integer maxLength;
 
@@ -86,6 +87,7 @@ public class PersistentProperty {
     this.type = field.getType();
     nullable = (field.getAnnotation(Nullable.class) != null);
     Column column = field.getAnnotation(Column.class);
+    MappedProperty mappedProperty = field.getAnnotation(MappedProperty.class);
     if (type == String.class) {
       if (column != null) {
         maxLength = 255;
@@ -95,6 +97,12 @@ public class PersistentProperty {
       } else {
         // A simple string, so treat it as a limited length string.
         maxLength = 255;
+      }
+      if (mappedProperty != null) {
+        if (mappedProperty.definition().equals("TEXT")) {
+          // A TEXT/CLOB will be treated as no max length.
+          maxLength = 0;
+        }
       }
     }
     if (column != null) {

@@ -1,30 +1,24 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.preference.domain
 
-import com.fasterxml.jackson.databind.ObjectMapper
+
 import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.preference.ColumnPreference
 import org.simplemes.eframe.preference.Preference
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
-import org.simplemes.eframe.test.MockBean
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+import org.simplemes.eframe.test.annotation.Rollback
 
 /**
  *
  */
 class UserPreferenceSpec extends BaseSpecification {
 
-  static specNeeds = [JSON, SERVER]
-  //static dirtyDomains = [UserPreference]
-
-  def setup() {
-    new MockBean(this, ObjectMapper, new ObjectMapper()).install()  // Auto cleaned up
-  }
+  @SuppressWarnings("unused")
+  static specNeeds = [SERVER]
 
   def "verify that domain enforces constraints"() {
     expect: 'the constraints are enforced'
@@ -39,7 +33,7 @@ class UserPreferenceSpec extends BaseSpecification {
     }
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that JSON conversions work for the persisted JSON format"() {
     given: 'a test preference'
     // Create a preference value
@@ -49,7 +43,7 @@ class UserPreferenceSpec extends BaseSpecification {
     userPreference.preferences << preference
 
     when: 'the record is saved'
-    userPreference.save(flush: true)
+    userPreference.save()
 
     and: 'the text is re-parsed'
     // Force the re-parsing of the value from the DB to simulate a fresh record.  afterLoad() does not seem to work in tests.
@@ -72,13 +66,13 @@ class UserPreferenceSpec extends BaseSpecification {
     pref.settings[0].width == 105
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that an empty preference can be saved"() {
     given: 'an empty preference'
     def userPreference = new UserPreference(page: '/app/test', userName: 'JOE')
 
     when: 'the record is saved'
-    userPreference.save(flush: true)
+    userPreference.save()
 
     and: 'the Map is cleared so we can test loading due to issues with afterLoad in test mode'
     userPreference.preferences = []
@@ -89,7 +83,7 @@ class UserPreferenceSpec extends BaseSpecification {
     userPreference.preferences == []
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that preferences can be cleared"() {
     given: 'a record with preference values'
     def columnPref1 = new ColumnPreference(column: 'order', width: 105)
@@ -98,14 +92,14 @@ class UserPreferenceSpec extends BaseSpecification {
     def preference = new Preference(element: 'OrderList', settings: [columnPref1, columnPref2, columnPref3])
     def userPreference = new UserPreference(page: '/app/test', userName: 'JOE')
     userPreference.preferences << preference
-    userPreference.save(flush: true)
+    userPreference.save()
 
     when: 'the record is re-read'
     userPreference = UserPreference.findByUserNameAndPage('JOE', '/app/test')
 
     and: 'the preferences are cleared and saved'
     userPreference.preferences = []
-    userPreference.save(flush: true)
+    userPreference.save()
 
     then: 'the re-read values are correct'
     def userPreference2 = UserPreference.findByUserNameAndPage('JOE', '/app/test')
@@ -113,7 +107,7 @@ class UserPreferenceSpec extends BaseSpecification {
     userPreference2.preferences == []
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that preferences can be changed in memory and saved"() {
     given: 'a preference with multiple values'
     def columnPref1 = new ColumnPreference(column: 'order', width: 105)
@@ -122,11 +116,11 @@ class UserPreferenceSpec extends BaseSpecification {
     def preference = new Preference(element: 'OrderList', settings: [columnPref1, columnPref2, columnPref3])
     def userPreference = new UserPreference(page: '/app/test', userName: 'JOE')
     userPreference.preferences[0] = preference
-    userPreference.save(flush: true)
+    userPreference.save()
 
     when: 'the preference is changed and re-saved'
     columnPref3.width = 108
-    userPreference.save(flush: true)
+    userPreference.save()
 
     and: 'a read is simulated'
     // Force the re-parsing of the value from the DB to simulate a fresh record.  afterLoad() does not seem to work in tests.
@@ -150,7 +144,7 @@ class UserPreferenceSpec extends BaseSpecification {
     pref.settings[2].width == 108
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that large preferences can be saved quickly enough"() {
     given: 'a very large preference with more than 4K XML'
     int maxColumns = 40
@@ -163,7 +157,7 @@ class UserPreferenceSpec extends BaseSpecification {
     def preference = new Preference(element: 'OrderList', settings: list)
     def userPreference = new UserPreference(page: '/app/test', userName: 'JOE')
     userPreference.preferences[0] = preference
-    userPreference.save(flush: true)
+    userPreference.save()
     assert userPreference.preferencesText.length() > 4096
 
     when: 'the value is re-parsed during a simulated read'
@@ -190,5 +184,8 @@ class UserPreferenceSpec extends BaseSpecification {
     }
   }
 
-
+  def "verify that toString works"() {
+    expect:
+    new UserPreference().toString()
+  }
 }
