@@ -34,12 +34,14 @@
 
   <logger name="org.simplemes.eframe" level="warn"/>
   <logger name="org.simplemes.eframe.application" level="warn"/>
-  <logger name="org.simplemes.eframe.application.StartupHandler" level="error"/>  <!--warn for workaround warnings.-->
+  <logger name="org.simplemes.eframe.application.StartupHandler"
+          level="error"/>  <!--warn for workaround warnings.  debug for all beans-->
   <logger name="org.simplemes.eframe.custom" level="warn"/>
   <logger name="org.simplemes.eframe.web.ui" level="warn"/>
   <logger name="org.simplemes.eframe.security" level="warn"/>
   <logger name="org.simplemes.eframe.test" level="warn"/>
   <logger name="org.simplemes.eframe.preference" level="warn"/>
+  <logger name="org.simplemes.eframe.domain.EFrameJdbcRepositoryOperations" level="trace"/>
   <logger name="sample" level="warn"/>
   <logger name="client.to-server" level="warn"/>
   <logger name="client.dashboard" level="warn"/>

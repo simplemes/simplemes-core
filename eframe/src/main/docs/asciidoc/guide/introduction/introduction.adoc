@@ -23,7 +23,7 @@ https://github.com/simplemes/simplemes-core.
 
 === Purpose
 
-This is the Enterprise Framework module for http://micronaut.io/[Micronaut].
+This is the Enterprise Framework module for <<Micronaut>>.
 We wrote this framework as we were developing the <<{mes-core-path}/guide.adoc#,SimpleMES>> application.
 The main goal was to allow other developers to create enterprise applications using Micronaut as
 quickly as possible.

@@ -61,6 +61,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
     clazz.repository instanceof OrderRepository
   }
 
+  @Rollback
   @SuppressWarnings("GroovyAssignabilityCheck")
   def "verify that save will create a record"() {
     when: ' the record is saved'
@@ -72,6 +73,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
     list[0].uuid == order.uuid
   }
 
+  @Rollback
   def "verify that delete will delete a record"() {
     when: ' the record is saved'
     def order = new Order('M1001')
@@ -189,6 +191,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
     loadedList.contains(order.orderLines[1].uuid)
   }
 
+  @Rollback
   def "verify that SQL exception during lazyChildLoad is unwrapped for the caller"() {
     when: 'a bad order is saved'
     new Order(order: 'ABC', notes: "A" * 500).save()

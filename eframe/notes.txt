@@ -11,14 +11,14 @@ Enforce Transaction for insert/update/delete actions.
     done - SampleParent
     done - FlexField/AbstractField
     done - FlexType
-    FieldExtension
+    done - FieldExtension
+    done - FieldGUIExtension
     UserPreference
     done - SampleChild
     done - SampleGrandChild
     done - SampleSubClass
     RMA
     ArchiveLog
-    FieldGUIExtension
     Dashboard*
   done - Verify @JOIN and single/multiple foreign references. - fails for optionals.
     done - @JOIN does not work for H2 OUTER join when foreign ref is null.

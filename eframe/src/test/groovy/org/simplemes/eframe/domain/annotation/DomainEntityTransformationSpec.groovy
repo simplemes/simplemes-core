@@ -86,6 +86,7 @@ class DomainEntityTransformationSpec extends BaseSpecification {
     1 * mock.save(object)
   }
 
+  @Rollback
   def "verify that save works"() {
     when: ' the record is saved'
     def order = new Order('M1001').save()
@@ -98,6 +99,7 @@ class DomainEntityTransformationSpec extends BaseSpecification {
     list[0].qtyToBuild == 12.0
   }
 
+  @Rollback
   def "verify that list works"() {
     when: ' a record is saved'
     def order = new Order('M1001').save()
@@ -108,6 +110,7 @@ class DomainEntityTransformationSpec extends BaseSpecification {
     list[0].uuid == order.uuid
   }
 
+  @Rollback
   def "verify that delete works"() {
     when: ' the record is saved and then deleted'
     def order = new Order('M1001').save()
@@ -118,6 +121,7 @@ class DomainEntityTransformationSpec extends BaseSpecification {
     list.size() == 0
   }
 
+  @Rollback
   def "verify that getRepository works"() {
     when: ' a record is saved'
     def order = new Order('M1001').save()
@@ -127,6 +131,7 @@ class DomainEntityTransformationSpec extends BaseSpecification {
     o3.uuid == order.uuid
   }
 
+  @Rollback
   def "verify that findByXYZ works"() {
     when: ' a record is saved'
     def order = new Order('M1001').save()
@@ -142,6 +147,7 @@ class DomainEntityTransformationSpec extends BaseSpecification {
     !order
   }
 
+  @Rollback
   def "verify that findById works"() {
     when: ' a record is saved'
     def order = new Order('M1001').save()

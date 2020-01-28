@@ -11,11 +11,11 @@ import io.micronaut.data.annotation.DateCreated
 import io.micronaut.data.annotation.DateUpdated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
 
 //import grails.gorm.annotation.Entity
 
-import io.micronaut.data.annotation.MappedProperty
-import io.micronaut.data.model.DataType
 import org.simplemes.eframe.domain.annotation.DomainEntity
 
 import javax.annotation.Nullable
@@ -86,15 +86,19 @@ class SampleParent implements SampleParentInterface {
   /**
    * If true, then the initial data load will load a record.
    */
-  static allowInitialDataLoad = false
+  static allowInitialDataLoad = true
 
   /**
    * Load initial records.  Dummy test records for test mode only.
    */
   static initialDataLoad() {
-    if (allowInitialDataLoad && !findByName('SAMPLE')) {
-      new SampleParent(name: 'SAMPLE').save()
-    }
+    //if (allowInitialDataLoad && !findByName('SAMPLE')) {
+    def x = new SampleParent(name: 'SAMPLE').save()
+    x.title = "set"
+    x.save()
+    x.delete()
+    //}
+    return null
   }
 
 

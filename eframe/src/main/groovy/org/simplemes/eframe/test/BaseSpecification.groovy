@@ -488,21 +488,22 @@ class BaseSpecification extends GebSpec {
    * @param domainClass The domain to clean up.
    * @param ignoreInitialRecords If true, then the allowed initial data load records will nto be deleted.
    */
-  @Transactional
   @SuppressWarnings("GroovyAssignabilityCheck")
   void deleteAllRecords(Class domainClass, Boolean ignoreInitialRecords = true) {
-    def list = domainClass.list()
-    // Filter out any allowed records (usually from initial data load)
-    if (ignoreInitialRecords) {
-      def allowed = InitialDataRecords.instance.records[domainClass.simpleName]
-      list = list.findAll() { !(allowed?.contains(TypeUtils.toShortString(it))) }
-    }
-    if (list) {
-      log.debug("Deleting all({}) {} records", list.size(), domainClass.simpleName)
-    }
-    for (record in (list)) {
-      log.trace("  Deleting record '{}'", record)
-      record.delete()
+    domainClass.withTransaction {
+      def list = domainClass.list()
+      // Filter out any allowed records (usually from initial data load)
+      if (ignoreInitialRecords) {
+        def allowed = InitialDataRecords.instance.records[domainClass.simpleName]
+        list = list.findAll() { !(allowed?.contains(TypeUtils.toShortString(it))) }
+      }
+      if (list) {
+        log.debug("Deleting all({}) {} records", list.size(), domainClass.simpleName)
+      }
+      for (record in (list)) {
+        log.trace("  Deleting record '{}'", record)
+        record.delete()
+      }
     }
   }
 

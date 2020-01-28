@@ -46,6 +46,17 @@ micronaut:
       cookiePath: /
 ----
 
+==== @Transactional Used in Wrong Class
+
+<<Micronaut>> provides support the normal _javax.transaction.Transactional_ annotation.
+This works great in bean classes that are processed by Micronaut (e.g. _@Singleton,
+@Repository or @Replaces_).  If _@Transactional_ is used in other places then nothing is
+added to the method.
+
+To work around this, you can use the withTransaction closure on a domain (see <<Transactions>>).
+
+
+
 ==== HTTP Requests return Forbidden Status
 
 With the Micronaut security, if a request's URI is not valid for any reason, then the server will

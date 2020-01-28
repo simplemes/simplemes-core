@@ -8,6 +8,7 @@ import edu.umd.cs.findbugs.annotations.NonNull
 import edu.umd.cs.findbugs.annotations.Nullable
 import groovy.transform.CompileDynamic
 import groovy.transform.CompileStatic
+import groovy.util.logging.Slf4j
 import io.micronaut.context.BeanContext
 import io.micronaut.context.annotation.EachBean
 import io.micronaut.context.annotation.Parameter
@@ -27,6 +28,7 @@ import io.micronaut.data.runtime.mapper.QueryStatement
 import io.micronaut.http.codec.MediaTypeCodec
 import io.micronaut.transaction.TransactionOperations
 import io.micronaut.transaction.jdbc.DataSourceUtils
+import io.micronaut.transaction.jdbc.exceptions.CannotGetJdbcConnectionException
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.application.issues.WorkArounds
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
@@ -45,12 +47,23 @@ import java.sql.SQLException
 import java.util.concurrent.ExecutorService
 
 /**
+ * A substitute for the micronaut JdbcRepositoryOperations implementation to add features for the enterprise
+ * framework.  Provides: Check for transactions on updates, support for optimistic locking and possible
+ * work-arounds for issues.
  *
+ * <h3>Logging</h3>
+ * The logging for this class that can be enabled:
+ * <ul>
+ *   <li><b>trace</b> - Logs the queries that are checked for transaction. </li>
+ * </ul>
  */
 
+@Slf4j
 @CompileStatic
 @EachBean(DataSource.class)
 class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
+
+  TransactionOperations<Connection> localTransactionOperations
 
   EFrameJdbcRepositoryOperations(@Parameter String dataSourceName, DataSource dataSource,
                                  @Parameter TransactionOperations<Connection> transactionOperations,
@@ -58,7 +71,7 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
                                  BeanContext beanContext, List<MediaTypeCodec> codecs,
                                  @NonNull DateTimeProvider dateTimeProvider) {
     super(dataSourceName, dataSource, transactionOperations, executorService, beanContext, codecs, dateTimeProvider)
-
+    localTransactionOperations = transactionOperations
     workAround264()
   }
 
@@ -88,7 +101,59 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
     //println "params = $params ${operation.entity.getProperties()}"
     //String query = annotationMetadata.stringValue(Query.class).orElse(null)
     //println "query = $query"
+    checkForTransaction(operation)
     return super.persist(operation)
+  }
+
+  @Override
+  @NonNull
+  Optional<Number> executeDelete(@NonNull PreparedQuery<?, Number> preparedQuery) {
+    checkForTransaction(preparedQuery)
+    return executeUpdate(preparedQuery)
+  }
+
+  @Override
+  <T> T update(@NonNull UpdateOperation<T> operation) {
+    checkForTransaction(operation)
+    if (WorkArounds.workAround323 || WorkArounds.workAroundOptimistic) {
+      //AnnotationMetadata annotationMetadata = operation.getAnnotationMetadata()
+      //String[] params = annotationMetadata.stringValues(DataMethod.class, DataMethod.META_MEMBER_PARAMETER_BINDING_PATHS)
+      //String query = annotationMetadata.stringValue(Query.class).orElse(null)
+      //println "thread = ${Thread.currentThread()} ${Thread.currentThread().dump()}"
+      //operation.entity.version = operation.entity.version + 1
+      //println "update2() operation = $operation ${operation.entity} ${operation.method}"
+      //println "operation = $operation"
+      return super.update(new AlterableUpdateOperation(operation))
+    } else {
+      return super.update(operation)
+    }
+  }
+
+  /**
+   * Ensure that the current SQL is being executed in a transaction.
+   */
+  void checkForTransaction(Object context) {
+    // This relies on an undocumented feature of the TransactionOperations that fail when no txn is active on the connection.
+    try {
+      if (log.traceEnabled) {
+        def sql = 'Unknown'
+        if (context instanceof InsertOperation || context instanceof UpdateOperation) {
+          AnnotationMetadata annotationMetadata = context.getAnnotationMetadata()
+          //String[] params = annotationMetadata.stringValues(DataMethod.class, DataMethod.META_MEMBER_PARAMETER_BINDING_PATHS)
+          //println "params = $params ${operation.entity.getProperties()}"
+          sql = annotationMetadata.stringValue(Query.class).orElse(null)
+          //println "query = $query"
+        } else if (context instanceof PreparedQuery) {
+          sql = context.query
+        }
+        log.trace("checkForTransaction() Query: {}", sql)
+      }
+      localTransactionOperations.getConnection()
+    } catch (CannotGetJdbcConnectionException e) {
+      def s = "No active transaction for SQL insert/update/delete.  Use domain.withTransaction or @Transactional for Beans."
+      throw new IllegalStateException(s, e)
+    }
+    //println "connection = $connection"
   }
 
   @Override
@@ -170,22 +235,6 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
   }
 
 
-  @Override
-  <T> T update(@NonNull UpdateOperation<T> operation) {
-    if (WorkArounds.workAround323 || WorkArounds.workAroundOptimistic) {
-      //AnnotationMetadata annotationMetadata = operation.getAnnotationMetadata()
-      //String[] params = annotationMetadata.stringValues(DataMethod.class, DataMethod.META_MEMBER_PARAMETER_BINDING_PATHS)
-      //String query = annotationMetadata.stringValue(Query.class).orElse(null)
-      //println "thread = ${Thread.currentThread()} ${Thread.currentThread().dump()}"
-      //operation.entity.version = operation.entity.version + 1
-      //println "update2() operation = $operation ${operation.entity} ${operation.method}"
-      //println "operation = $operation"
-      return super.update(new AlterableUpdateOperation(operation))
-    } else {
-      return super.update(operation)
-    }
-
-  }
 }
 
 class AlterableUpdateOperation implements UpdateOperation {

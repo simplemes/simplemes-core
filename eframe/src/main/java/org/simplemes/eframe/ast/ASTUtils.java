@@ -15,8 +15,11 @@ import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.classgen.Verifier;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.control.messages.SimpleMessage;
+import org.codehaus.groovy.syntax.SyntaxException;
 import org.codehaus.groovy.syntax.Token;
 import org.codehaus.groovy.syntax.Types;
+import org.simplemes.eframe.domain.annotation.DomainEntityHelper;
+import org.spockframework.runtime.model.FeatureMetadata;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -319,4 +322,72 @@ public class ASTUtils {
     }
     return false;
   }
+
+  /**
+   * Wraps the given method with a closure that is called within a transaction.  Supports forced rollback
+   * option
+   *
+   * @param forceRollback If true, then adds a setRollbackOnly() call in the method.
+   * @param method        The method to wrap.
+   * @param sourceUnit    The source.
+   */
+  public static void wrapWithTransaction(boolean forceRollback, MethodNode method, SourceUnit sourceUnit) {
+
+    /*
+    Wraps the code with this logic:
+      DomainEntityHelper.instance.getTransactionManager().executeWrite {_$status ->
+        _$status.setRollbackOnly()
+
+        // Original Method
+      }
+
+     */
+
+    // Add the setRollbackOnly as the first statement in the closure.
+    BlockStatement originalBlock = (BlockStatement) method.getCode();
+    BlockStatement closureBlock = new BlockStatement();
+
+    // Make sure this is not used in a method with a where clause.
+    for (AnnotationNode ann : method.getAnnotations(new ClassNode(FeatureMetadata.class))) {
+      if (ann.getMembers().get("parameterNames") != null) {
+        ListExpression parameterNames = (ListExpression) ann.getMembers().get("parameterNames");
+        if (parameterNames.getExpressions().size() > 0) {
+          ConstantExpression nameExpr = (ConstantExpression) ann.getMembers().get("name");
+          String methodName = nameExpr.getText();
+          String message = "@Rollback does not support Spock 'where:' features.  Method '" + methodName + "'.";
+          sourceUnit.addError(new SyntaxException(message, method));
+        }
+      }
+      ListExpression blocks = (ListExpression) ann.getMembers().get("blocks");
+      for (Object o : blocks.getExpressions()) {
+        AnnotationConstantExpression ace = (AnnotationConstantExpression) o;
+      }
+    }
+
+    if (forceRollback) {
+      MethodCallExpression setRollbackMethod = new MethodCallExpression(new VariableExpression("status"),
+          "setRollbackOnly", new ArgumentListExpression(Parameter.EMPTY_ARRAY));
+      closureBlock.addStatement(new ExpressionStatement(setRollbackMethod));
+    }
+
+    closureBlock.addStatements(originalBlock.getStatements());
+
+    ClosureExpression body = new ClosureExpression(
+        new Parameter[]{new Parameter(ClassHelper.OBJECT_TYPE, "status")},
+        closureBlock);
+
+    VariableScope scope = new VariableScope(method.getVariableScope());
+    body.setVariableScope(scope);
+
+    MethodCallExpression executeMethod = new MethodCallExpression(
+        new PropertyExpression(new ClassExpression(new ClassNode(DomainEntityHelper.class)), "instance"),
+        "executeWrite",
+        new ArgumentListExpression(body));
+
+    BlockStatement block = new BlockStatement();
+    block.addStatement(new ExpressionStatement(executeMethod));
+    method.setCode(block);
+  }
+
+
 }

@@ -20,9 +20,6 @@ import org.simplemes.eframe.test.annotation.Rollback
 class FieldExtensionSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, SERVER]
-
-  @SuppressWarnings("unused")
   static dirtyDomains = [FieldGUIExtension, FieldExtension]
 
   def "verify that default values are set correctly"() {

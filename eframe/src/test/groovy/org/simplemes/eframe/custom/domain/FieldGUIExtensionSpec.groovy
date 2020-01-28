@@ -130,7 +130,9 @@ class FieldGUIExtensionSpec extends BaseSpecification {
     }
 
     when: 'the method is called'
-    FieldGUIExtension.removeReferencesToField('com.test.FlexType', 'custom1')
+    FieldGUIExtension.withTransaction {
+      FieldGUIExtension.removeReferencesToField('com.test.FlexType', 'custom1')
+    }
 
     then: 'the record is deleted'
     FieldGUIExtension.withTransaction {
@@ -150,7 +152,9 @@ class FieldGUIExtensionSpec extends BaseSpecification {
     }
 
     when: 'the method is called'
-    FieldGUIExtension.removeReferencesToField('com.test.FlexType', 'custom1')
+    FieldGUIExtension.withTransaction {
+      FieldGUIExtension.removeReferencesToField('com.test.FlexType', 'custom1')
+    }
 
     then: 'the record contains the other field'
     FieldGUIExtension.withTransaction {

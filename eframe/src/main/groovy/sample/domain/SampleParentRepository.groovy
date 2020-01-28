@@ -14,9 +14,7 @@ import org.simplemes.eframe.domain.BaseRepository
  * beans generated for the runtime.
  */
 interface SampleParentRepository extends BaseRepository, CrudRepository<SampleParent, UUID> {
-
   Optional<SampleParent> findByUuid(UUID uuid)
-
+  Optional<SampleParent> findByName(String name)
   List<SampleParent> list()
-
 }

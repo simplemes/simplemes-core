@@ -447,7 +447,6 @@ def beforeDelete() {
 }
 ----
 
-This will always be called from within a transaction.
 
 
 ==== Transactions
@@ -470,6 +469,12 @@ Order.withTransaction {  // <.>
 ----
 <.> Starts the transaction, if not already in a DB transaction.  This reads a domain that is passed
     to the service method.
+
+NOTE: The framework checks for an active transaction on every insert/update/delete SQL statement.
+      You will need to wrap those database method calls with _@Transactional, @Rollback_ or
+      withTransaction.
+
+The various ways to initiate  
 
 
 

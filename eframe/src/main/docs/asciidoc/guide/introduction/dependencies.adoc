@@ -3,6 +3,7 @@
 This framework module depends on a number of other modules/libraries/products.
 The important dependencies are:
 
+* <<Micronaut>> - https://docs.micronaut.io/latest/guide/index.html[documentation^] icon:share-square-o[role="link-blue"].
 * https://micronaut-projects.github.io/micronaut-data/latest/guide/[Micronaut-Data Persistence^]
 * http://www.gebish.org/[GEB^] (GUI Testing)
 * http://js.jsnlog.com/[JSNLog Client Logger^]
@@ -19,4 +20,10 @@ consistent with the versions this framework requires. The specific versions need
 the framework's _build.gradle_ file.
 
 See <<Modules>> for details on how to design your application's module layout.
+
+=== Micronaut
+
+This framework depends on the bean framework http://micronaut.io/[Micronaut^] icon:share-square-o[role="link-blue"].
+Micronaut provides the basic run-time lookup for beans, HTTP support and general logic for a
+normal HTTP server. Various modules provide security, UI views and management features.
 
