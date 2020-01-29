@@ -7,6 +7,7 @@ package org.simplemes.eframe.archive
 
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.archive.domain.ArchiveLog
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.exception.MessageBasedException
@@ -74,8 +75,8 @@ class FileArchiver implements ArchiverInterface {
     }
 
     // Make sure the domain has been saved and has a record in the db.
-    if (domainObject.id == null) {
-      //error.128.message=The domain {0} {1} has no ID.  This record must be saved before it can be processed.
+    if (domainObject.uuid == null) {
+      //error.128.message=The domain {0} {1} has no UUID.  This record must be saved before it can be processed.
       throw new MessageBasedException(128, [TypeUtils.toShortString(domainObject), domainObject.class.simpleName])
     }
 
@@ -163,6 +164,7 @@ class FileArchiver implements ArchiverInterface {
     //println "Parent.list()1 = ${Parent.list()}"
     for (o in objectsToDelete) {
       o.delete()
+      //noinspection GroovyAssignabilityCheck
       log.trace("Deleting Archived Object {} {}", o.class.simpleName, TypeUtils.toShortString(o))
     }
     //println "Parent.list()2 = ${Parent.list()}"
@@ -177,7 +179,7 @@ class FileArchiver implements ArchiverInterface {
     if (Holders.configuration.archive.log) {
       def domainObject = objectsToDelete[0]
       ArchiveLog archiveLog = new ArchiveLog()
-      archiveLog.recordID = domainObject.id
+      archiveLog.recordUUID = domainObject.uuid
       archiveLog.className = domainObject.class.name
       archiveLog.archiveReference = fileReference.take(FieldSizes.MAX_PATH_LENGTH)
       if (keyName) {

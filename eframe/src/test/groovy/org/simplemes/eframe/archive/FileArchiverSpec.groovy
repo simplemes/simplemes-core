@@ -1,9 +1,14 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.archive
 
 import ch.qos.logback.classic.Level
 import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.EFrameConfiguration
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.archive.domain.ArchiveLog
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.misc.FileFactory
 import org.simplemes.eframe.misc.FileUtils
@@ -11,25 +16,19 @@ import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.MockAppender
 import org.simplemes.eframe.test.MockFileFactory
-import org.simplemes.eframe.test.MockObjectMapper
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.AllFieldsDomain
 import sample.domain.SampleChild
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
  */
 class FileArchiverSpec extends BaseSpecification {
 
+  @SuppressWarnings("unused")
   def dirtyDomains = [SampleParent, AllFieldsDomain, ArchiveLog]
-  def specNeeds = [JSON]
 
   /**
    * The string writer to contain the mocked file contents.
@@ -43,9 +42,7 @@ class FileArchiverSpec extends BaseSpecification {
     FileFactory.instance = new MockFileFactory(stringWriter)
 
     // The Jackson mapper is setup in the mocked application context
-    new MockObjectMapper(this).install()
-
-    //mockMapper()
+    //new MockObjectMapper(this).install()
   }
 
   void cleanup() {
@@ -100,8 +97,8 @@ class FileArchiverSpec extends BaseSpecification {
     SampleParent.withTransaction {
       def afd2 = new AllFieldsDomain(name: 'ABC-02').save()
       sampleParent1 = new SampleParent(name: 'SAMPLE', title: 'Sample')
-      sampleParent1.addToSampleChildren(new SampleChild(key: '123'))
-      sampleParent1.addToAllFieldsDomains(afd2)
+      sampleParent1.sampleChildren << new SampleChild(key: '123')
+      sampleParent1.allFieldsDomains << afd2
       sampleParent1.save()
     }
 
@@ -109,7 +106,7 @@ class FileArchiverSpec extends BaseSpecification {
     def sampleParent2 = null
     SampleParent.withTransaction {
       sampleParent2 = new SampleParent(name: 'XYZ', title: 'xyz')
-      sampleParent2.addToSampleChildren(new SampleChild(key: '456'))
+      sampleParent2.sampleChildren << new SampleChild(key: '456')
       sampleParent2.save()
     }
 
@@ -342,7 +339,7 @@ class FileArchiverSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(e, ['string', 'not', 'domain'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that attempts to save same object twice generates a different file name each time"() {
     given: 'a domain object is created'
     def sample = new SampleParent(name: 'ABC').save()
@@ -364,7 +361,7 @@ class FileArchiverSpec extends BaseSpecification {
     reference1 != reference2
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the verification of the archive can be disabled"() {
     given: 'a domain object is created'
     def sample = new SampleParent(name: 'ABC').save()
@@ -381,7 +378,7 @@ class FileArchiverSpec extends BaseSpecification {
     !archiver.verified
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the verification of the archive can be enabled"() {
     given: 'a domain object is created'
     def sample = new SampleParent(name: 'ABC').save()
@@ -398,7 +395,7 @@ class FileArchiverSpec extends BaseSpecification {
     archiver.verified
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the ArchiveLog record creation can be disabled"() {
     given: 'a domain object is created'
     def sample = new SampleParent(name: 'ABC').save()
@@ -415,7 +412,7 @@ class FileArchiverSpec extends BaseSpecification {
     ArchiveLog.list().size() == 0
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that cancel preserves records and does not leave file partially created"() {
     given: 'a domain object is created'
     def sample = new SampleParent(name: 'XYZ').save()
@@ -437,7 +434,7 @@ class FileArchiverSpec extends BaseSpecification {
     FileFactory.instance.lastFileCreated.deleted
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the debug logging works"() {
     given: 'a mock appender for Info level only'
     def mockAppender = MockAppender.mock(FileArchiver, Level.DEBUG)
@@ -449,7 +446,7 @@ class FileArchiverSpec extends BaseSpecification {
     def archiver = new FileArchiver()
     archiver.archive(sample)
     archiver.close()
-    sample.delete(flush: true)  // Force the DB to remove the record
+    sample.delete()  // Force the DB to remove the record
 
     then: 'the debug message is written'
     UnitTestUtils.assertContainsAllIgnoreCase(mockAppender.message, ['DEBUG', 'archived', TypeUtils.toShortString(sample)])
@@ -462,7 +459,7 @@ class FileArchiverSpec extends BaseSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(mockAppender.message, ['DEBUG', 'unarchived', TypeUtils.toShortString(sample)])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that a write error preserves records and does not leave file partially created"() {
     given: 'a domain object is created'
     def sample = new SampleParent(name: 'XYZ').save()

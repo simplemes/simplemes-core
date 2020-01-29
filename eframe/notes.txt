@@ -1,10 +1,18 @@
 Scratch
 =======
 
+@ExtensibleFieldHolder
+  Adds getter/setter to encode/decode the JSON.
+  Adds complexFieldHolder to class.
+  Adds value getter/setter (setValue(), getValue()).
+  Adds addConfigurableTypeAccessors.
+
+
 Micronaut Data Conversion Tasks
 ===============================
 Undo workarounds that were fixed (323).
 done - Enforce Transaction for insert/update/delete actions.
+@ExtensibleFields replacement - A field level @ExtensibleFieldHolder?
 @Entity replacement with GDSL.
   Convert Domains
     done - AllFieldsDomain
@@ -17,8 +25,8 @@ done - Enforce Transaction for insert/update/delete actions.
     done - SampleChild
     done - SampleGrandChild
     done - SampleSubClass
-    RMA
-    ArchiveLog
+    done - RMA
+    done - ArchiveLog
     Dashboard*
   done - Verify @JOIN and single/multiple foreign references. - fails for optionals.
     done - @JOIN does not work for H2 OUTER join when foreign ref is null.

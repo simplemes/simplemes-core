@@ -1,60 +1,67 @@
-package org.simplemes.eframe.archive
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
 
-//import grails.gorm.annotation.Entity
+package org.simplemes.eframe.archive.domain
+
+import groovy.transform.EqualsAndHashCode
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
+import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.FieldSizes
 
-/*
- * Copyright Michael Houston. All rights reserved.
- *
-*/
+import javax.persistence.Column
 
 /**
  * This tracks archiving of old records no longer needed in the active database.  A record is written for each top-level
  * object that is archived.
  *
  */
-////@Entity
+@MappedEntity
+@DomainEntity
+@EqualsAndHashCode(includes = ['uuid'])
 class ArchiveLog {
+
   /**
    * The date/time this record was archived.
    */
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateArchived = new Date()
 
   /**
-   * The record ID for the archive record.
+   * The record UUID for the archived record.
    */
-  Long recordID
+  UUID recordUUID
 
   /**
    * The class of the domain object that was archived.
    */
+  @Column(length = FieldSizes.MAX_CLASS_NAME_LENGTH, nullable = false)
   String className
 
   /**
    * The main key value(s) for the domain object that was archived.  Multiple values are separated by
    * {@link org.simplemes.eframe.misc.TextUtils#VALUE_SEPARATOR}. <b>Optional.</b>
    */
+  @Column(length = FieldSizes.MAX_KEY_LENGTH, nullable = true)
   String keyValue
 
   /**
    * The archive file reference.  This is used by the archive module to restore the record if needed.
    */
+  @Column(length = FieldSizes.MAX_PATH_LENGTH, nullable = false)
   String archiveReference
 
-  /**
-   * Internal constraints.
-   */
-  static constraints = {
-    dateArchived(nullable: false)
-    className(maxSize: FieldSizes.MAX_CLASS_NAME_LENGTH, nullable: false, blank: false)
-    archiveReference(maxSize: FieldSizes.MAX_PATH_LENGTH, nullable: false, blank: false)
-    keyValue(maxSize: FieldSizes.MAX_KEY_LENGTH, nullable: true, blank: true)
-  }
+  @Id @AutoPopulated UUID uuid
 
   /**
    * This is searchable.
    */
   static searchable = true
+
   /**
    * Load initial records - test data.
    */

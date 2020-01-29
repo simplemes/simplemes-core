@@ -4,13 +4,10 @@
 
 package org.simplemes.eframe.json
 
-
-//import grails.gorm.annotation.Entity
+import io.micronaut.data.annotation.MappedEntity
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.TypeUtils
-
-import javax.persistence.Entity
 
 /**
  * The JSON formatter/parser that handles arbitrary list or map of objects in a single JSON string.
@@ -150,8 +147,7 @@ class TypeableMapper {
    * @return True if this class is valid.
    */
   static boolean isValidClass(Class clazz) {
-    // TODO: Replace with non-hibernate alternative - was Entity
-    return (clazz.isAnnotationPresent(Entity)) || (TypeableJSONInterface.isAssignableFrom(clazz))
+    return (clazz.isAnnotationPresent(MappedEntity)) || (TypeableJSONInterface.isAssignableFrom(clazz))
   }
 
 }

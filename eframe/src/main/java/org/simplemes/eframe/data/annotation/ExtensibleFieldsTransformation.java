@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data.annotation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -152,6 +156,7 @@ public class ExtensibleFieldsTransformation implements ASTTransformation {
    *
    * @param classNode The class the method is added to.
    */
+  // TODO: Still needed?
   private void addEmptyValidateAllCustomFields(ClassNode classNode) {
     Parameter[] methodParameters = {new Parameter(new ClassNode(Object.class), "val"),
         new Parameter(new ClassNode(Object.class), "domainObject")};
