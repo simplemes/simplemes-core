@@ -1,13 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom.gui
 
 
 import org.simplemes.eframe.custom.domain.FieldGUIExtension
-
-/*
- * Copyright Michael Houston. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * This class gathers the field customizations for a domain and manipulates the field ordering as needed
@@ -26,7 +24,7 @@ class FieldAdjuster {
    */
   static List<String> applyUserAdjustments(Class domainClass, List<String> fieldOrder) {
     List list = fieldOrder
-    def fieldGUIExtension = FieldGUIExtension.findByDomainName(domainClass.name, [cache: true])
+    def fieldGUIExtension = FieldGUIExtension.findByDomainName(domainClass.name)
     List<FieldAdjustmentInterface> adjustments = fieldGUIExtension?.adjustments
     for (adj in adjustments) {
       adj.apply(list)

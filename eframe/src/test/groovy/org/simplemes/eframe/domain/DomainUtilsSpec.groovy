@@ -4,7 +4,6 @@
 
 package org.simplemes.eframe.domain
 
-
 import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.data.annotation.ExtensibleFields
 import org.simplemes.eframe.security.domain.Role
@@ -12,10 +11,9 @@ import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.AllFieldsDomain
 import sample.domain.RMA
-import sample.domain.SampleChild
-import sample.domain.SampleGrandChild
 import sample.domain.SampleParent
 
 /**
@@ -203,11 +201,10 @@ class DomainUtilsSpec extends BaseSpecification {
     elapsed / 100.0 < 1.0
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that getValidationMessages can build a message from a validation error"() {
     given: 'a domain record with multiple errors.'
     def badRecord = new AllFieldsDomain(name: 'ABC', count: 1000000)
-    assert !badRecord.validate()
 
     when: 'the errors are converted to messages'
     def msg = DomainUtils.instance.getValidationMessages(badRecord)
@@ -220,11 +217,10 @@ class DomainUtilsSpec extends BaseSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(msg.text, ['count', '000', '999'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that getValidationMessages can handle multiple validation errors"() {
     given: 'a domain record with multiple errors.'
     def badRecord = new AllFieldsDomain(name: 'ABC', qty: 1000000.0, count: 1000000)
-    assert !badRecord.validate()
 
     when: 'the errors are converted to messages'
     def msg = DomainUtils.instance.getValidationMessages(badRecord)
@@ -233,18 +229,21 @@ class DomainUtilsSpec extends BaseSpecification {
     then: 'the message holder has all of the messages'
     msg.otherMessages.size() == 1
     msg.text != null
+
+    msg.toString().contains('qty')
+    msg.toString().contains('count')
   }
 
+/*
   def "verify that methods gracefully ignore null records"() {
     when: ''
     DomainUtils.instance.fixChildParentReferences(null)
-    DomainUtils.instance.resolveProxies(null)
 
     then: 'no errors'
     notThrown(Exception)
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that fixChildParentReferences fixes errors with children"() {
     given: 'a domain record with several children added the wrong way - simple insert to list'
     def sampleParent = new SampleParent(name: 'ABC')
@@ -260,7 +259,7 @@ class DomainUtilsSpec extends BaseSpecification {
     sampleParent.sampleChildren[0].sampleParent.id == sampleParent.id
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that fixChildParentReferences fixes errors with grand children"() {
     given: 'a domain record with several children added the wrong way - simple insert to list'
     def sampleParent = new SampleParent(name: 'ABC')
@@ -276,20 +275,21 @@ class DomainUtilsSpec extends BaseSpecification {
     sampleParent.sampleChildren[0].sampleParent.id == sampleParent.id
     sampleParent.sampleChildren[0].sampleGrandChildren[0].sampleChild.id == sampleChild.id
   }
+*/
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that findDomainRecord finds the record by ID"() {
     given: 'a domain record with several children added the wrong way - simple insert to list'
     def sampleParent = new SampleParent(name: 'ABC').save()
 
     when: 'the record is found'
-    def sampleParent2 = DomainUtils.instance.findDomainRecord(SampleParent, sampleParent.id.toString())
+    def sampleParent2 = DomainUtils.instance.findDomainRecord(SampleParent, sampleParent.uuid)
 
     then: 'the record is found correctly'
     sampleParent2 == sampleParent
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that findDomainRecord finds the record by key"() {
     given: 'a domain record with several children added the wrong way - simple insert to list'
     def sampleParent = new SampleParent(name: 'ABC').save()
@@ -301,16 +301,15 @@ class DomainUtilsSpec extends BaseSpecification {
     sampleParent2 == sampleParent
   }
 
-  //TODO: Find alternative to @Rollback
-  def "verify that findDomainRecord gracefully fails when ID is not given"() {
-    when: 'the record is found'
-    def sampleParent2 = DomainUtils.instance.findDomainRecord(SampleParent, null)
-
-    then: 'the record is not found with no exception'
-    sampleParent2 == null
+  @Rollback
+  def "verify that findDomainRecord gracefully fails when argument is null"() {
+    expect:
+    def n = null
+    DomainUtils.instance.findDomainRecord(SampleParent, (UUID) n) == null
+    DomainUtils.instance.findDomainRecord(SampleParent, n as String) == null
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that findDomainRecord gracefully fails when ID is not found"() {
     when: 'the record is found'
     def sampleParent2 = DomainUtils.instance.findDomainRecord(SampleParent, 'gibberish')
@@ -319,7 +318,7 @@ class DomainUtilsSpec extends BaseSpecification {
     sampleParent2 == null
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that findRelatedRecords works for a domain with the method implemented"() {
     given: 'a domain with some related files - an AllFieldsDomain with the same key field'
     def afd = new AllFieldsDomain(name: 'SAMPLE').save()
@@ -332,7 +331,7 @@ class DomainUtilsSpec extends BaseSpecification {
     list.contains(afd)
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that findRelatedRecords works for a domain without the method implemented"() {
     given: 'a domain with some related files - an AllFieldsDomain with the same key field'
     def afd = new AllFieldsDomain(name: 'SAMPLE').save()
@@ -344,7 +343,7 @@ class DomainUtilsSpec extends BaseSpecification {
     !list
   }
 
-  def "verify that isGormEntity works with supported GORM entities"() {
+  def "verify that isDomainEntity works with supported domain entities"() {
     expect: 'the entity is detected'
     AllFieldsDomain.withTransaction {
       assert DomainUtils.instance.isDomainEntity(clazz) == results
@@ -356,22 +355,6 @@ class DomainUtilsSpec extends BaseSpecification {
     String          | false
     null            | false
     AllFieldsDomain | true
-  }
-
-  def "verify that isGormEntity works with hibernate proxy elements"() {
-    given: 'a saved domain record'
-    def record = null
-    AllFieldsDomain.withTransaction {
-      record = new AllFieldsDomain(name: 'ABC').save()
-    }
-
-    expect: 'the loaded value is a proxy and it is detected as a GORM entity'
-    AllFieldsDomain.withTransaction {
-      def clazz = AllFieldsDomain.load(record.id).getClass()
-      assert DomainUtils.instance.isDomainEntity(clazz)
-      assert clazz != AllFieldsDomain
-      true
-    }
   }
 
   def "verify that getDomain works for supported cases"() {

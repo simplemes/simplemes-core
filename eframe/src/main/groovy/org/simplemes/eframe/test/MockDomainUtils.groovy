@@ -180,7 +180,7 @@ class MockDomainUtils implements AutoCleanupMockInterface, IDefaultResponse {
       return domainClassList
     } else if (methodName == 'getDomain') {
       return domainClassList.find() { it.simpleName == invocation.arguments[0] }
-    } else if (methodName == 'isGormEntity') {
+    } else if (methodName == 'isDomainEntity') {
       return domainClassList.contains(invocation.arguments[0])
     } else if (methodName == 'getPersistentFields') {
       return persistentFields

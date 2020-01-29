@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.application
 
 import com.fasterxml.jackson.databind.ObjectMapper
@@ -11,12 +15,6 @@ import io.micronaut.runtime.event.annotation.EventListener
 
 import javax.inject.Singleton
 import javax.sql.DataSource
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * A place to hold specific global values.  Simplifies access to things like the ApplicationContext.
@@ -67,6 +65,14 @@ class Holders {
    */
   static DataSource getDataSource() {
     return applicationContext?.getBean(DataSource)
+  }
+
+  /**
+   * Convenience method to get the bean from the Application Context.
+   * @return The bean.
+   */
+  static Object getBean(Class c) {
+    return applicationContext?.getBean(c)
   }
 
   /**

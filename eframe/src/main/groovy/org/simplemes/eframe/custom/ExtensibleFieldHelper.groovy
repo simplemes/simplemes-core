@@ -1,9 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom
 
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.custom.domain.FieldExtension
-import org.simplemes.eframe.custom.domain.FieldGUIExtension
 import org.simplemes.eframe.custom.gui.FieldAdjuster
 import org.simplemes.eframe.data.AdditionFieldDefinition
 import org.simplemes.eframe.data.ConfigurableTypeInterface
@@ -20,12 +23,6 @@ import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.ShortTermCacheMap
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.misc.TypeUtils
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * This class defines methods to access extensible field definitions define by module additions, users
@@ -95,7 +92,7 @@ class ExtensibleFieldHelper {
 
     // Now, add any user-defined custom fields.
     FieldExtension.withTransaction {
-      def fieldExtensions = FieldExtension.findAllByDomainClassName(domainClass.name, [cache: true])
+      def fieldExtensions = FieldExtension.findAllByDomainClassName(domainClass.name)
       for (extension in fieldExtensions) {
         def fieldDefinition = new CustomFieldDefinition(extension)
         log.debug('getEffectiveFieldDefinitions(): Adding {} to {}', fieldDefinition, domainClass)
@@ -195,9 +192,7 @@ class ExtensibleFieldHelper {
     }
 
     // Now, apply the user's customizations to flattened list.  Will recursively check all super classes (if any).
-    FieldGUIExtension.withTransaction {
-      return FieldAdjuster.applyUserAdjustments(domainClass, fieldOrder)
-    }
+    return FieldAdjuster.applyUserAdjustments(domainClass, fieldOrder)
   }
 
   /**

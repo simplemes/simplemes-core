@@ -17,6 +17,7 @@ import io.micronaut.data.annotation.Transient
 import io.micronaut.data.model.DataType
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.annotation.DomainEntity
+import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.system.EnabledStatus
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
@@ -67,12 +68,27 @@ class AllFieldsDomain {
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateUpdated
 
+  int version = 0
+
   @Id @AutoPopulated UUID uuid
 
 
   static fieldOrder = ['name', 'title', 'qty', 'count', 'enabled', 'dueDate', 'dateTime',
                        'group:details', 'notes', 'transientField', 'reportTimeInterval', 'order', 'status',
                        'displayOnlyText']
+
+  def validate() {
+    def res = []
+    if (count > 999999) {
+      //error.2.message=Value is too long (max={2}, length={1}) for field "{0}".
+      res << new ValidationError(2, 'count', 999999, count)
+    }
+    if (qty > 999999.99) {
+      //error.2.message=Value is too long (max={2}, length={1}) for field "{0}".
+      res << new ValidationError(2, 'qty', 999999.99, count)
+    }
+    return res
+  }
 
   /**
    * Load initial records.  Dummy test records.

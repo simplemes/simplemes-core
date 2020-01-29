@@ -33,6 +33,7 @@ import org.simplemes.eframe.json.EFrameJacksonModule
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.LogUtils
 import org.simplemes.eframe.misc.TypeUtils
+import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.security.SecurityUtils
 import spock.lang.Shared
 
@@ -478,8 +479,7 @@ class BaseSpecification extends GebSpec {
       if (!loggedOnce) {
         loggedOnce = true
       }
-      // TODO: Re-enable when UserPreference is updated.
-      //deleteAllRecords(UserPreference)
+      deleteAllRecords(UserPreference)
     }
   }
 

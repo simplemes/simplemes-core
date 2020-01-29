@@ -80,8 +80,7 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
 
     and: 'the object is re-created from the JSON'
     def p2 = objectMapper.readValue(s, SampleParent)
-    p2.uuid = null // Force the record to be inserted
-    // TODO: Is this required by caller of should we do it in the save() method?  A new _exists field?
+    p2.uuid = null // TODO: Determine if we need to clear this to force insert.   A new _exists field?
     //println "p2 = $p2"
     p2.save()
     //println "p2 = $p2"
@@ -113,27 +112,28 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
       "notes": null,
       "notDisplayed": null,
       "dateCreated": 1546379397946,
-      "lastUpdated": 1546379397946,
+      "dateUpdated": 1546379397946,
       "allFieldsDomain": {
           "name": "SAMPLEX",
-          "id": ${afd.id}
+          "uuid": "${afd.uuid}"
       },
       "allFieldsDomains": null,
       "sampleChildren": [
           
       ],
-      "id": -123
+      "uuid": "274e90ad-fb5b-4ec1-9c87-060914079edd"
     }"""
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
     and: 'the object is created from the JSON'
     def p1 = objectMapper.readValue(s, SampleParent)
+    p1.uuid = null // TODO: Determine if we need to clear this to force insert.   A new _exists field?
     p1.save()
-    //println "p2 = $p2"
+    //println "p1 = $p1"
 
     then: 'the new record exists'
     def p2 = SampleParent.findByName('SAMPLE')
-    p2.id > 0
+    p2.uuid != null
     p2.allFieldsDomain == afd
     //println "p2 = $p2.version, $p2.id"
 
@@ -157,7 +157,7 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
     json.name == 'SAMPLE'
 
     and: 'the foreign reference is correct'
-    json.allFieldsDomain.id == afd.id
+    json.allFieldsDomain.uuid == afd.uuid.toString()
     json.allFieldsDomain.name == afd.name
     json.allFieldsDomain.title == null
   }
@@ -167,7 +167,7 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
     given: 'a simple domain'
     def p = new SampleParent(name: 'SAMPLE', title: 'Sample')
     p.save()
-    def originalID = p.id
+    def originalID = p.uuid
 
     when: 'the entity is serialized to JSON'
     def objectMapper = new ObjectMapper().registerModule(new EFrameJacksonModule())
@@ -180,11 +180,12 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
 
     and: 'the object is re-created from the JSON'
     def p2 = objectMapper.readValue(s, SampleParent)
+    p2.uuid = null // TODO: Determine if we need to clear this to force insert.   A new _exists field?
     p2.save()
     //println "p2 = $p2"
 
     then: 'the new record exists'
-    p2.id != originalID
+    p2.uuid != originalID
   }
 
   @Rollback

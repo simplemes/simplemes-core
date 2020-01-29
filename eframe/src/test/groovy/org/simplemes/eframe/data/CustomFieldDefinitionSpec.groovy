@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data
 
 
@@ -19,15 +23,10 @@ import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.system.DisabledStatus
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -37,7 +36,7 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static specNeeds = [JSON, SERVER]
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that FieldExtension constructor works"() {
     given: 'a custom field on a domain'
     def fieldExtension = new FieldExtension(fieldName: 'abc', domainClassName: SampleParent.name,
@@ -50,11 +49,11 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
     field.name == 'abc'
     field.type == BigDecimal
     field.format == BigDecimalFieldFormat.instance
-    field.fieldExtensionId == fieldExtension.id
+    field.fieldExtensionUuid == fieldExtension.uuid
     field.label == "abc"
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that FieldExtension constructor works with a valueClassName"() {
     given: 'a custom field on a domain'
     def fieldExtension = new FieldExtension(fieldName: 'abc', domainClassName: SampleParent.name,
@@ -68,7 +67,7 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
     field.type == BasicStatus
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that FieldExtension constructor works with string length"() {
     given: 'a custom field on a domain'
     def fieldExtension = new FieldExtension(fieldName: 'xyz', domainClassName: SampleParent.name,
@@ -84,7 +83,7 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
     field.maxLength == 237
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that FieldExtension constructor works with unknown type"() {
     given: 'a custom field on a domain'
     def fieldExtension = new FieldExtension(fieldName: 'xyz', domainClassName: SampleParent.name,
@@ -108,7 +107,7 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
     field.type == Integer
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that get and setFieldValue works with a domain with ExtensibleFields annotation"() {
     given: 'a custom field on a domain'
     def fieldExtension = new FieldExtension(fieldName: 'xyz', domainClassName: SampleParent.name,
@@ -132,7 +131,6 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
   static aDate = new Date(UnitTestUtils.SAMPLE_TIME_MS)
   static aDateOnly = new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS)
 
-  //TODO: Find alternative to @Rollback
   def "verify that get and setFieldValue works with custom fields on supported types"() {
     given: 'a custom field on a domain'
     def vcn = vc?.name
@@ -175,7 +173,7 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
     //DomainRefListFieldFormat   | MultiComboboxWidget
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that FieldExtension constructor uses a specified label if defined in the field extension"() {
     given: 'a custom field on a domain'
     def fieldExtension = new FieldExtension(fieldName: 'abc', domainClassName: SampleParent.name,

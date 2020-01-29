@@ -1,15 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data
 
 import groovy.transform.ToString
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.misc.TypeUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * A field definition for custom fields created by user or addition modules.
@@ -21,7 +19,7 @@ class CustomFieldDefinition extends SimpleFieldDefinition {
   /**
    * The record ID for the field extension record that this field def represents.
    */
-  Long fieldExtensionId
+  UUID fieldExtensionUuid
 
   /**
    * Basic constructor.
@@ -50,7 +48,7 @@ class CustomFieldDefinition extends SimpleFieldDefinition {
       referenceType = type  // Used for domain references
     }
     maxLength = fieldExtension.maxLength
-    fieldExtensionId = fieldExtension.id
+    fieldExtensionUuid = fieldExtension.uuid
     label = fieldExtension.fieldLabel ?: name
     custom = true
   }

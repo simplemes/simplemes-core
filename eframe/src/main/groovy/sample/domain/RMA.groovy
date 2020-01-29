@@ -1,55 +1,65 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package sample.domain
 
-//import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.DateCreated
+
+//import grails.gorm.annotation.Entity
+
+import io.micronaut.data.annotation.DateUpdated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.annotation.Transient
+import io.micronaut.data.model.DataType
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.custom.domain.FlexType
-import org.simplemes.eframe.data.annotation.ExtensibleFields
+import org.simplemes.eframe.domain.annotation.DomainEntity
 
-/*
- * Copyright Michael Houston 2017. All rights reserved.
- * Original Author: mph
- *
-*/
+import javax.annotation.Nullable
 
 /**
  * A sample domain class that simulates an RMA approval.
  * Fields include: rma, status, product, qty, returnDate, rmaType
  */
-//@Entity
 // TODO: Replace with non-hibernate alternative
-@ExtensibleFields
-@ToString(includePackage = false, includeNames = true,
-  excludes = ['dateCreated', 'lastUpdated'])
+//@ExtensibleFields
+@MappedEntity
+@DomainEntity
+@ToString(includePackage = false, includeNames = true, excludes = ['dateCreated', 'dateUpdated'])
 @EqualsAndHashCode(includes = ['rma'])
 @SuppressWarnings("unused")
 class RMA {
   String rma
   String status = 'Approved'
-  String product
+  @Nullable String product
   BigDecimal qty = 1.0
-  Date returnDate
-  FlexType rmaType
+  @Nullable Date returnDate
+  @Nullable FlexType rmaType
+  @DateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateCreated
-  Date lastUpdated
+
+  @DateUpdated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateUpdated
+
+  int version = 0
+
+  @Id @AutoPopulated UUID uuid
 
   /**
    * A transient list of the fields defined for this flex type.
    */
-  String rmaSummary
-
-  static constraints = {
-    rma nullable: false, blank: false, maxSize: 30, unique: true
-    status nullable: false, length: 20
-    product nullable: true, blank: true, maxSize: 40
-    returnDate nullable: true
-    qty nullable: false, scale: 2
-  }
+  @Transient String rmaSummary
 
   static fieldOrder = ['rma', 'status', 'product', 'qty', 'returnDate', 'rmaType']
 
-  static transients = ['rmaSummary']
 
   /**
    * Load initial records - test data.

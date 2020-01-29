@@ -15,9 +15,7 @@ import org.simplemes.eframe.domain.annotation.DomainEntityHelper
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.domain.validate.ValidationErrorInterface
 import org.simplemes.eframe.exception.MessageHolder
-import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.NameUtils
-import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.misc.TypeUtils
 
 import java.lang.reflect.Field
@@ -72,27 +70,19 @@ class DomainUtils {
   }
 
   /**
-   * Gets the transient fields for the given GORM entity class.
+   * Gets the transient fields for the given domain entity class.
    * Uses the transients static value.
-   * @param c The class to find the fields in.
+   * @param domainClass The class to find the fields in.
    * @return A list of transient fields.
    */
-  List<Field> getTransientGORMFields(Class c) {
-    List<List<String>> propList = TypeUtils.getStaticPropertyInSuperClasses(c, 'transients')
-    List<String> transientNames = []
-    // Flatten into a single list of names
-    for (l in propList) {
-      transientNames.addAll(l)
-    }
-
+  List<Field> getTransientGORMFields(Class domainClass) {
     List<Field> res = []
-    for (fieldName in transientNames) {
-      def field = TypeUtils.safeGetField(c, fieldName)
-      if (field) {
-        res << c.getDeclaredField(fieldName)
+    for (field in domainClass.getDeclaredFields()) {
+      def ann = field.getAnnotation(Transient)
+      if (Modifier.isTransient(field.modifiers) || ann) {
+        res << field
       }
     }
-
     return res
   }
 
@@ -110,9 +100,9 @@ class DomainUtils {
 
 
   /**
-   * Returns true if this is a GORM/Hibernate entity.
-   * @param c The class to check for GORM injection.
-   * @return True if this is a real GORM entity.
+   * Returns true if this is a domain entity.
+   * @param c The class to check.
+   * @return True if this is a real domain entity.
    */
   boolean isDomainEntity(Class c) {
     if (!c) {
@@ -248,9 +238,6 @@ class DomainUtils {
   List<Class> getAllDomains() {
     //PerformanceUtils.elapsedPrint()
     Collection<BeanIntrospection<Object>> introspections = BeanIntrospector.SHARED.findIntrospections(MappedEntity.class)
-    //PerformanceUtils.elapsedPrint('introspections')
-    //println "introspections = ${introspections*.getBeanType()}"
-    // TODO: Need to cache this?
     return introspections*.getBeanType()
   }
 
@@ -270,6 +257,7 @@ class DomainUtils {
    * new child records and removes then re-adds them with the addTo method.
    * @param object The domain object to check.
    */
+  // TODO: Delete if unused?
   void fixChildParentReferences(Object object) {
     if (object == null) {
       return
@@ -342,11 +330,9 @@ class DomainUtils {
    */
   MessageHolder getValidationMessages(Object domainObject) {
     def res = new MessageHolder()
-    def messages = GlobalUtils.lookupValidationErrors(domainObject)
-    messages.each { fieldName, errors ->
-      for (s in errors) {
-        res.addError(text: "$fieldName: $s")
-      }
+    def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) domainObject)
+    for (error in errors) {
+      res.addError(text: "$error.fieldName: $error")
     }
 
     return res
@@ -371,42 +357,37 @@ class DomainUtils {
   }
 
   /**
-   * Returns the domain record that matches the given ID or primary key.
+   * Returns the domain record that matches the given uuid or primary key.
    * @param domainClass The domain to find the given record for.
-   * @param keyOrID The record ID or primary key.  The value is checked as key first.
+   * @param keyOrUuid The UUID or primary key.
    * @return The record.
    */
-  Object findDomainRecord(Class domainClass, String keyOrID) {
-    def keys = DomainUtils.instance.getKeyFields(domainClass)
-    if (keys.size() == 1) {
-      // Single primary key, try it first.
-      def criteria = domainClass.createCriteria()
-      List results = criteria {
-        eq(keys[0], keyOrID)
-      }
-      if (results) {
-        return results[0]
-      }
+  Object findDomainRecord(Class domainClass, Object keyOrUuid) {
+    if (!keyOrUuid) {
+      return null
     }
-    // Find by record ID
-    Long expectedID
-    if (NumberUtils.isNumber(keyOrID)) {
-      try {
-        expectedID = Long.valueOf(keyOrID)
-      } catch (Exception ignored) {
-        // Not a valid Long, so treat as missing.
+    if (keyOrUuid instanceof UUID) {
+      return domainClass.findByUuid(keyOrUuid)
+    } else {
+      def keys = DomainUtils.instance.getKeyFields(domainClass)
+      if (keys.size() < 0) {
+        throw new IllegalArgumentException("Domain class ${domainClass} no supported.  Needs a key field.")
       }
-    }
+      def keyName = keys[0]
 
-    def criteria = domainClass.createCriteria()
-    List results = criteria {
-      eq('id', expectedID)
-    }
-    if (results) {
-      return results[0]
-    }
+      // Find the correct findBy method for the repository.
+      def repo = domainClass.repository
+      def method = repo.getClass().getDeclaredMethod("findBy${NameUtils.uppercaseFirstLetter(keyName)}", String)
+      // Force access to the method.  For some reason, this method is not accessible, even though it is public.
+      method.setAccessible(true)
 
-    return null
+      def res = method.invoke(repo, keyOrUuid)
+      if (res instanceof Optional) {
+        // Strip the Optional wrapper for the findBy() case.
+        res = ((Optional<?>) res).orElse(null)
+      }
+      return res
+    }
   }
 
   /**
