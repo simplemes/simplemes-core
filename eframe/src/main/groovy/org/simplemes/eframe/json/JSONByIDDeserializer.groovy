@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.json
 
 import com.fasterxml.jackson.core.JsonParser
@@ -6,12 +10,6 @@ import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.misc.NameUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Defines the Jackson deserializer that will serialize domain references with just the domain record's ID.
@@ -44,9 +42,9 @@ class JSONByIDDeserializer extends StdDeserializer {
       throw new IllegalArgumentException("Could not find domain class for $domainName.  Do not use @JSONByID on non-domain classes.")
     }
     def s = p.getText()
-    def record = clazz.get(Long.valueOf(s))
+    def record = clazz.get(UUID.fromString(s))
     if (!record) {
-      throw new IllegalArgumentException("@JSONByID Could not find $domainName record for id $s")
+      throw new IllegalArgumentException("@JSONByID Could not find $domainName record for uuid $s")
     }
     return record
   }

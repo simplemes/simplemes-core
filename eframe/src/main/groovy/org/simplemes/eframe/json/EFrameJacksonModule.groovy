@@ -13,7 +13,7 @@ import com.fasterxml.jackson.databind.ser.BeanPropertyWriter
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
-import org.simplemes.eframe.data.annotation.ExtensibleFields
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.data.format.EncodedTypeFieldFormat
 import org.simplemes.eframe.domain.DomainUtils
 
@@ -143,7 +143,7 @@ class EFrameBeanSerializerModifier extends BeanSerializerModifier {
    * @return True if the field is the custom field holder.
    */
   boolean isComplexCustomFieldHolder(String fieldName) {
-    return (ExtensibleFields.COMPLEX_CUSTOM_FIELD_NAME == fieldName)
+    return (ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME == fieldName)
   }
 
 }

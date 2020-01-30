@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom.service
 
 import groovy.util.logging.Slf4j
@@ -18,12 +22,6 @@ import org.simplemes.eframe.web.PanelUtils
 
 import javax.inject.Singleton
 import javax.transaction.Transactional
-
-/*
- * Copyright Michael Houston. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Provides access to the extensions that allow user to customize the GUI and application.
@@ -165,7 +163,7 @@ class ExtensionService {
    */
   @Transactional
   int deleteField(String id) {
-    def fieldExtension = FieldExtension.get(Long.valueOf(id))
+    def fieldExtension = FieldExtension.get(UUID.fromString(id))
     if (!fieldExtension) {
       return 0
     }

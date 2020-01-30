@@ -1,19 +1,17 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom
 
 
 import org.simplemes.eframe.custom.domain.FlexField
-import org.simplemes.eframe.data.annotation.ExtensibleFields
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.data.format.IntegerFieldFormat
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2017. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -66,8 +64,8 @@ class ConfigurableTypeFieldDefinitionSpec extends BaseSpecification {
     fieldDef.getFieldValue(sampleParent) == 'ABC'
 
     and: 'the value is stored in the domains custom fields holder with the prefix'
-    sampleParent[ExtensibleFields.DEFAULT_FIELD_NAME].contains('"rmaType_field1"')
-    !sampleParent[ExtensibleFields.DEFAULT_FIELD_NAME].contains('"field1"')
+    sampleParent[ExtensibleFieldHolder.DEFAULT_FIELD_NAME].contains('"rmaType_field1"')
+    !sampleParent[ExtensibleFieldHolder.DEFAULT_FIELD_NAME].contains('"field1"')
   }
 
 

@@ -7,7 +7,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Design Decisions>>#
 [inline-toc]#<<Custom Field Design>>#
 [inline-toc]#<<Custom Field Usage>>#
-[inline-toc]#<<ExtensibleFields Annotation>>#
+[inline-toc]#<<ExtensibleFieldHolder Annotation>>#
 [inline-toc]#<<Extension Logging>>#
 [inline-toc]#<<Field Extension Example>>#
 [inline-toc]#<<Storage Limitations>>#
@@ -147,7 +147,7 @@ icon:share-square-o[role="link-blue"] to access the value in the domain.
 These fields do not support GORM dynamic finders (e.g. Order.findByProduct(), etc).
 
 
-===== ExtensibleFields Annotation
+===== ExtensibleFieldHolder Annotation
 
 You, as the application developer, must mark your domain classes that you wish to allow custom fields.
 A simple domain class might look like this:
@@ -155,39 +155,45 @@ A simple domain class might look like this:
 [source,groovy]
 .Extensible Fields Use
 ----
-@ExtensibleFields
+@MappedEntity
+@DomainEntity
 class SampleDomain {
   String key
   String name
   . . .
+
+  @ExtensibleFieldHolder <.>
+  @Column(nullable = true, length = 1024)
+  String customFields
 }
 ----
-
-This will add a new field `_customFields` to the domain class and save it in the database with a
-max size of 1024 characters. If you do not like the default field name or maxSize, you can specify
-them as below:
-
-[source,groovy]
-.Extensible Fields Max Size
-----
-@ExtensibleFields(fieldName = 'userFields',maxSize = 9999)
-class SampleDomain {
-  String key
-  String name
-  . . .
-}
-----
-
-This will create a column in the database `USER_FIELDS` with a type of _TEXT_.  The database
-you are using will determine when the column type of _TEXT_ is used.  You should avoid this
-because of the performance issues with _TEXT_ columns. Most databases can support a size of
-1024 characters in a normal _varchar_ column.
-
-If you use inheritance in your domain classes, then only the top-level domain class should
-have the _@ExtensibleFields_ annotation.
+<.> The extensible fields requires a place to store the values (in JSON).
 
 NOTE: You should not change the column name for custom fields on a production database.
       There is no automatic database migration to handle a column name change.
+
+This will use the field `customFields` in the domain class and save it in the database with
+a limited size (1024). If you want unlimited length field, you can specify
+them as below:
+
+[source,groovy]
+.Extensible Fields - Unlimited Length
+----
+@MappedEntity
+@DomainEntity
+class SampleDomain {
+  String key
+  String name
+  . . .
+
+  @ExtensibleFieldHolder
+  @Column(nullable = true)
+  @MappedProperty(type = DataType.STRING, definition = 'TEXT') // <.>
+  String customFields
+}
+----
+<.> A standard TEXT field - unlimited length.  This slower than a limited field length.
+
 
 ===== Accessing Custom Field Values
 
@@ -244,7 +250,6 @@ This class represents a customer order:
 [source,groovy]
 .Example - Extensible Domain
 ----
-@ExtensibleFields
 public class Order {
   String order             // <.>
   String product           // <.>
@@ -370,19 +375,17 @@ the product.
 [source,groovy]
 .Example - Custom Child List
 ----
-@ExtensibleFields
 public class Product {
   String product
-  Date lastUpdated  // <1>
      . . .
+  @ExtensibleFieldHolder
+  @Column(nullable = true, length = 1024)
+  String customFields
 }
 ----
-<1> The parent object should have a `lastUpdated` field.  This allows the controller code to update
-    the custom child records, even if the parent record is not changed during an Update.
-    The framework will change the `lastUpdated` field to force a database update of the parent.
 
-To support this, the _@ExtensibleFields_ creates a transient Map `_complexCustomFields` to hold the
-list from the database.
+To support this, the _@ExtensibleFieldHolder_ creates a transient Map `_complexCustomFields` to
+hold the list from the database.
 
 Then in a module or other extension, you decide you need to add a list of components to the
 Product definition:

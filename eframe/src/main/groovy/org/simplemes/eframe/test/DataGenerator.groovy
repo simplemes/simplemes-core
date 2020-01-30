@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import groovy.transform.ToString
@@ -12,12 +16,6 @@ import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.security.domain.Role
 import org.simplemes.eframe.security.domain.User
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * A simple data generator for test data.  Simplifies the creation of of test data for most
@@ -162,10 +160,10 @@ class DataGenerator {
       def format = options?.format ?: options?.fieldFormat ?: StringFieldFormat.instance
       def label = options?.fieldLabel
       for (int i = 0; i < fieldCount; i++) {
-        flexType.addToFields(new FlexField(fieldName: options?.fieldName ?: "FIELD${i + 1}",
-                                           fieldFormat: format,
-                                           fieldLabel: label,
-                                           sequence: (10 + i * 10)))
+        flexType.fields << new FlexField(fieldName: options?.fieldName ?: "FIELD${i + 1}",
+                                         fieldFormat: format,
+                                         fieldLabel: label,
+                                         sequence: (10 + i * 10))
       }
       flexType.save()
     }

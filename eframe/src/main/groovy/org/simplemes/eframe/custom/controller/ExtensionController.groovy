@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom.controller
 
 import groovy.util.logging.Slf4j
@@ -30,12 +34,6 @@ import org.simplemes.eframe.security.Roles
 import javax.annotation.Nullable
 import javax.inject.Inject
 import java.security.Principal
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Controller to support GUI extension/customization.  Provides dialogs and server support for customizing GUIs and
@@ -157,7 +155,7 @@ class ExtensionController extends BaseController {
     if (id) {
       FieldExtension.withTransaction {
         // Store the existing record in the model for the view/markers.
-        def record = FieldExtension.get(Long.valueOf((String) id))
+        def record = FieldExtension.get(UUID.fromString((String) id))
         modelAndView.model.get().put(ControllerUtils.MODEL_DOMAIN_OBJECT, record)
       }
     } else {
@@ -247,7 +245,7 @@ class ExtensionController extends BaseController {
     def errorResponse = null
     domainClass.withTransaction {
       if (id) {
-        fieldExtension = FieldExtension.get(Long.valueOf(id))
+        fieldExtension = FieldExtension.get(UUID.fromString(id))
         if (!fieldExtension) {
           //error.134.message=The record (id={0}) for domain {1} could not be found.
           throw new BusinessException(134, [id, domainClass.simpleName])

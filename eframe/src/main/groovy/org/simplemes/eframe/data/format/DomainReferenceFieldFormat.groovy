@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data.format
 
 import org.simplemes.eframe.custom.domain.FieldExtension
@@ -7,12 +11,6 @@ import org.simplemes.eframe.data.SimpleChoiceListItem
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.TypeUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Defines the format for a field that is a domain reference to a single object.
@@ -60,10 +58,10 @@ class DomainReferenceFieldFormat extends BasicFieldFormat {
       return null
     }
     def domainClass = fieldDefinition.referenceType
-    def id = Long.valueOf(value)
+    def id = UUID.fromString(value)
     def res = null
     domainClass.withTransaction {
-      res = domainClass.get(id)
+      res = domainClass.findByUuid(id)
     }
     return res
   }
@@ -92,7 +90,7 @@ class DomainReferenceFieldFormat extends BasicFieldFormat {
     def res = null
     if (value != null) {
       FieldExtension.withTransaction {
-        res = value?.id?.toString()
+        res = value?.uuid?.toString()
       }
     }
     return res
@@ -133,10 +131,11 @@ class DomainReferenceFieldFormat extends BasicFieldFormat {
     def referencedClass = fieldDefinition.referenceType
     def key = DomainUtils.instance.getPrimaryKeyField(referencedClass)
     referencedClass.withTransaction {
-      def list = referencedClass.list([sort: key, cache: true])
+      def list = referencedClass.list()
+      // Sort by the primary key
+      list = list.sort { a, b -> a[key] <=> b[key] }
       for (record in list) {
-        DomainUtils.instance.resolveProxies(record)
-        res << new SimpleChoiceListItem(id: record.id, value: record,
+        res << new SimpleChoiceListItem(id: record.uuid, value: record,
                                         displayValue: TypeUtils.toShortString(record, true))
       }
     }

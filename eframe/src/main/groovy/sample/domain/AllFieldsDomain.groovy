@@ -15,6 +15,7 @@ import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.annotation.Transient
 import io.micronaut.data.model.DataType
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.domain.validate.ValidationError
@@ -23,6 +24,7 @@ import org.simplemes.eframe.system.EnabledStatus
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
 import javax.annotation.Nullable
+import javax.persistence.Column
 import javax.persistence.ManyToOne
 
 /**
@@ -37,8 +39,6 @@ import javax.persistence.ManyToOne
 //@CompileStatic
 @SuppressWarnings("unused")
 @ToString(includePackage = false, includeNames = true, excludes = ['dateCreated', 'dateUpdated'])
-// TODO: Replace with non-hibernate alternative
-//@ExtensibleFields(maxSize = 513, fieldName = 'anotherField')
 class AllFieldsDomain {
 
   // ********************************************************
@@ -59,6 +59,11 @@ class AllFieldsDomain {
   @Nullable ReportTimeIntervalEnum reportTimeInterval
   @Nullable @ManyToOne(targetEntity = Order) Order order
   @Nullable BasicStatus status = EnabledStatus.instance
+
+  @ExtensibleFieldHolder
+  @Column(nullable = true, length = 513)
+  String otherCustomFields
+
 
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')

@@ -1,6 +1,13 @@
 Scratch
 =======
 
+
+OptionB
+  @ExtensibleFieldHolder
+  @Column(nullable = true)
+  @MappedProperty(type = DataType.STRING, definition = 'TEXT')
+  String customFields
+
 @ExtensibleFieldHolder
   Adds getter/setter to encode/decode the JSON.
   Adds complexFieldHolder to class.
@@ -13,6 +20,7 @@ Micronaut Data Conversion Tasks
 Undo workarounds that were fixed (323).
 done - Enforce Transaction for insert/update/delete actions.
 @ExtensibleFields replacement - A field level @ExtensibleFieldHolder?
+  Add support for getFieldValue() and config type getters/setters in GDSL.
 @Entity replacement with GDSL.
   Convert Domains
     done - AllFieldsDomain
@@ -32,7 +40,7 @@ done - Enforce Transaction for insert/update/delete actions.
     done - @JOIN does not work for H2 OUTER join when foreign ref is null.
       done - - Add getter that lazy loads the value.
       done - - Add .adoc note on lazy loader.
-  Verify sub-class works AbstractField
+  done - needs work - Verify sub-class works AbstractField
     Needs:
       AbstractField >> FlexField, FieldExtension
       Routing >> ProductRouting, MasterRouting - RoutingService?
@@ -49,12 +57,11 @@ done - Enforce Transaction for insert/update/delete actions.
           Order order
       Operation >>
       CodeSequence >> LSNSequence, OrderSequence (Logic in Service?)
-  Convert ExtensibleFields?
   done - EncodedTypes - Status on Order?
   done - Use GDSL to handle code completion.  See https://www.tothenew.com/blog/gdsl-awesomeness-introduction-to-gdsl-in-intellij-idea/
   Adds these methods
-    Lazy load
-      reference - uses txn.
+    done = Lazy load
+      done - reference - uses txn.
       done - getChildRecords, addToChildRecords, save logic.
     done - save, list, delete.save findByXYZ(),findById(), @Rollback
   done - withTransaction {} ?
@@ -73,26 +80,26 @@ done- Converters needed
   done - EncodedTypes.
 Update code when issue is fixed:
   https://github.com/micronaut-projects/micronaut-data/issues/323
-Vaerify Jackson handlers for domain entities.
+Verify Jackson handlers for domain entities.
 
 done - DateOnly conversion.
 
 
 Support cache in specific use cases:
   UserPreferences - timed, any update for user flushed cache? done in PreferenceHolder?
-  FieldExtension - Already cached at the domainUtils level with FieldGUIExtension via ExtensibleFieldHelper
+  FieldExtension/GUI - Already cached at the domainUtils level with FieldGUIExtension via ExtensibleFieldHelper
   Others as needed.
-Fix BaseSpecification for new startup logic.
+done - Fix BaseSpecification for new startup logic.
 Solve list() method ad-hoc sorting.
   Add pagination support.
   Find way to execute dynamic query and populate domain from result set.  Maybe use DomainBinder?
 Move business logic to services.  No longer in Domain.
 Use @CompileStatic for domains/services/controllers, if possible.  May conflict with dynamic @MappedEntity support.
-Fix save/update/delete of custom OrderLine records. Generic hook mechanism?
-Add SQL DDL logic and Liquid-base support.
-  Find way to auto-generate core stuff.
+done - Fix save/update/delete of custom OrderLine records. Generic hook mechanism?
+Add SQL DDL logic and Liquid-base/FlyWay support.
+  Find way to auto-generate core stuff?.
 Add option to run tests against Postgres (manual only).
-Micronaut-data does not support traits or sub-classes in most cases.
+done - Micronaut-data does not support traits or sub-classes in most cases.
 
 Docs
 =================

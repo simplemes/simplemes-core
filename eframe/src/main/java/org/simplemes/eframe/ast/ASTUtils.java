@@ -145,7 +145,7 @@ public class ASTUtils {
    * @param sourceUnit The source the compiler used. (For error messages).
    * @return The MethodNode added.
    */
-  static MethodNode addGetter(FieldNode fieldNode, ClassNode classNode, int modifier, SourceUnit sourceUnit) {
+  public static MethodNode addGetter(FieldNode fieldNode, ClassNode classNode, int modifier, SourceUnit sourceUnit) {
     String getterName = "get" + StringUtils.capitalize(fieldNode.getName());
     // Make sure the method doesn't exist already
     if (ASTUtils.methodExists(classNode, getterName, Parameter.EMPTY_ARRAY)) {

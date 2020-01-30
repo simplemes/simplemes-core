@@ -5,7 +5,7 @@
 package org.simplemes.eframe.domain
 
 import org.simplemes.eframe.custom.domain.FlexType
-import org.simplemes.eframe.data.annotation.ExtensibleFields
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.security.domain.Role
 import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.BaseSpecification
@@ -142,10 +142,10 @@ class DomainUtilsSpec extends BaseSpecification {
     def fieldDefs = DomainUtils.instance.getFieldDefinitions(SampleParent)
 
     then: 'the custom data holder field is not in the list'
-    !fieldDefs[ExtensibleFields.DEFAULT_FIELD_NAME]
+    !fieldDefs[ExtensibleFieldHolder.DEFAULT_FIELD_NAME]
 
     and: 'the complex custom data holder field is not in the list'
-    !fieldDefs[ExtensibleFields.COMPLEX_CUSTOM_FIELD_NAME]
+    !fieldDefs[ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME]
   }
 
   def "verify that getFieldDefinitions works for POGO class"() {

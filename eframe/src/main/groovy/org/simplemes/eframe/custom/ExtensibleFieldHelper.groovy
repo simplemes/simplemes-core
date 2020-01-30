@@ -13,16 +13,19 @@ import org.simplemes.eframe.data.ConfigurableTypeInterface
 import org.simplemes.eframe.data.CustomFieldDefinition
 import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.data.FieldDefinitions
-import org.simplemes.eframe.data.annotation.ExtensibleFields
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.data.format.ConfigurableTypeDomainFormat
 import org.simplemes.eframe.data.format.ListFieldLoaderInterface
 import org.simplemes.eframe.domain.DomainUtils
+import org.simplemes.eframe.domain.PersistentProperty
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.ShortTermCacheMap
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.misc.TypeUtils
+
+import java.lang.reflect.Field
 
 /**
  * This class defines methods to access extensible field definitions define by module additions, users
@@ -220,7 +223,7 @@ class ExtensibleFieldHelper {
     String holderName = getCustomHolderFieldName(object)
     def clazz = object.getClass()
     if (!holderName) {
-      //error.131.message=The domain class {0} does not support extensible fields. Add @ExtensibleFields.
+      //error.131.message=The domain class {0} does not support extensible fields. Add @ExtensibleFieldHolder.
       throw new BusinessException(131, [clazz.name])
     }
     String text = object[holderName]
@@ -252,10 +255,11 @@ class ExtensibleFieldHelper {
       //object[ExtensibleFields.DEFAULT_FIELD_NAME] = w.with(SerializationFeature.INDENT_OUTPUT).writeValueAsString(map)
       // The default indenting is faster (25%).
       def s = Holders.objectMapper.writeValueAsString(map)
-      if (s.size() > getFieldSize(object)) {
+      def maxSize = getCustomFieldSize(object)
+      if (maxSize && s.size() > maxSize) {
         def recordName = TypeUtils.toShortString(object)
         //error.130.message=Not enough room to store {0} in custom fields for {1} {2}.  Max size = {3}.
-        throw new BusinessException(130, [fieldName, clazz.name, recordName, getFieldSize(object)])
+        throw new BusinessException(130, [fieldName, clazz.name, recordName, maxSize])
       }
       object[holderName] = Holders.objectMapper.writeValueAsString(map)
       log.trace('setFieldValue(): {} value = {} to object {}', fieldName, value, object)
@@ -286,7 +290,7 @@ class ExtensibleFieldHelper {
     String holderName = getCustomHolderFieldName(object)
     def clazz = object.getClass()
     if (!holderName) {
-      //error.131.message=The domain class {0} does not support extensible fields. Add @ExtensibleFields.
+      //error.131.message=The domain class {0} does not support extensible fields. Add @ExtensibleFieldHolder.
       throw new BusinessException(131, [clazz.name])
     }
     String text = object[holderName]
@@ -336,7 +340,7 @@ class ExtensibleFieldHelper {
    * @return The map.  Never null.
    */
   Map getComplexHolder(Object object) {
-    String holderName = ExtensibleFields.COMPLEX_CUSTOM_FIELD_NAME
+    String holderName = ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME
     if (!object.hasProperty(holderName)) {
       //error.131.message=The domain class {0} does not support extensible fields. Add @ExtensibleFields.
       throw new BusinessException(131, [object.getClass().name])
@@ -353,14 +357,11 @@ class ExtensibleFieldHelper {
   /**
    * Gets the max size of the custom field value holder in the domain object.
    * @param object The object with the ExtensibleFields annotation.
-   * @return The size.
+   * @return The size.  0 is unknown or unlimited.
    */
-  Integer getFieldSize(Object object) {
-    def annotation = object.getClass().getAnnotation(ExtensibleFields)
-    if (annotation) {
-      return annotation.maxSize()
-    }
-    return 0
+  protected int getCustomFieldSize(Object object) {
+    Field field = object.getClass().getDeclaredField(getCustomHolderFieldName(object))
+    return PersistentProperty.getFieldMaxLength(field)
   }
 
   /**
@@ -369,13 +370,20 @@ class ExtensibleFieldHelper {
    * @return The name.  Null means no custom fields.
    */
   String getCustomHolderFieldName(Object object) {
-    def clazz = object.getClass()
-    if (object instanceof Class) {
-      clazz = object
+    if (object.hasProperty(ExtensibleFieldHolder.HOLDER_FIELD_NAME)) {
+      //return object."$ExtensibleFieldHolder.HOLDER_FIELD_NAME"
+      return object[ExtensibleFieldHolder.HOLDER_FIELD_NAME]
     }
-    def annotation = clazz.getAnnotation(ExtensibleFields)
-    if (annotation) {
-      return annotation.fieldName()
+    return null
+  }
+  /**
+   * Gets the name of the custom field value holder in the domain object.
+   * @param object The object or Class with the ExtensibleFields annotation.
+   * @return The name.  Null means no custom fields.
+   */
+  String getCustomHolderFieldName(Class clazz) {
+    if (clazz.metaClass.getMetaProperty(ExtensibleFieldHolder.HOLDER_FIELD_NAME)) {
+      return clazz[ExtensibleFieldHolder.HOLDER_FIELD_NAME]
     }
     return null
   }
@@ -387,7 +395,7 @@ class ExtensibleFieldHelper {
    * @return True if it has extensible fields.
    */
   boolean hasExtensibleFields(Class clazz) {
-    return (clazz?.getAnnotation(ExtensibleFields) != null)
+    return (clazz?.getAnnotation(ExtensibleFieldHolder) != null)
   }
 
   /**

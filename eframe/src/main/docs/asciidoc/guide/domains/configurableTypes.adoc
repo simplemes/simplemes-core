@@ -54,20 +54,24 @@ class in a domain and the data is automatically displayed and saved in the defin
 [source,groovy]
 .Example Flex Type Domain
 ----
-@ExtensibleFields <.>
 class RMA {
   String rma
   String product
   BigDecimal qty
   Date returnDate
   FlexType rmaType  <.>
+
+  @ExtensibleFieldHolder <.>
+  @Column(nullable = true)
+  @MappedProperty(type = DataType.STRING, definition = 'TEXT')
+  String customFields
 }
 
 ----
-<.> The FlexType requires a place to store the values for RMA records created.
-    This is done in the normal location for <<Field Extensions>>.
 <.> The field `rmaType` will hold the reference to the appropriate flex type.  The acutal
     values will be stored as described in <<Configurable Type Persistent Storage>>.
+<.> The FlexType requires a place to store the values for RMA records created.
+    This is done in the normal location for <<Field Extensions>>.
 
 It is also possible to define configurable types that are not based on <<Flex Types>>.
 This requires more programming to provide the information needed. One example is
@@ -88,7 +92,7 @@ the customer defined fields at the domain level.
 In the example above, the `FlexType` field name is used (e.g. 'rmaType_address',
 'rmaType_lastName', etc.).
 
-See <<ExtensibleFields Annotation>> for details on the storage and internal format.
+See <<ExtensibleFieldHolder Annotation>> for details on the storage and internal format.
 An example of the raw data stored in the database column is shown below.
 
 [source,json]

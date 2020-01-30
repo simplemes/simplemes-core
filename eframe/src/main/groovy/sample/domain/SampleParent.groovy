@@ -13,12 +13,13 @@ import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
-
-//import grails.gorm.annotation.Entity
-
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.domain.annotation.DomainEntity
 
 import javax.annotation.Nullable
+
+//import grails.gorm.annotation.Entity
+
 import javax.persistence.Column
 import javax.persistence.ManyToMany
 import javax.persistence.ManyToOne
@@ -31,7 +32,6 @@ import javax.persistence.OneToMany
  * <b>Fields</b> Include: name, title, notes, notDisplayed, moreNotes. allFieldsDomains, allFieldDomain, sampleChildren,
  * dateCreated, lastUpdated
  */
-// TODO: Replace with non-hibernate alternative @ExtensibleFields
 @MappedEntity
 @DomainEntity
 @ToString(includePackage = false, includeNames = true, includes = ['name', 'title', 'notes', 'notDisplayed',
@@ -75,6 +75,10 @@ class SampleParent implements SampleParentInterface {
    */
   @OneToMany(mappedBy = "sampleParent")
   List<SampleChild> sampleChildren
+
+  @ExtensibleFieldHolder
+  @Column(nullable = true, length = 255)
+  String customFields
 
   @Id @AutoPopulated UUID uuid
 

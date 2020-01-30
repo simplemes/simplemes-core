@@ -1,4 +1,8 @@
 
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data.annotation;
 
 import org.codehaus.groovy.transform.GroovyASTTransformationClass;
@@ -14,14 +18,20 @@ import java.lang.annotation.Target;
  * into a column of their choosing with a user-definable column size/type.
  */
 @Retention(RetentionPolicy.RUNTIME)
-@Target({ElementType.TYPE})
-@GroovyASTTransformationClass("org.simplemes.eframe.data.annotation.ExtensibleFieldsTransformation")
-public @interface ExtensibleFields {
+@Target({ElementType.FIELD})
+@GroovyASTTransformationClass("org.simplemes.eframe.data.annotation.ExtensibleFieldHolderTransformation")
+public @interface ExtensibleFieldHolder {
 
   /**
    * The default field name to store the custom values in.  Default is 'customFields'.
    */
+  // TODO: Delete
   String DEFAULT_FIELD_NAME = "_customFields";
+
+  /**
+   * The field name that holds the custom field holder name.
+   */
+  String HOLDER_FIELD_NAME = "_customFieldName";
 
   /*
    * The static field to store the custom definitions in.  Value is '_customFieldDef'.

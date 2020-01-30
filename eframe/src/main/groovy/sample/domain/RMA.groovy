@@ -8,20 +8,22 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.DateCreated
+import io.micronaut.data.annotation.DateUpdated
+import io.micronaut.data.annotation.Id
 
 //import grails.gorm.annotation.Entity
 
-import io.micronaut.data.annotation.DateUpdated
-import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.annotation.Transient
 import io.micronaut.data.model.DataType
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.custom.domain.FlexType
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.domain.annotation.DomainEntity
 
 import javax.annotation.Nullable
+import javax.persistence.Column
 
 /**
  * A sample domain class that simulates an RMA approval.
@@ -50,6 +52,11 @@ class RMA {
   Date dateUpdated
 
   int version = 0
+
+  @ExtensibleFieldHolder
+  @Column(nullable = true, length = 255)
+  String customFields
+
 
   @Id @AutoPopulated UUID uuid
 

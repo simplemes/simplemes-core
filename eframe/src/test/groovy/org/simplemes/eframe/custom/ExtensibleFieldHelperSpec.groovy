@@ -10,7 +10,7 @@ import org.simplemes.eframe.custom.domain.FieldGUIExtension
 import org.simplemes.eframe.custom.domain.FlexField
 import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.custom.gui.FieldInsertAdjustment
-import org.simplemes.eframe.data.annotation.ExtensibleFields
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.data.format.BigDecimalFieldFormat
 import org.simplemes.eframe.data.format.BooleanFieldFormat
 import org.simplemes.eframe.data.format.DateFieldFormat
@@ -45,9 +45,6 @@ import sample.domain.SampleParent
  * Tests.
  */
 class ExtensibleFieldHelperSpec extends BaseSpecification {
-
-  @SuppressWarnings("unused")
-  static specNeeds = [JSON, SERVER]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [OrderLine, Order, FieldGUIExtension, FieldExtension]
@@ -205,8 +202,9 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
   def "verify that set and getFieldValue handles simple cases"() {
     given: 'a domain object with a custom field'
     def src = """
-      import org.simplemes.eframe.data.annotation.ExtensibleFields
-      @ExtensibleFields class TestClass {
+      import org.simplemes.eframe.data.annotation.*
+      class TestClass {
+        @ExtensibleFieldHolder String customFields 
       }
     """
     def object = CompilerTestUtils.compileSource(src).newInstance()
@@ -221,8 +219,9 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
   def "verify that set and getFieldValue handles supported field types"() {
     given: 'a domain object with a custom field'
     def src = """
-      import org.simplemes.eframe.data.annotation.ExtensibleFields
-      @ExtensibleFields class TestClass {
+      import org.simplemes.eframe.data.annotation.*
+      class TestClass {
+        @ExtensibleFieldHolder String customFields 
       }
     """
     def object = CompilerTestUtils.compileSource(src).newInstance()
@@ -335,7 +334,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     ExtensibleFieldHelper.instance.getFieldValue(object, 'dummyType_field1') == 'XYZZY'
 
     and: 'the field is stored with the prefix in the JSON'
-    object[ExtensibleFields.DEFAULT_FIELD_NAME].contains('"dummyType_field1"')
+    object[ExtensibleFieldHolder.DEFAULT_FIELD_NAME].contains('"dummyType_field1"')
 
     and: 'getFieldValue with no prefix does not find the prefixed field'
     ExtensibleFieldHelper.instance.getFieldValue(object, 'field1') == null
@@ -744,6 +743,16 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
 
     expect: 'the method works'
     ExtensibleFieldHelper.instance.formatConfigurableTypeValues('rmaType', object) == "${lookup('order.label')}: XYZ"
+  }
+
+  def "verify that getCustomHolderFieldName works for a class"() {
+    expect: 'method works'
+    ExtensibleFieldHelper.instance.getCustomHolderFieldName(clazz) == results
+
+    where:
+    clazz                 | results
+    SampleParent          | 'customFields'
+    FieldInsertAdjustment | null
   }
 
 

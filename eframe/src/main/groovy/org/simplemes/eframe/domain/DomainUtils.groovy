@@ -10,7 +10,7 @@ import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.Transient
 import org.simplemes.eframe.data.FieldDefinitionFactory
 import org.simplemes.eframe.data.FieldDefinitions
-import org.simplemes.eframe.data.annotation.ExtensibleFields
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.domain.annotation.DomainEntityHelper
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.domain.validate.ValidationErrorInterface
@@ -164,7 +164,7 @@ class DomainUtils {
    * The names for special properties that are not considered normal domain fields.
    */
   static specialProperties = ['uuid', 'version', 'dateCreated', 'dateUpdated',
-                              ExtensibleFields.DEFAULT_FIELD_NAME, ExtensibleFields.COMPLEX_CUSTOM_FIELD_NAME]
+                              ExtensibleFieldHolder.DEFAULT_FIELD_NAME, ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME]
 
   /**
    * Determine if the given property is a special field that we want to ignore in GUIs and such.

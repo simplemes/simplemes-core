@@ -147,18 +147,24 @@ might look like this:
 [source,groovy]
 .Example Flex Type Domain
 ----
-@ExtensibleFields
 class RMA {
   String rma
   String product
   BigDecimal qty
   Date returnDate
   FlexType rmaType  <.>
+
+  @ExtensibleFieldHolder <.>
+  @Column(nullable = true)
+  @MappedProperty(type = DataType.STRING, definition = 'TEXT')
+  String customFields
+
 }
 
 ----
 <.> The field `rmaType` will hold the reference to the appropriate flex type.  The acutal
     values will be stored as described in <<Configurable Type Persistent Storage>>.
+<.> Defines the column that will hold the JSON values of the custom fields.
 
 The API format for this type of data field would be:
 

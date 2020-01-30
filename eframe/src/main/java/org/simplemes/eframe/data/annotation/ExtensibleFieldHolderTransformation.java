@@ -9,7 +9,6 @@ import org.codehaus.groovy.ast.*;
 import org.codehaus.groovy.ast.expr.*;
 import org.codehaus.groovy.ast.stmt.BlockStatement;
 import org.codehaus.groovy.ast.stmt.ExpressionStatement;
-import org.codehaus.groovy.ast.stmt.ReturnStatement;
 import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
@@ -19,8 +18,6 @@ import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.simplemes.eframe.ast.ASTUtils;
 
 import java.lang.reflect.Modifier;
-import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -30,17 +27,13 @@ import java.util.Map;
  */
 @SuppressWarnings("DefaultAnnotationParam")
 @GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
-public class ExtensibleFieldsTransformation implements ASTTransformation {
-
-  /*
-   * The default field name for the static definition holder variable in the domain class.  Not configurable.
-   */
-  //public static final String DEFAULT_DEFINITION_HOLDER_FIELD_NAME = "_customFieldDef";
+public class ExtensibleFieldHolderTransformation implements ASTTransformation {
 
   /**
    * Basic Constructor.
    */
-  public ExtensibleFieldsTransformation() {
+  @SuppressWarnings("unused")
+  public ExtensibleFieldHolderTransformation() {
   }
 
   public void visit(ASTNode[] astNodes, SourceUnit sourceUnit) {
@@ -48,60 +41,50 @@ public class ExtensibleFieldsTransformation implements ASTTransformation {
     if (sourceUnit.getAST() == null) {
       return;
     }
-    // find all methods annotated with @WithLogging
-    ClassNode ourAnnotationNode = new ClassNode(ExtensibleFields.class);
     for (ASTNode astNode : astNodes) {
-      if (astNode instanceof ClassNode) {
-        //System.out.println("Checking astNode = " + astNode);
-        ClassNode classNode = (ClassNode) astNode;
-        List<AnnotationNode> annotations = classNode.getAnnotations(ourAnnotationNode);
-        if (annotations.size() > 0) {
-          AnnotationNode annotation = annotations.get(0);
-          addCustomFieldHolder(classNode, annotation, sourceUnit);
-          //addStaticCustomFieldDefinitionHolder(classNode, sourceUnit);
-          addComplexFieldHolder(classNode, sourceUnit);
-          addEmptyValidateAllCustomFields(classNode);
-          addValueSetter(classNode, sourceUnit);
-          addValueGetter(classNode, sourceUnit);
-          addConfigurableTypeAccessors(classNode, sourceUnit);
-        }
+      if (astNode instanceof FieldNode) {
+        FieldNode fieldNode = (FieldNode) astNode;
+        ClassNode classNode = fieldNode.getDeclaringClass();
+        //addComplexFieldHolder(classNode, sourceUnit);
+        addCustomFieldName(fieldNode.getName(), classNode, sourceUnit);
+        addJsonProperty(fieldNode, sourceUnit);
+        addValueSetter(classNode, sourceUnit);
+        addValueGetter(classNode, sourceUnit);
+        addConfigurableTypeAccessors(classNode, sourceUnit);
       }
     }
   }
 
   /**
-   * Adds the custom field holder to the domain class.
+   * Adds a static property to the clazz that defines the field name.
    *
-   * @param node       The node for the class itself.
-   * @param annotation The annotation that defines the customer field name/size.
-   * @param sourceUnit The source unit being processed.
+   * @param customFieldName The custom field name.
+   * @param node            The node for the class itself.
+   * @param sourceUnit      The source unit being processed.
    */
-  private void addCustomFieldHolder(ClassNode node, AnnotationNode annotation, SourceUnit sourceUnit) {
-    // Check the annotation to make sure we have the field the developer intended.
-    String fieldName = ExtensibleFields.DEFAULT_FIELD_NAME;
-    ConstantExpression fieldExpression = (ConstantExpression) annotation.getMember("fieldName");
-    if (fieldExpression != null) {
-      fieldName = fieldExpression.getValue().toString();
-    }
-    // Figure out the maxSize of the added column.
-    int maxSize = ExtensibleFields.DEFAULT_MAX_SIZE;
-    fieldExpression = (ConstantExpression) annotation.getMember("maxSize");
-    if (fieldExpression != null) {
-      maxSize = (Integer) fieldExpression.getValue();
-    }
+  private void addCustomFieldName(String customFieldName, ClassNode node, SourceUnit sourceUnit) {
+    Expression initialValue = new ConstantExpression(customFieldName);
+    ASTUtils.addField(ExtensibleFieldHolder.HOLDER_FIELD_NAME, Object.class, Modifier.PUBLIC | Modifier.STATIC, 0,
+        initialValue, node, sourceUnit);
+  }
 
-    if (fieldName != null) {
-      List<ASTNode> nodes = ASTUtils.addField(fieldName, String.class, Modifier.PRIVATE, maxSize, null, node, sourceUnit);
-      // Add the Jackson annotation to rename the field.  This will prevent overlaying the holder value during imports.
-      AnnotationNode annotationNode = new AnnotationNode(new ClassNode(JsonProperty.class));
-      annotationNode.addMember("value", new ConstantExpression("_" + fieldName));
-      MethodNode getterNode = (MethodNode) nodes.get(1);
-      getterNode.addAnnotation(annotationNode);
-    }
-    /*
+  /**
+   * Adds the Jackson JsonProperty annotation to the custom field holder so that it is serialized with a special name
+   * that is ignored on de-serialization.
+   *
+   * @param fieldNode  The field to add the property annotation to.
+   * @param sourceUnit The source.
+   */
+  private void addJsonProperty(FieldNode fieldNode, SourceUnit sourceUnit) {
+    String fieldName = fieldNode.getName();
 
+    // Adds a getter for the field to specify the JsonProperty name on just the getter.
+    MethodNode getterNode = ASTUtils.addGetter(fieldNode, fieldNode.getDeclaringClass(), Modifier.PUBLIC, sourceUnit);
 
-     */
+    // Add the Jackson annotation to rename the field.  This will prevent overlaying the holder value during imports.
+    AnnotationNode annotationNode = new AnnotationNode(new ClassNode(JsonProperty.class));
+    annotationNode.addMember("value", new ConstantExpression("_" + fieldName));
+    getterNode.addAnnotation(annotationNode);
   }
 
   /**
@@ -120,52 +103,6 @@ public class ExtensibleFieldsTransformation implements ASTTransformation {
       }
     }
 
-  }
-  /*
-   * Adds static field to the domain class to hold the definition of the custom field extensions.
-   * This is cached in the domain class to avoid DB lookup at runtime.  This mainly holds the
-   * field type and max length.
-   *
-   * @param node       The node for the class itself.
-   * @param sourceUnit The source unit being processed.
-   */
-/*
-  private void addStaticCustomFieldDefinitionHolder(ClassNode node, SourceUnit sourceUnit) {
-    // The definition list is just a normal list.  It will be set by FieldExtensionHelper.setupFieldExtensionsInDomains().
-    ASTUtils.addField(DEFAULT_DEFINITION_HOLDER_FIELD_NAME, Object.class, Modifier.PUBLIC | Modifier.STATIC, 0, null, node, sourceUnit);
-  }
-*/
-
-  /**
-   * Adds a Map field to the domain class to hold the complex custom field values such
-   * as lists of references.  This is a transient field so that persistence is handled by
-   * non-Grails logic.  Initializes the field as an empty map.
-   *
-   * @param node       The node for the class itself.
-   * @param sourceUnit The source unit being processed.
-   */
-  private void addComplexFieldHolder(ClassNode node, SourceUnit sourceUnit) {
-    Expression init = new MapExpression();
-    ASTUtils.addField(ExtensibleFields.COMPLEX_CUSTOM_FIELD_NAME, Map.class, Modifier.PUBLIC | Modifier.TRANSIENT, 0, init, node, sourceUnit);
-    ASTUtils.addFieldToTransients(ExtensibleFields.COMPLEX_CUSTOM_FIELD_NAME, node, sourceUnit);
-  }
-
-  /**
-   * Adds an empty validateAllCustomFields() method on the given class to avoid runtime errors if
-   * there are custom fields defined (mainly in unit tests since the setupFields method is not called there).
-   *
-   * @param classNode The class the method is added to.
-   */
-  // TODO: Still needed?
-  private void addEmptyValidateAllCustomFields(ClassNode classNode) {
-    Parameter[] methodParameters = {new Parameter(new ClassNode(Object.class), "val"),
-        new Parameter(new ClassNode(Object.class), "domainObject")};
-    classNode.addMethod("validateAllCustomFields",
-        Modifier.PUBLIC,
-        ClassHelper.OBJECT_TYPE,
-        methodParameters,
-        null,
-        new ReturnStatement(new ConstantExpression(true)));
   }
 
   /**
@@ -199,6 +136,7 @@ public class ExtensibleFieldsTransformation implements ASTTransformation {
     // Make sure the method doesn't exist already
     if (ASTUtils.methodExists(classNode, getterName, parameters)) {
       sourceUnit.getErrorCollector().addError(new SimpleMessage(getterName + "() already exists in " + classNode, sourceUnit));
+      return;
     }
 
     ArgumentListExpression argumentListExpression = new ArgumentListExpression();

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.domain
 
 import groovy.util.logging.Slf4j
@@ -8,12 +12,6 @@ import org.simplemes.eframe.data.format.ConfigurableTypeDomainFormat
 import org.simplemes.eframe.misc.ArgumentUtils
 
 import java.text.ParseException
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Provides standardized binding of HTTP-style parameters to a domain or POGO class.
@@ -250,9 +248,9 @@ class DomainBinder {
           def record = null
           if (params._dbId) {
             // Should exist already in the DB, so find it
-            def dbId = Long.valueOf((String) params._dbId)
+            def dbId = UUID.fromString((String) params._dbId)
             params.remove('_dbId')
-            record = originalList.find { it.id == dbId }
+            record = originalList.find { it.uuid == dbId }
           }
           if (!record) {
             // Must be a new child record, so just create it.
@@ -285,11 +283,11 @@ class DomainBinder {
 
     // Start with a list of all IDs and remove them as they are found in the input params.
     // Leaves us with a list of IDs the user removed.
-    def idToRemoveList = originalList*.id
+    def idToRemoveList = originalList*.uuid
     for (params in list) {
       if (params?._dbId) {
-        def id = Long.valueOf((String) params._dbId)
-        idToRemoveList.removeAll { it == id }
+        def uuid = UUID.fromString((String) params._dbId)
+        idToRemoveList.removeAll { it == uuid }
       }
     }
 

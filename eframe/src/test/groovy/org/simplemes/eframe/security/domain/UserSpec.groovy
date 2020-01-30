@@ -1,7 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.security.domain
 
 
-import org.simplemes.eframe.data.annotation.ExtensibleFields
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.data.format.DomainRefListFieldFormat
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.misc.FieldSizes
@@ -9,12 +13,6 @@ import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -33,7 +31,7 @@ class UserSpec extends BaseSpecification {
       maxSize 'password', 128
       notNullCheck 'userName'
       notNullCheck 'password'
-      notInFieldOrder(['authoritySummary', 'password', ExtensibleFields.DEFAULT_FIELD_NAME])
+      notInFieldOrder(['authoritySummary', 'password', ExtensibleFieldHolder.DEFAULT_FIELD_NAME])
     }
   }
 

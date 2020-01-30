@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data.format
 
 import org.simplemes.eframe.data.ChoiceListItemInterface
@@ -6,12 +10,6 @@ import org.simplemes.eframe.data.SimpleChoiceListItem
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.TypeUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Defines the format for a field that is a list domain references to a foreign domain objects.
@@ -62,7 +60,7 @@ class DomainRefListFieldFormat extends BasicFieldFormat {
     def idS = value.tokenize(', ')
     for (s in idS) {
       def domainClass = fieldDefinition.referenceType
-      def id = Long.valueOf(s)
+      def id = UUID.fromString(s)
       res << domainClass.load(id)
     }
     return res

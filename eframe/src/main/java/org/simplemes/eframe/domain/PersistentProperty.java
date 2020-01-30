@@ -87,23 +87,8 @@ public class PersistentProperty {
     this.type = field.getType();
     nullable = (field.getAnnotation(Nullable.class) != null);
     Column column = field.getAnnotation(Column.class);
-    MappedProperty mappedProperty = field.getAnnotation(MappedProperty.class);
     if (type == String.class) {
-      if (column != null) {
-        maxLength = 255;
-        if (column.length() > 0) {
-          maxLength = column.length();
-        }
-      } else {
-        // A simple string, so treat it as a limited length string.
-        maxLength = 255;
-      }
-      if (mappedProperty != null) {
-        if (mappedProperty.definition().equals("TEXT")) {
-          // A TEXT/CLOB will be treated as no max length.
-          maxLength = 0;
-        }
-      }
+      maxLength = getFieldMaxLength(field);
     }
     if (column != null) {
       nullable = column.nullable();
@@ -134,6 +119,34 @@ public class PersistentProperty {
     if (!isParentReference) {
       isChild = (oneToMany != null);
     }
+  }
+
+  /**
+   * Finds the max length of the given field, from the @Column and @MappedProperty settings.
+   *
+   * @param field The field.
+   * @return The maxLength.  0 if unlimited or not defined.
+   */
+  static public int getFieldMaxLength(Field field) {
+    int maxLength;
+    Column column = field.getAnnotation(Column.class);
+    if (column != null) {
+      maxLength = 255;
+      if (column.length() > 0) {
+        maxLength = column.length();
+      }
+    } else {
+      // A simple string, so treat it as a limited length string.
+      maxLength = 255;
+    }
+    MappedProperty mappedProperty = field.getAnnotation(MappedProperty.class);
+    if (mappedProperty != null) {
+      if (mappedProperty.definition().equals("TEXT")) {
+        // A TEXT/CLOB will be treated as no max length.
+        maxLength = 0;
+      }
+    }
+    return maxLength;
   }
 
   @Override

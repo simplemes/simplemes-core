@@ -7,7 +7,7 @@ import org.codehaus.groovy.classgen.Verifier
 /**
  *
  */
-// TODO: Look at https://stackoverflow.com/questions/49315807/how-to-make-ides-aware-of-addition-to-classes-by-annotations-and-ast-transforma
+// Look at https://stackoverflow.com/questions/49315807/how-to-make-ides-aware-of-addition-to-classes-by-annotations-and-ast-transforma
 // Also, groovy doc for type checking extensions to check dynamic logic from annotation> ?
 // Also, old code at: https://github.com/joewalnes/idea-community/tree/master/java/java-impl/src/com/intellij/psi/impl
 // PSI API (10 ysr old): https://github.com/joewalnes/idea-community/tree/1fa2c45953ed08667da52b1b83d44c56eb83b043/java/openapi/src/com/intellij/psi
@@ -81,16 +81,41 @@ contribute(allContext) {
       //delegatesTo(findClass(repoClassName))
     }
     //new File('c:\\tmp\\out.log') << "A${repoClassName}\n"
-/*
-    classType?.fields?.each {
-      def params = [:]
-      //new File('c:\\tmp\\out.log') << "A${it.dump()}\n"
-      //new File('c:\\tmp\\out.log') << "B${it.getTypeElementGroovy().getType().getCanonicalText()}\n"
-      params."$it.name" = it.getTypeElementGroovy()?.getType()?.getCanonicalText()
-      def methodName = "findBy${Verifier.capitalize(it.name)}".toString()
+
+    // Look for custom field methods.
+    def hasCustomFields = false
+    classType?.fields?.each { field ->
+      //new File('c:\\tmp\\out.log') << "A${field.name} ${field.annotations}\n"
+      if (field?.annotations) {
+        //new File('c:\\tmp\\out.log') << "A${field.name} ${field.annotations*.qualifiedName}\n"
+        if (field.annotations*.qualifiedName.contains('org.simplemes.eframe.data.annotation.ExtensibleFieldHolder')) {
+          hasCustomFields = true
+          //new File('c:\\tmp\\out.log') << "  ${field.name} ${hasCustomFields}\n"
+          return
+        }
+      }
+      //params."$it.name" = it.getTypeElementGroovy()?.getType()?.getCanonicalText()
+      //def methodName = "findBy${Verifier.capitalize(it.name)}".toString()
       //params."${it.name}" = it.getQualifiedName()
       //method name: methodName, params: params, type: classType?.getQualifiedName(), isStatic: true
     }
-*/
+    //new File('c:\\tmp\\out.log') << "${classType.name} ${hasCustomFields}\n"
+    if (hasCustomFields) {
+      method name: 'getFieldValue', params: [fieldName: String], type: Object
+      method name: 'setFieldValue', params: [fieldName: String, value: Object], type: void
+      property name: '_customFieldName', type: String, static: true
+
+      // Find any configurable types .
+      classType?.fields?.each { field ->
+        def superTypes = field.type.superTypes*.canonicalText
+        //new File('c:\\tmp\\out.log') << "A${field.name} ${superTypes}\n"
+        if (superTypes.contains('org.simplemes.eframe.data.ConfigurableTypeInterface')) {
+          def fieldName = Verifier.capitalize(field.name)
+          method name: 'get' + fieldName + 'Value', params: [fieldName: String], type: Object
+          method name: 'set' + fieldName + 'Value', params: [fieldName: String, value: Object], type: void
+        }
+      }
+
+    }
   }
 }

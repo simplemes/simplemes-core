@@ -6,7 +6,7 @@ package org.simplemes.eframe.data
 
 
 import org.simplemes.eframe.custom.domain.FieldExtension
-import org.simplemes.eframe.data.annotation.ExtensibleFields
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.data.format.BigDecimalFieldFormat
 import org.simplemes.eframe.data.format.BooleanFieldFormat
 import org.simplemes.eframe.data.format.DateFieldFormat
@@ -124,8 +124,8 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
     fieldDef.getFieldValue(sampleParent) == 'ABC'
 
     and: 'the value is stored in the domains custom fields holder'
-    sampleParent[ExtensibleFields.DEFAULT_FIELD_NAME].contains('xyz')
-    sampleParent[ExtensibleFields.DEFAULT_FIELD_NAME].contains('ABC')
+    sampleParent[ExtensibleFieldHolder.DEFAULT_FIELD_NAME].contains('xyz')
+    sampleParent[ExtensibleFieldHolder.DEFAULT_FIELD_NAME].contains('ABC')
   }
 
   static aDate = new Date(UnitTestUtils.SAMPLE_TIME_MS)
@@ -155,7 +155,7 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
     fieldDef.getFieldValue(sampleParent) == value
 
     and: 'the value is stored in the domains custom fields holder'
-    sampleParent[ExtensibleFields.DEFAULT_FIELD_NAME].contains(contains)
+    sampleParent[ExtensibleFieldHolder.DEFAULT_FIELD_NAME].contains(contains)
 
     where:
     format                     | value                            | vc                     | contains
