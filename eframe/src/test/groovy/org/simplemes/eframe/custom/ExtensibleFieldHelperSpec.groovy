@@ -10,7 +10,6 @@ import org.simplemes.eframe.custom.domain.FieldGUIExtension
 import org.simplemes.eframe.custom.domain.FlexField
 import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.custom.gui.FieldInsertAdjustment
-import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.data.format.BigDecimalFieldFormat
 import org.simplemes.eframe.data.format.BooleanFieldFormat
 import org.simplemes.eframe.data.format.DateFieldFormat
@@ -23,6 +22,7 @@ import org.simplemes.eframe.data.format.LongFieldFormat
 import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.DomainUtils
+import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.system.BasicStatus
@@ -36,6 +36,7 @@ import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
+import sample.domain.CustomOrderComponent
 import sample.domain.Order
 import sample.domain.OrderLine
 import sample.domain.RMA
@@ -47,7 +48,7 @@ import sample.domain.SampleParent
 class ExtensibleFieldHelperSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static dirtyDomains = [OrderLine, Order, FieldGUIExtension, FieldExtension]
+  static dirtyDomains = [OrderLine, Order, FieldGUIExtension, FieldExtension, FlexType, RMA]
 
   @Rollback
   def "verify that getEffectiveFieldDefinitions finds custom fields"() {
@@ -203,8 +204,11 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     given: 'a domain object with a custom field'
     def src = """
       import org.simplemes.eframe.data.annotation.*
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      @DomainEntity
       class TestClass {
-        @ExtensibleFieldHolder String customFields 
+        @ExtensibleFieldHolder String customFields
+        UUID uuid 
       }
     """
     def object = CompilerTestUtils.compileSource(src).newInstance()
@@ -213,15 +217,18 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     ExtensibleFieldHelper.instance.setFieldValue(object, 'field1', 'ABC')
 
     then: 'the value can be read'
-    ExtensibleFieldHelper.instance.getFieldValue(object, 'field1') == 'ABC'
+    ExtensibleFieldHelper.instance.getFieldValue(object as DomainEntityInterface, 'field1') == 'ABC'
   }
 
   def "verify that set and getFieldValue handles supported field types"() {
     given: 'a domain object with a custom field'
     def src = """
       import org.simplemes.eframe.data.annotation.*
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      @DomainEntity
       class TestClass {
-        @ExtensibleFieldHolder String customFields 
+        @ExtensibleFieldHolder String customFields
+        UUID uuid 
       }
     """
     def object = CompilerTestUtils.compileSource(src).newInstance()
@@ -334,7 +341,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     ExtensibleFieldHelper.instance.getFieldValue(object, 'dummyType_field1') == 'XYZZY'
 
     and: 'the field is stored with the prefix in the JSON'
-    object[ExtensibleFieldHolder.DEFAULT_FIELD_NAME].contains('"dummyType_field1"')
+    object[ExtensibleFieldHelper.instance.getCustomHolderFieldName(SampleParent)].contains('"dummyType_field1"')
 
     and: 'getFieldValue with no prefix does not find the prefixed field'
     ExtensibleFieldHelper.instance.getFieldValue(object, 'field1') == null
@@ -343,11 +350,18 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
   def "verify that set and getFieldValue round-trip performance is acceptable"() {
     given: 'a domain object with a custom field'
     def src = """
-      import org.simplemes.eframe.data.annotation.ExtensibleFields
-      @ExtensibleFields(maxSize=5000) class TestClass {
+      import org.simplemes.eframe.data.annotation.*
+      import javax.persistence.Column
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      @DomainEntity
+      class TestClass {
+        @ExtensibleFieldHolder 
+        @Column(nullable = true, length = 5000)
+        String customFields
+        UUID uuid
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = (DomainEntityInterface) CompilerTestUtils.compileSource(src).newInstance()
     def nFields = 100
     def nIterations = 1000
 
@@ -372,8 +386,11 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
   def "verify that setFieldValue fails when there is not enough size - Default Size case"() {
     given: 'a domain object with a custom field'
     def src = """
-      import org.simplemes.eframe.data.annotation.ExtensibleFields
-      @ExtensibleFields class TestClass {
+      import org.simplemes.eframe.data.annotation.*
+      import javax.persistence.Column
+      class TestClass {
+        @ExtensibleFieldHolder 
+        String customFields
       }
     """
     def object = CompilerTestUtils.compileSource(src).newInstance()
@@ -392,8 +409,12 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
   def "verify that setFieldValue fails when there is not enough size - custom Size case"() {
     given: 'a domain object with a custom field'
     def src = """
-      import org.simplemes.eframe.data.annotation.ExtensibleFields
-      @ExtensibleFields(maxSize=437) class TestClass {
+      import org.simplemes.eframe.data.annotation.*
+      import javax.persistence.Column
+      class TestClass {
+        @ExtensibleFieldHolder 
+        @Column(nullable = true, length = 437)
+        String customFields
       }
     """
     def object = CompilerTestUtils.compileSource(src).newInstance()
@@ -413,7 +434,6 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
   def "verify that setFieldValue fails when the annotation is not used on the domain"() {
     given: 'a domain object without the annotation'
     def src = """
-      import org.simplemes.eframe.data.annotation.ExtensibleFields
       class TestClass {
       }
     """
@@ -431,7 +451,6 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
   def "verify that getFieldValue fails when the annotation is not used on the domain"() {
     given: 'a domain object without the annotation'
     def src = """
-      import org.simplemes.eframe.data.annotation.ExtensibleFields
       class TestClass {
       }
     """
@@ -446,11 +465,14 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['TestClass'])
   }
 
-  def "verify that set and getFieldValue handles custom field name case"() {
+  def "verify that set and getFieldValue handles non-standard field name case"() {
     given: 'a domain object with a custom field'
     def src = """
-      import org.simplemes.eframe.data.annotation.ExtensibleFields
-      @ExtensibleFields(fieldName='testCustom') class TestClass {
+      import org.simplemes.eframe.data.annotation.*
+      import javax.persistence.Column
+      class TestClass {
+        @ExtensibleFieldHolder 
+        String testCustom
       }
     """
     def object = CompilerTestUtils.compileSource(src).newInstance()
@@ -492,7 +514,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     and: 'the child custom records'
     DataGenerator.generate {
       domain OrderLine
-      values orderId: order.id, sequence: 0, product: 'PRODUCT-$i', qty: 1.2
+      values order: order, sequence: 0, product: 'PRODUCT-$i', qty: 1.2
     }
 
     when: 'the value is read'
@@ -753,6 +775,44 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     clazz                 | results
     SampleParent          | 'customFields'
     FieldInsertAdjustment | null
+  }
+
+  def "verify that hasExtensibleFields works for a class"() {
+    expect: 'method works'
+    ExtensibleFieldHelper.instance.hasExtensibleFields(clazz) == results
+
+    where:
+    clazz                 | results
+    SampleParent          | true
+    FieldInsertAdjustment | false
+  }
+
+
+  @Rollback
+  def "verify that getCustomChildLists works for custom child lists"() {
+    given: 'a domain record with custom child records'
+    def order = new Order(order: 'ABC')
+    def comp1 = new CustomOrderComponent(order: order, sequence: 123).save()
+    def comps = [comp1]
+    order.setFieldValue('customComponents', comps)
+    order.save()
+
+    when: 'the list is returned'
+    List<Map<String, Object>> list = ExtensibleFieldHelper.getCustomChildLists(order as DomainEntityInterface)
+
+    then: 'the custom fields are correct'
+    list.size() >= 1
+    def map = list.find { it.fieldName == 'customComponents' }
+    map.fieldName == 'customComponents'
+    map.childClass == CustomOrderComponent
+    map.parentFieldName == 'order'
+    map.list == comps
+  }
+
+  @Rollback
+  def "verify that getCustomChildLists gracefully handles non-extensible domains"() {
+    expect: 'a null list'
+    ExtensibleFieldHelper.getCustomChildLists(new FlexType()) == null
   }
 
 

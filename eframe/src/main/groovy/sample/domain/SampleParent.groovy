@@ -17,12 +17,12 @@ import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.domain.annotation.DomainEntity
 
 import javax.annotation.Nullable
-
-//import grails.gorm.annotation.Entity
-
 import javax.persistence.Column
 import javax.persistence.ManyToMany
 import javax.persistence.ManyToOne
+
+//import grails.gorm.annotation.Entity
+
 import javax.persistence.OneToMany
 
 /**
@@ -90,18 +90,18 @@ class SampleParent implements SampleParentInterface {
   /**
    * If true, then the initial data load will load a record.
    */
-  static allowInitialDataLoad = true
+  static allowInitialDataLoad = false
 
   /**
    * Load initial records.  Dummy test records for test mode only.
    */
   static initialDataLoad() {
-    //if (allowInitialDataLoad && !findByName('SAMPLE')) {
-    def x = new SampleParent(name: 'SAMPLE').save()
-    x.title = "set"
-    x.save()
-    x.delete()
-    //}
+    if (allowInitialDataLoad && !findByName('SAMPLE')) {
+      def x = new SampleParent(name: 'SAMPLE').save()
+      x.title = "set"
+      x.save()
+      x.delete()
+    }
     return null
   }
 

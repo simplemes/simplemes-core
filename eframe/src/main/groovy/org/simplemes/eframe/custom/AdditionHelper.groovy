@@ -1,14 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom
 
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.misc.TypeUtils
 import org.yaml.snakeyaml.Yaml
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Support methods and data for additions.  Includes a list of additions discovered.
@@ -33,13 +31,14 @@ class AdditionHelper {
   @SuppressWarnings("GroovyAssignabilityCheck")
   List<AdditionInterface> getAdditions() {
     if (additions == null) {
-      additions = []
       def resources = getClass().classLoader.getResources('efBootstrap.yml')
+      def res = []
       for (url in resources) {
         def inputStream = url.openStream()
         def list = getAdditions(inputStream, url.toString())
-        additions.addAll(list)
+        res.addAll(list)
       }
+      additions = res
       log.debug("getAdditions(): additions found {} ", additions)
     }
     return additions

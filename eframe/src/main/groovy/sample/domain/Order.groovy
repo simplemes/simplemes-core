@@ -13,6 +13,7 @@ import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.system.BasicStatus
@@ -47,8 +48,6 @@ class Order {
   //@MappedProperty(type = DataType.DATE)
   DateOnly dueDate = new DateOnly()
 
-  Integer version = 0
-
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateCreated
@@ -64,6 +63,12 @@ class Order {
   // Uses nullable option on @Column for unit tests.  See PersistentPropertySpec.
   // Larger than the default for H2 to allow SQL error generation in unit tests.  See DomainEntityHelperSpec.
   String notes
+
+  @ExtensibleFieldHolder
+  @Column(nullable = true, length = 255)
+  String customFields
+
+  Integer version = 0
 
   @Id @AutoPopulated UUID uuid
 

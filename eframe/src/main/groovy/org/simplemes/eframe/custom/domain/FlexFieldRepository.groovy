@@ -13,9 +13,7 @@ import org.simplemes.eframe.domain.BaseRepository
  * beans generated for the runtime.
  */
 interface FlexFieldRepository extends BaseRepository, CrudRepository<FlexField, UUID> {
-
   Optional<FlexField> findByUuid(UUID uuid)
-
+  List<FlexField> findAllByFlexType(FlexType flexType)
   List<FlexField> list()
-
 }

@@ -7,6 +7,7 @@ import org.codehaus.groovy.classgen.Verifier
 /**
  *
  */
+// Great tutorial https://www.tothenew.com/blog/gdsl-awesomeness-introduction-to-gdsl-in-intellij-idea/
 // Look at https://stackoverflow.com/questions/49315807/how-to-make-ides-aware-of-addition-to-classes-by-annotations-and-ast-transforma
 // Also, groovy doc for type checking extensions to check dynamic logic from annotation> ?
 // Also, old code at: https://github.com/joewalnes/idea-community/tree/master/java/java-impl/src/com/intellij/psi/impl

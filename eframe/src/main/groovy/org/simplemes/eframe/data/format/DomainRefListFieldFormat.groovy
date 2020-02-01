@@ -61,7 +61,7 @@ class DomainRefListFieldFormat extends BasicFieldFormat {
     for (s in idS) {
       def domainClass = fieldDefinition.referenceType
       def id = UUID.fromString(s)
-      res << domainClass.load(id)
+      res << domainClass.findByUuid(id)
     }
     return res
   }
@@ -99,7 +99,7 @@ class DomainRefListFieldFormat extends BasicFieldFormat {
       if (sb) {
         sb << ","
       }
-      sb << o.id
+      sb << o.uuid
     }
     return sb.toString()
   }
@@ -129,9 +129,11 @@ class DomainRefListFieldFormat extends BasicFieldFormat {
     def referencedClass = fieldDefinition.referenceType
     def key = DomainUtils.instance.getPrimaryKeyField(referencedClass)
     referencedClass.withTransaction {
-      def list = referencedClass.list([sort: key])
+      def list = referencedClass.list()
+      // Sort by the primary key
+      list = list.sort { a, b -> a[key] <=> b[key] }
       for (record in list) {
-        res << new SimpleChoiceListItem(id: record.id, displayValue: TypeUtils.toShortString(record, false))
+        res << new SimpleChoiceListItem(id: record.uuid, displayValue: TypeUtils.toShortString(record, false))
       }
     }
     return res

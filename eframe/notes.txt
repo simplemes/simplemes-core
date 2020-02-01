@@ -107,6 +107,9 @@ New Guidelines
   Move all business logic to OrderService (populateLSNs).
     Leave lazy loaders in domain (getLSNSequence()).
   Use UUID for entities
+  Convert ID/Id/id to UUID in docs
+  Convert long to UUID.
+  Replace lastUpdated with dateUpdated.
   Standard/Required methods
     findById(uuid)
     list(pagination)

@@ -1,12 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data.format
 
 import org.simplemes.eframe.data.FieldDefinitionInterface
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 
 /**
  * Defines a custom field format that the value needs to be loaded from the database as a list.
@@ -20,7 +19,7 @@ interface ListFieldLoaderInterface {
    * @param fieldDefinition The field definition used to define this field (<b>Required</b>).
    * @return The list.
    */
-  List readList(Object object, FieldDefinitionInterface fieldDefinition)
+  List readList(DomainEntityInterface object, FieldDefinitionInterface fieldDefinition)
 
   /**
    * Saves the list field values to the DB.  Relies on the GORM/hibernate save() mechanism and dirty
@@ -30,7 +29,7 @@ interface ListFieldLoaderInterface {
    * @param list The field list.
    * @param fieldDefinition The field definition used to define this field (<b>Required</b>).
    */
-  void saveList(Object object, List list, FieldDefinitionInterface fieldDefinition)
+  void saveList(DomainEntityInterface object, List list, FieldDefinitionInterface fieldDefinition)
 
 
 }

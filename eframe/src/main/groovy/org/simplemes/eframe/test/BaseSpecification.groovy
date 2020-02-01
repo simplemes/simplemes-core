@@ -688,5 +688,29 @@ class BaseSpecification extends GebSpec {
     return true
   }
 
+  /**
+   * Enable SQL trace.  Used mainly in debugging of SQL without enabling it during startup.
+   * @param includeParams If true, then parameters are logged too.  (<b>Default</b>: false).
+   */
+  void enableSQLTrace(boolean includeParams = false) {
+    def logger = LogUtils.getLogger('io.micronaut.data')
+    def oldLevel = LogUtils.getLogger('io.micronaut.data').level
+    if (includeParams) {
+      logger.level = Level.TRACE
+    } else {
+      logger.level = Level.DEBUG
+    }
+    // Automatically reset it at the end of the test.
+    registerAutoCleanup({ testSpec -> logger.level = oldLevel })
+  }
+
+
+  /**
+   * Disables the SQL trace level.  Resets to WARN.
+   */
+  void disableSQLTrace() {
+    def logger = LogUtils.getLogger('io.micronaut.data')
+    logger.level = Level.WARN
+  }
 
 }

@@ -29,7 +29,6 @@ import javax.inject.Singleton
 @Singleton
 class StartupHandler {
 
-
   /**
    * Executed on Startup.  Triggers the initial data load process.
    * @param event

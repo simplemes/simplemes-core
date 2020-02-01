@@ -4,7 +4,6 @@
 
 package org.simplemes.eframe.domain.annotation
 
-
 import io.micronaut.transaction.SynchronousTransactionManager
 import io.micronaut.transaction.jdbc.DataSourceUtils
 import org.simplemes.eframe.application.Holders
@@ -18,6 +17,7 @@ import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.AllFieldsDomain
+import sample.domain.CustomOrderComponent
 import sample.domain.Order
 import sample.domain.OrderLine
 import sample.domain.OrderRepository
@@ -36,7 +36,6 @@ class DomainEntityHelperSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
   static dirtyDomains = [Order, OrderLine]
-  //static specNeeds= SERVER
 
   def "verify that getRepository works for simple case"() {
     expect: 'the repository is found'
@@ -121,12 +120,14 @@ class DomainEntityHelperSpec extends BaseSpecification {
   def "verify that lazyChildLoad works"() {
     given: 'a domain record with children'
     def order = new Order(order: 'M1001')
+    def orderLine1 = new OrderLine(order: order, product: 'BIKE', sequence: 1)
+    def orderLine2 = new OrderLine(order: order, qty: 2.0, product: 'WHEEL', sequence: 2)
+    order.orderLines = [orderLine1, orderLine2]
     order.save()
-    def orderLine1 = new OrderLine(order: order, product: 'BIKE', sequence: 1).save()
-    def orderLine2 = new OrderLine(order: order, qty: 2.0, product: 'WHEEL', sequence: 2).save()
 
-    when: 'the lazy load is used'
-    def list = (List<OrderLine>) DomainEntityHelper.instance.lazyChildLoad((DomainEntityInterface) order, 'orderLines', 'order', OrderLine)
+    when: 'the lazy load is used - on an empty parent domain object'
+    def order2 = Order.findByOrder('M1001')
+    def list = (List<OrderLine>) DomainEntityHelper.instance.lazyChildLoad((DomainEntityInterface) order2, 'orderLines', 'order', OrderLine)
 
     then: 'the record is in the DB'
     list.size() == 2
@@ -134,11 +135,11 @@ class DomainEntityHelperSpec extends BaseSpecification {
     list[1].uuid == orderLine2.uuid
 
     and: 'the field has the list - the list is the same on later calls'
-    DomainEntityHelper.instance.lazyChildLoad((DomainEntityInterface) order, 'orderLines', 'order', OrderLine).is(list)
+    DomainEntityHelper.instance.lazyChildLoad((DomainEntityInterface) order2, 'orderLines', 'order', OrderLine).is(list)
 
     when: 'the loaded is called again'
     DomainEntityHelper.instance.lastLazyChildParentLoaded = null
-    DomainEntityHelper.instance.lazyChildLoad((DomainEntityInterface) order, 'orderLines', 'order', OrderLine)
+    DomainEntityHelper.instance.lazyChildLoad((DomainEntityInterface) order2, 'orderLines', 'order', OrderLine)
 
     then: 'the value is not re-read from the DB'
     DomainEntityHelper.instance.lastLazyChildParentLoaded == null
@@ -762,6 +763,63 @@ class DomainEntityHelperSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that save custom child list on creation"() {
+    when: 'a domain record with the custom child records is saved'
+    def order = new Order(order: 'ABC')
+    def comp1 = new CustomOrderComponent(order: order, sequence: 123)
+    def comp2 = new CustomOrderComponent(order: order, sequence: 456)
+    def comp3 = new CustomOrderComponent(order: order, sequence: 789)
+    def comps = [comp1, comp2, comp3]
+    order.setFieldValue('customComponents', comps)
+    order.save()
+
+    then: 'the records are saved in the DB'
+    def list = CustomOrderComponent.findAllByOrder(order)
+    list.size() == 3
+    list.find { it.sequence == 123 }
+    list.find { it.sequence == 456 }
+    list.find { it.sequence == 789 }
+  }
+
+  @Rollback
+  def "verify that save custom child list on update - changed/remove/added records"() {
+    when: 'a domain record with the custom child records is created'
+    def order = new Order(order: 'ABC')
+    def comp1 = new CustomOrderComponent(order: order, sequence: 123)
+    def comp2 = new CustomOrderComponent(order: order, sequence: 456)
+    def comp3 = new CustomOrderComponent(order: order, sequence: 789)
+    def comps = [comp1, comp2, comp3]
+    order.setFieldValue('customComponents', comps)
+    order.save()
+
+    and: 'the records are changed'
+    List customComponents = order.getFieldValue('customComponents') as List
+    customComponents.remove(1)
+    comp1.sequence = 1234
+    comp3.sequence = 7894
+    customComponents << new CustomOrderComponent(order: order, sequence: 4999)
+    customComponents << new CustomOrderComponent(order: order, sequence: 5999)
+    order.save()
+
+    then: 'the records are saved in the DB'
+    def list = CustomOrderComponent.list()
+    list.size() == 4
+    list.find { it.sequence == 1234 }
+    list.find { it.sequence == 7894 }
+    list.find { it.sequence == 4999 }
+    list.find { it.sequence == 5999 }
+    !list.find { it.sequence == 456 }
+
+    and: 'the list in the domain is consistent'
+    customComponents.size() == 4
+    customComponents.find { it.sequence == 1234 }
+    customComponents.find { it.sequence == 7894 }
+    customComponents.find { it.sequence == 4999 }
+    customComponents.find { it.sequence == 5999 }
+    !customComponents.find { it.sequence == 456 }
+  }
+
+  @Rollback
   def "verify that delete calls the beforeDelete method on the domain"() {
     when: 'the domain is saved'
     def order = new Order(order: 'ABC')
@@ -911,6 +969,22 @@ class DomainEntityHelperSpec extends BaseSpecification {
 
     then: 'the reference list is correct'
     sampleParent2.allFieldsDomain == null
+  }
+
+  def "verify that getComplexHolder finds the holder"() {
+    when: ' the class is compiled'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      
+      @DomainEntity(repository=sample.domain.OrderRepository)
+      class TestClass {
+        UUID uuid
+      }
+    """
+    def o = CompilerTestUtils.compileSource(src).newInstance()
+
+    then: 'the field has the repository '
+    DomainEntityHelper.instance.getComplexHolder(o as DomainEntityInterface) instanceof Map
   }
 
 }

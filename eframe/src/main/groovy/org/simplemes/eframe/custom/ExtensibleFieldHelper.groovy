@@ -15,9 +15,12 @@ import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.data.FieldDefinitions
 import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.data.format.ConfigurableTypeDomainFormat
+import org.simplemes.eframe.data.format.CustomChildListFieldFormat
 import org.simplemes.eframe.data.format.ListFieldLoaderInterface
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.domain.PersistentProperty
+import org.simplemes.eframe.domain.annotation.DomainEntityHelper
+import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.NameUtils
@@ -199,6 +202,34 @@ class ExtensibleFieldHelper {
   }
 
   /**
+   * Gets the custom fields that are child object lists.
+   * This is exposed as a helper for the DomainEntityHelper (Java) class to avoid too much dependency on
+   * the groovy world.
+   * <p>
+   * Doing this method with FieldDefinitionInterface elements bring too many
+   * groovy elements into the Java world.  These are not available during build since the Java src tree is
+   * compiled before the groovy source.
+   * @param object The domain object.
+   * @return The list of custom fields that are child lists.  The map contains details of the list definition
+   *        <b>('childClass', 'fieldName', 'parentFieldName', the "list")</b>.
+   */
+  static List<Map<String, Object>> getCustomChildLists(DomainEntityInterface object) {
+    if (!instance.hasExtensibleFields(object.getClass())) {
+      return null
+    }
+    def res = []
+    def fieldDefinitions = instance.getEffectiveFieldDefinitions(object.getClass())
+    for (field in fieldDefinitions) {
+      if (field.format == CustomChildListFieldFormat.instance) {
+        def parentFieldName = NameUtils.lowercaseFirstLetter(object.getClass().simpleName)
+        def list = object.getFieldValue(field.name)
+        res << [childClass: field.referenceType, fieldName: field.name, parentFieldName: parentFieldName, list: list]
+      }
+    }
+    return res
+  }
+
+  /**
    * Sets the value in a custom field holder.  Uses JSON as the internal format.
    * @param object The object to store the value in.
    * @param fieldName The name of the field.
@@ -308,10 +339,10 @@ class ExtensibleFieldHelper {
       ListFieldLoaderInterface format = (ListFieldLoaderInterface) fieldDefinition.format
       if (list == null) {
         // Not already in the object, so read it from DB.
-        list = format.readList(object, fieldDefinition)
+        list = format.readList(object as DomainEntityInterface, fieldDefinition)
         map[fieldName] = list
         def idListName = '_IDs' + fieldName
-        map[idListName] = list*.id
+        map[idListName] = list*.uuid
       }
       log.trace('getFieldValue(): {} List = {} from object {}', fieldName, list, object)
       return list
@@ -340,19 +371,8 @@ class ExtensibleFieldHelper {
    * @return The map.  Never null.
    */
   Map getComplexHolder(Object object) {
-    String holderName = ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME
-    if (!object.hasProperty(holderName)) {
-      //error.131.message=The domain class {0} does not support extensible fields. Add @ExtensibleFields.
-      throw new BusinessException(131, [object.getClass().name])
-    }
-    Map map = (Map) object[holderName]
-    if (map == null) {
-      map = [:]
-      object[holderName] = map
-    }
-    return map
+    return DomainEntityHelper.instance.getComplexHolder(object as DomainEntityInterface)
   }
-
 
   /**
    * Gets the max size of the custom field value holder in the domain object.
@@ -395,7 +415,7 @@ class ExtensibleFieldHelper {
    * @return True if it has extensible fields.
    */
   boolean hasExtensibleFields(Class clazz) {
-    return (clazz?.getAnnotation(ExtensibleFieldHolder) != null)
+    return clazz.metaClass.getMetaProperty(ExtensibleFieldHolder.HOLDER_FIELD_NAME)
   }
 
   /**

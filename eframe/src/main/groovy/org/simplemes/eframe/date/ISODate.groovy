@@ -1,23 +1,14 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.date
 
 import org.simplemes.eframe.misc.ArgumentUtils
 
 import java.text.SimpleDateFormat
+import java.time.Instant
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
-/**
- * ISO 8601 compliant date formatting and parsing utilities.
- * Typical date format is: 2010-11-14T13:24:56.987Z or 2010-11-14T13:24:56.987-05:00
- * <p/>
- * Created by API Technologies. Copyright. All rights reserved.
- * Original Author: mph
- *
- */
 class ISODate {
 
   /**
@@ -47,10 +38,7 @@ class ISODate {
    */
   static String format(DateOnly dateOnly) {
     ArgumentUtils.checkMissing(dateOnly, 'dateOnly')
-    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd")
-    // Force the UTC timezone for all DateOnly uses.
-    sdf.setTimeZone(TIMEZONE_UTC)
-    return sdf.format(dateOnly)
+    return Instant.ofEpochMilli(dateOnly.time).toString()[0..9]
   }
 
   /**

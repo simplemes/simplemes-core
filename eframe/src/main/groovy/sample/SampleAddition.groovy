@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package sample
 
 import groovy.transform.ToString
@@ -7,15 +11,9 @@ import org.simplemes.eframe.custom.AdditionInterface
 import org.simplemes.eframe.custom.BaseAddition
 import org.simplemes.eframe.data.format.CustomChildListFieldFormat
 import org.simplemes.eframe.data.format.IntegerFieldFormat
+import sample.domain.CustomOrderComponent
 import sample.domain.Order
-import sample.domain.OrderLine
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Defines an internal addition for the framework that is used to specify some features
@@ -48,12 +46,12 @@ class SampleAddition extends BaseAddition implements AdditionInterface {
     // Sample custom child list for the sample Order
     field {
       domain Order
-      name 'orderLines'
-      label 'Line Items'
+      name 'customComponents'
+      label 'Components'
       format CustomChildListFieldFormat
-      valueClass OrderLine
+      valueClass CustomOrderComponent
       fieldOrder {
-        name 'orderLines'
+        name 'customComponents'
         after 'dueDate'
       }
       guiHints 'sequence@default="tk.findMaxGridValue(gridName, \'sequence\')+10"' +

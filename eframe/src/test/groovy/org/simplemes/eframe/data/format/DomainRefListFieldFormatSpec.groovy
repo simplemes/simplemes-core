@@ -1,23 +1,23 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data.format
 
 
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.MockFieldDefinitions
+import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.AllFieldsDomain
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
  */
 class DomainRefListFieldFormatSpec extends BaseSpecification {
 
+  @SuppressWarnings("unused")
   static dirtyDomains = [SampleParent, AllFieldsDomain]
 
   def "verify that id and toString work and the format is registered in the BasicFieldFormat class"() {
@@ -60,7 +60,7 @@ class DomainRefListFieldFormatSpec extends BaseSpecification {
   }
 
   @SuppressWarnings("GroovyAssignabilityCheck")
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the parse method handles list of 1 value"() {
     given: 'a field definition'
     def fieldDefinitions = new MockFieldDefinitions([allFieldsDomain: AllFieldsDomain])
@@ -72,13 +72,13 @@ class DomainRefListFieldFormatSpec extends BaseSpecification {
     }
 
     when: 'the method is called'
-    def list = (List) DomainRefListFieldFormat.instance.parse("${allFieldsDomain.id}", null, fieldDef)
+    def list = (List) DomainRefListFieldFormat.instance.parse("${allFieldsDomain.uuid}", null, fieldDef)
 
     then: 'the list contains the value'
-    list[0].id == allFieldsDomain.id
+    list[0].uuid == allFieldsDomain.uuid
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the parse method handles list of multiple values"() {
     given: 'a field definition'
     def fieldDefinitions = new MockFieldDefinitions([allFieldsDomain: AllFieldsDomain])
@@ -91,12 +91,12 @@ class DomainRefListFieldFormatSpec extends BaseSpecification {
     }
 
     when: 'the method is called'
-    def list = (List) DomainRefListFieldFormat.instance.parse(allFieldsDomains*.id.join(','), null, fieldDef)
+    def list = (List) DomainRefListFieldFormat.instance.parse(allFieldsDomains*.uuid.join(','), null, fieldDef)
 
     then: 'the list contains the value'
     list.size() == 10
     for (afd in allFieldsDomains) {
-      assert list.find { it.id == afd.id }
+      assert list.find { it.uuid == afd.uuid }
     }
   }
 
@@ -111,7 +111,7 @@ class DomainRefListFieldFormatSpec extends BaseSpecification {
     def s = DomainRefListFieldFormat.instance.encode(list, null)
 
     then: 'the encoded value is correct'
-    s == list*.id.join(',')
+    s == list*.uuid.join(',')
   }
 
   def "verify that the encode method encodes handles an empty list gracefully"() {
@@ -130,7 +130,7 @@ class DomainRefListFieldFormatSpec extends BaseSpecification {
     s == ''
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the decode method decodes a list of IDs correctly"() {
     given: 'a field definition'
     def fieldDefinitions = new MockFieldDefinitions([allFieldsDomain: AllFieldsDomain])
@@ -143,7 +143,7 @@ class DomainRefListFieldFormatSpec extends BaseSpecification {
     }
 
     and: 'the encoded IDs in a list'
-    def ids = list*.id
+    def ids = list*.uuid
     def s = ids.join(', ')
 
     when: 'the method is called'
@@ -153,7 +153,7 @@ class DomainRefListFieldFormatSpec extends BaseSpecification {
     list2 == list
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the getValidValues provides the valid values"() {
     given: 'domain records'
     DataGenerator.generate {

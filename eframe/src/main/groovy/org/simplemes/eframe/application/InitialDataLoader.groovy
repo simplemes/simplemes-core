@@ -33,6 +33,11 @@ import javax.inject.Singleton
 @Singleton
 class InitialDataLoader {
 
+  /**
+   * Set to true if the initial data load is finished.
+   */
+  boolean loadFinished = false
+
   @SuppressWarnings("GroovyAssignabilityCheck")
   List<Class> dataLoad() {
     def classesLoaded = []
@@ -64,6 +69,7 @@ class InitialDataLoader {
       }
     }
 
+    loadFinished = true
     log.info('InitialDataLoad time: {} ms for {} domains', (System.currentTimeMillis() - start), classesLoaded.size())
     return classesLoaded
   }

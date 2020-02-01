@@ -19,10 +19,14 @@ import io.micronaut.transaction.jdbc.DataSourceUtils;
 import org.simplemes.eframe.domain.PersistentProperty;
 import org.simplemes.eframe.domain.validate.ValidationError;
 import org.simplemes.eframe.domain.validate.ValidationErrorInterface;
+import org.simplemes.eframe.web.asset.EFrameAssetPipelineService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.sql.DataSource;
+import javax.validation.constraints.NotNull;
 import java.lang.reflect.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -34,6 +38,11 @@ import java.util.*;
  * class.  This includes support for methods like list(), findById(), save(), etc.
  */
 public class DomainEntityHelper {
+
+  /**
+   * The logger.
+   */
+  private static final Logger LOG = LoggerFactory.getLogger(EFrameAssetPipelineService.class);
 
   /**
    * A singleton, used for simplified unit testing with a mocked class.
@@ -58,6 +67,12 @@ public class DomainEntityHelper {
    * The element name is this prefix plus the field's name (e.g. loadedRef+'order').
    */
   public static final String SETTINGS_LOADED_REFERENCE = "loadedRef";
+
+  /**
+   * The name of the element in the domain settings holder that will contain the complex
+   * custom fields.
+   */
+  public static final String SETTINGS_COMPLEX_CUSTOM_FIELDS = "complexFields";
 
   /**
    * Determine the repository associated with the given domain class. This is not for public access.
@@ -108,8 +123,10 @@ public class DomainEntityHelper {
       executeDomainMethod(object, "beforeSave");
       validateForSave(object);
       if (object.getUuid() == null) {
+        //System.out.println("Creating:" + object);
         repo.save(object);
       } else {
+        //System.out.println("Updating:" + object);
         repo.update(object);
       }
       saveManyToMany(object);
@@ -266,19 +283,7 @@ public class DomainEntityHelper {
    */
   public ApplicationContext getApplicationContext() {
     if (applicationContext == null) {
-      // Use reflection to access the Holders.getApplicationContext() at run time since the Groovy
-      // classes are not visible when this .java class is compiled.
-      try {
-        Class holdersClass = Class.forName("org.simplemes.eframe.application.Holders");
-        Method method = ((Class<?>) holdersClass).getMethod("getApplicationContext");
-        if (method != null) {
-          applicationContext = (ApplicationContext) method.invoke(null);
-        }
-      } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | ClassNotFoundException ignored) {
-        // Intentionally ignored.
-        //ignored.printStackTrace();
-      }
-
+      applicationContext = (ApplicationContext) invokeGroovyMethod("org.simplemes.eframe.application.Holders", "getApplicationContext");
     }
     return applicationContext;
   }
@@ -320,57 +325,84 @@ public class DomainEntityHelper {
   @SuppressWarnings("unchecked")
   void saveChildren(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
     // Check all properties for (List) child properties.
-    Map domainSettings = getDomainSettings(object);
     for (Field field : object.getClass().getDeclaredFields()) {
       // Performance: Consider moving the reflection logic to the Transformation to avoid run-time cost.
       OneToMany ann = field.getAnnotation(OneToMany.class);
-      if (ann != null && Collection.class.isAssignableFrom(field.getType())) {
+      if (ann != null && List.class.isAssignableFrom(field.getType())) {
         field.setAccessible(true);  // Need to bypass the getter, since that would trigger a read in some cases.
-        Collection list = (Collection) field.get(object);
+        List list = (List) field.get(object);
         String mappedByFieldName = ann.mappedBy();
         Class<DomainEntityInterface> childClass = (Class<DomainEntityInterface>) getGenericType(field);
-        //System.out.println("childClass:" + childClass);
-        Field parentField = childClass.getDeclaredField(mappedByFieldName);
-        parentField.setAccessible(true);  // Need to bypass any setters.
-        //System.out.println("  parentField:" + parentField+" ");
-        if (list != null) {
-          List<Object> newRecordList = new ArrayList();
-          for (Object child : list) {
-            if (child instanceof DomainEntityInterface && mappedByFieldName.length() > 0) {
-              //System.out.println("  child:" + child);
-              // Make sure the parent element is set before the save.
-              if (parentField.get(child) == null) {
-                parentField.set(child, object);
-              }
-              ((DomainEntityInterface) child).save();
-              newRecordList.add(((DomainEntityInterface) child).getUuid());
+
+        saveChildList(object, list, field.getName(), childClass, mappedByFieldName, false);
+      }
+    }
+
+    // Try all custom fields.
+    List<Map<String, Object>> customLists = (List<Map<String, Object>>) invokeGroovyMethod(
+        "org.simplemes.eframe.custom.ExtensibleFieldHelper",
+        "getCustomChildLists", object);
+    if (customLists != null) {
+      for (Map<String, Object> map : customLists) {
+        saveChildList(object, (List) map.get("list"), (String) map.get("fieldName"), (Class) map.get("childClass"),
+            (String) map.get("parentFieldName"), true);
+      }
+    }
+  }
+
+  /**
+   * Saves the given child list of records.  Handles deleted, new and updated records.
+   *
+   * @param object          The parent domain object.
+   * @param list            The list of children.
+   * @param fieldName       The name of the field list is stored in.
+   * @param childClass      The child record class.
+   * @param parentFieldName The name of the parent reference in the child class.
+   * @param custom          If true, then the field is a custom field?
+   */
+  @SuppressWarnings("unchecked")
+  public void saveChildList(DomainEntityInterface object, List list, String fieldName, Class childClass,
+                            String parentFieldName, boolean custom)
+      throws NoSuchFieldException, IllegalAccessException, InstantiationException {
+    Map domainSettings = getDomainSettings(object);
+    Field parentField = childClass.getDeclaredField(parentFieldName);
+    parentField.setAccessible(true);  // Need to bypass any setters.
+    if (list != null) {
+      List<Object> newRecordList = new ArrayList();
+      for (Object child : list) {
+        if (child instanceof DomainEntityInterface && parentFieldName.length() > 0) {
+          //System.out.println("  child:" + child);
+          // Make sure the parent element is set before the save.
+          if (parentField.get(child) == null) {
+            parentField.set(child, object);
+          }
+          ((DomainEntityInterface) child).save();
+          newRecordList.add(((DomainEntityInterface) child).getUuid());
+        }
+      }
+      // Now, delete any removed records from the previous read.
+      if (domainSettings != null) {
+        List<UUID> previouslyLoadedList = (List) domainSettings.get(SETTINGS_LOADED_CHILDREN_PREFIX + fieldName);
+
+        if (previouslyLoadedList != null) {
+          for (UUID uuid : previouslyLoadedList) {
+            if (!newRecordList.contains(uuid)) {
+              // The child record is no longer in the ths list, so delete it.
+              DomainEntityInterface childObject = (DomainEntityInterface) childClass.newInstance();
+              childObject.setUuid(uuid);
+              childObject.delete();
             }
           }
-          // Now, delete any removed records from the previous read.
-          if (domainSettings != null) {
-            List<UUID> previouslyLoadedList = (List) domainSettings.get(SETTINGS_LOADED_CHILDREN_PREFIX + field.getName());
+        }
+      }
 
-            if (previouslyLoadedList != null) {
-              for (UUID uuid : previouslyLoadedList) {
-                if (!newRecordList.contains(uuid)) {
-                  // The child record is no longer in the ths list, so delete it.
-                  DomainEntityInterface childObject = childClass.newInstance();
-                  childObject.setUuid(uuid);
-                  childObject.delete();
-                }
-              }
-            }
-          }
-
-          // Finally, use the new list of updated records.
-          List loadedList = new ArrayList();
-          if (domainSettings != null) {
-            domainSettings.put(SETTINGS_LOADED_CHILDREN_PREFIX + field.getName(), loadedList);
-            for (Object child : list) {
-              if (child instanceof DomainEntityInterface) {
-                loadedList.add(((DomainEntityInterface) child).getUuid());
-              }
-            }
+      // Finally, use the new list of updated records.
+      List loadedList = new ArrayList();
+      if (domainSettings != null) {
+        domainSettings.put(SETTINGS_LOADED_CHILDREN_PREFIX + fieldName, loadedList);
+        for (Object child : list) {
+          if (child instanceof DomainEntityInterface) {
+            loadedList.add(((DomainEntityInterface) child).getUuid());
           }
         }
       }
@@ -548,40 +580,56 @@ public class DomainEntityHelper {
       if (domainSettings != null) {
         domainSettings.put(SETTINGS_LOADED_CHILDREN_PREFIX + fieldName, loadedUuidList);
       }
-      GenericRepository repository = getRepository(childDomainClazz);
-      UUID uuid = object.getUuid();
-      //System.out.println("uuid:" + uuid + object);
-      if (repository != null && uuid != null) {
-        String finderName = "findAllBy" + StringUtils.capitalize(mappedByFieldName);
-        Method method = repository.getClass().getMethod(finderName, object.getClass());
-        method.setAccessible(true);  // For some reason, Micronaut-data creates the method that is not accessible.
-        try {
-          list = (List) method.invoke(repository, object);
-          field.set(object, list);
-          // Store the UUID's for later checks on update.
-          for (Object child : list) {
-            if (child instanceof DomainEntityInterface) {
-              loadedUuidList.add(((DomainEntityInterface) child).getUuid());
-              // Force the parent reference to work around issue with children and grand children.
-              Method m1 = child.getClass().getDeclaredMethod("set" + StringUtils.capitalize(mappedByFieldName), object.getClass());
-              m1.invoke(child, object);
-              //System.out.println("  parent:" + parent);
-            }
-          }
-          if (isEnvironmentTest()) {
-            // Record the last uuid read, so we can test the lazy loading behavior.
-            lastLazyChildParentLoaded = uuid;
-          }
-        } catch (Throwable e) {
-          // Most exceptions are wrapped in invocation target exceptions, so we can remove them.
-          throw unwrapAndSimplifyException(e);
+      list = loadChildRecords(object, childDomainClazz, mappedByFieldName);
+      field.set(object, list);
+      if (isEnvironmentTest()) {
+        // Record the last uuid read, so we can test the lazy loading behavior.
+        lastLazyChildParentLoaded = object.getUuid();
+      }
+      // Remember the UUID's read for the load.
+      for (Object child : list) {
+        if (child instanceof DomainEntityInterface) {
+          loadedUuidList.add(((DomainEntityInterface) child).getUuid());
+          // Force the parent reference to work around issue with children and grand children.
+          Method m1 = child.getClass().getDeclaredMethod("set" + StringUtils.capitalize(mappedByFieldName), object.getClass());
+          m1.invoke(child, object);
+          //System.out.println("  parent:" + parent);
         }
       }
-      //System.out.println("  getter " + fieldName + " list: " + list);
     }
 
     return list;
   }
+
+  /**
+   * Loads a list of child records for the given parent domain object.
+   *
+   * @param parentObject    The parent domain object.
+   * @param childClass      The class to read.
+   * @param parentFieldName The field in the child class to search on.
+   * @return The list.
+   */
+  @SuppressWarnings("unchecked")
+  public List<DomainEntityInterface> loadChildRecords(DomainEntityInterface parentObject, Class childClass, String parentFieldName)
+      throws Throwable {
+    List<DomainEntityInterface> list = new ArrayList<>();
+    GenericRepository repository = getRepository(childClass);
+    UUID uuid = parentObject.getUuid();
+    if (repository != null && uuid != null) {
+      String finderName = "findAllBy" + StringUtils.capitalize(parentFieldName);
+      Method method = repository.getClass().getMethod(finderName, parentObject.getClass());
+      method.setAccessible(true);  // For some reason, Micronaut-data creates the method that is not accessible.
+      try {
+        list = (List<DomainEntityInterface>) method.invoke(repository, parentObject);
+      } catch (Throwable e) {
+        // Most exceptions are wrapped in invocation target exceptions, so we can remove them.
+        throw unwrapAndSimplifyException(e);
+      }
+    }
+
+    return list;
+  }
+
 
   /**
    * Records the last lazy reference loaded (in test mode only).  Used to testing to verify that
@@ -699,7 +747,7 @@ public class DomainEntityHelper {
    * @return The settings holder.
    */
   @SuppressWarnings("unchecked")
-  private Map<String, Object> getDomainSettings(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException {
+  private @NotNull Map<String, Object> getDomainSettings(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException {
     // Uses reflection since the element is a field and that is difficult to implement in an interface.
     Field field = object.getClass().getDeclaredField(DOMAIN_SETTINGS_FIELD_NAME);
     Object o = field.get(object);
@@ -707,6 +755,24 @@ public class DomainEntityHelper {
       return (Map<String, Object>) o;
     }
     return null;
+  }
+
+  /**
+   * Finds the complex custom fields holder for given domain object.
+   *
+   * @param object The domain object.
+   * @return The complex fields holder.
+   */
+  @SuppressWarnings({"unchecked", "ConstantConditions"})
+  public Map<String, Object> getComplexHolder(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException {
+    Map<String, Object> settingsMap = getDomainSettings(object);
+    Object o = settingsMap.get(SETTINGS_COMPLEX_CUSTOM_FIELDS);
+    if (o instanceof Map) {
+      return (Map<String, Object>) o;
+    }
+    o = new HashMap<String, Object>();
+    settingsMap.put(SETTINGS_COMPLEX_CUSTOM_FIELDS, o);
+    return (Map<String, Object>) o;
   }
 
   /**
@@ -875,19 +941,9 @@ public class DomainEntityHelper {
    */
   public static boolean isEnvironmentTest() {
     if (isEnvironmentTest == null) {
-      // Use reflection to access the Holders.isEnvironmentTest() at run time since the Groovy
-      // classes are not visible when this .java class is compiled.
-      try {
-        Class holdersClass = Class.forName("org.simplemes.eframe.application.Holders");
-        Method method = ((Class<?>) holdersClass).getMethod("isEnvironmentTest");
-        if (method != null) {
-          isEnvironmentTest = (boolean) method.invoke(null);
-        }
-      } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | ClassNotFoundException ignored) {
-        // Intentionally ignored.
-        //ignored.printStackTrace();
-      }
+      isEnvironmentTest = (Boolean) invokeGroovyMethod("org.simplemes.eframe.application.Holders", "isEnvironmentTest");
     }
+    //noinspection ConstantConditions
     return isEnvironmentTest;
   }
 
@@ -903,19 +959,9 @@ public class DomainEntityHelper {
    */
   public static boolean isEnvironmentDev() {
     if (isEnvironmentDev == null) {
-      // Use reflection to access the Holders.isEnvironmentTest() at run time since the Groovy
-      // classes are not visible when this .java class is compiled.
-      try {
-        Class holdersClass = Class.forName("org.simplemes.eframe.application.Holders");
-        Method method = ((Class<?>) holdersClass).getMethod("isEnvironmentDev");
-        if (method != null) {
-          isEnvironmentDev = (boolean) method.invoke(null);
-        }
-      } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | ClassNotFoundException ignored) {
-        // Intentionally ignored.
-        //ignored.printStackTrace();
-      }
+      isEnvironmentDev = (Boolean) invokeGroovyMethod("org.simplemes.eframe.application.Holders", "isEnvironmentDev");
     }
+    //noinspection ConstantConditions
     return isEnvironmentDev;
   }
 
@@ -926,6 +972,43 @@ public class DomainEntityHelper {
 
   public static void setInstance(DomainEntityHelper instance) {
     DomainEntityHelper.instance = instance;
+  }
+
+  /**
+   * Invokes the given groovy class/method with arguments.  This is done to access
+   * the groovy world from the Java code.  This is needed since the Java source tree is compiled before
+   * the groovy code is compiled.
+   * <p>We do this to avoid moving the Java source to a separate module.
+   * <p><b>Note</b> This will return null if the method is not found or other invocation errors.  The error will be logged
+   * as a warning.
+   *
+   * @param className  The fully qualified class name.
+   * @param methodName The method name.
+   * @param args       The arguments.
+   * @return The results of the method call.  Null if the class/method is not found.
+   */
+  protected static Object invokeGroovyMethod(String className, String methodName, Object... args) {
+    try {
+      Class[] paramTypes = new Class[args.length];
+      for (int i = 0; i < args.length; i++) {
+        if (args[i] != null) {
+          paramTypes[i] = args[i].getClass();
+          // Check for special case Domain object
+          if (args[i] instanceof DomainEntityInterface) {
+            paramTypes[i] = DomainEntityInterface.class;
+          }
+        } else {
+          // Unknown type, so try Object
+          paramTypes[i] = Object.class;
+        }
+      }
+      Class holdersClass = Class.forName(className);
+      Method method = ((Class<?>) holdersClass).getMethod(methodName, paramTypes);
+      return method.invoke(null, args);
+    } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+      LOG.warn("Error invoking method " + className + "." + methodName + "(). ", e);
+      return null;
+    }
   }
 
   /**
@@ -962,4 +1045,5 @@ public class DomainEntityHelper {
       return null;
     }
   }
+
 }

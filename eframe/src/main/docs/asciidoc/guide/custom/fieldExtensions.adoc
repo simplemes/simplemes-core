@@ -337,7 +337,7 @@ getting or setting values.
 ==== Single Domain Reference
 
 You can add a custom field that is a reference to a single foreign domain record.
-The reference is stored in the JSON using the record ID (Long).
+The reference is stored in the JSON using the record UUID.
 
 NOTE: The field definition defines a `valueClassName` that is used to find
       the actual record.  It is important that this `valueClassName` not be changed if data
@@ -394,19 +394,17 @@ Product definition:
 .Example - Custom Child Sub-Object
 ----
 public class Component {
-  Long productId // <.>
+  @ManyToOne
+  Product product // <.>
   Long sequence
   BigDecimal qty
 
-  static keys = ['productId', 'sequence'] // <.>
+  static keys = ['product', 'sequence'] // <.>
 
 }
 ----
-<.> The parent Product reference.  This is stored as an ID only to avoid issues with the hibernate
-    _TransientPropertyValueException_ triggered by saving a direct reference to the parent.
-    This also avoids issues with creating the parent record in a different session from the
-    sub-objects. Since you will normally use the sub-objects as a list from the parent,
-    this is not a serious problem.
+<.> The parent Product reference.  It is a normal ManyToOn reference (much like a foreign
+    reference).  It is stored as a UUID in the DB.
 <.> Your custom child needs to have some keys defined.  This allows the JSON update capability.
 
 The list will contain a list of Component sub-objects.
@@ -434,24 +432,7 @@ To use this custom child list in a domain, you can define it in <<Module Additio
 This addition will add an inline grid for these child order line items in the standard
 Order definition pages.
 
-GORM will not save a record if it thinks the record is unchanged.  When you only change the
-custom sub-table (e.g. `Component` below), the parent record (`Product`) will not be updated.
-To fix this, the framework will change the `lastUpdated` in the parent domain record.
-
-NOTE: The `lastUpdated` field is automatically change by the BaseCrudController logic.
-      If you save the records in a service or other controller, then you should make sure the parent
-      record is changed to force an update on your custom child records.
-
 When testing using GUI/GEB testing, remember to delete your custom child classes first.
-There is a bug in the GUI testing support classes that triggers a strange proxy error
-from Hibernate. See the <<Potholes>> for details.  Also, you probably can't run your
-GEB tests in @Rollback mode. There is no easy way to force an update event to happen
-(`lastUpdated` note above).
-
-Be careful with unique constraints involving the parent and a field in the custom child
-(`productId` and `sequence` in the example above).
-This causes some issues with the way the child records are updated during save.  It
-is best to enforce this unique constraint in other ways.
 
 ==== Custom Child List - Integration/GUI Testing
 

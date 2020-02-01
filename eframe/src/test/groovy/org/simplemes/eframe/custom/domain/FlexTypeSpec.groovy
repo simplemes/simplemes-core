@@ -84,6 +84,20 @@ class FlexTypeSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that deleting FlexType deletes fields"() {
+    given: 'an object with unicode values'
+    def flexType = new FlexType(flexType: 'ABC')
+    flexType.fields << new FlexField(fieldName: 'TEST')
+    flexType.save()
+
+    when: 'the record is deleted'
+    flexType.delete()
+
+    then: 'the fields are deleted'
+    FlexField.list().size() == 0
+  }
+
+  @Rollback
   def "verify that auto-assignment of sequence works - create case"() {
     given: 'a domain with some fields'
     def flexType = new FlexType(flexType: 'ABC')

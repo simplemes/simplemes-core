@@ -1,15 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.date
 
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
 
 import java.text.SimpleDateFormat
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -59,7 +57,7 @@ class ISODateSpec extends BaseSpecification {
 
   def "verify that parseDateOnly works with supported ISO formats"() {
     expect: 'the date is parsed'
-    ISODate.parseDateOnly(input) == new Date(result)
+    ISODate.parseDateOnly(input) == new DateOnly(result)
 
     where:
     input                                     | result

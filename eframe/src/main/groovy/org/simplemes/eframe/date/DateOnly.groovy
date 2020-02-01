@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.date
 
 import groovy.transform.EqualsAndHashCode
@@ -6,11 +10,6 @@ import io.micronaut.data.model.DataType
 
 import java.time.Instant
 import java.time.temporal.ChronoUnit
-
-/*
- * Copyright Michael Houston. All rights reserved.
- *
-*/
 
 /**
  * Date only class.  Provides basic date-related functions.
@@ -60,8 +59,12 @@ class DateOnly {
     time = instant.toEpochMilli()
   }
 
+  /**
+   * Returns the human readable format.  This is the ISO format.
+   * @return
+   */
   @Override
   String toString() {
-    return Instant.ofEpochMilli(time).toString()[0..9]
+    return ISODate.format(this)
   }
 }

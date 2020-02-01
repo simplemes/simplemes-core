@@ -1,25 +1,22 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data.format
 
 
 import org.simplemes.eframe.data.CustomFieldDefinition
+import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DataGenerator
+import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.Order
 import sample.domain.OrderLine
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
  */
 class CustomCustomChildListFieldFormatSpec extends BaseSpecification {
-
-  @SuppressWarnings("unused")
-  static specNeeds = [SERVER]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [OrderLine, Order]
@@ -64,7 +61,7 @@ class CustomCustomChildListFieldFormatSpec extends BaseSpecification {
     thrown(UnsupportedOperationException)
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the readList method finds child records"() {
     given: 'a field definition'
     def fieldDefinition = new CustomFieldDefinition(name: 'orderLine', format: CustomChildListFieldFormat.instance,
@@ -78,15 +75,15 @@ class CustomCustomChildListFieldFormatSpec extends BaseSpecification {
     and: 'the child custom records'
     def orderLines = DataGenerator.generate {
       domain OrderLine
-      values orderId: order.id, sequence: 0, product: 'PRODUCT-$i', qty: 1.2
+      values order: order, sequence: 0, product: 'PRODUCT-$i', qty: 1.2
     }
 
     when: 'the values are read via the format'
-    def list = (List) CustomChildListFieldFormat.instance.readList(order, fieldDefinition)
+    def list = (List) CustomChildListFieldFormat.instance.readList(order as DomainEntityInterface, fieldDefinition)
 
     then: 'the list contains the value'
     list.size() == 1
-    list[0].id == orderLines[0].id
+    list[0].uuid == orderLines[0].uuid
   }
 
   def "verify that the saveList method saves changed child records - in a proper transaction"() {
@@ -103,7 +100,7 @@ class CustomCustomChildListFieldFormatSpec extends BaseSpecification {
       order = orders[0]
       DataGenerator.generate {
         domain OrderLine
-        values orderId: order.id, sequence: 0, product: 'PRODUCT-$i', qty: 1.2
+        values order: order, sequence: 0, product: 'PRODUCT-$i', qty: 1.2
       }
     }
 
