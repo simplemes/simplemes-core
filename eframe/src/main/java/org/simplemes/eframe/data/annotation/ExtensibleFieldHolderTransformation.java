@@ -16,8 +16,10 @@ import org.codehaus.groovy.control.messages.SimpleMessage;
 import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.simplemes.eframe.ast.ASTUtils;
+import org.simplemes.eframe.domain.annotation.DomainEntity;
 
 import java.lang.reflect.Modifier;
+import java.util.List;
 
 
 /**
@@ -45,6 +47,7 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
       if (astNode instanceof FieldNode) {
         FieldNode fieldNode = (FieldNode) astNode;
         ClassNode classNode = fieldNode.getDeclaringClass();
+        validateUsage(classNode, sourceUnit);
         //addComplexFieldHolder(classNode, sourceUnit);
         addCustomFieldName(fieldNode.getName(), classNode, sourceUnit);
         addJsonProperty(fieldNode, sourceUnit);
@@ -54,6 +57,21 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
       }
     }
   }
+
+  /**
+   * Validates the annotation was used correctly.
+   *
+   * @param classNode  The class this annotation was used in.
+   * @param sourceUnit The source location.
+   */
+  private void validateUsage(ClassNode classNode, SourceUnit sourceUnit) {
+    List<AnnotationNode> annotations = classNode.getAnnotations(new ClassNode(DomainEntity.class));
+    if (annotations.size() <= 0) {
+      SimpleMessage message = new SimpleMessage("@ExtensibleFieldHolder must be used in class marked with @DomainEntity" + classNode, sourceUnit);
+      sourceUnit.getErrorCollector().addError(message);
+    }
+  }
+
 
   /**
    * Adds a static property to the clazz that defines the field name.

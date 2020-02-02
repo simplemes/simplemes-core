@@ -83,7 +83,7 @@ grails:
 ---
 jackson:
   serialization:
-    indentOutput: true
+    indentOutput: false
     useEqualityForObjectID: true
 
 ---

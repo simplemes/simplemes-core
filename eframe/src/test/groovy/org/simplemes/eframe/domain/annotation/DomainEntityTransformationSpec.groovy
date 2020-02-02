@@ -502,5 +502,30 @@ class DomainEntityTransformationSpec extends BaseSpecification {
     !methods.find { it.name == "set$DomainEntityHelper.DOMAIN_SETTINGS_FIELD_NAME" }
   }
 
+  def "verify that that the transformation detects a missing uuid field"() {
+    given: 'a class with the annotation'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import groovy.transform.ToString
+      
+      @DomainEntity
+      @ToString(includeNames = true)
+      class TestClass {
+      }
+    """
+    and: 'disable printing source'
+    CompilerTestUtils.printCompileFailureSource = false
+
+    when: 'the domain is compiled and a new value is used'
+    CompilerTestUtils.compileSource(src)
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['must', 'property', 'uuid', 'TestClass'])
+
+    cleanup:
+    CompilerTestUtils.printCompileFailureSource = true
+  }
+
 
 }

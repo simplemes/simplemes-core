@@ -399,15 +399,31 @@ public class DomainEntityHelper {
       // Finally, use the new list of updated records.
       List loadedList = new ArrayList();
       if (domainSettings != null) {
-        domainSettings.put(SETTINGS_LOADED_CHILDREN_PREFIX + fieldName, loadedList);
         for (Object child : list) {
           if (child instanceof DomainEntityInterface) {
             loadedList.add(((DomainEntityInterface) child).getUuid());
           }
         }
+        storeIdsLoadedForChildList(object, fieldName, loadedList);
       }
     }
   }
+
+  /**
+   * Stores the list of uuid's loaded for a child list.  Used to detect deleted child records.
+   *
+   * @param object    The domain object.
+   * @param fieldName The child list field name.
+   * @param list      The list.
+   */
+  @SuppressWarnings({"unchecked", "ConstantConditions"})
+  public void storeIdsLoadedForChildList(DomainEntityInterface object, String fieldName, List list)
+      throws NoSuchFieldException, IllegalAccessException {
+    Map domainSettings = getDomainSettings(object);
+    domainSettings.put(SETTINGS_LOADED_CHILDREN_PREFIX + fieldName, list);
+
+  }
+
 
   /**
    * Deletes the children for the given parent object.

@@ -48,7 +48,7 @@ import sample.domain.SampleParent
 class ExtensibleFieldHelperSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static dirtyDomains = [OrderLine, Order, FieldGUIExtension, FieldExtension, FlexType, RMA]
+  static dirtyDomains = [CustomOrderComponent, OrderLine, Order, FieldGUIExtension, FieldExtension, FlexType, RMA]
 
   @Rollback
   def "verify that getEffectiveFieldDefinitions finds custom fields"() {
@@ -388,9 +388,12 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     def src = """
       import org.simplemes.eframe.data.annotation.*
       import javax.persistence.Column
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      @DomainEntity
       class TestClass {
         @ExtensibleFieldHolder 
         String customFields
+        UUID uuid
       }
     """
     def object = CompilerTestUtils.compileSource(src).newInstance()
@@ -410,11 +413,14 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     given: 'a domain object with a custom field'
     def src = """
       import org.simplemes.eframe.data.annotation.*
+      import org.simplemes.eframe.domain.annotation.DomainEntity
       import javax.persistence.Column
+      @DomainEntity
       class TestClass {
         @ExtensibleFieldHolder 
         @Column(nullable = true, length = 437)
         String customFields
+        UUID uuid
       }
     """
     def object = CompilerTestUtils.compileSource(src).newInstance()
@@ -469,10 +475,13 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     given: 'a domain object with a custom field'
     def src = """
       import org.simplemes.eframe.data.annotation.*
+      import org.simplemes.eframe.domain.annotation.DomainEntity
       import javax.persistence.Column
+      @DomainEntity
       class TestClass {
         @ExtensibleFieldHolder 
         String testCustom
+        UUID uuid
       }
     """
     def object = CompilerTestUtils.compileSource(src).newInstance()
@@ -513,37 +522,33 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
 
     and: 'the child custom records'
     DataGenerator.generate {
-      domain OrderLine
+      domain CustomOrderComponent
       values order: order, sequence: 0, product: 'PRODUCT-$i', qty: 1.2
     }
 
     when: 'the value is read'
-    List list = (List) ExtensibleFieldHelper.instance.getFieldValue(order, 'orderLines')
+    def order2 = Order.findByUuid(order.uuid)
+    List list = (List) ExtensibleFieldHelper.instance.getFieldValue(order2, 'customComponents')
 
     then: 'the value is correct'
     list.size() == 1
     list[0].product == 'PRODUCT-001'
   }
 
+  @Rollback
   def "verify that setFieldValue will update the custom child records when the parent is saved"() {
     when: 'the parent record and custom child records are saved'
-    def order = null
-    Order.withTransaction {
-      order = new Order(order: 'M1001')
-      def orderLines = []
-      orderLines << new OrderLine(sequence: 1, product: 'PROD1')
-      orderLines << new OrderLine(sequence: 2, product: 'PROD2')
-      orderLines << new OrderLine(sequence: 3, product: 'PROD3')
-      order.setFieldValue('orderLines', orderLines)
-      order.save()
-    }
+    def order = new Order(order: 'M1001')
+    def customComponents = []
+    customComponents << new CustomOrderComponent(sequence: 1, product: 'PROD1')
+    customComponents << new CustomOrderComponent(sequence: 2, product: 'PROD2')
+    customComponents << new CustomOrderComponent(sequence: 3, product: 'PROD3')
+    order.setFieldValue('customComponents', customComponents)
+    order.save()
 
-    and: 'the order line list is read'
-    List list = null
-    Order.withTransaction {
-      order = Order.findByOrder('M1001')
-      list = (List) ExtensibleFieldHelper.instance.getFieldValue(order, 'orderLines')
-    }
+    and: 'the top-level domain is re-read'
+    order = Order.findByOrder('M1001')
+    List<CustomOrderComponent> list = (List) ExtensibleFieldHelper.instance.getFieldValue(order, 'customComponents')
 
     then: 'the values are correct'
     list.size() == 3
@@ -555,53 +560,39 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     list[2].product == 'PROD3'
 
     and: 'the records are in the database'
-    OrderLine.withTransaction {
-      def orderLines = OrderLine.findAllByOrderId((Long) order.id)
-      assert orderLines.size() == 3
-      assert orderLines[0].sequence == 1
-      assert orderLines[0].product == 'PROD1'
-      assert orderLines[0].orderId == order.id
-      assert orderLines[1].sequence == 2
-      assert orderLines[1].product == 'PROD2'
-      assert orderLines[1].orderId == order.id
-      assert orderLines[2].sequence == 3
-      assert orderLines[2].product == 'PROD3'
-      assert orderLines[2].orderId == order.id
-      true
-    }
+    def dbList = CustomOrderComponent.findAllByOrder(order)
+    dbList.size() == 3
+    dbList[0].sequence == 1
+    dbList[0].product == 'PROD1'
+    dbList[1].sequence == 2
+    dbList[1].product == 'PROD2'
+    dbList[2].sequence == 3
+    dbList[2].product == 'PROD3'
   }
 
+  @Rollback
   def "verify that updating the domain will update and add custom child records when the parent is saved"() {
     given: 'the saved parent record and custom child records'
-    def order = null
-    Order.withTransaction {
-      order = new Order(order: 'M1001')
-      def orderLines = []
-      orderLines << new OrderLine(sequence: 1, product: 'PROD1')
-      orderLines << new OrderLine(sequence: 2, product: 'PROD2')
-      orderLines << new OrderLine(sequence: 3, product: 'PROD3')
-      order.setFieldValue('orderLines', orderLines)
-      order.save()
-    }
+    def order = new Order(order: 'M1001')
+    def customComponents = []
+    customComponents << new CustomOrderComponent(sequence: 1, product: 'PROD1')
+    customComponents << new CustomOrderComponent(sequence: 2, product: 'PROD2')
+    customComponents << new CustomOrderComponent(sequence: 3, product: 'PROD3')
+    order.setFieldValue('customComponents', customComponents)
+    order.save()
 
     when: 'the parent record and custom child records are updated'
-    Order.withTransaction {
-      order = Order.findByOrder('M1001')
-      def orderLines = (List<OrderLine>) order.getFieldValue('orderLines')
-      orderLines[0].product = 'PROD1A'
-      orderLines[1].product = 'PROD2A'
-      orderLines[2].product = 'PROD3A'
-      orderLines << new OrderLine(sequence: 4, product: 'PROD4')
-      order.lastUpdated = new Date(System.currentTimeMillis() + 1)  // Force save of parent entity.
-      order.save()
-    }
+    order = Order.findByOrder('M1001')
+    customComponents = (List) order.getFieldValue('customComponents')
+    customComponents[0].product = 'PROD1A'
+    customComponents[1].product = 'PROD2A'
+    customComponents[2].product = 'PROD3A'
+    customComponents << new CustomOrderComponent(sequence: 4, product: 'PROD4')
+    order.save()
 
-    and: 'the order line list is read'
-    List list = null
-    Order.withTransaction {
-      order = Order.findByOrder('M1001')
-      list = (List) ExtensibleFieldHelper.instance.getFieldValue(order, 'orderLines')
-    }
+    and: 'the domain is re-read is re-read'
+    order = Order.findByOrder('M1001')
+    List list = (List) ExtensibleFieldHelper.instance.getFieldValue(order, 'customComponents')
 
     then: 'the values are correct'
     list.size() == 4
@@ -615,46 +606,38 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     list[3].product == 'PROD4'
 
     and: 'the records are in the database'
-    OrderLine.withTransaction {
-      def orderLines = OrderLine.findAllByOrderId((Long) order.id)
-      assert orderLines.size() == 4
-      assert orderLines[0].sequence == 1
-      assert orderLines[0].product == 'PROD1A'
-      assert orderLines[0].orderId == order.id
-      assert orderLines[1].sequence == 2
-      assert orderLines[1].product == 'PROD2A'
-      assert orderLines[1].orderId == order.id
-      assert orderLines[2].sequence == 3
-      assert orderLines[2].product == 'PROD3A'
-      assert orderLines[2].orderId == order.id
-      assert orderLines[3].sequence == 4
-      assert orderLines[3].product == 'PROD4'
-      assert orderLines[3].orderId == order.id
-      true
-    }
+    def dbList = CustomOrderComponent.findAllByOrder(order)
+    dbList.size() == 4
+    dbList[0].sequence == 1
+    dbList[0].product == 'PROD1A'
+    dbList[1].sequence == 2
+    dbList[1].product == 'PROD2A'
+    dbList[2].sequence == 3
+    dbList[2].product == 'PROD3A'
+    dbList[3].sequence == 4
+    dbList[3].product == 'PROD4'
   }
 
-  def "verify that updating the domain will remove custom child records when the parent is saved"() {
+  def "verify that updating the domain will remove custom child records when the parent is saved and transactions are used"() {
     given: 'the saved parent record and custom child records'
     def order = null
     Order.withTransaction {
       order = new Order(order: 'M1001')
-      def orderLines = []
-      orderLines << new OrderLine(sequence: 1, product: 'PROD1')
-      orderLines << new OrderLine(sequence: 2, product: 'PROD2')
-      orderLines << new OrderLine(sequence: 3, product: 'PROD3')
-      order.setFieldValue('orderLines', orderLines)
+      def customComponents = []
+      customComponents << new CustomOrderComponent(sequence: 1, product: 'PROD1')
+      customComponents << new CustomOrderComponent(sequence: 2, product: 'PROD2')
+      customComponents << new CustomOrderComponent(sequence: 3, product: 'PROD3')
+      order.setFieldValue('customComponents', customComponents)
       order.save()
     }
 
     when: 'the parent record is changed and the custom child record is removed and one is added'
     Order.withTransaction {
       order = Order.findByOrder('M1001')
-      def orderLines = (List<OrderLine>) order.getFieldValue('orderLines')
-      orderLines[0].product = 'PROD1A'
-      orderLines.remove(1)
-      orderLines << new OrderLine(sequence: 4, product: 'PROD4')
-      order.lastUpdated = new Date(System.currentTimeMillis() + 1)  // Force save of parent entity.
+      def orderComponents = (List<CustomOrderComponent>) order.getFieldValue('customComponents')
+      orderComponents[0].product = 'PROD1A'
+      orderComponents.remove(1)
+      orderComponents << new CustomOrderComponent(sequence: 4, product: 'PROD4')
       order.save()
     }
 
@@ -662,7 +645,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     List list = null
     Order.withTransaction {
       order = Order.findByOrder('M1001')
-      list = (List) ExtensibleFieldHelper.instance.getFieldValue(order, 'orderLines')
+      list = (List) ExtensibleFieldHelper.instance.getFieldValue(order, 'customComponents')
     }
 
     then: 'the values are correct'
@@ -676,17 +659,14 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
 
     and: 'the records are in the database'
     OrderLine.withTransaction {
-      def orderLines = OrderLine.findAllByOrderId((Long) order.id)
-      assert orderLines.size() == 3
-      assert orderLines[0].sequence == 1
-      assert orderLines[0].product == 'PROD1A'
-      assert orderLines[0].orderId == order.id
-      assert orderLines[1].sequence == 3
-      assert orderLines[1].product == 'PROD3'
-      assert orderLines[1].orderId == order.id
-      assert orderLines[2].sequence == 4
-      assert orderLines[2].product == 'PROD4'
-      assert orderLines[2].orderId == order.id
+      def customOrderComponents = CustomOrderComponent.findAllByOrder(order)
+      assert customOrderComponents.size() == 3
+      assert customOrderComponents[0].sequence == 1
+      assert customOrderComponents[0].product == 'PROD1A'
+      assert customOrderComponents[1].sequence == 3
+      assert customOrderComponents[1].product == 'PROD3'
+      assert customOrderComponents[2].sequence == 4
+      assert customOrderComponents[2].product == 'PROD4'
       true
     }
   }
@@ -695,7 +675,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
   def "verify that addConfigurableTypeFields adds the configurable fields to the field definitions"() {
     given: 'a flex type with a field'
     def flexType = new FlexType(flexType: 'XYZ')
-    flexType.addToFields(new FlexField(flexType: flexType, fieldName: 'Field1'))
+    flexType.fields << new FlexField(flexType: flexType, fieldName: 'Field1')
     flexType.save()
 
     and: 'a domain with a configurable type'
@@ -720,8 +700,8 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
   def "verify that getFieldValue supports the configurable field elements"() {
     given: 'a flex type with a field'
     def flexType = new FlexType(flexType: 'XYZ')
-    flexType.addToFields(new FlexField(flexType: flexType, fieldName: 'Field1',
-                                       fieldFormat: DateOnlyFieldFormat.instance))
+    flexType.fields << new FlexField(flexType: flexType, fieldName: 'Field1',
+                                     fieldFormat: DateOnlyFieldFormat.instance)
     flexType.save()
 
     and: 'a domain with a configurable type'
@@ -736,9 +716,10 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
 
   def "verify that formatConfigurableTypeValues handles supported cases"() {
     given: 'a domain object with the given field values'
+    def object = null
     RMA.withTransaction {
       def flexType = DataGenerator.buildFlexType(fieldCount: fieldCount)
-      def object = new RMA(rmaType: flexType)
+      object = new RMA(rmaType: flexType)
       for (int i = (fieldCount - 1); i >= 0; i--) {
         // Add the field values in reverse order
         object.setRmaTypeValue("FIELD${i + 1}", values[i])
@@ -809,6 +790,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     map.list == comps
   }
 
+  @SuppressWarnings("GroovyAssignabilityCheck")
   @Rollback
   def "verify that getCustomChildLists gracefully handles non-extensible domains"() {
     expect: 'a null list'

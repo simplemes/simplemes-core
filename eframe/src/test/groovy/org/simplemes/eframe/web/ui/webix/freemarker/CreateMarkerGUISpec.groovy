@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import org.simplemes.eframe.custom.domain.FieldExtension
@@ -15,12 +19,6 @@ import sample.page.AllFieldsDomainListPage
 import sample.page.AllFieldsDomainShowPage
 import spock.lang.IgnoreIf
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * Tests.
  */
@@ -31,6 +29,7 @@ class CreateMarkerGUISpec extends BaseGUISpecification {
 
   def "verify that basic create works"() {
     when: 'the create page is displayed'
+    // TODO: Replace with correct waitFor....
     sleep(1000)
     login()
     sleep(1000)

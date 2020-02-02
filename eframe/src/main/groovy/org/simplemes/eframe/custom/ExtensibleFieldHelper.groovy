@@ -341,8 +341,7 @@ class ExtensibleFieldHelper {
         // Not already in the object, so read it from DB.
         list = format.readList(object as DomainEntityInterface, fieldDefinition)
         map[fieldName] = list
-        def idListName = '_IDs' + fieldName
-        map[idListName] = list*.uuid
+        DomainEntityHelper.instance.storeIdsLoadedForChildList(object as DomainEntityInterface, fieldName, list*.uuid)
       }
       log.trace('getFieldValue(): {} List = {} from object {}', fieldName, list, object)
       return list

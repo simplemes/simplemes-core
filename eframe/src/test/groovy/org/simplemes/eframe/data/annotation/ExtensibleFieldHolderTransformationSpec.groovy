@@ -33,10 +33,13 @@ class ExtensibleFieldHolderTransformationSpec extends BaseSpecification {
       package sample
 
       import org.simplemes.eframe.data.annotation.*
+      import org.simplemes.eframe.domain.annotation.*
       import org.simplemes.eframe.custom.domain.*
-
+      
+      @DomainEntity
       class TestClass {
         $classContents
+        UUID uuid
       }
     """
 
@@ -134,6 +137,33 @@ class ExtensibleFieldHolderTransformationSpec extends BaseSpecification {
     then: "an exception is thrown with the key info"
     Exception ex = thrown()
     UnitTestUtils.assertContainsAllIgnoreCase(ex.toString(), ['line', '@ExtensibleFieldHolder'])
+  }
+
+  def "verify that the annotation detects when used without the DomainEntity annotation on the class"() {
+    given: 'the annotation is used without the DomainEntity'
+    def src = """
+      package sample
+
+      import org.simplemes.eframe.data.annotation.*
+      import org.simplemes.eframe.custom.domain.*
+
+      class TestClass {
+        @ExtensibleFieldHolder String customFields
+      }
+    """
+
+    and: 'disable printing source'
+    CompilerTestUtils.printCompileFailureSource = false
+
+    when: "compile a class with the incorrect usage"
+    CompilerTestUtils.compileSource(src)
+
+    then: "an exception is thrown with the key info"
+    Exception ex = thrown()
+    UnitTestUtils.assertContainsAllIgnoreCase(ex.toString(), ['domainEntity', 'ExtensibleFieldHolder'])
+
+    cleanup:
+    CompilerTestUtils.printCompileFailureSource = true
   }
 
   @Rollback

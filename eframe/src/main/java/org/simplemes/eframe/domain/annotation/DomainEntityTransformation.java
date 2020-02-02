@@ -75,6 +75,7 @@ public class DomainEntityTransformation implements ASTTransformation {
    * @param sourceUnit The source the class came from.
    */
   private void transformClass(ClassNode classNode, SourceUnit sourceUnit) {
+    validateUsage(classNode, sourceUnit);
     classNode.addInterface(new ClassNode(DomainEntityInterface.class));
     addRepositoryField(classNode, sourceUnit);
     addDelegatedMethod("save", "save", false, null, null, null, classNode, sourceUnit);
@@ -101,6 +102,22 @@ public class DomainEntityTransformation implements ASTTransformation {
         classNode, sourceUnit);
 
   }
+
+  /**
+   * Validates the annotation was used correctly.
+   *
+   * @param classNode  The class this annotation was used in.
+   * @param sourceUnit The source location.
+   */
+  private void validateUsage(ClassNode classNode, SourceUnit sourceUnit) {
+    // Make sure the domain has a UUID field.
+    FieldNode fieldNode = classNode.getField("uuid");
+    if (fieldNode == null) {
+      SimpleMessage message = new SimpleMessage("@DomainEntity domains must have a uuid property (type UUID)." + classNode, sourceUnit);
+      sourceUnit.getErrorCollector().addError(message);
+    }
+  }
+
 
   /**
    * Adds the lazy loader methods for the child lists.
