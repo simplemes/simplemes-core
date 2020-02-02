@@ -7,6 +7,8 @@ package org.simplemes.eframe.json
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.date.DateOnly
+import org.simplemes.eframe.date.ISODate
 import org.simplemes.eframe.system.DisabledStatus
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DataGenerator
@@ -269,10 +271,29 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
     then: 'the JSON has the correct field name for the holder'
-    !s.contains('"_customFields"')
-    s.contains('"__customFields"')
+    !s.contains('"customFields"')
+    s.contains('"_customFields"')
   }
 
+  def "verify that DateOnly serialize and deserialize works"() {
+    given: 'a domain with a DateOnly'
+    def dateOnly = new DateOnly()
+    def afd = new AllFieldsDomain(dueDate: dateOnly)
+
+    when: 'the domain is serialized'
+    def s = Holders.objectMapper.writeValueAsString(afd)
+    //println "s = $s"
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+
+    then: 'the JSON is correct'
+    s.contains('"dueDate":"' + ISODate.format(dateOnly) + '"')
+
+    when: 'the JSON is deserialized'
+    def afd2 = Holders.objectMapper.readValue(s, AllFieldsDomain)
+
+    then: 'the de-serialized value is correct'
+    afd2.dueDate == dateOnly
+  }
 
   // test POJO is left un-changed
   // test parent ref is removed

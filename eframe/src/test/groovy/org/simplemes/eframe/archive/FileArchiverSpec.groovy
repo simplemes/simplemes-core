@@ -258,7 +258,7 @@ class FileArchiverSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['dummy.arc', 'JsonMappingException'])
   }
 
-  def "verify that unarchive can create the objects with saving them"() {
+  def "verify that unarchive can create the objects without saving them"() {
     given: 'JSON in the original framework 1.0 format'
     def s = """ [
       "sample.domain.SampleParent",
@@ -278,9 +278,9 @@ class FileArchiverSpec extends BaseSpecification {
       objects = new FileArchiver().unarchive('dummy.arc', false)
     }
 
-    then: 'the data is note saved'
+    then: 'the data is not saved yet'
     objects.size() == 1
-    objects[0].id == null
+    objects[0].uuid == null
 
     and: 'no records are created'
     SampleParent.withTransaction {

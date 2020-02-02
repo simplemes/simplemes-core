@@ -4,9 +4,8 @@
 
 package org.simplemes.eframe.data
 
-
 import org.simplemes.eframe.custom.domain.FieldExtension
-import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
+import org.simplemes.eframe.custom.domain.FieldGUIExtension
 import org.simplemes.eframe.data.format.BigDecimalFieldFormat
 import org.simplemes.eframe.data.format.BooleanFieldFormat
 import org.simplemes.eframe.data.format.DateFieldFormat
@@ -34,7 +33,7 @@ import sample.domain.SampleParent
 class CustomFieldDefinitionSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, SERVER]
+  static dirtyDomains = [FieldGUIExtension, FieldExtension, AllFieldsDomain]
 
   @Rollback
   def "verify that FieldExtension constructor works"() {
@@ -124,8 +123,8 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
     fieldDef.getFieldValue(sampleParent) == 'ABC'
 
     and: 'the value is stored in the domains custom fields holder'
-    sampleParent[ExtensibleFieldHolder.DEFAULT_FIELD_NAME].contains('xyz')
-    sampleParent[ExtensibleFieldHolder.DEFAULT_FIELD_NAME].contains('ABC')
+    sampleParent.customFields.contains('xyz')
+    sampleParent.customFields.contains('ABC')
   }
 
   static aDate = new Date(UnitTestUtils.SAMPLE_TIME_MS)
@@ -134,8 +133,8 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
   def "verify that get and setFieldValue works with custom fields on supported types"() {
     given: 'a custom field on a domain'
     def vcn = vc?.name
-    def fieldExtension = new FieldExtension(fieldName: 'xyz', domainClassName: SampleParent.name,
-                                            fieldFormat: format.instance, valueClassName: vcn).save()
+    def fieldExtension = buildCustomField(domainClass: SampleParent, fieldName: 'xyz', fieldFormat: format.instance,
+                                          valueClassName: vcn)
     def fieldDef = new CustomFieldDefinition(fieldExtension)
 
     and: 'a domain object'
@@ -147,7 +146,7 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
       AllFieldsDomain.withTransaction {
         value = new AllFieldsDomain(name: 'XYZ').save()
       }
-      contains = value.id.toString()
+      contains = value.uuid.toString()
     }
     fieldDef.setFieldValue(sampleParent, value)
 
@@ -155,7 +154,7 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
     fieldDef.getFieldValue(sampleParent) == value
 
     and: 'the value is stored in the domains custom fields holder'
-    sampleParent[ExtensibleFieldHolder.DEFAULT_FIELD_NAME].contains(contains)
+    sampleParent.customFields.contains(contains)
 
     where:
     format                     | value                            | vc                     | contains

@@ -4,14 +4,13 @@
 
 package org.simplemes.eframe.archive
 
-
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.archive.domain.ArchiveLog
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.exception.MessageBasedException
-import org.simplemes.eframe.i18n.GlobalUtils
+import org.simplemes.eframe.exception.ValidationException
 import org.simplemes.eframe.json.TypeableMapper
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.FieldSizes
@@ -231,9 +230,9 @@ class FileArchiver implements ArchiverInterface {
       def list = TypeableMapper.instance.read(reader)
       for (o in list) {
         if (save) {
-          if (!o.validate()) {
-            //error.104.message=Could not process {0} due to error {1}
-            throw new BusinessException(104, [fName, GlobalUtils.lookupValidationErrors(o)])
+          def errors = DomainUtils.instance.validate(o)
+          if (errors) {
+            throw new ValidationException(errors, o)
           }
           o.save()
         }

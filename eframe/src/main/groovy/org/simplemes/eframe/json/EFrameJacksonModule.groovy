@@ -7,27 +7,30 @@ package org.simplemes.eframe.json
 import com.fasterxml.jackson.core.Version
 import com.fasterxml.jackson.databind.BeanDescription
 import com.fasterxml.jackson.databind.JsonSerializer
-import com.fasterxml.jackson.databind.Module
 import com.fasterxml.jackson.databind.SerializationConfig
+import com.fasterxml.jackson.databind.module.SimpleDeserializers
+import com.fasterxml.jackson.databind.module.SimpleModule
+import com.fasterxml.jackson.databind.module.SimpleSerializers
 import com.fasterxml.jackson.databind.ser.BeanPropertyWriter
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.data.format.EncodedTypeFieldFormat
+import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.DomainUtils
 
 /**
  * Provides extra features for Micronaut Data's use of the Jackson object mapper.
  * This alters the property serializer for specific cases, such as parent references and foreign domain references.
  */
-class EFrameJacksonModule extends Module {
+class EFrameJacksonModule extends SimpleModule {
 
-  /**
-   * Method that returns a display that can be used by Jackson
-   * for informational purposes, as well as in associating extensions with
-   * module that provides them.
-   */
+/**
+ * Method that returns a display that can be used by Jackson
+ * for informational purposes, as well as in associating extensions with
+ * module that provides them.
+ */
   @Override
   String getModuleName() {
     return this.getClass().simpleName
@@ -51,6 +54,13 @@ class EFrameJacksonModule extends Module {
   void setupModule(SetupContext context) {
     context.addBeanSerializerModifier(new EFrameBeanSerializerModifier())
     context.addDeserializationProblemHandler(new DeserializationProblemHandler())
+    def serializers = new SimpleSerializers()
+    def deserializers = new SimpleDeserializers()
+    serializers.addSerializer(DateOnly, new DateOnlySerializer())
+    deserializers.addDeserializer(DateOnly, new DateOnlyDeserializer())
+
+    context.addSerializers(serializers)
+    context.addDeserializers(deserializers)
   }
 }
 

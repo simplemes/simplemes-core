@@ -1,13 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.exception
 
 import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.i18n.GlobalUtils
-
-/*
- * Copyright Michael Houston 2020. All rights reserved.
- * Original Author: mph
- *
-*/
+import org.simplemes.eframe.misc.TypeUtils
 
 /**
  * Defines a validation exception that is triggered when a domain object  save() fails the validation.
@@ -16,14 +15,20 @@ class ValidationException extends BusinessException {
 
   List<ValidationError> errors
 
+  Object object
+
   /**
    * The basic constructor.
+   *
+   * @param errors The errors.
+   * @param object The object the error is on.
    */
-  ValidationException(List<ValidationError> errors) {
+  ValidationException(List<ValidationError> errors, Object object) {
     //error.3.message=Validation Failed: {0}
     setCode(3)
     setParams([errors])
     this.errors = errors
+    this.object = object
   }
 
   /**
@@ -41,7 +46,9 @@ class ValidationException extends BusinessException {
       sb << error.toString(locale)
     }
     def s = "[$sb]"
-    return GlobalUtils.lookup("error.${code}.message", locale, s) + " (${code})"
+    def className = object?.getClass()?.simpleName ?: "Unknown"
+    def objectString = TypeUtils.toShortString(object) ?: ''
+    return GlobalUtils.lookup("error.${code}.message", locale, s, className, objectString) + " (${code})"
   }
 
 }

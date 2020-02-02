@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.json
 
 import com.fasterxml.jackson.core.JsonGenerator
@@ -6,12 +10,6 @@ import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.SerializerProvider
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * A serializer for writing custom fields to a JSON output.
@@ -32,7 +30,7 @@ class CustomFieldSerializer extends JsonSerializer<Object> {
   }
 
   /**
-   * Serializes the domain record reference using the short string (e.g. primary key field).
+   * Serializes the domain record's custom fields.
    * @param value
    * @param gen
    * @param provider

@@ -164,7 +164,7 @@ public class DomainEntityHelper {
     if (errors.size() > 0) {
       // Use reflection to find the ValidationError class from the groovy world.
       Class<?> exceptionClass = Class.forName("org.simplemes.eframe.exception.ValidationException");
-      throw (Exception) exceptionClass.getConstructor(List.class).newInstance(errors);
+      throw (Exception) exceptionClass.getConstructor(List.class, Object.class).newInstance(errors, object);
     }
   }
 

@@ -17,10 +17,13 @@ class ExtensibleFieldHolderSpec extends BaseSpecification {
     given:
     def src = """
       import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
-      
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+
+      @DomainEntity
       class TestClass {
         @ExtensibleFieldHolder
         String customFields
+        UUID uuid
       }
     """
     def clazz = CompilerTestUtils.compileSource(src)
