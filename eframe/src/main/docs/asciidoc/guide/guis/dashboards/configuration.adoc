@@ -2,7 +2,7 @@
 ==== Dashboard Configuration
 
 The dashboard configurations are defined in a typical domain class
-(link:groovydoc/org/simplemes/eframe/web/dashboard/DashboardConfig.html[DashboardConfig^]),
+(link:groovydoc/org/simplemes/eframe/dashboard/domain/DashboardConfig.html[DashboardConfig^]),
 but there are no standard definition GUIs for the classes.  Instead, the dashboard configuration
 pages allow the user to alter the configurations. All dashboards must have a name and be stored
 in the database.
@@ -67,7 +67,7 @@ NOTE: These configurable buttons are optional.  You can have no buttons or creat
 
 
 The buttons are stored as child
-link:groovydoc/org/simplemes/eframe/web/dashboard/DashboardButton.html[DashboardButton^]
+link:groovydoc/org/simplemes/eframe/dashboard/domain/DashboardButton.html[DashboardButton^]
 icon:share-square-o[role="link-blue"] records of the DashboardConfig object.  These buttons are
 displayed one after another in the appropriate area of the page.  The buttons have configurable
 labels, styling, title (tooltip) and display sequence.

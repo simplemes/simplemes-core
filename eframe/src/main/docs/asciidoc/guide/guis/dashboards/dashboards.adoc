@@ -78,7 +78,7 @@ flows as needed.
 Most of the Javascript APIs use the panel name from the dashboard definition to select specific
 panels to operate on. These panel names are automatically assigned (A, B, C...), but you can
 assign your own name in the configuration GUI or in the CRUD API for the
-link:groovydoc/org/simplemes/eframe/web/dashboard/DashboardConfig.html[DashboardConfig^]
+link:groovydoc/org/simplemes/eframe/dashboard/domain/DashboardConfig.html[DashboardConfig^]
 
 ==== Custom Dashboard Page
 

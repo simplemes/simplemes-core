@@ -131,7 +131,14 @@ class DomainTester {
       def fieldDef = fieldDefs[p.key]
       if (fieldDef?.format == ChildListFieldFormat.instance) {
         // Special case a true child list.
-        DomainUtils.instance.addChildToDomain(obj, p.value, p.key)
+        if (p.value instanceof Collection) {
+          for (o in p.value) {
+            DomainUtils.instance.addChildToDomain(obj, o, p.key)
+          }
+        } else {
+          // Single object
+          DomainUtils.instance.addChildToDomain(obj, p.value, p.key)
+        }
       } else {
         obj[p.key] = p.value
       }

@@ -987,4 +987,30 @@ class DomainEntityHelperSpec extends BaseSpecification {
     DomainEntityHelper.instance.getComplexHolder(o as DomainEntityInterface) instanceof Map
   }
 
+  def "verify that executeDomainMethod detects method not found exception in the beforeValidate method"() {
+    when: ' the class is compiled'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import java.lang.reflect.Method
+
+      
+      @DomainEntity(repository=sample.domain.OrderRepository)
+      class TestClass {
+        UUID uuid
+        
+        def testMethod() {
+          Method method = this.getClass().getDeclaredMethod('badMethod');
+        }
+      }
+    """
+    def o = CompilerTestUtils.compileSource(src).newInstance()
+
+    and: 'the domain method is executed'
+    DomainEntityHelper.instance.executeDomainMethod(o as DomainEntityInterface, 'testMethod')
+
+    then: 'the right exception is thrown'
+    def ex = thrown(NoSuchMethodException)
+    UnitTestUtils.assertExceptionIsValid(ex, ['badMethod'])
+  }
+
 }

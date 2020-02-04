@@ -52,6 +52,7 @@ run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')
 
 groovydoc {
   destinationDir = new File("${project.docsDir}/html5/groovydoc")
+  source = [sourceSets.main.groovy,sourceSets.main.java]
 }
 
 // Disable compilation of Java and Groovy due to classpath issues when groovyDoc is used.

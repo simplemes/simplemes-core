@@ -5,6 +5,7 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc-header]#General#
 [inline-toc]#<<Micronaut Data>>#
+[inline-toc]#<<Domain Entities>>#
 [inline-toc]#<<Domain Packages>>#
 [inline-toc]#<<Reserved Domain Names>>#
 [inline-toc]#<<Duplicate Data (Sub-Classes)>>#
@@ -103,6 +104,41 @@ The features we did not really need include:
   specifically (e.g. UserPreference).
 
 The drawbacks for Hibernate out-weighed the benefits, so we migrated to a simpler solution.
+
+==== Domain Entities
+
+You define domain entities using annotations from <<Micronaut Data>> and this enterprise framework.
+These annotations, along with repositories (see <<Repository Requirements>>), provide a simplified
+API on the domain to process domain records.  It adds methods such as:
+
+* save()
+* delete()
+* withTransaction()
+* Lazy loaders for <<Simple Foreign Reference>> and <<parent-child-one-to-many>>
+* Access to all repository interface methods (e.g. list(), findBy...()  and others))
+
+A short example is shown below:
+
+[source,groovy]
+.Example - Simple Domain
+----
+@MappedEntity
+@DomainEntity
+class Order {
+  String order
+  Product product
+  @Id @AutoPopulated UUID uuid  // <.>
+}
+
+interface OrderRepository extends BaseRepository, CrudRepository<Order, UUID> {
+  Optional<Order> findByOrder(String order)  // <.>
+  Optional<Order> findByUuid(UUID uuid)
+  List<Order> list()
+}
+
+----
+<.> Required for all domains.
+<.> Exposed in the domain as `Order.findByOrder()`.
 
 
 ==== Domain Packages

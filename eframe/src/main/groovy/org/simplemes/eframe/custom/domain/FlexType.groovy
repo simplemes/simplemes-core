@@ -24,11 +24,10 @@ import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.misc.FieldSizes
 
 import javax.annotation.Nullable
-
-//import grails.gorm.annotation.Entity
-
 import javax.persistence.Column
 import javax.persistence.OneToMany
+
+//import grails.gorm.annotation.Entity
 
 /**
  * Defines the basic user-defined data types.
@@ -36,8 +35,6 @@ import javax.persistence.OneToMany
  * <p/>
  * The actual data values are typically stored in text fields.
  */
-// TODO: Replace with non-hibernate alternative
-//@ExtensibleFields()
 @MappedEntity
 @DomainEntity
 @EqualsAndHashCode(includes = ["flexType"])

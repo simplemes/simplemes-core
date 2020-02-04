@@ -1,24 +1,22 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.dashboard.domain
 
-
 import org.simplemes.eframe.domain.DomainUtils
-import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
 import org.simplemes.eframe.test.UnitTestUtils
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
+import org.simplemes.eframe.test.annotation.Rollback
 
 /**
  * Tests.
  */
 class DashboardConfigSpec extends BaseSpecification {
-  static specNeeds = [SERVER]
+
+  @SuppressWarnings("unused")
   static dirtyDomains = [DashboardConfig]
 
   def "verify that domain enforces constraints"() {
@@ -29,7 +27,7 @@ class DashboardConfigSpec extends BaseSpecification {
     expect: 'the constraints are enforced'
     DomainTester.test {
       domain DashboardConfig
-      requiredValues dashboard: 'ABC', category: 'OPERATOR', panels: [dashboardPanel]
+      requiredValues dashboard: 'ABC', category: 'OPERATOR', dashboardPanels: [dashboardPanel]
       maxSize 'dashboard', FieldSizes.MAX_CODE_LENGTH
       maxSize 'category', FieldSizes.MAX_CODE_LENGTH
       maxSize 'title', FieldSizes.MAX_TITLE_LENGTH
@@ -44,68 +42,54 @@ class DashboardConfigSpec extends BaseSpecification {
     DomainUtils.instance.getPrimaryKeyField(DashboardConfig) == 'dashboard'
   }
 
-  //TODO: Find alternative to @Rollback
   def "verify that unique panel ID constraint error is detected"() {
     when: 'a dashboard with invalid setting is validated'
     def dashboard = new DashboardConfig(dashboard: 'XYZ')
-    dashboard.addToPanels(new DashboardPanel(panel: 'ABC'))
-    dashboard.addToPanels(new DashboardPanel(panel: 'ABC'))
+    dashboard.dashboardPanels << new DashboardPanel(panel: 'ABC')
+    dashboard.dashboardPanels << new DashboardPanel(panel: 'ABC')
 
     then: 'there are errors'
-    !dashboard.validate()
-
-    and: 'the error is clear'
-    def errors = GlobalUtils.lookupValidationErrors(dashboard)
-    UnitTestUtils.assertContainsAllIgnoreCase(errors.panels[0], ['panel', 'abc', 'unique'])
+    def errors = DomainUtils.instance.validate(dashboard)
+    //error.203.message=The panel must be unique for each panel.  Panel {3} is used on {4} panels
+    UnitTestUtils.assertContainsError(errors, 203, 'dashboardPanels', ['panel', 'abc', 'unique'])
   }
 
-  //TODO: Find alternative to @Rollback
   def "verify that invalid panel for a button is detected"() {
     when: 'a dashboard with invalid setting is validated'
     def dashboard = new DashboardConfig(dashboard: 'XYZ')
-    dashboard.addToPanels(new DashboardPanel(panel: 'ABC'))
-    dashboard.addToButtons(new DashboardButton(label: '123', panel: 'PDQ'))
+    dashboard.dashboardPanels << new DashboardPanel(panel: 'ABC')
+    dashboard.buttons << new DashboardButton(label: '123', panel: 'PDQ')
 
-    then: 'there are errors'
-    !dashboard.validate()
-
-    and: 'the error is clear'
-    def errors = GlobalUtils.lookupValidationErrors(dashboard)
-    UnitTestUtils.assertContainsAllIgnoreCase(errors.buttons[0], ['button', '123', 'invalid', 'PDQ'])
+    then: 'the errors are correct'
+    def errors = DomainUtils.instance.validate(dashboard)
+    //error.204.message=The button {1} references an invalid panel {2}
+    UnitTestUtils.assertContainsError(errors, 204, 'buttons', ['button', '123', 'invalid', 'PDQ'])
   }
 
-  //TODO: Find alternative to @Rollback
   def "verify that too many splitter children error is detected"() {
     when: 'a dashboard with invalid setting is validated'
     def dashboard = new DashboardConfig(dashboard: 'XYZ')
-    dashboard.addToPanels(new DashboardPanelSplitter(panelIndex: 47))
-    dashboard.addToPanels(new DashboardPanel(panelIndex: 1, parentPanelIndex: 47, panel: 'A'))
-    dashboard.addToPanels(new DashboardPanel(panelIndex: 2, parentPanelIndex: 47, panel: 'B'))
-    dashboard.addToPanels(new DashboardPanel(panelIndex: 3, parentPanelIndex: 47, panel: 'C'))
+    dashboard.splitterPanels << new DashboardPanelSplitter(panelIndex: 47)
+    dashboard.dashboardPanels << new DashboardPanel(panelIndex: 1, parentPanelIndex: 47, panel: 'A')
+    dashboard.dashboardPanels << new DashboardPanel(panelIndex: 2, parentPanelIndex: 47, panel: 'B')
+    dashboard.dashboardPanels << new DashboardPanel(panelIndex: 3, parentPanelIndex: 47, panel: 'C')
 
-    then: 'there are errors'
-    !dashboard.validate()
-
-    and: 'the error is clear'
-    def errors = GlobalUtils.lookupValidationErrors(dashboard)
-    //dashboardConfig.panels.wrongNumberOfPanels=The splitter panel {3} must have exactly 2 child panels. It has {4} panels
-    UnitTestUtils.assertContainsAllIgnoreCase(errors.panels[0], ['splitter', '47', 'child', '2', '3'])
+    then: 'the errors are correct'
+    def errors = DomainUtils.instance.validate(dashboard)
+    //error.205.message=The splitter panel {1} must have exactly 2 child panels. It has {2} panels.
+    UnitTestUtils.assertContainsError(errors, 205, 'dashboardPanels', ['splitter', '47', 'child', '2', '3'])
   }
 
-  //TODO: Find alternative to @Rollback
   def "verify that too few splitter children error is detected"() {
     when: 'a dashboard with invalid setting is validated'
     def dashboard = new DashboardConfig(dashboard: 'XYZ')
-    dashboard.addToPanels(new DashboardPanelSplitter(panelIndex: 47))
-    dashboard.addToPanels(new DashboardPanel(panelIndex: 1, parentPanelIndex: 47, panel: 'A'))
+    dashboard.splitterPanels << new DashboardPanelSplitter(panelIndex: 47)
+    dashboard.dashboardPanels << new DashboardPanel(panelIndex: 1, parentPanelIndex: 47, panel: 'A')
 
-    then: 'there are errors'
-    !dashboard.validate()
-
-    and: 'the error is clear'
-    def errors = GlobalUtils.lookupValidationErrors(dashboard)
-    //dashboardConfig.panels.wrongNumberOfPanels=The splitter panel {3} must have exactly 2 child panels. It has {4} panels
-    UnitTestUtils.assertContainsAllIgnoreCase(errors.panels[0], ['splitter', '47', 'child', '2', '1'])
+    then: 'the errors are correct'
+    def errors = DomainUtils.instance.validate(dashboard)
+    //error.205.message=The splitter panel {1} must have exactly 2 child panels. It has {2} panels.
+    UnitTestUtils.assertContainsError(errors, 205, 'dashboardPanels', ['splitter', '47', 'child', '1 panel(s)'])
   }
 
   def "verify that only one default dashboard is allowed in each category - all others marked as non-default"() {
@@ -113,21 +97,23 @@ class DashboardConfigSpec extends BaseSpecification {
     DashboardConfig.withTransaction {
       def dashboardPanel1 = new DashboardPanel()
       def dashboard1 = new DashboardConfig(dashboard: 'XYZ', category: 'CAT1')
-      dashboard1.addToPanels(dashboardPanel1)
+      dashboard1.dashboardPanels << dashboardPanel1
       dashboard1.save()
     }
 
     when: 'a second dashboard is saved with the same category'
+    //enableSQLTrace()
     DashboardConfig.withTransaction {
       def dashboardPanel2 = new DashboardPanel()
       def dashboard2 = new DashboardConfig(dashboard: 'PDQ', category: 'CAT1')
-      dashboard2.addToPanels(dashboardPanel2)
+      dashboard2.dashboardPanels << dashboardPanel2
       dashboard2.save()
     }
+    //disableSQLTrace()
 
     then: 'there is only one in the DB marked as default'
     DashboardConfig.withTransaction {
-      assert DashboardConfig.findAllByCategoryAndDefaultConfig('CAT1', true).size() == 1
+      assert DashboardConfig.list().findAll { it.category == 'CAT1' && it.defaultConfig }.size() == 1
       assert DashboardConfig.findByCategoryAndDefaultConfig('CAT1', true).dashboard == 'PDQ'
       true
     }
@@ -138,7 +124,7 @@ class DashboardConfigSpec extends BaseSpecification {
     DashboardConfig.withTransaction {
       def dashboardPanel1 = new DashboardPanel()
       def dashboard1 = new DashboardConfig(dashboard: 'XYZ', category: 'CAT1')
-      dashboard1.addToPanels(dashboardPanel1)
+      dashboard1.dashboardPanels << dashboardPanel1
       dashboard1.save()
     }
 
@@ -158,62 +144,61 @@ class DashboardConfigSpec extends BaseSpecification {
   }
 
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the default panel IDs are assigned to new panels - create"() {
     when: 'a dashboard is saved'
     def dashboard = new DashboardConfig(dashboard: 'XYZ')
-    dashboard.addToPanels(new DashboardPanel())
-    dashboard.addToPanels(new DashboardPanel())
+    dashboard.dashboardPanels << new DashboardPanel()
+    dashboard.dashboardPanels << new DashboardPanel()
     dashboard.save()
 
     then: 'the panel IDs are correct'
-    dashboard.panels[0].panelIndex == 0
-    dashboard.panels[0].panel == 'A'
-    dashboard.panels[1].panelIndex == 1
-    dashboard.panels[1].panel == 'B'
+    dashboard.dashboardPanels[0].panelIndex == 0
+    dashboard.dashboardPanels[0].panel == 'A'
+    dashboard.dashboardPanels[1].panelIndex == 1
+    dashboard.dashboardPanels[1].panel == 'B'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the default panel IDs are assigned to new panels - update"() {
     given: 'a saved dashboard'
     def dashboardConfig = new DashboardConfig(dashboard: 'XYZ')
-    dashboardConfig.addToPanels(new DashboardPanel())
+    dashboardConfig.dashboardPanels << new DashboardPanel()
     dashboardConfig.save()
 
     when: 'a new panel is added'
-    dashboardConfig.addToPanels(new DashboardPanel())
-    dashboardConfig.validate(); assert !dashboardConfig.errors.allErrors
+    dashboardConfig.dashboardPanels << new DashboardPanel()
     dashboardConfig.save()
 
     then: 'the panel IDs are correct'
-    dashboardConfig.panels[0].panel == 'A'
-    dashboardConfig.panels[1].panel == 'B'
+    dashboardConfig.dashboardPanels[0].panel == 'A'
+    dashboardConfig.dashboardPanels[1].panel == 'B'
   }
 
   def "verify that the a panel ID can be set for a new dashboard"() {
     when: 'a saved dashboard with panel IDs'
     DashboardConfig.withTransaction {
       def dashboardConfig = new DashboardConfig(dashboard: 'XYZ')
-      dashboardConfig.addToPanels(new DashboardPanel(panel: "X1"))
-      dashboardConfig.addToPanels(new DashboardPanel(panel: "X2"))
+      dashboardConfig.dashboardPanels << new DashboardPanel(panel: "X1")
+      dashboardConfig.dashboardPanels << new DashboardPanel(panel: "X2")
       dashboardConfig.save()
     }
 
     then: 'the panel IDs are correct'
     DashboardConfig.withTransaction {
       def dashboardConfig = DashboardConfig.findByDashboard('XYZ')
-      dashboardConfig.panels[0].panel == 'X1'
-      dashboardConfig.panels[1].panel == 'X2'
+      dashboardConfig.dashboardPanels[0].panel == 'X1'
+      dashboardConfig.dashboardPanels[1].panel == 'X2'
     }
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the default button sequences are assigned to new button"() {
     when: 'a dashboard is saved'
     def dashboard = new DashboardConfig(dashboard: 'XYZ')
-    dashboard.addToPanels(new DashboardPanel(panel: 'A'))
-    dashboard.addToButtons(new DashboardButton(label: 'b1', url: 'page1', panel: 'A'))
-    dashboard.addToButtons(new DashboardButton(label: 'b2', url: 'page1', panel: 'A'))
+    dashboard.dashboardPanels << new DashboardPanel(panel: 'A')
+    dashboard.buttons << new DashboardButton(label: 'b1', url: 'page1', panel: 'A')
+    dashboard.buttons << new DashboardButton(label: 'b2', url: 'page1', panel: 'A')
     dashboard.save()
 
     then: 'the button sequences are correct'
@@ -223,20 +208,16 @@ class DashboardConfigSpec extends BaseSpecification {
     dashboard.buttons[1].label == 'b2'
   }
 
-  void testHierarchyToString() {
-
-  }
-
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that hierarchyToString works"() {
     when: 'a dashboard with a complex hierarchy is written to a string'
     def dashboard = new DashboardConfig(dashboard: 'XYZ')
-    dashboard.addToPanels(new DashboardPanelSplitter(panelIndex: 0))
-    dashboard.addToPanels(new DashboardPanel(panelIndex: 1, parentPanelIndex: 0, panel: 'A'))
-    dashboard.addToPanels(new DashboardPanel(panelIndex: 2, parentPanelIndex: 0, panel: 'B'))
-    dashboard.addToPanels(new DashboardPanelSplitter(panelIndex: 3, parentPanelIndex: 0))
-    dashboard.addToPanels(new DashboardPanel(panelIndex: 4, parentPanelIndex: 3, panel: 'C'))
-    dashboard.addToPanels(new DashboardPanel(panelIndex: 5, parentPanelIndex: 3, panel: 'D'))
+    dashboard.splitterPanels << new DashboardPanelSplitter(panelIndex: 0)
+    dashboard.dashboardPanels << new DashboardPanel(panelIndex: 1, parentPanelIndex: 0, panel: 'A')
+    dashboard.dashboardPanels << new DashboardPanel(panelIndex: 2, parentPanelIndex: 0, panel: 'B')
+    dashboard.splitterPanels << new DashboardPanelSplitter(panelIndex: 3, parentPanelIndex: 0)
+    dashboard.dashboardPanels << new DashboardPanel(panelIndex: 4, parentPanelIndex: 3, panel: 'C')
+    dashboard.dashboardPanels << new DashboardPanel(panelIndex: 5, parentPanelIndex: 3, panel: 'D')
     def s = dashboard.hierarchyToString()
 
     then: 'the hierarchy string is correct'

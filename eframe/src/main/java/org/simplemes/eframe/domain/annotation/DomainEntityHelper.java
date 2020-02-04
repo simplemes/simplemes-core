@@ -145,11 +145,22 @@ public class DomainEntityHelper {
    * @param object     The object.
    * @param methodName The method to execute.
    */
-  protected void executeDomainMethod(DomainEntityInterface object, String methodName) {
+  protected void executeDomainMethod(DomainEntityInterface object, String methodName)
+      throws Throwable {
+    Method method = null;
     try {
-      Method method = object.getClass().getDeclaredMethod(methodName);
-      method.invoke(object);
-    } catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException | SecurityException ignored) {
+      method = object.getClass().getDeclaredMethod(methodName);
+    } catch (NoSuchMethodException | SecurityException ignored) {
+      //System.out.println("ignored1:" + ignored);
+      //ignored.printStackTrace();
+    }
+    if (method != null) {
+      try {
+        method.invoke(object);
+      } catch (Throwable e) {
+        // Most exceptions are wrapped in invocation target exceptions, so we can remove them.
+        throw unwrapAndSimplifyException(e);
+      }
     }
   }
 
@@ -174,7 +185,7 @@ public class DomainEntityHelper {
    * @param object The domain object to delete.
    * @return The object that was deleted.
    */
-  Object delete(DomainEntityInterface object) throws IllegalAccessException, NoSuchMethodException, InvocationTargetException, SQLException, InstantiationException {
+  Object delete(DomainEntityInterface object) throws Throwable {
     executeDomainMethod(object, "beforeDelete");
     GenericRepository<DomainEntityInterface, UUID> repo = getRepository(object.getClass());
     if (repo == null) {
@@ -246,7 +257,7 @@ public class DomainEntityHelper {
   @SuppressWarnings("unused")
   public Object staticMethodMissingHandler(Class domainClazz, String methodName, Object[] args)
       throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-    //System.out.println("domainClazz:" + domainClazz+" method: "+methodName+" args:"+args.length);
+    //System.out.println("domainClazz:" + domainClazz+" method: "+methodName+" args:"+Arrays.toString(args));
     //System.out.println("  args:"+args.getClass());
     Class<?>[] paramTypes = null;
     if (args.length > 0) {
@@ -255,7 +266,7 @@ public class DomainEntityHelper {
         //System.out.println("args[i]:" + args[i]);
         paramTypes[i] = args[i].getClass();
       }
-      //System.out.println("paramTypes:" + paramTypes[0]);
+      //System.out.println("  paramTypes:" + Arrays.toString(paramTypes));
     }
     CrudRepository repo = (CrudRepository) getRepository(domainClazz);
     Method method = repo.getClass().getDeclaredMethod(methodName, paramTypes);
@@ -334,7 +345,7 @@ public class DomainEntityHelper {
         String mappedByFieldName = ann.mappedBy();
         Class<DomainEntityInterface> childClass = (Class<DomainEntityInterface>) getGenericType(field);
 
-        saveChildList(object, list, field.getName(), childClass, mappedByFieldName, false);
+        saveChildList(object, list, field.getName(), childClass, mappedByFieldName);
       }
     }
 
@@ -345,7 +356,7 @@ public class DomainEntityHelper {
     if (customLists != null) {
       for (Map<String, Object> map : customLists) {
         saveChildList(object, (List) map.get("list"), (String) map.get("fieldName"), (Class) map.get("childClass"),
-            (String) map.get("parentFieldName"), true);
+            (String) map.get("parentFieldName"));
       }
     }
   }
@@ -358,11 +369,10 @@ public class DomainEntityHelper {
    * @param fieldName       The name of the field list is stored in.
    * @param childClass      The child record class.
    * @param parentFieldName The name of the parent reference in the child class.
-   * @param custom          If true, then the field is a custom field?
    */
   @SuppressWarnings("unchecked")
   public void saveChildList(DomainEntityInterface object, List list, String fieldName, Class childClass,
-                            String parentFieldName, boolean custom)
+                            String parentFieldName)
       throws NoSuchFieldException, IllegalAccessException, InstantiationException {
     Map domainSettings = getDomainSettings(object);
     Field parentField = childClass.getDeclaredField(parentFieldName);
@@ -693,12 +703,12 @@ public class DomainEntityHelper {
           // Record the last uuid read, so we can test the lazy loading behavior.
           lastLazyRefLoaded = uuid;
         }
-        domainSettings.put(alreadyLoadedName, true);
       } else {
         // A null UUID, so we need to clear the value in the parent object.
         referencedObject = null;
-        domainSettings.put(alreadyLoadedName, true);
       }
+      domainSettings.put(alreadyLoadedName, true);
+
       // Make sure the property is set in parent domain so we can avoid this lookup later.
       Field field = parentObject.getClass().getDeclaredField(fieldName);
       Class referencedClass = field.getType();

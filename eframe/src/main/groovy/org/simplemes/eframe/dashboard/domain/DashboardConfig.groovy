@@ -1,11 +1,28 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.dashboard.domain
 
 //import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.DateCreated
+import io.micronaut.data.annotation.DateUpdated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.annotation.Transient
+import io.micronaut.data.model.DataType
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.domain.annotation.DomainEntity
+import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.misc.FieldSizes
+
+import javax.persistence.Column
+import javax.persistence.OneToMany
 
 /**
  * Defines the basic dashboard configuration.  This provides the framework to execute application-level pages (activities)
@@ -13,9 +30,10 @@ import org.simplemes.eframe.misc.FieldSizes
  * and user-configurable dashboards.
  */
 @Slf4j
-//@Entity
+@MappedEntity
+@DomainEntity
 @EqualsAndHashCode(includes = ['dashboard'])
-@ToString(includePackage = false, includeNames = true, excludes = ['dateCreated', 'lastUpdated'])
+@ToString(includePackage = false, includeNames = true, excludes = ['dateCreated', 'dateUpdated'])
 class DashboardConfig {
 
   /**
@@ -29,77 +47,90 @@ class DashboardConfig {
    * This is not part of the keys for this object.
    * (<b>Default:</b>'NONE').  <b>Required.</b>
    */
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String category = DEFAULT_CATEGORY
 
   /**
    * The dashboard's name (primary key).
    * <b>Required.</b>
    */
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String dashboard
 
   /**
    * The title (short) of this dashboard.  Used for many display purposes.
    */
+  @Column(length = FieldSizes.MAX_TITLE_LENGTH, nullable = true)
   String title
 
   /**
    * If true, then this is the default configuration for a given category.
    * During the save validation, this domain class will ensure that only one dashboard config is marked as the default.
    */
-  boolean defaultConfig = true
-
-  /**
-   * The date this record was last updated.
-   */
-  Date lastUpdated
-
-  /**
-   * The date this record was created
-   */
-  @SuppressWarnings("unused")
-  Date dateCreated
+  Boolean defaultConfig = true
 
   /**
    * A list of display panels configured for this dashboard.
    * <b>Required.</b>
    */
-  List<AbstractDashboardPanel> panels = []
+  @OneToMany(mappedBy = "dashboardConfig")
+  List<DashboardPanel> dashboardPanels
+
+  /**
+   * A list of display panels configured for this dashboard.
+   * <b>Required.</b>
+   */
+  @OneToMany(mappedBy = "dashboardConfig")
+  List<DashboardPanelSplitter> splitterPanels
+
+  /**
+   * The combined list of panels/splitters.  User for old code that used to
+   * have these in one list in the DB.
+   */
+  // TODO: Is this needed?
+  @Transient List panels
 
   /**
    * A list of buttons display in the dashboard.
    * <b>Optional.</b>
    */
-  List<DashboardButton> buttons = []
+  @OneToMany(mappedBy = "dashboardConfig")
+  List<DashboardButton> buttons
 
-  /**
-   * Internal definition for this domain.
-   */
+
+  @DateCreated
   @SuppressWarnings("unused")
-  static hasMany = [panels: AbstractDashboardPanel, buttons: DashboardButton]
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateCreated
+
+  @DateUpdated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  @SuppressWarnings("unused")
+  Date dateUpdated
+
+  Integer version = 0
+
+  @Id @AutoPopulated UUID uuid
+
 
   @SuppressWarnings("unused")
   static keys = ['dashboard']
 
   @SuppressWarnings("unused")
-  def beforeUpdate() {
-    clearOtherDefaultDashboardsIfNeeded()
-  }
-
-  @SuppressWarnings("unused")
-  def beforeInsert() {
+  def beforeSave() {
     clearOtherDefaultDashboardsIfNeeded()
   }
 
   /**
    * Called before validate happens.
    */
-  @SuppressWarnings(["unused", "GroovyAssignabilityCheck"])
+  @SuppressWarnings(["GroovyAssignabilityCheck"])
   def beforeValidate() {
     char startChar = 'A' - 1
     // Find highest single character already in use for a panel name
-    for (int i = 0; i < panels.size(); i++) {
-      if (panels[i] instanceof DashboardPanel && panels[i].panel) {
-        char c = panels[i].panel[0]
+    for (int i = 0; i < getDashboardPanels().size(); i++) {
+      if (dashboardPanels[i] instanceof DashboardPanel && dashboardPanels[i].panel) {
+        char c = dashboardPanels[i].panel[0]
         c++  // WIll start at next highest character
         if (c > startChar) {
           startChar = c
@@ -109,18 +140,18 @@ class DashboardConfig {
     }
 
     // Set the panels' index to match the array index in panels and assign a panel name (if none)
-    for (int i = 0; i < panels?.size(); i++) {
-      if (panels[i].panelIndex == null) {
-        panels[i].panelIndex = i
+    for (int i = 0; i < dashboardPanels?.size(); i++) {
+      if (dashboardPanels[i].panelIndex == null) {
+        dashboardPanels[i].panelIndex = i
       }
-      if (panels[i] instanceof DashboardPanel && !panels[i].panel) {
-        panels[i].panel = startChar
+      if (dashboardPanels[i] instanceof DashboardPanel && !dashboardPanels[i].panel) {
+        dashboardPanels[i].panel = startChar
         startChar++
       }
     }
 
     // Set the buttons' index to match the array index in buttons
-    for (int i = 0; i < buttons.size(); i++) {
+    for (int i = 0; i < getButtons().size(); i++) {
       if (buttons[i].sequence == null) {
         buttons[i].sequence = (i + 1) * 10
       }
@@ -131,57 +162,63 @@ class DashboardConfig {
   }
 
   /**
+   * Validates the config.
+   * @return A list of errors (may be empty).
+   */
+  List<ValidationError> validate() {
+    beforeValidate()
+
+    List res1 = validatePanels()
+    List res2 = validateButtons()
+
+    res1.addAll(res2)
+
+
+    if (dashboardPanels?.size() <= 0) {
+      //error.200.message=The list value ({0}) must have at least one entry in it.
+      res1 << new ValidationError(200, 'panels')
+    }
+
+    return res1
+  }
+
+  /**
    * Internal method to clear the other dashboards if the default flag is set on this dashboard.
    */
   @SuppressWarnings('UnnecessaryQualifiedReference')
   protected clearOtherDefaultDashboardsIfNeeded() {
     // Make sure all other configs in this category are marked as not default if this one is the default.
-    // Must do this in a new session to avoid issues with recursive loop in Unit tests.
-    DashboardConfig.withNewSession {
-      DashboardConfig.withTransaction {
-        if (defaultConfig) {
-          // This qualified ref is needed for Unit Tests.  Something in Grails mockup forces this.
-          //noinspection UnnecessaryQualifiedReference
-          def list = DashboardConfig.findAllByCategoryAndDefaultConfig(category, true)
-          for (otherDashboardConfig in list) {
-            if (otherDashboardConfig != this && otherDashboardConfig.id != this.id) {
-              otherDashboardConfig.defaultConfig = false
-              assert otherDashboardConfig.save(flush: true)
-            }
-          }
+    if (defaultConfig) {
+      //noinspection UnnecessaryQualifiedReference
+      def list = DashboardConfig.findAllByCategoryAndDefaultConfig(category, true)
+      for (otherDashboardConfig in list) {
+        if (otherDashboardConfig != this && otherDashboardConfig.uuid != this.uuid) {
+          otherDashboardConfig.defaultConfig = false
+          assert otherDashboardConfig.save()
         }
       }
     }
-  }
-  /**
-   * Internal constraints for this domain.
-   */
-  @SuppressWarnings("unused")
-  static constraints = {
-    dashboard(nullable: false, blank: false, maxSize: FieldSizes.MAX_CODE_LENGTH, unique: true)
-    category(nullable: false, blank: false, maxSize: FieldSizes.MAX_CODE_LENGTH)
-    title(maxSize: FieldSizes.MAX_TITLE_LENGTH, nullable: true, blank: true)
-    panels(minSize: 1, validator: { val -> validatePanels(val) })
-    buttons(validator: { val, config -> validateButtons(val, config) })
   }
 
   /**
    * Validate that the panels have valid panel (names) and parent panel references.
    * @param panels The list of panels.
    */
-  static validatePanels(List<AbstractDashboardPanel> panels) {
-    List<String> panelNames = panels.collect { it instanceof DashboardPanel ? it.panel : '' }
+  List<ValidationError> validatePanels() {
+    def res = []
+    List<String> panelNames = getDashboardPanels().collect { it instanceof DashboardPanel ? it.panel : '' }
     for (s in panelNames) {
       if (s != '') {
         if (panelNames.count(s) != 1) {
-          return ['unique', s, panelNames.count(s)]
+          //error.203.message=The panel must be unique for each panel.  Panel {1} is used on {2} panels
+          res << new ValidationError(203, 'dashboardPanels', s, panelNames.count(s))
         }
       }
     }
 
     // Make sure all splitters have exactly 2 children.
     Map<Integer, Integer> childCounts = [:]
-    for (panel in panels) {
+    for (panel in getDashboardPanels()) {
       if (panel.parentPanelIndex >= 0) {
         //println "parent = ${panel.parentPanelIndex} map = ${splitters}"
         def childCount = childCounts[panel.parentPanelIndex] ?: 0
@@ -191,39 +228,15 @@ class DashboardConfig {
     }
 
     // Make sure all panels
-    for (panel in panels) {
+    for (panel in getDashboardPanels()) {
       if (panel.parentPanelIndex >= 0) {
         if (childCounts[panel.parentPanelIndex] != 2) {
-          return ['wrongNumberOfPanels', panel.parentPanelIndex, childCounts[panel.parentPanelIndex]]
+          //error.205.message=The splitter panel {1} must have exactly 2 child panels. It has {2} panels.
+          res << new ValidationError(205, 'dashboardPanels', panel.parentPanelIndex, childCounts[panel.parentPanelIndex])
         }
       }
     }
-
-/*
-
-
-    // Find all splitters
-    def splitters = []
-    for (int i = 0; i < panels.size(); i++) {
-      if (panels[i] instanceof DashboardPanelSplitter) {
-        splitters[i] = [index: panels[i].panelIndex, childCount: 0]
-      }
-    }
-    for (panel in panels) {
-      if (panel.parentPanelIndex >= 0) {
-        //println "parent = ${panel.parentPanelIndex} map = ${splitters}"
-        splitters[panel.parentPanelIndex].childCount++
-      }
-    }
-    for (int i = 0; i < panels.size(); i++) {
-      if (panels[i] instanceof DashboardPanelSplitter) {
-        if (childCounts[i].childCount != 2) {
-          return ['wrongNumberOfPanels', i, splitters[i].childCount]
-        }
-      }
-    }
-
-*/
+    return res
   }
 
   /**
@@ -231,14 +244,16 @@ class DashboardConfig {
    * @param buttons The list of buttons.
    * @param config The rest of the dashboard config.
    */
-  static validateButtons(List<DashboardButton> buttons, DashboardConfig config) {
-    for (button in buttons) {
-      def panel = config.panels.find { it instanceof DashboardPanel && it.panel == button.panel }
+  List<ValidationError> validateButtons() {
+    def res = []
+    for (button in getButtons()) {
+      def panel = getDashboardPanels().find { it instanceof DashboardPanel && it.panel == button.panel }
       if (!panel) {
-        return ['invalidPanel', button, button.panel]
+        //error.204.message=The button {1} references an invalid panel {2}
+        res << new ValidationError(204, 'buttons', button, button.panel)
       }
     }
-    return true
+    return res
   }
 
   /**

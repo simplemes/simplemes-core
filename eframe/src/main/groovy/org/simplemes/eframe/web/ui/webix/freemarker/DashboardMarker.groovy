@@ -1,8 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.controller.ControllerUtils
-import org.simplemes.eframe.dashboard.domain.AbstractDashboardPanel
 import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.dashboard.domain.DashboardPanel
 import org.simplemes.eframe.dashboard.domain.DashboardPanelSplitter
@@ -12,12 +15,6 @@ import org.simplemes.eframe.misc.JavascriptUtils
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.preference.PreferenceHolder
 import org.simplemes.eframe.security.SecurityUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Provides the implementation of the &lt;ef:dashboard/&gt; tag.
@@ -346,7 +343,7 @@ class DashboardMarker extends BaseMarker {
    * @param topElement True if this is the top element of a splitter panel.  Used to define the position of the splitter
    *        bar and the resize handler logic.
    */
-  String buildSplitterPanelMember(AbstractDashboardPanel panel, boolean topElement, Boolean vertical) {
+  String buildSplitterPanelMember(DashboardPanel panel, boolean topElement, Boolean vertical) {
     if (panel instanceof DashboardPanelSplitter) {
       def panelName = "Splitter${panel.panelIndex}"
       def panels = dashboardConfig.panels.findAll() { it.parentPanelIndex == panel.panelIndex }
@@ -356,9 +353,9 @@ class DashboardMarker extends BaseMarker {
         {
           id: "Panel${panelName}", type: "space", margin: 0,paddingX: 0,paddingY: 0, $rowsOrCols: 
             [
-              ${buildSplitterPanelMember((AbstractDashboardPanel) panels[0], true, panel.vertical)}
+              ${buildSplitterPanelMember((DashboardPanel) panels[0], true, panel.vertical)}
             , {view: "resizer", id: "resizer${panel.panelIndex}"},
-              ${buildSplitterPanelMember((AbstractDashboardPanel) panels[1], false, panel.vertical)}
+              ${buildSplitterPanelMember((DashboardPanel) panels[1], false, panel.vertical)}
             ] 
         }
       """

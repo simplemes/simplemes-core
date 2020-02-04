@@ -19,9 +19,9 @@ Micronaut Data Conversion Tasks
 ===============================
 Undo workarounds that were fixed (323).
 done - Enforce Transaction for insert/update/delete actions.
-@ExtensibleFields replacement - A field level @ExtensibleFieldHolder?
-  Add support for getFieldValue() and config type getters/setters in GDSL.
-@Entity replacement with GDSL.
+done - @ExtensibleFields replacement - A field level @ExtensibleFieldHolder?
+  done - Add support for getFieldValue() and config type getters/setters in GDSL.
+done - @Entity replacement with GDSL.
   Convert Domains
     done - AllFieldsDomain
     done - SampleParent
@@ -59,7 +59,7 @@ done - Enforce Transaction for insert/update/delete actions.
       CodeSequence >> LSNSequence, OrderSequence (Logic in Service?)
   done - EncodedTypes - Status on Order?
   done - Use GDSL to handle code completion.  See https://www.tothenew.com/blog/gdsl-awesomeness-introduction-to-gdsl-in-intellij-idea/
-  Adds these methods
+  done - Adds these methods
     done = Lazy load
       done - reference - uses txn.
       done - getChildRecords, addToChildRecords, save logic.
@@ -80,7 +80,7 @@ done- Converters needed
   done - EncodedTypes.
 Update code when issue is fixed:
   https://github.com/micronaut-projects/micronaut-data/issues/323
-Verify Jackson handlers for domain entities.
+done - Verify Jackson handlers for domain entities.
 
 done - DateOnly conversion.
 
@@ -100,6 +100,7 @@ Add SQL DDL logic and Liquid-base/FlyWay support.
   Find way to auto-generate core stuff?.
 Add option to run tests against Postgres (manual only).
 done - Micronaut-data does not support traits or sub-classes in most cases.
+Look at using an environment for DB type: h2, postgres.  Change command line to use it.
 
 Docs
 =================
@@ -119,6 +120,7 @@ Add notes on why using MN-Data, not hibernate.
 Vue Investigation
 =================
 Use tables, with full-time editable cells.
+Dashboard splitter component?
 
 Tasks
 =====

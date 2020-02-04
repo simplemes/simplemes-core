@@ -1,7 +1,21 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.dashboard.domain
 
-//import grails.gorm.annotation.Entity
+
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.FieldSizes
+
+import javax.annotation.Nullable
+import javax.persistence.Column
+import javax.persistence.ManyToOne
 
 /**
  * This domain class defines a single configurable button on a dashboard.  This allows
@@ -9,11 +23,15 @@ import org.simplemes.eframe.misc.FieldSizes
  * These buttons are displayed one after another in the appropriate area
  * of the page.  The buttons have configurable labels, styling, title (tooltip) and display sequence.
  */
-//@Entity
+@MappedEntity
+@DomainEntity
+@EqualsAndHashCode(includes = ["dashboardConfig", "sequence", "buttonID"])
+@ToString(includePackage = false, includeNames = true, excludes = ['dashboardConfig'])
 class DashboardButton {
   /**
    * The parent dashboard this button is a child of. <b>Required.</b>
    */
+  @ManyToOne
   DashboardConfig dashboardConfig
 
   /**
@@ -25,12 +43,14 @@ class DashboardButton {
   /**
    * The HTML element ID used for the button.  This can be used to access the button within the page.
    */
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = true)
   String buttonID
 
   /**
    * The title (tooltip) of this button.
    * This value can be used as the key in a lookup into the .properties files for globalization.
    */
+  @Column(length = FieldSizes.MAX_TITLE_LENGTH, nullable = true)
   String title
 
   /**
@@ -39,54 +59,45 @@ class DashboardButton {
    * <p/>
    * This field is used to group multiple activities on a single button.
    */
+  @Column(length = FieldSizes.MAX_TITLE_LENGTH, nullable = false)
   String label
 
   /**
    * The URL/URI to display in a panel.
    */
+  @Column(length = FieldSizes.MAX_URL_LENGTH, nullable = false)
   String url
 
   /**
    * The panel (name) to display the activity in.  (<b>Required</b>.  No default provided.)
    * Must exist in the dashboard.
    */
+  @Column(length = FieldSizes.MAX_KEY_LENGTH, nullable = false)
   String panel
 
   /**
    * The relative size of this button (1.0 - standard size, the default).
    */
-  BigDecimal size = 1.0
+  @Nullable BigDecimal size = 1.0
 
   /**
    * Additional CSS class(es) to add to the button.
    */
+  @Column(length = FieldSizes.MAX_SINGLE_LINE_LENGTH, nullable = true)
   String css
+
+  @Id @AutoPopulated UUID uuid
 
   /**
    * The primary keys for this object.
    */
-  static keys = ['dashboardConfig', 'sequence']
-
-  /**
-   * This is a child of a parent Dashboard.
-   */
   @SuppressWarnings("unused")
-  static belongsTo = [dashboardConfig: DashboardConfig]
-
-  static constraints = {
-    dashboardConfig(nullable: false)
-    buttonID(maxSize: FieldSizes.MAX_CODE_LENGTH, blank: true, nullable: true)
-    label(maxSize: FieldSizes.MAX_TITLE_LENGTH, blank: false, nullable: false)
-    title(maxSize: FieldSizes.MAX_TITLE_LENGTH, blank: true, nullable: true)
-    css(maxSize: FieldSizes.MAX_SINGLE_LINE_LENGTH, blank: true, nullable: true)
-    size(scale: FieldSizes.STANDARD_DECIMAL_SCALE, nullable: true)
-    url(maxSize: FieldSizes.MAX_URL_LENGTH, blank: false, nullable: false)
-    panel(maxSize: FieldSizes.MAX_KEY_LENGTH, blank: false, nullable: false)
-  }
+  static keys = ['dashboardConfig', 'sequence']
 
   /**
    * Defines the order the fields are shown in the edit/show/etc GUIs.
    */
+  @SuppressWarnings("unused")
   static fieldOrder = ['sequence', 'label', 'buttonID', 'title', 'size', 'css', 'url', 'panel']
 
   /**
@@ -97,23 +108,5 @@ class DashboardButton {
   String toString() {
     return label + "($buttonID ${sequence})"
   }
-
-  /**
-   * Build a full human readable version of this object.
-   * @return
-   */
-/*
-  String toFullString() {
-    return "Button{" +
-      "sequence=" + sequence +
-      ", label='" + label + "\'" +
-      ", buttonID='" + buttonID + "\'" +
-      ", title='" + title + "\'" +
-      ", style='" + style + "\'" +
-      ", url='" + url + "\'" +
-      ", panel='" + panel + "\'" +
-      '}'
-  }
-*/
 
 }

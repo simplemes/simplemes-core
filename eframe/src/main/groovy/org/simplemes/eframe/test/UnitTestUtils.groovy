@@ -3,6 +3,10 @@
  */
 
 package org.simplemes.eframe.test
+
+
+import org.simplemes.eframe.domain.validate.ValidationErrorInterface
+
 class UnitTestUtils {
 
   /**
@@ -125,6 +129,23 @@ class UnitTestUtils {
     for (s in values) {
       assert testStringLC.contains(s.toLowerCase())
     }
+    return true
+  }
+
+  /**
+   * Asserts that the given list of validation errors contains the given error on the given field with
+   * the strings in the message.
+   * @param errors The validation errors list of check.
+   * @param values The values to check.
+   * @return true if contains all.  Will throw an assertion exception otherwise.
+   */
+  static boolean assertContainsError(List<ValidationErrorInterface> list, int code, String fieldName, List<String> values) {
+    def error = list?.find { it.code == code }
+    assert error, "Error code $code not found in list of errors: $list"
+    assert error.fieldName == fieldName, "Error is for the wrong field '$error.fieldName'.  Expected '$fieldName'. Error: '$error'"
+    def msg = error.toString().toLowerCase()
+    assertContainsAllIgnoreCase(msg, values)
+
     return true
   }
 
