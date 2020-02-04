@@ -4,9 +4,11 @@
 
 package org.simplemes.eframe.dashboard.domain
 
-//import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+
+//import grails.gorm.annotation.Entity
+
 import groovy.util.logging.Slf4j
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.DateCreated
@@ -14,7 +16,6 @@ import io.micronaut.data.annotation.DateUpdated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
-import io.micronaut.data.annotation.Transient
 import io.micronaut.data.model.DataType
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.domain.annotation.DomainEntity
@@ -84,13 +85,6 @@ class DashboardConfig {
   List<DashboardPanelSplitter> splitterPanels
 
   /**
-   * The combined list of panels/splitters.  User for old code that used to
-   * have these in one list in the DB.
-   */
-  // TODO: Is this needed?
-  @Transient List panels
-
-  /**
    * A list of buttons display in the dashboard.
    * <b>Optional.</b>
    */
@@ -129,23 +123,23 @@ class DashboardConfig {
     char startChar = 'A' - 1
     // Find highest single character already in use for a panel name
     for (int i = 0; i < getDashboardPanels().size(); i++) {
-      if (dashboardPanels[i] instanceof DashboardPanel && dashboardPanels[i].panel) {
-        char c = dashboardPanels[i].panel[0]
+      if (getDashboardPanels()[i] instanceof DashboardPanel && getDashboardPanels()[i].panel) {
+        char c = getDashboardPanels()[i].panel[0]
         c++  // WIll start at next highest character
         if (c > startChar) {
           startChar = c
         }
       }
-
     }
 
     // Set the panels' index to match the array index in panels and assign a panel name (if none)
     for (int i = 0; i < dashboardPanels?.size(); i++) {
-      if (dashboardPanels[i].panelIndex == null) {
-        dashboardPanels[i].panelIndex = i
+      def panel = dashboardPanels[i]
+      if (panel.panelIndex == null) {
+        panel.panelIndex = i
       }
-      if (dashboardPanels[i] instanceof DashboardPanel && !dashboardPanels[i].panel) {
-        dashboardPanels[i].panel = startChar
+      if (!panel.panel) {
+        panel.panel = startChar
         startChar++
       }
     }
@@ -219,6 +213,14 @@ class DashboardConfig {
     // Make sure all splitters have exactly 2 children.
     Map<Integer, Integer> childCounts = [:]
     for (panel in getDashboardPanels()) {
+      if (panel.parentPanelIndex >= 0) {
+        //println "parent = ${panel.parentPanelIndex} map = ${splitters}"
+        def childCount = childCounts[panel.parentPanelIndex] ?: 0
+        childCount++
+        childCounts[panel.parentPanelIndex] = childCount
+      }
+    }
+    for (panel in getSplitterPanels()) {
       if (panel.parentPanelIndex >= 0) {
         //println "parent = ${panel.parentPanelIndex} map = ${splitters}"
         def childCount = childCounts[panel.parentPanelIndex] ?: 0
@@ -315,8 +317,8 @@ class DashboardConfig {
    * @return The hierarchy
    */
   String hierarchyToString() {
-    if (panels.size() < 2) {
-      return "Panel${panels[0].panel}[0]"
+    if (getSplitterPanels().size() < 1) {
+      return "Panel${getDashboardPanels()[0].panel}[0]"
     }
     return hierarchyToStringInternal(0, 0)
   }
@@ -330,14 +332,16 @@ class DashboardConfig {
   private String hierarchyToStringInternal(int splitterIndex, int level) {
     StringBuilder sb = new StringBuilder()
     def padding = '  ' * level
-    sb << "${padding}Splitter[$splitterIndex] ${panels[splitterIndex].vertical ? 'Vertical' : 'Horizontal'}\n"
-    for (int i = 0; i < panels.size(); i++) {
-      if (panels[i] instanceof DashboardPanelSplitter) {
-        if (panels[i].parentPanelIndex == splitterIndex) {
-          sb << hierarchyToStringInternal(i, level + 1)
-        }
-      } else if (panels[i].parentPanelIndex == splitterIndex) {
-        sb << "${padding}  Panel${panels[i].panel}[$i] ${panels[i].defaultURL ?: ''}\n"
+    sb << "${padding}Splitter[$splitterIndex] ${getSplitterPanels()[splitterIndex].vertical ? 'Vertical' : 'Horizontal'}\n"
+    for (panel in getDashboardPanels()) {
+      if (panel.parentPanelIndex == splitterIndex) {
+        sb << "${padding}  Panel${panel.panel}[${panel.panelIndex}] ${panel.defaultURL ?: ''}\n"
+      }
+    }
+    // Now, dump the child splitters (if any)
+    for (int i = 0; i < getSplitterPanels().size(); i++) {
+      if (getSplitterPanels()[i].parentPanelIndex == splitterIndex) {
+        sb << hierarchyToStringInternal(i, level + 1)
       }
     }
     return sb.toString()

@@ -1,15 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import org.simplemes.eframe.dashboard.domain.DashboardButton
 import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.dashboard.domain.DashboardPanel
 import org.simplemes.eframe.dashboard.domain.DashboardPanelSplitter
-
-/*
- * Copyright Michael Houston. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Utility methods to help test Dashboard features.
@@ -31,34 +29,35 @@ class DashboardUnitTestUtils {
   static DashboardConfig buildDashboardConfig(String dashboardName, List<String> defaultPages, List<Map> buttons = null) {
     DashboardConfig dashboardConfig = new DashboardConfig(dashboard: dashboardName)
     int index = 0
+    int splitterIndex = 0
     int lastSplitterIndex = -1
     for (page in defaultPages) {
-      def panel
       if (page.startsWith('vertical') || page.startsWith('horizontal')) {
         boolean vertical = page.startsWith('vertical')
-        panel = new DashboardPanelSplitter(panelIndex: index, vertical: vertical, parentPanelIndex: lastSplitterIndex)
-        lastSplitterIndex = index
+        def splitter = new DashboardPanelSplitter(panelIndex: splitterIndex, vertical: vertical, parentPanelIndex: lastSplitterIndex)
+        lastSplitterIndex = splitterIndex
+        dashboardConfig.splitterPanels << splitter
+        splitterIndex++
       } else {
         if (page == '') {
           page = null
         }
-        panel = new DashboardPanel(panelIndex: index, defaultURL: page, parentPanelIndex: lastSplitterIndex)
+        def panel = new DashboardPanel(panelIndex: index, defaultURL: page, parentPanelIndex: lastSplitterIndex)
+        dashboardConfig.dashboardPanels << panel
+        index++
       }
-      dashboardConfig.addToPanels(panel)
-      index++
     }
     // Now, create the buttons (if any)
     for (button in buttons) {
       // Must handle child Map separately since in functional (GEB) test mode, the child activities are not saved.
       //button.activities = null
       def dashboardButton = new DashboardButton(button)
-      dashboardConfig.addToButtons(dashboardButton)
+      dashboardConfig.buttons << dashboardButton
     }
 
-    //println "dashboardConfig = ${dashboardConfig.toFullString()}"
+    dashboardConfig.save()
+    //println "dashboardConfig = ${dashboardConfig.toString()}"
     //println "dashboardConfig = ${dashboardConfig.hierarchyToString()}"
-    dashboardConfig.validate(); assert !dashboardConfig.errors.allErrors
-    assert dashboardConfig.save()
     return dashboardConfig
   }
 

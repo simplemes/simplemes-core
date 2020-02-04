@@ -21,5 +21,7 @@ interface DashboardConfigRepository extends BaseRepository, CrudRepository<Dashb
 
   List<DashboardConfig> findAllByCategoryAndDefaultConfig(String category, Boolean defaultConfig)
 
+  List<DashboardConfig> findAllByDefaultConfig(Boolean defaultConfig)
+
   List<DashboardConfig> list()
 }

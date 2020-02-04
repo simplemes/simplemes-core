@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.dashboard.controller
 
 
@@ -7,19 +11,15 @@ import org.simplemes.eframe.dashboard.domain.DashboardPanel
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.ControllerTester
 import org.simplemes.eframe.test.MockPrincipal
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.eframe.web.ui.webix.freemarker.DashboardMarker
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
  */
 class DashboardControllerSpec extends BaseSpecification {
 
+  @SuppressWarnings("unused")
   static specNeeds = [SERVER]
 
   def "verify that controller follows standards - security etc"() {
@@ -44,13 +44,24 @@ class DashboardControllerSpec extends BaseSpecification {
     otherParams.category == null
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that taskMenuItems uses the default dashboards for the menu items"() {
     given: 'some dashboards in non-sorted order, some are not the default dashboard for their category'
-    new DashboardConfig(dashboard: 'XYZ', title: 'xyz', defaultConfig: true, category: 'CAT_X').addToPanels(new DashboardPanel()).save()
-    new DashboardConfig(dashboard: 'ABC', title: 'abc', defaultConfig: true, category: 'CAT_A').addToPanels(new DashboardPanel()).save()
-    new DashboardConfig(dashboard: 'AB1', title: 'ab1', defaultConfig: false, category: 'CAT_A').addToPanels(new DashboardPanel()).save()
-    new DashboardConfig(dashboard: 'XY2', title: 'xy2', defaultConfig: false, category: 'CAT_X').addToPanels(new DashboardPanel()).save()
+    def dash1 = new DashboardConfig(dashboard: 'XYZ', title: 'xyz', defaultConfig: true, category: 'CAT_X')
+    dash1.dashboardPanels << new DashboardPanel()
+    dash1.save()
+
+    def dash2 = new DashboardConfig(dashboard: 'ABC', title: 'abc', defaultConfig: true, category: 'CAT_A')
+    dash2.dashboardPanels << new DashboardPanel()
+    dash2.save()
+
+    def dash3 = new DashboardConfig(dashboard: 'AB1', title: 'ab1', defaultConfig: false, category: 'CAT_A')
+    dash3.dashboardPanels << new DashboardPanel()
+    dash3.save()
+
+    def dash4 = new DashboardConfig(dashboard: 'XY2', title: 'xy2', defaultConfig: false, category: 'CAT_X')
+    dash4.dashboardPanels << new DashboardPanel()
+    dash4.save()
 
     when: 'the task menu items are checked'
     def taskMenuItems = new DashboardController().taskMenuItems
@@ -79,10 +90,12 @@ class DashboardControllerSpec extends BaseSpecification {
     notThrown(Throwable)
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that getTaskMenuItems works cleanly with dashboards with no titles"() {
     given: 'a dashboard with no title'
-    new DashboardConfig(dashboard: 'XYZ', defaultConfig: true, category: 'CAT_X').addToPanels(new DashboardPanel()).save()
+    def dash = new DashboardConfig(dashboard: 'XYZ', defaultConfig: true, category: 'CAT_X')
+    dash.dashboardPanels << new DashboardPanel()
+    dash.save()
 
     when: 'the task menu items are checked'
     def taskMenuItems = new DashboardController().taskMenuItems

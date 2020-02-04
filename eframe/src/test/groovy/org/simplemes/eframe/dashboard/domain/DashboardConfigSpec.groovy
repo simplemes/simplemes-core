@@ -215,16 +215,16 @@ class DashboardConfigSpec extends BaseSpecification {
     dashboard.splitterPanels << new DashboardPanelSplitter(panelIndex: 0)
     dashboard.dashboardPanels << new DashboardPanel(panelIndex: 1, parentPanelIndex: 0, panel: 'A')
     dashboard.dashboardPanels << new DashboardPanel(panelIndex: 2, parentPanelIndex: 0, panel: 'B')
-    dashboard.splitterPanels << new DashboardPanelSplitter(panelIndex: 3, parentPanelIndex: 0)
-    dashboard.dashboardPanels << new DashboardPanel(panelIndex: 4, parentPanelIndex: 3, panel: 'C')
-    dashboard.dashboardPanels << new DashboardPanel(panelIndex: 5, parentPanelIndex: 3, panel: 'D')
+    dashboard.splitterPanels << new DashboardPanelSplitter(panelIndex: 1, parentPanelIndex: 0, vertical: true)
+    dashboard.dashboardPanels << new DashboardPanel(panelIndex: 4, parentPanelIndex: 1, panel: 'C')
+    dashboard.dashboardPanels << new DashboardPanel(panelIndex: 5, parentPanelIndex: 1, panel: 'D')
     def s = dashboard.hierarchyToString()
 
     then: 'the hierarchy string is correct'
-    s.startsWith('Splitter[0]')
+    s.startsWith('Splitter[0] Horizontal')
     s.contains('  PanelA[1]')
     s.contains('  PanelB[2]')
-    s.contains('  Splitter[3]')
+    s.contains('  Splitter[1] Vertical')
     s.contains('    PanelC[4]')
     s.contains('    PanelD[5]')
     s.count('PanelD[5]') == 1

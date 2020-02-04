@@ -9,7 +9,6 @@ import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.dashboard.domain.DashboardPanel
 import org.simplemes.eframe.dashboard.domain.DashboardPanelSplitter
-import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.misc.JavascriptUtils
 import org.simplemes.eframe.misc.NameUtils
@@ -104,29 +103,25 @@ class DashboardMarker extends BaseMarker {
     def dashboardName = parameters.dashboard
     def category = parameters.category ?: 'NONE'
 
-    // TODO: Consider moving this DB access to a service with Preferences.
-    DashboardConfig.withTransaction() {
-      if (dashboardName) {
-        // Caller wants a specific dashboard
-        dashboardConfig = DashboardConfig.findByDashboard(dashboardName)
-        if (dashboardConfig == null) {
-          //error.121.message=No dashboard {0} found.
-          throw new BusinessException(121, [dashboardName])
-        } else {
-          categoryForEditor = dashboardConfig.category
-        }
+    if (dashboardName) {
+      // Caller wants a specific dashboard
+      dashboardConfig = DashboardConfig.findByDashboard(dashboardName)
+      if (dashboardConfig == null) {
+        //error.121.message=No dashboard {0} found.
+        throw new BusinessException(121, [dashboardName])
       } else {
-        // Use the category
-        dashboardConfig = DashboardConfig.findByCategoryAndDefaultConfig(category, true)
-        if (dashboardConfig == null) {
-          //error.112.message=No default dashboard for category {0} found.
-          throw new BusinessException(112, [category])
-        }
-        categoryForEditor = category
+        categoryForEditor = dashboardConfig.category
       }
-      DomainUtils.instance.resolveProxies(dashboardConfig)
-      loadSplitterSizes()
+    } else {
+      // Use the category
+      dashboardConfig = DashboardConfig.findByCategoryAndDefaultConfig(category, true)
+      if (dashboardConfig == null) {
+        //error.112.message=No default dashboard for category {0} found.
+        throw new BusinessException(112, [category])
+      }
+      categoryForEditor = category
     }
+    loadSplitterSizes()
     log.trace('configureDashboard() {}', dashboardConfig)
     if (log.traceEnabled) {
       log.trace("configureDashboard() \n {} ${dashboardConfig?.hierarchyToString()}")
@@ -141,8 +136,8 @@ class DashboardMarker extends BaseMarker {
    */
   void writeDashboard() {
     def rowsOrCols = 'rows'
-    if (dashboardConfig.panels[0] instanceof DashboardPanelSplitter) {
-      if (dashboardConfig.panels[0].vertical) {
+    if (dashboardConfig.splitterPanels.size()) {
+      if (dashboardConfig.splitterPanels[0].vertical) {
         rowsOrCols = 'cols'
       }
     }
@@ -175,10 +170,8 @@ class DashboardMarker extends BaseMarker {
    */
   String buildCommunicationVariables() {
     def sb = new StringBuilder()
-    for (panel in dashboardConfig.panels) {
-      if (panel instanceof DashboardPanel) {
-        sb << "var _${panel.panel}={};\n"
-      }
+    for (panel in dashboardConfig.dashboardPanels) {
+      sb << "var _${panel.panel}={};\n"
     }
 
     return sb.toString()
@@ -192,22 +185,19 @@ class DashboardMarker extends BaseMarker {
     sb << """dashboard._definePanelsAndLoad({"""
     int index = 0
     boolean first = true
-    for (panel in dashboardConfig.panels) {
-      if (panel instanceof DashboardPanel) {
-        if (!first) {
-          sb << """,\n"""
-        }
-        def defaultURL = ''
-        if (panel.defaultURL) {
-          defaultURL = "defaultURL: \"${panel.defaultURL}\""
-        }
-        sb << """ "${panel.panel}": {${defaultURL}}"""
-        index++
-        first = false
+    for (panel in dashboardConfig.dashboardPanels) {
+      if (!first) {
+        sb << ",\n"
       }
-
+      def defaultURL = ''
+      if (panel.defaultURL) {
+        defaultURL = "defaultURL: \"${panel.defaultURL}\""
+      }
+      sb << """ "${panel.panel}": {${defaultURL}}"""
+      index++
+      first = false
     }
-    sb << """});\n"""
+    sb << "});\n"
 
     return sb.toString()
   }
@@ -292,10 +282,10 @@ class DashboardMarker extends BaseMarker {
    * Builds the panels needed for the dashboard.
    */
   String buildPanels() {
-    if (dashboardConfig?.panels?.size() == 1) {
+    if (dashboardConfig?.dashboardPanels?.size() == 1) {
       return buildSinglePanel()
     } else {
-      return buildOneSplitterPanel(dashboardConfig.panels[0].panelIndex)
+      return buildOneSplitterPanel(dashboardConfig.splitterPanels[0].panelIndex)
     }
   }
 
@@ -303,10 +293,11 @@ class DashboardMarker extends BaseMarker {
    * Builds the single panel scenario (no splitters).
    */
   String buildSinglePanel() {
+    def panel = dashboardConfig.dashboardPanels[0].panel ?: 'A'
     def s = """
-      {view: "form", id: "PanelA", height: tk.ph("93%"), type: "clean", borderless: true, elements: 
+      {view: "form", id: "Panel$panel", height: tk.ph("93%"), type: "clean", borderless: true, elements: 
         [
-          {view: "template", id: "ContentA", template: " "}
+          {view: "template", id: "Content$panel", template: " "}
         ]
       }
     """
@@ -315,95 +306,107 @@ class DashboardMarker extends BaseMarker {
 
   /**
    * Builds one level of splitters.  Supports recursively nested panels.
-   * @param panelId The panel ID to generate.
+   * @param splitterPanelIdx The panel ID to generate.
    */
-  String buildOneSplitterPanel(int panelId) {
+  String buildOneSplitterPanel(int splitterPanelIdx) {
     // Find the two child panels for the given panel
-    DashboardPanelSplitter panel = (DashboardPanelSplitter) dashboardConfig.panels.find() { it.panelIndex == panelId }
-    def panels = dashboardConfig.panels.findAll() { it.parentPanelIndex == panelId }
+    DashboardPanelSplitter splitter = (DashboardPanelSplitter) dashboardConfig.splitterPanels[splitterPanelIdx]
+    def panels = dashboardConfig.dashboardPanels.findAll() { it.parentPanelIndex == splitterPanelIdx }
+    def splitters = dashboardConfig.splitterPanels.findAll() { it.parentPanelIndex == splitterPanelIdx }
+    //noinspection GroovyAssignabilityCheck
+    panels.addAll(splitters)  // Combine both lists to get the 2 elements displayed in this splitter.
     if (panels.size() != 2) {
       //error.98.message=Invalid Value {0}. {1} should be {2}.
       throw new BusinessException(98, [panels.size(), 'panels.size()', '2'])
     }
     panels.sort { a, b -> a.panelIndex <=> b.panelIndex }
 
-    def resizeId = "resizer${panelId}"
+    def resizeId = "resizer${splitterPanelIdx}"
 
     def s = """  
-      ${buildSplitterPanelMember(panels[0], true, panel.vertical)},
+      ${buildSplitterPanelMember(panels[0], true, splitter.vertical)},
       {view: "resizer", id: "$resizeId"},
-      ${buildSplitterPanelMember(panels[1], false, panel.vertical)}
+      ${buildSplitterPanelMember(panels[1], false, splitter.vertical)}
     """
     return s
   }
 
   /**
-   * Builds one of the splitter's panels.  Calls the buildOneSplitterPanel() when the a sub-splitter is found.
-   * @param panel The panel to generate.  Can be a splitter or a content panel.
+   * Builds one of the splitter's panels.
+   * @param panel The panel to generate.
    * @param topElement True if this is the top element of a splitter panel.  Used to define the position of the splitter
    *        bar and the resize handler logic.
    */
   String buildSplitterPanelMember(DashboardPanel panel, boolean topElement, Boolean vertical) {
-    if (panel instanceof DashboardPanelSplitter) {
-      def panelName = "Splitter${panel.panelIndex}"
-      def panels = dashboardConfig.panels.findAll() { it.parentPanelIndex == panel.panelIndex }
-      panels.sort { a, b -> a.panelIndex <=> b.panelIndex }
-      def rowsOrCols = panel.vertical ? 'cols' : 'rows'
-      return """
-        {
-          id: "Panel${panelName}", type: "space", margin: 0,paddingX: 0,paddingY: 0, $rowsOrCols: 
-            [
-              ${buildSplitterPanelMember((DashboardPanel) panels[0], true, panel.vertical)}
-            , {view: "resizer", id: "resizer${panel.panelIndex}"},
-              ${buildSplitterPanelMember((DashboardPanel) panels[1], false, panel.vertical)}
-            ] 
-        }
-      """
-    } else {
-      def sizeText = ''
-      def resizeHandlerText = ''
-      if (topElement) {
-        def resizeId = "resizer${panel.parentPanelIndex}"
-        def panelSize = getReSizerPreference(resizeId)
-        if (panelSize) {
-          def size = vertical ? "width: tk.pw(" : "height: tk.ph("
-          sizeText = """,${size}"${panelSize}%")"""
-        }
-        resizeHandlerText = """
+    def sizeText = ''
+    def resizeHandlerText = ''
+    if (topElement) {
+      def resizeId = "resizer${panel.parentPanelIndex}"
+      def panelSize = getReSizerPreference(resizeId)
+      if (panelSize) {
+        def size = vertical ? "width: tk.pw(" : "height: tk.ph("
+        sizeText = """,${size}"${panelSize}%")"""
+      }
+      resizeHandlerText = """
             on: {
               onViewResize: function () {
                 dashboard._splitterResized("${baseElement}","${panel.panel}","${resizeId}",${vertical});
               }
             },
           """
-      }
+    }
 
-      def s = """
+    def s = """
         {
-          view: "form", id: "Panel${panel.panel}"${
-        sizeText
-      }, type: "clean", margin: 2,paddingX: 2,paddingY: 2, borderless: true, $resizeHandlerText elements: [
+          view: "form", id: "Panel${panel.panel}"${sizeText}, type: "clean", margin: 2,paddingX: 2,paddingY: 2, 
+            borderless: true, $resizeHandlerText elements: [
             {view: "template", id: "Content${panel.panel}", template: ""}] 
         }
       """
-      return s
-    }
+    return s
   }
 
   /**
-   * Finds the user's preference for the panel size (from last resize).
-   * @param resizerId The first panel for the splitter.
-   * @return The size (in percent).  Can be null.
+   * Builds one of the splitter's panels.  Calls the buildOneSplitterPanel().
+   * @param panel The panel to generate.
+   * @param topElement True if this is the top element of a splitter panel.  Used to define the position of the splitter
+   *        bar and the resize handler logic.
    */
+  @SuppressWarnings("unused")
+  String buildSplitterPanelMember(DashboardPanelSplitter panel, boolean topElement, Boolean vertical) {
+    def panelName = "Splitter${panel.panelIndex}"
+    def panels = dashboardConfig.dashboardPanels.findAll() { it.parentPanelIndex == panel.panelIndex }
+    def splitters = dashboardConfig.splitterPanels.findAll() { it.parentPanelIndex == panel.panelIndex }
+    //noinspection GroovyAssignabilityCheck
+    panels.addAll(splitters)
+    panels.sort { a, b -> a.panelIndex <=> b.panelIndex }
+    def rowsOrCols = panel.vertical ? 'cols' : 'rows'
+    return """
+        {
+          id: "Panel${panelName}", type: "space", margin: 0,paddingX: 0,paddingY: 0, $rowsOrCols: 
+            [
+              ${buildSplitterPanelMember(panels[0], true, panel.vertical)}
+            , {view: "resizer", id: "resizer${panel.panelIndex}"},
+              ${buildSplitterPanelMember(panels[1], false, panel.vertical)}
+            ] 
+        }
+      """
+  }
+
+/**
+ * Finds the user's preference for the panel size (from last resize).
+ * @param resizerId The first panel for the splitter.
+ * @return The size (in percent).  Can be null.
+ */
   BigDecimal getReSizerPreference(String resizerId) {
     preferenceHolder.element = baseElement
     def splitterPref = preferenceHolder[resizerId]
     return splitterPref?.size
   }
 
-  /**
-   * Loads the user preferences for the dashboard page.
-   */
+/**
+ * Loads the user preferences for the dashboard page.
+ */
   void loadSplitterSizes() {
     // Now, write the default size for each panel
     // Load the preferences (if any) for this page/splitter.
@@ -415,11 +418,11 @@ class DashboardMarker extends BaseMarker {
     }
   }
 
-  /**
-   * Build the Javascript to create additional activity parameters needed fto be passed from the dashboard URI to the
-   * activity URIs.
-   * @return The Javascript.
-   */
+/**
+ * Build the Javascript to create additional activity parameters needed fto be passed from the dashboard URI to the
+ * activity URIs.
+ * @return The Javascript.
+ */
   String buildAdditionalActivityParameters() {
     def sb = new StringBuilder()
     def activityParams = unwrap(environment.dataModel?.get(ACTIVITY_PARAMETERS_NAME))
