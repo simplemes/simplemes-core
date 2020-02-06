@@ -145,26 +145,3 @@ def "verify that user domain enforces constraints"() {
 
 You can also disable the fieldOrder check with the option *'fieldOrderCheck false'*.
 
-===== fieldOrder and Sub-Classes
-
-When a parent class has a `fieldOrder` value, all the child classes should have `fieldOrder`,
-even if the list is empty:
-
-[source,groovy]
-----
-class FlexField {
-  // No added fields to be displayed.
-  // Parent AbstractField class has all of the fields needed.
-  static fieldOrder = []
-}
-----
-
-This happens often when the child class has only a reference to some containing class that is not
-displayed. The FlexField example above has only a reference to the containing _FlexType_ class,
-which we don't normally display.
-
-The link:groovydoc/org/simplemes/eframe/domain/DomainUtils.html[DomainUtils^] has methods to
-determine the effective field order for a domain that takes into account the super-classes.
-
-
-

@@ -13,7 +13,7 @@ datasources:
     username: "mph"
     password: "mh1234"
     dialect: POSTGRES
-    # schema-generate: CREATE
+    schema-generate: CREATE
     autoCommit: true
 
 ---

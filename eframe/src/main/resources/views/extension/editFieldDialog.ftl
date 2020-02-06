@@ -8,11 +8,11 @@
                              error.1.message,error.133.message"/>
 
   <@efForm id="editField" dashboard="true">
-    <@efField field="AbstractField.fieldName" required='true'/>
-    <@efField field="AbstractField.fieldLabel" />
-    <@efField field="AbstractField.fieldFormat" />
-    <@efField field="AbstractField.maxLength" />
-    <@efField field="AbstractField.valueClassName" />
+    <@efField field="FlexField.fieldName" required='true'/>
+    <@efField field="FlexField.fieldLabel" />
+    <@efField field="FlexField.fieldFormat" />
+    <@efField field="FlexField.maxLength" />
+    <@efField field="FlexField.valueClassName" />
     <@efButtonGroup>
       <@efButton id='saveField' label="definitionEditor.saveField.label" click="efd._editorFieldSave()" />
       <@efButton id='cancelField' label="cancel.label" click="efd._editorFieldCancel()"/>

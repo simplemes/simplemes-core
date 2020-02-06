@@ -30,6 +30,7 @@ import javax.validation.constraints.NotNull;
 import java.lang.reflect.*;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -628,6 +629,96 @@ public class DomainEntityHelper {
   }
 
   /**
+   * Records the last parent loaded for a lazy reference list loader (in test mode only).  Used to testing to verify that
+   * the lazy records are loaded at the right time and not re-read over and over.
+   */
+  protected UUID lastLazyRefParentLoaded = null;
+
+  /**
+   * Performs the lazy load of the given field from the mapping table.
+   * After the list is first read, it will be saved in the field and re-used on later calls to the loader.
+   *
+   * @param object           The parent domain object to load the child from.
+   * @param fieldName        The field to store the list in.  Used by later calls.
+   * @param mappedBy         The mappedBy value from the @ManyToMany annotation.  Used to determine table name.
+   * @param childDomainClazz The child domain class.
+   * @return The list.
+   */
+  @SuppressWarnings("unchecked")
+  public List lazyRefListLoad(DomainEntityInterface object, String fieldName, String mappedBy, Class childDomainClazz)
+      throws Throwable {
+    // Find the current value.  Use reflection to access the field, even if not public.
+    Field field = object.getClass().getDeclaredField(fieldName);
+    field.setAccessible(true);  // Allow direct access.
+
+    List list = (List) field.get(object);
+    if (object.getUuid() == null && list == null) {
+      // Parent object has not been created yet, so just set the list to an empty list.
+      list = new ArrayList();
+      field.set(object, list);
+      return list;
+    }
+    if (list == null) {
+      list = new ArrayList();
+      field.set(object, list);
+
+      // Set the list to empty to avoid stack overflow in case of exception calling the getter over and over.
+      // This happens when the parent object is not saved yet.
+      Map domainSettings = getDomainSettings(object);
+      List loadedUuidList = new ArrayList();
+      if (domainSettings != null) {
+        domainSettings.put(SETTINGS_LOADED_CHILDREN_PREFIX + fieldName, loadedUuidList);
+      }
+
+      // Do a direct SQL query on the join table, and bring in the top-level fields of the foreign reference with a JOIN.
+      NamingStrategy namingStrategy = getNamingStrategy(object);
+      String fromIDName = namingStrategy.mappedName(object.getClass().getSimpleName()) + "_id";
+      String toIDName = namingStrategy.mappedName(childDomainClazz.getSimpleName()) + "_id";
+      String referenceTableName = namingStrategy.mappedName(childDomainClazz.getSimpleName());
+      String mappedByTableName = namingStrategy.mappedName(mappedBy);
+      StringBuilder sb = new StringBuilder();
+      sb.append("SELECT * ").append(" from ").append(mappedByTableName);
+      sb.append(" INNER JOIN ").append(referenceTableName).append(" ON ").append(mappedByTableName).append(".").append(toIDName);
+      sb.append(" = ").append(referenceTableName).append(".uuid").append("  WHERE ").append(fromIDName).append("=?");
+      //System.out.println("sb:" + sb);
+      PreparedStatement ps = null;
+      ResultSet rs = null;
+      try {
+        ps = getPreparedStatement(sb.toString());
+        ps.setString(1, object.getUuid().toString());
+        ps.execute();
+        rs = ps.getResultSet();
+        while (rs.next()) {
+          DomainEntityInterface o = (DomainEntityInterface) invokeGroovyMethod("org.simplemes.eframe.domain.DomainBinder",
+              "bindResultSet", rs, childDomainClazz);
+          list.add(o);
+        }
+      } finally {
+        if (ps != null) {
+          ps.close();
+        }
+        if (rs != null) {
+          rs.close();
+        }
+      }
+
+      field.set(object, list);
+      if (isEnvironmentTest()) {
+        // Record the last uuid read, so we can test the lazy loading behavior.
+        lastLazyRefParentLoaded = object.getUuid();
+      }
+      // Remember the UUID's read for the load.
+      for (Object ref : list) {
+        if (ref instanceof DomainEntityInterface) {
+          loadedUuidList.add(((DomainEntityInterface) ref).getUuid());
+        }
+      }
+    }
+
+    return list;
+  }
+
+  /**
    * Loads a list of child records for the given parent domain object.
    *
    * @param parentObject    The parent domain object.
@@ -1001,6 +1092,12 @@ public class DomainEntityHelper {
   }
 
   /**
+   * A list of classes to handles specially in the invokeGroovyMethod().  Any sub-classes of these
+   * will be treated as the parent class when finding the groovy method.
+   */
+  private static List<Class> parentClassesForInvoke = Arrays.asList(new Class[]{DomainEntityInterface.class, ResultSet.class});
+
+  /**
    * Invokes the given groovy class/method with arguments.  This is done to access
    * the groovy world from the Java code.  This is needed since the Java source tree is compiled before
    * the groovy code is compiled.
@@ -1013,15 +1110,18 @@ public class DomainEntityHelper {
    * @param args       The arguments.
    * @return The results of the method call.  Null if the class/method is not found.
    */
+  @SuppressWarnings("unchecked")
   protected static Object invokeGroovyMethod(String className, String methodName, Object... args) {
     try {
       Class[] paramTypes = new Class[args.length];
       for (int i = 0; i < args.length; i++) {
         if (args[i] != null) {
           paramTypes[i] = args[i].getClass();
-          // Check for special case Domain object
-          if (args[i] instanceof DomainEntityInterface) {
-            paramTypes[i] = DomainEntityInterface.class;
+          // Use the parent class for some common cases in order to find the right method.
+          for (Class clazz : parentClassesForInvoke) {
+            if (clazz.isAssignableFrom(args[i].getClass())) {
+              paramTypes[i] = clazz;
+            }
           }
         } else {
           // Unknown type, so try Object
@@ -1031,9 +1131,13 @@ public class DomainEntityHelper {
       Class holdersClass = Class.forName(className);
       Method method = ((Class<?>) holdersClass).getMethod(methodName, paramTypes);
       return method.invoke(null, args);
-    } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
+    } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException e) {
       LOG.warn("Error invoking method " + className + "." + methodName + "(). ", e);
       return null;
+    } catch (InvocationTargetException e) {
+      // We need to wrap the original exception in a runtime exception to avoid adding InvocationTargetException
+      // to every method in this class.
+      throw new RuntimeException(e.getCause());
     }
   }
 

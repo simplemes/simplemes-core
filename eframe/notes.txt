@@ -2,18 +2,6 @@ Scratch
 =======
 
 
-OptionB
-  @ExtensibleFieldHolder
-  @Column(nullable = true)
-  @MappedProperty(type = DataType.STRING, definition = 'TEXT')
-  String customFields
-
-@ExtensibleFieldHolder
-  Adds getter/setter to encode/decode the JSON.
-  Adds complexFieldHolder to class.
-  Adds value getter/setter (setValue(), getValue()).
-  Adds addConfigurableTypeAccessors.
-
 
 Micronaut Data Conversion Tasks
 ===============================
@@ -21,11 +9,11 @@ Undo workarounds that were fixed (323).
 done - Enforce Transaction for insert/update/delete actions.
 done - @ExtensibleFields replacement - A field level @ExtensibleFieldHolder?
   done - Add support for getFieldValue() and config type getters/setters in GDSL.
-done - @Entity replacement with GDSL.
-  Convert Domains
+done - Entity annotation replacement with GDSL.
+  done - Convert Domains
     done - AllFieldsDomain
     done - SampleParent
-    done - FlexField/AbstractField
+    done - FlexField
     done - FlexType
     done - FieldExtension
     done - FieldGUIExtension
@@ -35,14 +23,13 @@ done - @Entity replacement with GDSL.
     done - SampleSubClass
     done - RMA
     done - ArchiveLog
-    Dashboard*
+    done - Dashboard*
   done - Verify @JOIN and single/multiple foreign references. - fails for optionals.
     done - @JOIN does not work for H2 OUTER join when foreign ref is null.
       done - - Add getter that lazy loads the value.
       done - - Add .adoc note on lazy loader.
-  done - needs work - Verify sub-class works AbstractField
+  done - needs work in app
     Needs:
-      AbstractField >> FlexField, FieldExtension
       Routing >> ProductRouting, MasterRouting - RoutingService?
         Routing
           List<RoutingOperation> operations

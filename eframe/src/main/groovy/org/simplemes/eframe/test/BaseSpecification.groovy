@@ -40,6 +40,8 @@ import spock.lang.Shared
 import javax.sql.DataSource
 import javax.transaction.Transactional
 import java.sql.Connection
+import java.sql.PreparedStatement
+import java.sql.SQLException
 
 /**
  * The base class for most non-GUI tests.  This supports starting an embedded server and cleanup of the database tables.
@@ -711,6 +713,18 @@ class BaseSpecification extends GebSpec {
   void disableSQLTrace() {
     def logger = LogUtils.getLogger('io.micronaut.data')
     logger.level = Level.WARN
+  }
+
+  /**
+   * Creates a prepared SQL statement.
+   *
+   * @param sql The SQL.
+   * @return The statement.
+   */
+  protected PreparedStatement getPreparedStatement(String sql) throws SQLException {
+    DataSource dataSource = Holders.applicationContext.getBean(DataSource.class)
+    Connection connection = DataSourceUtils.getConnection(dataSource)
+    return connection.prepareStatement(sql)
   }
 
 }

@@ -172,8 +172,9 @@ class FlexTypeSpec extends BaseSpecification {
     flexType.fields << new FlexField(fieldName: 'Boolean', fieldFormat: BooleanFieldFormat.instance)
     flexType.save()
 
-    when: 'the field definitions are extracted'
-    List<FieldDefinitionInterface> fieldDefinitions = flexType.determineInputFields('rmaType')
+    when: 'the field definitions are extracted from a recently read record'
+    def flexType2 = FlexType.findByFlexType('ABC')
+    List<FieldDefinitionInterface> fieldDefinitions = flexType2.determineInputFields('rmaType')
 
     then: 'the fields are correct'
     fieldDefinitions.size() == 2

@@ -5,12 +5,21 @@
 package org.simplemes.eframe.domain
 
 import groovy.util.logging.Slf4j
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.model.naming.NamingStrategy
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.data.FieldDefinitions
 import org.simplemes.eframe.data.format.ConfigurableTypeDomainFormat
+import org.simplemes.eframe.date.DateOnly
+import org.simplemes.eframe.domain.annotation.DomainEntityInterface
+import org.simplemes.eframe.domain.validate.ValidationError
+import org.simplemes.eframe.domain.validate.ValidationErrorInterface
+import org.simplemes.eframe.exception.ValidationException
 import org.simplemes.eframe.misc.ArgumentUtils
 
+import java.sql.ResultSet
+import java.sql.Types
 import java.text.ParseException
 
 /**
@@ -71,7 +80,12 @@ class DomainBinder {
   /**
    * These are fields that not bound to domain objects.
    */
-  List<String> fieldsToSkipBinding = ['id']
+  List<String> fieldsToSkipBinding = ['uuid']
+
+  /**
+   * Any errors accumulated during binding.
+   */
+  List<ValidationErrorInterface> errors = []
 
   /**
    * Binds the given parameters to the given object instance.
@@ -145,7 +159,8 @@ class DomainBinder {
             } catch (ParseException | IllegalArgumentException ignored) {
               //println "ignored = $ignored"
               //ignored.printStackTrace()
-              addError(object, key, value, 'parseError')
+              //error.206.message=Parse error on {0}.  Invalid value {1}.
+              addError(206, key, value)
             }
           }
         } else if (value instanceof Collection) {
@@ -170,7 +185,85 @@ class DomainBinder {
         log.warn('bind() Ignoring field {}.  No field definition in {}', key, domainClass)
       }
     }
+    checkForErrors()
     //bindAnyChildrenValues(object, params)
+  }
+
+  /**
+   * Binds the current row of the result set to the given object instance.
+   * @param object The object to bind to.
+   * @param rs The result set.
+   */
+  @SuppressWarnings(["GroovyAssignabilityCheck", "EmptyIfStatement"])
+  void bind(Object object, ResultSet rs) {
+    Class<? extends NamingStrategy> namingStrategyClass = object.getClass().getAnnotation(MappedEntity.class).namingStrategy()
+    def namingStrategy = namingStrategyClass.newInstance()
+    // Build a list of possible column to property mappings.
+    def mappings = [:]
+    def props = DomainUtils.instance.getPersistentFields(object.getClass())
+    for (prop in props) {
+      def columnName = namingStrategy.mappedName(prop.name).toUpperCase()
+      mappings[columnName] = prop.name
+    }
+    // Now, build a list of values for the binder to use.
+    def map = [:]
+    for (int i = 1; i < rs.getMetaData().getColumnCount(); i++) {
+      String name = rs.getMetaData().getColumnName(i)
+      if (mappings[name]) {
+        map[mappings[name]] = adjustSQLValue(rs, i)
+      }
+    }
+    // Now, fix the dateCreated and dateUpdated since those are ignored by the bind() method.
+    if (map.dateCreated) {
+      object.dateCreated = map.dateCreated
+      map.remove('dateCreated')
+    }
+    if (map.dateUpdated) {
+      object.dateUpdated = map.dateUpdated
+      map.remove('dateUpdated')
+    }
+
+    bind(object, map, false)
+
+    // Add the UUID since the basic bind() ignores it (it is not in the fieldDefinitions).
+    def uuidColumnName = namingStrategy.mappedName('uuid').toUpperCase()
+    def uuidString = rs.getString(uuidColumnName)
+    if (uuidString) {
+      object.uuid = UUID.fromString(uuidString)
+    }
+
+/*
+    UUID toID = UUID.fromString(rs.getString("uuid"));
+    DomainEntityInterface o = (DomainEntityInterface) childDomainClazz.newInstance();
+    o.setUuid(toID);
+    list.add(o);
+*/
+
+  }
+
+  Object adjustSQLValue(ResultSet rs, int columnIndex) {
+    Object value = rs.getObject(columnIndex)
+    if (value != null) {
+      int type = rs.getMetaData().getColumnType(columnIndex)
+      switch (type) {
+        case Types.TIMESTAMP_WITH_TIMEZONE:
+          value = rs.getTimestamp(columnIndex)
+          break
+        case Types.DATE:
+          value = new DateOnly(rs.getDate(columnIndex))
+          break
+        default:
+          break
+      }
+    }
+
+/*
+    if (type == Types.TIMESTAMP_WITH_TIMEZONE) {
+      value = rs.getTimestamp(columnIndex)
+      println "name = ${rs.getMetaData().getColumnName(columnIndex)} ${rs.getTimestamp(columnIndex)}"
+    }
+*/
+    return value
   }
 
   /**
@@ -292,11 +385,11 @@ class DomainBinder {
     }
 
     // Now, remove any IDs left over from the input search above
-    for (id in idToRemoveList) {
-      def record = originalList.find { it.id == id }
-      originalList.removeAll { it.id == id }
+    for (uuid in idToRemoveList) {
+      def record = originalList.find { it.uuid == uuid }
+      originalList.removeAll { it.uuid == uuid }
       if (fieldDef?.child && record) {
-        log.debug('bindChildren(): Deleting ID {} for {} ({}).  Record: {}', id, fieldName, record.getClass().simpleName, record)
+        log.debug('bindChildren(): Deleting UUID {} for {} ({}).  Record: {}', uuid, fieldName, record.getClass().simpleName, record)
         record.delete()
       }
     }
@@ -304,22 +397,47 @@ class DomainBinder {
   }
 
   /**
+   * Checks for any errors accumulated for this domain (handled at top-level only).
+   * Will throw a ValidationException is any found.
+   */
+  void checkForErrors() {
+    if (!parentBinder) {
+      // Only check top-level since all sub-objects will be accumulated here.
+      if (errors) {
+        throw new ValidationException(errors, domainObject)
+      }
+    }
+  }
+
+  /**
    * Adds the given message as a validation error to the current list of errors.
    * This will bubble-up the error to the top-level domain object as needed.
-   * @param domainObject The domain object the error is for.
+   * @param code The error message code.
    * @param fieldName The field that failed.
    * @param value The bad value.
-   * @param messageKey The message.properties error key for the message.
    */
-  void addError(Object domainObject, String fieldName, Object value, String messageKey) {
+  void addError(int code, String fieldName, Object value) {
     if (parentBinder) {
       // Let the parent know of the binding error.
       def childFieldName = "${fieldNamePrefix}.$fieldName"
-      parentBinder.addError(domainObject, childFieldName, value, messageKey)
+      parentBinder.addError(code, childFieldName, value)
       return
     }
     // We must be the top-level binder, so build the error list in the top-level domain object.
-    DomainUtils.instance.addValidationError(this.domainObject, fieldName, value, messageKey)
+    errors << new ValidationError(code, fieldName, value)
   }
+
+  /**
+   * Converts the current row in the result set to the given domain object.
+   * @param rs The result set.
+   * @param domainClazz The domain class to create for the row.
+   * @return The domain object.
+   */
+  static DomainEntityInterface bindResultSet(ResultSet rs, Class domainClazz) throws IllegalAccessException, InstantiationException {
+    DomainEntityInterface object = (DomainEntityInterface) domainClazz.newInstance()
+    build().bind(object, rs)
+    return object
+  }
+
 
 }

@@ -32,6 +32,15 @@ import javax.persistence.ManyToOne
  * <p>
  * <b>Fields</b> Include: name, title,
  *   qty, count, enabled, dateTime, dueDate, transientField, notes, reportTimeInterval, order, status, dateCreated, lastUpdated
+ * <p>
+ *
+ *  <h3>Sample use of all fields</h3>
+ * <pre>
+ *  new AllFieldsDomain(name: 'ABC', title: 'DEF', qty:1.2, count: 437, enabled: true,
+ *                      dueDate: new DateOnly(), dateTime: new Date(),
+ *                      reportTimeInterval:ReportTimeIntervalEnum.LAST_6_MONTHS,
+ *                      status: EnabledStatus.instance).save()
+ * </pre>
  */
 @MappedEntity
 @DomainEntity
@@ -51,6 +60,7 @@ class AllFieldsDomain {
   @Nullable BigDecimal qty
   @Nullable Integer count
   @Nullable Boolean enabled
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   @Nullable Date dateTime
   @Nullable DateOnly dueDate
   @Transient String transientField = 'Transient Default'

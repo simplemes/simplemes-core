@@ -292,9 +292,91 @@ class DomainEntityTransformationSpec extends BaseSpecification {
     order2.orderLines.size() == 2
   }
 
+  @Rollback
+  def "verify that lazy load getter for many to many references is added to the domain"() {
+    given: 'a mocked domainEntityHelper for the lazy method call'
+    def domainEntityHelper = Mock(DomainEntityHelper)
+    DomainEntityHelper.instance = domainEntityHelper
+
+    and: 'a compiled domain class'
+    def src = """
+      import sample.domain.OrderLine
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import io.micronaut.data.annotation.MappedEntity
+      import io.micronaut.data.annotation.MappedProperty
+      import groovy.transform.EqualsAndHashCode
+      import javax.persistence.CascadeType
+      import javax.persistence.Column
+      import javax.persistence.ManyToMany
+      
+      @DomainEntity
+      @MappedEntity()
+      @EqualsAndHashCode(includes = ['uuid'])
+      class Order2 {
+        UUID uuid
+        
+        @ManyToMany(mappedBy="order_order_line")
+        List<OrderLine> orderLines
+      }
+    """
+    def clazz = CompilerTestUtils.compileSource(src)
+
+
+    when: 'the method is available'
+    def instance = clazz.newInstance()
+    instance.uuid = UUID.randomUUID()
+    def orderLines = instance.getOrderLines()
+
+    then: 'the right exception is thrown'
+    orderLines.size() == 1
+    orderLines == ["ABC"]
+
+    and: 'the method is called correctly'
+    1 * domainEntityHelper.lazyRefListLoad(_, 'orderLines', 'order_order_line', OrderLine) >> { args ->
+      //println "args = $args";
+      // For some reason, Spock does not match the instance variable in the DSL above.  Instead, we need to do this manually.
+      //noinspection GroovyAssignabilityCheck
+      assert instance.is(args[0])
+      return ["ABC"]
+    }
+
+    cleanup:
+    DomainEntityHelper.instance = new DomainEntityHelper()
+  }
+
+  def "verify that ManyToMany mappings for foreign reference list requires a parameterized type on the list"() {
+    given: 'a class with an error'
+    def src = """
+      package dummy.pack
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import javax.persistence.ManyToMany
+
+      @DomainEntity    
+      class TestClass {
+        UUID uuid
+        
+        @ManyToMany(mappedBy = "order")
+        List orderLines
+      }
+    """
+
+    and: 'no need to print the failing source to the console'
+    CompilerTestUtils.printCompileFailureSource = false
+
+    when: 'the domain is compiled'
+    CompilerTestUtils.compileSource(src)
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['Reference', 'List', 'parameterized', 'type', 'dummy.pack.TestClass'])
+
+    cleanup: 'reset the the console printing'
+    CompilerTestUtils.printCompileFailureSource = true
+  }
+
   @SuppressWarnings("GroovyAssignabilityCheck")
   @Rollback
-  def "verify that simple reference lazy load getter is added to the domain"() {
+  def "verify that single reference lazy load getter is added to the domain"() {
     given: 'a mocked domainEntityHelper for the lazy method call'
     def domainEntityHelper = Mock(DomainEntityHelper)
     DomainEntityHelper.instance = domainEntityHelper

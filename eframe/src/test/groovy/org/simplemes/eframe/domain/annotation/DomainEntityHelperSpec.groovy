@@ -14,6 +14,7 @@ import org.simplemes.eframe.security.domain.Role
 import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
+import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.AllFieldsDomain
@@ -28,6 +29,8 @@ import sample.domain.SampleParent
 import javax.sql.DataSource
 import java.lang.reflect.Field
 import java.sql.Connection
+import java.sql.PreparedStatement
+import java.sql.ResultSet
 
 /**
  * Tests.
@@ -386,37 +389,44 @@ class DomainEntityHelperSpec extends BaseSpecification {
 
   @Rollback
   def "verify that save handles many-to-many relationship on creation"() {
+    given: 'some roles'
+    new Role(authority: 'AUTH1', title: 'X').save()
+    new Role(authority: 'AUTH2', title: 'X').save()
+
     when: 'a domain record with the relationship is saved'
     def user = new User(userName: 'ABC', password: 'ABC')
-    user.userRoles << Role.findByAuthority('ADMIN')
-    user.userRoles << Role.findByAuthority('MANAGER')
+    user.userRoles << Role.findByAuthority('AUTH1')
+    user.userRoles << Role.findByAuthority('AUTH2')
     user.save()
 
     then: 'the record and relationships can be read'
     def user2 = User.findByUserName('ABC')
     user2.userRoles.size() == 2
-    user2.userRoles.contains(Role.findByAuthority('ADMIN'))
-    user2.userRoles.contains(Role.findByAuthority('MANAGER'))
-    !user2.userRoles.contains(Role.findByAuthority('CUSTOMIZER'))
+    user2.userRoles.contains(Role.findByAuthority('AUTH1'))
+    user2.userRoles.contains(Role.findByAuthority('AUTH2'))
   }
 
   @Rollback
   def "verify that save handles many-to-many relationship on update"() {
+    given: 'some roles'
+    new Role(authority: 'AUTH1', title: 'X').save()
+    new Role(authority: 'AUTH2', title: 'X').save()
+
     when: 'a domain record with the relationship is saved'
     def user = new User(userName: 'ABC', password: 'ABC')
-    user.userRoles << Role.findByAuthority('ADMIN')
-    user.userRoles << Role.findByAuthority('MANAGER')
+    user.userRoles << Role.findByAuthority('AUTH1')
+    user.userRoles << Role.findByAuthority('AUTH2')
     user.save()
 
     and: 'one reference is removed'
-    user.userRoles.remove(1)
+    user.userRoles.remove(Role.findByAuthority('AUTH2'))
     user.save()
 
     then: 'the record and relationships can be read'
     def user2 = User.findByUserName('ABC')
     user2.userRoles.size() == 1
-    user2.userRoles.contains(Role.findByAuthority('ADMIN'))
-    !user2.userRoles.contains(Role.findByAuthority('MANAGER'))
+    user2.userRoles.contains(Role.findByAuthority('AUTH1'))
+    !user2.userRoles.contains(Role.findByAuthority('AUTH2'))
   }
 
   @Rollback
@@ -1011,6 +1021,128 @@ class DomainEntityHelperSpec extends BaseSpecification {
     then: 'the right exception is thrown'
     def ex = thrown(NoSuchMethodException)
     UnitTestUtils.assertExceptionIsValid(ex, ['badMethod'])
+  }
+
+  /**
+   * Counts the records in the given table.
+   * @param tableName The real table name.
+   * @return The count.
+   */
+  @SuppressWarnings("GroovyUnusedAssignment")
+  int countRecords(String tableName) {
+    PreparedStatement ps = null
+    ResultSet rs = null
+    int res = 0
+    try {
+      ps = getPreparedStatement("SELECT count(*)  from $tableName")
+      ps.execute()
+      rs = ps.getResultSet()
+      while (rs.next()) {
+        res = rs.getInt(1)
+      }
+    } finally {
+      if (ps != null) {
+        ps.close()
+      }
+      if (rs != null) {
+        rs.close()
+      }
+    }
+    return res
+  }
+
+  @Rollback
+  def "verify that lazyRefListLoad works for read"() {
+    given: 'a domain record with list of references'
+    List<AllFieldsDomain> afdList = DataGenerator.generate {
+      domain AllFieldsDomain
+      count 5
+      values name: 'ABC-$i'
+    }
+
+    def sampleParent = new SampleParent(name: 'ABC')
+    sampleParent.allFieldsDomains = [afdList[0], afdList[1], afdList[2]] as List<AllFieldsDomain>
+    sampleParent.save()
+
+    when: 'the lazy load is used - on an uninitialized parent domain object'
+    def sampleParent2 = SampleParent.findByName('ABC')
+    def list = (List<AllFieldsDomain>) DomainEntityHelper.instance.lazyRefListLoad((DomainEntityInterface) sampleParent2,
+                                                                                   'allFieldsDomains',
+                                                                                   'sample_parent_all_fields_domain', AllFieldsDomain)
+
+    then: 'the record is in the DB'
+    list.size() == 3
+    list[0].uuid == afdList[0].uuid
+    list[1].uuid == afdList[1].uuid
+    list[2].uuid == afdList[2].uuid
+
+    and: 'the field has the list - the list is the same on later calls'
+    DomainEntityHelper.instance.lazyRefListLoad((DomainEntityInterface) sampleParent2, 'allFieldsDomains',
+                                                'sample_parent_all_fields_domain', AllFieldsDomain)
+
+    when: 'the loaded is called again'
+    DomainEntityHelper.instance.lastLazyRefParentLoaded = null
+    DomainEntityHelper.instance.lazyRefListLoad((DomainEntityInterface) sampleParent2, 'allFieldsDomains',
+                                                'sample_parent_all_fields_domain', AllFieldsDomain)
+
+    then: 'the value is not re-read from the DB'
+    DomainEntityHelper.instance.lastLazyRefParentLoaded == null
+
+    and: 'the records in the DB match'
+    countRecords('sample_parent_all_fields_domain') == 3
+  }
+
+  @Rollback
+  def "verify that save handles reference list changes"() {
+    given: 'a domain record with list of references'
+    List<AllFieldsDomain> afdList = DataGenerator.generate {
+      domain AllFieldsDomain
+      count 5
+      values name: 'ABC-$i'
+    }
+
+    def sampleParent = new SampleParent(name: 'ABC')
+    sampleParent.allFieldsDomains = [afdList[0], afdList[1], afdList[2]] as List<AllFieldsDomain>
+    sampleParent.save()
+
+    when: 'the reference list is changed'
+    sampleParent.allFieldsDomains.remove(1)
+    sampleParent.allFieldsDomains << (AllFieldsDomain) afdList[3]
+    sampleParent.allFieldsDomains << (AllFieldsDomain) afdList[4]
+    sampleParent.save()
+
+    then: 'the records are correct in the DB'
+    def sampleParent2 = SampleParent.findByName('ABC')
+    sampleParent2.allFieldsDomains.size() == 4
+    sampleParent2.allFieldsDomains.contains(afdList[0])
+    sampleParent2.allFieldsDomains.contains(afdList[2])
+    sampleParent2.allFieldsDomains.contains(afdList[3])
+    sampleParent2.allFieldsDomains.contains(afdList[4])
+    !sampleParent2.allFieldsDomains.contains(afdList[1])
+
+    and: 'the records in the DB match'
+    countRecords('sample_parent_all_fields_domain') == 4
+  }
+
+  @Rollback
+  def "verify that delete cleans up the reference list records"() {
+    given: 'a domain record with list of references'
+    List<AllFieldsDomain> afdList = DataGenerator.generate {
+      domain AllFieldsDomain
+      count 5
+      values name: 'ABC-$i'
+    }
+
+    def sampleParent = new SampleParent(name: 'ABC')
+    sampleParent.allFieldsDomains = [afdList[0], afdList[1], afdList[2]] as List<AllFieldsDomain>
+    sampleParent.save()
+
+    when: 'the record is deleted'
+    def sampleParent2 = SampleParent.findByName('ABC')
+    sampleParent2.delete()
+
+    then: 'the records are deleted from the DB join table'
+    countRecords('sample_parent_all_fields_domain') == 0
   }
 
 }

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.domain
 
 import ch.qos.logback.classic.Level
@@ -6,26 +10,27 @@ import org.simplemes.eframe.data.format.BigDecimalFieldFormat
 import org.simplemes.eframe.data.format.DateFieldFormat
 import org.simplemes.eframe.data.format.IntegerFieldFormat
 import org.simplemes.eframe.date.DateOnly
+import org.simplemes.eframe.exception.ValidationException
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.system.DisabledStatus
+import org.simplemes.eframe.system.EnabledStatus
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.MockAppender
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
+import sample.domain.CustomOrderComponent
 import sample.domain.Order
 import sample.domain.OrderLine
 import sample.domain.RMA
 import sample.domain.SampleChild
 import sample.domain.SampleParent
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+import java.sql.PreparedStatement
+import java.sql.ResultSet
 
 /**
  * Tests.
@@ -33,10 +38,7 @@ import sample.domain.SampleParent
 class DomainBinderSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON]
-
-  @SuppressWarnings("unused")
-  static dirtyDomains = [SampleParent, AllFieldsDomain, OrderLine, Order]
+  static dirtyDomains = [SampleParent, AllFieldsDomain, CustomOrderComponent, OrderLine, Order, FieldExtension]
 
   @SuppressWarnings("GrEqualsBetweenInconvertibleTypes")
   def "verify that simple one level binding on a domain works with non-string values"() {
@@ -204,9 +206,7 @@ class DomainBinderSpec extends BaseSpecification {
     def src = """
     package sample
     import org.simplemes.eframe.date.DateOnly
-    ////import grails.gorm.annotation.Entity
     
-    ////@Entity
     class SampleClass {
       Date dateTime
       DateOnly dueDate
@@ -239,9 +239,7 @@ class DomainBinderSpec extends BaseSpecification {
     given: 'a simple Domain class with a date field'
     def src = """
     package sample
-    //import grails.gorm.annotation.Entity
     
-    //@Entity
     class SampleClass {
       Date dateTime
     }
@@ -251,10 +249,10 @@ class DomainBinderSpec extends BaseSpecification {
     when: 'the params are bound using a locale-independent date format'
     DomainBinder.build().bind(o, [dateTime: 'gibberish'], true)
 
-    then: 'the domains errors list is populated correctly'
-    o.errors
-    def errorsByField = GlobalUtils.lookupValidationErrors(o.errors)
-    errorsByField['dateTime'][0].contains('gibberish')
+    then: 'the right exception is thrown'
+    def ex = thrown(ValidationException)
+    //error.206.message=Parse error on {0}.  Invalid value {1}.
+    UnitTestUtils.assertExceptionIsValid(ex, ['Parse', 'SampleClass', 'dateTime', 'gibberish'])
   }
 
   def "verify that bind gracefully handles parse errors in child records"() {
@@ -267,10 +265,10 @@ class DomainBinderSpec extends BaseSpecification {
                                   'sampleChildren[0].title'   : 'abc',
                                   'sampleChildren[0].dateTime': 'gibberish'], true)
 
-    then: 'the domains errors list is populated correctly'
-    o.errors
-    def errorsByField = GlobalUtils.lookupValidationErrors(o.errors)
-    errorsByField['sampleChildren.dateTime'][0].contains('gibberish')
+    then: 'the right exception is thrown'
+    def ex = thrown(ValidationException)
+    //error.206.message=Parse error on {0}.  Invalid value {1}.
+    UnitTestUtils.assertExceptionIsValid(ex, ['Parse', 'SampleParent', 'sampleChildren.dateTime', 'gibberish'])
   }
 
   def "verify that unknown inputs are ignored"() {
@@ -291,7 +289,7 @@ class DomainBinderSpec extends BaseSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(mockAppender.message, ['WARN', 'ignoring', 'gibberish'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that one level child bindings works on create"() {
     given: 'a domain object to bind to'
     def o = new SampleParent()
@@ -321,7 +319,7 @@ class DomainBinderSpec extends BaseSpecification {
     child2.sequence == 247
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that one level child bindings works on create - multiple rows in wrong order"() {
     given: 'a domain object to bind to'
     def o = new SampleParent()
@@ -370,20 +368,18 @@ class DomainBinderSpec extends BaseSpecification {
     and: 'a saved domain object to bind to'
     def record = null
     def child = null
-    def originalChildVersion = null
     SampleParent.withTransaction {
       child = new SampleChild(key: 'k1', title: 'title1', sequence: 147)
       record = new SampleParent(name: 'ABC')
-      record.addToSampleChildren(child)
+      record.sampleChildren << child
       record.save()
-      originalChildVersion = child.version
     }
 
     when: 'the object params are bound'
     SampleParent.withTransaction {
       DomainBinder.build().bind(record, [name                        : 'ABC',
-                                         'sampleChildren[0].id'      : "gibberish",
-                                         'sampleChildren[0]._dbId'   : "$child.id",
+                                         'sampleChildren[0].uuid'    : "gibberish",
+                                         'sampleChildren[0]._dbId'   : "$child.uuid",
                                          'sampleChildren[0].key'     : 'k2',
                                          'sampleChildren[0].title'   : 'title2',
                                          'sampleChildren[0].sequence': '247'], true)
@@ -404,8 +400,7 @@ class DomainBinderSpec extends BaseSpecification {
       assert child1.sequence == 247
 
       // and the record ID is unchanged and the version number was changed - means hibernate really saved the record
-      assert child1.id == child.id
-      assert child1.version != originalChildVersion
+      assert child1.uuid == child.uuid
       true
     }
 
@@ -413,12 +408,12 @@ class DomainBinderSpec extends BaseSpecification {
     !mockAppender.message
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that one level child bindings works when adding rows"() {
     given: 'a saved domain object to bind to'
     def child = new SampleChild(key: 'k1', title: 'title1', sequence: 147)
     def record = new SampleParent(name: 'ABC')
-    record.addToSampleChildren(child)
+    record.sampleChildren << child
     record.save()
 
     // Mixed up order of the parameters is intentional.  Tests the index sorting for the rows.
@@ -426,7 +421,7 @@ class DomainBinderSpec extends BaseSpecification {
     DomainBinder.build().bind(record, [name                        : 'ABC',
                                        'sampleChildren[1].key'     : 'k3',
                                        'sampleChildren[1].title'   : 'title3',
-                                       'sampleChildren[0]._dbId'   : "$child.id".toString(),
+                                       'sampleChildren[0]._dbId'   : "$child.uuid".toString(),
                                        'sampleChildren[0].key'     : 'k2',
                                        'sampleChildren[0].title'   : 'title2',
                                        'sampleChildren[0].sequence': '247',
@@ -442,13 +437,13 @@ class DomainBinderSpec extends BaseSpecification {
     child1.key == 'k2'
     child1.title == 'title2'
     child1.sequence == 247
-    child1.id == child.id
+    child1.uuid == child.uuid
 
     SampleChild child2 = (SampleChild) record1.sampleChildren[1]
     child2.key == 'k3'
     child2.title == 'title3'
     child2.sequence == 347
-    child2.id != child.id
+    child2.uuid != child.uuid
   }
 
   def "verify that one level child bindings works when removing rows"() {
@@ -461,9 +456,9 @@ class DomainBinderSpec extends BaseSpecification {
       def child2 = new SampleChild(key: 'k2', title: 'title2', sequence: 247)
       child3 = new SampleChild(key: 'k3', title: 'title3', sequence: 347)
       record = new SampleParent(name: 'ABC')
-      record.addToSampleChildren(child1)
-      record.addToSampleChildren(child2)
-      record.addToSampleChildren(child3)
+      record.sampleChildren << child1
+      record.sampleChildren << child2
+      record.sampleChildren << child3
       record.save()
     }
 
@@ -471,11 +466,11 @@ class DomainBinderSpec extends BaseSpecification {
     when: 'the object params are bound'
     SampleParent.withTransaction {
       DomainBinder.build().bind(record, [name                        : 'ABC',
-                                         'sampleChildren[0]._dbId'   : "$child1.id",
+                                         'sampleChildren[0]._dbId'   : "$child1.uuid",
                                          'sampleChildren[0].key'     : 'k2a',
                                          'sampleChildren[0].title'   : 'title2a',
                                          'sampleChildren[0].sequence': '2247',
-                                         'sampleChildren[1]._dbId'   : "$child3.id",
+                                         'sampleChildren[1]._dbId'   : "$child3.uuid",
                                          'sampleChildren[1].key'     : 'k3a',
                                          'sampleChildren[1].title'   : 'title3a',
                                          'sampleChildren[1].sequence': '2347',
@@ -502,7 +497,7 @@ class DomainBinderSpec extends BaseSpecification {
     }
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that one level child bindings works with sparse list"() {
     def record = new SampleParent()
     // Mixed up order of the parameters is intentional.  Tests the index sorting for the rows.
@@ -532,7 +527,7 @@ class DomainBinderSpec extends BaseSpecification {
     child2.sequence == 347
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that one level child bindings works with map list input"() {
     when: 'the object params are bound'
     def record = new SampleParent()
@@ -549,7 +544,6 @@ class DomainBinderSpec extends BaseSpecification {
     child1.sequence == 111
   }
 
-  @SuppressWarnings("GroovyAssignabilityCheck")
   def "verify that bind works with domain reference list to foreign domains"() {
     given: 'some domain records'
     List<AllFieldsDomain> afd = null
@@ -559,13 +553,12 @@ class DomainBinderSpec extends BaseSpecification {
         count 3
       }
     }
-    //setTraceLogLevel(DomainBinder)
 
     when: 'the object params are bound and saved'
     SampleParent.withTransaction {
       def o = new SampleParent(name: 'ABC')
       DomainBinder.build().bind(o, [name              : 'ABC',
-                                    'allFieldsDomains': "${afd[0].id},${afd[2].id}".toString()])
+                                    'allFieldsDomains': "${afd[0].uuid},${afd[2].uuid}".toString()])
       o.save()
     }
 
@@ -580,7 +573,7 @@ class DomainBinderSpec extends BaseSpecification {
 
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that bind supports custom fields - API mode"() {
     given: 'a mocked FieldDefinitions for the domain'
     new FieldExtension(fieldName: 'abc', domainClassName: SampleParent.name,
@@ -594,11 +587,12 @@ class DomainBinderSpec extends BaseSpecification {
     record.getFieldValue('abc') == 1.2
   }
 
-  //TODO: Find alternative to @Rollback
   def "verify that bind supports custom fields - UI mode"() {
     given: 'a mocked FieldDefinitions for the domain'
-    new FieldExtension(fieldName: 'abc', domainClassName: SampleParent.name,
-                       fieldFormat: format.instance).save()
+    FieldExtension.withTransaction {
+      new FieldExtension(fieldName: 'abc', domainClassName: SampleParent.name,
+                         fieldFormat: format.instance).save()
+    }
 
     and: 'the locale is set'
     GlobalUtils.defaultLocale = locale
@@ -626,13 +620,13 @@ class DomainBinderSpec extends BaseSpecification {
     def order = null
     Order.withTransaction {
       order = new Order()
-      DomainBinder.build().bind(order, [order                   : 'ABC',
-                                        'orderLines[0].sequence': '1',
-                                        'orderLines[0].qty'     : '1.2',
-                                        'orderLines[0].product' : 'PROD1',
-                                        'orderLines[1].sequence': '2',
-                                        'orderLines[1].qty'     : '2.2',
-                                        'orderLines[1].product' : 'PROD2'], true)
+      DomainBinder.build().bind(order, [order                         : 'ABC',
+                                        'customComponents[0].sequence': '1',
+                                        'customComponents[0].qty'     : '1.2',
+                                        'customComponents[0].product' : 'PROD1',
+                                        'customComponents[1].sequence': '2',
+                                        'customComponents[1].qty'     : '2.2',
+                                        'customComponents[1].product' : 'PROD2'], true)
 
       and: 'the top-level record is saved'
       order.save()
@@ -641,14 +635,14 @@ class DomainBinderSpec extends BaseSpecification {
     then: 'the records are correct in the DB'
     Order.withTransaction {
       order = Order.findByOrder('ABC')
-      List<OrderLine> orderLines = order.getFieldValue('orderLines')
-      assert orderLines.size() == 2
-      assert orderLines[0].sequence == 1
-      assert orderLines[0].qty == 1.2
-      assert orderLines[0].product == 'PROD1'
-      assert orderLines[1].sequence == 2
-      assert orderLines[1].qty == 2.2
-      assert orderLines[1].product == 'PROD2'
+      List<CustomOrderComponent> customComponents = order.getFieldValue('customComponents') as List<CustomOrderComponent>
+      assert customComponents.size() == 2
+      assert customComponents[0].sequence == 1
+      assert customComponents[0].qty == 1.2
+      assert customComponents[0].product == 'PROD1'
+      assert customComponents[1].sequence == 2
+      assert customComponents[1].qty == 2.2
+      assert customComponents[1].product == 'PROD2'
       true
     }
   }
@@ -659,7 +653,7 @@ class DomainBinderSpec extends BaseSpecification {
     Order.withTransaction {
       order = new Order()
       DomainBinder.build().bind(order, [order     : 'ABC',
-                                        orderLines: [
+                                        customComponents: [
                                           [sequence: 1, product: 'PROD1', qty: 12.2],
                                           [sequence: 2, product: 'PROD2', qty: 22.2]
                                         ]])
@@ -671,14 +665,14 @@ class DomainBinderSpec extends BaseSpecification {
     then: 'the records are correct in the DB'
     Order.withTransaction {
       order = Order.findByOrder('ABC')
-      List<OrderLine> orderLines = order.getFieldValue('orderLines')
-      assert orderLines.size() == 2
-      assert orderLines[0].sequence == 1
-      assert orderLines[0].qty == 12.2
-      assert orderLines[0].product == 'PROD1'
-      assert orderLines[1].sequence == 2
-      assert orderLines[1].qty == 22.2
-      assert orderLines[1].product == 'PROD2'
+      List<CustomOrderComponent> customComponents = order.getFieldValue('customComponents') as List<CustomOrderComponent>
+      assert customComponents.size() == 2
+      assert customComponents[0].sequence == 1
+      assert customComponents[0].qty == 12.2
+      assert customComponents[0].product == 'PROD1'
+      assert customComponents[1].sequence == 2
+      assert customComponents[1].qty == 22.2
+      assert customComponents[1].product == 'PROD2'
       true
     }
   }
@@ -688,11 +682,11 @@ class DomainBinderSpec extends BaseSpecification {
     def order = null
     Order.withTransaction {
       order = new Order(order: 'M1001')
-      def orderLines = []
-      orderLines << new OrderLine(sequence: 1, product: 'PROD1')
-      orderLines << new OrderLine(sequence: 2, product: 'PROD2')
-      orderLines << new OrderLine(sequence: 3, product: 'PROD3')
-      order.setFieldValue('orderLines', orderLines)
+      def customComponents = []
+      customComponents << new CustomOrderComponent(sequence: 1, product: 'PROD1')
+      customComponents << new CustomOrderComponent(sequence: 2, product: 'PROD2')
+      customComponents << new CustomOrderComponent(sequence: 3, product: 'PROD3')
+      order.setFieldValue('customComponents', customComponents)
       order.save()
     }
 
@@ -700,7 +694,7 @@ class DomainBinderSpec extends BaseSpecification {
     Order.withTransaction {
       order = new Order()
       DomainBinder.build().bind(order, [order     : 'ABC',
-                                        orderLines: [
+                                        customComponents: [
                                           [sequence: 11, product: 'PROD1A', qty: 32.2],
                                           [sequence: 12, product: 'PROD2A', qty: 42.2]
                                         ]])
@@ -712,19 +706,19 @@ class DomainBinderSpec extends BaseSpecification {
     then: 'the records are correct in the DB'
     Order.withTransaction {
       order = Order.findByOrder('ABC')
-      List<OrderLine> orderLines = order.getFieldValue('orderLines')
-      assert orderLines.size() == 2
-      assert orderLines[0].sequence == 11
-      assert orderLines[0].qty == 32.2
-      assert orderLines[0].product == 'PROD1A'
-      assert orderLines[1].sequence == 12
-      assert orderLines[1].qty == 42.2
-      assert orderLines[1].product == 'PROD2A'
+      List<CustomOrderComponent> customComponents = order.getFieldValue('customComponents') as List<CustomOrderComponent>
+      assert customComponents.size() == 2
+      assert customComponents[0].sequence == 11
+      assert customComponents[0].qty == 32.2
+      assert customComponents[0].product == 'PROD1A'
+      assert customComponents[1].sequence == 12
+      assert customComponents[1].qty == 42.2
+      assert customComponents[1].product == 'PROD2A'
       true
     }
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that bind supports Configurable Type field"() {
     given: 'a default flex type'
     def flexType = DataGenerator.buildFlexType()
@@ -735,6 +729,57 @@ class DomainBinderSpec extends BaseSpecification {
 
     then: 'the domain has the right values'
     rma.getRmaTypeValue('FIELD1') == 'custom value 1'
+  }
+
+  @SuppressWarnings("GroovyUnusedAssignment")
+  @Rollback
+  def "verify that bind supports JDBC ResultSet"() {
+    given: 'populate raw table for the query'
+    def dateOnly = new DateOnly()
+    def date = new Date()
+    def afd1 = new AllFieldsDomain(name: 'ABC', title: 'DEF', qty: 1.2, count: 437, enabled: true, dueDate: dateOnly,
+                                   dateTime: date, reportTimeInterval: ReportTimeIntervalEnum.LAST_6_MONTHS,
+                                   status: EnabledStatus.instance).save()
+
+    def sampleParent = new SampleParent(name: 'ABC')
+    sampleParent.allFieldsDomains = [afd1] as List<AllFieldsDomain>
+    sampleParent.save()
+
+    when: 'an SQL query result set is created'
+    def sb = new StringBuilder()
+    sb << "SELECT *  from sample_parent_all_fields_domain"
+    sb << " INNER JOIN all_fields_domain ON sample_parent_all_fields_domain.all_fields_domain_id = all_fields_domain.uuid"
+    PreparedStatement ps = null
+    ResultSet rs = null
+    AllFieldsDomain afd = null
+    try {
+      ps = getPreparedStatement(sb.toString())
+      ps.execute()
+      rs = ps.getResultSet()
+      while (rs.next()) {
+        afd = DomainBinder.bindResultSet(rs, AllFieldsDomain) as AllFieldsDomain
+      }
+    } finally {
+      if (ps != null) {
+        ps.close()
+      }
+      if (rs != null) {
+        rs.close()
+      }
+    }
+
+    then: 'record fields are populated'
+    afd.uuid == afd1.uuid
+    afd.name == 'ABC'
+    afd.title == 'DEF'
+    afd.qty == 1.2
+    afd.count == 437
+    afd.enabled
+    afd.dueDate == dateOnly
+    afd.dateTime == date
+    afd.reportTimeInterval == ReportTimeIntervalEnum.LAST_6_MONTHS
+    afd.status == EnabledStatus.instance
+
   }
 
   // remove foreign domain from list.

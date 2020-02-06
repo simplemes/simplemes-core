@@ -216,17 +216,15 @@ show the key (_'order.label'_, etc).
 
 ==== Reserved Field Names
 
-Micronaut/GORM and this framework use several domain field names for internal use and your domains should not create them.
-The framework uses these in JSON/XML processing, so your domains are not allowed to create fields
- with these names:
+<<Micronaut Data>> and this framework use several domain field names for internal use and
+your domains must have them:
 
 [cols="1,4"]
 |===
 |Field Name|Description
 
-|id|The internal database ID field.
-|class|The Java class name for the field.
-|version|The version of the record in the DB.  Automatically maintained by GORM.
+|uuid|The internal database UUID field.
+|version|The version of the record in the DB.  Used for optimistic locking.  Automatically maintained by the framework.
 |===
 
 
@@ -639,12 +637,23 @@ interface ChildRepository extends BaseRepository, CrudRepository<Child, UUID> {
 ==== Many-to-Many Relationships
 
 Many-to-Many relationships are implemented using a join table that contains a reference
-to the parent and to the related record.  You must use the _@ManyToMany_ annotation (from Jakarta)
-and add a _@Join_ annotation to the `findByXYZ()` method in your repository.
+to the parent and to the related record. This is sometimes referred to as a list of foreign
+references. You can implement them in two different ways:
 
-Also, the _@DomainEntity_ annotation adds the save() and delete() logic to handle this join table.
+. <<Many-to-Many - Join>> from a `find()` method.
+. <<Many-to-Many - Lazy Loader>>.
 
-NOTE: This is sometimes referred to as a list of foreign references.
+You can use either approach or a combination of the two.  If you don't define a JOIN option
+on the `find()` method, then you can still rely on the lazy loader to load the list on demand.
+The _@DomainEntity_ annotation adds the `save()` and `delete()` logic to handle this join table.
+
+Both approaches require a _@ManyToMany_ annotation.
+
+==== Many-to-Many - Join
+
+The Join approach requires the finders be defined with a _@Join_ annotation to join the values from
+the DB.  This uses the _@ManyToMany_ annotation (from Jakarta) and a _@Join_ annotation to
+the `findBy...()` method in your repository.
 
 An example is shown below:
 
@@ -653,7 +662,7 @@ An example is shown below:
 ----
 class User {
   @ManyToMany(mappedBy = "userRole")
-  List<Role> userRoles = [] // <.>
+  List<Role> userRoles // <.>
 }
 
 interface UserRepository extends BaseRepository, CrudRepository<User, UUID> {
@@ -661,10 +670,32 @@ interface UserRepository extends BaseRepository, CrudRepository<User, UUID> {
   Optional<User> findByUserName(String userName)
 }
 ----
-<.> An empty list is defined for new instances.  The `findByUserName()` method will create
-    the correct array if the finder is correct.
+<.> A null list allows the lazy loader logic to be used too.
 
-This will create a `users_role` table with a user_id and role_id field to link the two records.
+This will create a `user_role` table with a `user_id` and `role_id` field to link the two records.
+
+==== Many-to-Many - Lazy Loader
+
+The lazy loader approach is simpler.  It just requires the _@ManyToMany_ annotation (from Jakarta).
+On first access, the list of references will be loaded and the foreign domain will be populated.
+
+An example is shown below:
+
+[source,groovy]
+.Example - User Many-to-Many Relationship - No Join
+----
+class User {
+  @ManyToMany(cascade = CascadeType.ALL, mappedBy = "userRole")
+  List<Role> userRoles // <.>
+}
+
+interface UserRepository extends BaseRepository, CrudRepository<User, UUID> {
+  Optional<User> findByUserName(String userName)
+}
+----
+<.> A null list allows the lazy loader logic to be used too.
+
+This will create a `users_role` table with a `user_id` and `role_id` field to link the two records.
 
 ==== Choice List
 

@@ -38,16 +38,6 @@ class StartupHandler {
   void onStartup(ServiceStartedEvent event) {
     log.debug('Server Started with configuration {}', Holders.configuration)
 
-    // Modify the Object mapper
-    def mapper = Holders.applicationContext.getBean(ObjectMapper)
-    configureJacksonObjectMapper(mapper)
-    // TODO: Look at configuration https://stackoverflow.com/questions/59160012/get-micronaut-to-use-my-instance-of-jacksonconfiguration
-    // needs 1.3.0 or 1.2.8.
-
-    // Start Initial data load.
-    def loader = Holders.applicationContext.getBean(InitialDataLoader)
-    loader.dataLoad()
-
     if (log.debugEnabled) {
       log.debug('All Beans: {}', Holders.applicationContext.allBeanDefinitions*.name)
     }
@@ -58,6 +48,16 @@ class StartupHandler {
     if (WorkArounds.list()) {
       log.warn('WorkArounds in use {}', WorkArounds.list())
     }
+
+    // Modify the Object mapper
+    def mapper = Holders.applicationContext.getBean(ObjectMapper)
+    configureJacksonObjectMapper(mapper)
+    // TODO: Look at configuration https://stackoverflow.com/questions/59160012/get-micronaut-to-use-my-instance-of-jacksonconfiguration
+    // needs 1.3.0 or 1.2.8.
+
+    // Start Initial data load.
+    def loader = Holders.applicationContext.getBean(InitialDataLoader)
+    loader.dataLoad()
 
 
   }

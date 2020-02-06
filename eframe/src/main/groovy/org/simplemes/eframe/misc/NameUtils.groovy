@@ -1,9 +1,8 @@
-package org.simplemes.eframe.misc
-
 /*
- * Copyright Michael Houston. All rights reserved.
- *
-*/
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
+package org.simplemes.eframe.misc
 
 /**
  * Miscellaneous utilities for manipulating names in the application and for the framework.
@@ -155,7 +154,7 @@ class NameUtils {
     if (!columnName) {
       return columnName
     }
-    // This is the inverse of hibernate's ImprovedNamingStrategy.  They do not have a method to handle the case
+    // This is the inverse of data layer's NamingStrategy.  They do not have a method to handle the case
     def s = columnName.toLowerCase()
     def sb = new StringBuilder()
     def underscoreFound = false

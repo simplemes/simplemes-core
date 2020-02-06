@@ -20,6 +20,7 @@ import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.simplemes.eframe.ast.ASTUtils;
 
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.lang.reflect.Modifier;
@@ -96,6 +97,7 @@ public class DomainEntityTransformation implements ASTTransformation {
 
     addLazyChildLoaders(classNode, sourceUnit);
     addLazyReferenceLoaders(classNode, sourceUnit);
+    addLazyRefListLoaders(classNode, sourceUnit);
 
     Expression init = new MapExpression();
     ASTUtils.addField(DomainEntityHelper.DOMAIN_SETTINGS_FIELD_NAME, Map.class, Modifier.PUBLIC | Modifier.TRANSIENT, 0, false, init,
@@ -148,6 +150,40 @@ public class DomainEntityTransformation implements ASTTransformation {
         delegateArgs.add(new ClassExpression(childDomainTypeNode));
         ClassNode returnTypeNode = new ClassNode(List.class);
         addDelegatedMethod(getterName, "lazyChildLoad", false, null, delegateArgs, returnTypeNode, classNode, sourceUnit);
+      }
+
+    }
+  }
+
+  /**
+   * Adds the lazy loader methods for the list of foreign references.
+   *
+   * @param classNode  The class to transform.
+   * @param sourceUnit The source the class came from.
+   */
+  private void addLazyRefListLoaders(ClassNode classNode, SourceUnit sourceUnit) {
+    // Find all fields with a @OneToMany annotation.
+    for (FieldNode fieldNode : classNode.getFields()) {
+      for (AnnotationNode annotationNode : fieldNode.getAnnotations(new ClassNode(ManyToMany.class))) {
+        //System.out.println(fieldNode.getName()+" ann:" + annotationNode+" "+annotationNode.getClassNode()+" mappedBy:"+annotationNode.getMembers());
+        ClassNode referenceDomainClassNode = fieldNode.getType();
+        String mappedByTableName = annotationNode.getMember("mappedBy").getText();
+        GenericsType[] genericsTypes = referenceDomainClassNode.getGenericsTypes();
+        if (genericsTypes == null || genericsTypes.length == 0) {
+          String fqName = classNode.getName();
+          String s = "Reference List field " + fieldNode.getName() + " must be have a parameterized type (e.g. List<XYZ>) in " + fqName;
+          sourceUnit.getErrorCollector().addError(new SimpleMessage(s, sourceUnit));
+          return;
+        }
+        ClassNode referencedDomainTypeNode = genericsTypes[0].getType();
+        String getterName = "get" + StringUtils.capitalize(fieldNode.getName());
+        //  public List lazyChildLoad(Object object,String fieldName, String mappedByFieldName, Class childDomainClazz)
+        List<Expression> delegateArgs = new ArrayList<>();
+        delegateArgs.add(new ConstantExpression(fieldNode.getName()));
+        delegateArgs.add(new ConstantExpression(mappedByTableName));
+        delegateArgs.add(new ClassExpression(referencedDomainTypeNode));
+        ClassNode returnTypeNode = new ClassNode(List.class);
+        addDelegatedMethod(getterName, "lazyRefListLoad", false, null, delegateArgs, returnTypeNode, classNode, sourceUnit);
       }
 
     }

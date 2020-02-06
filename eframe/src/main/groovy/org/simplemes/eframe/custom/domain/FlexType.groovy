@@ -194,7 +194,7 @@ class FlexType implements ConfigurableTypeInterface, ChoiceListItemInterface {
   @Override
   List<FieldDefinitionInterface> determineInputFields(String configurableTypeFieldName) {
     def list = []
-    for (field in fields) {
+    for (field in getFields()) {
       list << new ConfigurableTypeFieldDefinition(field, configurableTypeFieldName)
     }
     return list

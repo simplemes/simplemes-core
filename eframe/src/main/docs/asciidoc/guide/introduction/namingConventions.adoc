@@ -19,7 +19,7 @@ These follow the basic Micronaut conventions, but add a few conventions for simp
 * `*Utils` - Various utilities packages as static methods on the Utils class. Example: link:groovydoc/org/simplemes/eframe/misc/DateUtils.html[DateUtils^].
 * `*Request` - A POGO object that contains the values for a specific request.  Usually used by services to hold all values needed for the request.
 * `*Response` - A POGO object that contains results from a specific request.  Usually used by services to hold the values returned to the caller.
-* `Abstract*` - A prefix for abstract parent classes such as link:groovydoc/org/simplemes/eframe/web/builder/AbstractFieldBuilder.html[AbstractFieldBuilder^].
+* `Abstract*` - A prefix for abstract parent classes.
 * `Base*` - A prefix for parent classes that have no abstract methods.
 * `*Spec` - A Spock-based test.
 * `*GUISpec` - A Spock-based test that use a live GUI for testing with GEB/Selenium/Webdriver.

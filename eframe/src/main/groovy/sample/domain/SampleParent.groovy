@@ -17,13 +17,13 @@ import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.domain.annotation.DomainEntity
 
 import javax.annotation.Nullable
+import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.ManyToMany
 import javax.persistence.ManyToOne
+import javax.persistence.OneToMany
 
 //import grails.gorm.annotation.Entity
-
-import javax.persistence.OneToMany
 
 /**
  * A test/Sample parent domain class.
@@ -67,8 +67,8 @@ class SampleParent implements SampleParentInterface {
   /**
    * A list of foreign references.
    */
-  @ManyToMany(mappedBy = "sample_parent_all_fields_domain")
-  List<AllFieldsDomain> allFieldsDomains = []
+  @ManyToMany(cascade = CascadeType.ALL, mappedBy = "sample_parent_all_fields_domain")
+  List<AllFieldsDomain> allFieldsDomains
 
   /**
    * A list of children.

@@ -1,14 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.security.domain
 
 import io.micronaut.data.annotation.Join
 import io.micronaut.data.repository.CrudRepository
 import org.simplemes.eframe.domain.BaseRepository
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * The sample order repository base interface.  Provides the methods for the repo,
@@ -17,7 +15,8 @@ import org.simplemes.eframe.domain.BaseRepository
  */
 interface UserRepository extends BaseRepository, CrudRepository<User, UUID> {
 
-  @Join(value = "userRoles", type = Join.Type.LEFT_FETCH)
+  // TODO: Restore this when workAround192 is fixed.
+  //@Join(value = "userRoles", type = Join.Type.LEFT_FETCH)
   Optional<User> findByUserName(String userName)
 
   Optional<User> findById(UUID uuid)

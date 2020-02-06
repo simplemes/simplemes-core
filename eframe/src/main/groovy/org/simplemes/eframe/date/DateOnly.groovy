@@ -7,6 +7,7 @@ package org.simplemes.eframe.date
 import groovy.transform.EqualsAndHashCode
 import io.micronaut.data.annotation.TypeDef
 import io.micronaut.data.model.DataType
+import org.simplemes.eframe.misc.ArgumentUtils
 
 import java.time.Instant
 import java.time.temporal.ChronoUnit
@@ -33,10 +34,20 @@ class DateOnly {
 
   /**
    * Constructs a dateOnly object from a given timestamp (in milliseconds).
-   * @param timeInMillis The time in milliseconds.  This must correspond to midnight in UTC.
+   * @param timeInMillis The time in milliseconds.
    */
   DateOnly(long timeInMillis) {
     time = timeInMillis
+    setTimeToMidnightUTC()
+  }
+
+  /**
+   * Constructs a dateOnly object from a given date/time.
+   * @param date The date. 
+   */
+  DateOnly(Date date) {
+    ArgumentUtils.checkMissing(date, 'date')
+    time = date.time
     setTimeToMidnightUTC()
   }
 
