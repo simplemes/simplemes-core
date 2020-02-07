@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 import org.simplemes.eframe.misc.TextUtils
@@ -17,12 +21,6 @@ import sample.domain.AllFieldsDomain
 import sample.domain.RMA
 import sample.domain.SampleParent
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * Tests.
  */
@@ -33,9 +31,6 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
   }
 
   def "verify that basic HTML structure is correct for a simple grid"() {
-    given: 'a mocked domain utils'
-    new MockDomainUtils(this, SampleParent).install()
-
     when: 'the UI element is built'
     def page = new DefinitionListWidget(new WidgetContext(parameters: [id: 'dummyID'], controllerClass: SampleParentController)).build().toString()
 

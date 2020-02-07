@@ -62,7 +62,7 @@ class SampleSubClass implements SampleParentInterface {
 
   @Id @AutoPopulated UUID uuid
 
-  static fieldOrder = SampleParent.fieldOrder << 'subTitle'
+  static fieldOrder = SampleParent.fieldOrder.clone() << 'subTitle'
   static keys = SampleParent.keys
 
   /**

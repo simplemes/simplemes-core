@@ -83,7 +83,7 @@ class SampleParent implements SampleParentInterface {
   @Id @AutoPopulated UUID uuid
 
   static fieldOrder = ['name', 'title', 'notes', 'moreNotes', 'allFieldsDomain', 'allFieldsDomains',
-                       'sampleChildren',]
+                       'sampleChildren']
 
   static keys = ['name']
 

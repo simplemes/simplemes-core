@@ -113,28 +113,26 @@ class PreferenceHolder {
    */
   @SuppressWarnings(["GroovyAssignabilityCheck", "GroovyMissingReturnStatement"])
   void load() {
-    UserPreference.withTransaction {
-      // Try to find the preference in the DB, with cache support.
-      def basePage = ControllerUtils.instance.determineBaseURI(_page)
-      if (_user && basePage) {
-        userPreference = UserPreference.findByUserNameAndPage((String) _user, basePage)
+    // Try to find the preference in the DB, with cache support.
+    def basePage = ControllerUtils.instance.determineBaseURI(_page)
+    if (_user && basePage) {
+      userPreference = UserPreference.findByUserNameAndPage((String) _user, basePage)
+    }
+    if (!userPreference) {
+      // No record found, so create it.
+      userPreference = new UserPreference(page: basePage, userName: _user)
+    }
+    if (_element) {
+      currentPreference = userPreference.preferences?.find { it.element == _element }
+      if (currentPreference == null) {
+        // Make sure the element has a preference entry in the map
+        currentPreference = new Preference(element: _element)
+        userPreference.preferences << currentPreference
       }
-      if (!userPreference) {
-        // No record found, so create it.
-        userPreference = new UserPreference(page: basePage, userName: _user)
-      }
-      if (_element) {
-        currentPreference = userPreference.preferences?.find { it.element == _element }
-        if (currentPreference == null) {
-          // Make sure the element has a preference entry in the map
-          currentPreference = new Preference(element: _element)
-          userPreference.preferences << currentPreference
-        }
-      } else {
-        // No element name, so use the first one found in the list
-        currentPreference = userPreference?.preferences?.getAt(0)
-        _element = currentPreference?.element
-      }
+    } else {
+      // No element name, so use the first one found in the list
+      currentPreference = userPreference?.preferences?.getAt(0)
+      _element = currentPreference?.element
     }
   }
 

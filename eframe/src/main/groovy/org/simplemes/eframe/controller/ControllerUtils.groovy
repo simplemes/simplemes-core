@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.controller
 
 import groovy.util.logging.Slf4j
@@ -11,12 +15,6 @@ import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.web.task.TaskMenuControllerUtils
 import org.simplemes.eframe.web.ui.UIDefaults
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Controller support utilities.
@@ -274,6 +272,9 @@ class ControllerUtils {
    * @return The baseURI.
    */
   String determineBaseURI(String uri) {
+    if (!uri) {
+      return uri
+    }
     // Strip any HTTP parameters
     def l = uri.indexOf('?')
     if (l >= 0) {

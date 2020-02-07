@@ -80,14 +80,8 @@ class DateUtils {
    * @return The date string.
    */
   static String formatDate(DateOnly date, Locale locale = null) {
-    def dateFormatter
-    if (date instanceof DateOnly) {
-      dateFormatter = getDateOnlyFormat(GlobalUtils.getRequestLocale(GlobalUtils.getRequestLocale(locale)))
-    } else {
-      dateFormatter = getDateFormat(GlobalUtils.getRequestLocale(GlobalUtils.getRequestLocale(locale)))
-      dateFormatter.setTimeZone(Holders.globals.timeZone)
-    }
-    return dateFormatter.format(date)
+    def dateFormatter = getDateOnlyFormat(GlobalUtils.getRequestLocale(GlobalUtils.getRequestLocale(locale)))
+    return dateFormatter.format(new Date(date.time))
   }
 
   /**

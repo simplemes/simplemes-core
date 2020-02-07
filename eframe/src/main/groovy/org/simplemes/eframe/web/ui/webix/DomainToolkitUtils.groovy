@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix
 
 import groovy.util.logging.Slf4j
@@ -17,12 +21,6 @@ import org.simplemes.eframe.web.PanelUtils
 import org.simplemes.eframe.web.ui.webix.widget.BaseLabeledFieldWidget
 
 import java.text.SimpleDateFormat
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * This class provides utilities to create schemas and other data needed for toolkit actions.
@@ -239,7 +237,7 @@ class DomainToolkitUtils {
       }
       Class type = DomainUtils.instance.getFieldType(domainClass, fieldName)
 
-      if (Date.isAssignableFrom(type)) {
+      if (Date.isAssignableFrom(type) || DateOnly.isAssignableFrom(type)) {
         // We need to parse the date with some special handling of TZ for the gui toolkit.
         sb << """if (typeof obj.$fieldName == 'string') {
           obj.$fieldName = tk._parseISODate(obj.$fieldName,true);

@@ -23,6 +23,8 @@ interface UserRepository extends BaseRepository, CrudRepository<User, UUID> {
 
   Optional<User> findByUuid(UUID uuid)
 
+  Optional<User> findByUserNameAndEnabled(String userName, Boolean enabled)
+
   List<User> list()
 
   @Join(value = "userRoles", type = Join.Type.LEFT_FETCH)

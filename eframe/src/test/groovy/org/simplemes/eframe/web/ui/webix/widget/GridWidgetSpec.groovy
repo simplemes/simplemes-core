@@ -1,7 +1,10 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
-import com.fasterxml.jackson.databind.ObjectMapper
-import org.simplemes.eframe.application.Holders
+
 import org.simplemes.eframe.data.format.ChildListFieldFormat
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.date.ISODate
@@ -16,33 +19,13 @@ import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.SampleChild
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * Tests.
  */
 class GridWidgetSpec extends BaseWidgetSpecification {
 
-  static originalObjectMapper
-
-  def setup() {
-    // Most tests will need a mocked preference holder
-    new MockPreferenceHolder(this, []).install()
-
-    // and the object mapper is mocked too
-    originalObjectMapper = Holders.objectMapper
-    def mockMapper = Mock(ObjectMapper)
-    mockMapper.writeValueAsString(*_) >> '{ "sequence": 237}'
-    Holders.objectMapper = mockMapper
-  }
-
-  void cleanup() {
-    Holders.objectMapper = originalObjectMapper
-  }
+  @SuppressWarnings("unused")
+  static specNeeds = SERVER
 
   def "verify that widget builds basic structure correctly - table definition"() {
     when: 'the UI element is built'
@@ -80,10 +63,9 @@ class GridWidgetSpec extends BaseWidgetSpecification {
     def list = []
     def dueDate = new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS)
     def dateTime = new Date(UnitTestUtils.SAMPLE_TIME_NO_FRACTION_MS)
-    list << new SampleChild(key: 'k1-abc', title: 'abc', id: 237, enabled: false,
-                            dueDate: dueDate,
-                            dateTime: dateTime)
-    list << new SampleChild(key: 'k2-xyz', title: 'xyz', id: 437, enabled: true)
+    list << new SampleChild(key: 'k1-abc', title: 'abc', enabled: false,
+                            dueDate: dueDate, dateTime: dateTime, uuid: UUID.randomUUID())
+    list << new SampleChild(key: 'k2-xyz', title: 'xyz', enabled: true, uuid: UUID.randomUUID())
 
     when: 'the UI element is built'
     def widgetContext = buildWidgetContext(parameters: [id: 'TheTable'], value: list,
@@ -97,16 +79,16 @@ class GridWidgetSpec extends BaseWidgetSpecification {
     and: 'the data rows contain the passed in data'
     def dataText = JavascriptTestUtils.extractBlock(page, 'data: [')
 
-    def rowText1 = TextUtils.findLine(dataText, 'id: "237"')
+    def rowText1 = TextUtils.findLine(dataText, "id: \"${list[0].uuid}\"")
     JavascriptTestUtils.extractProperty(rowText1, 'key') == 'k1-abc'
     JavascriptTestUtils.extractProperty(rowText1, 'title') == 'abc'
-    JavascriptTestUtils.extractProperty(rowText1, '_dbId') == '237'
+    JavascriptTestUtils.extractProperty(rowText1, '_dbId') == list[0].uuid.toString()
     JavascriptTestUtils.extractProperty(rowText1, 'enabled') == 'false'
 
-    def rowText2 = TextUtils.findLine(dataText, 'id: "437"')
+    def rowText2 = TextUtils.findLine(dataText, "id: \"${list[1].uuid}\"")
     JavascriptTestUtils.extractProperty(rowText2, 'key') == 'k2-xyz'
     JavascriptTestUtils.extractProperty(rowText2, 'title') == 'xyz'
-    JavascriptTestUtils.extractProperty(rowText2, '_dbId') == '437'
+    JavascriptTestUtils.extractProperty(rowText2, '_dbId') == list[1].uuid.toString()
     JavascriptTestUtils.extractProperty(rowText2, 'enabled') == 'true'
 
     and: 'the boolean values are enclosed in quotes'
@@ -120,7 +102,7 @@ class GridWidgetSpec extends BaseWidgetSpecification {
     and: 'the first row is auto-selected'
     def start = page.indexOf('var tableTheTable')
     def handlerText = page[start..-1]
-    handlerText.contains('tableTheTable.select("237")')
+    handlerText.contains("""tableTheTable.select("${list[0].uuid}")""")
   }
 
   def "verify that widget builds basic structure correctly - buttons"() {
@@ -189,8 +171,8 @@ class GridWidgetSpec extends BaseWidgetSpecification {
   def "verify that widget builds basic structure correctly - readOnly case"() {
     given: 'a value'
     def list = []
-    list << new SampleChild(key: 'k1-abc', title: 'abc', id: 237)
-    list << new SampleChild(key: 'k2-xyz', title: 'xyz', id: 437)
+    list << new SampleChild(key: 'k1-abc', title: 'abc', uuid: UUID.randomUUID())
+    list << new SampleChild(key: 'k2-xyz', title: 'xyz', uuid: UUID.randomUUID())
 
     when: 'the UI element is built'
     def widgetContext = buildWidgetContext(readOnly: true, value: list, parameters: [id: 'TheTable'],
@@ -220,8 +202,8 @@ class GridWidgetSpec extends BaseWidgetSpecification {
   def "verify that widget builds basic structure correctly - data is escaped correctly"() {
     given: 'a value'
     def list = []
-    list << new SampleChild(key: 'k1-abc', title: '<script>"</script>', id: 237)
-    list << new SampleChild(key: 'k2-xyz', title: "<script>'</script>", id: 437)
+    list << new SampleChild(key: 'k1-abc', title: '<script>"</script>', uuid: UUID.randomUUID())
+    list << new SampleChild(key: 'k2-xyz', title: "<script>'</script>", uuid: UUID.randomUUID())
 
     when: 'the UI element is built'
     def widgetContext = buildWidgetContext(parameters: [id: 'TheTable'], value: list,
@@ -231,10 +213,10 @@ class GridWidgetSpec extends BaseWidgetSpecification {
 
     then: 'the escaped value is in the data element'
     def dataText = JavascriptTestUtils.extractBlock(page, 'data: [')
-    def rowText1 = TextUtils.findLine(dataText, 'id: "237"')
+    def rowText1 = TextUtils.findLine(dataText, """id: "${list[0].uuid}""")
     rowText1.contains('"<script>\\"<\\/script>"')
 
-    def rowText2 = TextUtils.findLine(dataText, 'id: "437"')
+    def rowText2 = TextUtils.findLine(dataText, """id: "${list[1].uuid}""")
     rowText2.contains('"<script>\'<\\/script>"')
 
     and: 'the values are HTML escaped correctly on the client'
@@ -265,9 +247,9 @@ class GridWidgetSpec extends BaseWidgetSpecification {
 
     and: 'a value'
     def list = []
-    list << new SampleChild(key: 'k1-abc', title: 'abc', sequence: 10, id: 237)
-    list << new SampleChild(key: 'k2-xyz', title: "xyz", sequence: 1, id: 437)
-    list << new SampleChild(key: 'k3-pdq', title: "pdq", sequence: 13, id: 537)
+    list << new SampleChild(key: 'k1-abc', title: 'abc', sequence: 10, uuid: UUID.randomUUID())
+    list << new SampleChild(key: 'k2-xyz', title: "xyz", sequence: 1, uuid: UUID.randomUUID())
+    list << new SampleChild(key: 'k3-pdq', title: "pdq", sequence: 13, uuid: UUID.randomUUID())
 
     when: 'the UI element is built'
     def widgetContext = buildWidgetContext(parameters: [id: 'TheTable'], value: list,
@@ -283,8 +265,8 @@ class GridWidgetSpec extends BaseWidgetSpecification {
     markLine.contains('markSorting("sequence","desc");')
 
     and: 'the data list is in the correct order - integer descending sort on sequence'
-    page.indexOf('537') < page.indexOf('237')   // Sequence 13 is before sequence 10
-    page.indexOf('237') < page.indexOf('437')   // Sequence 10 is before sequence 1
+    page.indexOf(list[2].uuid.toString()) < page.indexOf(list[0].uuid.toString())   // Sequence 13 is before sequence 10
+    page.indexOf(list[0].uuid.toString()) < page.indexOf(list[1].uuid.toString())   // Sequence 10 is before sequence 1
   }
 
   def "verify that widget uses the sorting preferences - readOnly case"() {
@@ -293,9 +275,10 @@ class GridWidgetSpec extends BaseWidgetSpecification {
 
     and: 'a value'
     def list = []
-    list << new SampleChild(key: 'k1-abc', title: 'abc', sequence: 10, reportTimeInterval: ReportTimeIntervalEnum.LAST_6_MONTHS, id: 237)
-    list << new SampleChild(key: 'k2-xyz', title: "xyz", sequence: 1, id: 437)
-    list << new SampleChild(key: 'k3-pdq', title: "pdq", sequence: 13, id: 537)
+    list << new SampleChild(key: 'k1-abc', title: 'abc', sequence: 10,
+                            reportTimeInterval: ReportTimeIntervalEnum.LAST_6_MONTHS, uuid: UUID.randomUUID())
+    list << new SampleChild(key: 'k2-xyz', title: "xyz", sequence: 1, uuid: UUID.randomUUID())
+    list << new SampleChild(key: 'k3-pdq', title: "pdq", sequence: 13, uuid: UUID.randomUUID())
 
     when: 'the UI element is built'
     def widgetContext = buildWidgetContext(readOnly: true, parameters: [id: 'TheTable'], value: list,
@@ -311,8 +294,8 @@ class GridWidgetSpec extends BaseWidgetSpecification {
     markLine.contains('markSorting("title","asc");')
 
     and: 'the data list is in the correct order - integer descending sort on sequence'
-    page.indexOf('237') < page.indexOf('537')   // title 'abc' is before 'pdq'
-    page.indexOf('537') < page.indexOf('437')   // title 'pdq' is before 'xyz'
+    page.indexOf(list[0].uuid.toString()) < page.indexOf(list[2].uuid.toString())   // title 'abc' is before 'pdq'
+    page.indexOf(list[2].uuid.toString()) < page.indexOf(list[1].uuid.toString())   // title 'pdq' is before 'xyz'
 
     and: 'the value is the display value, not the encoded value'
     page.contains("""reportTimeInterval: "${ReportTimeIntervalEnum.LAST_6_MONTHS.toStringLocalized()}" """)
@@ -392,7 +375,7 @@ class GridWidgetSpec extends BaseWidgetSpecification {
     addRowText.contains('tk._gridAddRow($$("aField"),rowData)')
 
     and: 'has the default value'
-    addRowText.contains('"sequence": 237')
+    addRowText.contains('"sequence":10')
   }
 
   def "verify that widget has custom addRow logic "() {

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 import groovy.util.logging.Slf4j
@@ -11,12 +15,6 @@ import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.web.PanelUtils
 import org.simplemes.eframe.web.ui.webix.DomainToolkitUtils
 import org.simplemes.eframe.web.ui.webix.freemarker.BaseMarker
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * The base Grid widget class.  Produces the UI elements needed for a Grid (list) element.
@@ -196,7 +194,7 @@ class GridWidget extends BaseLabeledFieldWidget {
           sb << ",\n"
         }
 
-        sb << """{id: "${value.id}",_dbId: "${value.id}"  """
+        sb << """{id: "${value.uuid}",_dbId: "${value.uuid}"  """
         for (key in columns) {
           def fDef = fieldDefs[key]
           def s = JavascriptUtils.formatForObject(value[key], fDef.format)
@@ -295,7 +293,7 @@ class GridWidget extends BaseLabeledFieldWidget {
     if (widgetContext.readOnly) {
       return ''
     } else {
-      def rowId = value[0].id
+      def rowId = value[0].uuid
       return """
         table${id}.select("$rowId");
       """

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 import org.simplemes.eframe.data.format.DomainReferenceFieldFormat
@@ -9,12 +13,6 @@ import org.simplemes.eframe.test.BaseWidgetSpecification
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.JavascriptTestUtils
 import sample.domain.AllFieldsDomain
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests Combobox widget use for Simple domain reference field.
@@ -51,7 +49,7 @@ class ComboboxWidgetDomainReferenceSpec extends BaseWidgetSpecification {
 
   def "verify that the field is generated correctly - editable case"() {
     when: 'the UI element is built'
-    def afd = new AllFieldsDomain(name: 'ABC', title: 'xyz', id: 237)
+    def afd = new AllFieldsDomain(name: 'ABC', title: 'xyz', uuid: UUID.randomUUID())
     def widgetContext = buildWidgetContext(value: afd, format: DomainReferenceFieldFormat.instance,
                                            referenceType: AllFieldsDomain)
     def page = new ComboboxWidget(widgetContext).build().toString()
@@ -61,7 +59,7 @@ class ComboboxWidgetDomainReferenceSpec extends BaseWidgetSpecification {
 
     and: 'the current value is used'
     def fieldLine = TextUtils.findLine(page, 'id: "aField"')
-    JavascriptTestUtils.extractProperty(fieldLine, 'value') == afd.id.toString()
+    JavascriptTestUtils.extractProperty(fieldLine, 'value') == afd.uuid.toString()
 
     and: 'the input width is the minimum width'
     def width = TextFieldWidget.adjustFieldCharacterWidth(ComboboxWidget.MINIMUM_WIDTH)
@@ -169,7 +167,7 @@ class ComboboxWidgetDomainReferenceSpec extends BaseWidgetSpecification {
 
     and: 'all values are in the list'
     for (record in records) {
-      optionsBlock.contains("""id: "${record.id}""")
+      optionsBlock.contains("""id: "${record.uuid}""")
       optionsBlock.contains("""value: "${record.name}""")
     }
   }

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 
@@ -6,22 +10,18 @@ import org.simplemes.eframe.misc.JavascriptUtils
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.test.BaseWidgetSpecification
 import org.simplemes.eframe.test.JavascriptTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.AllFieldsDomain
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
  */
 class MultiComboboxWidgetSpec extends BaseWidgetSpecification {
 
+  @SuppressWarnings("unused")
   static dirtyDomains = [AllFieldsDomain]
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the field is generated correctly - editable case"() {
     when: 'the UI element is built'
     def afd1 = new AllFieldsDomain(name: 'ABC1', title: 'xyz').save()
@@ -36,7 +36,7 @@ class MultiComboboxWidgetSpec extends BaseWidgetSpecification {
 
     and: 'the current value is used'
     def fieldLine = TextUtils.findLine(page, 'id: "aField"')
-    JavascriptTestUtils.extractProperty(fieldLine, 'value') == "${afd1.id},${afd3.id}"
+    JavascriptTestUtils.extractProperty(fieldLine, 'value') == "${afd1.uuid},${afd3.uuid}"
 
     and: 'the input width is the minimum width'
     def width = TextFieldWidget.adjustFieldCharacterWidth((int) (ComboboxWidget.MINIMUM_WIDTH * 1.5))
@@ -49,7 +49,7 @@ class MultiComboboxWidgetSpec extends BaseWidgetSpecification {
 
     and: 'all values are in the list'
     for (record in [afd1, afd2, afd3]) {
-      optionsBlock.contains("""id: "${record.id}""")
+      optionsBlock.contains("""id: "${record.uuid}""")
       optionsBlock.contains("""value: "${record.name}""")
     }
 
@@ -57,7 +57,7 @@ class MultiComboboxWidgetSpec extends BaseWidgetSpecification {
     page.contains('view: "multiComboEF"')
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the field is generated correctly - readOnly case"() {
     when: 'the UI element is built'
     def afd1 = new AllFieldsDomain(name: 'ABC1', title: 'xyz').save()

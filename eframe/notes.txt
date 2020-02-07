@@ -6,6 +6,7 @@ Scratch
 Micronaut Data Conversion Tasks
 ===============================
 Undo workarounds that were fixed (323).
+  https://github.com/micronaut-projects/micronaut-data/issues/323
 done - Enforce Transaction for insert/update/delete actions.
 done - @ExtensibleFields replacement - A field level @ExtensibleFieldHolder?
   done - Add support for getFieldValue() and config type getters/setters in GDSL.
@@ -61,12 +62,9 @@ done - Entity annotation replacement with GDSL.
       done - Invalid value {0} for field {1} in {2}.
       done - Missing value for field {0} in {1}.
   Version and opt locking (custom JDBCOperations).
-Convert to UUID's, called uuid.  Update docs for new terms (ID)
 done- Converters needed
   done - DateOnly
   done - EncodedTypes.
-Update code when issue is fixed:
-  https://github.com/micronaut-projects/micronaut-data/issues/323
 done - Verify Jackson handlers for domain entities.
 
 done - DateOnly conversion.
@@ -88,6 +86,13 @@ Add SQL DDL logic and Liquid-base/FlyWay support.
 Add option to run tests against Postgres (manual only).
 done - Micronaut-data does not support traits or sub-classes in most cases.
 Look at using an environment for DB type: h2, postgres.  Change command line to use it.
+Remove unused mocks and methods in transformations.
+  MockPreferenceHolder
+  MockBean
+  MockConstraintUtils
+  MockDomainUtils?
+  MockObjectMapper?
+  MockFieldExtension
 
 Docs
 =================

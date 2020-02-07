@@ -1,18 +1,16 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.test.BaseWidgetSpecification
 import org.simplemes.eframe.test.JavascriptTestUtils
-import org.simplemes.eframe.test.MockDomainUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.eframe.web.ui.JSPageOptions
 import org.simplemes.eframe.web.ui.UIDefaults
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -20,12 +18,9 @@ import sample.domain.SampleParent
 class BaseLabeledFieldWidgetSpec extends BaseWidgetSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON]
+  static specNeeds = SERVER
 
   def "verify that the label is generated correctly"() {
-    given: 'a mocked domain utils'
-    new MockDomainUtils(this, SampleParent).install()
-
     when: 'the UI element is built'
     def page = new BaseLabeledFieldWidget(buildWidgetContext(readOnly: true, value: 'ABC')).build().toString()
 
@@ -46,9 +41,6 @@ class BaseLabeledFieldWidgetSpec extends BaseWidgetSpecification {
   }
 
   def "verify that the label is blank when a blank label is passed in"() {
-    given: 'a mocked domain utils'
-    new MockDomainUtils(this, SampleParent).install()
-
     when: 'the UI element is built'
     def page = new BaseLabeledFieldWidget(buildWidgetContext(value: 'ABC', parameters: [label: ''])).build().toString()
 
@@ -74,12 +66,10 @@ class BaseLabeledFieldWidgetSpec extends BaseWidgetSpecification {
     100       | 45
   }
 
+  @Rollback
   def "verify that field is generated correctly when a custom field is used"() {
-    given: 'a mocked domain utils'
-    new MockDomainUtils(this, SampleParent).install()
-
-    and: 'an added custom field'
-    //new MockFieldExtension(this, [domainClass: SampleParent, fieldName: 'custom1', afterFieldName: 'title']).install()
+    given: 'a custom field'
+    buildCustomField([domainClass: SampleParent, fieldName: 'custom1', afterFieldName: 'title'])
 
     when: 'the UI element is built'
     def page = new BaseLabeledFieldWidget(buildWidgetContext(custom: true, readOnly: true,

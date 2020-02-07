@@ -1,12 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.reports
 
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.data.FieldDefinitions
 //import org.springframework.core.io.support.PathMatchingResourcePatternResolver
-
-/*
- * Copyright (c) 2018 Simple MES, LLC.  All rights reserved.  See license.txt for license terms.
- */
 
 /**
  * Provides helper methods for finding and using reports from the external report engine.
@@ -33,11 +33,13 @@ class ReportHelper {
     // Check the built-in location first
     // TODO: Replace with non-hibernate alternative
     //PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver()
+/*
     def resources = resolver.getResources('classpath*:reports/*.jrxml')
     for (resource in resources) {
       log.debug('determineBuiltinReports: resource: {}, file: ', resource, resource.filename)
       res << "reports/$resource.filename".toString()
     }
+*/
 
     return res
   }

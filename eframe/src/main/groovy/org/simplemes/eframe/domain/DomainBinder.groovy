@@ -202,13 +202,13 @@ class DomainBinder {
     def mappings = [:]
     def props = DomainUtils.instance.getPersistentFields(object.getClass())
     for (prop in props) {
-      def columnName = namingStrategy.mappedName(prop.name).toUpperCase()
+      def columnName = namingStrategy.mappedName(prop.name).toLowerCase()
       mappings[columnName] = prop.name
     }
     // Now, build a list of values for the binder to use.
     def map = [:]
     for (int i = 1; i < rs.getMetaData().getColumnCount(); i++) {
-      String name = rs.getMetaData().getColumnName(i)
+      String name = rs.getMetaData().getColumnName(i).toLowerCase()
       if (mappings[name]) {
         map[mappings[name]] = adjustSQLValue(rs, i)
       }
@@ -260,7 +260,7 @@ class DomainBinder {
 /*
     if (type == Types.TIMESTAMP_WITH_TIMEZONE) {
       value = rs.getTimestamp(columnIndex)
-      println "name = ${rs.getMetaData().getColumnName(columnIndex)} ${rs.getTimestamp(columnIndex)}"
+      //println "name = ${rs.getMetaData().getColumnName(columnIndex)} ${rs.getTimestamp(columnIndex)}"
     }
 */
     return value

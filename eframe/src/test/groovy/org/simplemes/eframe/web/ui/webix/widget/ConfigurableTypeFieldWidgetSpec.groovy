@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 
@@ -8,13 +12,8 @@ import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.test.BaseWidgetSpecification
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.JavascriptTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.RMA
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -22,9 +21,9 @@ import sample.domain.RMA
 class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, SERVER]
+  static specNeeds = [SERVER]
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the combobox is generated correctly - a value - editable case"() {
     given: 'a flex type with multiple fields'
     def flexType = DataGenerator.buildFlexType()
@@ -64,7 +63,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(field1Line, 'value') == ''
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the widget creates the list of possible choices correctly"() {
     given: 'a flex type with multiple fields'
     def flexType1 = DataGenerator.buildFlexType(flexType: 'FLEX1', fieldName: 'FIELD1')
@@ -91,7 +90,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     post.contains("""rmaTypeChoices["$flexType3.id"]""")
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the change handler on the main ct field"() {
     given: 'a flex type with multiple fields'
     def flexType1 = DataGenerator.buildFlexType(flexType: 'FLEX1', fieldName: 'FIELD1')
@@ -117,7 +116,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     handler.contains('$$("rmaTypeHolder").addView(choice, 0);')
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the field format for input fields is correct"() {
     given: 'a flex type with multiple fields'
     def flexType1 = DataGenerator.buildFlexType(fieldFormat: DateOnlyFieldFormat.instance)
@@ -140,7 +139,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(fieldLine, 'view') == 'datepicker'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the widget handles the readOnly mode"() {
     given: 'a flex type with multiple fields'
     def flexType1 = DataGenerator.buildFlexType(fieldFormat: DateOnlyFieldFormat.instance)
@@ -167,7 +166,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(fieldLine, 'view') == 'label'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the widget handles quotes in the custom field value"() {
     given: 'a flex type with multiple fields'
     def flexType1 = DataGenerator.buildFlexType()
@@ -191,7 +190,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     fieldLine.contains('value: "abc\\"123"')
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the widget sets the default Configurable Type field setting"() {
     given: 'a flex type with multiple fields'
     DataGenerator.buildFlexType(defaultFlexType: true)
@@ -214,7 +213,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(field1Line, 'view') == 'text'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the widget handles no current value for the Configurable Type drop-down"() {
     given: 'a flex type with multiple fields'
     DataGenerator.buildFlexType()

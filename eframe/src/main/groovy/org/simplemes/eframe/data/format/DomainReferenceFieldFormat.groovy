@@ -130,7 +130,7 @@ class DomainReferenceFieldFormat extends BasicFieldFormat {
     List<ChoiceListItemInterface> res = []
     def referencedClass = fieldDefinition.referenceType
     def key = DomainUtils.instance.getPrimaryKeyField(referencedClass)
-    referencedClass.withTransaction {
+    //referencedClass.withTransaction {
       def list = referencedClass.list()
       // Sort by the primary key
       list = list.sort { a, b -> a[key] <=> b[key] }
@@ -138,7 +138,7 @@ class DomainReferenceFieldFormat extends BasicFieldFormat {
         res << new SimpleChoiceListItem(id: record.uuid, value: record,
                                         displayValue: TypeUtils.toShortString(record, true))
       }
-    }
+    //}
     return res
   }
 

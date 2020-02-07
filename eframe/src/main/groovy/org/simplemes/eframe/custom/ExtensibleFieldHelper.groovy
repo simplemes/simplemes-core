@@ -97,13 +97,11 @@ class ExtensibleFieldHelper {
     }
 
     // Now, add any user-defined custom fields.
-    FieldExtension.withTransaction {
-      def fieldExtensions = FieldExtension.findAllByDomainClassName(domainClass.name)
-      for (extension in fieldExtensions) {
-        def fieldDefinition = new CustomFieldDefinition(extension)
-        log.debug('getEffectiveFieldDefinitions(): Adding {} to {}', fieldDefinition, domainClass)
-        fieldDefs[extension.fieldName] = fieldDefinition
-      }
+    def fieldExtensions = FieldExtension.findAllByDomainClassName(domainClass.name)
+    for (extension in fieldExtensions) {
+      def fieldDefinition = new CustomFieldDefinition(extension)
+      log.debug('getEffectiveFieldDefinitions(): Adding {} to {}', fieldDefinition, domainClass)
+      fieldDefs[extension.fieldName] = fieldDefinition
     }
 
     cacheShortTerm(object, FIELD_DEF_CACHE_NAME, fieldDefs)
