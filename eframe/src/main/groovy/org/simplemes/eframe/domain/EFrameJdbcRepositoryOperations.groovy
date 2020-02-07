@@ -63,7 +63,17 @@ import java.util.concurrent.ExecutorService
 @EachBean(DataSource.class)
 class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
 
+  /**
+   * Keep a local copy of the operations so we can use this to check for existing txn on the current thread.
+   */
   TransactionOperations<Connection> localTransactionOperations
+
+  /**
+   * Keep a local copy of the operations so we can use this to check for existing txn on the current thread from Java
+   * classes.  This is done to prevent a connection leak that happens when we directly call getConnection()
+   * outside of a txn.
+   */
+  static TransactionOperations<Connection> localTransactionOperationsStatic
 
   EFrameJdbcRepositoryOperations(@Parameter String dataSourceName, DataSource dataSource,
                                  @Parameter TransactionOperations<Connection> transactionOperations,
@@ -72,6 +82,7 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
                                  @NonNull DateTimeProvider dateTimeProvider) {
     super(dataSourceName, dataSource, transactionOperations, executorService, beanContext, codecs, dateTimeProvider)
     localTransactionOperations = transactionOperations
+    localTransactionOperationsStatic = transactionOperations
     workAround264()
   }
 
@@ -150,10 +161,24 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
       }
       localTransactionOperations.getConnection()
     } catch (CannotGetJdbcConnectionException e) {
-      def s = "No active transaction for SQL insert/update/delete.  Use domain.withTransaction or @Transactional for Beans."
+      def s = "No active transaction for SQL insert/update/delete.  Use domain.withTransaction, @Transactional or @Rollback for Beans."
       throw new IllegalStateException(s, e)
     }
     //println "connection = $connection"
+  }
+
+  /**
+   * Ensure that the current SQL is being executed in a transaction - Static version for a single data source.
+   */
+  @SuppressWarnings("unused")
+  static void checkForTransactionStatic() {
+    // This relies on an undocumented feature of the TransactionOperations that fail when no txn is active on the connection.
+    try {
+      localTransactionOperationsStatic.getConnection()
+    } catch (CannotGetJdbcConnectionException e) {
+      def s = "No active transaction for SQL statement.  Use domain.withTransaction or @Transactional for Beans."
+      throw new IllegalStateException(s, e)
+    }
   }
 
   @Override

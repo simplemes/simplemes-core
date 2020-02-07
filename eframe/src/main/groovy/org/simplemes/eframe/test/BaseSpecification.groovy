@@ -266,8 +266,12 @@ class BaseSpecification extends GebSpec {
    */
   void cleanup() {
     doAutoCleanups()
-    cleanupDomainRecords()
-    checkForLeftoverRecords()
+    FieldExtension.withTransaction {
+      cleanupDomainRecords()
+    }
+    FieldExtension.withTransaction {
+      checkForLeftoverRecords()
+    }
     cleanupMockedUtilityClasses()
     MockAppender.cleanup()
     doOtherCleanups()
@@ -467,7 +471,6 @@ class BaseSpecification extends GebSpec {
    * array. Always cleans up UserPreference records.
    * @param tester The tester class <b>Required</b>.  Used to access the GEB features.
    */
-  static loggedOnce = false
   void cleanupDomainRecords() {
     if (this.hasProperty('dirtyDomains')) {
       for (domainClass in this.dirtyDomains) {
@@ -478,10 +481,9 @@ class BaseSpecification extends GebSpec {
       deleteAllRecords(domainClass)
     }
     if (embeddedServer) {
-      if (!loggedOnce) {
-        loggedOnce = true
-      }
       deleteAllRecords(UserPreference)
+      deleteAllRecords(FieldGUIExtension)
+      deleteAllRecords(FieldExtension)
     }
   }
 

@@ -4,11 +4,9 @@
 
 package org.simplemes.eframe.domain
 
-
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import sample.domain.Order
-import spock.lang.Unroll
 
 /**
  * Tests.
@@ -41,7 +39,6 @@ class PersistentPropertySpec extends BaseSpecification {
     prop.maxLength == 30
   }
 
-  @Unroll
   def "verify that maxLength works for the supported cases"() {
     given: 'a domain with a field'
     def src = """

@@ -4,6 +4,7 @@
 
 package org.simplemes.eframe.domain.annotation
 
+
 import io.micronaut.transaction.SynchronousTransactionManager
 import io.micronaut.transaction.jdbc.DataSourceUtils
 import org.simplemes.eframe.application.Holders
@@ -38,7 +39,38 @@ import java.sql.ResultSet
 class DomainEntityHelperSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static dirtyDomains = [Order, OrderLine]
+  static dirtyDomains = [Order, OrderLine, SampleParent]
+
+  def "verify that getPreparedStatement detects use outside of txn and fails"() {
+    given: 'a domain record with child records that need to be loaded using a preparedStatement'
+    SampleParent.withTransaction {
+      new SampleParent(name: 'ABC').save()
+    }
+
+    when: 'a read of the child records is attempted outside of a txn'
+    def sampleParent = SampleParent.findByName('ABC')
+    sampleParent.getAllFieldsDomains()
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['active', 'transaction'])
+  }
+
+  def "verify that getPreparedStatement works inside txn and does not fail"() {
+    given: 'a domain record with child records that need to be loaded using a preparedStatement'
+    SampleParent.withTransaction {
+      new SampleParent(name: 'ABC').save()
+    }
+
+    when: 'a read of the child records is attempted inside of a txn'
+    SampleParent.withTransaction {
+      def sampleParent = SampleParent.findByName('ABC')
+      sampleParent.getAllFieldsDomains()
+    }
+
+    then: 'no exception is thrown'
+    notThrown(Exception)
+  }
 
   def "verify that getRepository works for simple case"() {
     expect: 'the repository is found'

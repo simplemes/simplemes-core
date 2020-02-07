@@ -490,10 +490,11 @@ public class DomainEntityHelper {
               // Make sure the parent element is set before the save.
               String sql = "INSERT INTO " + tableName + " (" + fromIDName + "," + toIDName + ") VALUES (?,?)";
 
-              PreparedStatement ps = getPreparedStatement(sql);
-              ps.setString(1, object.getUuid().toString());
-              ps.setString(2, ((DomainEntityInterface) child).getUuid().toString());
-              ps.execute();
+              try (PreparedStatement ps = getPreparedStatement(sql)) {
+                ps.setString(1, object.getUuid().toString());
+                ps.setString(2, ((DomainEntityInterface) child).getUuid().toString());
+                ps.execute();
+              }
 
               ((DomainEntityInterface) child).save();
             }
@@ -531,9 +532,10 @@ public class DomainEntityHelper {
    */
   private void deleteAllManyToMany(UUID uuid, String tableName, String fromIDName) throws SQLException {
     String sql = "DELETE FROM " + tableName + " WHERE " + fromIDName + "=?";
-    PreparedStatement ps = getPreparedStatement(sql);
-    ps.setString(1, uuid.toString());
-    ps.execute();
+    try (PreparedStatement ps = getPreparedStatement(sql)) {
+      ps.setString(1, uuid.toString());
+      ps.execute();
+    }
 
   }
 
@@ -544,8 +546,13 @@ public class DomainEntityHelper {
    * @return The statement.
    */
   private PreparedStatement getPreparedStatement(String sql) throws SQLException {
+    invokeGroovyMethod("org.simplemes.eframe.domain.EFrameJdbcRepositoryOperations", "checkForTransactionStatic");
     DataSource dataSource = getApplicationContext().getBean(DataSource.class);
     Connection connection = DataSourceUtils.getConnection(dataSource);
+    //if (dataSource instanceof HikariDataSource) {
+    //HikariPoolMXBean bean = ((HikariDataSource) dataSource).getHikariPoolMXBean();
+    //System.out.println("Pool: " + bean.getActiveConnections()+"/"+bean.getTotalConnections()+" bean: "+sql+connection);
+    //}
     return connection.prepareStatement(sql);
   }
 
@@ -655,7 +662,6 @@ public class DomainEntityHelper {
     field.setAccessible(true);  // Allow direct access.
 
     List list = (List) field.get(object);
-    System.out.println("field:" + field + " list: " + list + " object.uuid: " + object.getUuid());
     if (object.getUuid() == null && list == null) {
       // Parent object has not been created yet, so just set the list to an empty list.
       list = new ArrayList();
@@ -663,7 +669,6 @@ public class DomainEntityHelper {
       return list;
     }
     if (list == null) {
-      System.out.println("Doing JOIN");
       list = new ArrayList();
       field.set(object, list);
 
@@ -681,31 +686,18 @@ public class DomainEntityHelper {
       String toIDName = namingStrategy.mappedName(childDomainClazz.getSimpleName()) + "_id";
       String referenceTableName = namingStrategy.mappedName(childDomainClazz.getSimpleName());
       String mappedByTableName = namingStrategy.mappedName(mappedBy);
-      StringBuilder sb = new StringBuilder();
-      sb.append("SELECT * ").append(" from ").append(mappedByTableName);
-      sb.append(" INNER JOIN ").append(referenceTableName).append(" ON ").append(mappedByTableName).append(".").append(toIDName);
-      sb.append(" = ").append(referenceTableName).append(".uuid").append("  WHERE ").append(fromIDName).append("=?");
-      System.out.println("sb:" + sb);
-      PreparedStatement ps = null;
-      ResultSet rs = null;
-      try {
-        ps = getPreparedStatement(sb.toString());
+      String sql = "SELECT * " + " from " + mappedByTableName +
+          " INNER JOIN " + referenceTableName + " ON " + mappedByTableName + "." + toIDName +
+          " = " + referenceTableName + ".uuid" + "  WHERE " + fromIDName + "=?";
+      try (PreparedStatement ps = getPreparedStatement(sql)) {
         ps.setString(1, object.getUuid().toString());
         ps.execute();
-        rs = ps.getResultSet();
-        System.out.println("rs:" + rs);
-        while (rs.next()) {
-          DomainEntityInterface o = (DomainEntityInterface) invokeGroovyMethod("org.simplemes.eframe.domain.DomainBinder",
-              "bindResultSet", rs, childDomainClazz);
-          list.add(o);
-          System.out.println("  rs:" + rs);
-        }
-      } finally {
-        if (ps != null) {
-          ps.close();
-        }
-        if (rs != null) {
-          rs.close();
+        try (ResultSet rs = ps.getResultSet()) {
+          while (rs.next()) {
+            DomainEntityInterface o = (DomainEntityInterface) invokeGroovyMethod("org.simplemes.eframe.domain.DomainBinder",
+                "bindResultSet", rs, childDomainClazz);
+            list.add(o);
+          }
         }
       }
 

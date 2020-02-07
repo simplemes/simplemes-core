@@ -1,5 +1,8 @@
-package org.simplemes.eframe.json
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
 
+package org.simplemes.eframe.json
 
 import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
@@ -19,15 +22,10 @@ import org.simplemes.eframe.system.DisabledStatus
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests the JSON custom field serializer.
@@ -35,9 +33,9 @@ import sample.domain.SampleParent
 class CustomFieldSerializerSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, SERVER]
+  static dirtyDomains = [AllFieldsDomain, SampleParent]
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that serialize handles multiple custom fields"() {
     given: 'a domain object with custom fields'
     buildCustomField([[fieldName: 'custom1', domainClass: SampleParent],
@@ -58,7 +56,7 @@ class CustomFieldSerializerSpec extends BaseSpecification {
     json.custom2 == 'xyz'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that serialize handles empty values"() {
     given: 'a domain object with custom fields'
     buildCustomField(fieldName: 'custom1', domainClass: SampleParent)
@@ -75,7 +73,6 @@ class CustomFieldSerializerSpec extends BaseSpecification {
     json.custom1 == null
   }
 
-  //TODO: Find alternative to @Rollback
   def "verify that serialize handles supported field types"() {
     given: 'a domain object with custom fields'
     buildCustomField(fieldName: 'custom1', domainClass: SampleParent, fieldFormat: format.instance,
