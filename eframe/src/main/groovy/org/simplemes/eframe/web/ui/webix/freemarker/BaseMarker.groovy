@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import freemarker.core.Environment
@@ -15,12 +19,6 @@ import org.simplemes.eframe.misc.JavascriptUtils
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.web.ui.webix.widget.WidgetContext
 import org.simplemes.eframe.web.view.FreemarkerWrapper
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Defines the base marker class.  Most Freemarker marker helpers will use this base class.
@@ -150,7 +148,7 @@ abstract class BaseMarker implements MarkerInterface {
         domainObject = unwrap(environment.dataModel?.get(domainObjectName))
       } else {
         // Try for an explicit object in the model.  Used when the controller is not specific to single domain.
-        domainObjectName = ControllerUtils.MODEL_DOMAIN_OBJECT
+        domainObjectName = ControllerUtils.MODEL_KEY_DOMAIN_OBJECT
         domainObject = unwrap(environment.dataModel?.get(domainObjectName))
         domainClass = domainObject?.getClass()
       }

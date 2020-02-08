@@ -1,14 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 
 import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.web.ui.webix.widget.ToolbarWidget
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Provides the efEdit Freemarker marker implementation.
@@ -51,7 +49,7 @@ class EditMarker extends BaseDefinitionPageMarker {
   String buildFunctions() {
     return """
       function editSave() {
-        efd._editSave('${id}','$rootURI/edit','${domainObject?.id}')
+        efd._editSave('${id}','$rootURI/edit','${domainObject?.uuid}')
       }
     """
   }

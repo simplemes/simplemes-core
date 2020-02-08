@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import freemarker.core.Environment
@@ -11,12 +15,6 @@ import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.test.BaseMarkerSpecification
 import org.simplemes.eframe.web.ui.webix.widget.WidgetContext
 import sample.controller.SampleParentController
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.  Uses some concrete Marker classes to test the base class features.
@@ -142,7 +140,7 @@ class BaseMarkerSpec extends BaseMarkerSpecification {
   def "verify that setValues uses the domain object fallback for generic controllers"() {
     when: 'the marker is built'
     def model = [:]
-    model[ControllerUtils.MODEL_DOMAIN_OBJECT] = 'ABC'
+    model[ControllerUtils.MODEL_KEY_DOMAIN_OBJECT] = 'ABC'
     def marker = buildMarker(ListMarker, [uri: '/extension', controllerClass: ExtensionController, model: model])
 
     then: 'the domain object is correct'

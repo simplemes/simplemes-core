@@ -156,12 +156,12 @@ class ExtensionController extends BaseController {
       FieldExtension.withTransaction {
         // Store the existing record in the model for the view/markers.
         def record = FieldExtension.get(UUID.fromString((String) id))
-        modelAndView.model.get().put(ControllerUtils.MODEL_DOMAIN_OBJECT, record)
+        modelAndView.model.get().put(ControllerUtils.MODEL_KEY_DOMAIN_OBJECT, record)
       }
     } else {
       // Store the default record in the model for the view/markers.
       def record = new FieldExtension(fieldFormat: StringFieldFormat.instance, maxLength: 10)
-      modelAndView.model.get().put(ControllerUtils.MODEL_DOMAIN_OBJECT, record)
+      modelAndView.model.get().put(ControllerUtils.MODEL_KEY_DOMAIN_OBJECT, record)
     }
 
     return modelAndView

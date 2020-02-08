@@ -33,7 +33,13 @@ class ControllerUtils {
    * Defines the name of the fallback object in the StandardModelAndView to hold the current domain object.
    * Used when the controller is not specific to single domain.
    */
-  static final String MODEL_DOMAIN_OBJECT = '_domainObject'
+  static final String MODEL_KEY_DOMAIN_OBJECT = '_domainObject'
+
+  /**
+   * Defines the name of the object in the StandardModelAndView to hold the current domain's errors.
+   * The domain errors is a list of ValidationError's.
+   */
+  static final String MODEL_KEY_DOMAIN_ERRORS = '_domainErrors'
 
   /**
    * Returns all of the controller classes defined in the system.

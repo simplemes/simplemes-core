@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.controller
 
 import groovy.util.logging.Slf4j
@@ -26,12 +30,6 @@ import org.simplemes.eframe.security.SecurityUtils
 
 import javax.annotation.Nullable
 import java.security.Principal
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * A base class for normal CRUD GUI controller actions such as index, list, edit, etc.
@@ -211,7 +209,7 @@ abstract class BaseCrudController extends BaseController {
 
     if (error) {
       def modelAndView = new StandardModelAndView(getView('create'), principal, this)
-      // TODO: Replace with non-hibernate alternative
+      // TODO: Replace with non-hibernate alternative and store in ControllerUtils.MODEL_KEY_DOMAIN_ERRORS
       //modelAndView[StandardModelAndView.MESSAGES] = new MessageHolder((ValidationErrors) record.errors)
       def renderer = Holders.applicationContext.getBean(ViewsRenderer)
 

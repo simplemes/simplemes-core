@@ -1,15 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.web.ui.webix.widget.ToolbarWidget
 import org.simplemes.eframe.web.ui.webix.widget.WidgetContext
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Provides the efShow Freemarker marker implementation.
@@ -49,14 +47,14 @@ class ShowMarker extends BaseDefinitionPageMarker {
     def widgetContext = buildWidgetContext(null)
     def uri = '?'
     if (markerContext?.uri) {
-      uri = markerContext.uri - "/show/${domainObject?.id}"
+      uri = markerContext.uri - "/show/${domainObject?.uuid}"
     }
     def list = [id: "${id}List", label: 'list.menu.label', icon: 'fa-th-list', link: "${uri}"]
     def create = [id: "${id}Create", label: 'create.menu.label', icon: 'fa-plus-square', link: "${uri}/create"]
-    def edit = [id: "${id}Edit", label: 'edit.menu.label', icon: 'fa-edit', link: "${uri}/edit/${domainObject?.id}"]
+    def edit = [id: "${id}Edit", label: 'edit.menu.label', icon: 'fa-edit', link: "${uri}/edit/${domainObject?.uuid}"]
 
     def shortString = escape(TypeUtils.toShortString(domainObject))
-    def click = "efd._confirmDelete('$uri/delete','${domainObject?.id}','${domainClass.simpleName}','${shortString}')"
+    def click = "efd._confirmDelete('$uri/delete','${domainObject?.uuid}','${domainClass.simpleName}','${shortString}')"
     def deleteButton = [id: "${id}Delete", label: 'delete.menu.label', click: click]
     def more = [id: "${id}More", label: 'more.menu.label', icon: 'fa-th-list', 'subMenus': [deleteButton]]
     def buttons = [list, create, edit, more]

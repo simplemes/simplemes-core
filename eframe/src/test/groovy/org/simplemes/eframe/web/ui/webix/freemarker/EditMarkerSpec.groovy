@@ -1,9 +1,14 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.data.SimpleFieldDefinition
 import org.simplemes.eframe.data.format.ChildListFieldFormat
+import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.test.BaseMarkerSpecification
 import org.simplemes.eframe.test.JavascriptTestUtils
@@ -15,12 +20,6 @@ import org.simplemes.eframe.web.ui.webix.widget.TextFieldWidget
 import sample.controller.SampleParentController
 import sample.domain.SampleChild
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -81,9 +80,9 @@ class EditMarkerSpec extends BaseMarkerSpecification {
       </@efForm>
     """
 
+    def sampleParent = new SampleParent(name: 'ABC', uuid: UUID.randomUUID())
     def page = execute(source: src, controllerClass: SampleParentController,
-                       domainObject: new SampleParent(name: 'ABC', id: 237),
-                       uri: '/sampleParent/edit/5')
+                       domainObject: sampleParent, uri: '/sampleParent/edit/5')
 
     then: 'the javascript is legal'
     checkPage(page)
@@ -117,7 +116,7 @@ class EditMarkerSpec extends BaseMarkerSpecification {
 
     and: 'the javascript function to handle the save click is correct'
     def functionText = JavascriptTestUtils.extractBlock(page, 'function editSave(')
-    functionText.contains("efd._editSave('edit','/sampleParent/edit','237')")
+    functionText.contains("efd._editSave('edit','/sampleParent/edit','${sampleParent.uuid}')")
   }
 
   def "verify that the text fields are escaped for use in javascript string"() {
@@ -201,12 +200,10 @@ class EditMarkerSpec extends BaseMarkerSpecification {
     given: 'a mocked FieldDefinitions for the domain'
     new MockDomainUtils(this, new MockFieldDefinitions(['name', 'title'])).install()
 
-    and: 'a simulated domain record with an error on the title field'
-    //def errors = new ValidationErrors('dummy')
-    //errors.addError(new FieldError('sampleParent', 'title', 'bad'))
-    def sampleParent = new SampleParent(name: 'ABC', title: 'xyz', errors: errors)
+    and: 'a simulated domain record'
+    def sampleParent = new SampleParent(name: 'ABC', title: 'xyz')
 
-    when: 'the marker is built'
+    when: 'the marker is built with domain errors in the model'
     def src = """
       <@efForm id="create">
         <@efEdit fields="name,title"/>
@@ -214,7 +211,7 @@ class EditMarkerSpec extends BaseMarkerSpecification {
     """
 
     def page = execute(source: src, controllerClass: SampleParentController,
-                       domainObject: sampleParent)
+                       domainObject: sampleParent, errors: [new ValidationError(1, 'title')])
 
     then: 'the javascript is legal'
     checkPage(page)

@@ -1,5 +1,10 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
+import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.test.BaseMarkerSpecification
 import org.simplemes.eframe.test.JavascriptTestUtils
@@ -9,12 +14,6 @@ import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.web.ui.webix.widget.TextFieldWidget
 import sample.controller.SampleParentController
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -192,12 +191,10 @@ class CreateMarkerSpec extends BaseMarkerSpecification {
     given: 'a mocked FieldDefinitions for the domain'
     new MockDomainUtils(this, new MockFieldDefinitions(['name', 'title'])).install()
 
-    and: 'a simulated domain record with an error on the title field'
-    //def errors = new ValidationErrors('dummy')
-    //errors.addError(new FieldError('sampleParent', 'title', 'bad'))
-    def sampleParent = new SampleParent(name: 'ABC', title: 'xyz', errors: errors)
+    and: 'a simulated domain record'
+    def sampleParent = new SampleParent(name: 'ABC', title: 'xyz')
 
-    when: 'the marker is built'
+    when: 'the marker is built with an error on the title field'
     def src = """
       <@efForm id="create">
         <@efCreate fields="name,title"/>
@@ -205,7 +202,7 @@ class CreateMarkerSpec extends BaseMarkerSpecification {
     """
 
     def page = execute(source: src, controllerClass: SampleParentController,
-                       domainObject: sampleParent)
+                       domainObject: sampleParent, errors: [new ValidationError(1, 'title')])
 
     then: 'the javascript is legal'
     checkPage(page)

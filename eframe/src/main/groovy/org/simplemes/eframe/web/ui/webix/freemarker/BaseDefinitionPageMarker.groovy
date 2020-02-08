@@ -1,18 +1,16 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import groovy.util.logging.Slf4j
+import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.data.FieldDefinitions
 import org.simplemes.eframe.domain.DomainUtils
-import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.web.PanelUtils
 import org.simplemes.eframe.web.ui.WidgetFactory
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Provides the basic behavior for the efShow, efCreate and efEdit definition page Freemarker markers.
@@ -96,7 +94,7 @@ abstract class BaseDefinitionPageMarker extends BaseMarker {
     fieldsByPanel = PanelUtils.organizeFieldsIntoPanels(fieldsToDisplay)
 
     if (domainObject) {
-      errors = GlobalUtils.lookupValidationErrors(domainObject)
+      errors = unwrap(environment.dataModel?.get(ControllerUtils.MODEL_KEY_DOMAIN_ERRORS))
     }
   }
 
@@ -220,7 +218,7 @@ abstract class BaseDefinitionPageMarker extends BaseMarker {
       def widgetContext = buildWidgetContext(fieldDefinition)
       widgetContext.object = domainObject
       if (errors) {
-        widgetContext.error = (errors[fieldName] != null)
+        widgetContext.error = (errors.find { it.fieldName == fieldName } != null)
       }
       // Move the key field to the center of the tabbed panel
       if (fieldsByPanel && keyField) {
@@ -313,13 +311,13 @@ abstract class BaseDefinitionPageMarker extends BaseMarker {
     // Find the first field that has an error and use that as the focus field first.
     if (errors) {
       for (fieldName in fieldsToDisplay) {
-        if (errors[fieldName]) {
+        if (errors.find { it.fieldName == fieldName }) {
           focusFieldName = fieldName
           break
         }
       }
       // Make sure the key field is focus if it has an error since the fieldsToDisplay
-      if (keyFields && errors[keyFields[0]]) {
+      if (keyFields && errors.find { it.fieldName == keyFields[0] }) {
         focusFieldName = keyFields[0]
       }
     }

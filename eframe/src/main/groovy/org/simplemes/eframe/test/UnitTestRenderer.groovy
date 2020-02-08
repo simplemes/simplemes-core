@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import freemarker.template.Configuration
@@ -8,12 +12,6 @@ import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.web.ui.webix.freemarker.FreemarkerDirectiveConfiguration
 import org.simplemes.eframe.web.ui.webix.freemarker.MarkerContext
 
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * Defines a Freemarker renderer that can render views from memory(string).
  * <h3>Options</h3>
@@ -22,6 +20,7 @@ import org.simplemes.eframe.web.ui.webix.freemarker.MarkerContext
  *   <li><b>controllerClass</b> - The controller used to serve up this page. </li>
  *   <li><b>uri</b> - The URI for this page (<b>Default:</b> based on the controller name). </li>
  *   <li><b>domainObject</b> - The domain object to store in the data model for the marker. </li>
+ *   <li><b>errors</b> - The domain object errors to store in the data model for the marker. </li>
  *   <li><b>dataModel</b> - The data model for the marker to use. </li>
  * </ul>
  */
@@ -51,6 +50,10 @@ class UnitTestRenderer {
       def domainObject = options.domainObject
       String domainInstanceName = (String) NameUtils.lowercaseFirstLetter(domainObject.getClass().simpleName)
       map[domainInstanceName] = domainObject
+    }
+
+    if (options.errors) {
+      map[ControllerUtils.MODEL_KEY_DOMAIN_ERRORS] = options.errors
     }
 
     // Copy the data model to the model for the marker.

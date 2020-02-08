@@ -189,10 +189,6 @@ class BaseSpecification extends GebSpec {
         new MockBean(this, ObjectMapper, objectMapper).install()  // Auto cleaned up
       }
 
-      // See if a mock extensible field helper is needed.
-      if (needs(EXTENSION_MOCK)) {
-        _mockFieldExtension = new MockFieldExtension(this).install()
-      }
     } else {
       // No server needed.
       // Finally, set the environment to test it not set already
@@ -201,6 +197,10 @@ class BaseSpecification extends GebSpec {
         Holders.fallbackEnvironment = Holders.fallbackEnvironment ?: new DefaultEnvironment('test')
       }
 
+      // See if a mock extensible field helper is needed.
+      if (needs(EXTENSION_MOCK)) {
+        _mockFieldExtension = new MockFieldExtension(this).install()
+      }
     }
   }
 
@@ -266,11 +266,13 @@ class BaseSpecification extends GebSpec {
    */
   void cleanup() {
     doAutoCleanups()
-    FieldExtension.withTransaction {
-      cleanupDomainRecords()
-    }
-    FieldExtension.withTransaction {
-      checkForLeftoverRecords()
+    if (embeddedServer) {
+      FieldExtension.withTransaction {
+        cleanupDomainRecords()
+      }
+      FieldExtension.withTransaction {
+        checkForLeftoverRecords()
+      }
     }
     cleanupMockedUtilityClasses()
     MockAppender.cleanup()

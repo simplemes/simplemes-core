@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom.controller
 
 
@@ -19,12 +23,6 @@ import org.simplemes.eframe.test.MockPrincipal
 import org.simplemes.eframe.test.UnitTestUtils
 import sample.domain.SampleParent
 import spock.lang.Shared
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -117,7 +115,7 @@ class ExtensionControllerSpec extends BaseSpecification {
     def modelAndView = controller.fieldDialog(mockRequest([domainURL: '/sampleParent/show']), new MockPrincipal('joe', 'ADMIN'))
 
     then: 'the model returned contains the default field extension for the display'
-    FieldExtension fieldExtension = modelAndView.model.get().get(ControllerUtils.MODEL_DOMAIN_OBJECT)
+    FieldExtension fieldExtension = modelAndView.model.get().get(ControllerUtils.MODEL_KEY_DOMAIN_OBJECT)
     fieldExtension.fieldFormat == StringFieldFormat.instance
     fieldExtension.maxLength == 10
   }

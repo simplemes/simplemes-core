@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import org.simplemes.eframe.misc.JavascriptUtils
@@ -8,12 +12,6 @@ import org.simplemes.eframe.test.MockDomainUtils
 import org.simplemes.eframe.test.MockFieldDefinitions
 import sample.controller.SampleParentController
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -74,8 +72,10 @@ class ShowMarkerSpec extends BaseMarkerSpecification {
       </@efForm>
     """
 
+    def sampleParent = new SampleParent(name: 'ABC', title: 'xyz', uuid: UUID.randomUUID())
     def page = execute(source: src, controllerClass: SampleParentController,
-                       domainObject: new SampleParent(name: 'ABC', title: 'xyz', id: 237), uri: '/sampleParent/show/237')
+                       domainObject: sampleParent,
+                       uri: "/sampleParent/show/${sampleParent.uuid}")
 
     then: 'the javascript is legal'
     checkPage(page)
@@ -105,7 +105,7 @@ class ShowMarkerSpec extends BaseMarkerSpecification {
     JavascriptTestUtils.extractProperty(editButtonText, 'label').contains(lookup('edit.menu.label'))
     JavascriptTestUtils.extractProperty(editButtonText, 'icon') == 'fas fa-edit'
     JavascriptTestUtils.extractProperty(editButtonText, 'tooltip') == lookup('edit.menu.tooltip')
-    JavascriptTestUtils.extractProperty(editButtonText, 'click') == "window.location='/sampleParent/edit/237'"
+    JavascriptTestUtils.extractProperty(editButtonText, 'click') == "window.location='/sampleParent/edit/$sampleParent.uuid'"
 
     and: 'the correct standard show toolbar more..delete button is generated'
     def moreButtonText = TextUtils.findLine(page, 'view: "menu"')
@@ -117,7 +117,7 @@ class ShowMarkerSpec extends BaseMarkerSpecification {
 
     and: 'the click handler is correct'
     def clickHandlerText = TextUtils.findLine(page, 'if (id=="showDelete")')
-    clickHandlerText.contains("efd._confirmDelete('/sampleParent/delete','237','SampleParent','ABC')")
+    clickHandlerText.contains("efd._confirmDelete('/sampleParent/delete','$sampleParent.uuid','SampleParent','ABC')")
   }
 
   def "verify that the record short string is HTML escaped in delete click handler"() {
