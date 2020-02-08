@@ -179,8 +179,8 @@ class DomainBinder {
         }
       } else if (key.contains('[') && key.contains(']')) {
         // Child objects have been converted to a child list.
-      } else if (fieldsToSkipBinding.contains(key)) {
-        // Skip some important fields like 'id'.
+      } else if (fieldsToSkipBinding.contains(key) || key == 'id') {
+        // Skip some important fields like 'uuid' and silently ignore 'id'.
       } else if (!(key?.startsWith('_'))) {
         log.warn('bind() Ignoring field {}.  No field definition in {}', key, domainClass)
       }

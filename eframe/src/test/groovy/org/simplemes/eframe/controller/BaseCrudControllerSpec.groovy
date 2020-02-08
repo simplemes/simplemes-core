@@ -13,7 +13,8 @@ import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.security.SecurityUtils
-import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.security.domain.User
+import org.simplemes.eframe.test.BaseAPISpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.MockPrincipal
@@ -31,10 +32,10 @@ import sample.domain.SampleParent
 /**
  * Tests.
  */
-class BaseCrudControllerSpec extends BaseSpecification {
+class BaseCrudControllerSpec extends BaseAPISpecification {
 
   @SuppressWarnings("unused")
-  static dirtyDomains = [RMA, FlexType]
+  static dirtyDomains = [RMA, FlexType, SampleParent, User]
 
   Class<BaseCrudController> buildSampleParentController() {
     def src = """package sample
@@ -431,7 +432,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
 
     when: 'the create is called from the controller'
     def controller = buildSampleParentController().newInstance()
-    def res = controller.edit(sampleParent.id.toString(), new MockPrincipal())
+    def res = controller.edit(sampleParent.uuid.toString(), new MockPrincipal())
 
     then: 'the values are set correctly'
     res.status == HttpStatus.OK
@@ -472,16 +473,12 @@ class BaseCrudControllerSpec extends BaseSpecification {
 
     when: 'the save is called from the controller'
     def controller = buildSampleParentController().newInstance()
-    def res = controller.editPost(mockRequest(), [id: sampleParent.id.toString(), title: 'abc'], new MockPrincipal())
+    def res = controller.editPost(mockRequest(), [id: sampleParent.uuid.toString(), title: 'abc'], new MockPrincipal())
 
     then: 'the record is update in the DB'
-    def id = null
-    SampleParent.withTransaction {
-      def sampleParent2 = SampleParent.findByName('ABC')
-      assert sampleParent2.title == 'abc'
-      id = sampleParent2.id
-      true
-    }
+    def sampleParent2 = SampleParent.findByName('ABC')
+    sampleParent2.title == 'abc'
+    def id = sampleParent2.uuid
 
     then: 'the HTTP response is correct'
     res.status == HttpStatus.FOUND
@@ -502,19 +499,15 @@ class BaseCrudControllerSpec extends BaseSpecification {
 
     when: 'the save is called from the controller'
     def controller = new RMAController()
-    def res = controller.editPost(mockRequest(), [id: rma.id.toString(), status: 'abc'],
+    def res = controller.editPost(mockRequest(), [id: rma.uuid.toString(), status: 'abc'],
                                   new MockPrincipal('joe', 'MANAGER'))
 
     then: 'the HTTP response is correct'
     res.status == HttpStatus.FOUND
 
     and: 'the redirect location is correct'
-    def id = null
-    RMA.withTransaction {
-      def rma2 = RMA.findByRma('ABC')
-      id = rma2.id
-      true
-    }
+    def rma2 = RMA.findByRma('ABC')
+    def id = rma2.uuid
     res.headers.get(HttpHeaders.LOCATION) == "/rma/show/${id}"
   }
 
@@ -543,15 +536,12 @@ class BaseCrudControllerSpec extends BaseSpecification {
 
     when: 'the save is called from the controller'
     def controller = clazz.newInstance()
-    controller.editPost(mockRequest(), [id: sampleParent.id.toString(), title: 'abc'], new MockPrincipal())
+    controller.editPost(mockRequest(), [id: sampleParent.uuid.toString(), title: 'abc'], new MockPrincipal())
 
 
     then: 'the record is created in the DB'
-    SampleParent.withTransaction {
-      def sampleParent2 = SampleParent.findByName('ABC')
-      assert sampleParent2.title == 'bind extension'
-      true
-    }
+    def sampleParent2 = SampleParent.findByName('ABC')
+    sampleParent2.title == 'bind extension'
   }
 
   @Rollback
@@ -565,7 +555,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
     when: 'the save is called from the controller with a field value too long'
     def controller = buildSampleParentController().newInstance()
     def res = controller.editPost(mockRequest(uri: '/sampleParent/create'),
-                                  [id: sampleParent.id.toString(), title: 'A' * 21], new MockPrincipal())
+                                  [id: sampleParent.uuid.toString(), title: 'A' * 21], new MockPrincipal())
 
     then: 'the HTTP response is correct'
     res.status == HttpStatus.OK
@@ -573,11 +563,8 @@ class BaseCrudControllerSpec extends BaseSpecification {
     mock.model.sampleParent.title == "${'A' * 21}"
 
     and: 'the record is unchanged in the DB'
-    SampleParent.withTransaction {
-      def sampleParent2 = SampleParent.findByName('ABC')
-      assert sampleParent2.title == sampleParent.title
-      true
-    }
+    def sampleParent2 = SampleParent.findByName('ABC')
+    sampleParent2.title == sampleParent.title
   }
 
   @Rollback
@@ -590,7 +577,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
 
     when: 'the save is called from the controller with a field value too long'
     def controller = buildSampleParentController().newInstance()
-    def params = [id                          : sampleParent.id.toString(),
+    def params = [id                          : sampleParent.uuid.toString(),
                   title                       : " 'new title",
                   'sampleChildren[0].key'     : 'ABC',
                   'sampleChildren[0].title'   : 'abc',
@@ -602,11 +589,8 @@ class BaseCrudControllerSpec extends BaseSpecification {
     mock.view == 'sampleParent/edit'
 
     and: 'the record is unchanged in the DB'
-    SampleParent.withTransaction {
-      def sampleParent2 = SampleParent.findByName('ABC')
-      assert sampleParent2.title == sampleParent.title
-      true
-    }
+    def sampleParent2 = SampleParent.findByName('ABC')
+    sampleParent2.title == sampleParent.title
   }
 
   @Rollback
@@ -657,13 +641,10 @@ class BaseCrudControllerSpec extends BaseSpecification {
 
     when: 'the save is called from the controller'
     def controller = buildSampleParentController().newInstance()
-    def res = controller.delete(mockRequest(), [id: sampleParent.id.toString()], new MockPrincipal())
+    def res = controller.delete(mockRequest(), [id: sampleParent.uuid.toString()], new MockPrincipal())
 
     then: 'the record is deleted from the DB'
-    SampleParent.withTransaction {
-      assert SampleParent.count() == 0
-      true
-    }
+    SampleParent.count() == 0
 
     and: 'the HTTP response is correct'
     def domainName = GlobalUtils.lookup("${NameUtils.lowercaseFirstLetter(SampleParent.simpleName)}.label")
@@ -683,7 +664,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
 
     when: 'the save is called from the controller'
     def controller = new RMAController()
-    def res = controller.delete(mockRequest(), [id: rma.id.toString()],
+    def res = controller.delete(mockRequest(), [id: rma.uuid.toString()],
                                 new MockPrincipal('joe', 'MANAGER'))
 
     then: 'the redirect location is correct'
@@ -700,7 +681,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
 
     when: 'the save is called from the controller'
     def controller = buildSampleParentController().newInstance()
-    def res = controller.delete(mockRequest(), [id: sampleParent.id.toString()], new MockPrincipal())
+    def res = controller.delete(mockRequest(), [id: sampleParent.uuid.toString()], new MockPrincipal())
 
     then: 'the records are deleted from the DB'
     SampleParent.count() == 0
@@ -740,7 +721,51 @@ class BaseCrudControllerSpec extends BaseSpecification {
     res.status == HttpStatus.FORBIDDEN
   }
 
-  // TODO: Test show/edit with record not found behavior.
+  def "verify that index works in a live server"() {
+    when: 'the page is read'
+    login()
+    def res = sendRequest(uri: "/sample", method: 'get')
+
+    then: 'the page is correct'
+    res.contains('parentGrid')
+  }
+
+  def "verify that index prevents access without the correct role in a live server"() {
+    given: 'a user without the MANAGER Role'
+    User.withTransaction {
+      new User(userName: 'TEST', password: 'TEST').save()
+    }
+
+    when: 'the page is read'
+    login('TEST', 'TEST')
+    sendRequest(uri: "/sample", method: 'get', status: HttpStatus.FORBIDDEN)
+
+    then: 'not error is found'
+    notThrown(Throwable)
+  }
+
+  def "verify that delete works in a live server with related records"() {
+    given: 'a record to delete'
+    def record1 = null
+    SampleParent.withTransaction {
+      record1 = new SampleParent(name: 'SAMPLE', title: 'Sample').save()
+    }
+
+    when:
+    login()
+    sendRequest(uri: "/sample/delete", method: 'post',
+                content: [id: record1.uuid.toString()], status: HttpStatus.FOUND)
+
+    then: 'the record is removed from the DB'
+    AllFieldsDomain.withTransaction {
+      assert SampleParent.count() == 0
+      assert AllFieldsDomain.count() == 0
+      true
+    }
+  }
+
+
+  // test show/edit with record not found behavior.
 
   /*
   def "verify handleList with filtering works"() {

@@ -244,7 +244,6 @@ abstract class BaseCrudController extends BaseController {
     domainClass.withTransaction {
       def name = NameUtils.lowercaseFirstLetter(domainClass.simpleName)
       def record = DomainUtils.instance.findDomainRecord(domainClass, id)
-      DomainUtils.instance.resolveProxies(record)
       modelAndView.model.get().put(name, record)
     }
 
@@ -280,47 +279,34 @@ abstract class BaseCrudController extends BaseController {
     def name = NameUtils.lowercaseFirstLetter(domainClass.simpleName)
     def id = bodyParams.id
 
-    def error = false
-    def record = null
+    def errors
+    def record = DomainUtils.instance.findDomainRecord(domainClass, id)
     domainClass.withTransaction {
-      record = DomainUtils.instance.findDomainRecord(domainClass, id)
-      DomainBinder.build().bind(record, bodyParams, true)
-      bindEvent(record, bodyParams)
-      // TODO: Replace with non-hibernate alternative
-      //ValidationErrors bindErrors = record.errors
-/*
-      if (record.validate() && !(bindErrors.allErrors)) {
-        // Force the save by changing a field in the parent.
-        // If we don't force this, then changes to the child records may not trigger the actual save.
-        if (record.hasProperty('lastUpdated')) {
-          record.lastUpdated = new Date()
-        }
+      try {
+        DomainBinder.build().bind(record, (Map) bodyParams, true)
+        bindEvent(record, bodyParams)
         log.debug('Updating {}', record)
         record.save()
-      } else {
-        error = true
+      } catch (ValidationException e) {
+        errors = e.errors
       }
-*/
-      DomainUtils.instance.resolveProxies(record)
     }
 
     ControllerUtils.instance.delayForTesting('BaseCrudController.editPost()')
 
-    if (error) {
+    if (errors) {
       def modelAndView = new StandardModelAndView(getView('edit'), principal, this)
-      // TODO: Replace with non-hibernate alternative
-      //modelAndView[StandardModelAndView.MESSAGES] = new MessageHolder((ValidationErrors) record.errors)
+      modelAndView.model.get().put(ControllerUtils.MODEL_KEY_DOMAIN_ERRORS, errors)
+      modelAndView[StandardModelAndView.MESSAGES] = new MessageHolder(errors)
       def renderer = Holders.applicationContext.getBean(ViewsRenderer)
 
       // Store the domain record in the model for the view/markers.
-      //def record = domainClass.newInstance()
       modelAndView.model.get().put(name, record)
 
-      //def page
       Writable writable = renderer.render(modelAndView.view.get(), modelAndView.model.get())
       return HttpResponse.status(HttpStatus.OK).body(writable)
     } else {
-      return HttpResponse.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, "$rootPath/show/${record.id}")
+      return HttpResponse.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, "$rootPath/show/${record.uuid}")
     }
   }
 
@@ -359,11 +345,11 @@ abstract class BaseCrudController extends BaseController {
       if (record) {
         // Now delete any related records (not true child records)
         for (o in DomainUtils.instance.findRelatedRecords(record)) {
-          o.delete(flush: true)
-          log.debug('delete() related {} id = {}', o.class.simpleName, (Object) o.id)
+          o.delete()
+          log.debug('delete() related {} id = {}', o.class.simpleName, (Object) o.uuid)
         }
         // Delete after the related records in case of a referential integrity check.
-        record.delete(flush: true)
+        record.delete()
         log.debug('delete() {} id = {}', record.class.simpleName, id)
       } else {
         error = true
