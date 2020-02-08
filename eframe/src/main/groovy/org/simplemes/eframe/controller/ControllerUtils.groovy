@@ -191,38 +191,38 @@ class ControllerUtils {
   }
 
   /**
-   * Calculates the effective <code>offset</code> and <code>max</code> for standard list queries.
-   * Supports GUI toolkit-style <code>start</code> and <code>count</code> too.  Limits the Max to 100 (configurable)
-   * for safety.  <code>max</code> and <code>offset</code>
-   * take precedence over the toolkit-style values (start/count).<p/>
+   * Calculates the effective <code>from</code> (page start) and <code>size</code>(page size) for standard list queries.
+   * Supports GUI toolkit-style <code>start</code> and <code>count</code>.  Limits the <code>size</code> to 100 (configurable)
+   * for safety.
+   * <p/>
    * Typical usage in a controller:
    * <pre>
-   * def (int offset, int max) = ControllerUtils.calculateOffsetAndMaxForList(params)
+   * def (int from, int size) = ControllerUtils.calculateFromAndSizeForList(params)
    * </pre>
    * @param params The request parameters. Integer and String values are supported.
    * @param allowNull If true, then the returned values can be null.  Only use this option if you have fallback's for max in your code.
    * @return A Tuple with the effective offset and max.  Never null, always Integers. (<b>Defaults:</b> 0,UIDefaults.PAGE_SIZE).
    */
-  Tuple2<Integer, Integer> calculateOffsetAndMaxForList(Map params, boolean allowNull = false) {
-    Integer max = null
-    Integer offset = null
+  Tuple2<Integer, Integer> calculateFromAndSizeForList(Map params, boolean allowNull = false) {
+    Integer size = null
+    Integer from = null
     if (!allowNull) {
-      max = UIDefaults.PAGE_SIZE
-      offset = 0
+      size = UIDefaults.PAGE_SIZE
+      from = 0
     }
-    if (params?.max) {
-      max = params.max as Integer
+    if (params?.size) {
+      size = params.size as Integer
     } else if (params?.count) {
-      max = params.count as Integer
+      size = params.count as Integer
     }
-    max = max ? Math.min(max, Holders.configuration.maxRowLimit) : null
+    size = size ? Math.min(size, Holders.configuration.maxRowLimit) : null
 
-    if (params?.offset) {
-      offset = params.offset as Integer
+    if (params?.from) {
+      from = params.from as Integer
     } else if (params?.start) {
-      offset = params.start as Integer
+      from = (params.start as Integer) / size as Integer
     }
-    return [offset, max]
+    return [from, size]
   }
 
   /**

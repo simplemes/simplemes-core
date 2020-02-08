@@ -5,6 +5,7 @@
 package sample.domain
 
 
+import io.micronaut.data.model.Pageable
 import io.micronaut.data.repository.CrudRepository
 import org.simplemes.eframe.domain.BaseRepository
 
@@ -15,6 +16,14 @@ import org.simplemes.eframe.domain.BaseRepository
  */
 interface SampleParentRepository extends BaseRepository, CrudRepository<SampleParent, UUID> {
   Optional<SampleParent> findByUuid(UUID uuid)
+
   Optional<SampleParent> findByName(String name)
+
+  List<SampleParent> findAllByNameLike(String name, Pageable pageable)
+
+  List<SampleParent> list(Pageable pageable)
+
   List<SampleParent> list()
+
+  long count()
 }

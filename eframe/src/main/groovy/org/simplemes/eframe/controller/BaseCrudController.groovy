@@ -6,6 +6,8 @@ package org.simplemes.eframe.controller
 
 import groovy.util.logging.Slf4j
 import io.micronaut.core.io.Writable
+import io.micronaut.data.model.Pageable
+import io.micronaut.data.model.Sort
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
@@ -78,24 +80,25 @@ abstract class BaseCrudController extends BaseController {
     }
     Class clazz = getDomain()
     def params = ControllerUtils.instance.convertToMap(request.parameters)
-    def (offset, max) = ControllerUtils.instance.calculateOffsetAndMaxForList(params)
+    def (from, max) = ControllerUtils.instance.calculateFromAndSizeForList(params)
     def (sortField, sortDir) = ControllerUtils.instance.calculateSortingForList(params)
     // Use some defaults if no sorting specified.
     sortField = sortField ?: DomainUtils.instance.getPrimaryKeyField(clazz)
     sortDir = sortDir ?: 'asc'
+    def sortDirection = (sortDir == 'asc') ? Sort.Order.Direction.ASC : Sort.Order.Direction.DESC
     def data = []
     def totalCount = 0
     clazz.withTransaction {
       totalCount = clazz.count()
-      log.debug('List(max: {}, offset: {}, sort: {}, order: {}) : ', max, offset, sortField, sortDir)
-      def objects = clazz.list(max: max, offset: offset, sort: sortField, order: sortDir, fetch: [lazy: false])
+      log.debug('List(max: {}, from: {}, sort: {}, order: {}) : ', max, from, sortField, sortDir)
+      //def objects = clazz.list(max: max, offset: from, sort: sortField, order: sortDir, fetch: [lazy: false])
+      def objects = clazz.list(Pageable.from((Integer) from, (Integer) max).order((String) sortField, sortDirection))
       for (o in objects) {
-        DomainUtils.instance.resolveProxies(o)
         data << o
       }
     }
     ControllerUtils.instance.delayForTesting('BaseCrudController.list()')
-    def json = Holders.objectMapper.writeValueAsString([data: data, pos: offset, total_count: totalCount, sort: sortField, sortDir: sortDir])
+    def json = Holders.objectMapper.writeValueAsString([data: data, pos: from * max, total_count: totalCount, sort: sortField, sortDir: sortDir])
     return HttpResponse.status(HttpStatus.OK).body(json)
   }
 

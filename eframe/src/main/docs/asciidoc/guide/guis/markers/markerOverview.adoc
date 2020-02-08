@@ -181,6 +181,6 @@ then the conversion to the GORM values is automatically done for you.
 
 The link:groovydoc/org/simplemes/eframe/controller/ControllerUtils.html[ControllerUtils^]
 icon:share-square-o[role="link-blue"] provides the methods
-`calculateOffsetAndMaxForList()` and `calculateSortingForList()`
+`calculateFromAndSizeForList()` and `calculateSortingForList()`
 to provide the values needed for retrieval from the DB.
 

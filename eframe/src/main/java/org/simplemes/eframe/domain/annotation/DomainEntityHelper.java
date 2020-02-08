@@ -9,6 +9,7 @@ import io.micronaut.context.ApplicationContext;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.exceptions.DataAccessException;
+import io.micronaut.data.model.Pageable;
 import io.micronaut.data.model.naming.NamingStrategy;
 import io.micronaut.data.repository.CrudRepository;
 import io.micronaut.data.repository.GenericRepository;
@@ -265,7 +266,7 @@ public class DomainEntityHelper {
       paramTypes = new Class<?>[args.length];
       for (int i = 0; i < args.length; i++) {
         //System.out.println("args[i]:" + args[i]);
-        paramTypes[i] = args[i].getClass();
+        paramTypes[i] = fixSpecialCaseParameterTypes(args[i].getClass());
       }
       //System.out.println("  paramTypes:" + Arrays.toString(paramTypes));
     }
@@ -284,6 +285,25 @@ public class DomainEntityHelper {
       res = ((Optional<?>) res).orElse(null);
     }
     return res;
+  }
+
+  /**
+   * Fixes some well-know special cases for parameter types.  This typically replaces a concrete class
+   * with an interface to match the method declaration.  For example, the Pageable.from() methods return
+   * a DefaultPageable object.  The repository method is declared as list(Pageable) using the Pageable interface.
+   * This method fixes the type to use Pageable so the method can be found.
+   * <p>
+   * This is done to avoid using Class.getMethods() to find the right method.  Someday, this fix may have to
+   * be replaced with the slower Class.getMethods() approach.
+   *
+   * @param clazz The class.
+   * @return The real class appropriate for most method lookups.  Returns clazz unchanged unless we decided to fix the type.
+   */
+  private Class<?> fixSpecialCaseParameterTypes(Class<?> clazz) {
+    if (Pageable.class.isAssignableFrom(clazz)) {
+      return Pageable.class;
+    }
+    return clazz;
   }
 
   /**

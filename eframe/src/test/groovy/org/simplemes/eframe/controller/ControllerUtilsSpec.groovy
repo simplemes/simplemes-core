@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.controller
 
 import ch.qos.logback.classic.Level
@@ -17,12 +21,6 @@ import sample.controller.AllFieldsDomainController
 import sample.controller.RMAController
 import sample.controller.SampleParentController
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -64,35 +62,37 @@ class ControllerUtilsSpec extends BaseSpecification {
     ControllerUtils.instance.getDomainClass(clazz.newInstance()) == SampleParent
   }
 
-  def "verify calculateOffsetAndMaxForList works for basic cases"() {
+  def "verify calculateFromAndSizeForList works for basic cases"() {
     expect:
-    ControllerUtils.instance.calculateOffsetAndMaxForList(map) == result
+    ControllerUtils.instance.calculateFromAndSizeForList(map) == result
 
     where:
     map                      | result
-    [offset: 8, max: 10]     | [8, 10]
-    [offset: '8', max: '10'] | [8, 10]
-    [start: 11, count: 10]   | [11, 10]
-    [start: '12', count: 10] | [12, 10]
-    [start: '13', count: 10] | [13, 10]
-    [offset: 888, max: 9999] | [888, Holders.configuration.maxRowLimit]
+    [from: 8, size: 10]      | [8, 10]
+    [from: '8', size: '10']  | [8, 10]
+    [start: 11, count: 10]   | [1, 10]
+    [start: 20, count: 10]   | [2, 10]
+    [start: '10', count: 10] | [1, 10]
+    [start: '11', count: 10] | [1, 10]
+    [start: '20', count: 10] | [2, 10]
+    [from: 888, size: 9999]  | [888, Holders.configuration.maxRowLimit]
   }
 
-  def "verify calculateOffsetAndMaxForList supports configurable max limit"() {
+  def "verify calculateFromAndSizeForList supports configurable max limit"() {
     given: 'a configured max limit'
     def originalConfig = Holders.configuration
     Holders.configuration = new EFrameConfiguration(maxRowLimit: 237)
 
     expect:
-    ControllerUtils.instance.calculateOffsetAndMaxForList([offset: 12, max: 500]) == [12, 237]
+    ControllerUtils.instance.calculateFromAndSizeForList([from: 12, size: 500]) == [12, 237]
 
     cleanup:
     Holders.configuration = originalConfig
   }
 
-  def "verify calculateOffsetAndMaxForList with allowNulls true and false"() {
+  def "verify calculateFromAndSizeForList with allowNulls true and false"() {
     expect: 'a POGO response class with a domain reference'
-    ControllerUtils.instance.calculateOffsetAndMaxForList(params, allowNulls) == result
+    ControllerUtils.instance.calculateFromAndSizeForList(params, allowNulls) == result
 
     where:
     params | allowNulls | result

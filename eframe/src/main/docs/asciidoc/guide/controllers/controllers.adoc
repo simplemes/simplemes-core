@@ -158,6 +158,8 @@ class SomeController extends BaseCrudController {
 This affects the <<BaseCrudController>>.
 
 
+Also, you should implement a number of methods as described in <<Repository Requirements>>.
+
 ===== getView Method
 
 The view page file names are usually derived from the controller's domain class.

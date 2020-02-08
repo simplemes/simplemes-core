@@ -370,24 +370,57 @@ This includes:
 
 ifeval::["{backend}" != "pdf"]
 
+[inline-toc]#<<Standard Repository Methods>>#
 [inline-toc]#<<Support for H2 and Production Database>>#
 
 endif::[]
 
+A repository is a <<Micronaut Data>> mechanism to access your data.  These repositories follow a
+number common patterns such as extending specific interfaces and implementing specific methods.
+Most methods in the repository are automatically added to your domain class, so you rarely need
+to use the repository directly.
+
+Base interfaces include:
+
+* BaseRepository
+* CrudRepository<__Domain__, UUID>
 
 
-Micronaut-Data provides access to the database records using a number of naming patterns.
+
+
+===== Standard Repository Methods
+
+
+<<Micronaut Data>> provides access to the database records using a number of naming patterns.
 If your repository interface has a method that matches one of these patterns, then the SQL
 will be generated automatically.
 
-Some of the standard method expected include:
+Some of the standard methods expected are:
 
-* `Optional<Order> findByUuid(UUID uuid)` - Reads a single record for the given ID.
-  Used by many framework functions to find related records.
+[source,groocy]
+.Example - Methods for most top-level domain repositories
+----
+interface OrderRepository extends BaseRepository, CrudRepository<Order, UUID> {
+  Optional<Order> findByUuid(UUID uuid)  // <.>
 
-Other Requirements:
+  List<Order> list(Pageable pageable) // <.>
+  long count() // <.>
 
-* Extends: BaseRepository, CrudRepository<__Domain__, UUID>
+  Optional<Order> findByOrder(String name) // <.>
+  List<Order> list()  // <.>
+}
+----
+<.> Reads a single record for the given ID. Used by many framework functions to find related records.
+<.> Finds all records (with paging/sorting support).  Used by <<BaseCrudController>> to find records
+    for the List <<Definition Pages>>.
+<.> Counts all records.  Used by <<BaseCrudController>> to determine the paging limits
+    for the List <<Definition Pages>>.
+<.> Find by primary key.  Not used in framework, but useful for some application logic.
+<.> Lists all records. Not used in framework, but useful for some application logic and debugging.
+
+Most top-level domains that have List <<Definition Pages>> should provide the `list(Pageable)` and
+`count()` methods.
+
 
 ===== Support for H2 and Production Database
 
