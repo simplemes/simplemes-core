@@ -1,14 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.exception
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.json.JsonSlurper
+import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.test.BaseSpecification
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -74,34 +73,24 @@ class MessageHolderSpec extends BaseSpecification {
     messageHolder.level == MessageHolder.LEVEL_ERROR
   }
 
-  def "verify that validation error map constructor works - multiple errors"() {
-    given: 'the validation errors'
-    def error1 = Mock(FieldError)
-    error1.getField() >> 'name'
-    error1.getCodes() >> ['someMessage.message']
-    error1.getArguments() >> ['name']
-    error1.getDefaultMessage() >> 'someMessage.message'
-    0 * _
+  def "verify that List constructor handles validation errors correctly"() {
+    given: 'some errors'
+    def error1 = new ValidationError(1, 'badField')
+    def error2 = new ValidationError(0, 'otherBadField')
 
-    def error2 = Mock(FieldError)
-    error2.getField() >> 'zTitle'
-    error2.getCodes() >> ['anotherMessage.message']
-    error2.getArguments() >> ['zTitle']
-    error2.getDefaultMessage() >> 'anotherMessage.message'
-    0 * _
+    when: 'the constructor is called'
+    def messageHolder = new MessageHolder([error1, error2])
 
-    def errors = Mock(ValidationErrors)
-    errors.getAllErrors() >> [error1, error2]
-    0 * _
+    then: 'the messages are in the list correctly'
+    messageHolder.code == error1.code
+    messageHolder.text == error1.toString()
+    messageHolder.level == MessageHolder.LEVEL_ERROR
 
-    when: 'a message is added'
-    def messageHolder = new MessageHolder(errors)
-
-    then: 'the main message is in the holder'
-    messageHolder.text == 'someMessage.message'
-
-    and: 'the second message is in the holder'
-    messageHolder.otherMessages[0].text == 'anotherMessage.message'
+    def msg2 = messageHolder.otherMessages[0]
+    messageHolder.otherMessages.size() == 1
+    msg2.code == error2.code
+    msg2.text == error2.toString()
+    msg2.level == MessageHolder.LEVEL_ERROR
   }
 
 }

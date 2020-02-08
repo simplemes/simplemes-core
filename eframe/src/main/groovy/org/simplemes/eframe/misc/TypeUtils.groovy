@@ -1,14 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.misc
 
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.domain.DomainUtils
 
 import java.lang.reflect.Field
-
-/*
- * Copyright Michael Houston. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Various utilities that operate on generic types (or classes).
@@ -60,7 +59,8 @@ class TypeUtils {
    * @return A list of lists of values, top-level parent first.
    */
   static List<List> getStaticPropertyInSuperClasses(Class c, String propertyName) {
-    def list = []
+    // TODO: Consider simplifying this since we no longer supported domain sub-classes?
+    List<List> list = []
     def fields = c.metaClass.properties
     def prop = fields.find() { it.name == propertyName }
     //println "prop = $prop, ${prop.dump()}"
@@ -196,6 +196,19 @@ class TypeUtils {
   @SuppressWarnings("ClassForName")
   static Class loadClass(String className) {
     return Class.forName(className)
+  }
+
+  /**
+   * Determines if the given object is a mock.
+   * @param object The object to check.
+   * @return True if a mock.  Always false if environment is not test.
+   */
+  static boolean isMock(Object object) {
+    if (Holders.isEnvironmentTest()) {
+      def s = object?.getClass()?.toString()
+      return s?.contains('Mock') || s?.contains('com.sun.proxy')
+    }
+    return false
   }
 
 }

@@ -22,9 +22,6 @@ import sample.domain.SampleParent
 class DomainUtilsSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [SERVER]
-
-  @SuppressWarnings("unused")
   static dirtyDomains = [User, SampleParent, AllFieldsDomain, RMA, FlexType]
 
   def "verify getStaticFieldOrder works with a normal domain class"() {
@@ -234,56 +231,25 @@ class DomainUtilsSpec extends BaseSpecification {
     msg.toString().contains('count')
   }
 
-/*
-  def "verify that methods gracefully ignore null records"() {
-    when: ''
-    DomainUtils.instance.fixChildParentReferences(null)
-
-    then: 'no errors'
-    notThrown(Exception)
-  }
-
   @Rollback
-  def "verify that fixChildParentReferences fixes errors with children"() {
-    given: 'a domain record with several children added the wrong way - simple insert to list'
-    def sampleParent = new SampleParent(name: 'ABC')
-    sampleParent.sampleChildren << new SampleChild(key: 'C1')
-    sampleParent.sampleChildren << new SampleChild(key: 'C2')
-    sampleParent.sampleChildren << new SampleChild(key: 'C3')
-
-    when: 'the child records are fixed and saved'
-    DomainUtils.instance.fixChildParentReferences(sampleParent)
-    sampleParent.save()
-
-    then: 'the record is saved correctly'
-    sampleParent.sampleChildren[0].sampleParent.id == sampleParent.id
-  }
-
-  @Rollback
-  def "verify that fixChildParentReferences fixes errors with grand children"() {
-    given: 'a domain record with several children added the wrong way - simple insert to list'
-    def sampleParent = new SampleParent(name: 'ABC')
-    def sampleChild = new SampleChild(key: 'C1')
-    sampleParent.sampleChildren << sampleChild
-    sampleChild.sampleGrandChildren << new SampleGrandChild(grandKey: 'G1A')
-
-    when: 'the child records are fixed and saved'
-    DomainUtils.instance.fixChildParentReferences(sampleParent)
-    sampleParent.save()
-
-    then: 'the record is saved correctly'
-    sampleParent.sampleChildren[0].sampleParent.id == sampleParent.id
-    sampleParent.sampleChildren[0].sampleGrandChildren[0].sampleChild.id == sampleChild.id
-  }
-*/
-
-  @Rollback
-  def "verify that findDomainRecord finds the record by ID"() {
+  def "verify that findDomainRecord finds the record by UUID"() {
     given: 'a domain record with several children added the wrong way - simple insert to list'
     def sampleParent = new SampleParent(name: 'ABC').save()
 
     when: 'the record is found'
     def sampleParent2 = DomainUtils.instance.findDomainRecord(SampleParent, sampleParent.uuid)
+
+    then: 'the record is found correctly'
+    sampleParent2 == sampleParent
+  }
+
+  @Rollback
+  def "verify that findDomainRecord finds the record by UUID - String input"() {
+    given: 'a domain record with several children added the wrong way - simple insert to list'
+    def sampleParent = new SampleParent(name: 'ABC').save()
+
+    when: 'the record is found'
+    def sampleParent2 = DomainUtils.instance.findDomainRecord(SampleParent, sampleParent.uuid.toString())
 
     then: 'the record is found correctly'
     sampleParent2 == sampleParent

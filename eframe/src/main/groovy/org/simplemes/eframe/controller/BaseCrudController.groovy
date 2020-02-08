@@ -25,6 +25,8 @@ import io.micronaut.views.ViewsRenderer
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.domain.DomainBinder
 import org.simplemes.eframe.domain.DomainUtils
+import org.simplemes.eframe.exception.MessageHolder
+import org.simplemes.eframe.exception.ValidationException
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.TypeUtils
@@ -126,7 +128,6 @@ abstract class BaseCrudController extends BaseController {
     domainClass.withTransaction {
       def name = NameUtils.lowercaseFirstLetter(domainClass.simpleName)
       def record = DomainUtils.instance.findDomainRecord(domainClass, id)
-      DomainUtils.instance.resolveProxies(record)
       modelAndView.model.get().put(name, record)
     }
 
@@ -189,41 +190,34 @@ abstract class BaseCrudController extends BaseController {
     def domainClass = ControllerUtils.instance.getDomainClass(this)
     def name = NameUtils.lowercaseFirstLetter(domainClass.simpleName)
 
-    def error = false
-    def record = null
+    def errors
+    def record = domainClass.newInstance()
     domainClass.withTransaction {
-      record = domainClass.newInstance()
-      DomainBinder.build().bind(record, bodyParams, true)
-      bindEvent(record, bodyParams)
-      // TODO: Replace with non-hibernate alternative
-/*
-      ValidationErrors bindErrors = record.errors
-      if (record.validate() && !(bindErrors.allErrors)) {
+      try {
+        DomainBinder.build().bind(record, bodyParams, true)
+        bindEvent(record, bodyParams)
         log.debug('Creating {}', record)
         record.save()
-      } else {
-        error = true
+      } catch (ValidationException e) {
+        errors = e.errors
       }
-*/
-      DomainUtils.instance.resolveProxies(record)
     }
 
     ControllerUtils.instance.delayForTesting('BaseCrudController.createPost()')
 
-    if (error) {
+    if (errors) {
       def modelAndView = new StandardModelAndView(getView('create'), principal, this)
-      // TODO: Replace with non-hibernate alternative and store in ControllerUtils.MODEL_KEY_DOMAIN_ERRORS
-      //modelAndView[StandardModelAndView.MESSAGES] = new MessageHolder((ValidationErrors) record.errors)
+      modelAndView.model.get().put(ControllerUtils.MODEL_KEY_DOMAIN_ERRORS, errors)
+      modelAndView[StandardModelAndView.MESSAGES] = new MessageHolder(errors)
       def renderer = Holders.applicationContext.getBean(ViewsRenderer)
 
       // Store the domain record in the model for the view/markers.
-      //def record = domainClass.newInstance()
       modelAndView.model.get().put(name, record)
 
       Writable writable = renderer.render(modelAndView.view.get(), modelAndView.model.get())
       return HttpResponse.status(HttpStatus.OK).body(writable)
     } else {
-      return HttpResponse.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, "${rootPath}/show/${record.id}")
+      return HttpResponse.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, "${rootPath}/show/${record.uuid}")
     }
   }
 

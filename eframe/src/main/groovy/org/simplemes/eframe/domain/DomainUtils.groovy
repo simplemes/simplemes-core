@@ -17,6 +17,7 @@ import org.simplemes.eframe.domain.validate.ValidationErrorInterface
 import org.simplemes.eframe.exception.MessageHolder
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.TypeUtils
+import org.simplemes.eframe.misc.UUIDUtils
 
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
@@ -359,13 +360,14 @@ class DomainUtils {
   /**
    * Returns the domain record that matches the given uuid or primary key.
    * @param domainClass The domain to find the given record for.
-   * @param keyOrUuid The UUID or primary key.
+   * @param keyOrUuid The UUID or primary key.  Supports UUID as a string input.
    * @return The record.
    */
   Object findDomainRecord(Class domainClass, Object keyOrUuid) {
     if (!keyOrUuid) {
       return null
     }
+    keyOrUuid = UUIDUtils.convertToUUIDIfPossible(keyOrUuid)
     if (keyOrUuid instanceof UUID) {
       return domainClass.findByUuid(keyOrUuid)
     } else {

@@ -13,6 +13,7 @@ import io.micronaut.scheduling.annotation.Async
 import org.simplemes.eframe.application.issues.WorkArounds
 import org.simplemes.eframe.date.EFrameDateFormat
 import org.simplemes.eframe.json.EFrameJacksonModule
+import org.simplemes.eframe.misc.TypeUtils
 
 import javax.inject.Singleton
 
@@ -56,8 +57,12 @@ class StartupHandler {
     // needs 1.3.0 or 1.2.8.
 
     // Start Initial data load.
-    def loader = Holders.applicationContext.getBean(InitialDataLoader)
-    loader.dataLoad()
+    if (!TypeUtils.isMock(Holders.applicationContext)) {
+      def loader = Holders.applicationContext.getBean(InitialDataLoader)
+      loader.dataLoad()
+    } else {
+      log.debug("Disabled Initial Data Load for mock applicationContext")
+    }
 
 
   }

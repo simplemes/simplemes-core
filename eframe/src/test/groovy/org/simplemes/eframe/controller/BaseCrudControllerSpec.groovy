@@ -8,6 +8,7 @@ import groovy.json.JsonSlurper
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpStatus
 import org.simplemes.eframe.custom.domain.FlexType
+import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.TypeUtils
@@ -24,6 +25,7 @@ import org.simplemes.eframe.web.ui.UIDefaults
 import sample.controller.RMAController
 import sample.domain.AllFieldsDomain
 import sample.domain.RMA
+import sample.domain.SampleChild
 import sample.domain.SampleParent
 
 /**
@@ -212,7 +214,7 @@ class BaseCrudControllerSpec extends BaseSpecification {
 
     when: 'the index is called from the controller'
     def controller = buildSampleParentController().newInstance()
-    def res = controller.show(sampleParent.id.toString(), new MockPrincipal())
+    def res = controller.show(sampleParent.uuid.toString(), new MockPrincipal())
 
     then: 'the response is correct'
     res.status == HttpStatus.OK
@@ -288,13 +290,9 @@ class BaseCrudControllerSpec extends BaseSpecification {
     def res = controller.createPost(mockRequest(), [name: 'ABC', title: 'abc'], new MockPrincipal())
 
     then: 'the record is created in the DB'
-    def id = null
-    SampleParent.withTransaction {
-      def sampleParent = SampleParent.findByName('ABC')
-      assert sampleParent.title == 'abc'
-      id = sampleParent.id
-      true
-    }
+    def sampleParent = SampleParent.findByName('ABC')
+    sampleParent.title == 'abc'
+    def id = sampleParent.uuid
 
     then: 'the HTTP response is correct'
     res.status == HttpStatus.FOUND
@@ -316,11 +314,8 @@ class BaseCrudControllerSpec extends BaseSpecification {
     res.status == HttpStatus.FOUND
 
     and: 'the redirect location is correct'
-    def id = null
-    RMA.withTransaction {
-      def rma = RMA.findByRma('ABC')
-      id = rma.id
-    }
+    def rma = RMA.findByRma('ABC')
+    def id = rma.uuid
     res.headers.get(HttpHeaders.LOCATION) == "/rma/show/${id}"
   }
 
@@ -338,11 +333,15 @@ class BaseCrudControllerSpec extends BaseSpecification {
     res.status == HttpStatus.OK
     mock.view == 'sampleParent/create'
 
+    and: 'the model has the errors'
+    def model = mock.model
+    List<ValidationError> errors = model[ControllerUtils.MODEL_KEY_DOMAIN_ERRORS] as List<ValidationError>
+    errors.size() == 1
+    errors[0].code == 1
+    errors[0].fieldName == 'name'
+
     and: 'no record is written to the DB'
-    SampleParent.withTransaction {
-      assert SampleParent.count() == 0
-      true
-    }
+    SampleParent.count() == 0
   }
 
   @Rollback
@@ -362,11 +361,16 @@ class BaseCrudControllerSpec extends BaseSpecification {
     res.status == HttpStatus.OK
     mock.view == 'sampleParent/create'
 
+    and: 'the model has the errors'
+    def model = mock.model
+    List<ValidationError> errors = model[ControllerUtils.MODEL_KEY_DOMAIN_ERRORS] as List<ValidationError>
+    errors.size() == 1
+    errors[0].code == 206
+    errors[0].fieldName == 'sampleChildren.sequence'
+
     and: 'no record is written to the DB'
-    SampleParent.withTransaction {
-      assert SampleParent.count() == 0
-      true
-    }
+    SampleParent.count() == 0
+    SampleChild.count() == 0
   }
 
   @Rollback

@@ -1,14 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.exception
 
 import com.fasterxml.jackson.databind.annotation.JsonSerialize
 import groovy.transform.ToString
-import org.simplemes.eframe.i18n.GlobalUtils
-
-/*
- * Copyright Michael Houston. All rights reserved.
- * Original Author: mph
- *
-*/
+import org.simplemes.eframe.domain.validate.ValidationError
 
 /**
  * This class encapsulates multiple response messages (error, etc) and allows controllers to render them
@@ -124,13 +122,9 @@ class MessageHolder {
    * Builds a message holder with the given messages.  All messages are marked as errors.
    * @param errors The validation errors from a domain object that failed validation.
    */
-  // TODO: Replace with non-hibernate alternative
-  MessageHolder(Object errors) {
-    def map = GlobalUtils.lookupValidationErrors(errors)
-    for (fieldName in map.keySet()) {
-      for (msg in map[fieldName]) {
-        add([text: msg, level: LEVEL_ERROR])
-      }
+  MessageHolder(List<ValidationError> errors) {
+    for (error in errors) {
+      addError(code: error.code, text: error.toString())
     }
   }
 
