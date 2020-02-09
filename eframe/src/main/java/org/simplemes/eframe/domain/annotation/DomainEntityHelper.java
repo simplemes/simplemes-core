@@ -17,6 +17,7 @@ import io.micronaut.transaction.SynchronousTransactionManager;
 import io.micronaut.transaction.TransactionCallback;
 import io.micronaut.transaction.TransactionStatus;
 import io.micronaut.transaction.jdbc.DataSourceUtils;
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder;
 import org.simplemes.eframe.domain.PersistentProperty;
 import org.simplemes.eframe.domain.validate.ValidationError;
 import org.simplemes.eframe.domain.validate.ValidationErrorInterface;
@@ -69,12 +70,6 @@ public class DomainEntityHelper {
    * The element name is this prefix plus the field's name (e.g. loadedRef+'order').
    */
   public static final String SETTINGS_LOADED_REFERENCE = "loadedRef";
-
-  /**
-   * The name of the element in the domain settings holder that will contain the complex
-   * custom fields.
-   */
-  public static final String SETTINGS_COMPLEX_CUSTOM_FIELDS = "complexFields";
 
   /**
    * Determine the repository associated with the given domain class. This is not for public access.
@@ -899,15 +894,10 @@ public class DomainEntityHelper {
    * @param object The domain object.
    * @return The complex fields holder.
    */
-  @SuppressWarnings({"unchecked", "ConstantConditions"})
+  @SuppressWarnings({"unchecked"})
   public Map<String, Object> getComplexHolder(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException {
-    Map<String, Object> settingsMap = getDomainSettings(object);
-    Object o = settingsMap.get(SETTINGS_COMPLEX_CUSTOM_FIELDS);
-    if (o instanceof Map) {
-      return (Map<String, Object>) o;
-    }
-    o = new HashMap<String, Object>();
-    settingsMap.put(SETTINGS_COMPLEX_CUSTOM_FIELDS, o);
+    Field field = object.getClass().getDeclaredField(ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME);
+    Object o = field.get(object);
     return (Map<String, Object>) o;
   }
 

@@ -50,6 +50,11 @@ public @interface ExtensibleFieldHolder {
   String COMPLEX_CUSTOM_FIELD_NAME = "_complexCustomFields";
 
   /**
+   * The name of the element in the COMPLEX_CUSTOM_FIELD_NAME Map that holds a reference to itself.
+   */
+  String COMPLEX_THIS_NAME = "_this";
+
+  /**
    * Defines the field name to store the custom values in.  Default is 'customFields'.
    *
    * @return the field name.

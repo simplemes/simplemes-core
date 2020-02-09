@@ -1,17 +1,15 @@
-package org.simplemes.eframe.json
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
 
+package org.simplemes.eframe.json
 
 import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.annotation.Rollback
+import sample.domain.CustomOrderComponent
 import sample.domain.Order
-import sample.domain.OrderLine
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests the JSON complex custom field serializer.
@@ -19,17 +17,17 @@ import sample.domain.OrderLine
 class ComplexCustomFieldSerializerSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, SERVER]
+  static specNeeds = SERVER
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that serialize handles custom child list from addition"() {
     given: 'a domain object with custom fields'
     def order = new Order(order: 'M1001')
-    def orderLines = []
-    orderLines << new OrderLine(sequence: 1, product: 'PROD1')
-    orderLines << new OrderLine(sequence: 2, product: 'PROD2')
-    orderLines << new OrderLine(sequence: 3, product: 'PROD3')
-    order.setFieldValue('orderLines', orderLines)
+    def customComponents = []
+    customComponents << new CustomOrderComponent(sequence: 1, product: 'PROD1')
+    customComponents << new CustomOrderComponent(sequence: 2, product: 'PROD2')
+    customComponents << new CustomOrderComponent(sequence: 3, product: 'PROD3')
+    order.setFieldValue('customComponents', customComponents)
     order.save()
 
     when: 'the JSON is created'
@@ -38,17 +36,17 @@ class ComplexCustomFieldSerializerSpec extends BaseSpecification {
 
     then: 'the JSON is correct'
     def json = new JsonSlurper().parseText(s)
-    List orderLines2 = json.orderLines
-    orderLines2.size() == 3
-    orderLines2[0].sequence == 1
-    orderLines2[0].product == 'PROD1'
-    orderLines2[1].sequence == 2
-    orderLines2[1].product == 'PROD2'
-    orderLines2[2].sequence == 3
-    orderLines2[2].product == 'PROD3'
+    List customComponents2 = json.customComponents
+    customComponents2.size() == 3
+    customComponents2[0].sequence == 1
+    customComponents2[0].product == 'PROD1'
+    customComponents2[1].sequence == 2
+    customComponents2[1].product == 'PROD2'
+    customComponents2[2].sequence == 3
+    customComponents2[2].product == 'PROD3'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that serialize handles empty custom child list from addition"() {
     given: 'a domain object with custom fields'
     def order = new Order(order: 'M1001')
@@ -60,7 +58,7 @@ class ComplexCustomFieldSerializerSpec extends BaseSpecification {
 
     then: 'the JSON is correct'
     def json = new JsonSlurper().parseText(s)
-    json.orderLines == null
+    json.customComponents.size() == 0
   }
 
   // test no complex custom field value

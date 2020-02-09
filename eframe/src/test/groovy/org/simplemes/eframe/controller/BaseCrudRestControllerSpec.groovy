@@ -1,39 +1,34 @@
-package org.simplemes.eframe.controller
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
 
+package org.simplemes.eframe.controller
 
 import groovy.json.JsonSlurper
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.date.ISODate
-import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.BaseAPISpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.MockSecurityUtils
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.controller.AllFieldsDomainController
 import sample.controller.OrderController
 import sample.controller.SampleParentController
 import sample.domain.AllFieldsDomain
+import sample.domain.CustomOrderComponent
 import sample.domain.Order
-import sample.domain.OrderLine
 import sample.domain.SampleChild
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
  */
-class BaseCrudRestControllerSpec extends BaseSpecification {
-
-  @SuppressWarnings("unused")
-  static specNeeds = [JSON, SERVER]
+class BaseCrudRestControllerSpec extends BaseAPISpecification {
 
   @SuppressWarnings("unused")
   static dirtyDomains = [SampleParent]
@@ -90,7 +85,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
   }
 
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restGet works for basic case "() {
     given: 'a controller for the base class'
     Class clazz = buildAllFieldsDomainController()
@@ -113,7 +108,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     json.reportTimeInterval == ReportTimeIntervalEnum.YESTERDAY.toString()
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restGet works with record ID"() {
     given: 'a controller for the base class for SampleParent'
     def controller = buildSampleParentController().newInstance()
@@ -122,7 +117,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     def record = new SampleParent(name: 'ABC1', title: 'abc').save()
 
     when: 'the get is called'
-    HttpResponse res = controller.restGet(record.id.toString(), null)
+    HttpResponse res = controller.restGet(record.uuid.toString(), null)
 
     then: 'the JSON is valid'
     res.status() == HttpStatus.OK
@@ -131,7 +126,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     json.title == 'abc'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restGet works with records with child proxy records"() {
     given: 'a controller for the base class for SampleParent'
     Class clazz = buildSampleParentController()
@@ -140,15 +135,15 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     def record = null
     SampleParent.withTransaction {
       record = new SampleParent(name: 'ABC', title: 'abc')
-      record.addToSampleChildren(new SampleChild(key: 'C1'))
-      record.addToSampleChildren(new SampleChild(key: 'C2'))
-      record.addToSampleChildren(new SampleChild(key: 'C3'))
+      record.sampleChildren << (new SampleChild(key: 'C1'))
+      record.sampleChildren << (new SampleChild(key: 'C2'))
+      record.sampleChildren << (new SampleChild(key: 'C3'))
       record.save()
     }
 
     when: 'the get is called'
     def controller = clazz.newInstance()
-    HttpResponse res = controller.restGet(record.id.toString(), null)
+    HttpResponse res = controller.restGet(record.uuid.toString(), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
     then: 'the JSON is valid'
@@ -165,7 +160,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     children[2].key == 'C3'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restGet works with custom fields"() {
     given: 'a controller for the base class'
     Class clazz = buildAllFieldsDomainController()
@@ -189,18 +184,18 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     json.custom1 == 'xyzzy'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restGet works with custom child list field added via addition"() {
     given: 'a controller for the base class'
     Class clazz = buildOrderController()
 
     and: 'some test data is created'
     def order = new Order(order: 'M1001')
-    def orderLines = []
-    orderLines << new OrderLine(sequence: 1, product: 'PROD1')
-    orderLines << new OrderLine(sequence: 2, product: 'PROD2')
-    orderLines << new OrderLine(sequence: 3, product: 'PROD3')
-    order.setFieldValue('orderLines', orderLines)
+    def customComponents = []
+    customComponents << new CustomOrderComponent(sequence: 1, product: 'PROD1')
+    customComponents << new CustomOrderComponent(sequence: 2, product: 'PROD2')
+    customComponents << new CustomOrderComponent(sequence: 3, product: 'PROD3')
+    order.setFieldValue('customComponents', customComponents)
     order.save()
 
     when: 'the get is called'
@@ -210,18 +205,19 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     then: 'the JSON is valid'
     res.status() == HttpStatus.OK
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
+
     def json = new JsonSlurper().parseText((String) res.body())
-    List orderLines2 = json.orderLines
-    orderLines2.size() == 3
-    orderLines2[0].sequence == 1
-    orderLines2[0].product == 'PROD1'
-    orderLines2[1].sequence == 2
-    orderLines2[1].product == 'PROD2'
-    orderLines2[2].sequence == 3
-    orderLines2[2].product == 'PROD3'
+    List customComponents2 = json.customComponents
+    customComponents2.size() == 3
+    customComponents2[0].sequence == 1
+    customComponents2[0].product == 'PROD1'
+    customComponents2[1].sequence == 2
+    customComponents2[1].product == 'PROD2'
+    customComponents2[2].sequence == 3
+    customComponents2[2].product == 'PROD3'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restGet gracefully handles record not found case"() {
     given: 'a controller for the base class for SampleParent'
     Class clazz = buildSampleParentController()
@@ -235,7 +231,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     res.status() == HttpStatus.NOT_FOUND
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restGet gracefully handles ID is not a long"() {
     given: 'a controller for the base class for SampleParent'
     Class clazz = buildSampleParentController()
@@ -249,7 +245,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     res.status() == HttpStatus.NOT_FOUND
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restGet gracefully handles ID missing"() {
     given: 'a controller for the base class for SampleParent'
     Class clazz = buildSampleParentController()
@@ -263,7 +259,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     res.status() == HttpStatus.NOT_FOUND
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restGet checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller'
     Object controller = buildAllFieldsDomainController().newInstance()
@@ -279,7 +275,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
   }
 
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restPost can create simple record"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -326,10 +322,10 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     json.enabled == record.enabled
     ISODate.parseDateOnly((String) json.dueDate) == record.dueDate
     ISODate.parse((String) json.dateTime) == record.dateTime
-    json.id == record.id
+    json.uuid == record.uuid.toString()
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restPost can create a record with child records"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildSampleParentController()
@@ -377,7 +373,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     jsonChildren[2].key == 'C2'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restPost can create a record with custom fields"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -411,7 +407,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     record2.getFieldValue('custom1') == 'custom_abc'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restPost can create a record with custom child records"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildOrderController()
@@ -420,7 +416,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     def src = """
       {
         "order" : "ABC-021",
-        "orderLines" : [
+        "customComponents" : [
           {"sequence" : 1, "product" : "C1"},
           {"sequence" : 2, "product" : "C2"},
           {"sequence" : 3, "product" : "C3"}
@@ -441,20 +437,20 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     record.order == 'ABC-021'
 
     and: 'the child records are correct'
-    List<OrderLine> orderLines = record.getFieldValue('orderLines')
-    orderLines.size() == 3
-    orderLines[0].sequence == 1
-    orderLines[0].product == 'C1'
-    orderLines[1].sequence == 2
-    orderLines[1].product == 'C2'
-    orderLines[2].sequence == 3
-    orderLines[2].product == 'C3'
+    List<CustomOrderComponent> customComponents = record.getFieldValue('customComponents') as List<CustomOrderComponent>
+    customComponents.size() == 3
+    customComponents[0].sequence == 1
+    customComponents[0].product == 'C1'
+    customComponents[1].sequence == 2
+    customComponents[1].product == 'C2'
+    customComponents[2].sequence == 3
+    customComponents[2].product == 'C3'
 
     and: 'the JSON is valid'
     def json = new JsonSlurper().parseText((String) res.getBody().get())
     json.order == record.order
 
-    List jsonChildren = json.orderLines
+    List jsonChildren = json.customComponents
     jsonChildren.size() == 3
     jsonChildren[0].sequence == 1
     jsonChildren[0].product == 'C1'
@@ -464,7 +460,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     jsonChildren[2].product == 'C3'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restPost fails with validation errors"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -491,7 +487,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     json.message.text.contains('000')
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restPost fails with no request body"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -509,7 +505,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['empty', 'body'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restPost checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller'
     Object controller = buildAllFieldsDomainController().newInstance()
@@ -524,7 +520,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     res.status == HttpStatus.FORBIDDEN
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restPut can update a simple record"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -546,7 +542,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
 
     when: 'the put is called'
     def controller = clazz.newInstance()
-    HttpResponse res = controller.restPut(record1.id.toString(), mockRequest([body: src]), null)
+    HttpResponse res = controller.restPut(record1.uuid.toString(), mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
 
     then: 'the JSON is valid'
@@ -572,10 +568,10 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     json.enabled == record.enabled
     ISODate.parseDateOnly((String) json.dueDate) == record.dueDate
     ISODate.parse((String) json.dateTime) == record.dateTime
-    json.id == record.id
+    json.uuid == record.uuid
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restPut can update a simple record with child records added"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildSampleParentController()
@@ -597,7 +593,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
 
     when: 'the put is called'
     def controller = clazz.newInstance()
-    HttpResponse res = controller.restPut(record1.id.toString(), mockRequest([body: src]), null)
+    HttpResponse res = controller.restPut(record1.uuid.toString(), mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
 
     then: 'the JSON is valid'
@@ -622,15 +618,15 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     jsonChildren[2].key == 'C2'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restPut can update a simple record with child records that are replaced"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildSampleParentController()
 
     and: 'an existing record'
     def record1 = new SampleParent(name: 'ABC-021')
-    record1.addToSampleChildren(new SampleChild(key: 'C1'))
-    record1.addToSampleChildren(new SampleChild(key: 'C2'))
+    record1.sampleChildren << (new SampleChild(key: 'C1'))
+    record1.sampleChildren << (new SampleChild(key: 'C2'))
     record1.save()
 
     and: 'the source JSON'
@@ -645,7 +641,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
 
     when: 'the put is called'
     def controller = clazz.newInstance()
-    HttpResponse res = controller.restPut(record1.id.toString(), mockRequest([body: src]), null)
+    HttpResponse res = controller.restPut(record1.uuid.toString(), mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
 
     then: 'the JSON is valid'
@@ -666,25 +662,25 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     jsonChildren[0].key == 'C3'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restPut can update a record with custom child records"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildOrderController()
 
     and: 'a domain object to update'
     def order = new Order(order: 'ABC')
-    def orderLines = []
-    orderLines << new OrderLine(sequence: 1, product: 'PROD1')
-    orderLines << new OrderLine(sequence: 2, product: 'PROD2')
-    orderLines << new OrderLine(sequence: 3, product: 'PROD3')
-    order.setFieldValue('orderLines', orderLines)
+    def customComponents = []
+    customComponents << new CustomOrderComponent(sequence: 1, product: 'PROD1')
+    customComponents << new CustomOrderComponent(sequence: 2, product: 'PROD2')
+    customComponents << new CustomOrderComponent(sequence: 3, product: 'PROD3')
+    order.setFieldValue('customComponents', customComponents)
     order.save()
 
     and: 'the source JSON'
     def src = """
       {
         "order" : "ABC",
-        "orderLines" : [
+        "customComponents" : [
           {"sequence" : 11, "product" : "C1A"},
           {"sequence" : 12, "product" : "C2A"},
           {"sequence" : 13, "product" : "C3A"}
@@ -695,7 +691,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     when: 'the post is called'
     def controller = clazz.newInstance()
     //HttpResponse res = controller.restPut(mockRequest([body: src]), null)
-    HttpResponse res = controller.restPut(order.id.toString(), mockRequest([body: src]), null)
+    HttpResponse res = controller.restPut(order.uuid.toString(), mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
     then: 'the JSON is valid'
@@ -706,20 +702,20 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     record.order == 'ABC'
 
     and: 'the child records are correct'
-    List<OrderLine> orderLines2 = record.getFieldValue('orderLines')
-    orderLines2.size() == 3
-    orderLines2[0].sequence == 11
-    orderLines2[0].product == 'C1A'
-    orderLines2[1].sequence == 12
-    orderLines2[1].product == 'C2A'
-    orderLines2[2].sequence == 13
-    orderLines2[2].product == 'C3A'
+    List<CustomOrderComponent> customComponents2 = record.getFieldValue('customComponents') as List<CustomOrderComponent>
+    customComponents2.size() == 3
+    customComponents2[0].sequence == 11
+    customComponents2[0].product == 'C1A'
+    customComponents2[1].sequence == 12
+    customComponents2[1].product == 'C2A'
+    customComponents2[2].sequence == 13
+    customComponents2[2].product == 'C3A'
 
     and: 'the JSON is valid'
     def json = new JsonSlurper().parseText((String) res.getBody().get())
     json.order == record.order
 
-    List jsonChildren = json.orderLines
+    List jsonChildren = json.customComponents
     jsonChildren.size() == 3
     jsonChildren[0].sequence == 11
     jsonChildren[0].product == 'C1A'
@@ -729,15 +725,15 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     jsonChildren[2].product == 'C3A'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restPut can update will leave child records un-touched if they are not in the update JSON"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildSampleParentController()
 
     and: 'an existing record'
     def record1 = new SampleParent(name: 'ABC-021')
-    record1.addToSampleChildren(new SampleChild(key: 'C1'))
-    record1.addToSampleChildren(new SampleChild(key: 'C2'))
+    record1.sampleChildren << (new SampleChild(key: 'C1'))
+    record1.sampleChildren << (new SampleChild(key: 'C2'))
     record1.save()
 
     and: 'the source JSON'
@@ -749,7 +745,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
 
     when: 'the put is called'
     def controller = clazz.newInstance()
-    HttpResponse res = controller.restPut(record1.id.toString(), mockRequest([body: src]), null)
+    HttpResponse res = controller.restPut(record1.uuid.toString(), mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
 
     then: 'the JSON is valid'
@@ -772,7 +768,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     jsonChildren[1].key == 'C2'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restPut can update a record with custom fields"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -796,7 +792,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
 
     when: 'the put is called'
     def controller = clazz.newInstance()
-    HttpResponse res = controller.restPut(record1.id.toString(), mockRequest([body: src]), null)
+    HttpResponse res = controller.restPut(record1.uuid.toString(), mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
 
     then: 'the JSON is valid'
@@ -811,7 +807,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     record2.getFieldValue('custom1') == 'xyzzy'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restPut fails with validation errors"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -828,7 +824,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
 
     when: 'the post is called'
     def controller = clazz.newInstance()
-    HttpResponse res = controller.restPut(record1.id.toString(), mockRequest([body: src]), null)
+    HttpResponse res = controller.restPut(record1.uuid.toString(), mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
     then: 'the create fails'
@@ -840,7 +836,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     json.message.text.contains('000')
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restPut fails with no request body"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -859,7 +855,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
   }
 
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restPut fails with no record found"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -873,7 +869,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     res.status() == HttpStatus.NOT_FOUND
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restPut checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller'
     Object controller = buildAllFieldsDomainController().newInstance()
@@ -888,7 +884,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     res.status == HttpStatus.FORBIDDEN
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restDelete can delete a simple record"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -898,7 +894,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
 
     when: 'the put is called'
     def controller = clazz.newInstance()
-    HttpResponse res = controller.restDelete(record1.id.toString(), null)
+    HttpResponse res = controller.restDelete(record1.uuid.toString(), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
 
     then: 'the JSON is valid'
@@ -908,20 +904,20 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     AllFieldsDomain.findByName('ABC-021') == null
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restDelete can delete a record with children"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildSampleParentController()
 
     and: 'an existing record'
     def record1 = new SampleParent(name: 'ABC-021')
-    record1.addToSampleChildren(new SampleChild(key: 'C1'))
-    record1.addToSampleChildren(new SampleChild(key: 'C2'))
-    record1.save(flush: true)
+    record1.sampleChildren << (new SampleChild(key: 'C1'))
+    record1.sampleChildren << (new SampleChild(key: 'C2'))
+    record1.save()
 
     when: 'the put is called'
     def controller = clazz.newInstance()
-    HttpResponse res = controller.restDelete(record1.id.toString(), null)
+    HttpResponse res = controller.restDelete(record1.uuid.toString(), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
 
     then: 'the JSON is valid'
@@ -932,18 +928,18 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     SampleChild.count() == 0
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restDelete can delete a record with related records"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildSampleParentController()
 
     and: 'an existing record'
-    new AllFieldsDomain(name: 'SAMPLE').save(flush: true)
-    def sampleParent = new SampleParent(name: 'SAMPLE', title: 'Sample').save(flush: true)
+    new AllFieldsDomain(name: 'SAMPLE').save()
+    def sampleParent = new SampleParent(name: 'SAMPLE', title: 'Sample').save()
 
     when: 'the put is called'
     def controller = clazz.newInstance()
-    HttpResponse res = controller.restDelete(sampleParent.id.toString(), null)
+    HttpResponse res = controller.restDelete(sampleParent.uuid.toString(), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
 
     then: 'the JSON is valid'
@@ -954,7 +950,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     AllFieldsDomain.count() == 0
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restDelete fails with no record found"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
@@ -968,7 +964,7 @@ class BaseCrudRestControllerSpec extends BaseSpecification {
     res.status() == HttpStatus.NOT_FOUND
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify restDelete checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller'
     Object controller = buildAllFieldsDomainController().newInstance()

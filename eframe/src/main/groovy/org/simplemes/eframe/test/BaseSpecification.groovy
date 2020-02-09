@@ -181,14 +181,6 @@ class BaseSpecification extends GebSpec {
         log.debug('All Beans: {}', Holders.applicationContext.allBeanDefinitions*.name)
       }
 
-      // See if a mock Jackson ObjectMapper is needed and not already in an embedded server.
-      if ((!needsServer()) && needs(JSON) && embeddedServer == null) {
-        def objectMapper = new ObjectMapper()
-        objectMapper.registerModule(new EFrameJacksonModule())
-        StartupHandler.configureJacksonObjectMapper(objectMapper)
-        new MockBean(this, ObjectMapper, objectMapper).install()  // Auto cleaned up
-      }
-
     } else {
       // No server needed.
       // Finally, set the environment to test it not set already
@@ -202,6 +194,15 @@ class BaseSpecification extends GebSpec {
         _mockFieldExtension = new MockFieldExtension(this).install()
       }
     }
+
+    // See if a mock Jackson ObjectMapper is needed and not already in an embedded server.
+    if ((!needsServer()) && needs(JSON) && embeddedServer == null) {
+      def objectMapper = new ObjectMapper()
+      objectMapper.registerModule(new EFrameJacksonModule())
+      StartupHandler.configureJacksonObjectMapper(objectMapper)
+      new MockBean(this, ObjectMapper, objectMapper).install()  // Auto cleaned up
+    }
+
   }
 
   /**

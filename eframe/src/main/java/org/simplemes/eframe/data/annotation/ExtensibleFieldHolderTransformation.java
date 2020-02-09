@@ -19,7 +19,9 @@ import org.simplemes.eframe.ast.ASTUtils;
 import org.simplemes.eframe.domain.annotation.DomainEntity;
 
 import java.lang.reflect.Modifier;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 
 /**
@@ -48,7 +50,7 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
         FieldNode fieldNode = (FieldNode) astNode;
         ClassNode classNode = fieldNode.getDeclaringClass();
         validateUsage(classNode, sourceUnit);
-        //addComplexFieldHolder(classNode, sourceUnit);
+        addComplexFieldHolder(classNode, sourceUnit);
         addCustomFieldName(fieldNode.getName(), classNode, sourceUnit);
         addJsonProperty(fieldNode, sourceUnit);
         addValueSetter(classNode, sourceUnit);
@@ -238,6 +240,31 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
         ClassHelper.VOID_TYPE,
         parameters,
         null, methodBody);
+  }
+
+  /**
+   * Adds a Map field to the domain class to hold the complex custom field values such
+   * as lists of references.  This is a transient field so that persistence is handled by
+   * non-Grails logic.  Initializes the field as an empty map.
+   * <p>
+   * <b>Note:</b> This ComplexCustomFieldSerializer depends on the _complexCustomFields Map added
+   * to all extensible field domains.
+   *
+   * @param node       The node for the class itself.
+   * @param sourceUnit The source unit being processed.
+   */
+  private void addComplexFieldHolder(ClassNode node, SourceUnit sourceUnit) {
+    MapEntryExpression entry = new MapEntryExpression(new ConstantExpression(ExtensibleFieldHolder.COMPLEX_THIS_NAME),
+        new VariableExpression("this"));
+    List<MapEntryExpression> initEntries = new ArrayList<>();
+    initEntries.add(entry);
+    Expression init = new MapExpression(initEntries);
+    List list = ASTUtils.addField(ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME, Map.class,
+        Modifier.PUBLIC | Modifier.TRANSIENT, 0, init, node, sourceUnit);
+    if (list.size() > 0) {
+      FieldNode fieldNode = (FieldNode) list.get(0);
+      fieldNode.addAnnotation(new AnnotationNode(new ClassNode(io.micronaut.data.annotation.Transient.class)));
+    }
   }
 
   /**

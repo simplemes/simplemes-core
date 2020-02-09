@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.controller
 
 import groovy.util.logging.Slf4j
@@ -16,16 +20,11 @@ import io.micronaut.security.rules.SecurityRule
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.exception.MessageHolder
+import org.simplemes.eframe.exception.ValidationException
 import org.simplemes.eframe.security.SecurityUtils
 
 import javax.annotation.Nullable
 import java.security.Principal
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Defines common JSON/REST API behavior for controllers.  This provides these endpoints for the controller:
@@ -147,17 +146,14 @@ abstract class BaseCrudRestController extends BaseCrudController {
     HttpResponse res = null
     _domain.withTransaction {
       def record = Holders.objectMapper.readValue(body, _domain)
-      DomainUtils.instance.fixChildParentReferences(record)
-      if (!record.validate()) {
-        // Failed, so return error messages.
-        def msg = DomainUtils.instance.getValidationMessages(record)
-        //println "map = $map"
-        def s = Holders.objectMapper.writeValueAsString(msg)
-        res = HttpResponse.status(HttpStatus.BAD_REQUEST).body(s)
-      } else {
+      try {
         record.save()
         def s = Holders.objectMapper.writeValueAsString(record)
         res = HttpResponse.status(HttpStatus.OK).body(s)
+      } catch (ValidationException e) {
+        def msg = new MessageHolder(e.errors)
+        def s = Holders.objectMapper.writeValueAsString(msg)
+        res = HttpResponse.status(HttpStatus.BAD_REQUEST).body(s)
       }
     }
     log.debug('restPost() res = {}', res)
