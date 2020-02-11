@@ -98,15 +98,16 @@ abstract class BaseCrudRestController extends BaseCrudController {
       if (record) {
         // Now delete any related records (not true child records)
         for (o in DomainUtils.instance.findRelatedRecords(record)) {
-          o.delete(flush: true)
-          log.debug('restDelete() related {} id = {}', o.class.simpleName, (Object) o.id)
+          o.delete()
+          log.debug('restDelete() related {} uuid = {}', o.class.simpleName, (Object) o.uuid)
         }
         // Delete after the related records in case of a referential integrity check.
-        record.delete(flush: true)
+        record.delete()
         res = HttpResponse.status(HttpStatus.NO_CONTENT)
         log.debug('restDelete() id = {}', x)
       }
     }
+
     if (res) {
       return res
     } else {
@@ -146,6 +147,8 @@ abstract class BaseCrudRestController extends BaseCrudController {
     HttpResponse res = null
     _domain.withTransaction {
       def record = Holders.objectMapper.readValue(body, _domain)
+      // Force a null UUID to make sure the record is created.
+      record.uuid = null
       try {
         record.save()
         def s = Holders.objectMapper.writeValueAsString(record)
@@ -192,23 +195,25 @@ abstract class BaseCrudRestController extends BaseCrudController {
 
     _domain.withTransaction {
       def record = DomainUtils.instance.findDomainRecord(_domain, x)
+      DomainUtils.instance.loadChildRecords(record)  // Force the child records to be loaded for updates.
+      def originalUUID = record?.uuid
       if (record) {
         Holders.objectMapper.readerForUpdating(record).readValue(body)
-        DomainUtils.instance.fixChildParentReferences(record)
-        if (!record.validate()) {
-          // Failed, so return error messages.
-          def msg = DomainUtils.instance.getValidationMessages(record)
-          //println "map = $map"
-          def s = Holders.objectMapper.writeValueAsString(msg)
-          res = HttpResponse.status(HttpStatus.BAD_REQUEST).body(s)
-        } else {
+        // Restore the original UUID in case the JSON changed it.
+        record.uuid = originalUUID
+        try {
           record.save()
           def s = Holders.objectMapper.writeValueAsString(record)
           res = HttpResponse.status(HttpStatus.OK).body(s)
+        } catch (ValidationException e) {
+          def msg = new MessageHolder(e.errors)
+          def s = Holders.objectMapper.writeValueAsString(msg)
+          res = HttpResponse.status(HttpStatus.BAD_REQUEST).body(s)
         }
       }
     }
-    log.debug('restGet() id = {}, res = {}', x, res)
+
+    log.debug('restPut() id = {}, res = {}', x, res)
     if (res) {
       return res
     } else {

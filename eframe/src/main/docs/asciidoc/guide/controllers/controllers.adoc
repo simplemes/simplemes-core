@@ -199,14 +199,14 @@ This `bindEvent()` method makes sure the two values are the same.
 void bindEvent(Object record, Object params) {
   if (params._pwNew) {
     if (params._pwNew != params._pwConfirm) {   // <.>
-      DomainUtils.instance.addValidationError(record, 'password','(hidden)','passwordMatchFail')
+      throw new Exception(...)
     } else {
       record.password = params._pwNew  // <.>
     }
   }
 }
 ----
-<.> Compares the new password and the confirmation password.  If different, then a validation error
+<.> Compares the new password and the confirmation password.  If different, then an error
     is triggered.
 <.> If valid, then the password is stored in the User record for later encryption upon save.
 

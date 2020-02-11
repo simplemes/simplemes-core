@@ -85,7 +85,7 @@ class ExtensibleFieldHolderTransformationSpec extends BaseSpecification {
     and: "the custom field name is created as a static field"
     instance[ExtensibleFieldHolder.HOLDER_FIELD_NAME] == 'customFields'
 
-    and: 'the custom field holder is present'
+    and: 'the complex custom field holder is present'
     def complexHolderMap = instance[ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME]
     complexHolderMap instanceof Map
     complexHolderMap[ExtensibleFieldHolder.COMPLEX_THIS_NAME] == instance

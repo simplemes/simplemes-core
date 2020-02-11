@@ -16,12 +16,9 @@
         <appender-ref ref="STDOUT"/>
     </root>
   <logger name="StackTrace" level="error"/>
+
   <!--<logger name="io.micronaut" level="trace"/>-->
   <!--<logger name="io.micronaut.context" level="trace" />-->
-  <logger name="net.sf.ehcache.config.ConfigurationFactory" level="error"/>
-  <logger name="org.hibernate.orm.deprecation"
-          level="error"/>  <!-- Suppress the Hibernate 5.1.0 warning on deprecated criteria in GORM.-->
-  <!--<logger name="net.sf.ehcache" level="trace"/>-->
   <logger name="io.micronaut.runtime.Micronaut" level="info"/>
   <logger name="io.micronaut.http.client" level="warn"/>
   <logger name="io.micronaut.views" level="warn"/>

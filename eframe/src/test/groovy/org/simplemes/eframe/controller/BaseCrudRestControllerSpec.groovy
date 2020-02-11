@@ -31,7 +31,7 @@ import sample.domain.SampleParent
 class BaseCrudRestControllerSpec extends BaseAPISpecification {
 
   @SuppressWarnings("unused")
-  static dirtyDomains = [SampleParent]
+  static dirtyDomains = [SampleParent, AllFieldsDomain]
 
   Class<SampleParentController> buildSampleParentController() {
     def src = """package sample
@@ -326,6 +326,33 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
   }
 
   @Rollback
+  def "verify restPost ignores the UUID passed in"() {
+    given: 'a controller for the base class for a domain'
+    Class clazz = buildAllFieldsDomainController()
+    def uuid = UUID.fromString("bcf50818-cbd9-45d5-b6c0-146332e19045")
+
+    and: 'the source JSON'
+    def src = """
+      {
+        "name" : "ABC-021",
+        "uuid" : "${uuid}"
+      }
+      """
+
+    when: 'the post is called'
+    def controller = clazz.newInstance()
+    HttpResponse res = controller.restPost(mockRequest([body: src]), null)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
+
+    then: 'the JSON is valid'
+    res.status() == HttpStatus.OK
+
+    and: 'the record is created in the DB'
+    AllFieldsDomain record = AllFieldsDomain.findByName('ABC-021')
+    record.uuid != uuid
+  }
+
+  @Rollback
   def "verify restPost can create a record with child records"() {
     given: 'a controller for the base class for a domain'
     Class clazz = buildSampleParentController()
@@ -375,6 +402,30 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
 
   @Rollback
   def "verify restPost can create a record with custom fields"() {
+/*
+    given: 'some setup'
+    def s = """
+{
+    "name": "ABC-021",
+    "title": "abc-001",
+    "transientField": "Transient Default",
+    "displayOnlyText": "Display Only",
+    "status": "ENABLED",
+    "_statusDisplay_": "Enabled",
+    "dateCreated": "2020-02-11T18:20:41.212Z",
+    "dateUpdated": "2020-02-11T18:20:41.212Z",
+    "version": 0,
+    "uuid": "98dd2861-3647-4784-8e74-61e3b9473625",
+    "__complexCustomFields": null,
+    "_otherCustomFields": null,
+    "custom1": "custom_abc"
+}
+"""
+    def record3 = Holders.objectMapper.readValue(s, AllFieldsDomain)
+    println "record3 = $record3"
+    record3.getFieldValue('custom1') == 'custom_abc'
+*/
+
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
 
@@ -568,7 +619,41 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     json.enabled == record.enabled
     ISODate.parseDateOnly((String) json.dueDate) == record.dueDate
     ISODate.parse((String) json.dateTime) == record.dateTime
-    json.uuid == record.uuid
+    json.uuid == record.uuid.toString()
+  }
+
+  @Rollback
+  def "verify restPut will ignore a UUID changed on update"() {
+    given: 'a controller for the base class for a domain'
+    Class clazz = buildAllFieldsDomainController()
+
+    and: 'an existing record'
+    def record1 = new AllFieldsDomain(name: 'ABC-021').save()
+
+    and: 'the source JSON'
+    def src = """
+      {
+        "title" : "abc-001",
+        "uuid" : "bcf50818-cbd9-45d5-b6c0-146332e19045"
+      }
+      """
+
+    when: 'the put is called to update by name'
+    def controller = clazz.newInstance()
+    HttpResponse res = controller.restPut(record1.name, mockRequest([body: src]), null)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
+
+    then: 'the JSON is valid'
+    res.status() == HttpStatus.OK
+
+    and: 'the record is updated in the DB'
+    AllFieldsDomain record = AllFieldsDomain.findByName('ABC-021')
+    record.title == 'abc-001'
+    record.uuid == record1.uuid
+
+    and: 'the JSON is valid'
+    def json = new JsonSlurper().parseText((String) res.getBody().get())
+    json.uuid == record.uuid.toString()
   }
 
   @Rollback
@@ -979,5 +1064,110 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     res.status == HttpStatus.FORBIDDEN
   }
 
+  def "verify that get works in a live server"() {
+    given: 'a test record'
+    def record = null
+    AllFieldsDomain.withTransaction {
+      record = new AllFieldsDomain(name: 'ABC', title: 'abc').save()
+    }
 
+    when: 'the get is triggered'
+    login()
+    def s = sendRequest(uri: "/allFieldsDomain/crud/${record.uuid}")
+
+    then: 'the JSON is valid'
+    def json = new JsonSlurper().parseText(s)
+    json.name == 'ABC'
+    json.title == 'abc'
+  }
+
+  def "verify that post works in a live server"() {
+    given: 'the source JSON'
+    def src = """
+      {
+        "name" : "ABC-021",
+        "title" : "abc-001",
+        "qty" : 1221.00,
+        "count" : 3333,
+        "enabled" : false,
+        "dateTime" : "2018-11-13T12:41:30.000-0500",
+        "dueDate" : "2010-07-05"
+      }
+      """
+
+    when:
+    login()
+    def s = sendRequest(uri: "/allFieldsDomain/crud", method: 'post', content: src)
+
+    then: 'the record is created in the DB'
+    def record = null
+    AllFieldsDomain.withTransaction {
+      record = AllFieldsDomain.findByName('ABC-021')
+    }
+    record != null
+
+    then: 'the JSON is valid'
+    def json = new JsonSlurper().parseText(s)
+    json.name == 'ABC-021'
+    json.uuid == record.uuid.toString()
+  }
+
+  def "verify that put works in a live server"() {
+    given: 'a record to update'
+    def record1 = null
+    AllFieldsDomain.withTransaction {
+      record1 = new AllFieldsDomain(name: 'ABC-021').save()
+    }
+
+    and: 'the source JSON'
+    def src = """
+      {
+        "name" : "ABC-021",
+        "title" : "abc-001",
+        "qty" : 1221.00,
+        "count" : 3333,
+        "enabled" : false,
+        "dateTime" : "2018-11-13T12:41:30.000-0500",
+        "dueDate" : "2010-07-05"
+      }
+      """
+
+    when:
+    login()
+    def s = sendRequest(uri: "/allFieldsDomain/crud/${record1.uuid}", method: 'put', content: src)
+
+    then: 'the record is created in the DB'
+    def record = null
+    AllFieldsDomain.withTransaction {
+      record = AllFieldsDomain.findByName('ABC-021')
+      true
+    }
+    record != null
+    record.title == 'abc-001'
+
+    then: 'the JSON is valid'
+    def json = new JsonSlurper().parseText(s)
+    json.name == 'ABC-021'
+    json.uuid == record.uuid.toString()
+  }
+
+  def "verify that delete works in a live server"() {
+    given: 'a record to delete'
+    def record1 = null
+    AllFieldsDomain.withTransaction {
+      record1 = new AllFieldsDomain(name: 'ABC-021').save()
+    }
+
+    when:
+    login()
+    sendRequest(uri: "/allFieldsDomain/crud/${record1.uuid}", method: 'delete', status: HttpStatus.NO_CONTENT)
+
+    then: 'the record is created in the DB'
+    def record = null
+    AllFieldsDomain.withTransaction {
+      record = AllFieldsDomain.findByName('ABC-021')
+      true
+    }
+    record == null
+  }
 }

@@ -293,6 +293,28 @@ class DomainUtils {
   }
 
   /**
+   * Forces the load of child records that might have a lazy loader.  This is recursive.
+   * @param object The domain object to make sure the child records are loaded.
+   */
+  void loadChildRecords(Object object) {
+    if (object == null) {
+      return
+    }
+
+    for (property in getPersistentFields(object.class)) {
+      def value = object[property.name] // Forces the load.
+
+      if (Collection.isAssignableFrom(property.type) && value) {
+        // Now, load any children.
+        Collection list = (Collection) value
+        for (item in list) {
+          loadChildRecords(item)
+        }
+      }
+    }
+  }
+
+  /**
    * Adds a single child to the given element using the dynamic addToXYZ method.
    * @param domainObject The object to add the child to.
    * @param child The child.

@@ -1,5 +1,8 @@
-package org.simplemes.eframe.json
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
 
+package org.simplemes.eframe.json
 
 import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
@@ -10,12 +13,6 @@ import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.data.format.ListFieldLoaderInterface
 import org.simplemes.eframe.domain.DomainBinder
 import org.simplemes.eframe.misc.NameUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * A serializer for writing an encoded type field.  Writes just the ID string.
@@ -38,7 +35,8 @@ class DeserializationProblemHandler extends com.fasterxml.jackson.databind.deser
    * takes effect only <b>after</b> handler is called, and only
    * if handler did <b>not</b> handle the problem.
    *
-   * @param ctxt @param p Parser to use for handling problematic content
+   * @param ctxt
+   * @param p Parser to use for handling problematic content
    *
    * @param deserializer @param beanOrClass Either bean instance being deserialized (if one
    *   has been instantiated so far); or Class that indicates type that

@@ -14,6 +14,7 @@ import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.AllFieldsDomain
 import sample.domain.RMA
+import sample.domain.SampleChild
 import sample.domain.SampleParent
 
 /**
@@ -332,5 +333,29 @@ class DomainUtilsSpec extends BaseSpecification {
     'sampleParent' | SampleParent
     'SampleParent' | SampleParent
     'SAMPLEParent' | SampleParent
+  }
+
+  @Rollback
+  def "verify that loadChildRecords loads the child records"() {
+    given: 'a domain record with several children'
+    def sampleParent = new SampleParent(name: 'ABC-021')
+    sampleParent.sampleChildren << (new SampleChild(key: 'C1'))
+    sampleParent.sampleChildren << (new SampleChild(key: 'C2'))
+    sampleParent.save()
+
+    when: 'the record is read without a loaded child list'
+    def sampleParent1 = SampleParent.findByUuid(sampleParent.uuid)
+
+    then: 'the children records are not loaded yet'
+    def field = SampleParent.getDeclaredField('sampleChildren')
+    field.setAccessible(true)
+    field.get(sampleParent1) == null
+
+    when: 'the load method is called with an unloaded child list'
+    DomainUtils.instance.loadChildRecords(sampleParent1)
+
+    then: 'the list is loaded'
+    def list = field.get(sampleParent1)
+    list.size() == 2
   }
 }

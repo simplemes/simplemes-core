@@ -6,13 +6,18 @@ package org.simplemes.eframe.json
 
 import com.fasterxml.jackson.core.Version
 import com.fasterxml.jackson.databind.BeanDescription
+import com.fasterxml.jackson.databind.DeserializationConfig
+import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.SerializationConfig
+import com.fasterxml.jackson.databind.deser.BeanDeserializerModifier
+import com.fasterxml.jackson.databind.introspect.BeanPropertyDefinition
 import com.fasterxml.jackson.databind.module.SimpleDeserializers
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.module.SimpleSerializers
 import com.fasterxml.jackson.databind.ser.BeanPropertyWriter
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier
+import com.fasterxml.jackson.databind.type.MapType
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
@@ -54,6 +59,7 @@ class EFrameJacksonModule extends SimpleModule {
   @Override
   void setupModule(SetupContext context) {
     context.addBeanSerializerModifier(new EFrameBeanSerializerModifier())
+    context.addBeanDeserializerModifier(new EFrameBeanDeserializerModifier())
     context.addDeserializationProblemHandler(new DeserializationProblemHandler())
     def serializers = new SimpleSerializers()
     def deserializers = new SimpleDeserializers()
@@ -62,6 +68,72 @@ class EFrameJacksonModule extends SimpleModule {
 
     context.addSerializers(serializers)
     context.addDeserializers(deserializers)
+  }
+
+  /**
+   * Determines if the given field is a custom field holder.
+   * @param domainClass The domain class the field is in.
+   * @param fieldName The field to check.
+   * @return True if the field is the custom field holder.
+   */
+  static boolean isCustomFieldHolder(Class domainClass, String fieldName) {
+    def customFieldHolderName = '_' + ExtensibleFieldHelper.instance.getCustomHolderFieldName(domainClass)
+    return (customFieldHolderName == fieldName)
+  }
+
+  /**
+   * Determines if the given field is a custom field holder.
+   * @param fieldName The field to check.
+   * @return True if the field is the custom field holder.
+   */
+  static boolean isComplexCustomFieldHolder(String fieldName) {
+    return (ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME == fieldName)
+  }
+
+
+}
+
+@Slf4j
+class EFrameBeanDeserializerModifier extends BeanDeserializerModifier {
+
+  /**
+   * @param config
+   * @param type
+   * @param beanDesc
+   * @param deserializer
+   */
+  @Override
+  JsonDeserializer<?> modifyMapDeserializer(DeserializationConfig config, MapType type, BeanDescription beanDesc, JsonDeserializer<?> deserializer) {
+    return super.modifyMapDeserializer(config, type, beanDesc, deserializer)
+  }
+
+  /**
+   * This sub-class removes the un-wanted fields that we never want to de-serialize from JSON.
+   * This mainly removes the custom field holders.  Those fields are handled by the
+   * {@link DeserializationProblemHandler}.
+   *
+   * @param config
+   * @param beanDesc
+   * @param propDefs
+   */
+  @Override
+  List<BeanPropertyDefinition> updateProperties(DeserializationConfig config, BeanDescription beanDesc, List<BeanPropertyDefinition> propDefs) {
+    def clazz = beanDesc.type.rawClass
+    List<String> fieldsToRemove = []
+    for (BeanPropertyDefinition propDef : propDefs) {
+      if (EFrameJacksonModule.isCustomFieldHolder(clazz, propDef.name)) {
+        fieldsToRemove = propDefs.name
+      } else if (EFrameJacksonModule.isComplexCustomFieldHolder(propDef.name)) {
+        fieldsToRemove = propDefs.name
+      }
+    }
+
+    // Remove any problem properties.
+    log.debug("updateProperties(): Removing JSON properties {}", fieldsToRemove)
+    for (fieldToRemove in fieldsToRemove) {
+      propDefs.removeAll { it.name == fieldToRemove }
+    }
+    return super.updateProperties(config, beanDesc, propDefs)
   }
 }
 
@@ -101,7 +173,7 @@ class EFrameBeanSerializerModifier extends BeanSerializerModifier {
       //println "beanPropertyWriter = ${w?.dump()}"
       def fieldName = w.getName()
       def fieldDef = fieldDefinitions?.get(fieldName)
-      //println "fieldDef = $fieldDef"
+      //println "  fieldDef = $fieldName $fieldDef"
       if (fieldDef?.isReference()) {
         if ((!fieldDef.isChild()) && (!Collection.isAssignableFrom(fieldDef.type))) {
           def keys = DomainUtils.instance.getKeyFields(fieldDef.type)
@@ -112,9 +184,9 @@ class EFrameBeanSerializerModifier extends BeanSerializerModifier {
         w.assignSerializer(new EnumSerializer(fieldName))
       } else if (fieldDef?.format == EncodedTypeFieldFormat.instance) {
         w.assignSerializer(new EncodedTypeSerializer(fieldName))
-      } else if (isCustomFieldHolder(clazz, fieldName)) {
+      } else if (EFrameJacksonModule.isCustomFieldHolder(clazz, fieldName)) {
         w.assignSerializer(new CustomFieldSerializer(clazz))
-      } else if (isComplexCustomFieldHolder(fieldName)) {
+      } else if (EFrameJacksonModule.isComplexCustomFieldHolder(fieldName)) {
         w.assignSerializer(new ComplexCustomFieldSerializer(clazz))
       } else {
         // Check for reference ID field (e.g. sampleParentId) to be removed.
@@ -135,26 +207,6 @@ class EFrameBeanSerializerModifier extends BeanSerializerModifier {
     }
 
     return super.changeProperties(config, beanDesc, beanProperties)
-  }
-
-  /**
-   * Determines if the given field is a custom field holder.
-   * @param domainClass The domain class the field is in.
-   * @param fieldName The field to check.
-   * @return True if the field is the custom field holder.
-   */
-  boolean isCustomFieldHolder(Class domainClass, String fieldName) {
-    def customFieldHolderName = '_' + ExtensibleFieldHelper.instance.getCustomHolderFieldName(domainClass)
-    return (customFieldHolderName == fieldName)
-  }
-
-  /**
-   * Determines if the given field is a custom field holder.
-   * @param fieldName The field to check.
-   * @return True if the field is the custom field holder.
-   */
-  boolean isComplexCustomFieldHolder(String fieldName) {
-    return (ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME == fieldName)
   }
 
 }

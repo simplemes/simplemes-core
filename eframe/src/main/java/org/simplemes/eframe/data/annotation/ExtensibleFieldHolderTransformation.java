@@ -259,11 +259,14 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
     List<MapEntryExpression> initEntries = new ArrayList<>();
     initEntries.add(entry);
     Expression init = new MapExpression(initEntries);
-    List list = ASTUtils.addField(ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME, Map.class,
+    List<ASTNode> list = ASTUtils.addField(ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME, Map.class,
         Modifier.PUBLIC | Modifier.TRANSIENT, 0, init, node, sourceUnit);
-    if (list.size() > 0) {
-      FieldNode fieldNode = (FieldNode) list.get(0);
-      fieldNode.addAnnotation(new AnnotationNode(new ClassNode(io.micronaut.data.annotation.Transient.class)));
+    for (ASTNode n : list) {
+      if (n instanceof FieldNode) {
+        // Make it transient
+        FieldNode fieldNode = (FieldNode) n;
+        fieldNode.addAnnotation(new AnnotationNode(new ClassNode(io.micronaut.data.annotation.Transient.class)));
+      }
     }
   }
 
