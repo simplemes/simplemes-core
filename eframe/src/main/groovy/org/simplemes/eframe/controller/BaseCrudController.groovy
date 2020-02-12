@@ -90,6 +90,7 @@ abstract class BaseCrudController extends BaseController {
     def sortDirection = (sortDir == 'asc') ? Sort.Order.Direction.ASC : Sort.Order.Direction.DESC
     def data = []
     def totalCount = 0
+    def json = null
     clazz.withTransaction {
       totalCount = clazz.count()
       log.debug('List(max: {}, from: {}, sort: {}, order: {}) : ', max, from, sortField, sortDir)
@@ -98,9 +99,9 @@ abstract class BaseCrudController extends BaseController {
       for (o in objects) {
         data << o
       }
+      json = Holders.objectMapper.writeValueAsString([data: data, pos: from * max, total_count: totalCount, sort: sortField, sortDir: sortDir])
     }
     ControllerUtils.instance.delayForTesting('BaseCrudController.list()')
-    def json = Holders.objectMapper.writeValueAsString([data: data, pos: from * max, total_count: totalCount, sort: sortField, sortDir: sortDir])
     return HttpResponse.status(HttpStatus.OK).body(json)
   }
 

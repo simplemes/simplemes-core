@@ -4,6 +4,7 @@
 
 package org.simplemes.eframe.security.domain
 
+import com.fasterxml.jackson.annotation.JsonIgnore
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
@@ -49,12 +50,14 @@ class User {
   /**
    * The raw password (un-encrypted, not saved).  Uses only when the password changes.
    */
+  @JsonIgnore
   @Transient
   String password
 
   /**
    * The password (encrypted).
    */
+  @JsonIgnore
   @Column(length = 128)
   String encodedPassword
 

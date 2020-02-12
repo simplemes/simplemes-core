@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.controller
 
 import groovy.util.logging.Slf4j
@@ -14,13 +18,8 @@ import org.simplemes.eframe.exception.MessageHolder
 import org.simplemes.eframe.misc.HTMLUtils
 import org.simplemes.eframe.misc.LogUtils
 
+import java.lang.reflect.InvocationTargetException
 import java.security.Principal
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Provides the standard error handler definition for a normal controller.
@@ -54,6 +53,18 @@ abstract class BaseController {
    */
   @Error
   HttpResponse error(HttpRequest request, Throwable throwable) {
+    if (throwable.cause) {
+      throwable = throwable.cause
+    }
+    if (throwable instanceof InvocationTargetException) {
+      if (throwable.hasProperty('target')) {
+        //noinspection GroovyAccessibility
+        throwable = throwable.target
+      }
+    }
+    if (Holders.environmentDev || Holders.environmentTest) {
+      LogUtils.logStackTrace(log, throwable, null)
+    }
     def accept = request.headers?.get(HttpHeaders.ACCEPT)
     if (accept?.contains(MediaType.TEXT_HTML)) {
       def modelAndView = new StandardModelAndView('home/error', null, this)
@@ -67,9 +78,6 @@ abstract class BaseController {
       return HttpResponse.status(HttpStatus.OK).contentType(MediaType.TEXT_HTML).body(writable)
     } else {
       def holder = new MessageHolder(text: throwable.toString())
-      if (Holders.environmentDev || Holders.environmentTest) {
-        LogUtils.logStackTrace(log, throwable, null)
-      }
       //println "(base) throwable = $throwable"
       log.trace("error(): Handling exception {}", throwable)
       return HttpResponse.status(HttpStatus.BAD_REQUEST).body(Holders.objectMapper.writeValueAsString(holder))

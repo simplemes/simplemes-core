@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix
 
 import org.simplemes.eframe.data.format.BigDecimalFieldFormat
@@ -27,12 +31,6 @@ import sample.domain.SampleParent
 
 import java.text.SimpleDateFormat
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * Tests.
  */
@@ -50,7 +48,7 @@ class DomainToolkitUtilsSpec extends BaseSpecification {
     name.contains("""header: {text: "${lookup('name.label')}"}""")
     name.contains("""adjust: false""")
     name.contains("""format: webix.template.escape""")
-    name.contains("""template: "<a href='/allFieldsDomain/show/#id#'>#name#</a>\"""")
+    name.contains("""template: "<a href='/allFieldsDomain/show/#uuid#'>#name#</a>\"""")
 
     and: 'the non-key string column is generated correctly'
     def title = TextUtils.findLine(page, 'id: "title"')

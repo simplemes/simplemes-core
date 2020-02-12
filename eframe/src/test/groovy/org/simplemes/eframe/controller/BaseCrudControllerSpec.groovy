@@ -80,18 +80,11 @@ class BaseCrudControllerSpec extends BaseAPISpecification {
       domain SampleParent
       count 20
     } as List<SampleParent>
-    //enableSQLTrace()
-    //println "records1 = ${SampleParent.list()*.name}"
-    //println "records2 = ${SampleParent.repository.list(Pageable.from(1,3))*.name}"
-    //println "records3 = ${SampleParent.list(Pageable.from(1,3).order('name', Sort.Order.Direction.DESC))*.name}"
-    //println "records4 = ${SampleParent.findAllByNameLike('ABC01%',Pageable.from(1,3).order('name', Sort.Order.Direction.DESC))*.name}"
-    //println "count = ${SampleParent.count()}"
-    //println "records4 = ${SampleParent.listP(Pageable.from(1,3))}"
-    //disableSQLTrace()
 
     when: 'the list is called from the controller'
     def controller = clazz.newInstance()
     def res = controller.list(mockRequest(), null)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
     then: 'the correct values are returned'
     res.status == HttpStatus.OK

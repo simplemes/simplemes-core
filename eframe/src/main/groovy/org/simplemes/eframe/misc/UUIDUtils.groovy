@@ -34,5 +34,14 @@ class UUIDUtils {
     return value
   }
 
+  /**
+   * Returns true if the given string is a valid UUID.
+   * @param s The possible UUID string.
+   * @return True if this is a legal UUID.
+   */
+  static boolean isUUID(String s) {
+    def matcher = s =~ /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$/
+    return matcher.matches()
+  }
 
 }

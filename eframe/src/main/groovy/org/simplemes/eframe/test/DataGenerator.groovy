@@ -188,7 +188,7 @@ class DataGenerator {
 
       def user = new User(userName: userName, password: userName, passwordExpired: false)
       if (role) {
-        user.addToUserRoles(role)
+        user.userRoles << role
       }
       user.save()
     }

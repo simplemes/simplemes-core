@@ -175,6 +175,7 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
 
     when: 'the UI element is built'
     def page = new DefinitionListWidget(new WidgetContext(parameters: [id: 'dummyID'], controllerClass: SampleParentController)).build().toString()
+    //println "page = $page"
 
     then: 'the page is valid'
     checkPage(page)

@@ -1,24 +1,24 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 
 import org.simplemes.eframe.date.DateOnly
+import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.security.domain.Role
 import org.simplemes.eframe.security.domain.User
+import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.AllFieldsDomain
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
  */
 class DataGeneratorSpec extends BaseSpecification {
 
-  //static specNeeds = [SERVER]
+  @SuppressWarnings("unused")
   static dirtyDomains = [SampleParent]
 
   def "verify that simple case works without rollback annotation"() {
@@ -39,7 +39,7 @@ class DataGeneratorSpec extends BaseSpecification {
     records[9].notes == 'XYZ010xyz001'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that simple case works with rollback annotation"() {
     when: 'some data is generated'
     def records = DataGenerator.generate {
@@ -52,7 +52,7 @@ class DataGeneratorSpec extends BaseSpecification {
     records[0].name == 'ABC001'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that various types can be incremented correctly"() {
     given: 'the starting values'
     def dateOnly = new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS)
@@ -81,14 +81,14 @@ class DataGeneratorSpec extends BaseSpecification {
     records[1].count == 11
     !records[1].enabled
     records[1].dateTime == date + 1
-    records[1].dueDate == dateOnly + 1
+    records[1].dueDate == new DateOnly(dateOnly.time + DateUtils.MILLIS_PER_DAY)
 
     and: 'the number keeps increment'
     records[2].count == 12
 
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that generate gracefully handles no domain"() {
     when: 'some data is generated'
     DataGenerator.generate {
@@ -100,7 +100,7 @@ class DataGeneratorSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['domain'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that a foreign domain reference can be used in the values"() {
     when: 'some data is generated'
     def (AllFieldsDomain allFieldsDomain) = DataGenerator.generate {
@@ -116,7 +116,7 @@ class DataGeneratorSpec extends BaseSpecification {
     sampleParent.allFieldsDomain == allFieldsDomain
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that buildTestUser works for the none user "() {
     when: 'some data is generated'
     DataGenerator.buildTestUser('none')
@@ -125,7 +125,7 @@ class DataGeneratorSpec extends BaseSpecification {
     User.findByUserName('none')
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that buildTestUser works for a user with a role"() {
     given: 'a role for the user'
     def role = new Role(authority: 'DUMMY1', title: 'dummy1').save()

@@ -402,30 +402,6 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
 
   @Rollback
   def "verify restPost can create a record with custom fields"() {
-/*
-    given: 'some setup'
-    def s = """
-{
-    "name": "ABC-021",
-    "title": "abc-001",
-    "transientField": "Transient Default",
-    "displayOnlyText": "Display Only",
-    "status": "ENABLED",
-    "_statusDisplay_": "Enabled",
-    "dateCreated": "2020-02-11T18:20:41.212Z",
-    "dateUpdated": "2020-02-11T18:20:41.212Z",
-    "version": 0,
-    "uuid": "98dd2861-3647-4784-8e74-61e3b9473625",
-    "__complexCustomFields": null,
-    "_otherCustomFields": null,
-    "custom1": "custom_abc"
-}
-"""
-    def record3 = Holders.objectMapper.readValue(s, AllFieldsDomain)
-    println "record3 = $record3"
-    record3.getFieldValue('custom1') == 'custom_abc'
-*/
-
     given: 'a controller for the base class for a domain'
     Class clazz = buildAllFieldsDomainController()
 

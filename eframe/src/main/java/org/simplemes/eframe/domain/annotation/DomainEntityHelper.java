@@ -323,7 +323,8 @@ public class DomainEntityHelper {
    *
    * @return The transaction manager.
    */
-  public SynchronousTransactionManager getTransactionManager() {
+  @SuppressWarnings("unchecked")
+  public SynchronousTransactionManager<Connection> getTransactionManager() {
     return getApplicationContext().getBean(SynchronousTransactionManager.class);
   }
 
@@ -560,7 +561,7 @@ public class DomainEntityHelper {
    * @param sql The SQL.
    * @return The statement.
    */
-  private PreparedStatement getPreparedStatement(String sql) throws SQLException {
+  protected PreparedStatement getPreparedStatement(String sql) throws SQLException {
     invokeGroovyMethod("org.simplemes.eframe.domain.EFrameJdbcRepositoryOperations", "checkForTransactionStatic");
     DataSource dataSource = getApplicationContext().getBean(DataSource.class);
     Connection connection = DataSourceUtils.getConnection(dataSource);
@@ -662,6 +663,9 @@ public class DomainEntityHelper {
   /**
    * Performs the lazy load of the given field from the mapping table.
    * After the list is first read, it will be saved in the field and re-used on later calls to the loader.
+   * <p>
+   * <b>Note:</b> This method starts a read-only transaction, if none exists on this thread.
+   * This helps avoid a DB connection leak.
    *
    * @param object           The parent domain object to load the child from.
    * @param fieldName        The field to store the list in.  Used by later calls.
@@ -704,17 +708,22 @@ public class DomainEntityHelper {
       String sql = "SELECT * " + " from " + mappedByTableName +
           " INNER JOIN " + referenceTableName + " ON " + mappedByTableName + "." + toIDName +
           " = " + referenceTableName + ".uuid" + "  WHERE " + fromIDName + "=?";
-      try (PreparedStatement ps = getPreparedStatement(sql)) {
-        ps.setString(1, object.getUuid().toString());
-        ps.execute();
-        try (ResultSet rs = ps.getResultSet()) {
-          while (rs.next()) {
-            DomainEntityInterface o = (DomainEntityInterface) invokeGroovyMethod("org.simplemes.eframe.domain.DomainBinder",
-                "bindResultSet", rs, childDomainClazz);
-            list.add(o);
+      // Force a read-only transaction to avoid DB connection leaks when done.
+      list = getTransactionManager().executeRead(status -> {
+        final List listInner = new ArrayList();
+        try (PreparedStatement ps = getPreparedStatement(sql)) {
+          ps.setString(1, object.getUuid().toString());
+          ps.execute();
+          try (ResultSet rs = ps.getResultSet()) {
+            while (rs.next()) {
+              DomainEntityInterface o = (DomainEntityInterface) invokeGroovyMethod("org.simplemes.eframe.domain.DomainBinder",
+                  "bindResultSet", rs, childDomainClazz);
+              listInner.add(o);
+            }
           }
         }
-      }
+        return listInner;
+      });
 
       field.set(object, list);
       if (isEnvironmentTest()) {

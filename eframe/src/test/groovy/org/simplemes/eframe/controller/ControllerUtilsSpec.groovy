@@ -120,12 +120,13 @@ class ControllerUtilsSpec extends BaseSpecification {
     assert ControllerUtils.instance.determineBaseURI(input) == result
 
     where:
-    input                         | result
-    '/parent/show?test=null'      | '/parent/show'
-    '/parent/show/1111?test=null' | '/parent/show'
-    '/app/parent/show/343232'     | '/app/parent/show'
-    '/app/parent/show'            | '/app/parent/show'
-    '/app/parent/show/'           | '/app/parent/show/'
+    input                                                         | result
+    '/parent/show?test=null'                                      | '/parent/show'
+    '/parent/show/148f5327-b297-44bc-8ccc-46f8fd4c32e6?test=null' | '/parent/show'
+    '/app/parent/show/148f5327-b297-44bc-8ccc-46f8fd4c32e6'       | '/app/parent/show'
+    '/app/parent/show/14875327-164f'                              | '/app/parent/show/14875327-164f'  // Looks a little like a UUID, but is not.
+    '/app/parent/show'                                            | '/app/parent/show'
+    '/app/parent/show/'                                           | '/app/parent/show/'
   }
 
   def "verify getRootPath works"() {

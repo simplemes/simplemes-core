@@ -523,7 +523,7 @@ consistent state across several domains.  To support this, the framework uses <<
 for database access and forces transactions around all database updates/insert/deletes.
 
 Most transactions are initiated at the <<Services>> layer, but also sometimes in the controllers.
-You can use the _@Transactional_ annotation or the `withTransaction()` method.
+You can use the _@Transactional_ annotation in beans or the `withTransaction()` method.
 
 [source,groovy]
 .Example withTransaction Usage
@@ -541,7 +541,18 @@ NOTE: The framework checks for an active transaction on every insert/update/dele
       You will need to wrap those database method calls with _@Transactional, @Rollback_ or
       withTransaction.
 
-The various ways to initiate  
+The _@Transactional_ annotation only works in classes that are processed as beans in Micronaut.
+This means you can't use this annotation in most test classes or in plain of groovy/java logic.
+
+===== Transactions and Prepared Statements
+
+Some internal logic in the framework needs to be executed in a transaction.  This is done
+to avoid a DB connection leak that happens with PreparedStatements.  This means sometimes you
+may need to wrap some logic with a transaction.  If you find an IllegalStateException
+with the note: _'No active transaction for SQL statement'_, then you may need to wrap the logic
+with a transaction.
+
+The most common cases are automatically wrapped when needed in the framework.
 
 
 

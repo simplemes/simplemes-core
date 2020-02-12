@@ -86,7 +86,7 @@ class DomainToolkitUtils {
       }
       sb << """ {id: "${fieldName}", header: {text: "$label"},adjust: false $sort """
       if (isPrimaryKey(domainClass, fieldName) && keyHyperlink) {
-        sb << """, template: "<a href='$path/show/#id#'>#$fieldName#</a>" """
+        sb << """, template: "<a href='$path/show/#uuid#'>#$fieldName#</a>" """
       }
 
       def readOnly = false

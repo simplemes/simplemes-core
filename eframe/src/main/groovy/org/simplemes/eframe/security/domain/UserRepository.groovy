@@ -5,6 +5,7 @@
 package org.simplemes.eframe.security.domain
 
 import io.micronaut.data.annotation.Join
+import io.micronaut.data.model.Pageable
 import io.micronaut.data.repository.CrudRepository
 import org.simplemes.eframe.domain.BaseRepository
 
@@ -25,6 +26,7 @@ interface UserRepository extends BaseRepository, CrudRepository<User, UUID> {
 
   Optional<User> findByUserNameAndEnabled(String userName, Boolean enabled)
 
+  List<User> list(Pageable pageable)
   List<User> list()
 
   @Join(value = "userRoles", type = Join.Type.LEFT_FETCH)

@@ -176,7 +176,7 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
     try {
       localTransactionOperationsStatic.getConnection()
     } catch (CannotGetJdbcConnectionException e) {
-      def s = "No active transaction for SQL statement.  Use domain.withTransaction or @Transactional for Beans."
+      def s = "No active transaction for SQL statement.  Use domain.withTransaction or @Transactional for Beans. (This avoids a connection leak)."
       throw new IllegalStateException(s, e)
     }
   }

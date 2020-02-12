@@ -82,7 +82,7 @@ class EditMarkerSpec extends BaseMarkerSpecification {
 
     def sampleParent = new SampleParent(name: 'ABC', uuid: UUID.randomUUID())
     def page = execute(source: src, controllerClass: SampleParentController,
-                       domainObject: sampleParent, uri: '/sampleParent/edit/5')
+                       domainObject: sampleParent, uri: "/sampleParent/edit/${sampleParent.uuid}")
 
     then: 'the javascript is legal'
     checkPage(page)
@@ -131,7 +131,8 @@ class EditMarkerSpec extends BaseMarkerSpecification {
     """
 
     def page = execute(source: src, controllerClass: SampleParentController,
-                       domainObject: new SampleParent(name: '<script>"ABC</script>'), uri: '/sampleParent/edit/5')
+                       domainObject: new SampleParent(name: '<script>"ABC</script>'),
+                       uri: "/sampleParent/edit/${UUID.randomUUID()}")
 
     // We can't check the javascript on the page since the extra quote causes problems in this scenario.
     // Leave it to the EditMarkerGUISpec to test this.
@@ -156,7 +157,7 @@ class EditMarkerSpec extends BaseMarkerSpecification {
     """
 
     def page = execute(source: src, controllerClass: SampleParentController,
-                       domainObject: new SampleParent(name: 'ABC'), uri: '/sampleParent/edit/5')
+                       domainObject: new SampleParent(name: 'ABC'), uri: "/sampleParent/edit/${UUID.randomUUID()}")
 
     then: 'the javascript is legal'
     checkPage(page)
@@ -187,7 +188,7 @@ class EditMarkerSpec extends BaseMarkerSpecification {
     """
 
     def page = execute(source: src, controllerClass: SampleParentController,
-                       domainObject: new SampleParent(name: 'ABC'), uri: '/sampleParent/edit/5')
+                       domainObject: new SampleParent(name: 'ABC'), uri: "/sampleParent/edit/${UUID.randomUUID()}")
 
     then: 'the javascript is legal'
     checkPage(page)

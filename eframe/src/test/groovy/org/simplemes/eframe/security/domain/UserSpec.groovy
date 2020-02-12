@@ -4,8 +4,8 @@
 
 package org.simplemes.eframe.security.domain
 
-
-import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
+import groovy.json.JsonSlurper
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.data.format.DomainRefListFieldFormat
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.misc.FieldSizes
@@ -28,10 +28,8 @@ class UserSpec extends BaseSpecification {
       domain User
       requiredValues userName: 'ADMIN', password: 'password'
       maxSize 'userName', FieldSizes.MAX_CODE_LENGTH
-      maxSize 'password', 128
       notNullCheck 'userName'
-      notNullCheck 'password'
-      notInFieldOrder(['authoritySummary', 'password', ExtensibleFieldHolder.DEFAULT_FIELD_NAME])
+      notInFieldOrder(['authoritySummary', 'password', 'encodedPassword'])
     }
   }
 
@@ -122,8 +120,8 @@ class UserSpec extends BaseSpecification {
 
     when: 'a user is created with roles'
     def user = new User(userName: 'ABC', password: 'xyz')
-    user.addToUserRoles(role2)
-    user.addToUserRoles(role1)
+    user.userRoles << role2
+    user.userRoles << role1
     user.save()
 
     then: 'the record can be reloaded'
@@ -134,6 +132,27 @@ class UserSpec extends BaseSpecification {
     def fieldDefs = DomainUtils.instance.getFieldDefinitions(User)
     def fieldDef = fieldDefs['userRoles']
     fieldDef.format == DomainRefListFieldFormat.instance
+  }
+
+  @Rollback
+  def "verify that sensitive info is not exposed in exported JSON for user"() {
+    given: ' user'
+    def user = new User(userName: 'ABC', password: 'XYZ')
+    user.save()
+
+    and: 'a password is set in clear text in the domain due to a bug elsewhere in the logic'
+    user.password = 'bad'
+
+    when: 'the JSON is generated'
+    def s = Holders.objectMapper.writeValueAsString(user)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+
+    then: 'the JSON does not contain the sensitive fields'
+    def json = new JsonSlurper().parseText(s)
+    json.encodedPassword == null
+    !s.contains('encodedPassword')
+    !s.toLowerCase().contains('password"')
+    !s.contains('bad')
   }
 
 }

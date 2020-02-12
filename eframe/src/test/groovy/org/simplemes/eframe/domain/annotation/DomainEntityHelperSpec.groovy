@@ -42,6 +42,20 @@ class DomainEntityHelperSpec extends BaseSpecification {
   static dirtyDomains = [Order, OrderLine, SampleParent]
 
   def "verify that getPreparedStatement detects use outside of txn and fails"() {
+    given: 'make sure the checkForTransactionStatic method in the repository operations object is initialized'
+    SampleParent.withTransaction {
+      new SampleParent(name: 'ABC').save()
+    }
+
+    when: 'the method is called'
+    DomainEntityHelper.instance.getPreparedStatement("SELECT * from usr")
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['active', 'transaction'])
+  }
+
+  def "verify that lazyRefListLoad creates a read-only txn on all loads"() {
     given: 'a domain record with child records that need to be loaded using a preparedStatement'
     SampleParent.withTransaction {
       new SampleParent(name: 'ABC').save()
@@ -51,9 +65,8 @@ class DomainEntityHelperSpec extends BaseSpecification {
     def sampleParent = SampleParent.findByName('ABC')
     sampleParent.getAllFieldsDomains()
 
-    then: 'the right exception is thrown'
-    def ex = thrown(Exception)
-    UnitTestUtils.assertExceptionIsValid(ex, ['active', 'transaction'])
+    then: 'no exception is thrown'
+    notThrown(Exception)
   }
 
   def "verify that getPreparedStatement works inside txn and does not fail"() {
@@ -1017,9 +1030,12 @@ class DomainEntityHelperSpec extends BaseSpecification {
     when: ' the class is compiled'
     def src = """
       import org.simplemes.eframe.domain.annotation.DomainEntity
+      import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
       
       @DomainEntity(repository=sample.domain.OrderRepository)
       class TestClass {
+        @ExtensibleFieldHolder
+        String customFields
         UUID uuid
       }
     """

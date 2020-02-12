@@ -13,6 +13,7 @@ import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.TypeUtils
+import org.simplemes.eframe.misc.UUIDUtils
 import org.simplemes.eframe.web.task.TaskMenuControllerUtils
 import org.simplemes.eframe.web.ui.UIDefaults
 
@@ -273,7 +274,7 @@ class ControllerUtils {
   }
 
   /**
-   * Determines the base URI for a given page URI.  Mainly just strips the trailing parameters and any record ID.
+   * Determines the base URI for a given page URI.  Mainly just strips the trailing parameters and any record UUID.
    * @param uri The raw URI from the web-page.
    * @return The baseURI.
    */
@@ -288,9 +289,18 @@ class ControllerUtils {
       uri = uri[0..l]
     }
 
-    // If the URL ends in a number, then strip it too.
-    uri = (uri =~ /\/[0-9]+/).replaceFirst("")
-    //println "uri = $uri"
+    // Check for a UUID at the end.
+    def idx = uri.lastIndexOf('/')
+    if (idx > 0) {
+      idx++
+      if (idx == uri.length() - 36) {
+        def trailing = uri[idx..-1]
+        if (UUIDUtils.isUUID(trailing)) {
+          uri = uri[0..(idx - 2)]
+        }
+      }
+    }
+
     return uri
   }
 
