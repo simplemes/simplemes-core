@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.system.controller
 
 import ch.qos.logback.classic.Level
@@ -31,12 +35,6 @@ import javax.annotation.Nullable
 import javax.transaction.Transactional
 import java.security.Principal
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * This controller provides access to the logging configuration for runtime logging changes.
  */
@@ -55,7 +53,7 @@ class LoggingController {
   /**
    * The default entries in the list of 'others'.  
    */
-  public static final List<String> DEFAULT_OTHERS = ['org.hibernate.SQL', 'org.hibernate.type']
+  public static final List<String> DEFAULT_OTHERS = ['io.micronaut.data']
 
   /**
    * The user preference element the 'others' are stored under.

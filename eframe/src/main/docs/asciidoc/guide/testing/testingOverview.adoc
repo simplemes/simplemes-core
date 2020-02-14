@@ -169,7 +169,7 @@ There are many helper classes that make your testing easier.  The helper classes
 to make testing easier include:
 
 * <<domain-testing,DomainTester>> - Tests Constraints and FieldOrder
-* <<GUI Test Helpers (CRUD)>> - Tests CRUD GUI pages for a domain class.
+* <<GUI Test Helpers>> - Tests CRUD GUI pages for a domain class.
 * <<Controller Test Helper>> - Controller Test Utilities.
 
 Also, there is a series of base classes used in Spock tests that simplifies testing of common features:

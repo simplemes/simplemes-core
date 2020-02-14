@@ -94,8 +94,9 @@ abstract class BaseCrudController extends BaseController {
     clazz.withTransaction {
       totalCount = clazz.count()
       log.debug('List(max: {}, from: {}, sort: {}, order: {}) : ', max, from, sortField, sortDir)
+      def order = new Sort.Order((String) sortField, sortDirection, true)
       //def objects = clazz.list(max: max, offset: from, sort: sortField, order: sortDir, fetch: [lazy: false])
-      def objects = clazz.list(Pageable.from((Integer) from, (Integer) max).order((String) sortField, sortDirection))
+      def objects = clazz.list(Pageable.from((Integer) from, (Integer) max).order(order))
       for (o in objects) {
         data << o
       }

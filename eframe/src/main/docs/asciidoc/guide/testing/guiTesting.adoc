@@ -4,7 +4,7 @@
 ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<Testing and Logging in>>#
-[inline-toc]#<<GUI Test Helpers (CRUD)>>#
+[inline-toc]#<<GUI Test Helpers>>#
 [inline-toc]#<<GUI Language Testing>>#
 [inline-toc]#<<GEB Page Modules>>#
 [inline-toc]#<<Deleting Records After Tests>>#
@@ -61,17 +61,20 @@ icon:share-square-o[role="link-blue"]
 is provided to make it easier to work with common framework elements. This includes methods to
 wait for all Ajax requests to finish when a page loads.
 
-==== GUI Test Helpers (CRUD)
+==== GUI Test Helpers
 
 ifeval::["{backend}" != "pdf"]
 
-[inline-toc]#<<Helper Notes>>#
+[inline-toc-header]#CRUDGUITester#
+[inline-toc]#<<CRUDGUITester>>#
 [inline-toc]#<<Disabling Test Phases>>#
 [inline-toc]#<<Testing Domains with Initial Data Loaded>>#
+[inline-toc]#<<Read-Only Fields>>#
+[inline-toc]#<<Testing Inline Grids>>#
 
 endif::[]
 
-
+==== CRUDGUITester
 
 Most definition GUIs provide the common CRUD actions in your application.  These are fairly
 standardized and follow a consistent pattern that uses the common GUI markers such as
@@ -163,22 +166,8 @@ for details.  These includes options for:
 * Tests for inline grids.
 * Multiple language support (see <<GUI Language Testing>>).
 
-===== Helper Notes
 
-ifeval::["{backend}" != "pdf"]
-
-[inline-toc]#<<Disabling Test Phases>>#
-[inline-toc]#<<Testing Domains with Initial Data Loaded>>#
-[inline-toc]#<<Read-Only Fields>>#
-[inline-toc]#<<Testing Inline Grids>>#
-
-endif::[]
-
-
-
-Some basic notes about testing specific conditions/features with this helper.
-
-====== Disabling Test Phases
+===== Disabling Test Phases
 
 The
 link:groovydoc/org/simplemes/eframe/test/CRUDGUITester.html[CRUDGUITester^] icon:share-square-o[role="link-blue"]
@@ -223,7 +212,7 @@ _-DtestOnly_ option:
 
 
 
-====== Testing Domains with Initial Data Loaded
+===== Testing Domains with Initial Data Loaded
 
 The <<Initial Data Load>> feature will affect some CRUD GUI tests.  These records will show up
 in the main list page and in drop-down lists.   For this reason, it is best to make sure that
@@ -243,7 +232,7 @@ class ProductGUITests extends BaseGUISpecification {
       tester this
       domain User
       recordParams user: 'ABC', password: 'secret', title: 'abc001' // <1>
-      minimalParams product: 'X', password: 'secret'// <2>
+      minimalParams user: 'ABD', password: 'secret'// <2>
     }
   }
 }
@@ -251,7 +240,7 @@ class ProductGUITests extends BaseGUISpecification {
 <1> This record will show up at the top of the list in the default short order.
 <2> This record will show up above the _'admin'_ user.
 
-====== Read-Only Fields
+===== Read-Only Fields
 
 Some fields are defined as read-only (see <<efCreate>> and <<efEdit>>) in the page definitions.
 This means the
@@ -281,7 +270,7 @@ If you forget to note the read-only fields, then you will see an error similar t
   java.lang.AssertionError: Field Value for qtyReleased is not correct. Found '', expected '0'.
 
 
-====== Testing Inline Grids
+===== Testing Inline Grids
 
 Inline grids can be tested using the
 link:groovydoc/org/simplemes/eframe/test/CRUDGUITester.html[CRUDGUITester^] icon:share-square-o[role="link-blue"].
@@ -335,7 +324,7 @@ run from the gradle command line:
   ./gradlew -Dgeb.lang=de-DE  test
 
 This language is used to create the browser instance.  It is also used in the test helpers
-<<GUI Test Helpers (CRUD)>> and the base GUI specification class
+<<GUI Test Helpers>> and the base GUI specification class
 link:groovydoc/org/simplemes/eframe/test/BaseGUISpecification.html[BaseGUISpecification^]
 icon:share-square-o[role="link-blue"].
 

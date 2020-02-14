@@ -76,7 +76,7 @@ class DomainUtils {
    * @param domainClass The class to find the fields in.
    * @return A list of transient fields.
    */
-  List<Field> getTransientGORMFields(Class domainClass) {
+  List<Field> getTransientFields(Class domainClass) {
     List<Field> res = []
     for (field in domainClass.getDeclaredFields()) {
       def ann = field.getAnnotation(Transient)
@@ -128,7 +128,7 @@ class DomainUtils {
         }
       }
       // Add the transients like a simple field from any class.
-      def transients = getTransientGORMFields(c)
+      def transients = getTransientFields(c)
       for (t in transients) {
         if (!isPropertySpecial(c, t.name)) {
           res << FieldDefinitionFactory.buildFieldDefinition(t)

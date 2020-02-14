@@ -167,7 +167,7 @@ public class DomainEntityHelper {
    * @param object The object.
    * @throws Exception An exception is thrown if the validation fails.
    */
-  protected void validateForSave(DomainEntityInterface object) throws Exception {
+  protected void validateForSave(DomainEntityInterface object) throws Throwable {
     List<ValidationErrorInterface> errors = validate(object);
     if (errors.size() > 0) {
       // Use reflection to find the ValidationError class from the groovy world.
@@ -959,7 +959,9 @@ public class DomainEntityHelper {
    * @param object The domain object.
    * @return The list of validation errors.  Never null.
    */
-  public List<ValidationErrorInterface> validate(DomainEntityInterface object) throws InvocationTargetException, IllegalAccessException {
+  public List<ValidationErrorInterface> validate(DomainEntityInterface object) throws Throwable {
+    executeDomainMethod(object, "beforeValidate");
+
     List<ValidationErrorInterface> res = validateColumns(object);
     try {
       Method validateMethod = object.getClass().getDeclaredMethod("validate");

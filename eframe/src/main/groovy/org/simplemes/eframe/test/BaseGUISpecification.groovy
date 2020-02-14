@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import geb.navigator.Navigator
@@ -8,12 +12,6 @@ import org.simplemes.eframe.misc.LogUtils
 import org.simplemes.eframe.test.page.HomePage
 import org.simplemes.eframe.test.page.LoginPage
 import spock.lang.IgnoreIf
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * This is the common Spock specification base class for GUI/GEB tests.
@@ -43,13 +41,11 @@ class BaseGUISpecification extends BaseSpecification {
   def setup() {
     browser.config.autoClearCookies = false
     //println "headless = $headless"
-    if (!headless) {
-      // Now, shift the window horizontally if desired.
-      def w = driver.manage().window()
-      if (w.position.x > -20) {
-        w.position = new Point(w.position.x - 1500, 10)
-        w.maximize()
-      }
+    // Now, shift the window horizontally if desired.
+    def w = driver.manage().window()
+    if (w.position.x > -20) {
+      w.position = new Point(w.position.x - 1500, 10)
+      w.maximize()
     }
     browser.baseUrl = "http://localhost:${embeddedServer.port}"
 
@@ -212,25 +208,6 @@ class BaseGUISpecification extends BaseSpecification {
       domainClass.withTransaction {
         def count = domainClass.count()
         res = (count > 0)
-        res
-      }
-      res
-    }
-  }
-
-  /**
-   * Wait for a record to change in the database.  Checks the version until is changes.
-   * @param record The record to wait for a change.
-   */
-  void waitForRecordChange(Object record) {
-    def originalVersion = record.version
-    def domainClass = record.getClass()
-    waitFor {
-      // Need to use a temp variable (res) to avoid confusing waitFor with a closure inside of a closure.
-      def res = false
-      domainClass.withTransaction {
-        def record2 = domainClass.load(record.id)
-        res = (record2.version != originalVersion)
         res
       }
       res

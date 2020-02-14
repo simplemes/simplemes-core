@@ -818,6 +818,17 @@ class DomainEntityHelperSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that validate calls the beforeValidate method on the domain"() {
+    when: 'the domain is validated'
+    def order = new Order(order: 'ABC')
+    order.product = 'XYZZY'
+    DomainEntityHelper.instance.validate(order as DomainEntityInterface)
+
+    then: 'the product field is altered by the beforeValidate method'
+    order.product == "XYZZYAlteredByBeforeValidate"
+  }
+
+  @Rollback
   def "verify that save custom child list on creation"() {
     when: 'a domain record with the custom child records is saved'
     def order = new Order(order: 'ABC')
@@ -1045,7 +1056,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
     DomainEntityHelper.instance.getComplexHolder(o as DomainEntityInterface) instanceof Map
   }
 
-  def "verify that executeDomainMethod detects method not found exception in the beforeValidate method"() {
+  def "verify that executeDomainMethod detects method not found exception in the method called dynamically"() {
     when: ' the class is compiled'
     def src = """
       import org.simplemes.eframe.domain.annotation.DomainEntity

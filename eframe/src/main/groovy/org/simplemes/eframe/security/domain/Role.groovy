@@ -23,7 +23,7 @@ import javax.persistence.Column
 @Slf4j
 @MappedEntity()
 @DomainEntity
-@EqualsAndHashCode(includes = ['authority'])
+@EqualsAndHashCode(includes = ['authority', 'title'])
 class Role {
 
   /**
@@ -49,7 +49,8 @@ class Role {
    */
   @Override
   String toString() {
-    return title
+    // Use the authority to work around issue with User.list() not returning the title for the userRoles.
+    return authority
   }
 
   /**
@@ -62,7 +63,7 @@ class Role {
    * A list of the records created by the initial data load.
    * Used only for test cleanup by {@link org.simplemes.eframe.test.BaseSpecification}.
    */
-  static initialDataRecords = [Role: ['Admin', 'Customizer', 'Manager', 'Designer']]
+  static initialDataRecords = [Role: ['ADMIN', 'CUSTOMIZER', 'MANAGER', 'DESIGNER']]
 
 
   /**

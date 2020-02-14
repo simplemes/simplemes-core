@@ -140,8 +140,12 @@ class DomainBinder {
       if (!key.contains('[')) {
         log.debug('bind() Binding {} for {} with value {}', key, domainClass, value)
       }
+      // Convert any gStrings to real strings.
+      if (value instanceof GString) {
+        value = value.toString()
+      }
       if (fieldDef) {
-        // Only process fields know of.  Ignores all others.
+        // Only process fields that we know of.  Ignores all others.
         Class propertyClass = fieldDef.type
         //println "$fieldDef.name = ${value?.getClass()}"
         if (value == null) {

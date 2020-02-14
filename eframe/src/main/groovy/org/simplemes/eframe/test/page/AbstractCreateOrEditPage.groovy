@@ -82,7 +82,7 @@ class AbstractCreateOrEditPage extends AbstractPage {
 
   /**
    * Generates the path arguments from the arguments.  This sub-class takes a domain object
-   * and stores it in the 'domainObject' field and the uses the object's id for the URL creation.
+   * and stores it in the 'domainObject' field and the uses the object's uuid for the URL creation.
    * @param args The 'to' arguments.
    * @return The path.
    */
@@ -92,7 +92,7 @@ class AbstractCreateOrEditPage extends AbstractPage {
     for (int i = 0; i < args.size(); i++) {
       if (DomainUtils.instance.isDomainEntity(args[i].getClass())) {
         domainObject = args[i]
-        args[i] = args[i].id
+        args[i] = args[i].uuid
       }
     }
     return super.convertToPath(args)

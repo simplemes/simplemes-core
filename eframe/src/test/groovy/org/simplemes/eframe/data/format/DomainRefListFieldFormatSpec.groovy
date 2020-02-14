@@ -4,7 +4,8 @@
 
 package org.simplemes.eframe.data.format
 
-
+import org.simplemes.eframe.custom.domain.FieldGUIExtension
+import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.MockFieldDefinitions
@@ -159,6 +160,7 @@ class DomainRefListFieldFormatSpec extends BaseSpecification {
     DataGenerator.generate {
       domain AllFieldsDomain
       count 10
+      values name: 'ABC-$r'
     }
 
     and: 'a field definition'
@@ -168,6 +170,39 @@ class DomainRefListFieldFormatSpec extends BaseSpecification {
     expect: 'the valid values contains the right values'
     def list = DomainRefListFieldFormat.instance.getValidValues(fieldDef)
     list.size() == 10
+
+    and: 'the values are sorted correctly'
+    list[0].displayValue == 'ABC-001'
+    list[9].displayValue == 'ABC-010'
+  }
+
+  @Rollback
+  def "verify that the getValidValues sorts when there is no key field for the domain"() {
+    given: 'some domain records'
+    new FieldGUIExtension(domainName: 'D' + FieldGUIExtension.name).save()
+    new FieldGUIExtension(domainName: 'C' + FieldGUIExtension.name).save()
+    new FieldGUIExtension(domainName: 'B' + FieldGUIExtension.name).save()
+    new FieldGUIExtension(domainName: 'A' + FieldGUIExtension.name).save()
+
+    and: 'a field definition'
+    def fieldDefinitions = new MockFieldDefinitions([fge: FieldGUIExtension])
+    def fieldDef = fieldDefinitions.fge
+
+    and: 'the test domain has no key field'
+    // If this assertion fails, then someone added a primary key to FieldGUIExtension
+    // (via static keys or fieldOrder values in the class).
+    assert DomainUtils.instance.getPrimaryKeyField(FieldGUIExtension) == null
+
+    when: 'the valid values are retrieved'
+    def list = DomainRefListFieldFormat.instance.getValidValues(fieldDef)
+
+    then: 'the list is in the correct order'
+    list.size() == 4
+
+    list[0].displayValue.contains('A' + FieldGUIExtension.name)
+    list[1].displayValue.contains('B' + FieldGUIExtension.name)
+    list[2].displayValue.contains('C' + FieldGUIExtension.name)
+    list[3].displayValue.contains('D' + FieldGUIExtension.name)
   }
 
 

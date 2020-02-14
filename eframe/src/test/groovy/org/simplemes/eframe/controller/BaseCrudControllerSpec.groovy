@@ -28,6 +28,7 @@ import sample.domain.AllFieldsDomain
 import sample.domain.RMA
 import sample.domain.SampleChild
 import sample.domain.SampleParent
+import spock.lang.Ignore
 
 /**
  * Tests.
@@ -51,7 +52,6 @@ class BaseCrudControllerSpec extends BaseAPISpecification {
       }
     """
     return CompilerTestUtils.compileSource(src)
-
   }
 
   @Rollback
@@ -114,6 +114,29 @@ class BaseCrudControllerSpec extends BaseAPISpecification {
     def list = json.data as List<SampleParent>
     list.size() == UIDefaults.PAGE_SIZE
     list[0].name == records[19].name
+  }
+
+  @Ignore("https://github.com/micronaut-projects/micronaut-data/issues/404")
+  @Rollback
+  def "verify list works with case insensitive sorting"() {
+    given: 'some test data is created'
+    new SampleParent(name: 'ABC4').save()
+    new SampleParent(name: 'abc3').save()
+    new SampleParent(name: 'abc2').save()
+    new SampleParent(name: 'ABC1').save()
+    Class clazz = buildSampleParentController()
+
+    when: 'the list is called from the controller'
+    def res = clazz.newInstance().list(mockRequest([sort: 'name']), null)
+
+    then: 'the correct values are returned'
+    res.status == HttpStatus.OK
+    def json = new JsonSlurper().parseText((String) res.body())
+    def list = json.data as List<SampleParent>
+    list[0].name == 'ABC1'
+    list[1].name == 'abc2'
+    list[2].name == 'abc3'
+    list[3].name == 'ABC4'
   }
 
   @Rollback

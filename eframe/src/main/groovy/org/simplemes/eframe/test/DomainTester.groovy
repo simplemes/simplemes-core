@@ -10,7 +10,6 @@ import org.simplemes.eframe.data.format.ChildListFieldFormat
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.domain.validate.ValidationErrorInterface
 import org.simplemes.eframe.misc.ArgumentUtils
-import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.web.PanelUtils
 
 /**
@@ -231,12 +230,9 @@ class DomainTester {
     fields = fields.findAll { !PanelUtils.isPanel(it) }
 
     // Remove any transient fields since they are allowed in the fieldOrder.
-    def transients = TypeUtils.getStaticPropertyInSuperClasses(_domain, 'transients')
+    def transients = DomainUtils.instance.getTransientFields(_domain)*.name
     if (transients) {
-      // Flatten into a single list.
-      def flatList = []
-      transients.each { flatList.addAll(it) }
-      fields = fields.findAll { !flatList.contains(it) }
+      fields = fields.findAll { !transients.contains(it) }
     }
 
     // Now, make sure no extra properties are added to the fieldOrder array.

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.system.controller
 
 import ch.qos.logback.classic.Level
@@ -25,12 +29,6 @@ import sample.controller.AllFieldsDomainController
 import sample.controller.SampleParentController
 import sample.domain.SampleChild
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -353,13 +351,12 @@ class LoggingControllerSpec extends BaseSpecification {
     def othersEntry = treeData.find { it.title == GlobalUtils.lookup('others.label') }
     othersEntry
     List othersList = othersEntry.data
-    othersList.size() == 4
+    othersList.size() == 3
 
     and: 'the others are in the right order'
-    othersList[0].title == 'org.abc.ZClass'
-    othersList[1].title == 'org.hibernate.SQL'
-    othersList[2].title == 'org.hibernate.type'
-    othersList[3].title == 'org.xyz.AClass'
+    othersList[0].title == 'io.micronaut.data'
+    othersList[1].title == 'org.abc.ZClass'
+    othersList[2].title == 'org.xyz.AClass'
 
     and: 'all are marked as allowing remove'
     for (other in othersList) {

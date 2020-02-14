@@ -5,6 +5,7 @@
 package org.simplemes.eframe.security.domain
 
 import com.fasterxml.jackson.annotation.JsonIgnore
+import com.fasterxml.jackson.annotation.JsonProperty
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
@@ -42,10 +43,10 @@ class User {
   String userName
 
   /**
-   * The title (short) of this user.  Used for many displays/lists.
+   * The display value (short) of this user.  Used for many displays/lists.
    */
   @Column(length = FieldSizes.MAX_TITLE_LENGTH)
-  @Nullable String title
+  @Nullable String displayName
 
   /**
    * The raw password (un-encrypted, not saved).  Uses only when the password changes.
@@ -58,7 +59,7 @@ class User {
    * The password (encrypted).
    */
   @JsonIgnore
-  @Column(length = 128)
+  @Column(length = 128, nullable = false)
   String encodedPassword
 
   /**
@@ -91,6 +92,7 @@ class User {
    * A list of the user roles this user has assigned in a comma-delimited form.
    * This is a transient value and is read from the roles and uses the title for display.
    */
+  @JsonProperty("authoritySummary")
   @Transient
   String authoritySummary
 
@@ -117,7 +119,7 @@ class User {
    * Defines the order the fields are shown in the edit/show/etc GUIs.
    */
   @SuppressWarnings("unused")
-  static fieldOrder = ['userName', 'title', 'enabled', 'accountExpired', 'accountLocked', 'passwordExpired',
+  static fieldOrder = ['userName', 'displayName', 'enabled', 'accountExpired', 'accountLocked', 'passwordExpired',
                        'email', 'userRoles']
 
 
@@ -125,7 +127,7 @@ class User {
    * Called before new records are created.
    */
   @SuppressWarnings("unused")
-  def beforeSave() {
+  def beforeValidate() {
     encodePassword()
   }
 
@@ -141,7 +143,7 @@ class User {
    */
   static Map<String, List<String>> initialDataLoad() {
     if (!findByUserName('admin')) {
-      def adminUser = new User(userName: 'admin', password: 'admin', title: 'Admin User')
+      def adminUser = new User(userName: 'admin', password: 'admin', displayName: 'Admin User')
       def note = ""
       if (Holders.environmentDev || Holders.environmentTest) {
         adminUser.passwordExpired = false
@@ -210,13 +212,12 @@ class User {
       return authoritySummary
     }
     StringBuilder sb = new StringBuilder()
-    for (userRole in userRoles) {
+    for (userRole in getUserRoles()) {
       if (sb) {
         sb << ', '
       }
-      sb << userRole.authority
+      sb << userRole.toString()
     }
-
     authoritySummary = sb.toString()
     return authoritySummary
   }

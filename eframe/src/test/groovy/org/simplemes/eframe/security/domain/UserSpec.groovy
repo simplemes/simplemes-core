@@ -26,10 +26,10 @@ class UserSpec extends BaseSpecification {
     expect: 'the constraints are enforced'
     DomainTester.test {
       domain User
-      requiredValues userName: 'ADMIN', password: 'password'
+      requiredValues userName: 'ADAM', password: 'password'
       maxSize 'userName', FieldSizes.MAX_CODE_LENGTH
       notNullCheck 'userName'
-      notInFieldOrder(['authoritySummary', 'password', 'encodedPassword'])
+      notInFieldOrder(['userRoles', 'password', 'encodedPassword'])
     }
   }
 
@@ -153,6 +153,45 @@ class UserSpec extends BaseSpecification {
     !s.contains('encodedPassword')
     !s.toLowerCase().contains('password"')
     !s.contains('bad')
+  }
+
+  @Rollback
+  def "verify that authoritySummary is exported via JSON"() {
+    given: 'a user with some roles'
+    waitForInitialDataLoad()
+    def roles = Role.list()
+    def user = new User(userName: 'ABC', password: 'XYZ')
+    user.userRoles << roles[0]
+    user.userRoles << roles[3]
+    user.save()
+
+    when: 'the JSON is generated'
+    def s = Holders.objectMapper.writeValueAsString(user)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+
+    then: 'the JSON does not contain the sensitive fields'
+    def json = new JsonSlurper().parseText(s)
+    json.authoritySummary.contains(roles[0].toString())
+    json.authoritySummary.contains(roles[3].toString())
+    !json.authoritySummary.contains(roles[1].toString())
+  }
+
+  @Rollback
+  def "verify that getAuthoritySummary works correctly"() {
+    given: 'a user with some roles'
+    waitForInitialDataLoad()
+    def roles = Role.list()
+    def user = new User(userName: 'ABC', password: 'XYZ')
+    user.userRoles << roles[0]
+    user.userRoles << roles[3]
+
+    when: 'the summary is generated'
+    def authoritySummary = user.authoritySummary
+
+    then: 'the summary has the right values'
+    authoritySummary.contains(roles[0].toString())
+    authoritySummary.contains(roles[3].toString())
+    !authoritySummary.contains(roles[1].toString())
   }
 
 }

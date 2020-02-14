@@ -46,6 +46,12 @@ import org.simplemes.eframe.web.PanelUtils
  *              child records in your code.
  * <p>
  *
+ * <h3>-D Options</h3>
+ * The -D command-line options for this tester include:
+ * <ul>
+ *   <li><b>testOnly=phase</b> - -DtestOnly=create for create phase only.  Supports phases: show, create,list, edit.  </li>
+ *   <li><b>slowTest</b> - If present, then the test is slowed down after every field that is filled in (create/edit only). </li>
+ * </ul>
  *
  * <h3>Logging</h3>
  * The logging for this class that can be enabled:
@@ -129,6 +135,11 @@ class CRUDGUITester {
    * The -D testOnly option from the command line (or simulated for unit testing).
    */
   String _dashDOption
+
+  /**
+   * The -D slowTest option from the command line.  If true, then a small delay will be added after each field.
+   */
+  boolean slowTest = false
 
   /**
    * If true, then enabled the create page tests.  (<b>Default:</b> true).
@@ -389,6 +400,7 @@ class CRUDGUITester {
     log.trace("doSetup(): ID = {}, URI = {}, fieldOrder = {}", _htmlIDBase, _uri, fieldOrder)
     // The code value overrides the -D option for testing purposes.
     _dashDOption = _dashDOption ?: System.getProperty('testOnly')
+    slowTest = System.getProperty('slowTest') != null
 
     hasPanels = (fieldOrder.find { PanelUtils.isPanel(it) } != null)
 
@@ -620,7 +632,7 @@ class CRUDGUITester {
   void testShowPageFields() {
     def mainRecord = createRecord(_recordParams)
     log.trace("testShowPage(): Checking fields {}", effectiveShowFields)
-    go("/show/${mainRecord.id}")
+    go("/show/${mainRecord.uuid}")
     waitForCompletion()
     assert browser.title == lookup('show.title', [TypeUtils.toShortString(mainRecord), lookup("${domainName}.label"), Holders.configuration.appName])
     assertLocalized((String) browser.title, 'title', 'show')
@@ -647,9 +659,9 @@ class CRUDGUITester {
       }
     }
 
-    checkToolbarButton("/show/${mainRecord.id}", "showList", "$_uri")
-    checkToolbarButton("/show/${mainRecord.id}", "showCreate", "$_uri/create")
-    checkToolbarButton("/show/${mainRecord.id}", "showEdit", "$_uri/edit/${mainRecord.id}")
+    checkToolbarButton("/show/${mainRecord.uuid}", "showList", "$_uri")
+    checkToolbarButton("/show/${mainRecord.uuid}", "showCreate", "$_uri/create")
+    checkToolbarButton("/show/${mainRecord.uuid}", "showEdit", "$_uri/edit/${mainRecord.uuid}")
     testShowPageDelete(mainRecord)
     cleanupCreatedRecords()
   }
@@ -659,9 +671,9 @@ class CRUDGUITester {
    * @param mainRecord The domain record to test.
    */
   void testShowPageDelete(Object mainRecord) {
-    def id = mainRecord.id
+    def id = mainRecord.uuid
 
-    go("/show/${mainRecord.id}")
+    go("/show/${mainRecord.uuid}")
     waitForCompletion()
 
     // Open the more actions menu
@@ -683,7 +695,7 @@ class CRUDGUITester {
 
     // make sure the record was deleted.
     _domain.withTransaction {
-      assert !_domain.get(id), "${_domain.simpleName} record (${id}) was deleted"
+      assert !_domain.findByUuid(id), "${_domain.simpleName} record (${id}) was deleted"
     }
 
   }
@@ -750,7 +762,7 @@ class CRUDGUITester {
     // Create a a default record with the minimal values.
     def mainRecord = createRecord(_minimalParams)
     log.trace("testEditPage(): Checking fields {}", effectiveEditFields)
-    go("/edit/${mainRecord.id}")
+    go("/edit/${mainRecord.uuid}")
     waitForCompletion()
     assert browser.title == lookup('edit.title', [TypeUtils.toShortString(mainRecord), lookup("${domainName}.label"), Holders.configuration.appName])
     assertLocalized((String) browser.title, 'title', 'show')
@@ -792,7 +804,7 @@ class CRUDGUITester {
       checkRecord(record, _recordParams)
     }
 
-    checkToolbarButton("/edit/${mainRecord.id}", "editList", "$_uri")
+    checkToolbarButton("/edit/${mainRecord.uuid}", "editList", "$_uri")
 
     cleanupCreatedRecords()
   }
@@ -822,6 +834,9 @@ class CRUDGUITester {
     checkFieldLabel(fieldName)
     checkFieldValue(fieldName, expectedRef, fieldDef, true)
     fillInField(fieldName, fillInValue, fieldDef)
+    if (slowTest) {
+      sleep(500)
+    }
   }
 
   /**
@@ -846,6 +861,7 @@ class CRUDGUITester {
    * @param fieldDef The field definition.
    * @param editable If true, then the value will come from an input field.
    */
+  @SuppressWarnings("EmptyIfStatement")
   protected void checkFieldValue(String fieldName, DomainReference expectedRef,
                                  FieldDefinitionInterface fieldDef, boolean editable) {
     if (_readOnlyFields?.contains(fieldName)) {
@@ -856,7 +872,7 @@ class CRUDGUITester {
     if (fieldDef?.format instanceof ChildListFieldFormat) {
       checkInlineGridValues(fieldName, (Collection) expectedRef.value, fieldDef)
     } else if (fieldDef?.format instanceof DomainRefListFieldFormat) {
-      // TODO: Fix when multi-select is done
+      // Do nothing.
     } else if (fieldDef?.format instanceof BooleanFieldFormat) {
       // Check the check-box status.
       def checkbox = _tester.$('div.webix_el_checkbox', view_id: "${fieldName}").find('button')
@@ -921,6 +937,8 @@ class CRUDGUITester {
       if (checked != value) {
         checkbox.click()
       }
+    } else if (fieldDef?.format instanceof DomainRefListFieldFormat) {
+      _tester.setCombobox(fieldName, value.toString())
     } else {
       // Simple text input field.
 
@@ -1001,6 +1019,15 @@ class CRUDGUITester {
       object = object.toStringLocalized()
     } else if (DomainUtils.instance.isDomainEntity(object.getClass())) {
       object = TypeUtils.toShortString(object, true)
+    } else if (object instanceof Collection) {
+      def sb = new StringBuilder()
+      for (o in object) {
+        if (sb) {
+          sb << ","
+        }
+        sb << o.toString()
+      }
+      object = sb.toString()
     }
     return object
   }
@@ -1060,6 +1087,7 @@ class CRUDGUITester {
     log.trace('checkRecord: record {} expectedValue {}', record, expectedValues)
 
     for (String fieldName in expectedValues.keySet()) {
+      def fieldDef = fieldDefinitions[fieldName]
       // Compare as strings to avoid issues with internal time supporting fractions of seconds.
       def value = formatExpectedValueForShow(record[fieldName])
       def expectedValue = formatExpectedValueForShow(expectedValues[fieldName])
@@ -1075,6 +1103,16 @@ class CRUDGUITester {
         assert matches, "Field $fieldName expected '$expectedValue', found (encrypted)'${value}'"
       } else if (expectedValue instanceof Collection) {
         checkChildRecordValues(fieldName, record, determineExpectedRowsAfterSave(fieldName))
+      } else if (fieldDef?.format instanceof DomainRefListFieldFormat) {
+        // Check the uuid of the list against the values in the expected array
+        def uuidList = expectedValue?.tokenize(',')
+        // Make sure each uuid is in the list from the DB.
+        def dbList = record[fieldName]
+        def uuidInDBList = dbList ? dbList*.uuid*.toString() : []
+        def c1 = fieldDef.referenceType?.simpleName
+        for (uuid in uuidList) {
+          assert uuidInDBList.contains(uuid), "Field $fieldName expected '$uuid'($c1) in DB list '${uuidInDBList}'."
+        }
       } else {
         def c1 = expectedValue?.getClass()?.simpleName
         def c2 = value?.getClass()?.simpleName
@@ -1168,8 +1206,8 @@ class CRUDGUITester {
         list = []
         recordsCreated[_domain] = list
       }
-      list << object.id
-      log.trace("Created record {}({}) id = {} ", object, _domain, object.id)
+      list << object.uuid
+      log.trace("Created record {}({}) id = {} ", object, _domain, object.uuid)
       res = object
     }
 
@@ -1185,10 +1223,10 @@ class CRUDGUITester {
       for (clazz in recordsCreated.keySet()) {
         def list = recordsCreated[clazz]
         for (id in list) {
-          def record = clazz.get(id)
+          def record = clazz.findByUuid(id)
           if (record) {
             record.delete()
-            log.trace("Deleted record {}({}) id = {}", record, clazz, record.id)
+            log.trace("Deleted record {}({}) id = {}", record, clazz, record.uuid)
           }
         }
       }

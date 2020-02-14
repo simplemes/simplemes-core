@@ -1,16 +1,14 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.security.controller
 
-import org.simplemes.eframe.i18n.GlobalUtils
+import org.simplemes.eframe.exception.ValidationException
 import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.ControllerTester
 import org.simplemes.eframe.test.UnitTestUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -36,17 +34,14 @@ class UserControllerSpec extends BaseSpecification {
   }
 
   def "verify that the bindEvent handles password change checks - fails check"() {
-    def user = new User()
+    def user = new User(userName: 'ABC')
 
     when: 'the bind event method is called'
     new UserController().bindEvent(user, [_pwNew: 'abc', _pwConfirm: 'wrong'])
 
-    then: 'the validation error is set'
-    def errors = GlobalUtils.lookupValidationErrors(user)
-    UnitTestUtils.assertContainsAllIgnoreCase(errors.password, ['match'])
-
-    and: 'neither password is in the validation message'
-    !errors.password.contains('abc')
-    !errors.password.contains('wrong')
+    then: 'the right exception is thrown'
+    def ex = thrown(ValidationException)
+    //error.207.message=Password match fail on {1}
+    UnitTestUtils.assertContainsError(ex.errors, 207, 'password', ['ABC'])
   }
 }

@@ -95,6 +95,15 @@ class Order {
   static fieldOrder = ['order', 'product', 'qtyToBuild', 'status', 'dueDate']
 
   /**
+   * Sample beforeValidate method.  Will alter the product is set to XYZZY.
+   */
+  def beforeValidate() {
+    if (product == 'XYZZY') {
+      product = "XYZZYAlteredByBeforeValidate"
+    }
+  }
+
+  /**
    * Sample beforeSave method.  Will alter the product is set to XYZZY.
    */
   def beforeSave() {

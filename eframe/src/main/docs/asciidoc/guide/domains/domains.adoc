@@ -22,6 +22,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc-header]#Persistence#
 [inline-toc]#<<Repository Requirements>>#
 [inline-toc]#<<validate Method>>#
+[inline-toc]#<<beforeValidate Method>>#
 [inline-toc]#<<beforeSave Method>>#
 [inline-toc]#<<beforeDelete Method>>#
 [inline-toc]#<<Transactions>>#
@@ -485,21 +486,27 @@ def validate() {
     *null* means no errors were found.
 
 
-==== beforeSave Method
+==== beforeValidate Method
 
-Sometimes you need to execute some logic in your domain class before every `save()`.  For example,
-you need to encrypt a password on save.  If you define a `beforeSave()` method on your
-domain, then it will be executed by the domain's `save()` method.  For example:
+Sometimes you need to execute some logic in your domain class before `validate()` is called.
+For example, you need to encrypt a password on save/validate.  If you define a `beforeValidate()`
+method on your domain, then it will be executed by the helper's `validate()` method.  For example:
 
 [source,groovy]
-.Example - beforeSave Method
+.Example - beforeValidate Method
 ----
-def beforeSave() {
+def beforeValidate() {
   encryptPassword()
 }
 ----
 
-This will call the `encryptPassword()` before every save.  
+This will call the `encryptPassword()` before the validation is performed on the domain.
+
+==== beforeSave Method
+
+Sometimes you need to execute some logic in your domain class before every `save()`.  For example,
+you need to encrypt a password on save.  If you define a `beforeSave()` method on your
+domain, then it will be executed by the domain's `save()` method.
 
 ==== beforeDelete Method
 

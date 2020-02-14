@@ -18,7 +18,9 @@ import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.transaction.jdbc.DataSourceUtils
 import org.junit.Rule
 import org.junit.rules.TestName
+import org.openqa.selenium.TimeoutException
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.application.InitialDataLoader
 import org.simplemes.eframe.application.StartupHandler
 import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.custom.domain.FieldExtension
@@ -470,6 +472,29 @@ class BaseSpecification extends GebSpec {
   }
 
   /**
+   * Waits for the initial data load finishes.  Mainly used to wait for things like admin user or roles to be loaded.
+   * Waits up to 5 seconds.  Will throw an exception if it never finishes.
+   */
+  void waitForInitialDataLoad() {
+    def loader = Holders.applicationContext.getBean(InitialDataLoader)
+    if (loader.loadFinished) {
+      return
+    }
+
+    def start = System.currentTimeMillis()
+    def elapsed = 0
+    while (elapsed < 5000) {
+      elapsed = System.currentTimeMillis() - start
+      if (loader.loadFinished) {
+        return
+      }
+    }
+
+    throw new IllegalStateException("waitForInitialDataLoad(): Initial data load did not finish in ${elapsed}ms.  Is server started?")
+
+  }
+
+  /**
    * Cleans up any records before and after each test, based on the values in the <code>dirtyDomains</code>
    * array. Always cleans up UserPreference records.
    * @param tester The tester class <b>Required</b>.  Used to access the GEB features.
@@ -730,6 +755,26 @@ class BaseSpecification extends GebSpec {
     DataSource dataSource = Holders.applicationContext.getBean(DataSource.class)
     Connection connection = DataSourceUtils.getConnection(dataSource)
     return connection.prepareStatement(sql)
+  }
+
+  /**
+   * Wait for a record to change in the database.  Checks the version until is changes.  Waits up to 5 seconds.
+   * @param record The record to wait for a change.
+   */
+  void waitForRecordChange(Object record) {
+    def originalVersion = record.version
+    def domainClass = record.getClass()
+    def start = System.currentTimeMillis()
+    def elapsed = System.currentTimeMillis() - start
+    while (elapsed < 5000) {
+      def record2 = domainClass.findByUuid(record.uuid)
+      if (record2.version != originalVersion) {
+        return
+      }
+      sleep(100)
+      elapsed = System.currentTimeMillis() - start
+    }
+    throw new TimeoutException("${record.getClass().simpleName} record '${TypeUtils.toShortString(record)}' did not change within ${elapsed}ms.")
   }
 
 }
