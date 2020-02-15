@@ -604,7 +604,8 @@ class OrderService {
 }
 
 ----
-<.> Defines the reference as a simple foreign reference.  Not as a <<parent-child-one-to-many>>
+<.> Defines the reference as a simple foreign reference.  The targetEntity is required  for simple
+    foreign references.   This distinguishes it from a <<parent-child-one-to-many>>
     relationship.
 <.> Reads the product record on first access.
 
@@ -612,7 +613,7 @@ This adds a lazy loader mechanism in the `getProduct()` method.  On first access
 the Product (if not-null).
 
 NOTE: This _targetEntity_ is used as a marker for a simple foreign reference.  Do not use
-      for this _targetEntity_ option for <<parent-child-one-to-many>> relationships.
+      the _targetEntity_ option for <<parent-child-one-to-many>> relationships.
       This is the mechanism for distinguishing between simple references and the
       parent side in parent/child relations.
 
@@ -683,6 +684,9 @@ interface ChildRepository extends BaseRepository, CrudRepository<Child, UUID> {
 <.> The reference to the parent record is one of the primary keys in the child record.
 <.> The finder `findByXYZ()` must be defined to find the child records.  This is used by the lazy
     loader.
+
+NOTE: On the @_ManyToOne_ annotation, do not use _targetEntity_.  It is used as a marker for a
+      <<Simple Foreign Reference>>.
 
 
 ==== Many-to-Many Relationships
@@ -825,15 +829,15 @@ You want these to be stored in an _Order_ domain field like this:
 ----
 class Order {
   String key
-  BasicStatus status = EnabledStatus.instance  // <.>
 
-  static constraints = {
-    status length: FieldSizes.MAX_ENCODED_TYPE_LENGTH // <.>
-  }
+  @Column(length = 12, nullable = true)
+  @Nullable BasicStatus status = EnabledStatus.instance // <.>
+  BasicStatus status = EnabledStatus.instance
+
 }
 ----
 <.> A simple reference to the BasicStatus, with a default value.
-<.> The status database column will be a small length (8 chars in the example).
+    The status database column will be a small length (12 chars in the example).
     If not specified, then hibernate will default this to 255 characters.
 
 The mapping of the BasicStatus to a database column is handled automatically by the

@@ -23,7 +23,7 @@ import javax.persistence.Column
 @Slf4j
 @MappedEntity()
 @DomainEntity
-@EqualsAndHashCode(includes = ['authority', 'title'])
+@EqualsAndHashCode(includes = ['authority'])
 class Role {
 
   /**

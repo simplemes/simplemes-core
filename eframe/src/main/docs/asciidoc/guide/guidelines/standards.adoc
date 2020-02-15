@@ -77,12 +77,9 @@ assembled:
 class OrderComponent {
   . . .
 
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String userName = SecurityUtils.currentUserName  // <1>
   Date dateTime
-
-  static constraints = {
-    userName(maxSize: FieldSizes.MAX_CODE_LENGTH, blank: false, nullable: false)
-  }
 
 ----
 <1> The user who is currently logged into the session for this request.

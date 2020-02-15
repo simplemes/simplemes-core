@@ -1,10 +1,8 @@
-package org.simplemes.eframe.domain.validate;
-
 /*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
+ * Copyright (c) Michael Houston 2020. All rights reserved.
  */
+
+package org.simplemes.eframe.domain.validate;
 
 /**
  * A single validation error on a field.
@@ -23,6 +21,13 @@ public interface ValidationErrorInterface {
    * @return The message code.
    */
   int getCode();
+
+  /**
+   * Returns the other args for the error message.
+   *
+   * @return The args.
+   */
+  Object[] getArgs();
 
 
 }

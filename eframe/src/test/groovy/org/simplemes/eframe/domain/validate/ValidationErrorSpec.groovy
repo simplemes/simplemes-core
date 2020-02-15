@@ -1,12 +1,10 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.domain.validate
 
 import org.simplemes.eframe.test.BaseSpecification
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -15,16 +13,17 @@ class ValidationErrorSpec extends BaseSpecification {
 
   def "verify that simple constructor works - no arguments"() {
     when: 'the constructor is used'
-    def error = new ValidationError(1, 'XYZ')
+    def error = new ValidationError(1, 'XYZ', 'ABC')
 
     then: 'the fields are correct'
     error.code == 1
     error.fieldName == 'XYZ'
 
     and: 'the toString works'
-    //error.1.message=Required value is missing {0}.
-    error.toString() == lookup('error.1.message', null, 'XYZ')
+    //error.1.message=Required value is missing "{0}" ({1}).
+    error.toString() == lookup('error.1.message', null, 'XYZ', 'ABC')
     error.toString().contains('XYZ')
+    error.toString().contains('ABC')
   }
 
   def "verify that simple constructor works - arguments"() {

@@ -9,12 +9,14 @@ import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
 import org.simplemes.eframe.data.format.BasicFieldFormat
 import org.simplemes.eframe.date.DateOnly
+import org.simplemes.eframe.domain.annotation.DomainEntity
 
 //import grails.gorm.annotation.Entity
 
-import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
 import javax.annotation.Nullable
@@ -50,10 +52,11 @@ class SampleChild {
   @Nullable BasicFieldFormat format
   @Nullable BigDecimal qty
   @Nullable Boolean enabled
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   @Nullable Date dateTime
   @Nullable DateOnly dueDate
   @Nullable ReportTimeIntervalEnum reportTimeInterval
-  @Nullable Order order
+  @Nullable @ManyToOne(targetEntity = Order) Order order
 
   /**
    * A list of grand children.

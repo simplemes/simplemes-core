@@ -42,6 +42,7 @@ class Order {
 
   @Nullable String product
 
+  @Column(length = 12, nullable = true)
   BasicStatus status = EnabledStatus.instance
 
   @Nullable
@@ -121,6 +122,14 @@ class Order {
     }
   }
 
+  /**
+   * Builds a localized version of the order.
+   * @param locale (ignored).
+   * @return The order.
+   */
+  String toStringLocalized(Locale locale = null) {
+    return getOrder()
+  }
   /**
    * Load initial records - test data.
    */

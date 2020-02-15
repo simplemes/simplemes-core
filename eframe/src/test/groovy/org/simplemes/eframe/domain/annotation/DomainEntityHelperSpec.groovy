@@ -268,7 +268,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
   }
 
   @Rollback
-  def "verify that save works with added records"() {
+  def "verify that save works with added child records"() {
     when: 'a domain record with children is saved'
     def order = new Order(order: 'M1001')
     order.orderLines << new OrderLine(product: 'BIKE', sequence: 1)
@@ -278,6 +278,20 @@ class DomainEntityHelperSpec extends BaseSpecification {
     then: 'the child records are saved too.'
     def order2 = Order.findByUuid(order.uuid)
     order2.orderLines.size() == 2
+  }
+
+  @Rollback
+  def "verify that save detects errors with child lists"() {
+    when: 'a domain record with children is saved'
+    def order = new Order(order: 'M1001')
+    def orderLine = new OrderLine(product: 'BIKE', sequence: 1)
+    orderLine.sequence = null
+    order.orderLines << orderLine
+    order.save()
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['sequence'])
   }
 
   @Rollback
@@ -667,10 +681,39 @@ class DomainEntityHelperSpec extends BaseSpecification {
     def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) object)
 
     then: 'the validation error is correct'
-    //error.1.message=Required value is missing {0}.
+    //error.1.message=Required value is missing "{0}" ({1}).
     errors.size() == 1
     errors[0].code == 1
     errors[0].fieldName == 'notNullableField'
+    errors[0].args[0] == 'TestClass'
+  }
+
+  def "verify that validate detects blank string values in non-nullable fields"() {
+    given: 'a domain'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import org.simplemes.eframe.domain.validate.ValidationError
+      import javax.annotation.Nullable
+  
+      @DomainEntity
+      class TestClass {
+        UUID uuid
+        String notNullableField
+        @Nullable String title
+      }
+    """
+    def object = CompilerTestUtils.compileSource(src).newInstance()
+    object.notNullableField = ''
+
+    when: 'the object is validated'
+    def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) object)
+
+    then: 'the validation error is correct'
+    //error.1.message=Required value is missing "{0}" ({1}).
+    errors.size() == 1
+    errors[0].code == 1
+    errors[0].fieldName == 'notNullableField'
+    errors[0].args[0] == 'TestClass'
   }
 
   def "verify that validate handles nullable in the JPA column annotation"() {

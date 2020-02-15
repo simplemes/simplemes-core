@@ -116,4 +116,8 @@ public class ValidationError implements ValidationErrorInterface {
       return "Could not find GlobalUtils for message key " + key;
     }
   }
+
+  public Object[] getArgs() {
+    return args;
+  }
 }

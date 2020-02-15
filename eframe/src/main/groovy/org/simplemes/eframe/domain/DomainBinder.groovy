@@ -98,6 +98,7 @@ class DomainBinder {
   @SuppressWarnings(["GroovyAssignabilityCheck", "EmptyIfStatement"])
   void bind(Object object, Map params, Boolean ui = false) {
     ArgumentUtils.checkMissing(object, 'object')
+    log.trace("bind() object = {} params = {}, ui = ui", object, params, ui)
     if (object.getClass() != domainClass) {
       domainClass = object.getClass()
       fieldDefs = ExtensibleFieldHelper.instance.getEffectiveFieldDefinitions(domainClass, object)

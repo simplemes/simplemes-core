@@ -30,8 +30,8 @@ trait FieldTrait {
     //noinspection GrEqualsBetweenInconvertibleTypes
     if (fieldFormat == EnumFieldFormat.instance) {
       if (!valueClassName) {
-        //error.1.message=Required value is missing "{0}".
-        return new ValidationError(1, 'valueClassName')
+        //error.1.message=Required value is missing "{0}" ({1}).
+        return new ValidationError(1, 'valueClassName', this.getClass().simpleName)
       }
       try {
         def clazz = TypeUtils.loadClass(valueClassName)

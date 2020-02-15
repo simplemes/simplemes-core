@@ -68,6 +68,8 @@ class AllFieldsDomain {
   @Nullable String notes
   @Nullable ReportTimeIntervalEnum reportTimeInterval
   @Nullable @ManyToOne(targetEntity = Order) Order order
+
+  @Column(length = 12, nullable = true)
   @Nullable BasicStatus status = EnabledStatus.instance
 
   @ExtensibleFieldHolder

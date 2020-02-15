@@ -10,15 +10,11 @@ domain class:
 ----
 @MappedEntity
 class Order {
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String order
   BigDecimal qty = 1.0
-  Product product  // <1>
+  @Nullable Product product  // <1>
   BigDecimal qtyScrapped = 0.0
-
-  static constraints = {
-    order(maxSize: Constants.CODE_LENGTH, blank: false, unique: true)
-    product(nullable: true)
-  }
 
   static fieldOrder = ['order', 'qty', 'product']
 }

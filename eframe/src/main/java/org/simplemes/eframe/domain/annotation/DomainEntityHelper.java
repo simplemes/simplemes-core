@@ -562,7 +562,7 @@ public class DomainEntityHelper {
    * @return The statement.
    */
   protected PreparedStatement getPreparedStatement(String sql) throws SQLException {
-    invokeGroovyMethod("org.simplemes.eframe.domain.EFrameJdbcRepositoryOperations", "checkForTransactionStatic");
+    checkForTransaction();
     DataSource dataSource = getApplicationContext().getBean(DataSource.class);
     Connection connection = DataSourceUtils.getConnection(dataSource);
     //if (dataSource instanceof HikariDataSource) {
@@ -799,6 +799,7 @@ public class DomainEntityHelper {
     Map<String, Object> domainSettings = getDomainSettings(parentObject);
     String alreadyLoadedName = SETTINGS_LOADED_REFERENCE + fieldName;
     Boolean alreadyLoaded = (Boolean) domainSettings.get(alreadyLoadedName);
+    //System.out.println(fieldName + " referencedObject:" + referencedObject+" alreadyLoaded: "+alreadyLoaded + " "+alreadyLoadedName);
     if (alreadyLoaded != null && alreadyLoaded) {
       return referencedObject;
     }
@@ -1019,8 +1020,11 @@ public class DomainEntityHelper {
             property.getField().setAccessible(true);  // Use work around to make this code simpler.  Should call getter().
             Object value = property.getField().get(object);
             if (value == null) {
-              //error.1.message=Required value is missing {0}.
-              res.add(new ValidationError(1, property.getName()));
+              //error.1.message=Required value is missing "{0}" ({1}).
+              res.add(new ValidationError(1, property.getName(), object.getClass().getSimpleName()));
+            } else if (value instanceof String && ((String) value).length() == 0) {
+              //error.1.message=Required value is missing "{0}" ({1}).
+              res.add(new ValidationError(1, property.getName(), object.getClass().getSimpleName()));
             }
           } catch (IllegalAccessException ignored) {
             // Will always be accessible.
@@ -1159,6 +1163,14 @@ public class DomainEntityHelper {
       // to every method in this class.
       throw new RuntimeException(e.getCause());
     }
+  }
+
+  /**
+   * Makes sure there is an active transaction for this thread.
+   * This is used to make sure there is no connection leak since a
+   */
+  public void checkForTransaction() {
+    invokeGroovyMethod("org.simplemes.eframe.domain.EFrameJdbcRepositoryOperations", "checkForTransactionStatic");
   }
 
   /**

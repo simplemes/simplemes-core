@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.reports.controller
 
 import groovy.util.logging.Slf4j
@@ -19,6 +23,7 @@ import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.controller.BaseController
 import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.controller.StandardModelAndView
+import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.data.format.DateFieldFormat
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.preference.PreferenceHolder
@@ -34,10 +39,6 @@ import org.simplemes.eframe.web.view.FreemarkerWrapper
 
 import javax.annotation.Nullable
 import java.security.Principal
-
-/*
- * Copyright (c) 2018 Simple MES, LLC.  All rights reserved.  See license.txt for license terms.
- */
 
 /**
  * Support for report engine-style reports.  Used to display HTML and PDF reports.
@@ -96,7 +97,12 @@ class ReportController extends BaseController {
     } else {
       out = new StringWriter()
     }
-    def missingRoles = ReportEngine.instance.writeReport(report, out)
+    def missingRoles = null
+    FieldExtension.withTransaction {
+      // Need to be in a transaction to avoid connection leaks.
+      // Transaction commits seem to clean up the connection correctly.
+      missingRoles = ReportEngine.instance.writeReport(report, out)
+    }
     if (missingRoles) {
       return buildDeniedResponse(request, "Missing role $missingRoles for ${params.loc}", principal)
     } else {

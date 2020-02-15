@@ -76,4 +76,15 @@ class FlexFieldSpec extends BaseSpecification {
     assertValidationFails(flexField, 4, 'valueClassName', ['valueClassName', 'gibberish', 'invalid', 'class'])
   }
 
+  @Rollback
+  def "verify that the constraint enforces non-null valueClassName on enum fields"() {
+    given: 'a field extension with bad valueClassName '
+    def flexField = new FlexField(fieldName: 'abc', flexType: new FlexType(),
+                                  fieldFormat: EnumFieldFormat.instance)
+
+    expect: 'invalid valueClassName check is enforced'
+    //error.1.message=Required value is missing "{0}" ({1}).
+    assertValidationFails(flexField, 1, 'valueClassName', ['valueClassName', String.name, 'missing', FlexField.simpleName])
+  }
+
 }

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 
@@ -10,18 +14,13 @@ import sample.page.SampleParentEditPage
 import sample.page.SampleParentShowPage
 import spock.lang.IgnoreIf
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * Tests.
  */
 @IgnoreIf({ !sys['geb.env'] })
 class ComboboxWidgetGUISpec extends BaseGUISpecification {
 
+  @SuppressWarnings("unused")
   static dirtyDomains = [SampleParent, AllFieldsDomain]
 
   def "verify that the combobox field can be populated and saved"() {
@@ -44,7 +43,7 @@ class ComboboxWidgetGUISpec extends BaseGUISpecification {
     allFieldsDomain.input.value() == TypeUtils.toShortString(afd1, true)
 
     when: 'the value is changed and saved'
-    setCombobox(allFieldsDomain, afd2.id.toString())
+    setCombobox(allFieldsDomain, afd2.uuid.toString())
     updateButton.click()
     waitForRecordChange(sampleParent)
 

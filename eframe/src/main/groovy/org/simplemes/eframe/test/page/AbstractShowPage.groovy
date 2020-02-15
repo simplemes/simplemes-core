@@ -72,7 +72,7 @@ class AbstractShowPage extends AbstractPage {
     for (int i = 0; i < args.size(); i++) {
       if (DomainUtils.instance.isDomainEntity(args[i].getClass())) {
         domainObject = args[i]
-        args[i] = args[i].id
+        args[i] = args[i].uuid
       }
     }
     return super.convertToPath(args)

@@ -1,6 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.reports
 
 import groovy.util.logging.Slf4j
+import io.micronaut.transaction.jdbc.DataSourceUtils
 import net.sf.jasperreports.engine.DefaultJasperReportsContext
 import net.sf.jasperreports.engine.JasperCompileManager
 import net.sf.jasperreports.engine.JasperFillManager
@@ -21,6 +26,7 @@ import org.simplemes.eframe.data.format.DateFieldFormat
 import org.simplemes.eframe.data.format.DateOnlyFieldFormat
 import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.date.ISODate
+import org.simplemes.eframe.domain.annotation.DomainEntityHelper
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.ArgumentUtils
@@ -28,9 +34,7 @@ import org.simplemes.eframe.misc.HTMLUtils
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
-/*
- * Copyright (c) 2018 Simple MES, LLC.  All rights reserved.  See license.txt for license terms.
- */
+import javax.sql.DataSource
 
 /**
  * Provides low-level access to the external report engine.  This is designed to be replaced by a mock
@@ -177,7 +181,14 @@ class ReportEngine {
 
     log.debug('fill: parameters: {}', parameters)
 
-    def dataOrConn = report.jrDataSource ?: Holders.dataSource?.connection
+    def dataOrConn = report.jrDataSource
+    if (!dataOrConn) {
+      // Need to get a real DB connection
+      // Avoid connection leaks by enforcing use of a txn around this fill() method.
+      DomainEntityHelper.instance.checkForTransaction()
+      DataSource dataSource = Holders.applicationContext.getBean(DataSource.class)
+      dataOrConn = DataSourceUtils.getConnection(dataSource)
+    }
     JasperPrint jasperPrint = JasperFillManager.fillReport(report.compiledReport, parameters, dataOrConn)
     report.filledReport = jasperPrint
 

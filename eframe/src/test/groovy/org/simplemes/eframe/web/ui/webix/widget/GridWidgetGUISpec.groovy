@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 
@@ -20,12 +24,6 @@ import sample.page.SampleParentCreatePage
 import sample.page.SampleParentEditPage
 import sample.page.SampleParentShowPage
 import spock.lang.IgnoreIf
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -54,7 +52,7 @@ class GridWidgetGUISpec extends BaseGUISpecification {
       def sampleChild = new SampleChild(key: 'C1', sequence: 300, title: 'title1', qty: 12.2, enabled: true,
                                         dueDate: dueDate, dateTime: dateTime, format: DomainReferenceFieldFormat.instance,
                                         reportTimeInterval: ReportTimeIntervalEnum.LAST_YEAR, order: order)
-      sampleParent.addToSampleChildren(sampleChild)
+      sampleParent.sampleChildren << (sampleChild)
       sampleParent.save()
     }
 
@@ -156,8 +154,8 @@ class GridWidgetGUISpec extends BaseGUISpecification {
     def sampleParent = null
     SampleParent.withTransaction {
       sampleParent = new SampleParent(name: 'ABC')
-      sampleParent.addToSampleChildren(new SampleChild(key: 'C1', sequence: 100))
-      sampleParent.addToSampleChildren(new SampleChild(key: 'C2', sequence: 200))
+      sampleParent.sampleChildren << (new SampleChild(key: 'C1', sequence: 100))
+      sampleParent.sampleChildren << (new SampleChild(key: 'C2', sequence: 200))
       sampleParent.save()
     }
 
@@ -286,10 +284,10 @@ class GridWidgetGUISpec extends BaseGUISpecification {
     assert sampleChildren.headers[getColumnIndex(SampleChild, 'order')].text() == lookup('order.label')
     sampleChildren.cell(0, getColumnIndex(SampleChild, 'order')).click()
     waitFor {
-      getComboListItem(order.id.toString()).displayed
+      getComboListItem(order.uuid.toString()).displayed
     }
-    assert getComboListItem(order.id.toString()).text() == order.order
-    getComboListItem(order.id.toString()).click()
+    assert getComboListItem(order.uuid.toString()).text() == order.order
+    getComboListItem(order.uuid.toString()).click()
     sendKey(Keys.TAB)
 
     and: 'the record is saved'
@@ -347,9 +345,9 @@ class GridWidgetGUISpec extends BaseGUISpecification {
     def sampleParent = null
     SampleParent.withTransaction {
       sampleParent = new SampleParent(name: 'ABC')
-      sampleParent.addToSampleChildren(new SampleChild(key: 'C1', sequence: 300))
-      sampleParent.addToSampleChildren(new SampleChild(key: 'C2', sequence: 200))
-      sampleParent.addToSampleChildren(new SampleChild(key: 'C3', sequence: 100))
+      sampleParent.sampleChildren << (new SampleChild(key: 'C1', sequence: 300))
+      sampleParent.sampleChildren << (new SampleChild(key: 'C2', sequence: 200))
+      sampleParent.sampleChildren << (new SampleChild(key: 'C3', sequence: 100))
       sampleParent.save()
     }
 
@@ -390,9 +388,9 @@ class GridWidgetGUISpec extends BaseGUISpecification {
     def sampleParent = null
     SampleParent.withTransaction {
       sampleParent = new SampleParent(name: 'ABC')
-      sampleParent.addToSampleChildren(new SampleChild(key: 'C1', sequence: 300))
-      sampleParent.addToSampleChildren(new SampleChild(key: 'C2', sequence: 200))
-      sampleParent.addToSampleChildren(new SampleChild(key: 'C3', sequence: 100))
+      sampleParent.sampleChildren << (new SampleChild(key: 'C1', sequence: 300))
+      sampleParent.sampleChildren << (new SampleChild(key: 'C2', sequence: 200))
+      sampleParent.sampleChildren << (new SampleChild(key: 'C3', sequence: 100))
       sampleParent.save()
     }
 
@@ -462,8 +460,8 @@ class GridWidgetGUISpec extends BaseGUISpecification {
     at SampleParentCreatePage
 
     and: 'an error is displayed'
-    //blank={0} is missing ({2})
-    messages.text().contains(lookup('blank', null, lookup('key.label'), '', 'SampleChild'))
+    //error.1.message=Required value is missing "{0}" ({1}).
+    messages.text().contains(lookup('error.1.message', null, 'key', 'SampleChild'))
   }
 
 }

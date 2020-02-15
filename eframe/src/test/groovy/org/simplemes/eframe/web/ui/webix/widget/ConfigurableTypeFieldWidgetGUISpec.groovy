@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 import org.simplemes.eframe.custom.domain.FlexType
@@ -9,12 +13,6 @@ import sample.page.RMACreatePage
 import sample.page.RMAEditPage
 import sample.page.RMAShowPage
 import spock.lang.IgnoreIf
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -34,7 +32,7 @@ class ConfigurableTypeFieldWidgetGUISpec extends BaseGUISpecification {
     to RMACreatePage
 
     and: 'the combobox is set'
-    setCombobox((Object) rmaType, flexType.id.toString())
+    setCombobox((Object) rmaType, flexType.uuid.toString())
     waitFor {
       FIELD1.displayed
     }
@@ -119,7 +117,7 @@ class ConfigurableTypeFieldWidgetGUISpec extends BaseGUISpecification {
     FIELD2.input.value() == 'VALUE2'
 
     when: 'the combobox is changed'
-    setCombobox((Object) rmaType, flexType3.id.toString())
+    setCombobox((Object) rmaType, flexType3.uuid.toString())
     waitFor {
       FIELD3.displayed
     }

@@ -193,7 +193,7 @@ class DomainTester {
     _domain.withTransaction() {
       // and make sure it fails
       def msg = "Nulls allowed on field '$fieldName' in $_domain.simpleName for $obj.  Expected a validation failure on the null field"
-      //error.1.message=Required value is missing {0}.
+      //error.1.message=Required value is missing "{0}" ({1}).
       assertErrorIsPresent(DomainUtils.instance.validate(obj), fieldName, 1, msg)
     }
   }
