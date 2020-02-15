@@ -4,7 +4,6 @@
 
 package org.simplemes.eframe.archive.domain
 
-import org.simplemes.eframe.archive.domain.ArchiveLog
 import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester

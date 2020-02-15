@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.archive
 
 import org.simplemes.eframe.application.EFrameConfiguration
@@ -5,17 +9,12 @@ import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * Tests.
  */
 class ArchiverFactorySpec extends BaseSpecification {
 
+  @SuppressWarnings("unused")
   static specNeeds = [SERVER]
 
   def "verify that the default FileArchiver is returned"() {

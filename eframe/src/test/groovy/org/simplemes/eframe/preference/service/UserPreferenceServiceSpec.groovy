@@ -20,7 +20,8 @@ import sample.pogo.SamplePOGO
  */
 class UserPreferenceServiceSpec extends BaseSpecification {
 
-  static specNeeds = [SERVER, JSON]
+  @SuppressWarnings("unused")
+  static specNeeds = SERVER
 
 
   /**

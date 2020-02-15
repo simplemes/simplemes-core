@@ -80,6 +80,8 @@ class SampleParent implements SampleParentInterface {
   @Column(nullable = true, length = 255)
   String customFields
 
+  Integer version = 0
+
   @Id @AutoPopulated UUID uuid
 
   static fieldOrder = ['name', 'title', 'notes', 'moreNotes', 'allFieldsDomain', 'allFieldsDomains',

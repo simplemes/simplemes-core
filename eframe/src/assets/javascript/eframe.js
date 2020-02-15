@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 // Define the eframe 'module' for the enterprise framework API in case of name conflicts.
 // Provides generic javascript functions that are not directly dependent on the GUI toolkit.
 // noinspection JSUnusedAssignment JSUnusedGlobalSymbols
@@ -377,7 +381,7 @@ _ef.eframe = function () {
       if (jsonResponse.length < 1) {
         return undefined;
       }
-      if (jsonResponse[0] == '{' && jsonResponse.indexOf('"message" :') >= 0) {
+      if (jsonResponse[0] == '{' && jsonResponse.indexOf('"message"') >= 0) {
         try {
           var msg = JSON.parse(jsonResponse);
           var message = msg.message;

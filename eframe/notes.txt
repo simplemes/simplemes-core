@@ -75,15 +75,14 @@ Support cache in specific use cases:
   FieldExtension/GUI - Already cached at the domainUtils level with FieldGUIExtension via ExtensibleFieldHelper
   Others as needed.
 done - Fix BaseSpecification for new startup logic.
-Solve list() method ad-hoc sorting.
-  Add pagination support.
-  Find way to execute dynamic query and populate domain from result set.  Maybe use DomainBinder?
+done - Solve list() method ad-hoc sorting.
+  done - Add pagination support.
+  done - Find way to execute dynamic query and populate domain from result set.  Maybe use DomainBinder?
 Move business logic to services.  No longer in Domain.
 Use @CompileStatic for domains/services/controllers, if possible.  May conflict with dynamic @MappedEntity support.
 done - Fix save/update/delete of custom OrderLine records. Generic hook mechanism?
 Add SQL DDL logic and Liquid-base/FlyWay support.
   Find way to auto-generate core stuff?.
-Add option to run tests against Postgres (manual only).
 done - Micronaut-data does not support traits or sub-classes in most cases.
 Look at using an environment for DB type: h2, postgres.  Change command line to use it.
 Remove unused mocks and methods in transformations.

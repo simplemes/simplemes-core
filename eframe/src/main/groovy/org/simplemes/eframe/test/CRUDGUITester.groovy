@@ -1101,7 +1101,7 @@ class CRUDGUITester {
         // Special case password checks to account for encryption.
         def matches = record.passwordMatches((String) expectedValue)
         assert matches, "Field $fieldName expected '$expectedValue', found (encrypted)'${value}'"
-      } else if (expectedValue instanceof Collection) {
+      } else if (fieldDef?.format instanceof ChildListFieldFormat) {
         checkChildRecordValues(fieldName, record, determineExpectedRowsAfterSave(fieldName))
       } else if (fieldDef?.format instanceof DomainRefListFieldFormat) {
         // Check the uuid of the list against the values in the expected array

@@ -1,14 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.dashboard.javascript
 
 import org.simplemes.eframe.dashboard.controller.DashboardTestController
 import org.simplemes.eframe.test.BaseDashboardSpecification
 import spock.lang.IgnoreIf
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests of the dashboard.js methods related to undo handling.
@@ -51,7 +49,7 @@ class DashboardJSUndoGUISpec extends BaseDashboardSpecification {
     undoButton.classes().contains('undo-button')
 
     and: 'the counter is correct'
-    messages.text().contains('"counter" : 1')
+    messages.text().contains('"counter":1')
 
     when: 'the undo is triggered'
     undoButton.click()

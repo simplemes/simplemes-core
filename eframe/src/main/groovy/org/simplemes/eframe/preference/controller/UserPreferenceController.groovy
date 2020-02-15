@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.preference.controller
 
 
@@ -80,7 +84,7 @@ class UserPreferenceController {
   @Get("/findPreferences")
   Map findPreferences(HttpRequest request) {
     def params = request.parameters
-    //println "params = $params"
+    //println "params = ${ControllerUtils.instance.convertToMap(params)}"
     def preferences = userPreferenceService.findPreferences(ControllerUtils.instance.determineBaseURI(params.get('pageURI')),
                                                             params.get('element'), params.get('preferenceType'))
     return preferences

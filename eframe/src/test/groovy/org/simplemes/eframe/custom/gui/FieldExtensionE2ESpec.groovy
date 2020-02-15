@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom.gui
 
 import org.simplemes.eframe.custom.domain.FieldExtension
@@ -29,12 +33,6 @@ import sample.page.SampleParentCreatePage
 import sample.page.SampleParentEditPage
 import spock.lang.IgnoreIf
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * End to End tests of custom fields added to definition GUIs.
  */
@@ -59,9 +57,12 @@ class FieldExtensionE2ESpec extends BaseDefinitionEditorSpecification {
         customField.setValue(value)
         break
       case Date:
+        def customField = $("body").module(new DateFieldModule(field: fieldName))
+        customField.input.value(DateUtils.formatDate(value as Date))
+        break
       case DateOnly:
         def customField = $("body").module(new DateFieldModule(field: fieldName))
-        customField.input.value(DateUtils.formatDate((Date) value))
+        customField.input.value(DateUtils.formatDate(value as DateOnly))
         break
       case ReportTimeIntervalEnum:
         def customField = $("body").module(new ComboboxModule(field: fieldName))
@@ -73,7 +74,7 @@ class FieldExtensionE2ESpec extends BaseDefinitionEditorSpecification {
         break
       case AllFieldsDomain:
         def customField = $("body").module(new ComboboxModule(field: fieldName))
-        setCombobox(customField, value.id.toString())
+        setCombobox(customField, value.uuid.toString())
         break
       default:
         def customField = $("body").module(new TextFieldModule(field: fieldName))
