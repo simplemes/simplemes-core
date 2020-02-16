@@ -59,7 +59,9 @@ class RMA {
   String product
   BigDecimal qty
   Date returnDate
-  FlexType rmaType  <.>
+
+  @ManyToOne(targetEntity=Product) <.>
+  FlexType rmaType
 
   @ExtensibleFieldHolder <.>
   @Column(nullable = true)
@@ -68,8 +70,9 @@ class RMA {
 }
 
 ----
-<.> The field `rmaType` will hold the reference to the appropriate flex type.  The acutal
+<.> The field `rmaType` will hold the reference to the appropriate flex type.  The actual
     values will be stored as described in <<Configurable Type Persistent Storage>>.
+    Note the _@ManyToOne_ usage is needed for this <<Simple Foreign Reference>>.
 <.> The FlexType requires a place to store the values for RMA records created.
     This is done in the normal location for <<Field Extensions>>.
 

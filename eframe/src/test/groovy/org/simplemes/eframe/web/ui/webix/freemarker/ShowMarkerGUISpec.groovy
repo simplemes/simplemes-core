@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 
@@ -20,12 +24,6 @@ import sample.page.SampleParentCreatePage
 import sample.page.SampleParentListPage
 import sample.page.SampleParentShowPage
 import spock.lang.IgnoreIf
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -152,7 +150,7 @@ class ShowMarkerGUISpec extends BaseGUISpecification {
 
     then: 'the correct page is shown'
     currentUrl.contains('/sampleParent/edit')
-    currentUrl.contains("/${sampleParent.id}")
+    currentUrl.contains("/${sampleParent.uuid}")
   }
 
   def "verify that tab selection is retained when page is re-displayed"() {
@@ -256,7 +254,7 @@ class ShowMarkerGUISpec extends BaseGUISpecification {
     at AllFieldsDomainListPage
 
     and: 'the error message is displayed'
-    def msg = GlobalUtils.lookup('error.105.message', null, allFieldsDomain.id)
+    def msg = GlobalUtils.lookup('error.105.message', null, allFieldsDomain.uuid)
     messages.text() == msg
     messages.find('div').classes().contains('error-message')
   }

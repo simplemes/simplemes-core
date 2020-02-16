@@ -29,12 +29,8 @@ class CreateMarkerGUISpec extends BaseGUISpecification {
 
   def "verify that basic create works"() {
     when: 'the create page is displayed'
-    // TODO: Replace with correct waitFor....
-    sleep(1000)
     login()
-    sleep(1000)
     to AllFieldsDomainCreatePage
-    sleep(1000)
 
     then: 'the key field has focus and can accept input'
     sendKey('ABC')
@@ -57,7 +53,7 @@ class CreateMarkerGUISpec extends BaseGUISpecification {
       def record = AllFieldsDomain.findByName('ABC')
       assert record.name == 'ABC'
       assert record.title == 'abc'
-      assert driver.currentUrl.endsWith("/allFieldsDomain/show/${record.id}")
+      assert driver.currentUrl.endsWith("/allFieldsDomain/show/${record.uuid}")
       true
     }
 
@@ -106,7 +102,7 @@ class CreateMarkerGUISpec extends BaseGUISpecification {
       assert record.dueDate == dueDateValue
       assert record.dateTime == dateTimeValue
 
-      assert driver.currentUrl.endsWith("/allFieldsDomain/show/${record.id}")
+      assert driver.currentUrl.endsWith("/allFieldsDomain/show/${record.uuid}")
       true
     }
 

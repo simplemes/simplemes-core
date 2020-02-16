@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.json
 
 
@@ -7,22 +11,18 @@ import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.Order
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
  */
 class JSONByIDSpec extends BaseSpecification {
 
+  @SuppressWarnings("unused")
   static specNeeds = [JSON, SERVER]
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that serializer works for simple case"() {
     given: 'a POGO with the annotation on a field'
     def src = """
@@ -53,11 +53,11 @@ class JSONByIDSpec extends BaseSpecification {
     then: 'the JSON is simple ID.'
     def json = new JsonSlurper().parseText(s)
     !s.contains('status')
-    json.order == order.id
+    json.order == order.uuid.toString()
     json.barcode == 'XYZ'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that serializer/deserializer work on round-trip for simple case"() {
     given: 'a POGO with the annotation on a field'
     def src = """
@@ -93,7 +93,7 @@ class JSONByIDSpec extends BaseSpecification {
     o2.barcode == o.barcode
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that record not found is handled gracefully"() {
     given: 'a POGO with the annotation on a field'
     def src = """
@@ -112,7 +112,7 @@ class JSONByIDSpec extends BaseSpecification {
     and: 'JSON with record ID for non-existent Order'
     def s = """ {
       "barcode": "XYZ",
-      "order": 989896
+      "order": "3df9b080-91ff-476b-8bb6-2c067f7b262d"
     }
     """
 
@@ -121,10 +121,11 @@ class JSONByIDSpec extends BaseSpecification {
 
     then: 'the right exception is thrown'
     def ex = thrown(Exception)
-    UnitTestUtils.assertExceptionIsValid(ex, ['@JSONByID', 'not', 'record', 'order', '989896', 'sample.SampleClass'])
+    UnitTestUtils.assertExceptionIsValid(ex, ['@JSONByID', 'not', 'record', 'order', '3df9b080-91ff-476b-8bb6-2c067f7b262d',
+                                              'sample.SampleClass'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that using the wrong field name is detected gracefully"() {
     given: 'a POGO with a bad field reference'
     def src = """
@@ -154,7 +155,7 @@ class JSONByIDSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['@JSONByID', 'not', 'domain', 'orderX', 'sample.SampleClass'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that deserialize using a domain field name with the wrong field type fails gracefully"() {
     given: 'a POGO with a bad field reference'
     def src = """
@@ -175,7 +176,7 @@ class JSONByIDSpec extends BaseSpecification {
     and: 'JSON with record ID for non-existent Order'
     def s = """ {
       "barcode": "XYZ",
-      "order": ${order.id}
+      "order": "${order.uuid}"
     }
     """
 
@@ -187,7 +188,7 @@ class JSONByIDSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['String', 'type', 'mismatch', 'order', Order.name, 'sample.SampleClass'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that serialize using a domain field name with the wrong field type fails gracefully"() {
     given: 'a POGO with a bad field reference'
     def src = """

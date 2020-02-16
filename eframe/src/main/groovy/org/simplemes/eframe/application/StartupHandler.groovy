@@ -89,17 +89,6 @@ class StartupHandler {
     mapper.setDateFormat(format)
     mapper.registerModule(new EFrameJacksonModule())
 
-/*  // Don't use Hibernate5Module for Jackson.  Seems to not solve the infinite recursion problem when serializing parent/child.
-    // Also, doesn't help with child creation/update for REST POST cases.
-    def hibernate5Module = new Hibernate5Module()
-    hibernate5Module.disable(Hibernate5Module.Feature.FORCE_LAZY_LOADING)
-    hibernate5Module.enable(Hibernate5Module.Feature.SERIALIZE_IDENTIFIER_FOR_LAZY_NOT_LOADED_OBJECTS)
-    //println "hibernate5Module1 = ${hibernate5Module.isEnabled(Hibernate5Module.Feature.FORCE_LAZY_LOADING)}"
-    //println "hibernate5Module1 = ${hibernate5Module.isEnabled(Hibernate5Module.Feature.SERIALIZE_IDENTIFIER_FOR_LAZY_NOT_LOADED_OBJECTS)}"
-    mapper.registerModule(hibernate5Module)
-    //println "startup mapper = $mapper"
-*/
-
   }
 
 }

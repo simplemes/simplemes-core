@@ -10,11 +10,11 @@ import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.DateCreated
 import io.micronaut.data.annotation.DateUpdated
 import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
 
 //import grails.gorm.annotation.Entity
 
-import io.micronaut.data.annotation.MappedEntity
-import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.annotation.Transient
 import io.micronaut.data.model.DataType
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
@@ -24,6 +24,7 @@ import org.simplemes.eframe.domain.annotation.DomainEntity
 
 import javax.annotation.Nullable
 import javax.persistence.Column
+import javax.persistence.ManyToOne
 
 /**
  * A sample domain class that simulates an RMA approval.
@@ -42,7 +43,10 @@ class RMA {
   @Nullable String product
   BigDecimal qty = 1.0
   @Nullable Date returnDate
-  @Nullable FlexType rmaType
+
+  @Nullable @ManyToOne(targetEntity = FlexType)
+  FlexType rmaType
+
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateCreated

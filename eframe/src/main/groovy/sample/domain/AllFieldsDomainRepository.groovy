@@ -5,6 +5,7 @@
 package sample.domain
 
 import io.micronaut.data.annotation.Join
+import io.micronaut.data.model.Pageable
 import io.micronaut.data.repository.CrudRepository
 import org.simplemes.eframe.domain.BaseRepository
 
@@ -21,6 +22,7 @@ interface AllFieldsDomainRepository extends BaseRepository, CrudRepository<AllFi
 
   Optional<AllFieldsDomain> findByUuid(UUID uuid)
 
+  List<AllFieldsDomain> list(Pageable pageable)
   List<AllFieldsDomain> list()
 
   // Test that joins the order reference.  This only works for required references.

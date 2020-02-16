@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 
@@ -16,12 +20,6 @@ import sample.page.AllFieldsDomainEditPage
 import sample.page.AllFieldsDomainListPage
 import sample.page.AllFieldsDomainShowPage
 import spock.lang.IgnoreIf
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -60,7 +58,7 @@ class EditMarkerGUISpec extends BaseGUISpecification {
     AllFieldsDomain.withTransaction {
       def record = AllFieldsDomain.findByName('ABC-001')
       assert record.title == 'new title'
-      assert driver.currentUrl.endsWith("/allFieldsDomain/show/${record.id}")
+      assert driver.currentUrl.endsWith("/allFieldsDomain/show/${record.uuid}")
       true
     }
 
@@ -131,7 +129,7 @@ class EditMarkerGUISpec extends BaseGUISpecification {
       assert record.dueDate == dueDateValue
       assert record.dateTime == dateTimeValue
 
-      assert driver.currentUrl.endsWith("/allFieldsDomain/show/${record.id}")
+      assert driver.currentUrl.endsWith("/allFieldsDomain/show/${record.uuid}")
       true
     }
 
@@ -160,6 +158,7 @@ class EditMarkerGUISpec extends BaseGUISpecification {
     }
 
     then: 'the correct message is shown'
+    //error.136.message=Invalid Value "{1}" for "{0}". Value should be greater than or equal to {2}.
     UnitTestUtils.assertContainsAllIgnoreCase(messages.text(), ['count', '-237'])
 
     and: 'the message is displayed with the right class'

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data
 
 import org.simplemes.eframe.custom.domain.FieldExtension
@@ -7,17 +11,12 @@ import org.simplemes.eframe.system.DisabledStatus
 import org.simplemes.eframe.test.BaseSpecification
 import sample.domain.AllFieldsDomain
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * Tests.
  */
 class EncodedTypeSpec extends BaseSpecification {
 
+  @SuppressWarnings("unused")
   static dirtyDomains = [AllFieldsDomain, FieldExtension]
 
   def "verify that Encoded Type can be saved and retrieved - as part of the two different domains"() {
@@ -32,8 +31,8 @@ class EncodedTypeSpec extends BaseSpecification {
     def objectRead1 = null
     def objectRead2 = null
     FieldExtension.withTransaction {
-      objectRead1 = FieldExtension.findByDomainClassName('dummy')
-      objectRead2 = AllFieldsDomain.get(o2.id)
+      objectRead1 = FieldExtension.findAllByDomainClassName('dummy')[0]
+      objectRead2 = AllFieldsDomain.findByUuid(o2.uuid)
     }
 
     then: 'the date only is correct'

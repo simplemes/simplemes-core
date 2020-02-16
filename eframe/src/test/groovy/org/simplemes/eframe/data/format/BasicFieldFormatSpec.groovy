@@ -1,16 +1,15 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data.format
 
 import org.simplemes.eframe.date.DateOnly
+import org.simplemes.eframe.date.DateOnlyConverters
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.ClassPathScanner
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests of the abstract base class.  Uses StringFieldFormat for most tests.
@@ -105,7 +104,7 @@ class BasicFieldFormatSpec extends BaseSpecification {
   def "verify that the coreValues list has all of the child classes in it"() {
     when: 'the class path is scanned'
     def scanner = new ClassPathScanner(BasicFieldFormat)
-    def res = scanner.scan(DateOnlyType.package)
+    def res = scanner.scan(DateOnlyConverters.package)
 
     then: 'the classes found are in the coreValues list'
     for (clazz in res) {

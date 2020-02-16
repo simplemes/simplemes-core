@@ -42,7 +42,7 @@ class JSONByIDDeserializer extends StdDeserializer {
       throw new IllegalArgumentException("Could not find domain class for $domainName.  Do not use @JSONByID on non-domain classes.")
     }
     def s = p.getText()
-    def record = clazz.get(UUID.fromString(s))
+    def record = clazz.findByUuid(UUID.fromString(s))
     if (!record) {
       throw new IllegalArgumentException("@JSONByID Could not find $domainName record for uuid $s")
     }

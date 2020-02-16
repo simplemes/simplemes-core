@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 import org.simplemes.eframe.misc.TypeUtils
@@ -9,18 +13,13 @@ import sample.page.SampleParentEditPage
 import sample.page.SampleParentShowPage
 import spock.lang.IgnoreIf
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * Tests.
  */
 @IgnoreIf({ !sys['geb.env'] })
 class MultiComboboxWidgetGUISpec extends BaseGUISpecification {
 
+  @SuppressWarnings("unused")
   static dirtyDomains = [SampleParent, AllFieldsDomain]
 
   @SuppressWarnings("GroovyAssignabilityCheck")

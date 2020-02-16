@@ -293,7 +293,7 @@ class BaseGUISpecification extends BaseSpecification {
    * @param values The list of values to set (uses the .id element).
    */
   void setMultiCombobox(String view, List values) {
-    def valueList = values*.id.join(',')
+    def valueList = values*.uuid.join(',')
     js.exec("\$\$('$view').\$setValue('$valueList')")
   }
 

@@ -4,7 +4,7 @@
 
 package org.simplemes.eframe.json
 
-import com.fasterxml.jackson.databind.ObjectMapper
+
 import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.date.DateOnly
@@ -15,18 +15,13 @@ import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
-import sample.domain.AllFieldsDomainRepository
 import sample.domain.SampleChild
 import sample.domain.SampleParent
-import sample.domain.SampleParentRepository
 
 /**
  * Tests the Persistence Aware Jackson additions.
  */
 class EFrameJacksonModuleSpec extends BaseSpecification {
-
-  @SuppressWarnings("unused")
-  static specNeeds = [JSON, SERVER]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [SampleParent, AllFieldsDomain]
@@ -40,7 +35,7 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
     p.sampleChildren << new SampleChild(sampleParent: p, key: '123').save()
 
     when: 'the entity is serialized to JSON'
-    def s = new ObjectMapper().registerModule(new EFrameJacksonModule()).writeValueAsString(p)
+    def s = Holders.objectMapper.writeValueAsString(p)
 
     then: 'the correct JSON is created'
     def json = new JsonSlurper().parse(s.bytes)
@@ -54,21 +49,15 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
 
   @Rollback
   def "verify that the round trip with foreign reference in domain object works"() {
-    // TODO: Remove repo references?
     given: 'a simple domain'
-    AllFieldsDomainRepository allFieldsDomainRepository = Holders.applicationContext.getBean(AllFieldsDomainRepository)
-    //println "allFieldsDomainRepository = $allFieldsDomainRepository"
-    def afd1 = new AllFieldsDomain(name: 'ABC-01', title: 'orig')
-    allFieldsDomainRepository.save(afd1)
-    SampleParentRepository sampleParentRepository = Holders.applicationContext.getBean(SampleParentRepository)
-    def p = new SampleParent(name: 'SAMPLE', title: 'Sample', allFieldsDomain: afd1)
-    sampleParentRepository.save(p)
+    def afd1 = new AllFieldsDomain(name: 'ABC-01', title: 'orig').save()
+    def p = new SampleParent(name: 'SAMPLE', title: 'Sample', allFieldsDomain: afd1).save()
     def originalID = p.uuid
     //println "p = $p.version"
     //println "p1 = $p.version, $p.id"
 
     when: 'the entity is serialized to JSON'
-    def objectMapper = new ObjectMapper().registerModule(new EFrameJacksonModule())
+    def objectMapper = Holders.objectMapper
     def s = objectMapper.writeValueAsString(p)
     //println "s = $s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
@@ -106,7 +95,7 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
     def afd = new AllFieldsDomain(name: 'ABC-01', title: 'orig').save()
 
     when: 'the entity is de-serialized to JSON'
-    def objectMapper = new ObjectMapper().registerModule(new EFrameJacksonModule())
+    def objectMapper = Holders.objectMapper
     def s = """
     {
       "name": "SAMPLE",
@@ -150,7 +139,7 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
     def p = new SampleParent(name: 'SAMPLE', allFieldsDomain: afd)
 
     when: 'the entity is de-serialized to JSON'
-    def objectMapper = new ObjectMapper().registerModule(new EFrameJacksonModule())
+    def objectMapper = Holders.objectMapper
     def s = objectMapper.writeValueAsString(p)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
@@ -172,7 +161,7 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
     def originalID = p.uuid
 
     when: 'the entity is serialized to JSON'
-    def objectMapper = new ObjectMapper().registerModule(new EFrameJacksonModule())
+    def objectMapper = Holders.objectMapper
     def s = objectMapper.writeValueAsString(p)
     //println "s = $s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
@@ -196,7 +185,7 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
     def afd = new AllFieldsDomain(name: 'ABC-01', reportTimeInterval: ReportTimeIntervalEnum.LAST_30_DAYS)
 
     when: 'the entity is serialized to JSON'
-    def s = new ObjectMapper().registerModule(new EFrameJacksonModule()).writeValueAsString(afd)
+    def s = Holders.objectMapper.writeValueAsString(afd)
     //println "s = $s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
@@ -212,12 +201,12 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
     def afd = new AllFieldsDomain(name: 'ABC-01', reportTimeInterval: ReportTimeIntervalEnum.LAST_30_DAYS)
 
     when: 'the entity is serialized to JSON'
-    def s = new ObjectMapper().registerModule(new EFrameJacksonModule()).writeValueAsString(afd)
+    def s = Holders.objectMapper.writeValueAsString(afd)
     //println "s = $s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
     and: 'the value is de-serialized'
-    AllFieldsDomain o = new ObjectMapper().registerModule(new EFrameJacksonModule()).readValue(s, AllFieldsDomain)
+    AllFieldsDomain o = Holders.objectMapper.readValue(s, AllFieldsDomain)
 
     then: 'status us set correctly'
     o.reportTimeInterval == ReportTimeIntervalEnum.LAST_30_DAYS
@@ -229,7 +218,7 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
     def afd = new AllFieldsDomain(name: 'ABC-01', status: DisabledStatus.instance)
 
     when: 'the entity is serialized to JSON'
-    def s = new ObjectMapper().registerModule(new EFrameJacksonModule()).writeValueAsString(afd)
+    def s = Holders.objectMapper.writeValueAsString(afd)
     //println "s = $s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
@@ -246,12 +235,12 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
     def afd = new AllFieldsDomain(name: 'ABC-01', status: DisabledStatus.instance)
 
     when: 'the entity is serialized to JSON'
-    def s = new ObjectMapper().registerModule(new EFrameJacksonModule()).writeValueAsString(afd)
+    def s = Holders.objectMapper.writeValueAsString(afd)
     //println "s = $s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
     and: 'the value is de-serialized'
-    AllFieldsDomain o = new ObjectMapper().registerModule(new EFrameJacksonModule()).readValue(s, AllFieldsDomain)
+    AllFieldsDomain o = Holders.objectMapper.readValue(s, AllFieldsDomain)
 
     then: 'status us set correctly'
     o.status == DisabledStatus.instance
@@ -267,7 +256,7 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
 
     when: 'the JSON is created'
     sampleParent.setFieldValue('custom1', 'abc')
-    def s = new ObjectMapper().registerModule(new EFrameJacksonModule()).writeValueAsString(sampleParent)
+    def s = Holders.objectMapper.writeValueAsString(sampleParent)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
     then: 'the JSON has the correct field name for the holder'

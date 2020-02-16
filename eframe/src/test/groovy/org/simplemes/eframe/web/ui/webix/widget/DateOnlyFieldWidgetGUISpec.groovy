@@ -1,7 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.date.DateUtils
+import org.simplemes.eframe.date.ISODate
 import org.simplemes.eframe.test.BaseGUISpecification
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.UnitTestUtils
@@ -9,17 +14,12 @@ import sample.domain.AllFieldsDomain
 import sample.page.AllFieldsDomainEditPage
 import spock.lang.IgnoreIf
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * Tests.
  */
 @IgnoreIf({ !sys['geb.env'] })
 class DateOnlyFieldWidgetGUISpec extends BaseGUISpecification {
+  @SuppressWarnings("unused")
   static dirtyDomains = [AllFieldsDomain]
 
   // TODO: Convert to edit page tests to verify the initial value and test popup actions.
@@ -78,7 +78,7 @@ class DateOnlyFieldWidgetGUISpec extends BaseGUISpecification {
     then: 'the record in the database is correct and the correct show page is displayed'
     AllFieldsDomain.withTransaction {
       def record = AllFieldsDomain.findByName(afd.name)
-      assert record.dueDate == new DateOnly('2010-06-21')
+      assert record.dueDate == ISODate.parseDateOnly('2010-06-21')
       true
     }
   }

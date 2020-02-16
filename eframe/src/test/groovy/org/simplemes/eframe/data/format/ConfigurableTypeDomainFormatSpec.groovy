@@ -1,17 +1,15 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data.format
 
 
-import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.custom.domain.FlexField
 import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.RMA
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -28,29 +26,27 @@ class ConfigurableTypeDomainFormatSpec extends BaseSpecification {
     BasicFieldFormat.coreValues.contains(ConfigurableTypeDomainFormat)
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that Configurable Type fields can be saved"() {
     given: 'a flex type with a field'
     def flexType = new FlexType(flexType: 'XYZ')
-    flexType.addToFields(new FlexField(flexType: flexType, fieldName: 'Field1'))
+    flexType.fields << new FlexField(flexType: flexType, fieldName: 'Field1')
     flexType.save()
 
     when: 'a record with the Configurable Type is saved'
     def rma = new RMA(rma: 'ABC', rmaType: flexType)
-    // TODO: Change to rma.setRmaTypeValue('Field1','XYZZY')
-    ExtensibleFieldHelper.instance.setFieldValue(rma, 'Field1', 'XYZZY')
+    rma.setRmaTypeValue('Field1', 'XYZZY')
     rma.save()
 
     then: 'the fields values are pulled from storage'
-    // TODO: Change to rma.getRmaTypeValue('Field1')
-    ExtensibleFieldHelper.instance.getFieldValue(rma, 'Field1') == 'XYZZY'
+    rma.getRmaTypeValue('Field1') == 'XYZZY'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that getCurrentFields returns the list of fields for a flex type"() {
     given: 'a flex type with a field'
     def flexType = new FlexType(flexType: 'XYZ')
-    flexType.addToFields(new FlexField(flexType: flexType, fieldName: 'Field1'))
+    flexType.fields << new FlexField(flexType: flexType, fieldName: 'Field1')
     flexType.save()
 
     when: 'the current fields are returned'
@@ -64,7 +60,7 @@ class ConfigurableTypeDomainFormatSpec extends BaseSpecification {
     fields[0].configTypeFieldName == 'rmaType'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that getCurrentFields handles null field value gracefully"() {
     when: 'the current fields are returned'
     def rma = new RMA(rma: 'ABC')
@@ -74,7 +70,7 @@ class ConfigurableTypeDomainFormatSpec extends BaseSpecification {
     fields.size() == 0
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that getCurrentFields handles null object value gracefully"() {
     when: 'the current fields are returned'
     def fields = ConfigurableTypeDomainFormat.instance.getCurrentFields(null, 'rmaType')

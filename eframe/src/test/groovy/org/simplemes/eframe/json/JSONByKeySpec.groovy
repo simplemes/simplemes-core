@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.json
 
 
@@ -7,13 +11,8 @@ import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.Order
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -22,7 +21,7 @@ class JSONByKeySpec extends BaseSpecification {
 
   static specNeeds = [JSON, SERVER]
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that serializer works for simple case"() {
     given: 'a POGO with the annotation on a field'
     def src = """
@@ -57,7 +56,7 @@ class JSONByKeySpec extends BaseSpecification {
     json.barcode == 'XYZ'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that serializer/deserializer work on round-trip for simple case"() {
     given: 'a POGO with the annotation on a field'
     def src = """
@@ -93,7 +92,7 @@ class JSONByKeySpec extends BaseSpecification {
     o2.barcode == o.barcode
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that record not found is handled gracefully"() {
     given: 'a POGO with the annotation on a field'
     def src = """
@@ -124,7 +123,7 @@ class JSONByKeySpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['@JSONByKey', 'not', 'record', 'order', 'GIBBERISH', 'sample.SampleClass'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that using the wrong field name is detected gracefully"() {
     given: 'a POGO with a bad field reference'
     def src = """
@@ -154,7 +153,7 @@ class JSONByKeySpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['@JSONByKey', 'not', 'domain', 'orderX', 'sample.SampleClass'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that deserialize using a domain field name with the wrong field type fails gracefully"() {
     given: 'a POGO with a bad field reference'
     def src = """
@@ -187,7 +186,7 @@ class JSONByKeySpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['String', 'type', 'mismatch', 'order', Order.name, 'sample.SampleClass'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that serialize using a domain field name with the wrong field type fails gracefully"() {
     given: 'a POGO with a bad field reference'
     def src = """
@@ -212,7 +211,7 @@ class JSONByKeySpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['field', 'String', 'domain'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that serializer works for null value"() {
     given: 'a POGO with the annotation on a field'
     def src = """

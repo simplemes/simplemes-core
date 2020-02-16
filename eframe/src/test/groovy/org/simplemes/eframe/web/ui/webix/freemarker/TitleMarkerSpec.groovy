@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 
@@ -6,22 +10,14 @@ import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.dashboard.domain.DashboardPanel
 import org.simplemes.eframe.test.BaseMarkerSpecification
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import sample.controller.SampleParentController
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
  */
 class TitleMarkerSpec extends BaseMarkerSpecification {
-
-  @SuppressWarnings("unused")
-  static specNeeds = [SERVER]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [DashboardConfig]
@@ -118,11 +114,11 @@ class TitleMarkerSpec extends BaseMarkerSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['No controller', 'label='])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that marker works for the dashboard type - category scenario"() {
     given: 'a dashboard'
     DashboardConfig dashboardConfig = new DashboardConfig(category: 'MANAGER', dashboard: 'MANAGER', title: 'Manager')
-    dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 0))
+    dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 0)
     dashboardConfig.save()
 
     when: 'the text is generated'
@@ -138,7 +134,7 @@ class TitleMarkerSpec extends BaseMarkerSpecification {
     given: 'a dashboard'
     DashboardConfig.withTransaction {
       DashboardConfig dashboardConfig = new DashboardConfig(category: 'OTHER', dashboard: 'MANAGER', title: 'Manager')
-      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 0))
+      dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 0)
       dashboardConfig.save()
     }
 

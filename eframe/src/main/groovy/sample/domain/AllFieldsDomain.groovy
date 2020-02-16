@@ -96,9 +96,14 @@ class AllFieldsDomain {
 
   def validate() {
     def res = []
-    if (count > 999999) {
-      //error.2.message=Value is too long (max={2}, length={1}) for field "{0}".
-      res << new ValidationError(2, 'count', 999999, count)
+    if (count != null) {
+      if (count > 999999) {
+        //error.2.message=Value is too long (max={2}, length={1}) for field "{0}".
+        res << new ValidationError(2, 'count', 999999, count)
+      } else if (count < 0) {
+        //error.136.message=Invalid Value "{1}" for {0}. Value should be greater than or equal to {2}.
+        res << new ValidationError(136, 'count', count, 0)
+      }
     }
     if (qty > 999999.99) {
       //error.2.message=Value is too long (max={2}, length={1}) for field "{0}".
