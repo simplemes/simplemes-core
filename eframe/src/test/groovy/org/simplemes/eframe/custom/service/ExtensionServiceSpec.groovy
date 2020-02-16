@@ -1,10 +1,15 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom.service
 
-
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.custom.domain.FieldGUIExtension
 import org.simplemes.eframe.custom.gui.FieldInsertAdjustment
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.data.format.BigDecimalFieldFormat
 import org.simplemes.eframe.data.format.BooleanFieldFormat
 import org.simplemes.eframe.data.format.DateFieldFormat
@@ -15,14 +20,9 @@ import org.simplemes.eframe.data.format.FieldFormatInterface
 import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.AllFieldsDomain
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -30,15 +30,17 @@ import sample.domain.SampleParent
 class ExtensionServiceSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [SERVER, JSON]
-
-  @SuppressWarnings("unused")
   static dirtyDomains = [FieldExtension, FieldGUIExtension]
 
-  //TODO: Find alternative to @Rollback
+  ExtensionService extensionService
+  def setup(){
+    extensionService = Holders.getBean(ExtensionService)
+  }
+
+  @Rollback
   def "verify that getExtensionConfiguration works with normal domain and no custom fields"() {
     when: 'the configuration is found'
-    def (List available, List configured) = new ExtensionService().getExtensionConfiguration(SampleParent)
+    def (List available, List configured) = extensionService.getExtensionConfiguration(SampleParent)
 
     then: 'the configured list is correct'
     configured.size() == SampleParent.fieldOrder.size()
@@ -51,11 +53,37 @@ class ExtensionServiceSpec extends BaseSpecification {
     f == [name: 'notDisplayed', type: 'textField', label: lookup('notDisplayed.label'), custom: false]
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
+  def "verify that getExtensionConfiguration filters out the non-fields"() {
+    when: 'the configuration is found'
+    //noinspection GroovyUnusedAssignment
+    def (List available, List configured) = extensionService.getExtensionConfiguration(SampleParent)
+
+    then: 'the configured list is correct'
+    available.find {it.name.startsWith('_')} == null
+    available.find {it.name=='customFields'} == null
+    available.find {it.name=='metaClass'}== null
+  }
+
+  def "verify that canBeAvailable filters out the non-available fields"() {
+    expect: 'the configuration is found'
+    extensionService.canBeAvailable(domainClass, fieldName) == result
+
+    where:
+    domainClass     | fieldName                                       | result
+    SampleParent    | 'version'                                       | false
+    SampleParent    | '__$stMC'                                       | false
+    SampleParent    | ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME | false
+    SampleParent    | 'customFields'                                  | false
+    AllFieldsDomain | 'anotherField'                                  | true
+    AllFieldsDomain | 'count'                                         | true
+  }
+
+  @Rollback
   def "verify that getExtensionConfiguration handles panels in the fieldOrder"() {
     when: 'the configuration is found'
     //noinspection GroovyUnusedAssignment
-    def (List available, List configured) = new ExtensionService().getExtensionConfiguration(AllFieldsDomain)
+    def (List available, List configured) = extensionService.getExtensionConfiguration(AllFieldsDomain)
 
     then: 'the configured list has a panel field'
     def f1 = configured.find() { it.name == 'group:details' }
@@ -64,7 +92,7 @@ class ExtensionServiceSpec extends BaseSpecification {
     !f1.custom
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that getExtensionConfiguration handles custom panel in the fieldOrder"() {
     given: 'a custom panel added to the list'
     def fg = new FieldGUIExtension(domainName: SampleParent.name)
@@ -73,7 +101,7 @@ class ExtensionServiceSpec extends BaseSpecification {
 
     when: 'the configuration is found'
     //noinspection GroovyUnusedAssignment
-    def (List available, List configured) = new ExtensionService().getExtensionConfiguration(SampleParent)
+    def (List available, List configured) = extensionService.getExtensionConfiguration(SampleParent)
 
     then: 'the configured list has a panel field'
     def f1 = configured.find() { it.name == 'group:dummy' }
@@ -82,14 +110,14 @@ class ExtensionServiceSpec extends BaseSpecification {
     f1.custom
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that getExtensionConfiguration works with custom fields - not configured for display"() {
     given: 'a custom field for the domain'
     def fieldExtension = new FieldExtension(fieldName: 'custom1', domainClassName: SampleParent.name,
                                             fieldFormat: BigDecimalFieldFormat.instance).save()
 
     when: 'the configuration is found'
-    def (List available, List configured) = new ExtensionService().getExtensionConfiguration(SampleParent)
+    def (List available, List configured) = extensionService.getExtensionConfiguration(SampleParent)
 
     then: 'the configured list is correct'
     configured.size() == SampleParent.fieldOrder.size()
@@ -100,10 +128,10 @@ class ExtensionServiceSpec extends BaseSpecification {
 
     and: 'the custom field is in the available list'
     def f2 = available.find() { it.name == 'custom1' }
-    f2 == [name: 'custom1', type: 'textField', label: 'custom1', custom: true, recordID: fieldExtension.id]
+    f2 == [name: 'custom1', type: 'textField', label: 'custom1', custom: true, recordID: fieldExtension.uuid]
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that getExtensionConfiguration works with custom fields - configured for display"() {
     given: 'a custom field for the domain'
     def fieldExtension = new FieldExtension(fieldName: 'custom1', domainClassName: SampleParent.name,
@@ -113,7 +141,7 @@ class ExtensionServiceSpec extends BaseSpecification {
     fg.save()
 
     when: 'the configuration is found'
-    def (List available, List configured) = new ExtensionService().getExtensionConfiguration(SampleParent)
+    def (List available, List configured) = extensionService.getExtensionConfiguration(SampleParent)
 
     then: 'the configured list is correct'
     configured.size() == (SampleParent.fieldOrder.size() + 1)
@@ -122,7 +150,7 @@ class ExtensionServiceSpec extends BaseSpecification {
     configured[2].name == 'custom1'
 
     and: 'the record ID for the custom field extension is in the result'
-    configured[2].recordID == fieldExtension.id
+    configured[2].recordID == fieldExtension.uuid
 
     and: 'the custom field is not in the available field list'
     def f1 = available.find() { it.name == 'custom1' }
@@ -131,7 +159,7 @@ class ExtensionServiceSpec extends BaseSpecification {
 
   def "verify that determineFieldType works with the supported field types"() {
     expect: 'the right type is returned'
-    new ExtensionService().determineFieldType(name, (FieldFormatInterface) format?.instance) == type
+    extensionService.determineFieldType(name, (FieldFormatInterface) format?.instance) == type
 
     where:
     format                     | name         | type
@@ -145,21 +173,21 @@ class ExtensionServiceSpec extends BaseSpecification {
     null                       | 'group:main' | 'tabbedPanels'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that saveFieldOrder can save the new field order - create case"() {
     given: 'a new fieldOrder with the field added after the title'
     def newFieldOrder = DomainUtils.instance.getStaticFieldOrder(SampleParent)
     newFieldOrder.add(newFieldOrder.indexOf('title') + 1, 'custom1')
 
     when: 'the configuration is saved'
-    new ExtensionService().saveFieldOrder(SampleParent, newFieldOrder)
+    extensionService.saveFieldOrder(SampleParent, newFieldOrder)
 
     then: 'the new field is in the new effective field order'
     def adjustedFieldOrder = ExtensibleFieldHelper.instance.getEffectiveFieldOrder(SampleParent)
     adjustedFieldOrder.indexOf('title') < adjustedFieldOrder.indexOf('custom1')
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that saveFieldOrder can save the new field order - update case"() {
     given: 'an existing custom field added to the list'
     def fg = new FieldGUIExtension(domainName: SampleParent.name)
@@ -171,7 +199,7 @@ class ExtensionServiceSpec extends BaseSpecification {
     newFieldOrder.add(newFieldOrder.indexOf('title') + 1, 'custom1')
 
     when: 'the configuration is saved'
-    new ExtensionService().saveFieldOrder(SampleParent, newFieldOrder)
+    extensionService.saveFieldOrder(SampleParent, newFieldOrder)
 
     then: 'the new field is in the new effective field order'
     def adjustedFieldOrder = ExtensibleFieldHelper.instance.getEffectiveFieldOrder(SampleParent)
@@ -182,7 +210,7 @@ class ExtensionServiceSpec extends BaseSpecification {
     adjustedFieldOrder.indexOf('custom0') < 0
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that saveFieldOrder can save the new field order when moving the location of a custom field"() {
     given: 'an existing custom field added to the list'
     def fg = new FieldGUIExtension(domainName: SampleParent.name)
@@ -194,7 +222,7 @@ class ExtensionServiceSpec extends BaseSpecification {
     newFieldOrder.add(newFieldOrder.indexOf('title') + 1, 'custom0')
 
     when: 'the configuration is saved'
-    new ExtensionService().saveFieldOrder(SampleParent, newFieldOrder)
+    extensionService.saveFieldOrder(SampleParent, newFieldOrder)
 
     then: 'the existing custom field is in the new effective field order'
     def adjustedFieldOrder = ExtensibleFieldHelper.instance.getEffectiveFieldOrder(SampleParent)
@@ -213,7 +241,7 @@ class ExtensionServiceSpec extends BaseSpecification {
     }
 
     when: 'the record is deleted'
-    new ExtensionService().deleteField(fieldExtension.id.toString())
+    extensionService.deleteField(fieldExtension.uuid.toString())
 
     then: 'the field is no longer in the new effective field order'
     def adjustedFieldOrder = ExtensibleFieldHelper.instance.getEffectiveFieldOrder(SampleParent)
@@ -221,7 +249,7 @@ class ExtensionServiceSpec extends BaseSpecification {
 
     and: 'the record is delete'
     FieldExtension.withTransaction {
-      assert FieldExtension.findByDomainClassNameAndFieldName(SampleParent.name, 'custom1') == null
+      assert FieldExtension.findAllByDomainClassName(SampleParent.name).size() == 0
       true
     }
   }
@@ -232,7 +260,7 @@ class ExtensionServiceSpec extends BaseSpecification {
                                [fieldName: 'custom2', domainClass: SampleParent, afterFieldName: 'notes']])
 
     when: 'a request with params is made'
-    new ExtensionService().deleteField(fe.id.toString())
+    extensionService.deleteField(fe.uuid.toString())
 
     then: 'the field is not in the field order'
     def adjustedFieldOrder = ExtensibleFieldHelper.instance.getEffectiveFieldOrder(SampleParent)
@@ -244,7 +272,7 @@ class ExtensionServiceSpec extends BaseSpecification {
 
   def "verify that deleteField gracefully detects missing record"() {
     when: 'a request with params is made'
-    def res = new ExtensionService().deleteField('878788797')
+    def res = extensionService.deleteField('e91ab8d8-93ad-4a27-b1ed-adb6e4555690')
 
     then: 'the response is correct'
     res == 0

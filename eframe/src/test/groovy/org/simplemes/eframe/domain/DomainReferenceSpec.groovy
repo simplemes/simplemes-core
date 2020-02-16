@@ -1,25 +1,21 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.domain
 
-
 import org.simplemes.eframe.test.BaseSpecification
-import org.simplemes.eframe.test.MockDomainUtils
-import org.simplemes.eframe.test.MockFieldDefinitions
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.AllFieldsDomain
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2017. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
  */
 class DomainReferenceSpec extends BaseSpecification {
 
-  //static specNeeds = [SERVER]
+  static specNeeds = [SERVER]
 
   def "test buildDomainReference with no sub-object nesting"() {
     given: 'a domain class and object'
@@ -34,9 +30,11 @@ class DomainReferenceSpec extends BaseSpecification {
     ref.value == 'ABC'
   }
 
+  @Rollback
   def "test buildDomainReference with sub-object nesting"() {
-    given: 'a domain class and object'
-    def parent = new SampleParent(name: 'ABC', allFieldsDomain: new AllFieldsDomain(name: 'AFD'))
+    given: 'a domain class and real foreign reference'
+    def afd = new AllFieldsDomain(name: 'AFD').save()
+    def parent = new SampleParent(name: 'ABC', allFieldsDomain: afd)
 
     when: 'the property is resolved to a domain reference'
     def ref = DomainReference.buildDomainReference('allFieldsDomain.name', parent)
@@ -62,16 +60,18 @@ class DomainReferenceSpec extends BaseSpecification {
     ref.clazz == String
   }
 
+  @Rollback
   def "test buildDomainReference with sub-object nesting and a null value"() {
-    given: 'a domain class and object'
-    def parent = new SampleParent(name: 'ABC', allFieldsDomain: new AllFieldsDomain(title: 'AFD'))
+    given: 'a domain class and real foreign reference'
+    def afd = new AllFieldsDomain(name: 'AFD').save()
+    def parent = new SampleParent(name: 'ABC', allFieldsDomain: afd)
 
     when: 'the property is resolved to a domain reference'
-    def ref = DomainReference.buildDomainReference('allFieldsDomain.name', parent)
+    def ref = DomainReference.buildDomainReference('allFieldsDomain.title', parent)
 
     then: 'the right domain reference is built'
     ref.model instanceof AllFieldsDomain
-    ref.fieldName == 'name'
+    ref.fieldName == 'title'
     ref.value == null
     ref.clazz == String
   }
@@ -100,9 +100,11 @@ class DomainReferenceSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['property', 'gibberish', 'SampleParent', 'name'])
   }
 
+  @Rollback
   def "test buildDomainReference and getValue fails gracefully with invalid sub element name"() {
-    given: 'a domain class and object'
-    def parent = new SampleParent(name: 'ABC', allFieldsDomain: new AllFieldsDomain(title: 'AFD'))
+    given: 'a domain class and real foreign reference'
+    def afd = new AllFieldsDomain(name: 'AFD').save()
+    def parent = new SampleParent(name: 'ABC', allFieldsDomain: afd)
 
     when: 'the property is resolved to a domain reference'
     def ref = DomainReference.buildDomainReference('allFieldsDomain.gibberish', parent)
@@ -114,9 +116,6 @@ class DomainReferenceSpec extends BaseSpecification {
   }
 
   def "test buildDomainReference works with domain object property reference"() {
-    given: 'a mock domain utils'
-    new MockDomainUtils(this, [AllFieldsDomain], new MockFieldDefinitions(['name', 'title'])).install()
-
     when: 'the property is resolved to a domain reference'
     def ref = DomainReference.buildDomainReference('AllFieldsDomain.title')
 
@@ -127,9 +126,6 @@ class DomainReferenceSpec extends BaseSpecification {
   }
 
   def "test buildDomainReference gracefully handles when the domain is not found"() {
-    //given: 'a mock domain utils'
-    //new MockDomainUtils(this, [AllFieldsDomain],new MockFieldDefinitions(['name','title'])).install()
-
     when: 'the property is resolved to a domain reference'
     DomainReference.buildDomainReference('String.title')
 
@@ -139,9 +135,6 @@ class DomainReferenceSpec extends BaseSpecification {
   }
 
   def "test buildDomainReference gracefully handles when the property is not in the domain"() {
-    given: 'a mock domain utils'
-    new MockDomainUtils(this, [AllFieldsDomain], new MockFieldDefinitions(['name', 'title'])).install()
-
     when: 'the property is resolved to a domain reference'
     DomainReference.buildDomainReference('AllFieldsDomain.gibberish')
 

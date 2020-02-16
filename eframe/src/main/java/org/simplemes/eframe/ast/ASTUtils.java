@@ -11,7 +11,6 @@ import org.codehaus.groovy.ast.expr.*;
 import org.codehaus.groovy.ast.stmt.BlockStatement;
 import org.codehaus.groovy.ast.stmt.ExpressionStatement;
 import org.codehaus.groovy.ast.stmt.ReturnStatement;
-import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.classgen.Verifier;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.control.messages.SimpleMessage;
@@ -37,15 +36,14 @@ public class ASTUtils {
    * @param fieldName    The name of the field.
    * @param fieldType    The type of the field.
    * @param modifiers    The modifiers (e.g. public or static).  See Modifier.public.
-   * @param maxSize      The max size of the field that will hold the custom values.  0 Means no constraint is added for this field.
    * @param initialValue The initial value expression.
    * @param node         The AST Class Node to add this field to.
    * @param sourceUnit   The compiler source unit being processed (used to errors).
    * @return A list containing the nodes created ([0] = fieldNode, [1] = getterMethod, [2] = settingMethod.
    */
-  public static List<ASTNode> addField(String fieldName, Class fieldType, int modifiers, int maxSize,
+  public static List<ASTNode> addField(String fieldName, Class fieldType, int modifiers,
                                        Expression initialValue, ClassNode node, SourceUnit sourceUnit) {
-    return addField(fieldName, fieldType, modifiers, maxSize, true, initialValue, node, sourceUnit);
+    return addField(fieldName, fieldType, modifiers, true, initialValue, node, sourceUnit);
   }
 
   /**
@@ -54,14 +52,13 @@ public class ASTUtils {
    * @param fieldName          The name of the field.
    * @param fieldType          The type of the field.
    * @param modifiers          The modifiers (e.g. public or static).  See Modifier.public.
-   * @param maxSize            The max size of the field that will hold the custom values.  0 Means no constraint is added for this field.
-   * @param initialValue       The initial value expression.
    * @param addGetterAndSetter If true, then add the gett/setter.
+   * @param initialValue       The initial value expression.
    * @param node               The AST Class Node to add this field to.
    * @param sourceUnit         The compiler source unit being processed (used to errors).
    * @return A list containing the nodes created ([0] = fieldNode, [1] = getterMethod, [2] = settingMethod.
    */
-  public static List<ASTNode> addField(String fieldName, Class fieldType, int modifiers, int maxSize, boolean addGetterAndSetter,
+  public static List<ASTNode> addField(String fieldName, Class fieldType, int modifiers, boolean addGetterAndSetter,
                                        Expression initialValue, ClassNode node, SourceUnit sourceUnit) {
     //System.out.println("Adding " + fieldName+", maxSize="+maxSize);
     List<ASTNode> res = new ArrayList<>();
@@ -71,9 +68,6 @@ public class ASTUtils {
       ClassNode fieldTypeNode = new ClassNode(fieldType);
       FieldNode fieldNode = new FieldNode(fieldName, modifiers, fieldTypeNode, new ClassNode(node.getClass()), initialValue);
       node.addField(fieldNode);
-      if (maxSize > 0) {
-        addConstraint(node, fieldName, true, maxSize, sourceUnit);
-      }
       res.add(fieldNode);
       if (addGetterAndSetter) {
         int methodModifier = (modifiers & Modifier.STATIC);
@@ -164,119 +158,6 @@ public class ASTUtils {
 
 
   /**
-   * Adds a Grails constraint that allows null values to the given class.
-   *
-   * @param classNode  The AST Node for the given class.
-   * @param fieldName  The name of the field that allows nulls.
-   * @param nullable   True if the field allows null.
-   * @param maxSize    The maxSize of the value field.
-   * @param sourceUnit The compiler source unit being processed (used to errors).
-   */
-  @SuppressWarnings({"UnusedParameters", "SameParameterValue"})
-  static void addConstraint(ClassNode classNode, String fieldName, boolean nullable, int maxSize, SourceUnit sourceUnit) {
-    FieldNode closure = classNode.getDeclaredField("constraints");
-    if (closure == null) {
-      // Create the constraints closure (empty) if not defined for the class.
-      ClosureExpression expr = new ClosureExpression(Parameter.EMPTY_ARRAY, new BlockStatement());
-      expr.setVariableScope(new VariableScope());
-      classNode.addField("constraints", Modifier.STATIC | Modifier.PUBLIC, ClassHelper.OBJECT_TYPE, expr);
-      closure = classNode.getDeclaredField("constraints");
-      //System.out.println("Added constraints closure = " + closure);
-    }
-    if (closure != null) {
-      ClosureExpression exp = (ClosureExpression) closure.getInitialExpression();
-      BlockStatement block = (BlockStatement) exp.getCode();
-
-      if (!isFieldInClosure(closure, fieldName)) {
-        NamedArgumentListExpression argumentListExpression = new NamedArgumentListExpression();
-        argumentListExpression.addMapEntryExpression(new ConstantExpression("nullable"), new ConstantExpression(nullable));
-        argumentListExpression.addMapEntryExpression(new ConstantExpression("blank"), new ConstantExpression(true));
-        argumentListExpression.addMapEntryExpression(new ConstantExpression("maxSize"), new ConstantExpression(maxSize));
-
-        // Create a validator:
-        // def validator = { val ->
-        //    FieldExtensionHelper.validate(val)
-        // }
-        VariableExpression val = new VariableExpression("val");
-        VariableExpression domainObject = new VariableExpression("domainObject");
-        List<Expression> argumentList = new ArrayList<>();
-        argumentList.add(val);
-        argumentList.add(domainObject);
-/*
-        StaticMethodCallExpression closureMethodCall = new StaticMethodCallExpression(new ClassNode(FieldExtensionHelper.class),
-            "validateFieldExtensionsForSave",
-            new ArgumentListExpression(argumentList));
-*/
-        MethodCallExpression closureMethodCall = new MethodCallExpression(domainObject,
-            "validateAllCustomFields",
-            new ArgumentListExpression(argumentList));
-        BlockStatement closureBody = new BlockStatement(new Statement[]{new ReturnStatement(closureMethodCall)},
-            new VariableScope());
-        Parameter[] closureParameters = {new Parameter(new ClassNode(Object.class), "val"),
-            new Parameter(new ClassNode(Object.class), "domainObject")};
-
-        VariableScope scope = new VariableScope();
-        scope.putDeclaredVariable(val);
-        ClosureExpression validator = new ClosureExpression(closureParameters, closureBody);
-        validator.setVariableScope(scope);
-        argumentListExpression.addMapEntryExpression(new ConstantExpression("validator"), validator);
-
-        MethodCallExpression constExpr = new MethodCallExpression(VariableExpression.THIS_EXPRESSION,
-            new ConstantExpression(fieldName),
-            argumentListExpression);
-        block.addStatement(new ExpressionStatement(constExpr));
-      }
-    }
-  }
-
-  /**
-   * Adds a field to the standard Grails transients lists.
-   *
-   * @param classNode  The AST Node for the given class.
-   * @param fieldName  The name of the field to add.
-   * @param sourceUnit The compiler source unit being processed (used to errors).
-   */
-  @SuppressWarnings({"UnusedParameters", "SameParameterValue"})
-  public static void addFieldToTransients(String fieldName, ClassNode classNode, SourceUnit sourceUnit) {
-    FieldNode transientsNode = classNode.getDeclaredField("transients");
-    ListExpression list = new ListExpression();
-    if (transientsNode == null) {
-      // Create the transients array (empty) if not defined for the class.
-      classNode.addField("transients", Modifier.STATIC | Modifier.PUBLIC, ClassHelper.OBJECT_TYPE, list);
-      //transientsNode = classNode.getDeclaredField("transients");
-    } else {
-      list = (ListExpression) transientsNode.getInitialExpression();
-    }
-
-    list.addExpression(new ConstantExpression(fieldName));
-  }
-
-  /**
-   * Determines if the field is in the given closure (e.g. a constraints closure).
-   *
-   * @param closure   The closure.
-   * @param fieldName The field to check.
-   * @return true if the field is in the closure.
-   */
-  static boolean isFieldInClosure(FieldNode closure, String fieldName) {
-    if (closure != null) {
-      ClosureExpression exp = (ClosureExpression) closure.getInitialExpression();
-      BlockStatement block = (BlockStatement) exp.getCode();
-      List<Statement> statements = block.getStatements();
-      for (Statement statement : statements) {
-        if (statement instanceof ExpressionStatement && ((ExpressionStatement) statement).getExpression() instanceof MethodCallExpression) {
-          MethodCallExpression methodCallExpression = (MethodCallExpression) ((ExpressionStatement) statement).getExpression();
-          ConstantExpression constantExpression = (ConstantExpression) methodCallExpression.getMethod();
-          if (constantExpression.getValue().equals(fieldName)) {
-            return true;
-          }
-        }
-      }
-    }
-    return false;
-  }
-
-  /**
    * If the given AST class node is a generic, then extract the real, underlying class node.
    * Converts List&lt;String&gt; to String
    *
@@ -358,10 +239,10 @@ public class ASTUtils {
           sourceUnit.addError(new SyntaxException(message, method));
         }
       }
-      ListExpression blocks = (ListExpression) ann.getMembers().get("blocks");
-      for (Object o : blocks.getExpressions()) {
-        AnnotationConstantExpression ace = (AnnotationConstantExpression) o;
-      }
+      //ListExpression blocks = (ListExpression) ann.getMembers().get("blocks");
+      //for (Object o : blocks.getExpressions()) {
+      //AnnotationConstantExpression ace = (AnnotationConstantExpression) o;
+      //}
     }
 
     if (forceRollback) {

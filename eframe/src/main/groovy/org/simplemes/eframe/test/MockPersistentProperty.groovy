@@ -1,16 +1,15 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import groovy.transform.ToString
+import org.simplemes.eframe.domain.PersistentProperty
 import org.spockframework.mock.IDefaultResponse
 import org.spockframework.mock.IMockInvocation
 import org.spockframework.mock.ZeroOrNullResponse
 import spock.mock.DetachedMockFactory
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * A very simple mock/stub of a PersistentProperty for mocked domain use.

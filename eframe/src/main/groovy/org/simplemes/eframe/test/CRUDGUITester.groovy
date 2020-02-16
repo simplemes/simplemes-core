@@ -952,10 +952,10 @@ class CRUDGUITester {
         _tester.setCombobox(fieldName, value.toString())
         return
       } else if (isComboBoxField(fieldDef?.format) && value) {
-        _tester.setCombobox(fieldName, value.id.toString())
+        _tester.setCombobox(fieldName, value.uuid.toString())
         return
       } else if (fieldDef?.format instanceof DomainReferenceFieldFormat && value) {
-        _tester.setCombobox(fieldName, value.id.toString())
+        _tester.setCombobox(fieldName, value.uuid.toString())
         return
       }
       _tester.$("div.$css", view_id: "${fieldName}").find('input').value(displayValue)

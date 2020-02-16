@@ -1,14 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.domain.annotation
 
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -22,6 +20,7 @@ class DomainEntitySpec extends BaseSpecification {
       
       @DomainEntity
       class TestClass {
+        UUID uuid
       }
     """
     def clazz = CompilerTestUtils.compileSource(src)

@@ -84,7 +84,7 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
    */
   private void addCustomFieldName(String customFieldName, ClassNode node, SourceUnit sourceUnit) {
     Expression initialValue = new ConstantExpression(customFieldName);
-    ASTUtils.addField(ExtensibleFieldHolder.HOLDER_FIELD_NAME, Object.class, Modifier.PUBLIC | Modifier.STATIC, 0,
+    ASTUtils.addField(ExtensibleFieldHolder.HOLDER_FIELD_NAME, Object.class, Modifier.PUBLIC | Modifier.STATIC,
         initialValue, node, sourceUnit);
   }
 
@@ -260,7 +260,7 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
     initEntries.add(entry);
     Expression init = new MapExpression(initEntries);
     List<ASTNode> list = ASTUtils.addField(ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME, Map.class,
-        Modifier.PUBLIC | Modifier.TRANSIENT, 0, init, node, sourceUnit);
+        Modifier.PUBLIC | Modifier.TRANSIENT, init, node, sourceUnit);
     for (ASTNode n : list) {
       if (n instanceof FieldNode) {
         // Make it transient

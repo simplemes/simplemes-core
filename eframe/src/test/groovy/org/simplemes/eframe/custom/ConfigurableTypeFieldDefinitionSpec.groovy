@@ -4,9 +4,7 @@
 
 package org.simplemes.eframe.custom
 
-
 import org.simplemes.eframe.custom.domain.FlexField
-import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.data.format.IntegerFieldFormat
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.test.BaseSpecification
@@ -64,8 +62,9 @@ class ConfigurableTypeFieldDefinitionSpec extends BaseSpecification {
     fieldDef.getFieldValue(sampleParent) == 'ABC'
 
     and: 'the value is stored in the domains custom fields holder with the prefix'
-    sampleParent[ExtensibleFieldHolder.DEFAULT_FIELD_NAME].contains('"rmaType_field1"')
-    !sampleParent[ExtensibleFieldHolder.DEFAULT_FIELD_NAME].contains('"field1"')
+    def customFieldName = ExtensibleFieldHelper.instance.getCustomHolderFieldName(SampleParent)
+    sampleParent[customFieldName].contains('"rmaType_field1"')
+    !sampleParent[customFieldName].contains('"field1"')
   }
 
 

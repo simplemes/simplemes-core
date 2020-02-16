@@ -80,6 +80,8 @@ class FieldExtension implements FieldInterface, FieldTrait {
   @Column(length = FieldSizes.MAX_NOTES_LENGTH, nullable = true)
   String guiHints
 
+  Integer version = 0
+
   @Id @AutoPopulated UUID uuid
 
   /**

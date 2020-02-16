@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package sample.page
 
 
@@ -5,12 +9,6 @@ import org.simplemes.eframe.test.page.AbstractCreateOrEditPage
 import org.simplemes.eframe.test.page.DateFieldModule
 import org.simplemes.eframe.test.page.GridModule
 import org.simplemes.eframe.test.page.TextFieldModule
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * The page definition for the Domain Create page.
@@ -30,10 +28,11 @@ class OrderCreatePage extends AbstractCreateOrEditPage {
     qtyToBuild { module(new TextFieldModule(field: 'qtyToBuild')) }
     status { module(new TextFieldModule(field: 'status')) }
     dueDate { module(new DateFieldModule(field: 'dueDate')) }
+    orderLines { module(new GridModule(field: 'orderLines')) }
 
     // Field(s) added by SampleAddition 
     priority { module(new TextFieldModule(field: 'priority')) }
-    orderLines { module(new GridModule(field: 'orderLines')) }
+    customComponents { module(new GridModule(field: 'customComponents')) }
   }
 
 }

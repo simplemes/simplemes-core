@@ -88,7 +88,7 @@ Look at using an environment for DB type: h2, postgres.  Change command line to 
 Remove unused mocks and methods in transformations.
   MockPreferenceHolder
   MockBean
-  MockConstraintUtils
+  done - MockConstraintUtils
   MockDomainUtils?
   MockObjectMapper?
   MockFieldExtension
@@ -107,6 +107,7 @@ New Guidelines
     list(pagination)
 Update dependencies
 Add notes on why using MN-Data, not hibernate.
+Remove references to Grails constraints, transients and mapping options.
 
 Vue Investigation
 =================

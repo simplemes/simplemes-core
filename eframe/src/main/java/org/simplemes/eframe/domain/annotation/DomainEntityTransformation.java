@@ -100,7 +100,7 @@ public class DomainEntityTransformation implements ASTTransformation {
     addLazyRefListLoaders(classNode, sourceUnit);
 
     Expression init = new MapExpression();
-    ASTUtils.addField(DomainEntityHelper.DOMAIN_SETTINGS_FIELD_NAME, Map.class, Modifier.PUBLIC | Modifier.TRANSIENT, 0, false, init,
+    ASTUtils.addField(DomainEntityHelper.DOMAIN_SETTINGS_FIELD_NAME, Map.class, Modifier.PUBLIC | Modifier.TRANSIENT, false, init,
         classNode, sourceUnit);
 
   }
@@ -236,7 +236,7 @@ public class DomainEntityTransformation implements ASTTransformation {
     // Check the annotation to make sure we have the field the developer intended.
     String fieldName = DomainEntity.DEFAULT_REPOSITORY_FIELD_NAME;
 
-    List list = ASTUtils.addField(fieldName, GenericRepository.class, Modifier.STATIC, 0, false, null, node, sourceUnit);
+    List list = ASTUtils.addField(fieldName, GenericRepository.class, Modifier.STATIC, false, null, node, sourceUnit);
     if (list.size() > 0) {
       addRepositoryGetter((FieldNode) list.get(0), node, sourceUnit);
     }

@@ -48,7 +48,6 @@ class ExtensionService {
    *
    */
   @Transactional()
-// TODO: readOnly = true)
   Tuple2<List<Map>, List<Map>> getExtensionConfiguration(Class domainClass) {
     ArgumentUtils.checkMissing(domainClass, 'domainClass')
     def available = []
@@ -65,7 +64,7 @@ class ExtensionService {
         field.label = GlobalUtils.lookup(fieldDefinition.label)
         if (fieldDefinition.custom) {
           field.custom = true
-          field.recordID = fieldDefinition.fieldExtensionId
+          field.recordID = fieldDefinition.fieldExtensionUuid
         } else {
           field.custom = false
         }
@@ -86,12 +85,12 @@ class ExtensionService {
 
     // Build the available list from the other fields not in the fieldOrder
     for (fieldDefinition in fieldDefinitions) {
-      if (!fieldOrder.contains(fieldDefinition.name)) {
+      if (!fieldOrder.contains(fieldDefinition.name) && canBeAvailable(domainClass, fieldDefinition.name)) {
         def field = [name: fieldDefinition.name]
         field.label = GlobalUtils.lookup(fieldDefinition.label)
         if (fieldDefinition.custom) {
           field.custom = true
-          field.recordID = fieldDefinition.fieldExtensionId
+          field.recordID = fieldDefinition.fieldExtensionUuid
         } else {
           field.custom = false
         }
@@ -102,6 +101,29 @@ class ExtensionService {
 
     return [available, configured]
   }
+
+  /**
+   * Returns true if the given field can be in the available list.
+   * Also helps filter out field that start with '_'.
+   * @param domainClass The domain Class.
+   * @param fieldName The field in the domain class.
+   * @return True if the field can be in the available list.
+   */
+  boolean canBeAvailable(Class domainClass, String fieldName) {
+    if (DomainUtils.instance.isPropertySpecial(domainClass, fieldName)) {
+      return false
+    }
+    if (fieldName.startsWith('_') || fieldName == 'metaClass') {
+      return false
+    }
+
+    if (ExtensibleFieldHelper.instance.getCustomHolderFieldName(domainClass) == fieldName) {
+      return false
+    }
+
+    return true
+  }
+
 
   /**
    * Determines the field type for the Configuration GUI use.  Gives a hint on the appearance of the field.
@@ -163,7 +185,7 @@ class ExtensionService {
    */
   @Transactional
   int deleteField(String id) {
-    def fieldExtension = FieldExtension.get(UUID.fromString(id))
+    def fieldExtension = FieldExtension.findByUuid(UUID.fromString(id))
     if (!fieldExtension) {
       return 0
     }

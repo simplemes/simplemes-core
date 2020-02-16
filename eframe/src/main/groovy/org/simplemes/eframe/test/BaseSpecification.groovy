@@ -460,18 +460,6 @@ class BaseSpecification extends GebSpec {
   }
 
   /**
-   * Loads the initial data for the given domain class(s).  Also marks these domains as dirty.
-   * @param classes The class(s).
-   */
-  @Transactional
-  void loadInitialData(Class... classes) {
-    for (clazz in classes) {
-      clazz.initialDataLoad()
-      otherDirtyDomains << clazz
-    }
-  }
-
-  /**
    * Waits for the initial data load finishes.  Mainly used to wait for things like admin user or roles to be loaded.
    * Waits up to 5 seconds.  Will throw an exception if it never finishes.
    */

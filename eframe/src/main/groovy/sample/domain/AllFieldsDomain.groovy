@@ -66,6 +66,7 @@ class AllFieldsDomain {
   @Transient String transientField = 'Transient Default'
   @Nullable String displayOnlyText = 'Display Only'
   @Nullable String notes
+  @Nullable String anotherField
   @Nullable ReportTimeIntervalEnum reportTimeInterval
   @Nullable @ManyToOne(targetEntity = Order) Order order
 
@@ -89,7 +90,7 @@ class AllFieldsDomain {
 
   @Id @AutoPopulated UUID uuid
 
-
+  // anotherField left out intentionally for custom field editor checks.  See DefinitionEditorGUISpec.
   static fieldOrder = ['name', 'title', 'qty', 'count', 'enabled', 'dueDate', 'dateTime',
                        'group:details', 'notes', 'transientField', 'reportTimeInterval', 'order', 'status',
                        'displayOnlyText']

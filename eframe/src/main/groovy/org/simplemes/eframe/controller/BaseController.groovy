@@ -149,21 +149,4 @@ abstract class BaseController {
     return res
   }
 
-  /**
-   * Checks for any validation errors on the given domain record.
-   * @param record The record to check.
-   * @return If any errors are found, then return a response with the standard error message formatted for JSON.
-   */
-  HttpResponse checkForValidationErrors(Object record) {
-    // TODO: Fix.
-/*
-    ValidationErrors bindErrors = record.errors
-    if (!record.validate() || bindErrors.allErrors) {
-      def msg = DomainUtils.instance.getValidationMessages(record)
-      def s = Holders.objectMapper.writeValueAsString(msg)
-      return HttpResponse.status(HttpStatus.BAD_REQUEST).body(s)
-    }
-*/
-    return null
-  }
 }

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom.gui
 
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
@@ -13,19 +17,12 @@ import sample.page.AllFieldsDomainCreatePage
 import sample.page.SampleParentCreatePage
 import spock.lang.IgnoreIf
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * Tests of the eframe_definition.js definition editor functions.  Tests customization of definition
  * GUIs.
  */
 @IgnoreIf({ !sys['geb.env'] })
 class DefinitionEditorGUISpec extends BaseDefinitionEditorSpecification {
-
 
   @SuppressWarnings("unused")
   static dirtyDomains = [FieldGUIExtension, FieldExtension]
@@ -463,7 +460,7 @@ class DefinitionEditorGUISpec extends BaseDefinitionEditorSpecification {
 
     and: 'the custom field record is saved to the DB'
     FieldExtension.withTransaction {
-      FieldExtension fe = FieldExtension.findByDomainClassNameAndFieldName(SampleParent.name, 'custom1')
+      FieldExtension fe = FieldExtension.findAllByDomainClassName(SampleParent.name).find { it.fieldName == 'custom1' }
       assert fe.fieldLabel == 'Custom1'
       //noinspection GrEqualsBetweenInconvertibleTypes
       assert fe.fieldFormat == IntegerFieldFormat.instance
@@ -540,7 +537,7 @@ class DefinitionEditorGUISpec extends BaseDefinitionEditorSpecification {
 
     and: 'the custom field record is saved to the DB'
     FieldExtension.withTransaction {
-      FieldExtension fe = FieldExtension.findByDomainClassNameAndFieldName(SampleParent.name, 'custom2')
+      FieldExtension fe = FieldExtension.findAllByDomainClassName(SampleParent.name).find { it.fieldName == 'custom2' }
       assert fe.fieldLabel == 'Custom2'
       //noinspection GrEqualsBetweenInconvertibleTypes
       assert fe.fieldFormat == DateFieldFormat.instance
@@ -637,7 +634,7 @@ class DefinitionEditorGUISpec extends BaseDefinitionEditorSpecification {
 
     and: 'the record is removed from the DB'
     FieldExtension.withTransaction {
-      assert FieldExtension.findByDomainClassNameAndFieldName(AllFieldsDomain.name, 'custom1') == null
+      assert FieldExtension.findAllByDomainClassName(SampleParent.name).find { it.fieldName == 'custom1' } == null
       true
     }
   }

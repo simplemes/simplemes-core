@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.application
 
 import ch.qos.logback.classic.Level
@@ -9,24 +13,18 @@ import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.InitialDataRecords
 import org.simplemes.eframe.test.MockAdditionHelper
 import org.simplemes.eframe.test.MockAppender
-import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  *
  */
 class InitialDataLoaderSpec extends BaseSpecification {
 
-  //static specNeeds = [SERVER]
+  @SuppressWarnings("unused")
   static dirtyDomains = [User, Role]
 
   def "verify that initial data from real domains is loaded correctly"() {
-    given: 'the loader bean'
+    given: 'the loader has finished loading the users'
+    waitForInitialDataLoad()
     def loader = new InitialDataLoader()
 
     when: 'the data is loaded'
@@ -46,7 +44,7 @@ class InitialDataLoaderSpec extends BaseSpecification {
 
     and: 'the records are registered as initial data loaded records for the test cleanup'
     def records = InitialDataRecords.instance.records
-    records.Role.containsAll(['Admin', 'Customizer', 'Manager', 'Designer'])
+    records.Role.containsAll(['ADMIN', 'CUSTOMIZER', 'MANAGER', 'DESIGNER'])
     records.User.containsAll(['admin'])
   }
 
@@ -227,23 +225,6 @@ class InitialDataLoaderSpec extends BaseSpecification {
     cleanup:
     DomainUtils.instance = new DomainUtils()
     mockAppender.cleanup()
-  }
-
-  def "verify that the initial data load for BaseSpecification works"() {
-    given: 'the Sample Parent is configured to allow initial data load'
-    SampleParent.allowInitialDataLoad = true
-
-    when: 'the data is loaded'
-    loadInitialData(SampleParent)
-
-    then: 'the records are loaded'
-    SampleParent.withTransaction {
-      assert SampleParent.findByName('SAMPLE')
-      true
-    }
-
-    cleanup: 'the Sample Parent is reset to normal behavior'
-    SampleParent.allowInitialDataLoad = false
   }
 
   def "verify that initial loaders from an addition can be found"() {

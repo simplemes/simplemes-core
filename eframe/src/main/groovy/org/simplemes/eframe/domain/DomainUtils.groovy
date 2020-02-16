@@ -165,7 +165,7 @@ class DomainUtils {
    * The names for special properties that are not considered normal domain fields.
    */
   static specialProperties = ['uuid', 'version', 'dateCreated', 'dateUpdated',
-                              ExtensibleFieldHolder.DEFAULT_FIELD_NAME, ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME]
+                              ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME]
 
   /**
    * Determine if the given property is a special field that we want to ignore in GUIs and such.

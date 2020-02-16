@@ -1,19 +1,17 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.misc
 
-
+import io.micronaut.views.ModelAndView
+import org.simplemes.eframe.controller.StandardModelAndView
 import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import sample.domain.AllFieldsDomain
 import sample.domain.Order
 import sample.domain.SampleParent
-import sample.domain.SampleSubClass
-
-/*
- * Copyright Michael Houston 2017. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -159,6 +157,6 @@ class TypeUtilsSpec extends BaseSpecification {
     where:
     clazz          | results
     SampleParent   | []
-    SampleSubClass | [SampleParent]
+    StandardModelAndView | ModelAndView
   }
 }

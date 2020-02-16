@@ -71,7 +71,7 @@ class Holders {
    * Convenience method to get the bean from the Application Context.
    * @return The bean.
    */
-  static Object getBean(Class c) {
+  static <T> T getBean(Class<T> c) {
     return applicationContext?.getBean(c)
   }
 

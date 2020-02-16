@@ -144,7 +144,7 @@ class MockDomainUtils implements AutoCleanupMockInterface, IDefaultResponse {
 
         def type = DomainUtils.instance.getFieldType(clazz, fieldName) ?: String
         //noinspection GroovyAssignabilityCheck
-        persistentProperties << new MockPersistentProperty(fieldName as String, type) as Field
+        persistentProperties << new MockPersistentProperty(fieldName as String, type)
       }
     }
 

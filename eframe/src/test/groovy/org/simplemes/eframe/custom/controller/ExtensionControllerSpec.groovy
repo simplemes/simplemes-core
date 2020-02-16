@@ -4,7 +4,6 @@
 
 package org.simplemes.eframe.custom.controller
 
-
 import groovy.json.JsonSlurper
 import io.micronaut.http.HttpStatus
 import org.simplemes.eframe.application.Holders
@@ -12,7 +11,6 @@ import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.custom.domain.FieldGUIExtension
-import org.simplemes.eframe.custom.service.ExtensionService
 import org.simplemes.eframe.data.format.EncodedTypeFieldFormat
 import org.simplemes.eframe.data.format.IntegerFieldFormat
 import org.simplemes.eframe.data.format.StringFieldFormat
@@ -21,6 +19,7 @@ import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.MockPrincipal
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.SampleParent
 import spock.lang.Shared
 
@@ -28,9 +27,6 @@ import spock.lang.Shared
  * Tests.
  */
 class ExtensionControllerSpec extends BaseSpecification {
-
-  @SuppressWarnings("unused")
-  static specNeeds = [SERVER, JSON]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [FieldExtension, FieldGUIExtension]
@@ -43,11 +39,10 @@ class ExtensionControllerSpec extends BaseSpecification {
 
   @Override
   def setup() {
-    controller = new ExtensionController()
-    controller.extensionService = new ExtensionService()
+    controller = Holders.getBean(ExtensionController)
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that configDialog defines the available and configured fields in the model for the page - no custom fields"() {
     when: 'a request with params is made'
     def modelAndView = controller.configDialog(mockRequest([domainURL: '/sampleParent/show']), new MockPrincipal('joe', 'ADMIN'))
@@ -59,7 +54,7 @@ class ExtensionControllerSpec extends BaseSpecification {
     configured.contains('"name":"name"')
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that saveFieldOrder can save a custom field order"() {
     given: 'the desired field order'
     def desiredFieldOrder = ['name', 'title', 'custom1', 'notes', 'moreNotes', 'allFieldsDomain', 'allFieldsDomains',
@@ -80,7 +75,7 @@ class ExtensionControllerSpec extends BaseSpecification {
     json.message.text == GlobalUtils.lookup('definitionEditor.saved.message')
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that saveFieldOrder detects missing URL"() {
     given: 'the desired field order'
     def desiredFieldOrder = ['name', 'title']
@@ -95,7 +90,7 @@ class ExtensionControllerSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['domainURL', 'not'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that saveFieldOrder detects missing fields"() {
     given: 'the fields are missing'
     def body = [domainURL: '/sampleParent/show']
@@ -109,7 +104,7 @@ class ExtensionControllerSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['fields', 'not'])
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that fieldDialog defines the default values for the field - add mode"() {
     when: 'a request with params is made'
     def modelAndView = controller.fieldDialog(mockRequest([domainURL: '/sampleParent/show']), new MockPrincipal('joe', 'ADMIN'))
@@ -121,7 +116,7 @@ class ExtensionControllerSpec extends BaseSpecification {
   }
 
   @SuppressWarnings("GrEqualsBetweenInconvertibleTypes")
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that saveField can create a custom field"() {
     when: 'a request with params is made'
     def body = [fieldName     : 'custom1', fieldLabel: 'abc',
@@ -135,14 +130,14 @@ class ExtensionControllerSpec extends BaseSpecification {
     response.status == HttpStatus.OK
 
     and: 'the custom field is saved in the DB'
-    FieldExtension fieldExtension = FieldExtension.findByDomainClassNameAndFieldName(SampleParent.name, 'custom1')
+    FieldExtension fieldExtension = FieldExtension.findAllByDomainClassName(SampleParent.name).find { it.fieldName == 'custom1' }
     fieldExtension.fieldFormat == IntegerFieldFormat.instance
     fieldExtension.fieldLabel == 'abc'
     fieldExtension.valueClassName == String.name
     fieldExtension.maxLength == 237
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that saveField can create a custom field with an empty label"() {
     when: 'a request with params is made'
     def body = [fieldName     : 'custom1',
@@ -172,7 +167,7 @@ class ExtensionControllerSpec extends BaseSpecification {
     def body = [fieldName     : 'custom2', fieldLabel: 'xyz',
                 fieldFormat   : IntegerFieldFormat.instance.id, maxLength: 237,
                 valueClassName: Long.name,
-                id            : fe.id.toString(),
+                id            : fe.uuid.toString(),
                 domainURL     : '/sampleParent/show']
     def response = controller.saveField(mockRequest([body: Holders.objectMapper.writeValueAsString(body)]),
                                         new MockPrincipal('joe', 'ADMIN'))
@@ -183,7 +178,7 @@ class ExtensionControllerSpec extends BaseSpecification {
     and: 'the custom field is saved in the DB'
     FieldExtension fieldExtension = null
     FieldExtension.withTransaction {
-      fieldExtension = FieldExtension.findByDomainClassNameAndFieldName(SampleParent.name, 'custom2')
+      fieldExtension = FieldExtension.findAllByDomainClassName(SampleParent.name).find { it.fieldName == 'custom2' }
       assert fieldExtension.fieldFormat == IntegerFieldFormat.instance
       assert fieldExtension.fieldLabel == 'xyz'
       assert fieldExtension.valueClassName == Long.name
@@ -204,7 +199,7 @@ class ExtensionControllerSpec extends BaseSpecification {
     def body = [fieldName     : 'custom2', fieldLabel: 'xyz',
                 fieldFormat   : IntegerFieldFormat.instance.id, maxLength: 237,
                 valueClassName: Long.name,
-                id            : '9786774',
+                id            : 'e91ab8d8-93ad-4a27-b1ed-adb6e4555690',
                 domainURL     : '/sampleParent/show']
     controller.saveField(mockRequest([body: Holders.objectMapper.writeValueAsString(body)]),
                          new MockPrincipal('joe', 'ADMIN'))
@@ -212,7 +207,7 @@ class ExtensionControllerSpec extends BaseSpecification {
     then: 'the right exception is thrown'
     //error.134.message=The record (id={0}) for domain {1} could not be found.
     def ex = thrown(BusinessException)
-    UnitTestUtils.assertExceptionIsValid(ex, ['9786774', '134', SampleParent.simpleName])
+    UnitTestUtils.assertExceptionIsValid(ex, ['e91ab8d8-93ad-4a27-b1ed-adb6e4555690', '134', SampleParent.simpleName])
   }
 
   def "verify that saveField gracefully detects domain validation errors"() {
@@ -235,7 +230,7 @@ class ExtensionControllerSpec extends BaseSpecification {
                               valueClassName: String.name, domainClass: SampleParent)
 
     when: 'a request with params is made'
-    def body = [id: fe.id.toString(), domainURL: '/sampleParent/show']
+    def body = [id: fe.uuid.toString(), domainURL: '/sampleParent/show']
     def response = controller.deleteField(mockRequest([body: Holders.objectMapper.writeValueAsString(body)]),
                                           new MockPrincipal('joe', 'ADMIN'))
 
@@ -244,20 +239,20 @@ class ExtensionControllerSpec extends BaseSpecification {
 
     and: 'the custom field is removed from the DB'
     FieldExtension.withTransaction {
-      assert FieldExtension.findByDomainClassNameAndFieldName(SampleParent.name, 'custom1') == null
+      assert FieldExtension.findAllByDomainClassName(SampleParent.name).size() == 0
       true
     }
   }
 
   def "verify that deleteField gracefully handles record not found"() {
     when: 'a request with params is made'
-    def body = [id: '7979799998']
+    def body = [id: 'e91ab8d8-93ad-4a27-b1ed-adb6e4555690']
     controller.deleteField(mockRequest([body: Holders.objectMapper.writeValueAsString(body)]),
                            new MockPrincipal('joe', 'ADMIN'))
 
     then: 'the right exception is thrown'
     def ex = thrown(Exception)
-    UnitTestUtils.assertExceptionIsValid(ex, ['105', '7979799998'])
+    UnitTestUtils.assertExceptionIsValid(ex, ['105', 'e91ab8d8-93ad-4a27-b1ed-adb6e4555690'])
 
   }
 

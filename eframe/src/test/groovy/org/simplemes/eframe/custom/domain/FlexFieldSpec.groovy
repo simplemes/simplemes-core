@@ -84,7 +84,7 @@ class FlexFieldSpec extends BaseSpecification {
 
     expect: 'invalid valueClassName check is enforced'
     //error.1.message=Required value is missing "{0}" ({1}).
-    assertValidationFails(flexField, 1, 'valueClassName', ['valueClassName', String.name, 'missing', FlexField.simpleName])
+    assertValidationFails(flexField, 1, 'valueClassName', ['valueClassName', 'missing', FlexField.simpleName])
   }
 
 }

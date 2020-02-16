@@ -26,6 +26,7 @@ import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.domain.DomainBinder
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.exception.MessageHolder
+import org.simplemes.eframe.exception.ValidationException
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.JavascriptUtils
@@ -155,7 +156,7 @@ class ExtensionController extends BaseController {
     if (id) {
       FieldExtension.withTransaction {
         // Store the existing record in the model for the view/markers.
-        def record = FieldExtension.get(UUID.fromString((String) id))
+        def record = FieldExtension.findByUuid(UUID.fromString((String) id))
         modelAndView.model.get().put(ControllerUtils.MODEL_KEY_DOMAIN_OBJECT, record)
       }
     } else {
@@ -241,11 +242,11 @@ class ExtensionController extends BaseController {
     def domainClass = ControllerUtils.instance.getDomainClass(map.domainURL)
     map.remove('domainURL')
 
+    def errorResponse
     FieldExtension fieldExtension = null
-    def errorResponse = null
-    domainClass.withTransaction {
+    FieldExtension.withTransaction {
       if (id) {
-        fieldExtension = FieldExtension.get(UUID.fromString(id))
+        fieldExtension = FieldExtension.findByUuid(UUID.fromString(id))
         if (!fieldExtension) {
           //error.134.message=The record (id={0}) for domain {1} could not be found.
           throw new BusinessException(134, [id, domainClass.simpleName])
@@ -253,10 +254,13 @@ class ExtensionController extends BaseController {
       } else {
         fieldExtension = new FieldExtension(domainClassName: domainClass.name)
       }
-      DomainBinder.build().bind(fieldExtension, map)
-      errorResponse = checkForValidationErrors(fieldExtension)
-      if (!errorResponse) {
+      try {
+        DomainBinder.build().bind(fieldExtension, map)
         fieldExtension.save()
+      } catch (ValidationException e) {
+        def msgHolder = new MessageHolder(e.errors)
+        def s = Holders.objectMapper.writeValueAsString(msgHolder)
+        errorResponse = HttpResponse.status(HttpStatus.BAD_REQUEST).body(s)
       }
     }
     if (errorResponse) {
@@ -264,8 +268,7 @@ class ExtensionController extends BaseController {
     } else {
       def type = extensionService.determineFieldType(fieldExtension.fieldName, fieldExtension.fieldFormat)
       def label = fieldExtension.fieldLabel ? GlobalUtils.lookup(fieldExtension.fieldLabel) : fieldExtension.fieldName
-      def res = [name: fieldExtension.fieldName, label: label, type: type, custom: true, recordID: fieldExtension.id]
-
+      def res = [name: fieldExtension.fieldName, label: label, type: type, custom: true, recordID: fieldExtension.uuid]
       return HttpResponse.status(HttpStatus.OK).body(Holders.objectMapper.writeValueAsString(res))
     }
   }
