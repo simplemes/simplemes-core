@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.preference.event
 
 import ch.qos.logback.classic.Level
@@ -7,20 +11,17 @@ import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.MockAppender
 import org.simplemes.eframe.test.UnitTestUtils
-
-/*
- * Copyright Michael Houston 2017. All rights reserved.
- * Original Author: mph
- *
-*/
+import org.simplemes.eframe.test.annotation.Rollback
 
 /**
  * Tests.
  */
 class TreeStateChangedSpec extends BaseSpecification {
-  static specNeeds = [SERVER, JSON]
 
-  //TODO: Find alternative to @Rollback
+  @SuppressWarnings("unused")
+  static specNeeds = SERVER
+
+  @Rollback
   def "verify that handleEvent saves the state in the preferences"() {
     given: 'a session and state change request parameters'
     def params = [expandedKeys: 'A,B', pageURI: '/app/testPage', event: 'TreeStateChanged', element: '_tree']
@@ -40,7 +41,7 @@ class TreeStateChangedSpec extends BaseSpecification {
     preference[TreeStateChanged.KEY].expandedKeys == 'A,B'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that handleEvent works with multiple state changes"() {
     given: 'a session and an existing state in the preferences'
     def params = [expandedKeys: 'A,B', pageURI: '/app/testPage', event: 'TreeStateChanged', element: '_tree']
@@ -62,7 +63,7 @@ class TreeStateChangedSpec extends BaseSpecification {
     preference[TreeStateChanged.KEY].expandedKeys == 'D,A'
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that handleEvent clears the preference when the full tree is collapsed"() {
     given: 'a session and an existing state in the preferences'
     def params = [expandedKeys: 'A,B', pageURI: '/app/testPage', event: 'TreeStateChanged', element: '_tree']
@@ -84,7 +85,7 @@ class TreeStateChangedSpec extends BaseSpecification {
     !preference[TreeStateChanged.KEY].expandedKeys
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that handleEvent gracefully handles no user in session"() {
     given: 'no user is in the simulated session'
     SecurityUtils.simulateNoUserInUnitTest = true
@@ -99,7 +100,7 @@ class TreeStateChangedSpec extends BaseSpecification {
     SecurityUtils.simulateNoUserInUnitTest = false
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that logging works for the handleEvent method"() {
     given: 'a mock appender for Trace level only'
     def mockAppender = MockAppender.mock(TreeStateChanged, Level.TRACE)

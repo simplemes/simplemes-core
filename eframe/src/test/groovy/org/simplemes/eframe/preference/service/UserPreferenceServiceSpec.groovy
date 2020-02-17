@@ -4,7 +4,7 @@
 
 package org.simplemes.eframe.preference.service
 
-
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.preference.ColumnPreference
 import org.simplemes.eframe.preference.DialogPreference
 import org.simplemes.eframe.preference.PreferenceHolder
@@ -23,6 +23,11 @@ class UserPreferenceServiceSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static specNeeds = SERVER
 
+  UserPreferenceService userPreferenceService
+
+  def setup() {
+    userPreferenceService = Holders.getBean(UserPreferenceService)
+  }
 
   /**
    * Utility method to read the UserPreference record (for the page '/app/testPage' and TEST_USER), grab the
@@ -45,7 +50,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     setCurrentUser()
 
     when: 'a simple string preference is saved'
-    new UserPreferenceService().saveSimplePreference('/app/testPage', 'workCenterDefault', 'WC237')
+    userPreferenceService.saveSimplePreference('/app/testPage', 'workCenterDefault', 'WC237')
 
     then: 'the preference is saved'
     firstSetting('workCenterDefault').value == 'WC237'
@@ -58,7 +63,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
 
     when: 'a simple POGO preference is saved'
     def pogo = new SamplePOGO(name: 'PG247', count: 237)
-    new UserPreferenceService().saveSimplePreference('/app/testPage', 'pogoPref', pogo)
+    userPreferenceService.saveSimplePreference('/app/testPage', 'pogoPref', pogo)
 
     then: 'the preference is saved'
     firstSetting('pogoPref') == pogo
@@ -71,10 +76,10 @@ class UserPreferenceServiceSpec extends BaseSpecification {
 
     when: 'a simple POGO preference is saved'
     def pogo = new SamplePOGO(name: 'PG247', count: 237)
-    new UserPreferenceService().saveSimplePreference('/app/testPage', 'pogoPref', pogo)
+    userPreferenceService.saveSimplePreference('/app/testPage', 'pogoPref', pogo)
 
     and: 'a simple string preference is added to the page preferences'
-    new UserPreferenceService().saveSimplePreference('/app/testPage', 'workCenterDefault', 'WC237')
+    userPreferenceService.saveSimplePreference('/app/testPage', 'workCenterDefault', 'WC237')
 
     then: 'both were saved correctly'
     firstSetting('workCenterDefault').value == 'WC237'
@@ -87,7 +92,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     setCurrentUser()
 
     when: 'an empty preference is saved'
-    new UserPreferenceService().saveSimplePreference('/app/testPage', 'workCenterDefault', '')
+    userPreferenceService.saveSimplePreference('/app/testPage', 'workCenterDefault', '')
 
     then: 'the preference was saved'
     firstSetting('workCenterDefault').value == ''
@@ -99,10 +104,10 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     setCurrentUser()
 
     when: 'a string preference is saved'
-    new UserPreferenceService().saveSimplePreference('/app/testPage', 'workCenterDefault', 'orig')
+    userPreferenceService.saveSimplePreference('/app/testPage', 'workCenterDefault', 'orig')
 
     and: 'a different string preference is saved'
-    new UserPreferenceService().saveSimplePreference('/app/testPage', 'workCenterDefault', 'new')
+    userPreferenceService.saveSimplePreference('/app/testPage', 'workCenterDefault', 'new')
 
     then: 'the preference was saved'
     firstSetting('workCenterDefault').value == 'new'
@@ -114,10 +119,10 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     setCurrentUser()
 
     when: 'a string preference is saved'
-    new UserPreferenceService().saveSimplePreference('/app/testPage', 'workCenterDefault', 'orig')
+    userPreferenceService.saveSimplePreference('/app/testPage', 'workCenterDefault', 'orig')
 
     and: 'an empty string preference is saved'
-    new UserPreferenceService().saveSimplePreference('/app/testPage', 'workCenterDefault', '')
+    userPreferenceService.saveSimplePreference('/app/testPage', 'workCenterDefault', '')
 
     then: 'the preference was saved'
     firstSetting('workCenterDefault').value == ''
@@ -129,10 +134,10 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     setCurrentUser()
 
     when: 'a string preference is saved'
-    new UserPreferenceService().saveSimplePreference('/app/testPage', 'workCenterDefault', 'orig',)
+    userPreferenceService.saveSimplePreference('/app/testPage', 'workCenterDefault', 'orig',)
 
     then: 'the preference is retrieved'
-    new UserPreferenceService().findSimplePreference('/app/testPage', 'workCenterDefault') == 'orig'
+    userPreferenceService.findSimplePreference('/app/testPage', 'workCenterDefault') == 'orig'
   }
 
   @Rollback
@@ -142,10 +147,10 @@ class UserPreferenceServiceSpec extends BaseSpecification {
 
     when: 'a POGO preference is saved'
     def pogo = new SamplePOGO(name: 'PG247', count: 237)
-    new UserPreferenceService().saveSimplePreference('/app/testPage', 'pogo', pogo)
+    userPreferenceService.saveSimplePreference('/app/testPage', 'pogo', pogo)
 
     then: 'the preference is retrieved'
-    def foundPOGO = new UserPreferenceService().findSimplePreference('/app/testPage', 'pogo')
+    def foundPOGO = userPreferenceService.findSimplePreference('/app/testPage', 'pogo')
 
     and: 'the value is the same'
     foundPOGO == pogo
@@ -157,13 +162,13 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     setCurrentUser()
 
     expect: 'no preference is found '
-    new UserPreferenceService().findSimplePreference('/app/testPage', 'workCenterDefault') == null
+    userPreferenceService.findSimplePreference('/app/testPage', 'workCenterDefault') == null
   }
 
   @Rollback
   def "verify that guiStateChanged gracefully handles missing event"() {
     when: 'the guiStateChanged is called without an event'
-    new UserPreferenceService().guiStateChanged([:])
+    userPreferenceService.guiStateChanged([:])
 
     then: 'the correct exception is thrown'
     def ex = thrown(Exception)
@@ -173,7 +178,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
   @Rollback
   def "verify that guiStateChanged gracefully handles bad event"() {
     when: 'the guiStateChanged is called with bad event'
-    new UserPreferenceService().guiStateChanged([event: 'ColumnResizedX'])
+    userPreferenceService.guiStateChanged([event: 'ColumnResizedX'])
 
     then: 'the correct exception is thrown'
     def ex = thrown(Exception)
@@ -188,7 +193,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
 
     when: 'the column resize is triggered'
     def params = [pageURI: '/app/testPage', event: 'ColumnResized', column: 'order', newSize: '125', element: 'OrderList']
-    new UserPreferenceService().guiStateChanged(params)
+    userPreferenceService.guiStateChanged(params)
 
     then: 'the preference is updated'
     def preference = PreferenceHolder.find {
@@ -232,7 +237,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     setCurrentUser()
 
     when: 'the findPreferences is called'
-    def preferences = new UserPreferenceService().findPreferences('/app/test', '_dialogX')
+    def preferences = userPreferenceService.findPreferences('/app/test', '_dialogX')
 
     then: 'the right one is found'
     preferences.keySet().size() == 1
@@ -276,7 +281,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
     setCurrentUser()
 
     when: 'the findPreferences is called'
-    def preferences = new UserPreferenceService().findPreferences('/app/test', null, 'DialogPreference')
+    def preferences = userPreferenceService.findPreferences('/app/test', null, 'DialogPreference')
 
     then: 'the right one is found'
     preferences.keySet().size() == 2
@@ -292,7 +297,7 @@ class UserPreferenceServiceSpec extends BaseSpecification {
   @Rollback
   def "verify that findPreferences handles empty scenario"() {
     when: 'the findPreferences is called'
-    def preferences = new UserPreferenceService().findPreferences('/app/test', null, 'DialogPreference')
+    def preferences = userPreferenceService.findPreferences('/app/test', null, 'DialogPreference')
 
     then: 'none are found'
     preferences.keySet().size() == 0

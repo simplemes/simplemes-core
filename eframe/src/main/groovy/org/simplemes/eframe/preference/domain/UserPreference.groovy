@@ -85,20 +85,17 @@ class UserPreference {
 
   @Id @AutoPopulated UUID uuid
 
-
-  /**
-   * Internal field transients.
-   */
-  @SuppressWarnings("unused")
-  static transients = ['preferences', 'textHasBeenParsed']
-
   /**
    * Persist the transient preferences Map into the JSON for storage in the DB.
    */
   protected void persistPreferencesInText() {
     if (preferences) {
+      // Filter out any empty elements in the preference list.
+      def preferencesToSave = preferences.findAll { it.settings }
+
       def mapper = Holders.objectMapper
-      preferencesText = mapper.writeValueAsString(preferences)
+      preferencesText = mapper.writeValueAsString(preferencesToSave)
+      //println "preferences = $preferences"
       //println "preferencesText = $preferencesText"
       //println "JSON = ${groovy.json.JsonOutput.prettyPrint(preferencesText)}"
     } else {

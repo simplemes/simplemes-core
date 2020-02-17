@@ -84,6 +84,21 @@ class UserPreferenceSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that a preference with no settings without saving odd number of elements in JSON"() {
+    given: 'an empty preference'
+    def userPreference = new UserPreference(page: '/app/test', userName: 'JOE')
+    def preference = new Preference()
+    preference.element = 'OrderList'
+    userPreference.preferences << preference
+
+    when: 'the record is saved'
+    userPreference.save()
+
+    then: 'the JSON does not have the partial preference in it'
+    !userPreference.preferencesText.contains('OrderList')
+  }
+
+  @Rollback
   def "verify that preferences can be cleared"() {
     given: 'a record with preference values'
     def columnPref1 = new ColumnPreference(column: 'order', width: 105)

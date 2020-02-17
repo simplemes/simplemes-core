@@ -9,6 +9,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.json.JsonSlurper
 import io.micronaut.http.HttpStatus
 import io.micronaut.security.rules.SecurityRule
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.i18n.GlobalUtils
@@ -23,7 +24,6 @@ import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.service.ServiceUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.ControllerTester
-import org.simplemes.eframe.test.MockObjectMapper
 import org.simplemes.eframe.test.MockPrincipal
 import sample.controller.AllFieldsDomainController
 import sample.controller.SampleParentController
@@ -35,7 +35,11 @@ import sample.domain.SampleParent
  */
 class LoggingControllerSpec extends BaseSpecification {
 
-  static specNeeds = [SERVER]
+  @SuppressWarnings("unused")
+  static specNeeds = SERVER
+
+  LoggingController loggingController
+
 
   /**
    * A dummy logger for testing.
@@ -46,18 +50,13 @@ class LoggingControllerSpec extends BaseSpecification {
     // Reset the test logger to no level
     LogUtils.getLogger(LOGGER).setLevel(null)
     LogUtils.getLogger('org.gibberish').setLevel(null)
-
-    // index() uses the mapper
-    new MockObjectMapper(this).install()
+    loggingController = Holders.getBean(LoggingController)
   }
 
   void cleanup() {
     // Reset the test logger to no level
     LogUtils.getLogger(LOGGER).setLevel(null)
     LogUtils.getLogger('org.gibberish').setLevel(null)
-    DomainUtils.instance = new DomainUtils()
-    ControllerUtils.instance = new ControllerUtils()
-    ServiceUtils.instance = new ServiceUtils()
   }
 
   /**
@@ -94,7 +93,7 @@ class LoggingControllerSpec extends BaseSpecification {
     LogUtils.getLogger(LOGGER).setLevel(Level.INFO)
 
     when: 'the level is found'
-    def res = new LoggingController().getLoggingLevels(LOGGER)
+    def res = loggingController.getLoggingLevels(LOGGER)
 
     then: 'the level is correct'
     assertLevelMapIsCorrect(res, LOGGER, Level.INFO)
@@ -105,7 +104,7 @@ class LoggingControllerSpec extends BaseSpecification {
     LogUtils.getLogger('org.gibberish').setLevel(Level.DEBUG)
 
     when: 'the level is found'
-    def res = new LoggingController().getLoggingLevels(LOGGER)
+    def res = loggingController.getLoggingLevels(LOGGER)
 
     then: 'the level is correct'
     assertLevelMapIsCorrect(res, LOGGER, null, 'debug')
@@ -117,7 +116,7 @@ class LoggingControllerSpec extends BaseSpecification {
     LogUtils.getLogger(LOGGER).setLevel(Level.TRACE)
 
     when: 'the level is found'
-    def res = new LoggingController().getLoggingLevels(LOGGER)
+    def res = loggingController.getLoggingLevels(LOGGER)
 
     then: 'the level is correct'
     assertLevelMapIsCorrect(res, LOGGER, Level.TRACE, 'debug')
@@ -129,7 +128,7 @@ class LoggingControllerSpec extends BaseSpecification {
     def json = new ObjectMapper().writeValueAsString(params)
 
     when: 'the level is set'
-    def res = new LoggingController().setLoggingLevel(json)
+    def res = loggingController.setLoggingLevel(json)
 
     then: 'the level is correct'
     LogUtils.getLogger(LOGGER).level == Level.INFO
@@ -147,7 +146,7 @@ class LoggingControllerSpec extends BaseSpecification {
     LogUtils.getLogger(LOGGER).level = Level.INFO
 
     when: 'the level is set'
-    def res = new LoggingController().setLoggingLevel(json)
+    def res = loggingController.setLoggingLevel(json)
 
     then: 'the level is correct'
     LogUtils.getLogger(LOGGER).level == Level.DEBUG
@@ -165,7 +164,7 @@ class LoggingControllerSpec extends BaseSpecification {
     LogUtils.getLogger(LOGGER).level = Level.INFO
 
     when: 'the level is set'
-    def res = new LoggingController().setLoggingLevel(json)
+    def res = loggingController.setLoggingLevel(json)
 
     then: 'the level is correct'
     LogUtils.getLogger(LOGGER).level == null
@@ -180,7 +179,8 @@ class LoggingControllerSpec extends BaseSpecification {
     DomainUtils.instance.allDomains >> [SampleParent, SampleChild]
 
     when: 'the index page is generated'
-    def res = new LoggingController().index(null)
+    def res = loggingController.index(null)
+    loggingController.index(null)
 
     then: 'the map contains the tree data for the domains'
     def model = res.model.get()
@@ -201,6 +201,9 @@ class LoggingControllerSpec extends BaseSpecification {
     def s = model.treeJSON
     def json = new JsonSlurper().parseText((String) s)
     json.size() >= 5
+
+    cleanup:
+    DomainUtils.instance = new DomainUtils()
   }
 
   def "verify that index finds the right controllers and generates the JSON for the tree data"() {
@@ -209,7 +212,7 @@ class LoggingControllerSpec extends BaseSpecification {
     ControllerUtils.instance.allControllers >> [SampleParentController, AllFieldsDomainController]
 
     when: 'the index page is generated'
-    def res = new LoggingController().index(null)
+    def res = loggingController.index(null)
 
     then: 'the map contains the tree data for the controllers'
     def model = res.model.get()
@@ -230,6 +233,9 @@ class LoggingControllerSpec extends BaseSpecification {
     def s = model.treeJSON
     def json = new JsonSlurper().parseText((String) s)
     json.size() >= 5
+
+    cleanup:
+    ControllerUtils.instance = new ControllerUtils()
   }
 
   def "verify that index finds the right services and generates the JSON for the tree data"() {
@@ -238,7 +244,7 @@ class LoggingControllerSpec extends BaseSpecification {
     ServiceUtils.instance.allServices >> [PasswordEncoderService, UserPreferenceService]
 
     when: 'the index page is generated'
-    def res = new LoggingController().index(null)
+    def res = loggingController.index(null)
 
     then: 'the map contains the tree data for the services'
     def model = res.model.get()
@@ -259,6 +265,9 @@ class LoggingControllerSpec extends BaseSpecification {
     def s = model.treeJSON
     def json = new JsonSlurper().parseText((String) s)
     json.size() >= 5
+
+    cleanup:
+    ServiceUtils.instance = new ServiceUtils()
   }
 
   @SuppressWarnings("GroovyAssignabilityCheck")
@@ -269,7 +278,7 @@ class LoggingControllerSpec extends BaseSpecification {
     ControllerUtils.instance.determineBaseURI(_) >> { args -> return new ControllerUtils().determineBaseURI(args[0]) }
 
     when: 'the index page is generated'
-    def res = new LoggingController().index(null)
+    def res = loggingController.index(null)
 
     then: 'the map contains the tree data for the views'
     def model = res.model.get()
@@ -296,11 +305,14 @@ class LoggingControllerSpec extends BaseSpecification {
     def s = model.treeJSON
     def json = new JsonSlurper().parseText((String) s)
     json.size() >= 5
+
+    cleanup:
+    ControllerUtils.instance = new ControllerUtils()
   }
 
   def "verify that the correct others are in the tree data"() {
     when: 'the index page is generated'
-    def res = new LoggingController().index(null)
+    def res = loggingController.index(null)
 
     then: 'the map contains the tree data for the services'
     def model = res.model.get()
@@ -311,14 +323,13 @@ class LoggingControllerSpec extends BaseSpecification {
     def othersEntry = treeData.find { it.title == GlobalUtils.lookup('others.label') }
     othersEntry
     List otherList = othersEntry.data
-    otherList.size() == 2
+    otherList.size() == 1
 
     and: 'the other entry is marked to allow add button'
     othersEntry.add
 
     and: 'the other entries are in the right order'
     otherList[0].title == LoggingController.DEFAULT_OTHERS[0]
-    otherList[1].title == LoggingController.DEFAULT_OTHERS[1]
 
     and: 'the JSON data is valid'
     def s = model.treeJSON
@@ -340,7 +351,7 @@ class LoggingControllerSpec extends BaseSpecification {
     }
 
     when: 'the index page is generated'
-    def res = new LoggingController().index(new MockPrincipal())
+    def res = loggingController.index(new MockPrincipal())
 
     then: 'the map contains the tree data for the others'
     def model = res.model.get()
@@ -378,7 +389,7 @@ class LoggingControllerSpec extends BaseSpecification {
     }
 
     when: 'the index page is generated'
-    def res = new LoggingController().index(new MockPrincipal())
+    def res = loggingController.index(new MockPrincipal())
 
     then: 'the map contains the tree data'
     def model = res.model.get()
@@ -409,7 +420,7 @@ class LoggingControllerSpec extends BaseSpecification {
     setCurrentUser()
 
     when: 'the logger is added'
-    def res = new LoggingController().addOtherLogger(json)
+    def res = loggingController.addOtherLogger(json)
 
     then: 'the logger is in the preferences'
     UserPreference.withTransaction {
@@ -457,7 +468,7 @@ class LoggingControllerSpec extends BaseSpecification {
     when: 'the logger is added'
     def res = null
     UserPreference.withTransaction {
-      res = new LoggingController().addOtherLogger(json)
+      res = loggingController.addOtherLogger(json)
     }
     // Need to sleep to make sure transaction commits for some reason.
     // Without this, the second _dialogY record is lost.
@@ -488,8 +499,8 @@ class LoggingControllerSpec extends BaseSpecification {
     setCurrentUser()
 
     when: 'the logger is added twice'
-    new LoggingController().addOtherLogger(json)
-    def res = new LoggingController().addOtherLogger(json)
+    loggingController.addOtherLogger(json)
+    def res = loggingController.addOtherLogger(json)
 
     then: 'the logger is in the preferences only once'
     UserPreference.withTransaction {
@@ -511,7 +522,7 @@ class LoggingControllerSpec extends BaseSpecification {
 
   def "verify that addOtherLogger gracefully handles missing logger"() {
     when: 'the logger is added twice'
-    def res = new LoggingController().addOtherLogger('{}')
+    def res = loggingController.addOtherLogger('{}')
 
     then: 'a bad request is returned'
     res.status == HttpStatus.BAD_REQUEST
@@ -535,7 +546,7 @@ class LoggingControllerSpec extends BaseSpecification {
 
     when: 'the logger is removed'
     def json = new ObjectMapper().writeValueAsString([logger: 'org.abc.YClass'])
-    new LoggingController().removeOtherLogger(json)
+    loggingController.removeOtherLogger(json)
 
     then: 'the logger is removed from the preferences'
     String s = null
@@ -562,7 +573,7 @@ class LoggingControllerSpec extends BaseSpecification {
 
   def "verify that removeOtherLogger gracefully handles missing logger"() {
     when: 'the logger is added twice'
-    def res = new LoggingController().removeOtherLogger('{}')
+    def res = loggingController.removeOtherLogger('{}')
 
     then: 'a bad request is returned'
     res.status == HttpStatus.BAD_REQUEST

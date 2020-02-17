@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.preference.event
 
 
@@ -5,19 +9,17 @@ import org.simplemes.eframe.preference.PreferenceHolder
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.test.BaseSpecification
-
-/*
- * Copyright (c) 2018 Simple MES, LLC.  All rights reserved.  See license.txt for license terms.
- */
+import org.simplemes.eframe.test.annotation.Rollback
 
 /**
  * Tests.
  */
 class ConfigButtonToggledSpec extends BaseSpecification {
 
-  static specNeeds = [SERVER, JSON]
+  @SuppressWarnings("unused")
+  static specNeeds = SERVER
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that button toggled to visible works"() {
     given: 'the parameters for the GUI event handler'
     def params = [pageURI: ConfigButtonToggled.PAGE, event: ConfigButtonToggled.EVENT,
@@ -38,7 +40,7 @@ class ConfigButtonToggledSpec extends BaseSpecification {
     preference[ConfigButtonToggled.KEY].visible == true
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that button toggled to not visible works"() {
     given: 'the parameters for the GUI event handler'
     def params = [pageURI: ConfigButtonToggled.PAGE, event: ConfigButtonToggled.EVENT,
@@ -59,7 +61,7 @@ class ConfigButtonToggledSpec extends BaseSpecification {
     preference[ConfigButtonToggled.KEY].visible == false
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that button toggled twice works"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -81,7 +83,7 @@ class ConfigButtonToggledSpec extends BaseSpecification {
     preference[ConfigButtonToggled.KEY].visible == true
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that a toggle config button event with no current user logged does not save any values"() {
     given: 'the parameters for the GUI event handler'
     def params = [pageURI: ConfigButtonToggled.PAGE, event: ConfigButtonToggled.EVENT,

@@ -5,9 +5,7 @@
 package org.simplemes.eframe.data.format
 
 import org.simplemes.eframe.date.DateOnly
-import org.simplemes.eframe.date.DateOnlyConverters
 import org.simplemes.eframe.i18n.GlobalUtils
-import org.simplemes.eframe.misc.ClassPathScanner
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 
@@ -99,17 +97,6 @@ class BasicFieldFormatSpec extends BaseSpecification {
     ChildListFieldFormat         | _
     CustomChildListFieldFormat   | _
     ConfigurableTypeDomainFormat | _
-  }
-
-  def "verify that the coreValues list has all of the child classes in it"() {
-    when: 'the class path is scanned'
-    def scanner = new ClassPathScanner(BasicFieldFormat)
-    def res = scanner.scan(DateOnlyConverters.package)
-
-    then: 'the classes found are in the coreValues list'
-    for (clazz in res) {
-      assert BasicFieldFormat.coreValues.contains(clazz)
-    }
   }
 
   def "verify that the getGridEditor returns a standard text editor for this base class"() {

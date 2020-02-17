@@ -8,13 +8,15 @@ package org.simplemes.eframe.preference
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.annotation.Rollback
 
 /**
  * Tests.
  */
 class PreferenceHolderSpec extends BaseSpecification {
 
-  static specNeeds = [JSON, SERVER]
+  @SuppressWarnings("unused")
+  static specNeeds = SERVER
 
   /**
    * Creates a test setting and saves it to the DB.
@@ -38,8 +40,8 @@ class PreferenceHolderSpec extends BaseSpecification {
     return preference
   }
 
-  //TODO: Find alternative to @Rollback
-  def "verify that DSL for save works"() {
+  @Rollback
+  def "verify that DSL for save works with no settings"() {
     when: 'the preference is saved'
     PreferenceHolder preference = PreferenceHolder.find {
       page '/app/testPage'
@@ -50,10 +52,10 @@ class PreferenceHolderSpec extends BaseSpecification {
 
     then: 'the value is in the database'
     def userPreference = UserPreference.findByUserNameAndPage(SecurityUtils.API_TEST_USER, '/app/testPage')
-    userPreference.preferences.find { it.element == 'OrderList' } != null
+    userPreference.preferences.find { it.element == 'OrderList' } == null
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that set a preference setting works"() {
     when: 'the preference is saved'
     PreferenceHolder preference = PreferenceHolder.find {
@@ -71,7 +73,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     orderListPreference.settings[0].width == 437
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that get on the DSL field names finds the settings"() {
     when: 'the non-existent preference looked for'
     PreferenceHolder preference = PreferenceHolder.find {
@@ -89,7 +91,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preference['name'] == null
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that DSL works with the multiple named preferences"() {
     when: 'two existing preferences with different names exist'
     PreferenceHolder.find {
@@ -124,7 +126,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preferenceXYZ['ColumnX'].width == 33
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that DSL works with the optional name"() {
     when: 'two existing preferences with different names exist'
     PreferenceHolder.find {
@@ -157,7 +159,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preferenceX['ColumnX'].width == 33
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that DSL works with a page with arguments"() {
     when: 'the preference is saved'
     PreferenceHolder preference = PreferenceHolder.find {
@@ -165,6 +167,7 @@ class PreferenceHolderSpec extends BaseSpecification {
       user SecurityUtils.API_TEST_USER
       element 'OrderList'
     }
+    preference['order'] = new ColumnPreference(width: 437)
     preference.save()
 
     then: 'the value is in the database'
@@ -172,7 +175,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     userPreference.preferences.find { it.element == 'OrderList' } != null
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that DSL for setting preference and save works"() {
     given: 'a preference setting to save'
     def columnPreference = new ColumnPreference(column: 'ABC', width: 237)
@@ -191,7 +194,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     orderListPreference.settings.contains(columnPreference)
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that DSL for save and find round trip works"() {
     given: 'a preference setting that is saved'
     def columnPreference = new ColumnPreference(column: 'ABC', width: 237)
@@ -219,7 +222,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     columnPref.width == 237
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that DSL can overwrite the values"() {
     given: 'a saved preference setting'
     def preference = buildSetting([new ColumnPreference(column: 'XYZ', width: 137)])
@@ -253,7 +256,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preference3.userPreference.preferences[0].settings.size() == 1
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that DSL can store multiple settings before saving"() {
     when: 'several preference settings are saved'
     def preference = buildSetting([new ColumnPreference(column: 'ABC', width: 137),
@@ -273,7 +276,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preferenceFound.get('XYZ').width == 337
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that DSL can store multiple elements in one User Preference record"() {
     when: 'several preference settings are saved'
     def preference = buildSetting([new ColumnPreference(column: 'ABC', width: 137)], 'ListA')
@@ -298,7 +301,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preferenceFound2.get('XYZ').width == 337
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that DSL when find does not find a preference, no record is created"() {
     when: 'the preference is saved'
     PreferenceHolder preference = PreferenceHolder.find {
@@ -308,11 +311,11 @@ class PreferenceHolderSpec extends BaseSpecification {
     }
 
     then: 'the user preference is unsaved'
-    preference.userPreference.id == null
+    preference.userPreference.uuid == null
     UserPreference.list().size() == 0
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the holder can support access to multiple elements by changing the element"() {
     when: 'two existing preferences with different elements exist'
     PreferenceHolder.find {
@@ -344,7 +347,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preference.elementNames == ['OrderListA', 'OrderListB']
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the holder can support access to multiple elements by changing the element to an element that does not exist"() {
     when: 'two existing preferences with different elements exist'
     PreferenceHolder.find {
@@ -378,7 +381,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preference2['order'].width == 33
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the holder can support access to multiple elements without an element on the initial query"() {
     when: 'two existing preferences with different elements exist'
     PreferenceHolder.find {
@@ -405,7 +408,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preference['order'] != null
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the holder can set values in multiple elements with a single find"() {
     when: 'two existing preferences with different elements exist'
     def preferenceHolder = PreferenceHolder.find {
@@ -438,7 +441,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preference.elementNames == ['OrderListA', 'OrderListB']
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the holder can set values in multiple elements with a single find without an initial element"() {
     when: 'a preference is started'
     def preferenceHolder = PreferenceHolder.find {
@@ -472,7 +475,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preference.elementNames == ['OrderListA', 'OrderListB']
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the getSettings method works"() {
     when: 'the preference is saved'
     PreferenceHolder preference = PreferenceHolder.find {
@@ -486,7 +489,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preference.settings.size() == 1
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that the setSettings method works"() {
     when: 'the preference is saved'
     PreferenceHolder preference = PreferenceHolder.find {
@@ -501,7 +504,7 @@ class PreferenceHolderSpec extends BaseSpecification {
     preference.settings.size() == 1
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that set a preference setting works on an element with invalid JSON tag characters"() {
     given: 'an element name with '
     def badElement = 'OrderList/":some.jrxml'

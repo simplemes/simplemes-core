@@ -6,6 +6,8 @@ package org.simplemes.eframe.reports
 
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.data.FieldDefinitions
+import org.simplemes.eframe.misc.ClassPathScanner
+
 //import org.springframework.core.io.support.PathMatchingResourcePatternResolver
 
 /**
@@ -29,19 +31,7 @@ class ReportHelper {
    * @return The list of location strings.
    */
   List<String> determineBuiltinReports() {
-    def res = []
-    // Check the built-in location first
-    // TODO: Replace with non-hibernate alternative
-    //PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver()
-/*
-    def resources = resolver.getResources('classpath*:reports/*.jrxml')
-    for (resource in resources) {
-      log.debug('determineBuiltinReports: resource: {}, file: ', resource, resource.filename)
-      res << "reports/$resource.filename".toString()
-    }
-*/
-
-    return res
+    return new ClassPathScanner('reports/*.jrxml').scan()*.toString()
   }
 
   /**

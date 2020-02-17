@@ -29,7 +29,7 @@ class UserSpec extends BaseSpecification {
       requiredValues userName: 'ADAM', password: 'password'
       maxSize 'userName', FieldSizes.MAX_CODE_LENGTH
       notNullCheck 'userName'
-      notInFieldOrder(['userRoles', 'password', 'encodedPassword'])
+      notInFieldOrder(['password', 'encodedPassword'])
     }
   }
 

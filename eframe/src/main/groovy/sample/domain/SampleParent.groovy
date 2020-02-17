@@ -45,7 +45,7 @@ class SampleParent implements SampleParentInterface {
   // *       These fields are used by many tests.
   // ********************************************************
 
-  @Column(length = 40, nullable = true)
+  @Column(length = 40, nullable = false)
   String name
 
   @Column(length = 20, nullable = true)

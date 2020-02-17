@@ -210,7 +210,6 @@ class DomainTester {
     // Find all fieldOrder elements that apply to this domain.
     def fields = DomainUtils.instance.getStaticFieldOrder(_domain)
 
-    //def d = Grails.application.getDomainClass(domainClass.name)
     def props = DomainUtils.instance.getPersistentFields(_domain)
     def propNames = props*.name
     //println "propNames = $propNames"

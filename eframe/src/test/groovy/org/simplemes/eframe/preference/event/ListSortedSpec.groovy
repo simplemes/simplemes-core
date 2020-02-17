@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.preference.event
 
 import ch.qos.logback.classic.Level
@@ -7,21 +11,17 @@ import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.MockAppender
 import org.simplemes.eframe.test.UnitTestUtils
-
-/*
- * Copyright Michael Houston 2017. All rights reserved.
- * Original Author: mph
- *
-*/
+import org.simplemes.eframe.test.annotation.Rollback
 
 /**
  * Tests.
  */
 class ListSortedSpec extends BaseSpecification {
 
-  static specNeeds = [SERVER, JSON]
+  @SuppressWarnings("unused")
+  static specNeeds = SERVER
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that handleEvent works for basic case"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -40,7 +40,7 @@ class ListSortedSpec extends BaseSpecification {
     preference['title'].sortAscending == false
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that sort order is changed"() {
     given: 'the original settings is descending sort order'
     def params = [pageURI: '/app/testPage', event: 'ListSorted', 'sort': 'order',
@@ -69,7 +69,7 @@ class ListSortedSpec extends BaseSpecification {
     preference2['order'] == null
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that handleEvent will reset to default settings"() {
     given: 'an existing sort order on one column'
     def params = [pageURI: '/app/testPage', event: 'ListSorted', 'sort': 'order',
@@ -95,13 +95,13 @@ class ListSortedSpec extends BaseSpecification {
     preference2.settings.size() == 0
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that handleEvent strips the record ID from the Show page URL"() {
     given: 'a simulated current user is set'
     setCurrentUser()
 
     when: 'the event is handled'
-    def params = [pageURI: '/app/parent/show/11', event: 'ListSorted', 'sort': 'order',
+    def params = [pageURI: '/app/parent/show/dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b', event: 'ListSorted', 'sort': 'order',
                   'order': 'desc', element: 'OrderList']
     new ListSorted().handleEvent(params)
 
@@ -114,7 +114,7 @@ class ListSortedSpec extends BaseSpecification {
     preference2.settings.size() == 1
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that handleEvent strips params from page URL"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -133,7 +133,7 @@ class ListSortedSpec extends BaseSpecification {
     preference2.settings.size() == 1
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that handleEvent does nothing if there is no user for the current session"() {
     given: 'no user for the session/request'
     SecurityUtils.simulateNoUserInUnitTest = true
@@ -148,7 +148,7 @@ class ListSortedSpec extends BaseSpecification {
     SecurityUtils.simulateNoUserInUnitTest = false
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that handleEvent does nothing if there is no URI in the event"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -160,7 +160,7 @@ class ListSortedSpec extends BaseSpecification {
     UserPreference.count() == 0
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that logging works for the handleEvent method"() {
     given: 'a mock appender for Trace level only'
     def mockAppender = MockAppender.mock(ListSorted, Level.TRACE)

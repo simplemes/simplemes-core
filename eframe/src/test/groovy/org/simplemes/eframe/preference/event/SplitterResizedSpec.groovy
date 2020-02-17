@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.preference.event
 
 
@@ -5,19 +9,17 @@ import org.simplemes.eframe.preference.PreferenceHolder
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.test.BaseSpecification
-
-/*
- * Copyright (c) 2018 Simple MES, LLC.  All rights reserved.  See license.txt for license terms.
- */
+import org.simplemes.eframe.test.annotation.Rollback
 
 /**
  * Tests.
  */
 class SplitterResizedSpec extends BaseSpecification {
 
-  static specNeeds = [SERVER, JSON]
+  @SuppressWarnings("unused")
+  static specNeeds = SERVER
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that dialog resize event creates the preference correctly"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -38,7 +40,7 @@ class SplitterResizedSpec extends BaseSpecification {
     preference.resizerA.size == 23.4
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that two resize events saves the latest size correctly"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -64,7 +66,7 @@ class SplitterResizedSpec extends BaseSpecification {
     preference.resizerA.size == 33.4
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that dialog resize event handles URI with arguments"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -85,7 +87,7 @@ class SplitterResizedSpec extends BaseSpecification {
     preference.resizerA.size == 13.4
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that splitter resize gracefully handles bad size"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -101,7 +103,7 @@ class SplitterResizedSpec extends BaseSpecification {
     UserPreference.list().size() == 0
   }
 
-  //TODO: Find alternative to @Rollback
+  @Rollback
   def "verify that a splitter resize event with no current user logged does not save any values"() {
     given: 'no current user'
     SecurityUtils.simulateNoUserInUnitTest = true
