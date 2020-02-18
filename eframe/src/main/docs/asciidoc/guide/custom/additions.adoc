@@ -355,11 +355,7 @@ eframe:
 
 ----
 <.> A list of addition classes for this module.  EFrame has one internal addition, used to test
-    discovery of additions.  It also provides the
-    link:groovydoc/org/simplemes/eframe/data/EncodedType.html[EncodedType^] icon:share-square-o[role="link-blue"]
-    and
-    link:groovydoc/org/simplemes/eframe/data/DateOnlyType.html[DateOnlyType^] icon:share-square-o[role="link-blue"]
-    for Hibernate.
+    discovery of additions.  It also provides the core <<Encoded Types>>.
 
 ===== Addition Errors
 

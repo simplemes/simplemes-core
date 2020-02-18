@@ -6,10 +6,6 @@ package sample.domain
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-
-
-//import grails.gorm.annotation.Entity
-
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity

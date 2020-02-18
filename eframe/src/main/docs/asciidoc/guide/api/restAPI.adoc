@@ -50,7 +50,7 @@ given JSON response:
 .JSON Response
 ----
 {
-  "id":1000000001308000,
+  "id":"dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b",
   "product":"PRODUCT_XYZ",
   "description":"Standard 27-inch Bicycle"
    . . .
@@ -68,7 +68,7 @@ For example, to read a _Product_, use a an HTTP request like this below:
 The record's JSON is returned as the response content.  It is also possible to perform a get with
 the record's internal ID with a URI:
 
-*uri:* `/product/crud/1000000001307601` _(GET)_
+*uri:* `/product/crud/dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b` _(GET)_
 
 The response is shown below:
 
@@ -76,7 +76,7 @@ The response is shown below:
 .JSON Response
 ----
 {
-  "id":1000000001308000,
+  "uuid":"dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b",
   "product":"PRODUCT_XYZ",
   "description":"Standard 27-inch Bicycle"
    . . .
@@ -126,7 +126,7 @@ content are updated.  The updated record is returned in the response in JSON for
 
 You can also perform a get with the record's internal ID with a URI similar to:
 
-*uri:* `/product/crud/1000000001307601` _(PUT)_
+*uri:* `/product/crud/dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b` _(PUT)_
 
 A sample request is shown below:
 

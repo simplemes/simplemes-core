@@ -83,7 +83,7 @@ by specifying a `displayOrder` value on the folder definition or on the menu ite
 If no value is defined, then a value is assigned in alphabetical order from 9000.
 
 
-Since your application is made up of multiple plugins working together, it is important to
+Since your application is made up of multiple modules working together, it is important to
 have a consistent display ordering scheme.  The framework's basic folders are shown below (with their
 display ordering):
 

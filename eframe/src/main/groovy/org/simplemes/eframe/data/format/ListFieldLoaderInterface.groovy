@@ -22,7 +22,7 @@ interface ListFieldLoaderInterface {
   List readList(DomainEntityInterface object, FieldDefinitionInterface fieldDefinition)
 
   /**
-   * Saves the list field values to the DB.  Relies on the GORM/hibernate save() mechanism and dirty
+   * Saves the list field values to the DB.  Relies on the Micronaut Data save() mechanism and dirty
    * checking for the save.
    *
    * @param object The domain object the field is to be stored in.

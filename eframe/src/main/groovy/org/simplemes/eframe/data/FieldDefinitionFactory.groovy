@@ -15,7 +15,7 @@ import java.lang.reflect.Field
 class FieldDefinitionFactory {
 
   /**
-   * Builds the correct field definition for a persistent GORM entity property.
+   * Builds the correct field definition for a persistent entity property.
    * @param property The presisted property.
    */
   static FieldDefinitionInterface buildFieldDefinition(PersistentProperty property) {
@@ -25,7 +25,7 @@ class FieldDefinitionFactory {
 
   /**
    * Builds the correct field definition for a normal Java field.
-   * @param property The GORM property.
+   * @param field The field.
    */
   static FieldDefinitionInterface buildFieldDefinition(Field field) {
     ArgumentUtils.checkMissing(field, 'field')

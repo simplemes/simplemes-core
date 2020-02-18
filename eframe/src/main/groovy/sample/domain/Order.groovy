@@ -23,13 +23,10 @@ import javax.annotation.Nullable
 import javax.persistence.Column
 import javax.persistence.OneToMany
 
-//import grails.gorm.annotation.Entity
-
 /**
  * A sample domain class that simulates an order.
  * Fields include: order, qtyToBuild, product, status, dueDate
  */
-//@ExtensibleFields
 @MappedEntity('ordr')
 @DomainEntity
 @ToString(includeNames = true)

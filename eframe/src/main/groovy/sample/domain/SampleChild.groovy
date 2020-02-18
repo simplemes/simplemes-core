@@ -14,9 +14,6 @@ import io.micronaut.data.model.DataType
 import org.simplemes.eframe.data.format.BasicFieldFormat
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.annotation.DomainEntity
-
-//import grails.gorm.annotation.Entity
-
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
 import javax.annotation.Nullable

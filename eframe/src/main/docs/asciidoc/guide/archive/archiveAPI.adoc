@@ -21,12 +21,12 @@ your controller.  In your controller, you would add this code:
 ----
   @Transactional
   def archive() {
-    ArchiveUtils.handleArchive(this, Order, grailsApplication)
+    ArchiveUtils.handleArchive(this, Order)
   }
 
   @Transactional
   def unarchive() {
-    ArchiveUtils.handleUnarchive(this, Order, grailsApplication)
+    ArchiveUtils.handleUnarchive(this, Order)
   }
 ----
 

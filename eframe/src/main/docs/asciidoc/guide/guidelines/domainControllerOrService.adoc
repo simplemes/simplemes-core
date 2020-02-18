@@ -62,8 +62,8 @@ endif::[]
 :imagesdir: {imagesdir-src}
 
 The CRUD (Create, Read, Update and Delete) actions of domain objects does not involve services.
-GORM provides a good implementation of these functions.
-This framework adds some glue to make the pieces work better together.
+Micronaut Data with some helpers from this enterprise framework provides a good implementation
+of these functions. This framework adds some glue to make the pieces work better together.
 
 When you have non-CRUD requests, there is usually some business logic and transaction control needed.
 In many scenarios, multiple top-level domains are used by the business logic.  For these reasons,

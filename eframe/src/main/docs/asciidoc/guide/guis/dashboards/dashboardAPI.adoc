@@ -98,7 +98,7 @@ NOTE: Most events are defined by the application.  This framework only provides 
 
 It is also sometimes necessary for one activity to set parameters passed to another activity
 when it is initially displayed.  One common problem with dashboard activities is that one
-activity may have out of date values from another plugin.  In the diagram below, a user
+activity may have out of date values from another module.  In the diagram below, a user
 may enter a Work Center, then press the 'Pass' button.  It is important that the current
 value is used by the new activity(s) when they are displayed. There is an API defined that allows
 your activities to be called when new activity is displayed in a panel (due to a button press).

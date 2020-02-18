@@ -148,7 +148,7 @@ class ReportEngine {
   /**
    * Fills a report result using the given report and data.
    * @param report The compiled report details to fill in with data.
-   * @param data If provided, test data for the report.  If not given, then will use the Grails dataSource to make a connection.
+   * @param data If provided, test data for the report.  If not given, then will use the dataSource bean to make a connection.
    * @return The report Details.
    */
   @SuppressWarnings("GroovyAssignabilityCheck")

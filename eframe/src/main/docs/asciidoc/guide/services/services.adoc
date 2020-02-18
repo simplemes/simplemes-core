@@ -25,7 +25,7 @@ All services that perform database changes should be marked as transactional:
 ----
 package org.simplemes.mes.assy.floor
 
-import grails.gorm.transactions.Transactional
+import javax.transaction.Transactional
 
 @Transactional  // <1>
 class WorkCenterAssyService {
@@ -86,13 +86,5 @@ class AddComponentRequest {
 The above example uses POGO to receive a large number of arguments.  It then returns a domain object
 (WorkCenterComponent) that was created by this request.
 
-
-=== Domain Validation Errors
-
-Frequently, your services will process domain objects and attempt to save them.  Sometimes, these
-will fail due to validation errors.  To display/return these consistently, it is best to let
-GORM throw an exception upon save using the _failOnError: true_ option.
-
-See <<GORM>> for ways to make this the default setting.
 
 

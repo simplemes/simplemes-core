@@ -50,7 +50,7 @@ import java.sql.SQLException
  *
  * If the SERVER server is needed, then it will be started once for the session.  This server will be shared with all
  * tests run during the session.<p>
- * The <code>dirtyDomains</code> value indicates that your test will be using GORM/Hibernate.  That sub-system will be started
+ * The <code>dirtyDomains</code> value indicates that your test will be using a real database.  That sub-system will be started
  * for you and all records in the given domains will be deleted on cleanup.
  * <p>
  * <b>Note:</b> This base class extends GebSpec to make running GUI and non-GUI tests together easier.
@@ -152,7 +152,7 @@ class BaseSpecification extends GebSpec {
 
   /**
    * Sets up the Spock test.<p>
-   * <b>Note:</b> This method indirectly sets the JVM's default timezone to UTC for proper date handling in Hibernate.
+   * <b>Note:</b> This method indirectly sets the JVM's default timezone to UTC for proper date handling in the database.
    *
    */
   @SuppressWarnings(["Println", "GroovyAssignabilityCheck", "SystemOutPrint"])

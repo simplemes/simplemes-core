@@ -158,15 +158,15 @@ javascript.  To do this easily, the _header.ftl_ supports a block `head`.  It ca
 [[pagination-filtering-and-sorting]]
 ===== Pagination, Filtering and Sorting
 
-GORM/Hibernate provides a good basis for the pagination, filtering and sorting mechanism for
+Micronaut Data provides a good basis for the pagination, filtering and sorting mechanism for
 most domain objects. The toolkit library generally uses the same type of pagination,
-filtering and sorting as GORM, but the specific parameter names are different.
+filtering and sorting as Micronaut Data, but the specific parameter names are different.
 The parameters are shown below:
 
 [cols="1,1,4"]
 .Pagination, Filtering and Sorting
 |===
-| GORM | Toolkit | Description
+| Micronaut Data | Toolkit | Description
 
 | max | count | Number of rows per page (e.g. the number of rows retrieved).
 | offset | start | The record number of the first record to return.
@@ -177,7 +177,7 @@ The parameters are shown below:
 If your application uses the `list()` method from the
 link:groovydoc/org/simplemes/eframe/controller/BaseCrudController.html[BaseCrudController^]
 icon:share-square-o[role="link-blue"] as described in <<Controllers>>,
-then the conversion to the GORM values is automatically done for you.
+then the conversion to the DB values is automatically done for you.
 
 The link:groovydoc/org/simplemes/eframe/controller/ControllerUtils.html[ControllerUtils^]
 icon:share-square-o[role="link-blue"] provides the methods

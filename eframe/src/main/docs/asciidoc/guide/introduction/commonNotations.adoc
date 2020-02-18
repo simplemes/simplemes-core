@@ -17,7 +17,7 @@ For example:
   /**
    * Returns all of the domain classes defined in the system.
    * <p>
-   * <b>Note:</b> This method uses the internal values of the GORM HibernateDatastore.  // <1>
+   * <b>Note:</b> This method uses the internal values of the Micronaut.  // <1>
                   This may change someday.
    * @return
    */

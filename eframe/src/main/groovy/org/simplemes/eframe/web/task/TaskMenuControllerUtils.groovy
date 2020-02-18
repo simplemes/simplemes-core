@@ -1,13 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.task
 
 
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.controller.ControllerUtils
-
-/*
- * Copyright (c) 2018 Simple MES, LLC.  All rights reserved.  See license.txt for license terms.
- */
-
 
 /**
  * Provides access to the controller details for building a task menu from the controllers.  THis
@@ -39,7 +38,6 @@ class TaskMenuControllerUtils {
         //println "controllerItems = $controllerItems"
         controllerItems.each { it.controllerClass = clazz }
         list.addAll(controllerItems)
-        //println "${grailsController.name} = $controller.taskMenuItems"
       }
     }
     return list

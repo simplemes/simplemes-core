@@ -1,11 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.reports
 
 
 import org.simplemes.eframe.test.BaseSpecification
-
-/*
- * Copyright (c) 2018 Simple MES, LLC.  All rights reserved.  See license.txt for license terms.
- */
 
 /**
  * Tests.
@@ -30,7 +30,7 @@ class ReportHelperSpec extends BaseSpecification {
     when: 'the reports are found'
     def reports = ReportHelper.instance.determineBuiltinReports()
 
-    then: 'the reports list contains the one shipped with the plugin'
+    then: 'the reports list contains the one shipped with the module'
     reports.size() > 0
     reports.contains('reports/ArchiveLog.jrxml')
   }

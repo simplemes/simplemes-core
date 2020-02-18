@@ -84,14 +84,17 @@ Add SQL DDL logic and Liquid-base/FlyWay support.
   Find way to auto-generate core stuff?.
 done - Micronaut-data does not support traits or sub-classes in most cases.
 Look at using an environment for DB type: h2, postgres.  Change command line to use it.
-Remove unused mocks and methods in transformations.
-  MockFieldExtension
+Drop domainPackages from Addition.  Drop EFramePackage
+Check on if efBootstrap is needed.  Can application.yml handle it?
+  Update config.adoc with new requirements.
+In fieldTypes.adoc, add note on special type (Date, etc.).
+Fix all // TODO: Replace with non-hibernate alternative
+
 
 Docs
 =================
+Update Section Pagination, Filtering and Sorting
 New Guidelines
-  Move all business logic to OrderService (populateLSNs).
-    Leave lazy loaders in domain (getLSNSequence()).
   Use UUID for entities
   Convert ID/Id/id to UUID in docs
   Convert long to UUID.
@@ -100,7 +103,6 @@ New Guidelines
     findById(uuid)
     list(pagination)
 Update dependencies
-Add notes on why using MN-Data, not hibernate.
 Remove references to Grails constraints, transients and mapping options.
 
 Vue Investigation
@@ -116,7 +118,6 @@ Tasks left out
   Look into Jackson skipping foreign references.  Only need key and ID fields to import.
   Simplify Client.javascript to one per Controller by default -  Add GUI test of logging level in EFrameJSLoggingGUISpec.
   Rename efList to efGrid? for Defn pages? Doc/Code
-  Add unit test with mocks for EframeHibernateMappingContextConfiguration or use in BaseSpecification?
   Add E2E test for optimistic locking detection.  In definition GUIs.
   Add Dashboard editor.
   Add splitter position remember in dashboard.
@@ -210,11 +211,6 @@ Create new DB
 Jenkins Setup
 ==============
 URL: mphouston@s.attlocal.net:/opt/git/smes/eframe.git
-
-Global Renames
-==============
-Grails -> Micronaut
-Plugin -> Module
 
 Setup
 =========
@@ -349,19 +345,6 @@ Groovy vs. Kotlin
 
 Groovy is clearer.
 GORM vs. JPA vs. Kotlin Expose
-
-Sizes and Startup Times
-=======================
-                         Startup (ms)  distZip (MB)     create
-jonly (Java)                 2,056        10.2          mn create-app jonly -l java
-jjspock (Java/JPA/Spock)     2,141        32.2          mn create-app jjspock -l java -f kafka,spock,hibernate-jpa
-kspock (Kotlin/Spock)        2,107        17.5          mn create-app kspock -l kotlin -f kafka,spock
-gspock (Groovy/Spock)        2,032        19.0          mn create-app gspock -l groovy -f kafka,spock
-ggspock (Groovy/GORM/Spock)  2,089        35.7          mn create-app ggspock -l groovy -f kafka,spock,hibernate-gorm,management
-gjspock (Groovy/JPA/Spock)   2,098        36.9          mn create-app gjspock -l groovy -f kafka,spock,hibernate-jpa
-
-persist                      2,281        31.7          mn create-app persist -l groovy -f spock,hibernate-gorm,management
-test2                                                   mn create-app test2 -l groovy -f spock,hibernate-gorm,management
 
 
 

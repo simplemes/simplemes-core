@@ -20,7 +20,7 @@ class ClassPathScanner {
 
   /* Originally used the Spring logic to find sub-classes, but that was dropped in favor the addition discovery via
      efBootstrap.yml.  This avoids full class path searches.
-      For Spring-based logic, see https://github.com/grails/grails-data-mapping/blob/ef1730a42bc515cfb96cf9175d81e344d8a08a61/grails-datastore-gorm/src/main/groovy/org/grails/datastore/gorm/utils/ClasspathEntityScanner.groovy
+     The search is now simpler to find resources (e.g. .yml files and report files).
 
    */
 

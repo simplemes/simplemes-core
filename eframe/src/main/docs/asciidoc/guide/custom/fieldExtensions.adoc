@@ -20,7 +20,7 @@ endif::[]
 
 
 
-The Enterprise Framework plugin lets the user define custom fields for most domain objects.
+The Enterprise Framework module lets the user define custom fields for most domain objects.
 These are stored in a single string column in the domain object.  You (as the application
 developer) must enable this feature on the domain classes that need this ability.
 Once enabled, the end user can add custom fields and adjust the definition GUIs as they like.
@@ -46,7 +46,7 @@ All of the decisions below are based on a number of assumptions on the use of cu
   (<<Field Extensions>>) and production objects will tend to use another type (<<Flex Fields>>).
 
 When designing the custom field support, we had hoped to store each custom field value in its own
-database column. Unfortunately, that was not possible with GORM.  The hibernate plugin requires
+database column. Unfortunately, that was not possible with Micronaut Data.  Micronaut Data requires
 that persisted fields be compiled into the domain classes. This would force a recompilation/restart
 of the application just to add a custom field. Instead, we chose to store all custom fields into a
 single text column.  Each custom field still appears as a dynamic
@@ -144,7 +144,6 @@ and setters.  Instead, the framework uses the
 link:groovydoc/org/simplemes/eframe/data/FieldDefinitionInterface.html[FieldDefinitionInterface^]
 icon:share-square-o[role="link-blue"] to access the value in the domain.
 
-These fields do not support GORM dynamic finders (e.g. Order.findByProduct(), etc).
 
 
 ===== ExtensibleFieldHolder Annotation
@@ -437,12 +436,10 @@ When testing using GUI/GEB testing, remember to delete your custom child classes
 ==== Custom Child List - Integration/GUI Testing
 
 Testing lists of child records in Integration/GUI tests is a little more complex than we
-would like. The simplest approach for most integration testing is to use the @Rollback notation.
-This causes multiple issues with the list field extension.  In particular, many of the hibernate
-events are not triggered until the transaction is committed.   This means the custom records will
-never be saved.
+would like. The simplest approach for most non-GUI testing is to use the @Rollback notation.
 
-To avoid these problems, you will need to use explicit transactions in your tests.  For example:
+For GUI testing and other scenarios, you may need to use explicit transactions in your tests.
+For example:
 
 [source,groovy]
 .Example - Integration Testing of Custom Child List

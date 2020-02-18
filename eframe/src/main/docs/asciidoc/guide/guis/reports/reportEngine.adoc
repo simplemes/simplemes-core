@@ -334,7 +334,7 @@ easy to do.
 . Right-click on the top level element in the Project Explorer (typically _MyReports_).
 . Select _Properties_.
 . In the Properties dialog, select the _Java Build Path_ property.
-. Add a JAR file for the eframe plugin or add the class directories for the build area 
+. Add a JAR file for the eframe module or add the class directories for the build area
   on your system.
   
 image::guis/ReportStudioClassPath.png[title="ReportStudioClassPath",align="center", width=75%]

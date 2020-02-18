@@ -6,7 +6,7 @@
 
 This Javascript function notifies the <<guide.adoc#dashboards,Dashboards>> that a given activity is finished.
 This closes the activity and replaces it with the default or next activity page.  You can specify error, info and
-warning messages. You can also indicate that the next plugin in the sequence should stop.  This function is provided
+warning messages. You can also indicate that the next activity in the sequence should stop.  This function is provided
 in the _dashboard.js_ library.
 
 The parameters supported by the function are:

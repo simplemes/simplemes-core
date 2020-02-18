@@ -44,7 +44,7 @@ class InitialDataLoader {
     def start = System.currentTimeMillis()
     def allDomains = DomainUtils.instance.allDomains
     if (!allDomains) {
-      // Skip if hibernate is not started yet.
+      // Skip if database is not started yet.
       return classesLoaded
     }
     addLoadersFromAdditions(allDomains)
@@ -111,7 +111,7 @@ class InitialDataLoader {
 
   /**
    * Sorts the given list of Maps in the order needed for initial data loading.
-   * @param list The list.  Contains elements: domain (a GrailsDomainClass) and after (a List<String>).
+   * @param list The list.  Contains elements: 'domain' (a Class) and 'after' (a List<String>).
    * @return The sorted list.
    */
   protected List<IDL> sortDomainsForLoading(List<IDL> list) {

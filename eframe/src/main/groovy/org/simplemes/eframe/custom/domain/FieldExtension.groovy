@@ -18,7 +18,7 @@ import javax.persistence.Column
 
 /**
  * This class defines a single custom field for an application.  This field is inserted into the domain class
- * by the Enterprise Framework plugin at startup or when the custom field is changed.
+ * by the Enterprise Framework module at startup or when the custom field is changed.
  *
  */
 @MappedEntity

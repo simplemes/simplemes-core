@@ -12,9 +12,6 @@ import io.micronaut.data.annotation.DateUpdated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
-
-//import grails.gorm.annotation.Entity
-
 import io.micronaut.data.annotation.Transient
 import io.micronaut.data.model.DataType
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
@@ -30,8 +27,6 @@ import javax.persistence.ManyToOne
  * A sample domain class that simulates an RMA approval.
  * Fields include: rma, status, product, qty, returnDate, rmaType
  */
-// TODO: Replace with non-hibernate alternative
-//@ExtensibleFields
 @MappedEntity
 @DomainEntity
 @ToString(includePackage = false, includeNames = true, excludes = ['dateCreated', 'dateUpdated'])

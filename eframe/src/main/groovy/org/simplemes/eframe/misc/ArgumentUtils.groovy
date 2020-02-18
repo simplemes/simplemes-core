@@ -1,20 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.misc
 
 import groovy.transform.CompileStatic
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
-/**
- *  Convenience methods for handling arguments in the grails/groovy world.
- * <p/>
- * Copyright Michael Houston. All rights reserved.
- * Original Author: mph
- *
- */
 class ArgumentUtils {
 
   /**

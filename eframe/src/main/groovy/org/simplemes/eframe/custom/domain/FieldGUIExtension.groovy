@@ -20,15 +20,11 @@ import org.simplemes.eframe.misc.FieldSizes
 
 import javax.persistence.Column
 
-//import grails.gorm.annotation.Entity
-
 /**
  * This defines the field extensions added to the GUI for a given domain class.
  * This mainly adjusts the order of fields on the standard definition GUIs and lists.
  * This can also add custom fields to those GUIs.
  */
-// TODO: Replace with non-hibernate alternative
-//@ExtensibleFields()
 @MappedEntity
 @DomainEntity
 @EqualsAndHashCode(includes = ["domainName"])
@@ -122,7 +118,7 @@ class FieldGUIExtension {
   }
 
   /**
-   * Sets the adjustments.   Called by hibernate upon read.
+   * Sets the adjustments.
    */
   @SuppressWarnings("unused")
   void setAdjustmentsText(String xml) {

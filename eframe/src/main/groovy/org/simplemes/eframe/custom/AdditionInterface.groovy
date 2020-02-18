@@ -1,10 +1,8 @@
-package org.simplemes.eframe.custom
 /*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
 
+package org.simplemes.eframe.custom
 /**
  * Defines the methods an addition class must provide.  These additions define how modules add features to an
  * application.
@@ -18,15 +16,15 @@ interface AdditionInterface {
   String getName()
 
   /**
-   * Returns the list of encoded field types that Hibernate will support.
+   * Returns the list of encoded field types that will be supported.
    * @return The list of classes.
    */
   List<Class> getEncodedTypes()
 
   /**
-   * Returns a list of classes that define the top-level domain classes that help hibernate find the domain classes.
+   * Returns a list of classes that define the top-level domain classes that help the db find the domain classes.
    * This is usually a dummy class at the highest package that will contain all of the domain classes.
-   * Hibernate will search this package and all sub-packages for valid domain classes.
+   * Will search this package and all sub-packages for valid domain classes.
    * @return The list of top-level domain classes.
    */
   List<Class> getDomainPackageClasses()

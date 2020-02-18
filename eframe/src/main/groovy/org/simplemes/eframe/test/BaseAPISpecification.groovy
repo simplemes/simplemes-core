@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import groovy.util.logging.Slf4j
@@ -12,16 +16,10 @@ import io.reactivex.Flowable
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.security.SecurityUtils
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * The base class for Spock tests that need to make API calls (over HTTP) to a running (embedded) server.
  * Supports a current login for API access.
- * This test always starts the embedded server and GORM.  This also creates an HTTP client that sets
+ * This test always starts the embedded server.  This also creates an HTTP client that sets
  * followRedirects to false.
  * <p>
  * The test should login() for most tests.  All later requests will be sent with the login authorization cookie (until
@@ -35,7 +33,7 @@ import org.simplemes.eframe.security.SecurityUtils
 class BaseAPISpecification extends BaseSpecification {
 
   /**
-   * Makes sure the API tests have the embedded server (with GORM/Hibernate).
+   * Makes sure the API tests have the embedded server (with database).
    */
   @SuppressWarnings("unused")
   static specNeeds = [SERVER]

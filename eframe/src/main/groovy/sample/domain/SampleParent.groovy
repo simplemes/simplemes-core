@@ -23,8 +23,6 @@ import javax.persistence.ManyToMany
 import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 
-//import grails.gorm.annotation.Entity
-
 /**
  * A test/Sample parent domain class.
  * Has child and foreign references.

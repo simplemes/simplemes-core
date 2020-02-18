@@ -95,7 +95,7 @@ The JSON format for these references can use the 'id' format:
 {
   "orderCode": "10102-23",
   "customer": {
-    "id": 1020405534  // <1>
+    "id": "dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b"  // <1>
   }
 }
 ----

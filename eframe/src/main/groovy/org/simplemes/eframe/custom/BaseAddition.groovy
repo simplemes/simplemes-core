@@ -1,10 +1,8 @@
-package org.simplemes.eframe.custom
 /*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
 
+package org.simplemes.eframe.custom
 /**
  * Base class for most Addition classes.  Helps define the addition's elements to be added to the application.
  * Includes elements like field extensions, new encoded types, etc.
@@ -21,7 +19,7 @@ abstract class BaseAddition implements AdditionInterface {
   }
 
   /**
-   * Returns the list of encoded field types that Hibernate will support.
+   * Returns the list of encoded field types that data layer will support.
    * @return The list of classes.
    */
   @Override
@@ -30,9 +28,9 @@ abstract class BaseAddition implements AdditionInterface {
   }
 
   /**
-   * Returns a list of classes that define the top-level domain classes that help hibernate find the domain classes.
+   * Returns a list of classes that define the top-level domain classes that help the data layer find the domain classes.
    * This is usually a dummy class at the highest package that will contain all of the domain classes.
-   * Hibernate will search this package and all sub-packages for valid domain classes.
+   * The data layer will search this package and all sub-packages for valid domain classes.
    * @return The list of top-level domain classes.
    */
   @Override

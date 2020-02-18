@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data.format
 
 
@@ -6,14 +10,8 @@ import org.simplemes.eframe.test.BaseSpecification
 import sample.domain.SampleParent
 import sample.domain.SampleSubClass
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
- * Tests for the Factory, with full Hibernate running.
+ * Tests for the Factory.
  */
 class FieldFormatFactoryIntSpec extends BaseSpecification {
 

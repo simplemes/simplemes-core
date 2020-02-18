@@ -21,7 +21,7 @@ endif::[]
 
 
 Automated testing of your application is critical to your success.
-The Enterprise Framework plugin helps you test your application with test support helpers.
+The Enterprise Framework module helps you test your application with test support helpers.
 
 === Testing Philosophy
 
@@ -30,7 +30,7 @@ These can be 'true' unit tests or more like integration tests.
 This is done for speed purposes.
 
 GUI tests end with '_GUISpec_'.  These typically trigger an embedded server startup.
-Some tests will test domains, which will start the hibernate data store for testing the full
+Some tests will test domains, which will start the data store for testing the full
 domain stack.
 
 include::testingOverview.adoc[]

@@ -7,9 +7,6 @@ package sample.domain
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
-
-//import grails.gorm.annotation.Entity
-
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import org.simplemes.eframe.domain.annotation.DomainEntity

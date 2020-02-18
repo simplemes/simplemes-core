@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import ch.qos.logback.classic.Level
@@ -7,12 +11,6 @@ import ch.qos.logback.core.AppenderBase
 import ch.qos.logback.core.ConsoleAppender
 import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream
 import org.slf4j.LoggerFactory
-
-/*
- * Copyright Michael Houston 2017. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * A Mock appender for the logback logging system.  Used to collect messages logged from a class under test.
@@ -177,7 +175,7 @@ class MockAppender extends AppenderBase {
     LoggerContext loggerContext = (LoggerContext) LoggerFactory.ILoggerFactory
     //println "${clazz.simpleName} loggerContext = ${loggerContext.class}"
 
-    // Suppress the console output if the normal Grails default console appender for root is used.
+    // Suppress the console output if the normal default console appender for root is used.
     // This reduces console output during unit tests.
     def consoleAppender = loggerContext.getLogger("root").getAppender("STDOUT")
     if (consoleAppender instanceof ConsoleAppender && !(consoleAppender.outputStream instanceof ByteOutputStream)) {

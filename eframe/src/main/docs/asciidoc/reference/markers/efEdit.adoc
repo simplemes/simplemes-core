@@ -93,8 +93,7 @@ NOTE: This marker supports the <<Inline Grid>>.
 When a domain object has a list of simple child elements, it is useful to edit/show them within
 the parent's page using a standard editable grid (table) layout.  This eliminates the need for a
 dedicated edit page for the child records. This also allows creation of the
-child records within the update transaction.  You can also now specify a standard GORM `minSize`
-validation on the child list.
+child records within the update transaction.
 
 NOTE: This is only useful with simple child elements.  This usually means child elements with
       no sub-elements within the child. This child element should also define the <<fieldOrder>>

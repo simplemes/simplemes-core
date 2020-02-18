@@ -21,8 +21,9 @@ import spock.lang.IgnoreIf
 class BaseGUISpecification extends BaseSpecification {
 
   /**
-   * Makes sure the GUI test has GEB GUI, embedded server and hibernate.
+   * Makes sure the GUI test has GEB GUI, embedded server and database.
    */
+  @SuppressWarnings("unused")
   static specNeeds = [GUI]
 
   /**

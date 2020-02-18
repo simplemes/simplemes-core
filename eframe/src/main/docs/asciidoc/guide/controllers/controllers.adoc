@@ -231,12 +231,12 @@ used in standard CRUD <<Rest API>> methods. This includes the HTTP methods _GET,
 
 The _BaseCrudRestController_ has a the normal Rest-style API endpoints:
 
-* {domain}/crud/id *(GET)* - Read a single record by ID or primary key.
+* {domain}/crud/uuid *(GET)* - Read a single record by UUID or primary key.
 * {domain}/crud (*POST)* - Create single record.
-* {domain}/crud/id *(PUT)* - Update a single record.
-* {domain}/crud/id *(DELETE)* - Delete a single record.
+* {domain}/crud/uuid *(PUT)* - Update a single record.
+* {domain}/crud/uuid *(DELETE)* - Delete a single record.
 
-The ID-based methods use the URL to define the ID or primary key for the the record being processed.
+The ID-based methods use the URL to define the UUID or primary key for the the record being processed.
 See <<Rest API>> for details.
 
 

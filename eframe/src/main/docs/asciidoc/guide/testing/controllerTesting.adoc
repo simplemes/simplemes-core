@@ -12,7 +12,7 @@ endif::[]
 
 Controllers are the main entry point into your application from the outside world. These
 must be secured and rigorously tested.  Test helpers are provided to make your life easier.
-The general philosophy of controller testing is to use real GORM/Hibernate domain objects
+The general philosophy of controller testing is to use real domain objects
 and test with a real (in memory) database.  In general, most controller testing does not
 use the embedded server support provided by Micronaut.
 

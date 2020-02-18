@@ -11,7 +11,6 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc-header]#Module Additions#
 [inline-toc]#<<Module Additions>>#
-[inline-toc]#<<plugin-examples>>#
 
 endif::[]
 
@@ -28,4 +27,4 @@ include::flexTypes.adoc[]
 
 include::additions.adoc[]
 
-// TODO: composition, pluginExamples.
+// TODO: composition, pluginExamples (with TOC above)

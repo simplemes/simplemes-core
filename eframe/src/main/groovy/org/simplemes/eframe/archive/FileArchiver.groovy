@@ -70,7 +70,7 @@ class FileArchiver implements ArchiverInterface {
   void archive(Object domainObject) {
     ArgumentUtils.checkMissing(domainObject, 'domainObject')
     if (!DomainUtils.instance.isDomainEntity(domainObject.class)) {
-      throw new IllegalArgumentException("Cannot archive a ${domainObject.class}.  It is not a Hibernate domain class.")
+      throw new IllegalArgumentException("Cannot archive a ${domainObject.class}.  It is not a domain class.")
     }
 
     // Make sure the domain has been saved and has a record in the db.

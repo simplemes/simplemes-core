@@ -6,9 +6,6 @@ package org.simplemes.eframe.dashboard.domain
 
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
-
-//import grails.gorm.annotation.Entity
-
 import groovy.util.logging.Slf4j
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.DateCreated

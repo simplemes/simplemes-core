@@ -21,6 +21,10 @@ plugins {
   id "org.owasp.dependencycheck" version "4.0.0.1"
 }
 
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 // Temporarily roll back to Groovy 2.5.4 for compiling to avoid code coverage issue: https://issues.apache.org/jira/browse/GROOVY-9126
 ext['groovy.version'] = '2.5.4'
 
@@ -77,9 +81,6 @@ dependencies {
   }
   compile ( "com.bertramlabs.plugins:asset-pipeline-core:$assetPipelineVersion")
   compile "org.springframework.security:spring-security-crypto:${springSecurityCryptoVersion}"
-  //compile "io.micronaut.configuration:micronaut-hibernate-validator"
-  //compile "io.micronaut.configuration:micronaut-hibernate-gorm"
-  //compile "org.hibernate:hibernate-ehcache:${hibernateEhcacheVersion}"
 
   implementation "jakarta.persistence:jakarta.persistence-api:${jakartaJPAVersion}"
   compileOnly "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"

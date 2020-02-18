@@ -244,8 +244,8 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
 
   /**
    * Adds a Map field to the domain class to hold the complex custom field values such
-   * as lists of references.  This is a transient field so that persistence is handled by
-   * non-Grails logic.  Initializes the field as an empty map.
+   * as lists of references.  This is a transient field so that it is not persisted directly.
+   * Initializes the field as an empty map.
    * <p>
    * <b>Note:</b> This ComplexCustomFieldSerializer depends on the _complexCustomFields Map added
    * to all extensible field domains.

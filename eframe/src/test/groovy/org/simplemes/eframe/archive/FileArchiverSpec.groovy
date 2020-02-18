@@ -332,7 +332,7 @@ class FileArchiverSpec extends BaseSpecification {
 
     then: 'an exception is thrown'
     def e = thrown(Exception)
-    //      throw new IllegalArgumentException("Cannot archive a ${domainObject.class}.  It is not a Hibernate domain class.")
+    //      throw new IllegalArgumentException("Cannot archive a ${domainObject.class}.  It is not a domain class.")
     UnitTestUtils.assertExceptionIsValid(e, ['string', 'not', 'domain'])
   }
 

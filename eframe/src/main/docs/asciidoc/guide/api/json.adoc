@@ -111,8 +111,8 @@ These errors are not detected at compile time.
 ==== @JSONByID
 
 In some rare cases, you may need to serialize/deserialize a POGO that contains domain objects.
-This is similar to <<json-by-key,@JSONByKey>>, but you need to use a record ID instead of the key
-field. To make this JSON smaller, we provide an annotation that will use the ID only for the
+This is similar to <<json-by-key,@JSONByKey>>, but you need to use a record UUID instead of the key
+field. To make this JSON smaller, we provide an annotation that will use the UUID only for the
 serialization/deserialization process.  This makes things like the JSON processing
 for other systems simpler.
 
@@ -130,8 +130,8 @@ class StartRequest {
   Date dateTime
 }
 ----
-<.> Will serialize this as _"order": 123_.  Just the database record ID will be used from
-    the domain `Order`.
+<.> Will serialize this as _"order": "dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b"_.
+    Just the database record UUID will be used from the domain `Order`.
 
 
 This produces JSON similar to this:
@@ -141,7 +141,7 @@ This produces JSON similar to this:
 ----
 {
     "barcode": "M1001",
-    "order": 1234,
+    "order": "dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b",
     "workCenter": 4567,
     "qty": 1.2,
     "dateTime": null

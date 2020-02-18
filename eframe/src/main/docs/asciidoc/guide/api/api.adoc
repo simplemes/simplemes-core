@@ -18,22 +18,20 @@ The goal is to provide you with tools to create the APIs and avoid repeating you
 in the process.
 
 Many of the default Micronaut/Jackson features come close to the proper enterprise approach,
-but they miss out in key areas.  This includes dealing with hibernate references and other
+but they miss out in key areas.  This includes dealing with domain references and other
 related issues.  These issues are mostly hidden from you when you use the built-in <<Rest API>>
-support for this framework.  It handles most of the strange hibernate issues and supports the
+support for this framework.  It handles most of the strange database issues and supports the
 right formats (e.g. ISO Date formats, etc).
 
 
 If you do not use the built-in <<Rest API>>, then you will need to handle these types of issues:
 
-// TODO: Verify these are still issues.
-
 * Create/Read/Update/Delete (CRUD).
 * Child records.
 * Date/time encoding (ISO).
 * Child record removal.
-* Clean key field handling (no Micronaut IDs needed).
-* Support for optional Micronaut ID in references to other objects.
+* Clean key field handling (no database UUIDs needed).
+* Support for optional database UUID in references to other objects.
 * One-to-one relationship handling.
 * One-to-many relationship handling (children).
 * Standardized Controller/Service use for APIs.

@@ -399,7 +399,7 @@ class DomainBinderSpec extends BaseSpecification {
       assert child1.title == 'title2'
       assert child1.sequence == 247
 
-      // and the record ID is unchanged and the version number was changed - means hibernate really saved the record
+      // and the record ID is unchanged and the version number was changed
       assert child1.uuid == child.uuid
       true
     }

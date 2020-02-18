@@ -29,8 +29,7 @@ You can test this very concisely with this domain unit test DSL (Domain Specific
 ----
 class UserSpec extends BaseSpecification {  // <1>
 
-  static specNeeds = [HIBERNATE]            // <2>
-  static dirtyDomains = [User, Role]
+  static dirtyDomains = [User, Role]  // <2>
 
   def "verify that user domain enforces constraints"() {
     expect: 'the constraints are enforced'
@@ -45,7 +44,7 @@ class UserSpec extends BaseSpecification {  // <1>
 }
 ----
 <1> Uses the common Spock link:groovydoc/org/simplemes/eframe/test/BaseSpecification.html[BaseSpecification^].
-<2> Indicates that the GORM/Hibernate system needs to be started and that the User and Role
+<2> Indicates that the embedded server and database are needed and that the User and Role
     objects will need to be cleaned up when the test finishes.  See <<Test Data Pollution>> for details.
 <3> A Domain test helper to simplify testing.  See <<domain-testing>>.
 
@@ -74,7 +73,7 @@ the specification it belongs in should be obvious.
 
 Some naming conventions for a _GridWidget_ test:
 
-* _GridWidgetSpec_ - Basic tests.  Some may need hibernate domain objects.
+* _GridWidgetSpec_ - Basic tests.  Some may need real database for tests using domain objects.
 * _GridWidgetAPISpec_ - Non-GUI tests that need a live embedded server.  Typically tests REST API via an HTTP client. See <<API Testing>>.
 * _GridWidgetGUISpec_ - The GUI tests for the widget.  Runs a live embedded server and tests via GEB. See <<GUI Testing>>.
 
@@ -150,9 +149,9 @@ This should be rare, but you can use the _Holders_ class:
 [source,groovy]
 .Example - Detecting Test Mode
 ----
-// For unit tests without GORM active, we will check to make sure the entity is defined in GORM
+// For unit tests without server active, we will not force a change to the admin user password.
 if (Holders.environmentDev || Holders.environmentTest) {
-  isGormEntity = getAllDomains()?.contains(c)  // <.>
+  adminUser.passwordExpired = false  // <.>
 }
 ----
 <.> This logic is not triggered in production mode.
@@ -170,7 +169,7 @@ to make testing easier include:
 
 Also, there is a series of base classes used in Spock tests that simplifies testing of common features:
 
-* <<BaseSpecification>> - Base class for non-GUI testing.  Includes support for Hibernate and Embedded servers test.
+* <<BaseSpecification>> - Base class for non-GUI testing.  Includes support for a database and Embedded servers test.
 * <<BaseGUISpecification>> - Base class for GUI testing or non-GUI testing.  Includes GUI login/logout and other common functions.
 * <<BaseAPISpecification>> - Non-GUI access to controller actions in integration tests.
 
@@ -210,7 +209,7 @@ process that can be simplified with this DSL (Domain Specific Language):
 ----
 class UserSpec extends BaseSpecification {  // <.>
 
-  static specNeeds = [HIBERNATE] // <.>
+  static specNeeds = SERVER // <.>
   static dirtyDomains = [Order]
 
   @Rollback // <.>
@@ -227,7 +226,7 @@ class UserSpec extends BaseSpecification {  // <.>
 }
 ----
 <.> Uses the common Spock <<BaseSpecification>>.
-<.> Indicates that the GORM/Hibernate system needs to be started and that the Order
+<.> Indicates that the Micronaut Data system needs to be started and that the Order
     objects will need to be cleaned up when the test finishes.
 <.> Rollback is supported, but not required.
 <.> The data generator.
@@ -296,7 +295,7 @@ class UserSpec extends BaseSpecification {
   }
 }
 ----
-<1> Indicates that the GORM/Hibernate system needs to be started and that the Order
+<1> Indicates that the Micronaut Data system needs to be started and that the Order
     objects will need to be cleaned up when the test finishes.
 
 If your domains support <<Initial Data Load>>, then your load method should return the list

@@ -33,7 +33,7 @@ endif::[]
 | o  Extension Support         |
 +------------------------------+
 | Micronaut                    |
-| o  Hibernate                 |        +----------+
+| o  Micronaut Data            |        +----------+
 | o  Netty HTTP Server         |--------|{s}       |
 +------------------------------+        | Database |
                                         |          |

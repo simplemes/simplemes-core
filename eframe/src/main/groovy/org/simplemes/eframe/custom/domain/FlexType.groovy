@@ -27,8 +27,6 @@ import javax.annotation.Nullable
 import javax.persistence.Column
 import javax.persistence.OneToMany
 
-//import grails.gorm.annotation.Entity
-
 /**
  * Defines the basic user-defined data types.
  * The category can be extended in sub-classes at the application level.

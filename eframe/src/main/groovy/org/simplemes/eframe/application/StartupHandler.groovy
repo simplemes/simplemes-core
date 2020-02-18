@@ -69,7 +69,7 @@ class StartupHandler {
 
   /**
    * This method should be called from your Application class before the   Micronaut.run() method is called.
-   * It initializes some settings that must be in place before Hibernate and Micronaut startup.
+   * It initializes some settings that must be in place before Micronaut startup.
    */
   static void preStart() {
     // We set the default to UTC to make sure the timestamps are stored in the DB with UTC timezone.
@@ -78,8 +78,7 @@ class StartupHandler {
   }
 
   /**
-   * Configures the Jackson object mapper with the settings we need.  Includes adding the hibernate 5 module to
-   * avoid infinite recursion.
+   * Configures the Jackson object mapper with the settings we need.
    * @param mapper The mapper.
    */
   static void configureJacksonObjectMapper(ObjectMapper mapper) {

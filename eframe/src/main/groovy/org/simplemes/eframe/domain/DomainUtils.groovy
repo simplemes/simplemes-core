@@ -22,8 +22,6 @@ import org.simplemes.eframe.misc.UUIDUtils
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
 
-//import grails.gorm.annotation.Entity
-
 /**
  * Domain Object manipulation utilities.
  * These class provide common domain class utilities that simplify
@@ -58,7 +56,7 @@ class DomainUtils {
   }
 
   /**
-   * Gets a single persistent field for the given GORM entity class.
+   * Gets a single persistent field for the given domain entity class.
    * <p>
    * <b>Note</b>: This should not be used in production.  See {@link #getFieldDefinitions(java.lang.Class)} for a more efficient method.
    * This method is mainly used for unit testing.
@@ -219,7 +217,6 @@ class DomainUtils {
   /**
    * Returns all of the domain classes defined in the system.
    * <p>
-   * <b>CAUTION:</b> This method uses the internal values of the GORM HibernateDatastore.  This may change someday.
    * @return
    */
   List<Class> getAllDomains() {

@@ -46,7 +46,7 @@ JSON and then converting the payload(s) to the right type.
 Some of the key requirements of archiving are:
 
 . Handle large number of un-related elements in an archive.
-. Support JSON format of all GORM/Hibernate entities.
+. Support JSON format of all supported <<Field Types>>.
 . Prevent any security holes.
 . Allow extension by customers.
 . Support JSON format for User Preferences in secure way.
@@ -61,7 +61,7 @@ This can be a vector for attacks on your servers.
 Instead, we chose to use a simple array representation of of the objects being archived.  Then, we have a
 white list of allowed classes that can be stored in this JSON.  This list includes:
 
-* All GORM/Hibernate Entities (persistent domain objects).
+* All Domain Entities (persistent domain objects).
 * Classes marked with the the special interface
 link:groovydoc/org/simplemes/eframe/json/TypeableJSONInterface.html[TypeableJSONInterface^]
 icon:share-square-o[role="link-blue"].

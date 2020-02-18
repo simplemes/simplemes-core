@@ -34,7 +34,7 @@ class Holders {
   static Environment environment
 
   /**
-   * A fallback environment for unit/hibernate only tests and such.
+   * A fallback environment for unit only tests and such.
    */
   static Environment fallbackEnvironment
 
@@ -60,7 +60,7 @@ class Holders {
   }
 
   /**
-   * Returns the current data source. If hibernate is not started, then this will return null.
+   * Returns the current data source. If the db is not started, then this will return null.
    * @return The data store.
    */
   static DataSource getDataSource() {

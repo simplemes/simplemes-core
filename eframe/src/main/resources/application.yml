@@ -44,23 +44,6 @@ micronaut:
   server.netty.logLevel: DEBUG
 
 ---
-hibernate:
-  hbm2ddl:
-    auto: update
-  cache:
-    queries: false
-    use_second_level_cache: true
-    use_query_cache: true
-    # doesn't work format_sql: true
-    # doesn't work use_sql_comments: true
-    region:
-      factory_class: org.hibernate.cache.ehcache.SingletonEhCacheRegionFactory
-      #              org.hibernate.cache.ehcache.EhCacheRegionFactory
-    #jdbc:  # Does not work
-    #  time_zone: "UTC"
-  config_class: org.simplemes.eframe.data.EframeHibernateMappingContextConfiguration
-  session_factory:
-    interceptor: org.simplemes.eframe.data.EFrameHibernatePersistenceInterceptor
 dataSource:
   url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
   dbCreate: create-drop
@@ -71,14 +54,6 @@ dataSource:
   password: ''
   # doesn't work logSql: true
 
-
----
-grails:
-  gorm:
-    failOnError: true
-    failOnErrorPackages:
-      - org.simplemes
-      - sample
 
 ---
 jackson:
