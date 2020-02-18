@@ -349,7 +349,7 @@ This happens when you use a primitive type (boolean) as an argument in the repos
 If you try to use the domain convenience method (`DashboardConfig.findByCategoryAndDefaultConfig()`),
 you will get the exception.  For example:
 
-[source,groocy]
+[source,groovy]
 .Example - Primitive Types in Repository Methods
 ----
 interface DashboardConfigRepository extends BaseRepository, CrudRepository<DashboardConfig, UUID> {

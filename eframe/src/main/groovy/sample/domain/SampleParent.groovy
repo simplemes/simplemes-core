@@ -28,7 +28,7 @@ import javax.persistence.OneToMany
  * Has child and foreign references.
  * <p>
  * <b>Fields</b> Include: name, title, notes, notDisplayed, moreNotes. allFieldsDomains, allFieldDomain, sampleChildren,
- * dateCreated, lastUpdated
+ * dateCreated, dateUpdated
  */
 @MappedEntity
 @DomainEntity

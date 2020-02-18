@@ -59,25 +59,6 @@ This configures JWT Security to force all controller requests to be authenticate
 It also allows access to some pages/assets without a login.
 (See Roles below for details).
 
-==== Controllers
+==== Security Setup for Controllers
 
-By default all controller methods must be secured.  This means adding the _@Secured_
-annotation to your controllers:
-
-[source,groovy]
-----
-import org.springframework.security.access.annotation.Secured
-
-@Secured('ADMIN')  // <1>
-@Transactional
-class MonitorController {
-
-  def index() {
-    . . .
-  }
-}
-----
-<1> User must have ADMIN role for access to all pages (methods) under this controller.
-
-The role chosen can be any of the defined roles.  Individual methods can be secured too.
-
+By default all controller methods must be secured.  See <<Controller Security>> for details.

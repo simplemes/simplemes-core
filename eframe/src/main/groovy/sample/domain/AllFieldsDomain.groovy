@@ -31,7 +31,7 @@ import javax.persistence.ManyToOne
  * A test/Sample domain class with all field types as optional fields.
  * <p>
  * <b>Fields</b> Include: name, title,
- *   qty, count, enabled, dateTime, dueDate, transientField, notes, reportTimeInterval, order, status, dateCreated, lastUpdated
+ *   qty, count, enabled, dateTime, dueDate, transientField, notes, reportTimeInterval, order, status, dateCreated, dateUpdated
  * <p>
  *
  *  <h3>Sample use of all fields</h3>

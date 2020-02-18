@@ -168,15 +168,16 @@ The parameters are shown below:
 |===
 | Micronaut Data | Toolkit | Description
 
-| max | count | Number of rows per page (e.g. the number of rows retrieved).
-| offset | start | The record number of the first record to return.
+| size | count | Number of rows per page (e.g. the number of rows retrieved).
+| from | start | The page (or record number) to start the display at.  Note: on is a page (from) and
+                 the other is a record number (start).
 | sort|'sort[fieldName]=asc'|The sort column.  The toolkit combines this with the sort order.
 | order|(see above)|The sort direction for the sort (asc or desc)
 |===
 
 If your application uses the `list()` method from the
 link:groovydoc/org/simplemes/eframe/controller/BaseCrudController.html[BaseCrudController^]
-icon:share-square-o[role="link-blue"] as described in <<Controllers>>,
+icon:share-square-o[role="link-blue"] as described in <<Controller Base Classes>>,
 then the conversion to the DB values is automatically done for you.
 
 The link:groovydoc/org/simplemes/eframe/controller/ControllerUtils.html[ControllerUtils^]

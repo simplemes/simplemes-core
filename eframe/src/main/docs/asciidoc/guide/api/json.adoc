@@ -207,7 +207,7 @@ For lists, the array looks something like this:
 An example that writes and reads the objects from a JSON file is shown below.
 
 
-[source,groocy]
+[source,groovy]
 .Example - Using TypeableMapper for Write
 ----
 def writer = new File("out.json").newWriter()
@@ -220,7 +220,7 @@ writer.close()
 <.> First object is written.
 
 
-[source,groocy]
+[source,groovy]
 .Example - Using TypeableMapper for Read
 ----
 def reader = new File("in.json").newReader()

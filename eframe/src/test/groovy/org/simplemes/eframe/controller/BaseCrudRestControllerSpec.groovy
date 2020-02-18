@@ -232,7 +232,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
   }
 
   @Rollback
-  def "verify restGet gracefully handles ID is not a long"() {
+  def "verify restGet gracefully handles ID is not a UUID"() {
     given: 'a controller for the base class for SampleParent'
     Class clazz = buildSampleParentController()
 

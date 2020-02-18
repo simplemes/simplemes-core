@@ -88,41 +88,6 @@ interface FieldDefinitionInterface {
   Map getGuiHints()
 
   /**
-   * The database ID for the custom field.
-   */
-  //Long getId()
-
-  /**
-   * A static list of valid values for the input field (used to text/string fields only).
-   */
-  //List getValidValues()
-
-  /**
-   * The context this field is defined for (typically a domain class name string).
-   */
-  //Object getContext()
-
-  /**
-   * The source of this field definition (usually the class name of the source object (e.g. FieldExtension).
-   */
-  //Object getSource()
-
-  /**
-   * True, if this is a user-extension.  False if it comes from an addition module.
-   */
-  //boolean isUserExtension()
-
-  /**
-   * The class that provides the field values.  Currently, this only supports Enumerations.
-   */
-  //String getValueClassName()
-
-  /**
-   * Some GUI hints, stored as name/value paris in a standard map.
-   */
-  //Map<String, String> getGuiHints()
-
-  /**
    * Gets the given field value from the given object (domain or POGO depending on sub-class).
    *
    * @param domainOrPogoObject The domain or POGO object the field is stored in.
@@ -138,12 +103,4 @@ interface FieldDefinitionInterface {
    */
   void setFieldValue(Object domainOrPogoObject, Object value)
 
-  /**
-   * Create a new instance of this field definition and adjust the copy's fields
-   * with the given options.
-   * @param original The original field definition.
-   * @param options The options to apply to the copy.
-   * @return The copy.
-   */
-  //FieldDefinitionInterface copy(FieldDefinitionInterface original,Map options)
 }

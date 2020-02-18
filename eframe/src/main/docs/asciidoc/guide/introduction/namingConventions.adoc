@@ -29,7 +29,9 @@ These are not hard and fast restrictions, since Micronaut typically allows almos
 the defined beans.
 You can deviate from these conventions if needed in your application.
 
-NOTE: The domain classes typically use the base name alone.  For example _Order_ is the order domain class.
+NOTE: The domain classes typically use the base name alone.  For example _Order_ is the order
+      domain class.  These are usually stored in a sub-package domain
+      (e.g. _order.simplemes.mes.demand.domain_).
 
 ==== Field Naming Conventions
 
@@ -48,7 +50,7 @@ Most standard objects will have these typical fields:
 |title| The single line title.  This is usually a short description displayed in lists.
 |description| A multi-line description.  Typically limited to 255 characters to reduce database size.
 |dateCreated| The date/time this record was created.
-|lastUpdated| The date/time this record was last updated.
+|dateUpdated| The date/time this record was last updated.
 |===
 
 Quantity fields typically start with 'qty' and have a _BigDecimal_ type.

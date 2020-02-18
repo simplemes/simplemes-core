@@ -82,7 +82,7 @@ class AController {
 }
 ----
 
-If the _Principal_ argument is not an argument, then you will get an access denied
+If the _Principal_ argument is not an argument to your methods, then you will get an access denied
 response (*HTTP Status 403-Forbidden*).
 
 === Controller Base Classes

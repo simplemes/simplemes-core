@@ -1,6 +1,11 @@
 
 === Configuration
 
+ifeval::["{backend}" != "pdf"]
+[inline-toc]#<<application-yml>>#
+[inline-toc]#<<build-gradle>>#
+endif::[]
+
 Micronaut and this framework have many configuration options defined at the application level.
 Your application needs to use a number of these settings to take full advantage of the
 enterprise framework.
@@ -8,14 +13,87 @@ enterprise framework.
 
 ==== application.yml
 
-ifeval::["{backend}" != "pdf"]
-[inline-toc]#<<build-gradle>>#
-endif::[]
 
 
 
 The _application.yml_ file controls many of the features of your application.
 To avoid issues with the framework, you should use these settings:
+
+[source,yaml]
+.Example - Application.yml
+----
+
+---
+micronaut:
+  application:
+    name: eframe
+  session:
+    http:
+      cookiePath: /
+  security:
+    enabled: true
+    endpoints:
+      login:
+        enabled: true
+      logout:
+        enabled: true
+    session:
+      enabled: true
+      login-success-target-url: /
+      login-failure-target-url: /login/authFailed
+      #unauthorized-target-url: /login/auth
+      #forbidden-target-url: /login/denied
+    token:
+      jwt:
+        enabled: true
+        bearer:
+          enabled: false
+        cookie:
+          enabled: true
+          loginFailureTargetUrl: /login/authFailed
+        signatures:
+          secret:
+            generator:
+              secret: ${eframe.key}
+        generator:
+          access-token-expiration: 1800  # 1800 seconds = 30 minutes
+    interceptUrlMap:
+      - pattern: /assets/**
+        httpMethod: GET
+        access:
+          - isAnonymous()
+      - pattern: /favicon.ico
+        httpMethod: GET
+        access:
+          - isAnonymous()
+  server.netty.logLevel: DEBUG
+
+---
+dataSource:
+  url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+  dbCreate: create-drop
+  pooled: true
+  jmxExport: true
+  driverClassName: org.h2.Driver
+  username: sa
+  password: ''
+
+---
+jackson:
+  serialization:
+    indentOutput: false
+    useEqualityForObjectID: true
+
+---
+assets:
+  mapping: assets
+
+---
+eframe:
+  maxRowLimit: 200
+
+----
+
 
 
 

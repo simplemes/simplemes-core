@@ -70,7 +70,6 @@ class DomainUtils {
 
   /**
    * Gets the transient fields for the given domain entity class.
-   * Uses the transients static value.
    * @param domainClass The class to find the fields in.
    * @return A list of transient fields.
    */
@@ -167,7 +166,7 @@ class DomainUtils {
 
   /**
    * Determine if the given property is a special field that we want to ignore in GUIs and such.
-   * This is used to filter out framework fields such as 'id', 'version', 'dateCreated', 'lastUpdated' or '_customField'.
+   * This is used to filter out framework fields such as 'id', 'version', 'dateCreated', 'dateUpdated' or '_customField'.
    * @param c The class this property is in (Also checks the custom field definition for parent classes).
    * @param propertyName The name of the property to check.
    * @return True if property is a special property.

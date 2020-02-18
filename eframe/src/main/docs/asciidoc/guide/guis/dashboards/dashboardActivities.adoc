@@ -186,7 +186,7 @@ See <<Non-GUI Activity>> example below for details on how you can use this featu
 Dashboard activities can have a GUI that allows the user to enter data.  These tend to work with a
 controller method to process the inputs and show the results.  A simple RMA controller is shown below:
 
-[source,groocy]
+[source,groovy]
 .Example - Dashboard Activity with Input Fields - Controller
 ----
 @Get("/rma")

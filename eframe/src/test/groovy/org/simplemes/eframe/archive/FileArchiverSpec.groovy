@@ -186,7 +186,7 @@ class FileArchiverSpec extends BaseSpecification {
           "notes": null,
           "notDisplayed": null,
           "dateCreated": "2019-01-02T09:48:16.408-0500",
-          "lastUpdated": "2019-01-02T09:48:16.408-0500",
+          "dateUpdated": "2019-01-02T09:48:16.408-0500",
           "allFieldsDomain": null,
           "allFieldsDomains": null,
           "sampleChildren": [
@@ -203,7 +203,7 @@ class FileArchiverSpec extends BaseSpecification {
           "enabled": true,
           "dateTime": "${UnitTestUtils.SAMPLE_ISO_TIME_STRING}",
           "dueDate": "${UnitTestUtils.SAMPLE_ISO_DATE_ONLY_STRING}",
-          "lastUpdated": "2019-01-02T09:48:16.406-0500",
+          "dateUpdated": "2019-01-02T09:48:16.406-0500",
           "id": 247
       }
     ]

@@ -5,7 +5,6 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<Service Transactions>>#
 [inline-toc]#<<Arguments and Return Values>>#
-[inline-toc]#<<Domain Validation Errors>>#
 
 endif::[]
 
