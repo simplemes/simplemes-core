@@ -9,7 +9,6 @@ enterprise framework.
 ==== application.yml
 
 ifeval::["{backend}" != "pdf"]
-[inline-toc]#<<efBootstrap.yml>>#
 [inline-toc]#<<build-gradle>>#
 endif::[]
 
@@ -18,26 +17,6 @@ endif::[]
 The _application.yml_ file controls many of the features of your application.
 To avoid issues with the framework, you should use these settings:
 
-
-===== efBootstrap.yml
-
-// TODO: Move this to application.yml?
-The Micronaut startup triggers specific startup logic at various times.  in order to avoid slow
-classpath scanning on startup, we require that each framework module has an _efBootstrap.yml_ file.
-THis file provides the features needed by the module, such as <<Encoded Types>> and custom fields.
-
-
-
-[source,yaml]
-.efBootstrap.yml
-----
-
-eframe:
-  additions: [org.simplemes.eframe.custom.InternalAddition] // <.>
-
-----
-<.> A list of addition classes for this module.  EFrame has one internal addition, used to test
-    discovery of additions.  It also provides the core <<Encoded Types>>.
 
 
 ==== build.gradle

@@ -12,17 +12,12 @@ import java.util.regex.Pattern
 
 /**
  * Utility to scan the class path for folder with resources from all modules (.jar files) and class path directories.
+ * Supports only the format: 'folder/*.ext'.
  *
  */
 @CompileStatic
 @Slf4j
 class ClassPathScanner {
-
-  /* Originally used the Spring logic to find sub-classes, but that was dropped in favor the addition discovery via
-     efBootstrap.yml.  This avoids full class path searches.
-     The search is now simpler to find resources (e.g. .yml files and report files).
-
-   */
 
   /**
    * The path format to search for.  Supports only the format: 'folder/*.ext'.

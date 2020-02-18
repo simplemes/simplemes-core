@@ -14,12 +14,15 @@ import org.simplemes.eframe.data.format.IntegerFieldFormat
 import sample.domain.CustomOrderComponent
 import sample.domain.Order
 
+import javax.inject.Singleton
+
 /**
  * Defines an internal addition for the framework that is used to specify some features
  * for the framework (e.g. BasicStatus codes, etc).
  * <p>
  * <b>Note:</b> This is used in E2E tests.  
  */
+@Singleton
 @ToString(includeNames = true, includePackage = false)
 class SampleAddition extends BaseAddition implements AdditionInterface {
 

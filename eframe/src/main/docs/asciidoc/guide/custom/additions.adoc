@@ -16,7 +16,6 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Encoded Types Provided By Additions>>#
 [inline-toc]#<<Addition Field Extensions>>#
 [inline-toc]#<<Initial Data Loaders and Additions>>#
-[inline-toc]#<<Additions and efBootstrap.yml>>#
 [inline-toc]#<<Addition Errors>>#
 
 endif::[]
@@ -119,7 +118,6 @@ The basic steps are:
 * <<Design and Name Your Module>>
 * Create a Micronaut Module.  See the <<{mes-core-path}/guide.adoc#,SimpleMES>> application for an example.
 * Create an <<Addition>>.
-* Add your addition to <<Additions and efBootstrap.yml>> in your module.
 
 ===== Design and Name Your Module
 
@@ -290,7 +288,8 @@ domain classes.
 .Addition Example - Initial Data Loaders Provided By Additions
 ----
 
-class SimpleAddition extends BaseAddition {
+@Singleton                            // <.>
+class SimpleAddition extends BaseAddition implements AdditionInterface {
   AdditionConfiguration addition = Addition.configure {
     initialDataLoader SetupRoles  // <.>
      . . .
@@ -305,28 +304,10 @@ class SetupRoles {
 }
 
 
-
 ----
+<.> Registers this addition within the application context for discovery at runtime.
 <.> Specifies the class that performs the initial data loading.
 <.> Performs the actual initial data loading.
-
-
-
-===== Additions and efBootstrap.yml
-
-Finally, you will need to add the module addition(s) to your module's <<efBootstrap.yml>> file.
-This file will be used during startup to identify the additions you need to add to the application.
-
-[source,yaml]
-.efBootstrap.yml
-----
-
-eframe:
-  additions: [org.simplemes.eframe.custom.InternalAddition] // <.>
-
-----
-<.> A list of addition classes for this module.  EFrame has one internal addition, used to test
-    discovery of additions.  It also provides the core <<Encoded Types>>.
 
 ===== Addition Errors
 
