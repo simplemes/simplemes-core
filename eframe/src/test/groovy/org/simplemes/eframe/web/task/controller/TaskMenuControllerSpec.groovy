@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.task.controller
 
 import groovy.json.JsonSlurper
@@ -9,19 +13,15 @@ import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.JavascriptTestUtils
 import org.simplemes.eframe.test.MockBean
 import org.simplemes.eframe.test.MockControllerUtils
-import org.simplemes.eframe.test.MockObjectMapper
 import org.simplemes.eframe.test.MockPrincipal
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
  */
 class TaskMenuControllerSpec extends BaseSpecification {
+
+  @SuppressWarnings("unused")
+  static specNeeds = JSON
 
   void cleanup() {
     // reset the configuration
@@ -40,9 +40,6 @@ class TaskMenuControllerSpec extends BaseSpecification {
     """
     def clazz = CompilerTestUtils.compileSource(src)
     new MockControllerUtils(this, [clazz]).install()
-
-    and: 'the object mapper is mocked for the test'
-    new MockObjectMapper(this).install()
 
     and: 'a mock child'
     new MockBean(this, clazz, clazz.newInstance()).install()
@@ -86,9 +83,6 @@ class TaskMenuControllerSpec extends BaseSpecification {
     """
     def clazz = CompilerTestUtils.compileSource(src)
     new MockControllerUtils(this, [clazz]).install()
-
-    and: 'the object mapper is mocked for the test'
-    new MockObjectMapper(this).install()
 
     and: 'a mock child'
     new MockBean(this, clazz, clazz.newInstance()).install()
@@ -135,9 +129,6 @@ class TaskMenuControllerSpec extends BaseSpecification {
     """
     def clazz = CompilerTestUtils.compileSource(src)
     new MockControllerUtils(this, [clazz]).install()
-
-    and: 'the object mapper is mocked for the test'
-    new MockObjectMapper(this).install()
 
     and: 'a mock child'
     new MockBean(this, clazz, clazz.newInstance()).install()

@@ -21,6 +21,7 @@ import org.simplemes.eframe.date.ISODate
 import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.system.DisabledStatus
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
@@ -133,8 +134,8 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
   def "verify that get and setFieldValue works with custom fields on supported types"() {
     given: 'a custom field on a domain'
     def vcn = vc?.name
-    def fieldExtension = buildCustomField(domainClass: SampleParent, fieldName: 'xyz', fieldFormat: format.instance,
-                                          valueClassName: vcn)
+    def fieldExtension = DataGenerator.buildCustomField(domainClass: SampleParent, fieldName: 'xyz', fieldFormat: format.instance,
+                                                        valueClassName: vcn)
     def fieldDef = new CustomFieldDefinition(fieldExtension)
 
     and: 'a domain object'

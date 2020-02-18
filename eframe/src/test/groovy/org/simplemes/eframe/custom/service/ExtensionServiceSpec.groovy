@@ -20,6 +20,7 @@ import org.simplemes.eframe.data.format.FieldFormatInterface
 import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.AllFieldsDomain
 import sample.domain.SampleParent
@@ -256,8 +257,8 @@ class ExtensionServiceSpec extends BaseSpecification {
 
   def "verify that deleteField can create delete a custom field and leave other custom fields as-is"() {
     given: 'two existing field extension records'
-    def fe = buildCustomField([[fieldName: 'custom1', domainClass: SampleParent, afterFieldName: 'title'],
-                               [fieldName: 'custom2', domainClass: SampleParent, afterFieldName: 'notes']])
+    def fe = DataGenerator.buildCustomField([[fieldName: 'custom1', domainClass: SampleParent, afterFieldName: 'title'],
+                                             [fieldName: 'custom2', domainClass: SampleParent, afterFieldName: 'notes']])
 
     when: 'a request with params is made'
     extensionService.deleteField(fe.uuid.toString())

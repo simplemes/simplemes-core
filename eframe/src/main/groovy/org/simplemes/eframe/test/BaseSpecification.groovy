@@ -5,7 +5,6 @@
 package org.simplemes.eframe.test
 
 import ch.qos.logback.classic.Level
-import com.fasterxml.jackson.databind.ObjectMapper
 import geb.spock.GebSpec
 import groovy.util.logging.Slf4j
 import io.micronaut.context.ApplicationContext
@@ -25,13 +24,9 @@ import org.simplemes.eframe.application.StartupHandler
 import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.custom.domain.FieldGUIExtension
-import org.simplemes.eframe.custom.gui.FieldInsertAdjustment
-import org.simplemes.eframe.data.format.BasicFieldFormat
-import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.domain.annotation.DomainEntityHelper
 import org.simplemes.eframe.i18n.GlobalUtils
-import org.simplemes.eframe.json.EFrameJacksonModule
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.LogUtils
 import org.simplemes.eframe.misc.TypeUtils
@@ -81,20 +76,13 @@ import java.sql.SQLException
 class BaseSpecification extends GebSpec {
 
   /**
-   * Declares that the spec needs the EmbeddedServer started.  
-   * Possible value for the <code>specNeeds</code> list.        Use BaseAPISpecification for most embedded server tests.
-   */
-  // TODO: Delete this constant and EXTENSION_MOCK
-  static final String EMBEDDED = "EMBEDDED"
-
-  /**
    * Declares that the spec needs the EmbeddedServer started.
    * Possible value for the <code>specNeeds</code> list.        Use BaseAPISpecification for most embedded server tests.
    */
   static final String SERVER = "EMBEDDED"
 
   /**
-   * Declares that the spec will be testing GUI features.  This forces EMBEDDED.
+   * Declares that the spec will be testing GUI features.  This forces SERVER.
    * Possible value for the <code>specNeeds</code> list.
    */
   static final String GUI = "GUI"
@@ -199,10 +187,7 @@ class BaseSpecification extends GebSpec {
 
     // See if a mock Jackson ObjectMapper is needed and not already in an embedded server.
     if ((!needsServer()) && needs(JSON) && embeddedServer == null) {
-      def objectMapper = new ObjectMapper()
-      objectMapper.registerModule(new EFrameJacksonModule())
-      StartupHandler.configureJacksonObjectMapper(objectMapper)
-      new MockBean(this, ObjectMapper, objectMapper).install()  // Auto cleaned up
+      new MockObjectMapper(this).install()
     }
 
   }
@@ -216,20 +201,6 @@ class BaseSpecification extends GebSpec {
       embeddedServer = ApplicationContext.run(EmbeddedServer)
       System.out.println("Started Server ${System.currentTimeMillis() - start}ms")
       executeTestDDLStatements()
-/*    // Probably not needed in most cases.
-      // Wait for the initial user record to be committed
-      def adminUser = null
-      start = System.currentTimeMillis()
-      while(!adminUser) {
-        adminUser = User.findByUserName('admin')
-        //println "adminUser = $adminUser"
-        if (!adminUser) {
-          sleep(50)
-        }
-      }
-      System.out.println("  Waited ${System.currentTimeMillis() - start}ms for IDAT to finish")
-      //println "admin = ${User.list()*.userName} $adminUser "
-*/
 
       log.debug("All Beans = ${Holders.applicationContext.getAllBeanDefinitions()*.name}")
     }
@@ -387,7 +358,7 @@ class BaseSpecification extends GebSpec {
 
   /**
    * Determines if this test class needs a given feature.  Checks the 'specNeeds' static value.
-   * @param need The specific need (e.g. BaseSpecification.EMBEDDED).
+   * @param need The specific need (e.g. BaseSpecification.SERVER).
    * @return True if needed.
    */
   boolean needs(String need) {
@@ -399,12 +370,12 @@ class BaseSpecification extends GebSpec {
 
   /**
    * Determines if this test class needs the servers started.
-   * This is true if the <code>specNeeds</code> static values contain EMBEDDED or GUI.
+   * This is true if the <code>specNeeds</code> static values contain SERVER or GUI.
    * @return True if needed.
    */
   boolean needsServer() {
     if (this.hasProperty('specNeeds')) {
-      return (this.specNeeds.contains(EMBEDDED) || this.specNeeds.contains(SERVER) || this.specNeeds.contains(GUI))
+      return (this.specNeeds.contains(SERVER) || this.specNeeds.contains(GUI))
     }
 
     // dirtyDomains implies SERVER is needed.
@@ -642,51 +613,6 @@ class BaseSpecification extends GebSpec {
     }
 
     _mockFieldExtension.options << options
-  }
-
-  // TODO: Move to a Test Utils method?
-  /**
-   * Convenience method to build a custom field for the given domain class.
-   * @param options Contains: domainClass, fieldName, fieldFormat,valueClassName , afterFieldName or a 'list' of these elements.
-   * @return The first FieldExtension created.
-   */
-  FieldExtension buildCustomField(Map options) {
-    return buildCustomField([options])
-  }
-
-  /**
-   * Convenience method to build a custom field for the given domain class.
-   * @param options Contains: domainClass, fieldName, fieldFormat,valueClassName, afterFieldName or a 'list' of these elements.
-   * @return The first FieldExtension created.
-   */
-  FieldExtension buildCustomField(List<Map> list) {
-    def res = null
-    FieldExtension.withTransaction {
-      def domainList = new HashSet()
-      for (field in list) {
-        def fieldName = field.fieldName ?: 'custom1'
-        def fieldFormat = field.fieldFormat ?: StringFieldFormat.instance
-        def fe = new FieldExtension(fieldName: fieldName, domainClassName: field.domainClass.name,
-                                    fieldFormat: (BasicFieldFormat) fieldFormat,
-                                    valueClassName: field.valueClassName).save()
-        domainList << field.domainClass
-        res = res ?: fe
-      }
-      // Now, build the field GUI record, one for each domain in the input.
-      def adj = []
-      for (domainClass in domainList) {
-        def fieldList = list.findAll { it.domainClass == domainClass }
-        def fg = new FieldGUIExtension(domainName: domainClass.name)
-
-        for (field in fieldList) {
-          adj << new FieldInsertAdjustment(fieldName: field.fieldName,
-                                           afterFieldName: field.afterFieldName ?: 'title')
-        }
-        fg.adjustments = adj
-        fg.save()
-      }
-    }
-    return res
   }
 
   /**

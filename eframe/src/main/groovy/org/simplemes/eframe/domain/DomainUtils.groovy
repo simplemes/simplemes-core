@@ -178,20 +178,6 @@ class DomainUtils {
   boolean isPropertySpecial(Class c, String propertyName) {
 
     return (specialProperties.contains(propertyName))
-
-/*
-    // Now check for custom fields.
-    def res = FieldExtensionHelper.isFieldCustomSupportField(c, propertyName)
-    if (res) {
-      return res
-    }
-    // Not in this class, check any parent classes to be safe.
-    if (c.superclass != Object) {
-      return isPropertySpecial(c.superclass, propertyName)
-    }
-
-    return false
-*/
   }
 
   /**
@@ -252,45 +238,6 @@ class DomainUtils {
     return allDomains.find { it.simpleName.toLowerCase() == domainName }
   }
 
-  /**
-   * Fixes the child's parent reference when a record is created by Jackson.  Jackson simply adds the child to the parent's
-   * collection.  Instead, we must call the addXYZToChildren() method on the domain.  This method recursively finds all
-   * new child records and removes then re-adds them with the addTo method.
-   * @param object The domain object to check.
-   */
-  // TODO: Delete if unused?
-  void fixChildParentReferences(Object object) {
-    if (object == null) {
-      return
-    }
-
-    for (property in getPersistentFields(object.class)) {
-      def value = object[property.name]
-      if (Collection.isAssignableFrom(property.type) && value) {
-        Collection list = (Collection) value
-        def recordsToFix = []
-        for (item in list) {
-          if (item.id == null) {
-            // This is a new, unsaved item, so remember it to be fixed
-            recordsToFix << item
-          }
-        }
-
-        // Now, remove all new records before fixing them.
-        list.removeAll { it.id == null }
-
-        // An re-add with the special GORM method (will make sure the parent references are correct upon save).
-        for (child in recordsToFix) {
-          addChildToDomain(object, child, property.name)
-        }
-
-        // Now, check any sub-children.
-        for (item in list) {
-          fixChildParentReferences(item)
-        }
-      }
-    }
-  }
 
   /**
    * Forces the load of child records that might have a lazy loader.  This is recursive.
@@ -359,24 +306,6 @@ class DomainUtils {
     }
 
     return res
-  }
-
-  /**
-   * Adds a validation error to the given domain object.
-   * @param domainObject The domain object to add the error to.
-   */
-  void addValidationError(Object domainObject, String fieldName, Object value, String messageKey) {
-    // TODO: Replace with non-hibernate alternative
-/*
-    def errors = domainObject.errors
-    if (errors == null) {
-      domainObject.errors = new ValidationErrors(domainObject)
-    }
-    def clazz = domainObject.getClass()
-    errors.addError(new FieldError(clazz.simpleName, fieldName, value, true, [messageKey] as String[],
-                                   [fieldName, clazz, value] as Object[], '{0} failed validation on {1}.'))
-
-*/
   }
 
   /**

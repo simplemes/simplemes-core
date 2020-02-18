@@ -20,6 +20,7 @@ import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.system.DisabledStatus
+import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.page.BooleanFieldModule
 import org.simplemes.eframe.test.page.ComboboxModule
@@ -96,7 +97,7 @@ class FieldExtensionE2ESpec extends BaseDefinitionEditorSpecification {
 
   def "verify that the edit page can update a custom field value"() {
     given: 'a custom field for the domain'
-    buildCustomField(fieldName: 'custom1', domainClass: SampleParent)
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: SampleParent)
 
     and: 'a domain record is available to edit'
     def sampleParent = null
@@ -131,7 +132,7 @@ class FieldExtensionE2ESpec extends BaseDefinitionEditorSpecification {
 
   def "verify that the create page can set a custom field value"() {
     given: 'a custom field for the domain'
-    buildCustomField(fieldName: 'custom1', domainClass: SampleParent)
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: SampleParent)
 
     when: 'the edit page is shown'
     login()
@@ -158,8 +159,8 @@ class FieldExtensionE2ESpec extends BaseDefinitionEditorSpecification {
   @SuppressWarnings("GroovyAssignabilityCheck")
   def "verify that the create page can set a custom field using all supported field types"() {
     given: 'a custom field for the domain'
-    buildCustomField(fieldName: 'custom1', domainClass: SampleParent,
-                     fieldFormat: format.instance, valueClassName: valueClass?.name)
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: SampleParent,
+                                   fieldFormat: format.instance, valueClassName: valueClass?.name)
     if (value == AllFieldsDomain.name) {
       // Special case to initialize the value to a domain class
       value = buildAllFieldsDomain()

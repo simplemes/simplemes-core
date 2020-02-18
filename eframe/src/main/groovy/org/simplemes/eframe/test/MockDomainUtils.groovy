@@ -188,14 +188,6 @@ class MockDomainUtils implements AutoCleanupMockInterface, IDefaultResponse {
       //  return persistentFields[0].name
     } else if (methodName == 'getFieldDefinitions' && fieldDefinitions) {
       return fieldDefinitions
-/*
-    } else if (methodName=='addChildToDomain') {
-      // Perform a dummy addTo for non-hibernate unit tests.
-      def domainObject = invocation.arguments[0]
-      def child = invocation.arguments[1]
-      def collectionName = invocation.arguments[2]
-      domainObject."${collectionName}" << child
-*/
     } else if (delegateToOriginal.contains(methodName)) {
       // Let the real class handle it.
       def method = DomainUtils.getDeclaredMethod(methodName, invocation.method.parameterTypes as Class[])

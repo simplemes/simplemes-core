@@ -9,6 +9,7 @@ import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.custom.domain.FieldGUIExtension
 import org.simplemes.eframe.data.format.DateFieldFormat
 import org.simplemes.eframe.data.format.IntegerFieldFormat
+import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.page.TextFieldModule
 import sample.domain.AllFieldsDomain
@@ -128,7 +129,7 @@ class DefinitionEditorGUISpec extends BaseDefinitionEditorSpecification {
 
   def "verify that editor drag and drop can move a custom field in the fieldOrder"() {
     given: 'a custom field'
-    buildCustomField(fieldName: 'custom1', domainClass: AllFieldsDomain)
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: AllFieldsDomain)
     def fieldGUIExtension = null
     FieldGUIExtension.withTransaction {
       fieldGUIExtension = FieldGUIExtension.list()[0]
@@ -498,9 +499,9 @@ class DefinitionEditorGUISpec extends BaseDefinitionEditorSpecification {
 
   def "verify that editField dialog can be opened with the menu"() {
     given: 'a custom field is defined'
-    def fieldExtension = buildCustomField(fieldName: 'custom1', domainClass: SampleParent,
-                                          fieldLabel: 'a custom label', maxLength: 237,
-                                          fieldFormat: IntegerFieldFormat.instance, valueClassName: AllFieldsDomain.name)
+    def fieldExtension = DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: SampleParent,
+                                                        fieldLabel: 'a custom label', maxLength: 237,
+                                                        fieldFormat: IntegerFieldFormat.instance, valueClassName: AllFieldsDomain.name)
 
     when: 'the definition page is shown'
     openEditor(SampleParentCreatePage)
@@ -549,9 +550,9 @@ class DefinitionEditorGUISpec extends BaseDefinitionEditorSpecification {
 
   def "verify that editField dialog can be opened with double-click"() {
     given: 'a custom field is defined'
-    buildCustomField(fieldName: 'custom1', domainClass: SampleParent,
-                     fieldLabel: 'a custom label', maxLength: 237,
-                     fieldFormat: IntegerFieldFormat.instance, valueClassName: AllFieldsDomain.name)
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: SampleParent,
+                                   fieldLabel: 'a custom label', maxLength: 237,
+                                   fieldFormat: IntegerFieldFormat.instance, valueClassName: AllFieldsDomain.name)
 
     when: 'the definition page is shown'
     openEditor(SampleParentCreatePage)
@@ -611,9 +612,9 @@ class DefinitionEditorGUISpec extends BaseDefinitionEditorSpecification {
 
   def "verify that deleteField works with a custom field"() {
     given: 'a custom field is defined'
-    buildCustomField(fieldName: 'custom1', domainClass: SampleParent,
-                     fieldLabel: 'a custom label', maxLength: 237,
-                     fieldFormat: IntegerFieldFormat.instance, valueClassName: AllFieldsDomain.name)
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: SampleParent,
+                                   fieldLabel: 'a custom label', maxLength: 237,
+                                   fieldFormat: IntegerFieldFormat.instance, valueClassName: AllFieldsDomain.name)
 
     when: 'the definition page is shown'
     openEditor(SampleParentCreatePage)

@@ -249,7 +249,7 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
   @Rollback
   def "verify that serialize does not create an entry for the holder itself"() {
     given: 'a domain object with custom fields'
-    buildCustomField(fieldName: 'custom1', domainClass: SampleParent)
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: SampleParent)
     def (SampleParent sampleParent) = DataGenerator.generate {
       domain SampleParent
     }

@@ -166,7 +166,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     Class clazz = buildAllFieldsDomainController()
 
     and: 'a custom field for the domain'
-    buildCustomField(fieldName: 'custom1', domainClass: AllFieldsDomain)
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: AllFieldsDomain)
 
     and: 'some test data is created'
     def allFieldsDomain = new AllFieldsDomain(name: 'ABC')
@@ -406,7 +406,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     Class clazz = buildAllFieldsDomainController()
 
     and: 'a custom field for the domain'
-    buildCustomField(fieldName: 'custom1', domainClass: AllFieldsDomain)
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: AllFieldsDomain)
 
     and: 'the source JSON'
     def src = """
@@ -840,7 +840,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     record1.save()
 
     and: 'custom field values'
-    buildCustomField(fieldName: 'custom1', domainClass: AllFieldsDomain)
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: AllFieldsDomain)
 
     and: 'the source JSON'
     def src = """

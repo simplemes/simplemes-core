@@ -40,9 +40,6 @@ class FileArchiverSpec extends BaseSpecification {
     // Most tests will use the Mock file system
     stringWriter = new StringWriter()
     FileFactory.instance = new MockFileFactory(stringWriter)
-
-    // The Jackson mapper is setup in the mocked application context
-    //new MockObjectMapper(this).install()
   }
 
   void cleanup() {

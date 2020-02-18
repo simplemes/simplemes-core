@@ -6,6 +6,7 @@ package org.simplemes.eframe.web.ui.webix.widget
 
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.test.BaseWidgetSpecification
+import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.JavascriptTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.eframe.web.ui.JSPageOptions
@@ -69,7 +70,7 @@ class BaseLabeledFieldWidgetSpec extends BaseWidgetSpecification {
   @Rollback
   def "verify that field is generated correctly when a custom field is used"() {
     given: 'a custom field'
-    buildCustomField([domainClass: SampleParent, fieldName: 'custom1', afterFieldName: 'title'])
+    DataGenerator.buildCustomField([domainClass: SampleParent, fieldName: 'custom1', afterFieldName: 'title'])
 
     when: 'the UI element is built'
     def page = new BaseLabeledFieldWidget(buildWidgetContext(custom: true, readOnly: true,

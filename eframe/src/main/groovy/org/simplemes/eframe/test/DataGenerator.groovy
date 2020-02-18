@@ -6,8 +6,12 @@ package org.simplemes.eframe.test
 
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
+import org.simplemes.eframe.custom.domain.FieldExtension
+import org.simplemes.eframe.custom.domain.FieldGUIExtension
 import org.simplemes.eframe.custom.domain.FlexField
 import org.simplemes.eframe.custom.domain.FlexType
+import org.simplemes.eframe.custom.gui.FieldInsertAdjustment
+import org.simplemes.eframe.data.format.BasicFieldFormat
 import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.date.DateUtils
@@ -193,4 +197,50 @@ class DataGenerator {
       user.save()
     }
   }
+
+  /**
+   * Convenience method to build a custom field for the given domain class.
+   * @param options Contains: domainClass, fieldName, fieldFormat,valueClassName , afterFieldName or a 'list' of these elements.
+   * @return The first FieldExtension created.
+   */
+  static FieldExtension buildCustomField(Map options) {
+    return buildCustomField([options])
+  }
+
+  /**
+   * Convenience method to build a custom field for the given domain class.
+   * @param options Contains: domainClass, fieldName, fieldFormat,valueClassName, afterFieldName or a 'list' of these elements.
+   * @return The first FieldExtension created.
+   */
+  static FieldExtension buildCustomField(List<Map> list) {
+    def res = null
+    FieldExtension.withTransaction {
+      def domainList = new HashSet()
+      for (field in list) {
+        def fieldName = field.fieldName ?: 'custom1'
+        def fieldFormat = field.fieldFormat ?: StringFieldFormat.instance
+        def fe = new FieldExtension(fieldName: fieldName, domainClassName: field.domainClass.name,
+                                    fieldFormat: (BasicFieldFormat) fieldFormat,
+                                    valueClassName: field.valueClassName).save()
+        domainList << field.domainClass
+        res = res ?: fe
+      }
+      // Now, build the field GUI record, one for each domain in the input.
+      def adj = []
+      for (domainClass in domainList) {
+        def fieldList = list.findAll { it.domainClass == domainClass }
+        def fg = new FieldGUIExtension(domainName: domainClass.name)
+
+        for (field in fieldList) {
+          adj << new FieldInsertAdjustment(fieldName: field.fieldName,
+                                           afterFieldName: field.afterFieldName ?: 'title')
+        }
+        fg.adjustments = adj
+        fg.save()
+      }
+    }
+    return res
+  }
+
+
 }

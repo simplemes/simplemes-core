@@ -264,7 +264,6 @@ class EditMarkerSpec extends BaseMarkerSpecification {
 
     and: 'a mocked preference holder'
     new MockPreferenceHolder(this, []).install()
-    // new MockObjectMapper(this).install()
 
     and: 'the object mapper is mocked for the SampleParent record written as JSON to the generated page'
     originalObjectMapper = Holders.objectMapper

@@ -38,8 +38,8 @@ class CustomFieldSerializerSpec extends BaseSpecification {
   @Rollback
   def "verify that serialize handles multiple custom fields"() {
     given: 'a domain object with custom fields'
-    buildCustomField([[fieldName: 'custom1', domainClass: SampleParent],
-                      [fieldName: 'custom2', domainClass: SampleParent]])
+    DataGenerator.buildCustomField([[fieldName: 'custom1', domainClass: SampleParent],
+                                    [fieldName: 'custom2', domainClass: SampleParent]])
     def (SampleParent sampleParent) = DataGenerator.generate {
       domain SampleParent
     }
@@ -59,7 +59,7 @@ class CustomFieldSerializerSpec extends BaseSpecification {
   @Rollback
   def "verify that serialize handles empty values"() {
     given: 'a domain object with custom fields'
-    buildCustomField(fieldName: 'custom1', domainClass: SampleParent)
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: SampleParent)
     def (SampleParent sampleParent) = DataGenerator.generate {
       domain SampleParent
     }
@@ -75,8 +75,8 @@ class CustomFieldSerializerSpec extends BaseSpecification {
 
   def "verify that serialize handles supported field types"() {
     given: 'a domain object with custom fields'
-    buildCustomField(fieldName: 'custom1', domainClass: SampleParent, fieldFormat: format.instance,
-                     valueClassName: valueClass?.name)
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: SampleParent, fieldFormat: format.instance,
+                                   valueClassName: valueClass?.name)
     def (SampleParent sampleParent) = DataGenerator.generate {
       domain SampleParent
     }

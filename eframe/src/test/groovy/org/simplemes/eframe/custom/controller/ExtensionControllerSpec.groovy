@@ -17,6 +17,7 @@ import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.MockPrincipal
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
@@ -225,9 +226,9 @@ class ExtensionControllerSpec extends BaseSpecification {
 
   def "verify that deleteField can create delete a custom field"() {
     given: 'an existing field extension record'
-    def fe = buildCustomField(fieldName: 'custom1', fieldLabel: 'abc',
-                              fieldFormat: EncodedTypeFieldFormat.instance, maxLength: 437,
-                              valueClassName: String.name, domainClass: SampleParent)
+    def fe = DataGenerator.buildCustomField(fieldName: 'custom1', fieldLabel: 'abc',
+                                            fieldFormat: EncodedTypeFieldFormat.instance, maxLength: 437,
+                                            valueClassName: String.name, domainClass: SampleParent)
 
     when: 'a request with params is made'
     def body = [id: fe.uuid.toString(), domainURL: '/sampleParent/show']
