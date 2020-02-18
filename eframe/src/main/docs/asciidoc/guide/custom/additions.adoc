@@ -14,7 +14,6 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Example Addition>>#
 [inline-toc]#<<Addition Top-Level Options>>#
 [inline-toc]#<<Encoded Types Provided By Additions>>#
-[inline-toc]#<<Domain Packages Provided By Additions>>#
 [inline-toc]#<<Addition Field Extensions>>#
 [inline-toc]#<<Initial Data Loaders and Additions>>#
 [inline-toc]#<<Additions and efBootstrap.yml>>#
@@ -160,7 +159,6 @@ can provide.
 ----
 class SimpleAddition extends BaseAddition {
   AdditionConfiguration addition = Addition.configure {
-    domainPackage OnlineOrderPackage  // <.>
     encodedType OrderStatus
     initialDataLoader InitialDataLoadRoles
     field { domain Order; name 'warehouse'}  // <.>
@@ -176,8 +174,6 @@ class SimpleAddition extends BaseAddition {
   }
 }
 ----
-<.> Defines a class that is in your package hierarchy, that is above all domains in
-    your module.  See <<Domain Packages Provided By Additions>>.
 <.> Single-line format for a field definition.
 <.> Provides a GUI display hint for the display <<Markers>>.
 
@@ -198,34 +194,9 @@ The Addition supports these top-level options:
 |name | The name of the addition (*Default*: The addition class's simple name).
 |field | Defines a single field added to a domain.  See <<Addition Field Extensions>> (*Optional*).
 |encodedType | One of the <<Encoded Types Provided By Additions>> (*Optional*).
-|domainPackage | One of the <<Domain Packages Provided By Additions>> (*Optional*).
-                 Defines a class that is in a package that contains all of the addition's
-                 domain classes.
 |initialDataLoader | A class that is the initial data loader.  See <<Initial Data Loaders and Additions>> (*Optional*).
 |===
 
-
-===== Domain Packages Provided By Additions
-
-This is the most important setting in your addition. This tells the framework where to
-find your domain classes.  The class is any class that is in a package above *ALL* of your domain
-classes.
-
-[source,groovy]
-.Addition Example - DomainPackage
-----
-class SimpleAddition extends BaseAddition {
-  AdditionConfiguration addition = Addition.configure {
-    domainPackage OnlineOrderPackage  // <.>
-     . . .
-  }
-}
-----
-<.> Defines a class that is in your package hierarchy, that is above all domains in
-    your module.
-
-For the framework, we created a dummy class _org.simplemes.eframe.EFramePackage_ that
-serves this purpose.
 
 ===== Addition Field Extensions
 

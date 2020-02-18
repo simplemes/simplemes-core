@@ -1,7 +1,10 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom
 
 import ch.qos.logback.classic.Level
-import org.simplemes.eframe.EFramePackage
 import org.simplemes.eframe.data.format.BasicFieldFormat
 import org.simplemes.eframe.data.format.LongFieldFormat
 import org.simplemes.eframe.system.BasicStatus
@@ -13,12 +16,6 @@ import org.simplemes.eframe.test.UnitTestUtils
 import sample.domain.Order
 import sample.domain.SampleChild
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -38,14 +35,11 @@ class AdditionSpec extends BaseSpecification {
     import org.simplemes.eframe.custom.AdditionConfiguration
     import org.simplemes.eframe.data.format.LongFieldFormat
     import sample.domain.SampleParent
-    import org.simplemes.eframe.EFramePackage
     import org.simplemes.eframe.data.format.BasicFieldFormat
     import org.simplemes.eframe.system.BasicStatus
     
     class SimpleAddition extends BaseAddition {
       AdditionConfiguration addition = Addition.configure {
-        domainPackage EFramePackage
-        domainPackage SampleParent
         encodedType BasicStatus
         encodedType BasicFieldFormat
         initialDataLoader SampleParent
@@ -58,7 +52,6 @@ class AdditionSpec extends BaseSpecification {
     AdditionConfiguration addition = clazz.newInstance().addition
 
     then: 'the top-level values are correct'
-    addition.domainPackageClasses == [EFramePackage, SampleParent]
     addition.encodedTypes == [BasicStatus, BasicFieldFormat]
     addition.initialDataLoaders == [SampleParent]
     addition.name == 'SimpleAddition'
@@ -69,7 +62,6 @@ class AdditionSpec extends BaseSpecification {
     then: 'the configure closure can be used in a read program'
     def x = Addition.configure {
       encodedType BasicStatus
-      domainPackage SampleParent
       initialDataLoader SampleParent
       field {
         domain SampleParent
@@ -95,7 +87,6 @@ class AdditionSpec extends BaseSpecification {
     import org.simplemes.eframe.data.format.LongFieldFormat
     import sample.domain.SampleParent
     import sample.domain.SampleChild
-    import org.simplemes.eframe.EFramePackage
     import org.simplemes.eframe.data.format.BasicFieldFormat
     import org.simplemes.eframe.system.BasicStatus
     
@@ -147,7 +138,6 @@ class AdditionSpec extends BaseSpecification {
     import org.simplemes.eframe.data.format.LongFieldFormat
     import sample.domain.SampleParent
     import sample.domain.SampleChild
-    import org.simplemes.eframe.EFramePackage
     import org.simplemes.eframe.data.format.BasicFieldFormat
     import org.simplemes.eframe.system.BasicStatus
     
@@ -191,7 +181,6 @@ class AdditionSpec extends BaseSpecification {
     import org.simplemes.eframe.data.format.LongFieldFormat
     import sample.domain.SampleParent
     import sample.domain.SampleChild
-    import org.simplemes.eframe.EFramePackage
     import org.simplemes.eframe.domain.DomainUtils
     import org.simplemes.eframe.data.format.BasicFieldFormat
     import org.simplemes.eframe.system.BasicStatus

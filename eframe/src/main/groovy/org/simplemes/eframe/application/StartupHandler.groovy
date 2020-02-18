@@ -12,7 +12,6 @@ import io.micronaut.runtime.event.annotation.EventListener
 import io.micronaut.scheduling.annotation.Async
 import org.simplemes.eframe.application.issues.WorkArounds
 import org.simplemes.eframe.date.EFrameDateFormat
-import org.simplemes.eframe.json.EFrameJacksonModule
 import org.simplemes.eframe.misc.TypeUtils
 
 import javax.inject.Singleton
@@ -86,7 +85,9 @@ class StartupHandler {
     def format = new EFrameDateFormat()
     format.setTimeZone(Holders.globals.timeZone)
     mapper.setDateFormat(format)
-    mapper.registerModule(new EFrameJacksonModule())
+    // No need to register a module.  It is registered by the module scan option from the file:
+    //   src/main/resources/META-INF/services/com.fasterxml.jackson.databind.Module
+    //mapper.registerModule(new EFrameJacksonModule())
 
   }
 

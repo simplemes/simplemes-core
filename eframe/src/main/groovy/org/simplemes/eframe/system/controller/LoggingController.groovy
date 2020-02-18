@@ -224,9 +224,7 @@ class LoggingController {
    * @param userName The logged in user name.
    * @return The list of levels.
    */
-  // TODO: Replace with non-hibernate alternative
   @Transactional
-  //(readOnly = true)
   protected List<String> getOtherLevels(String userName) {
     def res = []
     res.addAll(DEFAULT_OTHERS)
@@ -357,9 +355,7 @@ class LoggingController {
    * @param userName The logged in user name.
    * @return The list of open tree levels.
    */
-  // TODO: Replace with non-hibernate alternative
   @Transactional
-  //(readOnly = true)
   protected List<String> getOpenLevels(String userName) {
     def res = []
     res.addAll(DEFAULT_OTHERS)

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom
 
 
@@ -8,12 +12,6 @@ import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.MockDomainUtils
 import sample.domain.SampleChild
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -35,7 +33,6 @@ class BaseAdditionSpec extends BaseSpecification {
     import org.simplemes.eframe.data.format.LongFieldFormat
     import sample.domain.SampleParent
     import sample.domain.SampleChild
-    import org.simplemes.eframe.EFramePackage
     import org.simplemes.eframe.data.format.BasicFieldFormat
     import org.simplemes.eframe.system.BasicStatus
     
@@ -62,20 +59,6 @@ class BaseAdditionSpec extends BaseSpecification {
 
     then: 'the encoded types are correct'
     addition.encodedTypes == [BasicStatus, BasicFieldFormat]
-  }
-
-  def "verify that getTopLevelDomainClasses works"() {
-    given: 'the DSL content for the addition'
-    def content = """
-      domainPackage SampleParent
-      domainPackage SampleChild
-    """
-
-    when: 'the configuration is generated'
-    AdditionInterface addition = buildAddition(content)
-
-    then: 'the values are correct'
-    addition.domainPackageClasses == [SampleParent, SampleChild]
   }
 
   def "verify that initialDataLoaders works"() {

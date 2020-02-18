@@ -29,6 +29,9 @@ import org.simplemes.eframe.domain.DomainUtils
  * Provides extra features for Micronaut Data's use of the Jackson object mapper.
  * This alters the property serializer for specific cases, such as parent references and foreign domain references.
  * See https://www.baeldung.com/jackson for some great tutorials.
+ * <p>
+ * <b>Note:</b> This module is loaded with the default moduleScan setting (true).  The file
+ *   src/main/resources/META-INF/services/com.fasterxml.jackson.databind.Module contains a reference to this module.
  */
 class EFrameJacksonModule extends SimpleModule {
 

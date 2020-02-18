@@ -22,14 +22,6 @@ interface AdditionInterface {
   List<Class> getEncodedTypes()
 
   /**
-   * Returns a list of classes that define the top-level domain classes that help the db find the domain classes.
-   * This is usually a dummy class at the highest package that will contain all of the domain classes.
-   * Will search this package and all sub-packages for valid domain classes.
-   * @return The list of top-level domain classes.
-   */
-  List<Class> getDomainPackageClasses()
-
-  /**
    * Returns a list of classes that define non-domain classes that will perform initial data loading.
    * These classes need a static initialDataLoad() method.
    * @return The list of other classes

@@ -91,7 +91,6 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     import org.simplemes.eframe.custom.AdditionConfiguration
     import org.simplemes.eframe.data.format.LongFieldFormat
     import sample.domain.SampleParent
-    import org.simplemes.eframe.EFramePackage
     import org.simplemes.eframe.data.format.BasicFieldFormat
     import org.simplemes.eframe.system.BasicStatus
     
@@ -175,7 +174,6 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     import org.simplemes.eframe.custom.AdditionConfiguration
     import org.simplemes.eframe.data.format.LongFieldFormat
     import sample.domain.SampleParent
-    import org.simplemes.eframe.EFramePackage
     import org.simplemes.eframe.data.format.BasicFieldFormat
     import org.simplemes.eframe.system.BasicStatus
     

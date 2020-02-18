@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom
 
 import groovy.transform.ToString
@@ -8,12 +12,6 @@ import org.simplemes.eframe.data.EncodedTypeInterface
 import org.simplemes.eframe.data.format.FieldFormatInterface
 import org.slf4j.Logger
 
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * Defines the features/requirements for a given Module (Addition) to be added to the application.
  * This includes definitions of EncodedType classes, data loaders, domain class package(s) and
@@ -23,7 +21,6 @@ import org.slf4j.Logger
  * <pre>
  * class SimpleAddition extends BaseAddition &#123;
  *   AdditionConfiguration addition = Addition.configure &#123;
- *     domainPackage EFramePackage
  *     encodedType BasicStatus
  *     field &#123;
  *       domain SampleParent
@@ -75,11 +72,6 @@ class AdditionConfiguration {
   List<Class<EncodedTypeInterface>> encodedTypes = []
 
   /**
-   * The top-level domain class(es) provided by this addition.
-   */
-  List<Class> domainPackageClasses = []
-
-  /**
    * The initial data loader classes defined by this addition.
    */
   List<Class> initialDataLoaders = []
@@ -109,14 +101,6 @@ class AdditionConfiguration {
    */
   void encodedType(Class<EncodedTypeInterface> type) {
     encodedTypes << type
-  }
-
-  /**
-   * The top-level domain class(es) provided by this addition.  Can be any class in a package that is above
-   * all of the domain classes in the addition.
-   */
-  void domainPackage(Class pkg) {
-    domainPackageClasses << pkg
   }
 
   /**

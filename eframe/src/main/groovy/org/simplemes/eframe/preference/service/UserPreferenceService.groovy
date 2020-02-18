@@ -129,8 +129,7 @@ class UserPreferenceService {
    * @param elementParam The page element (or preference name).
    * @return value The value.  Can be a POGO or a simple element.
    */
-  // TODO: Replace with non-hibernate alternative
-  @Transactional(/*readOnly = true*/)
+  @Transactional
   Object findSimplePreference(String pageParam, String elementParam) {
     String userParam = SecurityUtils.currentUserName
     PreferenceHolder holder = PreferenceHolder.find {

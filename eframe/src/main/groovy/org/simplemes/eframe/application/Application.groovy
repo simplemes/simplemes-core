@@ -1,8 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.application
 
 import groovy.transform.CompileStatic
 import io.micronaut.runtime.Micronaut
-import org.simplemes.eframe.domain.DomainFinder
 
 /**
  * The main application class.  
@@ -14,10 +17,7 @@ class Application {
     //TimeZone.setDefault(TimeZone.getTimeZone("UTC"))
     StartupHandler.preStart()
 
-    //noinspection GroovyUnusedAssignment
-    def list = DomainFinder.instance.topLevelDomainClasses
-    list << Application
-    Micronaut.run(list as Class[])
+    Micronaut.run(Application)
 
     //Environment environment = applicationContext.getEnvironment()
     //println "environment = ${environment.activeNames}"

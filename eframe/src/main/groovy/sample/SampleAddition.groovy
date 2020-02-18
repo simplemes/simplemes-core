@@ -13,7 +13,6 @@ import org.simplemes.eframe.data.format.CustomChildListFieldFormat
 import org.simplemes.eframe.data.format.IntegerFieldFormat
 import sample.domain.CustomOrderComponent
 import sample.domain.Order
-import sample.domain.SampleParent
 
 /**
  * Defines an internal addition for the framework that is used to specify some features
@@ -28,7 +27,6 @@ class SampleAddition extends BaseAddition implements AdditionInterface {
    * Defines the elements needed/provided by this addition.
    */
   AdditionConfiguration addition = Addition.configure {
-    domainPackage SampleParent
 
     // Sample addition field for the sample Order
     field {

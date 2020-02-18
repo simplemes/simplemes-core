@@ -1,15 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom
 
-import org.simplemes.eframe.EFramePackage
 import org.simplemes.eframe.data.format.BasicFieldFormat
 import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.test.BaseSpecification
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  *  Tests.
@@ -21,7 +18,6 @@ class InternalAdditionSpec extends BaseSpecification {
     def addition = new InternalAddition()
 
     then: 'the top-level values are as expected'
-    addition.domainPackageClasses == [EFramePackage]
     addition.encodedTypes == [BasicStatus, BasicFieldFormat]
     addition.initialDataLoaders == []
     addition.name == 'InternalAddition'
