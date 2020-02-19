@@ -59,8 +59,8 @@ LSN -- Routing
 Order -- ActionLog : has actions logged
 Order -- ProductionLog : has production logged
 
-CodeSequence <|-- OrderSequence
-CodeSequence <|-- LSNSequence
+CodeSequence -- OrderSequence
+CodeSequence -- LSNSequence
 
 @enduml
 ----
@@ -82,7 +82,8 @@ ifeval::["{backend}" != "pdf"]
 endif::[]
 
 
-The data model and documentation for SimpleMES follows some general guidelines.
+The data model and documentation for SimpleMES follows some general guidelines.  See also the
+guidelines from the <<Enterprise Framework>>.
 
 ==== Diagrams
 
@@ -169,7 +170,7 @@ include::orderGuide.adoc[]
 
 include::lsnGuide.adoc[]
 
-include::sequenceGuide.adoc[]
+include::codeSequenceGuide.adoc[]
 
 === Product Definition
 

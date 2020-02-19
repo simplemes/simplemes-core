@@ -28,7 +28,7 @@ import org.simplemes.mes.product.domain.RoutingOperation
  * This object also implements the WorkableInterface to encapsulate the process of working
  * on various objects.
  */
-@MappedEntity
+@MappedEntity('lsn_oper_state')
 @DomainEntity
 @ToString(includeNames = true, includePackage = false)
 // TODO: Restore @EqualsAndHashCode(includes = ['lsn', 'sequence'])

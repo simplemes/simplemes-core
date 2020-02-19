@@ -14,12 +14,18 @@ import org.simplemes.mes.misc.FieldSizes
 */
 
 /**
- * Test for basic CodeSequence logic.  Uses OrderSequence to test the super-class features.
+ * Test for basic CodeSequenceTrait logic.  Uses OrderSequence to test the super-class features.
  */
-class CodeSequenceSpec extends BaseSpecification {
+class CodeSequenceTraitSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
   static dirtyDomains = [OrderSequence]
+
+  @Override
+  void checkForLeftoverRecords() {
+    // TODO: Remove when all repos are defined.
+    println "checkForLeftoverRecords DISABLED"
+  }
 
   def "test standard constraints"() {
     expect: 'the constraints are enforced'
@@ -36,7 +42,7 @@ class CodeSequenceSpec extends BaseSpecification {
 
   def "basic sequence generation"() {
     given: 'a simple sequence'
-    CodeSequence n = new OrderSequence(currentSequence: 10, formatString: 'MPH$currentSequence')
+    def n = new OrderSequence(currentSequence: 10, formatString: 'MPH$currentSequence')
 
     expect: 'the sequence to be valid'
     n.formatTest() == 'MPH10'
@@ -44,14 +50,14 @@ class CodeSequenceSpec extends BaseSpecification {
 
   def "test multiple sequence generation"() {
     given: 'a simple sequence'
-    CodeSequence n = null
-    CodeSequence.withTransaction {
+    def n = null
+    OrderSequence.withTransaction {
       n = new OrderSequence(sequence: 'ABC', currentSequence: 10, formatString: 'MPH$currentSequence').save()
     }
 
     when: 'multiple sequences are generated'
     String[] numbers = null
-    CodeSequence.withTransaction {
+    OrderSequence.withTransaction {
       numbers = n.formatValues(3)
     }
 
@@ -62,7 +68,7 @@ class CodeSequenceSpec extends BaseSpecification {
     numbers[2] == 'MPH12'
 
     and: 'the current sequence is correct'
-    CodeSequence.withTransaction {
+    OrderSequence.withTransaction {
       def n1 = OrderSequence.findBySequence('ABC')
       n1.currentSequence == 13
     }
@@ -70,7 +76,7 @@ class CodeSequenceSpec extends BaseSpecification {
 
   def "zero count passed to formatValues() should fail"() {
     given: 'a simple sequence'
-    CodeSequence n = new OrderSequence(currentSequence: 10, formatString: 'MPH$currentSequence')
+    def n = new OrderSequence(currentSequence: 10, formatString: 'MPH$currentSequence')
 
     when: 'the format is attempted'
     n.formatValues(0) == ['MPH10']
@@ -83,7 +89,7 @@ class CodeSequenceSpec extends BaseSpecification {
 
   def "negative count passed to formatValues() should fail"() {
     given: 'a simple sequence'
-    CodeSequence n = new OrderSequence(currentSequence: 10, formatString: 'MPH$currentSequence')
+    def n = new OrderSequence(currentSequence: 10, formatString: 'MPH$currentSequence')
 
     when: 'the format is attempted'
     n.formatValues(-23) == ['MPH10']
@@ -97,7 +103,7 @@ class CodeSequenceSpec extends BaseSpecification {
   def "formatting with dates"() {
     given: 'a simple sequence with a date'
     def now = new Date().format('yyMMdd')
-    CodeSequence n = new OrderSequence(formatString: '${date.format(\'yyMMdd\')}')
+    def n = new OrderSequence(formatString: '${date.format(\'yyMMdd\')}')
 
     when: 'a value is formatted'
     def s = n.formatTest()
@@ -109,7 +115,7 @@ class CodeSequenceSpec extends BaseSpecification {
   def "complex formatting with dates"() {
     given: 'a complex sequence with a date and an expression'
     def now = (new Date() + 1).format('yyMMdd')
-    CodeSequence n = new OrderSequence(formatString: '${def d=date+1;d.format(\'yyMMdd\')}')
+    def n = new OrderSequence(formatString: '${def d=date+1;d.format(\'yyMMdd\')}')
 
     when: 'a value is formatted'
     def s = n.formatTest()
@@ -146,8 +152,8 @@ class CodeSequenceSpec extends BaseSpecification {
 
   def "verify that formatValues works with multi-threaded access"() {
     given: 'a code sequence to be shared'
-    CodeSequence n = null
-    CodeSequence.withTransaction {
+    def n = null
+    OrderSequence.withTransaction {
       n = new OrderSequence(sequence: 'ABC', currentSequence: 1, formatString: 'MPH$currentSequence').save()
     }
 
@@ -161,7 +167,7 @@ class CodeSequenceSpec extends BaseSpecification {
       for (int j = 0; j < nIterations; j++) {
         // Just generate a value
         try {
-          CodeSequence.withTransaction {
+          OrderSequence.withTransaction {
             //println "txn = ${txn.transaction.sessionHolder.dump()}"
             def n3 = OrderSequence.findBySequence('ABC')
             n3.formatValues(1)
@@ -196,20 +202,11 @@ class CodeSequenceSpec extends BaseSpecification {
     !exceptionFound
 
     and: 'the right number of values were formatted and committed correctly'
-    CodeSequence.withTransaction {
+    OrderSequence.withTransaction {
       def n2 = OrderSequence.findBySequence('ABC')
       assert n2.currentSequence == (nIterations * nThreads) + 1
       true
     }
-  }
-
-  @Rollback
-  def "verify that toShortString works"() {
-    given: 'a simple sequence with a date'
-    OrderSequence n = new OrderSequence(sequence: 'ABC', formatString: 'X${pogo.field?.length() ?: 1}')
-
-    expect: 'the method works'
-    n.toShortString() == 'ABC'
   }
 
 }

@@ -1,6 +1,12 @@
 Scratch
 -------
 
+Micronaut-Data Migration
+========================
+Remove references to GORM/Grails/Hibernate/.id.
+Remove disabled check for leftover records.
+
+
 
 Tasks
 =====

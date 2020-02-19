@@ -21,6 +21,7 @@ import org.simplemes.mes.misc.FieldSizes
 import org.simplemes.mes.product.domain.Product
 import org.simplemes.mes.tracking.domain.ActionLog
 
+import javax.persistence.Column
 import javax.persistence.OneToMany
 
 /*
@@ -42,7 +43,7 @@ import org.simplemes.mes.tracking.ActionLog
  * <p/>
  * <b>Note:</b> This object is stored in the table <b>'ORDR'</b>
  */
-@MappedEntity
+@MappedEntity('ordr')
 @DomainEntity
 @ToString(includeNames = true, includePackage = false, excludes = ['dateCreated', 'dateUpdated'])
 @EqualsAndHashCode(includes = ["order"])
@@ -55,6 +56,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject {
    * <p/>
    * This value is stored in the column <b>'ORDR'</b>
    */
+  @Column(name = 'ordr', length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String order
 
   /**
