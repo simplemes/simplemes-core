@@ -1,9 +1,8 @@
 package org.simplemes.mes.tracking.domain
 
-import grails.gorm.transactions.Rollback
 import groovy.json.JsonSlurper
-import org.simplemes.eframe.archive.ArchiveLog
 import org.simplemes.eframe.archive.FileArchiver
+import org.simplemes.eframe.archive.domain.ArchiveLog
 import org.simplemes.eframe.misc.FileFactory
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.test.BaseSpecification
@@ -11,6 +10,7 @@ import org.simplemes.eframe.test.DomainTester
 import org.simplemes.eframe.test.MockFileFactory
 import org.simplemes.eframe.test.MockObjectMapper
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.misc.FieldSizes
 
 /*

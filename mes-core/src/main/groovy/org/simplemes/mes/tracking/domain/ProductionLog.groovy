@@ -1,7 +1,13 @@
 package org.simplemes.mes.tracking.domain
 
-import grails.gorm.annotation.Entity
 import groovy.transform.ToString
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.DateCreated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
+import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.mes.misc.FieldSizes
 
@@ -17,7 +23,8 @@ import org.simplemes.mes.misc.FieldSizes
  * scale.
  */
 
-@Entity
+@MappedEntity
+@DomainEntity
 @ToString(includeNames = true, includePackage = false)
 class ProductionLog {
   /**
@@ -93,10 +100,12 @@ class ProductionLog {
   //BigDecimal qtyWithDefects
   //BigDecimal qtyScrapped
 
-  /**
-   * The date this record was created
-   */
+  @DateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateCreated
+
+  @Id @AutoPopulated UUID uuid
+
 
   static constraints = {
     action(maxSize: FieldSizes.MAX_CODE_LENGTH, nullable: false, blank: false)

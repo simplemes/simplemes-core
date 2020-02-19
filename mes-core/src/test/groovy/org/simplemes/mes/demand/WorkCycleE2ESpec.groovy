@@ -22,7 +22,7 @@ import org.simplemes.mes.tracking.domain.ActionLog
 class WorkCycleE2ESpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [EMBEDDED, HIBERNATE]
+  static specNeeds = [SERVER]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [ActionLog, Order, Product, LSNSequence]

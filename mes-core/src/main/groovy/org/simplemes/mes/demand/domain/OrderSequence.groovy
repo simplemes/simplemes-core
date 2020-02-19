@@ -1,9 +1,15 @@
 package org.simplemes.mes.demand.domain
 
-import grails.gorm.annotation.Entity
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
-import org.simplemes.mes.numbering.domain.CodeSequence
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.DateCreated
+import io.micronaut.data.annotation.DateUpdated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
+import org.simplemes.eframe.domain.annotation.DomainEntity
 
 /**
  * Defines the sequence used to generate new order numbers.
@@ -12,14 +18,31 @@ import org.simplemes.mes.numbering.domain.CodeSequence
  *
  */
 @Slf4j
-@Entity
+@MappedEntity
+@DomainEntity
 @ToString(includeNames = true, includePackage = false)
-class OrderSequence extends CodeSequence {
+class OrderSequence /* TODO: move from extends CodeSequence*/ {
+
+  /**
+   * The primary key for this sequence.
+   */
+  String sequence
 
   /**
    * If true, then this sequence is the default used for new orders.
    */
   boolean defaultSequence = false
+
+  @DateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE') Date dateCreated
+
+  @DateUpdated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateUpdated
+
+  Integer version = 0
+
+  @Id @AutoPopulated UUID uuid
 
   /**
    * Internal constraints.
@@ -41,6 +64,8 @@ class OrderSequence extends CodeSequence {
    *
    */
   static Map<String, List<String>> initialDataLoad() {
+    // TODO: Restore
+/*
     OrderSequence s
 
     //noinspection UnnecessaryQualifiedReference
@@ -50,6 +75,7 @@ class OrderSequence extends CodeSequence {
                         formatString: 'M$currentSequence', currentSequence: 1000, defaultSequence: true).save()
       log.info("Loaded OrderNameSequence ORDER")
     }
+*/
     return initialDataRecords
   }
 

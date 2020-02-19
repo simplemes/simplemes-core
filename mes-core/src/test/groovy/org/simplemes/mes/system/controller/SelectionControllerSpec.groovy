@@ -20,7 +20,7 @@ import org.simplemes.eframe.test.MockPrincipal
 class SelectionControllerSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
   def "verify that controller has secured methods and meets standard requirements"() {
     expect: 'the controller follows the standard requirements'

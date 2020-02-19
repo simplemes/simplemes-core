@@ -1,7 +1,7 @@
 package org.simplemes.mes.demand
 
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.domain.LSN
 import org.simplemes.mes.demand.domain.LSNOperState
 import org.simplemes.mes.demand.domain.Order
@@ -96,7 +96,7 @@ class FindWorkResponseDetailSpec extends BaseSpecification {
     detail.operationSequence == lsnOperState.sequence
   }
 
-  @Rollback
+  // TODO: Restore @Rollback
   def "test common constructor status tests"() {
     given: 'a detail record'
     def detail = new FindWorkResponseDetail(qtyInQueue: qtyInQueue, qtyInWork: qtyInWork)

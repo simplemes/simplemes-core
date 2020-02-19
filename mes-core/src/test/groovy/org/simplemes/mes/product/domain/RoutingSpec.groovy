@@ -1,10 +1,10 @@
 package org.simplemes.mes.product.domain
 
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.test.MESUnitTestUtils
 
 /*
@@ -66,7 +66,7 @@ class RoutingSpec extends BaseSpecification {
     assert s.contains('missing')
   }
 
-  @Rollback
+  // TODO: Restore @Rollback
   def "determineNextOperation finds the correct operation"() {
     given: 'a routing with multiple steps'
     def routing = MESUnitTestUtils.buildMasterRouting(operations: [1, 2, 3])

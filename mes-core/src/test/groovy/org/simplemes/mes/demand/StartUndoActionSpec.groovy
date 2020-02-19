@@ -1,9 +1,9 @@
 package org.simplemes.mes.demand
 
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.domain.Order
 
 /*
@@ -17,7 +17,7 @@ import org.simplemes.mes.demand.domain.Order
  */
 class StartUndoActionSpec extends BaseSpecification {
 
-  static specNeeds = [HIBERNATE, JSON]
+  static specNeeds = [SERVER, JSON]
 
   @SuppressWarnings("GroovyAssignabilityCheck")
   @Rollback

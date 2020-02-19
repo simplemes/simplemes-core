@@ -1,7 +1,7 @@
 package org.simplemes.mes.demand.service
 
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.LSNTrackingOption
 import org.simplemes.mes.demand.ResolveIDRequest
 import org.simplemes.mes.demand.domain.LSNSequence

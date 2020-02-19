@@ -1,10 +1,10 @@
 package org.simplemes.mes.tracking.domain
 
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.LSNTrackingOption
 import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.misc.FieldSizes
@@ -23,7 +23,7 @@ import org.simplemes.mes.test.MESUnitTestUtils
 class ActionLogSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [HIBERNATE]
+  static specNeeds = [SERVER]
 
   def "test constraints"() {
     given: 'no user in request'

@@ -1,9 +1,9 @@
 package org.simplemes.mes.numbering.domain
 
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.domain.OrderSequence
 import org.simplemes.mes.misc.FieldSizes
 

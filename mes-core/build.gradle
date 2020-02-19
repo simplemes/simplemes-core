@@ -59,8 +59,10 @@ dependencyManagement {
 
 dependencies {
   compile ("org.simplemes:eframe:0.5")
-  compileOnly("org.codehaus.groovy:groovy:${groovyDateUtilsVersions}")
-  compileOnly "io.micronaut:micronaut-inject-groovy"
+  //compileOnly("org.codehaus.groovy:groovy:${groovyDateUtilsVersions}")
+  //compileOnly "io.micronaut:micronaut-inject-groovy"
+  //compile "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
+
 
   // gems dependency configuration is added by jruby-gradle-plugin. Here we define
   // the gems we need in our build.

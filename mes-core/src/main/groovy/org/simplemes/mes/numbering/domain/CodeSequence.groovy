@@ -1,8 +1,15 @@
 package org.simplemes.mes.numbering.domain
 
-import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import groovy.util.logging.Slf4j
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.DateCreated
+import io.micronaut.data.annotation.DateUpdated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
+import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.mes.misc.FieldSizes
 
@@ -12,7 +19,8 @@ import org.simplemes.mes.misc.FieldSizes
  *
  */
 @Slf4j
-@Entity
+@MappedEntity
+@DomainEntity
 @EqualsAndHashCode(includes = ['sequence'])
 abstract class CodeSequence {
   // *******************************************************************
@@ -47,6 +55,18 @@ abstract class CodeSequence {
    * Only used by concrete sub-classes.
    */
   boolean defaultSequence = false
+
+  @DateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateCreated
+
+  @DateUpdated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateUpdated
+
+  Integer version = 0
+
+  @Id @AutoPopulated UUID uuid
 
 
   static constraints = {

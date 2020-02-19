@@ -1,8 +1,15 @@
 package org.simplemes.mes.demand.domain
 
-import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.DateCreated
+import io.micronaut.data.annotation.DateUpdated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
+import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.mes.demand.CompleteRequest
 import org.simplemes.mes.demand.DemandObject
@@ -13,6 +20,8 @@ import org.simplemes.mes.demand.WorkableInterface
 import org.simplemes.mes.misc.FieldSizes
 import org.simplemes.mes.product.domain.Product
 import org.simplemes.mes.tracking.domain.ActionLog
+
+import javax.persistence.OneToMany
 
 /*
 import org.simplemes.mes.numbering.LSNSequence
@@ -33,8 +42,9 @@ import org.simplemes.mes.tracking.ActionLog
  * <p/>
  * <b>Note:</b> This object is stored in the table <b>'ORDR'</b>
  */
-@Entity
-@ToString(includeNames = true, includePackage = false, excludes = ['dateCreated', 'lastUpdated', 'errors', 'dirty', 'dirtyPropertyNames', 'attached'])
+@MappedEntity
+@DomainEntity
+@ToString(includeNames = true, includePackage = false, excludes = ['dateCreated', 'dateUpdated'])
 @EqualsAndHashCode(includes = ["order"])
 class Order implements WorkStateTrait, WorkableInterface, DemandObject {
   /**
@@ -85,6 +95,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject {
    * in queue, in work, etc for a given operation. This list is sorted in the same order as the orderRouting's operations
    *
    */
+  @OneToMany(mappedBy = "order")
   List<OrderOperState> operationStates
   // This duplicate definition is needed since the normal hasMany injection uses a Set.  A List is easier to use.
 
@@ -92,6 +103,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject {
    * The Order can have child lot/serial numbers (LSNs) that can be processed for many actions.
    * Order is not guaranteed. <b>(Optional)</b>
    */
+  @OneToMany(mappedBy = "order")
   List<LSN> lsns
   // This duplicate definition is needed since the normal hasMany injection uses a Set.  A List is easier to use.
 
@@ -101,16 +113,6 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject {
    * then defaults to Order only.
    */
   LSNTrackingOption lsnTrackingOption = LSNTrackingOption.ORDER_ONLY
-
-  /**
-   * The date this record was last updated.
-   */
-  Date lastUpdated
-
-  /**
-   * The date this record was created
-   */
-  Date dateCreated
 
   /**
    * The date this order was released.
@@ -165,6 +167,17 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject {
    * <p/><b>WorkStateTrait field</b>.
    */
   Date dateFirstStarted
+
+  @DateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE') Date dateCreated
+
+  @DateUpdated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateUpdated
+
+  Integer version = 0
+
+  @Id @AutoPopulated UUID uuid
 
   /**
    * This is a list of fields that are not allowed in the standard CRUD (Create, Read, Update, Delete) APIs provided by the standard

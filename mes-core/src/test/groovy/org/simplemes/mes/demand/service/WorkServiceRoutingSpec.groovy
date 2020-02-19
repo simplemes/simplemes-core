@@ -1,9 +1,9 @@
 package org.simplemes.mes.demand.service
 
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.CompleteRequest
 import org.simplemes.mes.demand.StartRequest
 import org.simplemes.mes.demand.domain.Order
@@ -23,7 +23,7 @@ import org.simplemes.mes.tracking.service.ProductionLogService
 class WorkServiceRoutingSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = HIBERNATE
+  static specNeeds = SERVER
 
   /**
    * The work service being tested.

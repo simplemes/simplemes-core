@@ -1,6 +1,5 @@
 package org.simplemes.mes.demand.service
 
-import grails.gorm.transactions.Transactional
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.mes.demand.CompleteRequest
@@ -15,6 +14,7 @@ import org.simplemes.mes.tracking.domain.ActionLog
 import org.simplemes.mes.tracking.service.ProductionLogService
 
 import javax.inject.Inject
+import javax.transaction.Transactional
 
 /**
  * Defines Services for the starting and completing work on Orders and LSNs.

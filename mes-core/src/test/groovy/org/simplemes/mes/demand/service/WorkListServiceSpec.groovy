@@ -1,10 +1,10 @@
 package org.simplemes.mes.demand.service
 
 import ch.qos.logback.classic.Level
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.MockAppender
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.FindWorkRequest
 import org.simplemes.mes.demand.FindWorkResponse
 import org.simplemes.mes.demand.LSNTrackingOption
@@ -193,7 +193,7 @@ class WorkListServiceSpec extends BaseSpecification {
     list[0].order == orders[0].order
   }
 
-  @Rollback
+  // TODO: Restore @Rollback
   def "test max/offset inQueue orders with no routing"() {
     given: 'multiple released orders'
     def orders = MESUnitTestUtils.releaseOrders(nOrders: 10)
@@ -215,7 +215,7 @@ class WorkListServiceSpec extends BaseSpecification {
     5   | 3      | 5    | 'M1003'
   }
 
-  @Rollback
+  // TODO: Restore @Rollback
   def "test inQueue for orders with routing"() {
     given: 'multiple released orders'
     def orders = MESUnitTestUtils.releaseOrders(nOrders: 3, operations: [3])
@@ -234,7 +234,7 @@ class WorkListServiceSpec extends BaseSpecification {
     list[0].operationSequence == 3
   }
 
-  @Rollback
+  // TODO: Restore @Rollback
   def "test max/offset inQueue orders with routing"() {
     given: 'multiple released orders'
     def orders = MESUnitTestUtils.releaseOrders(nOrders: 10, operations: [3])
@@ -280,7 +280,7 @@ class WorkListServiceSpec extends BaseSpecification {
     !responseDetail.inWork
   }
 
-  @Rollback
+  // TODO: Restore @Rollback
   def "test max/offset inQueue LSNs with no routing"() {
     given: 'a single released order with multiple LSNs'
     MESUnitTestUtils.resetCodeSequences()
@@ -303,7 +303,7 @@ class WorkListServiceSpec extends BaseSpecification {
     5   | 3      | 5    | 'SN1003'
   }
 
-  @Rollback
+  // TODO: Restore @Rollback
   def "test inQueue for LSNs with routing"() {
     given: 'multiple released LSNs'
     MESUnitTestUtils.resetCodeSequences()
@@ -323,7 +323,7 @@ class WorkListServiceSpec extends BaseSpecification {
     list[0].operationSequence == 3
   }
 
-  @Rollback
+  // TODO: Restore @Rollback
   def "test max/offset inQueue LSNs with routing"() {
     given: 'multiple released LSNs'
     MESUnitTestUtils.resetCodeSequences()
@@ -346,7 +346,7 @@ class WorkListServiceSpec extends BaseSpecification {
     5   | 3      | 5    | 'SN1003'
   }
 
-  @Rollback
+  // TODO: Restore @Rollback
   def "test max/offset inQueue all 4 sources"() {
     given: 'multiple released LSNs'
     def order = MESUnitTestUtils.releaseOrder(id: "1WLS", operations: [3], qty: 10, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
@@ -380,7 +380,7 @@ class WorkListServiceSpec extends BaseSpecification {
     5   | 3      | 20   | 'M1003-3WLS'
   }
 
-  @Rollback
+  // TODO: Restore @Rollback
   def "test max/offset with inQueue and inWork at all 4 sources"() {
     given: 'multiple released LSNs'
     def order = MESUnitTestUtils.releaseOrder(id: "1WLS", operations: [3], qty: 10, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)

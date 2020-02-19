@@ -1,27 +1,41 @@
 package org.simplemes.mes.floor.domain
 
-import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.DateCreated
+import io.micronaut.data.annotation.DateUpdated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
+import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.mes.floor.WorkCenterStatus
 import org.simplemes.mes.misc.FieldSizes
+
+import javax.persistence.Column
 
 /**
  * Defines a work location or machine on the floor where work is performed.
  */
-@Entity
-@ToString(includeNames = true, includePackage = false, excludes = ['dateCreated', 'lastUpdated', 'errors', 'dirty', 'dirtyPropertyNames', 'attached'])
+@MappedEntity
+@DomainEntity
+@ToString(includeNames = true, includePackage = false, excludes = ['dateCreated', 'dateUpdated'])
 @EqualsAndHashCode(includes = ['workCenter'])
 class WorkCenter {
 
   /**
    * The work center's name (key field).
    */
+  // TODO: DDL Add unique constraint and non null on workCenter.
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
+  @MappedProperty(type = DataType.STRING, definition = 'VARCHAR(30) UNIQUE')
   String workCenter
 
   /**
    * The work center's name (short description).
    */
+  @Column(length = org.simplemes.eframe.misc.FieldSizes.MAX_TITLE_LENGTH, nullable = true)
   String title
 
   /**
@@ -29,24 +43,17 @@ class WorkCenter {
    */
   WorkCenterStatus overallStatus
 
-  /**
-   * The date this record was last updated.
-   */
-  Date lastUpdated
-
-  /**
-   * The date this record was created
-   */
+  @DateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateCreated
 
-  /**
-   * <i>Internal definitions for GORM framework.</i>
-   */
-  static constraints = {
-    workCenter(maxSize: FieldSizes.MAX_CODE_LENGTH, unique: true, nullable: false, blank: false)
-    title(maxSize: FieldSizes.MAX_TITLE_LENGTH, nullable: true, blank: true)
-    //workCenterComponents(nullable: true)
-  }
+  @DateUpdated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateUpdated
+
+  Integer version = 0
+
+  @Id @AutoPopulated UUID uuid
 
   /**
    * Defines the default general field ordering for GUIs and other field listings/reports.

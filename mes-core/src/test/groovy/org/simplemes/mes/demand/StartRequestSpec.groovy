@@ -1,9 +1,9 @@
 package org.simplemes.mes.demand
 
-import grails.gorm.transactions.Rollback
 import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.floor.domain.WorkCenter
 import org.simplemes.mes.test.MESUnitTestUtils
 
@@ -18,7 +18,7 @@ import org.simplemes.mes.test.MESUnitTestUtils
  */
 class StartRequestSpec extends BaseSpecification {
 
-  static specNeeds = [HIBERNATE, JSON]
+  static specNeeds = [SERVER, JSON]
 
   @Rollback
   def "verify that the request can be serialized/deserialized as JSON"() {

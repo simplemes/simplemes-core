@@ -1,22 +1,30 @@
 package org.simplemes.mes.demand.domain
 
-import grails.gorm.annotation.Entity
-import groovy.transform.EqualsAndHashCode
-import groovy.transform.ToString
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.DateCreated
+import io.micronaut.data.annotation.DateUpdated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
+import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.mes.demand.DemandObject
 import org.simplemes.mes.demand.LSNStatus
 import org.simplemes.mes.demand.WorkStateTrait
 import org.simplemes.mes.demand.WorkableInterface
 import org.simplemes.mes.misc.FieldSizes
 
+import javax.persistence.OneToMany
+
 /**
  * Defines a lot/serial number (LSN) for tracking and identification of demand.  This a child of the
  * {@link org.simplemes.mes.demand.domain.Order}.
  *
  */
-@Entity
-@EqualsAndHashCode(includes = ['lsn', 'order'])
-@ToString(includeNames = true, includePackage = false, excludes = ['order', 'errors', 'dirty', 'dirtyPropertyNames', 'attached'])
+@MappedEntity
+@DomainEntity
+// TODO: Restore @EqualsAndHashCode(includes = ['lsn', 'order'])
+// TODO: Restore @ToString(includeNames = true, includePackage = false, excludes = ['order'])
 class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
   /**
    * The Lot/Serial Number (LSN) of the unit to be tracked.
@@ -38,6 +46,7 @@ class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
    * in queue, in work, etc for a given operation. This list is sorted in the same order as the orderRouting's operations
    *
    */
+  @OneToMany(mappedBy = "lsn")
   List<LSNOperState> operationStates
   // This duplicate definition is needed since the normal hasMany injection uses a Set.  A List is easier to use.
 
@@ -85,15 +94,17 @@ class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
    */
   Date dateFirstStarted
 
-  /**
-   * The date this record was last updated.
-   */
-  Date lastUpdated
+  @DateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE') Date dateCreated
 
-  /**
-   * The date this record was created
-   */
-  Date dateCreated
+  @DateUpdated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateUpdated
+
+  Integer version = 0
+
+  @Id @AutoPopulated UUID uuid
+
 
   /**
    * An LSN always belongs to one order.  It is a child of the order and may be processed individually within

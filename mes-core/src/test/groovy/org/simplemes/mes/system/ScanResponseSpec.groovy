@@ -1,10 +1,9 @@
 package org.simplemes.mes.system
 
-
-import grails.gorm.transactions.Rollback
 import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.StartRequest
 import org.simplemes.mes.demand.StartResponse
 import org.simplemes.mes.demand.StartUndoAction
@@ -21,7 +20,7 @@ import org.simplemes.mes.demand.domain.Order
  */
 class ScanResponseSpec extends BaseSpecification {
 
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
   def "tests the copy constructor for a ScanRequest"() {
     given: 'a scan request'

@@ -1,8 +1,8 @@
 package org.simplemes.mes.product.domain
 
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.misc.FieldSizes
 
 /*
@@ -17,7 +17,7 @@ import org.simplemes.mes.misc.FieldSizes
 class RoutingOperationSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = HIBERNATE
+  static specNeeds = SERVER
 
   def "test constraints"() {
     given: 'an oper'
@@ -32,7 +32,7 @@ class RoutingOperationSpec extends BaseSpecification {
     }
   }
 
-  @Rollback
+  // TODO: Restore @Rollback
   @SuppressWarnings("GroovyAssignabilityCheck")
   def "constraint enforces sequence greater than 0"() {
     given: 'a routing operation'
@@ -50,7 +50,7 @@ class RoutingOperationSpec extends BaseSpecification {
     -1       | 'min.notmet.sequence'
   }
 
-  @Rollback
+  // TODO: Restore @Rollback
   def "test compareTo works"() {
     expect: 'compareTo works'
     def r1 = new RoutingOperation(sequence: sequenceA)

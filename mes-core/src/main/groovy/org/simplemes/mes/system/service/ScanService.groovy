@@ -1,6 +1,5 @@
 package org.simplemes.mes.system.service
 
-import grails.gorm.transactions.Transactional
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.mes.demand.ResolveIDRequest
@@ -12,6 +11,8 @@ import org.simplemes.mes.system.RefreshOrderStatusAction
 import org.simplemes.mes.system.ScanRequestInterface
 import org.simplemes.mes.system.ScanResponse
 import org.simplemes.mes.system.ScanResponseInterface
+
+import javax.transaction.Transactional
 
 /*
  * Copyright Michael Houston. All rights reserved.
@@ -105,7 +106,7 @@ class ScanService {
    * @param scanRequest The original barcode scan request.
    * @return A map containing the parsed name/value pairs found in the barcode (if any).
    */
-  @Transactional(readOnly = true)
+  @Transactional
   Map parseScan(ScanRequestInterface scanRequest) {
     def res = [:]
     String barcode = scanRequest.barcode

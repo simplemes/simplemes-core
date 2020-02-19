@@ -1,7 +1,6 @@
 package org.simplemes.mes.demand.service
 
 import ch.qos.logback.classic.Level
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.archive.ArchiverFactoryInterface
 import org.simplemes.eframe.archive.FileArchiver
 import org.simplemes.eframe.domain.DomainUtils
@@ -10,6 +9,7 @@ import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.MockAppender
 import org.simplemes.eframe.test.MockBean
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.LSNTrackingOption
 import org.simplemes.mes.demand.OrderHoldStatus
 import org.simplemes.mes.demand.OrderReleaseRequest

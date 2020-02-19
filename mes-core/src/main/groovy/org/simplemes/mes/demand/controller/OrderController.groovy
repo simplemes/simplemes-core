@@ -1,6 +1,5 @@
 package org.simplemes.mes.demand.controller
 
-import grails.gorm.transactions.Transactional
 import groovy.util.logging.Slf4j
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
@@ -21,6 +20,7 @@ import org.simplemes.mes.demand.service.OrderService
 
 import javax.annotation.Nullable
 import javax.inject.Inject
+import javax.transaction.Transactional
 import java.security.Principal
 
 //import org.simplemes.eframe.controller.ControllerErrorHandlerTrait
@@ -38,7 +38,7 @@ import java.security.Principal
 @Slf4j
 @Secured("SUPERVISOR")
 @Controller("/order")
-//@Transactional(readOnly = true)
+//@Transactional
 class OrderController extends BaseCrudRestController {
   /**
    * Injected OrderService.
@@ -136,7 +136,7 @@ class OrderController extends BaseCrudRestController {
    */
   @SuppressWarnings("GroovyAssignabilityCheck")
   @Get("/determineQtyStates/{id}")
-  @Transactional(readOnly = true)
+  @Transactional
   HttpResponse determineQtyStates(@PathVariable(name = 'id') String id, @Nullable Principal principal) {
     //println "params = $params"
     //println "id = ${params.id.class}, order = $order"

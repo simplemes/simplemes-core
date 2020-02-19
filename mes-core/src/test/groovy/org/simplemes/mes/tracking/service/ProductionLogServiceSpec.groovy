@@ -1,12 +1,11 @@
 package org.simplemes.mes.tracking.service
 
 import ch.qos.logback.classic.Level
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.application.Holders
-import org.simplemes.eframe.archive.ArchiveLog
 import org.simplemes.eframe.archive.ArchiverFactory
 import org.simplemes.eframe.archive.ArchiverFactoryInterface
 import org.simplemes.eframe.archive.FileArchiver
+import org.simplemes.eframe.archive.domain.ArchiveLog
 import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.misc.FileFactory
 import org.simplemes.eframe.security.SecurityUtils
@@ -17,6 +16,7 @@ import org.simplemes.eframe.test.MockBean
 import org.simplemes.eframe.test.MockFileFactory
 import org.simplemes.eframe.test.MockObjectMapper
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.LSNTrackingOption
 import org.simplemes.mes.demand.domain.LSNSequence
 import org.simplemes.mes.demand.domain.Order

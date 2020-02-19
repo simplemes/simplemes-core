@@ -1,6 +1,5 @@
 package org.simplemes.mes.tracking.service
 
-import grails.gorm.transactions.Transactional
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.archive.ArchiverFactoryInterface
@@ -13,6 +12,7 @@ import org.simplemes.mes.tracking.ProductionLogRequest
 import org.simplemes.mes.tracking.domain.ProductionLog
 
 import javax.inject.Singleton
+import javax.transaction.Transactional
 
 /*
  * Copyright Michael Houston. All rights reserved.

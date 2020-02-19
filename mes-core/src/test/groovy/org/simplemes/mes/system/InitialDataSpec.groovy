@@ -1,9 +1,9 @@
 package org.simplemes.mes.system
 
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.security.domain.Role
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.annotation.Rollback
 
 /*
  * Copyright Michael Houston 2017. All rights reserved.
@@ -18,7 +18,7 @@ import org.simplemes.eframe.test.BaseSpecification
 class InitialDataSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = HIBERNATE
+  static specNeeds = SERVER
 
   @Rollback
   def "tests createRoles()"() {

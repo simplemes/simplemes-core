@@ -1,7 +1,7 @@
 package org.simplemes.mes.product.domain
 
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.annotation.Rollback
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.
@@ -14,7 +14,7 @@ import org.simplemes.eframe.test.BaseSpecification
  */
 class ProductRoutingSpec extends BaseSpecification {
   @SuppressWarnings("unused")
-  static specNeeds = HIBERNATE
+  static specNeeds = SERVER
 
   @Rollback
   def "test duplicate operations fails save"() {

@@ -1,8 +1,14 @@
 package org.simplemes.mes.demand.domain
 
-import grails.gorm.annotation.Entity
-import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.DateCreated
+import io.micronaut.data.annotation.DateUpdated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
+import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.mes.demand.WorkStateTrait
 import org.simplemes.mes.demand.WorkableInterface
@@ -22,9 +28,10 @@ import org.simplemes.mes.product.domain.RoutingOperation
  * This object also implements the WorkableInterface to encapsulate the process of working
  * on various objects.
  */
-@Entity
+@MappedEntity
+@DomainEntity
 @ToString(includeNames = true, includePackage = false)
-@EqualsAndHashCode(includes = ['lsn', 'sequence'])
+// TODO: Restore @EqualsAndHashCode(includes = ['lsn', 'sequence'])
 class LSNOperState implements WorkStateTrait, WorkableInterface {
   /**
    * A copy of the sequence for the operation this state applies to.
@@ -80,15 +87,17 @@ class LSNOperState implements WorkStateTrait, WorkableInterface {
    */
   Date dateFirstStarted
 
-  /**
-   * The date this record was last updated.
-   */
-  Date lastUpdated
+  @DateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE') Date dateCreated
 
-  /**
-   * The date this record was created
-   */
-  Date dateCreated
+  @DateUpdated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateUpdated
+
+  Integer version = 0
+
+  @Id @AutoPopulated UUID uuid
+
 
   /**
    * Internal constraint definitions.

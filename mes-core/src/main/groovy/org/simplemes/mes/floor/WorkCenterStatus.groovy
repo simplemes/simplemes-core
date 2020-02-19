@@ -1,6 +1,6 @@
 package org.simplemes.mes.floor
 
-import groovy.transform.ToString
+
 import org.simplemes.eframe.data.ChoiceListInterface
 import org.simplemes.eframe.data.ChoiceListItemInterface
 import org.simplemes.eframe.data.EncodedTypeInterface
@@ -19,7 +19,7 @@ import org.simplemes.eframe.i18n.GlobalUtils
  * Sub-elements of the work center may have other states or statuses.
  *
  */
-@ToString(includeNames = true, includePackage = false)
+//@ToString(includeNames = true, includePackage = false)
 abstract class WorkCenterStatus implements EncodedTypeInterface, ChoiceListInterface, ChoiceListItemInterface {
 
   /**

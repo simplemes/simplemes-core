@@ -1,9 +1,9 @@
 package org.simplemes.mes.demand
 
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.domain.LSN
 import org.simplemes.mes.demand.domain.LSNOperState
 import org.simplemes.mes.demand.domain.Order
@@ -19,7 +19,7 @@ import org.simplemes.mes.demand.domain.Order
  */
 class WorkStateTraitSpec extends BaseSpecification {
 
-  static specNeeds = HIBERNATE
+  static specNeeds = SERVER
 
   /**
    * Builds an LSNOperState record with the given settings.  Builds this oper state object inside of an LSN/Order.

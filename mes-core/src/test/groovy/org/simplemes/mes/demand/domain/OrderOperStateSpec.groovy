@@ -1,9 +1,7 @@
 package org.simplemes.mes.demand.domain
 
-import org.simplemes.eframe.domain.ConstraintUtils
-import org.simplemes.eframe.domain.DomainUtils
+
 import org.simplemes.eframe.test.BaseSpecification
-import org.simplemes.mes.misc.FieldSizes
 import org.simplemes.mes.product.domain.Product
 import org.simplemes.mes.product.domain.RoutingOperation
 import org.simplemes.mes.test.MESUnitTestUtils
@@ -49,20 +47,6 @@ class OrderOperStateSpec extends BaseSpecification {
       assert order3.operationStates[0].qtyInWork == 1.0
       true
     }
-  }
-
-  def "constraints needed for WorkStateTrait fields are added"() {
-    given: 'a domain class property that should have a scale constraint'
-    def property = DomainUtils.instance.getPersistentField(OrderOperState, propertyName)
-
-    expect: 'the correct scale is used'
-    ConstraintUtils.instance.getPropertyScale(property) == scale
-
-    where: 'various properties are tested'
-    propertyName | scale
-    'qtyInQueue' | FieldSizes.STANDARD_DECIMAL_SCALE
-    'qtyInWork'  | FieldSizes.STANDARD_DECIMAL_SCALE
-    'qtyDone'    | FieldSizes.STANDARD_DECIMAL_SCALE
   }
 
   def "test copy constructor from a RoutingOperation"() {

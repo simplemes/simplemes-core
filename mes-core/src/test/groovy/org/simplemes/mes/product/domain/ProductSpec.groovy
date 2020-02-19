@@ -1,8 +1,8 @@
 package org.simplemes.mes.product.domain
 
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.misc.FieldSizes
 import org.simplemes.mes.test.MESUnitTestUtils
 
@@ -18,7 +18,7 @@ import org.simplemes.mes.test.MESUnitTestUtils
 class ProductSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = HIBERNATE
+  static specNeeds = SERVER
 
   @Rollback
   def "test routing update of domain object"() {

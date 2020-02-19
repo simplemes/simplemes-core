@@ -1,6 +1,5 @@
 package org.simplemes.mes.system.controller
 
-import grails.gorm.transactions.Transactional
 import groovy.util.logging.Slf4j
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.MediaType
@@ -20,6 +19,7 @@ import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.security.SecurityUtils
 
 import javax.annotation.Nullable
+import javax.transaction.Transactional
 import java.security.Principal
 
 /*

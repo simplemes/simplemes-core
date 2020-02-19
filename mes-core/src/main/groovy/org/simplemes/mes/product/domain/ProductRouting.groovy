@@ -1,8 +1,11 @@
 package org.simplemes.mes.product.domain
 
-import grails.gorm.annotation.Entity
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import org.simplemes.eframe.domain.annotation.DomainEntity
 
 /*
  * Copyright Michael Houston. All rights reserved.
@@ -19,7 +22,8 @@ import groovy.transform.ToString
  * This is a child of the product and can only be imported as part of the product.
  *
  */
-@Entity
+@MappedEntity
+@DomainEntity
 @EqualsAndHashCode(includes = ["product"])
 @ToString(includeNames = true, includePackage = false, excludes = ['product'])
 class ProductRouting extends Routing {
@@ -28,6 +32,8 @@ class ProductRouting extends Routing {
    * This ProductRouting  always belongs to a single Product record.
    */
   Product product
+
+  @Id @AutoPopulated UUID uuid
 
   /**
    * Internal values.

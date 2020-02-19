@@ -18,20 +18,21 @@
     <logger name="org.hibernate.orm.deprecation"
             level="error"/><!-- Waiting on GORM to migrate to JPA API.  See https://github.com/grails/gorm-hibernate5/issues/55-->
     <!--<logger name="net.sf.ehcache" level="trace"/>-->
-    <logger name="io.micronaut.runtime.Micronaut" level="info"/>
-    <logger name="io.micronaut" level="warn"/>
-    <logger name="org.hibernate.SQL" level="warn"/>  <!--trace for SQL-->
-    <!--<logger name="asset.pipeline" level="trace"/>-->
-    <!--<logger name="org.grails.datastore.gorm" level="trace"/>-->
-    <!--<logger name="org.springframework" level="trace"/>-->
-    <logger name="io.netty.handler.logging" level="WARN"/>
+  <logger name="io.micronaut.runtime.Micronaut" level="info"/>
+  <logger name="io.micronaut" level="warn"/>
+  <logger name="org.hibernate.SQL" level="warn"/>  <!--trace for SQL-->
+  <!--<logger name="asset.pipeline" level="trace"/>-->
+  <!--<logger name="org.grails.datastore.gorm" level="trace"/>-->
+  <!--<logger name="org.springframework" level="trace"/>-->
+  <logger name="io.netty.handler.logging" level="WARN"/>
 
-    <logger name="sample" level="warn"/>
-    <!--<logger name="org.simplemes.eframe.web.ui" level="trace"/>-->
-    <logger name="org.simplemes.eframe.test" level="warn"/>
-    <logger name="org.simplemes.eframe.preference" level="warn"/>
-    <logger name="org.simplemes.eframe" level="warn"/>
-    <logger name="org.simplemes.mes" level="warn"/>
-    <logger name="org.simplemes.mes.demand" level="warn"/>
-    <logger name="org.simplemes.mes.system.InitialData" level="error"/>
+  <logger name="sample" level="warn"/>
+  <!--<logger name="org.simplemes.eframe.web.ui" level="trace"/>-->
+  <logger name="org.simplemes.eframe.application" level="error"/>  <!--warn for work around output-->
+  <logger name="org.simplemes.eframe.test" level="warn"/>
+  <logger name="org.simplemes.eframe.preference" level="warn"/>
+  <logger name="org.simplemes.eframe" level="warn"/>
+  <logger name="org.simplemes.mes" level="warn"/>
+  <logger name="org.simplemes.mes.demand" level="warn"/>
+  <logger name="org.simplemes.mes.system.InitialData" level="error"/>
 </configuration>

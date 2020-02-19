@@ -1,7 +1,7 @@
 package org.simplemes.mes.demand.domain
 
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.product.domain.Product
 import org.simplemes.mes.product.domain.ProductRouting
 import org.simplemes.mes.product.domain.RoutingOperation
@@ -19,7 +19,7 @@ class OrderRoutingSpec extends BaseSpecification {
 
 
   @SuppressWarnings("unused")
-  static specNeeds = HIBERNATE
+  static specNeeds = SERVER
 
   @Rollback
   def "test copy constructor"() {

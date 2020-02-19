@@ -1,9 +1,9 @@
 package org.simplemes.mes.system
 
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.exception.MessageHolder
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.StartUndoAction
 import org.simplemes.mes.demand.service.OrderService
 import org.simplemes.mes.demand.service.ResolveService
@@ -22,7 +22,7 @@ import org.simplemes.mes.tracking.service.ProductionLogService
  * Tests.
  */
 class ScanServiceSpec extends BaseSpecification {
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
   /**
    * The scan service being tested.

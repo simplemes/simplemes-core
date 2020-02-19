@@ -1,8 +1,13 @@
 package org.simplemes.mes.product.domain
 
-import grails.gorm.annotation.Entity
 import groovy.transform.ToString
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.exception.BusinessException
+
+import javax.persistence.OneToMany
 
 /*
  * Copyright Michael Houston. All rights reserved.
@@ -21,15 +26,19 @@ import org.simplemes.eframe.exception.BusinessException
  * The sub-classes of this class are used to attach a routing to a product in different ways.
  *
  */
-@Entity
+@MappedEntity
+@DomainEntity
 @ToString(includeNames = true, includePackage = false)
 class Routing {
 
   /**
    * This is the list of operations to be performed on this routing.  This list is automatically sorted on the sequence.
    */
+  @OneToMany(mappedBy = "routing")
   List<RoutingOperation> operations
   // This duplicate definition is needed since the normal hasMany injection uses a Set.  A List is easier to use.
+
+  @Id @AutoPopulated UUID uuid
 
   /**
    * This operations are a list of RoutingOperation entries to be performed to produce this product.

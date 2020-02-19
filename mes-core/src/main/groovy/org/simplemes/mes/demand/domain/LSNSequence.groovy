@@ -1,9 +1,11 @@
 package org.simplemes.mes.demand.domain
 
-import grails.gorm.annotation.Entity
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
-import org.simplemes.mes.numbering.domain.CodeSequence
+import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.Id
+import io.micronaut.data.annotation.MappedEntity
+import org.simplemes.eframe.domain.annotation.DomainEntity
 
 /**
  * Defines the sequence used to generate new lot/serial numbers (LSN).
@@ -13,14 +15,17 @@ import org.simplemes.mes.numbering.domain.CodeSequence
  */
 
 @Slf4j
-@Entity
+@MappedEntity
+@DomainEntity
 @ToString(includeNames = true, includePackage = false)
-class LSNSequence extends CodeSequence {
+class LSNSequence /* TODO: move from extends CodeSequence*/ {
 
   /**
    * If true, then this sequence is the default used for new orders.
    */
   boolean defaultSequence = false
+
+  @Id @AutoPopulated UUID uuid
 
   /**
    * <i>Internal definitions for GORM framework.</i>
@@ -43,7 +48,8 @@ class LSNSequence extends CodeSequence {
    */
   static Map<String, List<String>> initialDataLoad() {
     LSNSequence s
-
+    // TODO: Restore
+/*
     //noinspection UnnecessaryQualifiedReference
     s = LSNSequence.findBySequence('SERIAL')
     if (!s) {
@@ -51,6 +57,7 @@ class LSNSequence extends CodeSequence {
                       formatString: 'SN$currentSequence', currentSequence: 1000, defaultSequence: true).save()
       log.info("Loaded LSNSequence SERIAL")
     }
+*/
     return initialDataRecords
   }
 

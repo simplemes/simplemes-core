@@ -1,8 +1,8 @@
 package org.simplemes.mes.demand
 
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.test.MESUnitTestUtils
 
 /*
@@ -16,7 +16,7 @@ import org.simplemes.mes.test.MESUnitTestUtils
  */
 class OrderUtilsSpec extends BaseSpecification {
 
-  static specNeeds = HIBERNATE
+  static specNeeds = SERVER
 
   def setup() {
     setCurrentUser()

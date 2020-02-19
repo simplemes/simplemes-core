@@ -1,7 +1,7 @@
 package org.simplemes.mes.demand.domain
 
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.annotation.Rollback
 
 /*
  * Copyright Michael Houston 2017. All rights reserved.

@@ -1,11 +1,11 @@
 package org.simplemes.mes.demand.controller
 
-import grails.gorm.transactions.Rollback
 import groovy.json.JsonSlurper
 import io.micronaut.http.HttpStatus
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.ControllerTester
 import org.simplemes.eframe.test.MockPrincipal
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.CompleteRequest
 import org.simplemes.mes.demand.CompleteResponse
 import org.simplemes.mes.demand.StartRequest
@@ -28,7 +28,7 @@ import org.simplemes.mes.test.MESUnitTestUtils
 class WorkControllerSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, HIBERNATE]
+  static specNeeds = [JSON, SERVER]
 
   /**
    * Convenience method to start an order.

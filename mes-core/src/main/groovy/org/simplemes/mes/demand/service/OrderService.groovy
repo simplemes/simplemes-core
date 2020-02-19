@@ -1,6 +1,5 @@
 package org.simplemes.mes.demand.service
 
-import grails.gorm.transactions.Transactional
 import groovy.transform.Synchronized
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.application.Holders
@@ -21,6 +20,7 @@ import org.simplemes.mes.demand.domain.OrderRouting
 import org.simplemes.mes.tracking.domain.ActionLog
 
 import javax.inject.Singleton
+import javax.transaction.Transactional
 
 /*
  * Copyright Michael Houston. All rights reserved.

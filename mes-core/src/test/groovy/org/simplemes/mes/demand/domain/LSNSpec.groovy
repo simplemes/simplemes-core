@@ -1,12 +1,10 @@
 package org.simplemes.mes.demand.domain
 
-import grails.gorm.transactions.Rollback
-import org.simplemes.eframe.domain.ConstraintUtils
-import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.LSNStatus
 import org.simplemes.mes.demand.LSNTrackingOption
 import org.simplemes.mes.misc.FieldSizes
@@ -49,20 +47,6 @@ class LSNSpec extends BaseSpecification {
       notNullCheck 'lsn'
       fieldOrderCheck false
     }
-  }
-
-  def "constraints needed for WorkStateTrait fields are added"() {
-    given: 'a domain class property that should have a scale constraint'
-    def property = DomainUtils.instance.getPersistentField(LSN, propertyName)
-
-    expect: 'the correct scale is used'
-    ConstraintUtils.instance.getPropertyScale(property) == scale
-
-    where: 'various properties are tested'
-    propertyName | scale
-    'qtyInQueue' | FieldSizes.STANDARD_DECIMAL_SCALE
-    'qtyInWork'  | FieldSizes.STANDARD_DECIMAL_SCALE
-    'qtyDone'    | FieldSizes.STANDARD_DECIMAL_SCALE
   }
 
   @Rollback

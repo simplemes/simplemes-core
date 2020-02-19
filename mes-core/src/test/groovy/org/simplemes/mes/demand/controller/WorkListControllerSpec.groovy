@@ -1,9 +1,9 @@
 package org.simplemes.mes.demand.controller
 
-import grails.gorm.transactions.Rollback
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.ControllerTester
 import org.simplemes.eframe.test.MockPrincipal
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.FindWorkRequest
 import org.simplemes.mes.demand.FindWorkResponse
 import org.simplemes.mes.demand.service.WorkListService
@@ -23,7 +23,7 @@ import org.simplemes.mes.floor.domain.WorkCenter
  */
 class WorkListControllerSpec extends BaseSpecification {
 
-  static specNeeds = [HIBERNATE]
+  static specNeeds = [SERVER]
 
   def "verify that the controller passes the standard controller test - security, task menu, etc"() {
     expect: 'the controller passes'

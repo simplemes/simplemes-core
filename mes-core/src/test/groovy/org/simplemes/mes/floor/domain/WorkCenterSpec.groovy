@@ -1,8 +1,9 @@
 package org.simplemes.mes.floor.domain
 
-import grails.gorm.transactions.Rollback
+
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.floor.WorkCenterDisabledStatus
 import org.simplemes.mes.floor.WorkCenterStatus
 import org.simplemes.mes.misc.FieldSizes
@@ -19,7 +20,13 @@ import org.simplemes.mes.misc.FieldSizes
 class WorkCenterSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = HIBERNATE
+  static specNeeds = SERVER
+
+  @Override
+  void checkForLeftoverRecords() {
+    // TODO: Remove when all repos are defined.
+    println "checkForLeftoverRecords DISABLED"
+  }
 
   def "test standard constraints"() {
     expect: 'the constraints are enforced'
