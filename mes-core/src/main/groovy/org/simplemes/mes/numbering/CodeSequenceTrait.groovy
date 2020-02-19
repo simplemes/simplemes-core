@@ -1,6 +1,7 @@
 package org.simplemes.mes.numbering
 
 import org.simplemes.eframe.misc.TextUtils
+import org.simplemes.mes.demand.domain.OrderSequence
 
 /*
  * Copyright Michael Houston 2020. All rights reserved.
@@ -88,15 +89,7 @@ trait CodeSequenceTrait {
    * @return The formatted next number
    */
   private static List<String> formatValuesStatic(CodeSequenceTrait sequence, int nValues, Map params = null) {
-    // TODO: Determine how locking should work.  Select for update?  Move to eframe?
-/*
-    def id = sequence.uuid
-    // Force the originally read record to be re-read
-    sequence.discard()
-    sequence = lock(id)
-*/
-    // This discard/lock logic avoids the error:
-    // ERROR org.hibernate.internal.SessionImpl - HHH000346: Error during managed flush [Batch update returned unexpected row count from update [0]; actual row count: 0; expected: 1]
+    sequence = OrderSequence.findByUuidWithLock(sequence.uuid)
     return sequence.formatValuesInternal(nValues, params)
   }
 
