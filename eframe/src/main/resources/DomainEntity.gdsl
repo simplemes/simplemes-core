@@ -39,6 +39,7 @@ contribute(allContext) {
     method name: "list", type: "List<${classType?.getQualifiedName()}>", params: [:], isStatic: true
     method name: "withTransaction", params: [closure: Closure], isStatic: true
     method name: "getRepository", type: "${classType?.getQualifiedName()}Repository", params: [:], isStatic: true
+/*
     classType?.fields?.each {
       def params = [:]
       //new File('c:\\tmp\\out.log') << "A${it.dump()}\n"
@@ -48,6 +49,7 @@ contribute(allContext) {
       //params."${it.name}" = it.getQualifiedName()
       //method name: methodName, params: params, type: classType?.getQualifiedName(), isStatic: true
     }
+*/
     // Look for all methods in the repo and make them available here.
     def repoClassName = "${classType?.getQualifiedName()}Repository"
     if (repoClassName) {

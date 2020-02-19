@@ -25,7 +25,7 @@ import javax.persistence.Column
  * This mainly adjusts the order of fields on the standard definition GUIs and lists.
  * This can also add custom fields to those GUIs.
  */
-@MappedEntity
+@MappedEntity('field_gui_extension')
 @DomainEntity
 @EqualsAndHashCode(includes = ["domainName"])
 class FieldGUIExtension {
