@@ -5,7 +5,8 @@
 
 <#include "../includes/header.ftl" />
 
-<@efPreloadMessages codes="ok.label,cancel.label,addLogger.title,addLogger.tooltip,logger.label,removeLogger.tooltip,others.label"/>
+<@efPreloadMessages codes="ok.label,cancel.label,addLogger.title,addLogger.tooltip,
+                           logger.label,removeLogger.tooltip,others.label,state.label"/>
 
 <div id="loggerDiv"></div>
 <!--suppress JSUnusedLocalSymbols, JSReferencingMutableVariableFromClosure -->
@@ -237,22 +238,22 @@
   }
 
   var gird = webix.ui({
-      container: "loggerDiv",
-      rows: [
-        {
-          view: "treetable",
-          id: 'logger',
-          columns: [
-            {
-              id: "title", header: "Logger", width: tk.pw("55%"),
-              template: loggerTitle
-            },
-            {id: "state", header: "State", width: tk.pw("35%"), template: loggerStates}
-          ],
-          autoheight: true,
-          autowidth: true,
-          activeTitle: true,
-          data: ${treeJSON}
+    container: "loggerDiv",
+    rows: [
+      {
+        view: "treetable",
+        id: 'logger',
+        columns: [
+          {
+            id: "title", header: ef.lookup("logger.label"), width: tk.pw("55%"),
+            template: loggerTitle
+          },
+          {id: "state", header: ef.lookup("state.label"), width: tk.pw("35%"), template: loggerStates}
+        ],
+        autoheight: true,
+        autowidth: true,
+        activeTitle: true,
+        data: ${treeJSON}
         }
       ]
     })

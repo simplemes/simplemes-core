@@ -1,13 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.misc
 
 import groovy.text.GStringTemplateEngine
 import groovy.util.logging.Slf4j
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * General-purpose text manipulation utilities.
@@ -60,7 +58,6 @@ class TextUtils {
     // Now get rid of the $ inside of the ${}.  'A${$day}' becomes 'A${day}'
     gString = gString.replaceAll(/\$\{\$/, /\$\{/)
 
-    // Finally fix a problem with the Spring message source (see AbstractMessageSource.alwaysUseMessageFormat).
     // Need to un-escape any brackets that did not get fixed during the lookup.
     if (gString.contains("'")) {
       gString = gString.replaceAll(/'\{'/, /\{/)

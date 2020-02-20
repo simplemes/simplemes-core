@@ -1,12 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.i18n
 
-import org.simplemes.eframe.test.BaseSpecification
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+import org.simplemes.eframe.test.BaseSpecification
 
 /**
  * Tests.
@@ -15,17 +14,44 @@ class MessageSourceSpec extends BaseSpecification {
 
   //static specNeeds = [SERVER]
 
+  static MessageSource messageSource = new MessageSource()
+
   def "verify that getMessage works for default locale"() {
     when: 'the lookup is made'
-    def s = new MessageSource().getMessage('home.label', Locale.US, null)
+    def s = messageSource.getMessage('home.label', Locale.US, null)
+    messageSource.getMessage('_testKey', Locale.US, null)
 
     then: 'it is correct'
     s == 'Home'
   }
 
+  def "verify that getMessage works for a second messages.properties file"() {
+    when: 'the lookup is made'
+    def s = messageSource.getMessage('_testKey', Locale.US, null)
+
+    then: 'it is correct'
+    s == 'Test Value'
+  }
+
+  def "verify that getMessage works for a second messages_de.properties file"() {
+    when: 'the lookup is made'
+    def s = messageSource.getMessage('_testKey', Locale.GERMAN, null)
+
+    then: 'it is correct'
+    s == 'Das Test Value'
+  }
+
+  def "verify that getMessage works for a second messages_de_DE.properties file"() {
+    when: 'the lookup is made'
+    def s = messageSource.getMessage('_testKey', Locale.GERMANY, null)
+
+    then: 'it is correct'
+    s == 'Test Value - Country'
+  }
+
   def "verify that getMessage works for a specific locale"() {
     when: 'the lookup is made'
-    def s = new MessageSource().getMessage('searchStatus.green.label', Locale.GERMAN)
+    def s = messageSource.getMessage('searchStatus.green.label', Locale.GERMAN)
 
     then: 'it is correct'
     s == GlobalUtils.lookup('searchStatus.green.label', Locale.GERMAN)
@@ -33,19 +59,19 @@ class MessageSourceSpec extends BaseSpecification {
 
   def "verify that lookup works with UTF-8 encoding for German"() {
     expect: 'the correct string encoding is returned'
-    def s = new MessageSource().getMessage('searchStatus.green.label', Locale.GERMAN)
+    def s = messageSource.getMessage('searchStatus.green.label', Locale.GERMAN)
     s.contains('Grün')
     s == 'Grün'
   }
 
   def "verify that lookup for German falls back to default bundle"() {
     expect: 'the lookup works'
-    new MessageSource().getMessage('error.0.message', Locale.GERMAN) == 'Missing Error Code.'
+    messageSource.getMessage('error.0.message', Locale.GERMAN) == 'Missing Error Code.'
   }
 
   def "verify that the sample bundle is found"() {
     expect: 'the sample string is found'
-    new MessageSource().getMessage('allFieldsDomain.label', null) == 'All Fields'
+    messageSource.getMessage('allFieldsDomain.label', null) == 'All Fields'
   }
 
   def "verify that a jar file bundle can be found"() {
@@ -58,7 +84,7 @@ class MessageSourceSpec extends BaseSpecification {
 
   def "verify that the getMessage supports arguments and message formatting options"() {
     expect: 'the sample string is found'
-    new MessageSource().getMessage('_fields.summary.label', null, 12) == '12 Fields'
+    messageSource.getMessage('_fields.summary.label', null, 12) == '12 Fields'
     //_fields.summary.label={0,number} {0,choice,0#Fields|1#Field|1<Fields}
   }
 
@@ -77,6 +103,23 @@ class MessageSourceSpec extends BaseSpecification {
 
     then: 'the cache was cleared'
     messageSource.cachedResourceBundles.keySet().size() == 0
+  }
+
+  def "verify that getMessage caches the bundles"() {
+    given: 'a message source'
+    def messageSource = new MessageSource()
+
+    when: 'the resource is loaded'
+    messageSource.getMessage('home.label', null) != null
+
+    then: 'the cache has a value'
+    messageSource.cachedResourceBundles.keySet().size() == 1
+
+    when: 'another element is read'
+    messageSource.getMessage('cancel.label', null) != null
+
+    then: 'the cache has not grown'
+    messageSource.cachedResourceBundles.keySet().size() == 1
   }
 
 

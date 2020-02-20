@@ -7,7 +7,7 @@ working around them.  This section is meant to help you avoid some of those pot 
 
 ==== groovy.lang.Singleton Used
 
-Groovy provides the `groovy.lang.@Singleton` annotation without an explicit import.
+Groovy provides the `groovy.lang.Singleton` annotation without an explicit import.
 This annotation is not compatible with the one needed by Micronaut (_javax.inject.Singleton_).
 You must explicitly import the correct one:
 
@@ -18,7 +18,16 @@ If you use the wrong annotation, then your bean will not be created.
 NOTE: Intellij will not flag the wrong `@Singleton` annotation.  You will have to manually
       insert the above import statement.
 
-// TODO: Find/document an automatic check for this.  On App startup?
+==== Beans Defined in .java Files
+
+Micronaut works well with Java or Groovy source trees.  It gets a little confused when you have
+beans (e.g. @Singleton or @Controller) in Java and Groovy in the same module.  This causes
+Micronaut to create two _'META-INF/services/io.micronaut.inject.BeanDefinitionReference'_ files.
+When the module is used, the run-time logic can't always find the beans from the Java tree.
+
+This means you should avoid defining beans in the Java source tree if you use Groovy for other
+beans. 
+
 
 ==== Sessions Lost Randomly
 
