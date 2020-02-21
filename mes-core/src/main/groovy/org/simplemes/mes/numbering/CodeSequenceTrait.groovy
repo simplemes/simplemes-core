@@ -1,7 +1,6 @@
 package org.simplemes.mes.numbering
 
 import org.simplemes.eframe.misc.TextUtils
-import org.simplemes.mes.demand.domain.OrderSequence
 
 /*
  * Copyright Michael Houston 2020. All rights reserved.
@@ -89,7 +88,7 @@ trait CodeSequenceTrait {
    * @return The formatted next number
    */
   private static List<String> formatValuesStatic(CodeSequenceTrait sequence, int nValues, Map params = null) {
-    sequence = OrderSequence.findByUuidWithLock(sequence.uuid)
+    sequence = this.findByUuidWithLock(sequence.uuid)
     return sequence.formatValuesInternal(nValues, params)
   }
 

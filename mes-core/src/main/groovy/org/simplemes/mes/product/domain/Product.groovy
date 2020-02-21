@@ -161,9 +161,11 @@ class Product {
    * Sets the routing.  Used to fix the reference ProductRouting.product in unit tests/
    * @param productRouting The routing.
    */
+/*
   void setProductRouting(ProductRouting productRouting) {
     this.productRouting = productRouting
     productRouting?.product = this
   }
+*/
 
 }

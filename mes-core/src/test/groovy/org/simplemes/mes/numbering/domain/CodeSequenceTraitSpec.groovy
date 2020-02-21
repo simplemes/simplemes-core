@@ -24,7 +24,6 @@ class CodeSequenceTraitSpec extends BaseSpecification {
   @Override
   void checkForLeftoverRecords() {
     // TODO: Remove when all repos are defined.
-    println "checkForLeftoverRecords DISABLED"
   }
 
   def "test standard constraints"() {

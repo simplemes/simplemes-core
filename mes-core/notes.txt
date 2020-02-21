@@ -5,7 +5,7 @@ Micronaut-Data Migration
 ========================
 Remove references to GORM/Grails/Hibernate/.id.
 Remove disabled check for leftover records.
-
+DDL creation - QTY scale = STANDARD_DECIMAL_SCALE?  4?
 
 
 Tasks

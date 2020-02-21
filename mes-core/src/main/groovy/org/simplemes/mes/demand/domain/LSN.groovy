@@ -1,5 +1,7 @@
 package org.simplemes.mes.demand.domain
 
+import groovy.transform.EqualsAndHashCode
+import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.DateCreated
 import io.micronaut.data.annotation.DateUpdated
@@ -14,6 +16,9 @@ import org.simplemes.mes.demand.WorkStateTrait
 import org.simplemes.mes.demand.WorkableInterface
 import org.simplemes.mes.misc.FieldSizes
 
+import javax.annotation.Nullable
+import javax.persistence.Column
+import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 
 /**
@@ -23,13 +28,22 @@ import javax.persistence.OneToMany
  */
 @MappedEntity
 @DomainEntity
-// TODO: Restore @EqualsAndHashCode(includes = ['lsn', 'order'])
-// TODO: Restore @ToString(includeNames = true, includePackage = false, excludes = ['order'])
+@EqualsAndHashCode(includes = ['lsn', 'order'])
+@ToString(includeNames = true, includePackage = false, excludes = ['order'])
 class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
   /**
    * The Lot/Serial Number (LSN) of the unit to be tracked.
    */
+  @Column(length = FieldSizes.MAX_LSN_LENGTH, nullable = false)
   String lsn
+  // TODO: Add unique constraint on order/lsn to DDL.  Index on LSN/Order?
+
+  /**
+   * An LSN always belongs to one order.  It is a child of the order and may be processed individually within
+   * the order in many cases.
+   */
+  @ManyToOne
+  Order order
 
   /**
    * The status of this LSN.  Uses the default LSNStatus if none is provided.
@@ -48,7 +62,6 @@ class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
    */
   @OneToMany(mappedBy = "lsn")
   List<LSNOperState> operationStates
-  // This duplicate definition is needed since the normal hasMany injection uses a Set.  A List is easier to use.
 
   /**
    * The number of pieces waiting to be worked (in queue) for this object.
@@ -73,6 +86,7 @@ class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
    * Can be null if the nothing is in queue.
    * <p/><b>WorkStateTrait field</b>.
    */
+  @Nullable @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateQtyQueued
 
   /**
@@ -80,22 +94,26 @@ class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
    * Can be null if the nothing is in work.
    * <p/><b>WorkStateTrait field</b>.
    */
+  @Nullable @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateQtyStarted
 
   /**
    * The date/time any quantity was first queued at this point (operation or top-level).
    * <p/><b>WorkStateTrait field</b>.
    */
+  @Nullable @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateFirstQueued
 
   /**
    * The date/time any quantity was first started at this point (operation or top-level).
    * <p/><b>WorkStateTrait field</b>.
    */
+  @Nullable @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateFirstStarted
 
   @DateCreated
-  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE') Date dateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateCreated
 
   @DateUpdated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
@@ -104,14 +122,6 @@ class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
   Integer version = 0
 
   @Id @AutoPopulated UUID uuid
-
-
-  /**
-   * An LSN always belongs to one order.  It is a child of the order and may be processed individually within
-   * the order in many cases.
-   */
-  @SuppressWarnings("unused")
-  static belongsTo = [order: Order]
 
   /**
    * The primary keys for this record are order and lsn.  Order is the parent key.
@@ -123,47 +133,12 @@ class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
    * Defines the default general field ordering for GUIs and other field listings/reports.
    */
   @SuppressWarnings("GroovyUnusedDeclaration")
-  static fieldOrder = ['lsn', 'status', 'qty',
-                       'qtyInQueue', 'qtyInWork', 'qtyDone']
-
-  static constraints = {
-    lsn(maxSize: FieldSizes.MAX_LSN_LENGTH, nullable: false)
-    qty(scale: FieldSizes.STANDARD_DECIMAL_SCALE)
-
-    // Fields added by the WorkStateTrait
-    qtyInQueue(scale: FieldSizes.STANDARD_DECIMAL_SCALE)
-    qtyInWork(scale: FieldSizes.STANDARD_DECIMAL_SCALE)
-    qtyDone(scale: FieldSizes.STANDARD_DECIMAL_SCALE)
-    dateQtyQueued(nullable: true)
-    dateQtyStarted(nullable: true)
-    dateFirstQueued(nullable: true)
-    dateFirstStarted(nullable: true)
-  }
-
-  /**
-   * <i>Internal definitions for GORM framework.</i>
-   */
-  @SuppressWarnings("unused")
-  static mapping = {
-    lsn column: 'lsn', index: 'Lsn_Idx'
-    autoTimestamp true
-  }
-
-  /**
-   * Internal definitions for GORM framework.
-   */
-  @SuppressWarnings("unused")
-  static hasMany = [operationStates: LSNOperState]
+  static fieldOrder = ['lsn', 'status', 'qty', 'qtyInQueue', 'qtyInWork', 'qtyDone']
 
   /**
    * Called before validate happens.
    */
   def beforeValidate() {
-    setStatusIfNeeded()
-  }
-
-  @SuppressWarnings("unused")
-  def beforeInsert() {
     setStatusIfNeeded()
   }
 
@@ -199,8 +174,6 @@ class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
    * Saves any changes to this record.
    */
   void saveChanges() {
-    // Force GORM/Hibernate to update the record
-    setLastUpdated(new Date())
     save()
   }
 

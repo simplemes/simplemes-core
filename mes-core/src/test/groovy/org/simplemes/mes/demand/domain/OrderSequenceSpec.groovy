@@ -16,6 +16,11 @@ class OrderSequenceSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static dirtyDomains = [OrderSequence]
 
+  @Override
+  void checkForLeftoverRecords() {
+    // TODO: Remove when all repos are defined.
+  }
+
   @Rollback
   def "test initial data load"() {
     when: 'the initial data is loaded'

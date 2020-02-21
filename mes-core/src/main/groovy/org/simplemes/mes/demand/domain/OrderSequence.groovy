@@ -69,10 +69,10 @@ class OrderSequence implements CodeSequenceTrait {
   @Id @AutoPopulated UUID uuid
 
   /**
-   * Internal constraints.
+   * Defines the default general field ordering for GUIs and other field listings/reports.
    */
-  static constraints = {
-  }
+  @SuppressWarnings("GroovyUnusedDeclaration")
+  static fieldOrder = ['sequence', 'title', 'formatString', 'currentSequence', 'defaultSequence']
 
   /**
    * A list of the records created by the initial data load.
@@ -90,7 +90,6 @@ class OrderSequence implements CodeSequenceTrait {
   static Map<String, List<String>> initialDataLoad() {
     OrderSequence s
 
-    //noinspection UnnecessaryQualifiedReference
     s = OrderSequence.findBySequence('ORDER')
     if (!s) {
       new OrderSequence(sequence: 'ORDER', title: 'Order Sequence',

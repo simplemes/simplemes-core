@@ -1,5 +1,6 @@
 package org.simplemes.mes.demand.domain
 
+
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
@@ -26,13 +27,13 @@ class LSNSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static dirtyDomains = [ActionLog, Order, Product]
 
-  /**
-   * Semi-unique ID for records created by this test suite.
-   */
-  public static final String ID = 'LS'
-
   void setup() {
-    loadInitialData(LSNSequence)
+    waitForInitialDataLoad()
+  }
+
+  @Override
+  void checkForLeftoverRecords() {
+    println "checkForLeftoverRecords DISABLED"
   }
 
   def "test constraints"() {
@@ -54,7 +55,7 @@ class LSNSpec extends BaseSpecification {
     given: 'an order with an LSN'
     LSN lsn = new LSN(lsn: 'SN1047')
     def order = new Order(order: 'M1047')
-    order.addToLsns(lsn)
+    order.lsns << lsn
 
     when: 'the LSN is saved'
     order.save()
@@ -70,8 +71,8 @@ class LSNSpec extends BaseSpecification {
     def sn2 = new LSN(lsn: 'SN1')
     Order order1 = new Order(order: 'M001')
     Order order2 = new Order(order: 'M002')
-    order1.addToLsns(sn1)
-    order2.addToLsns(sn2)
+    order1.lsns << sn1
+    order2.lsns << sn2
     order1.save()
     order2.save()
 
@@ -85,7 +86,7 @@ class LSNSpec extends BaseSpecification {
     setCurrentUser()
 
     and: 'an LSN to start'
-    def order = MESUnitTestUtils.releaseOrder(id: ID, qty: 90.0, lsnTrackingOption: LSNTrackingOption.LSN_ONLY, lotSize: 100.0)
+    def order = MESUnitTestUtils.releaseOrder(qty: 90.0, lsnTrackingOption: LSNTrackingOption.LSN_ONLY, lotSize: 100.0)
     def lsn = order.lsns[0]
 
     when: 'the qty is started'
@@ -105,7 +106,7 @@ class LSNSpec extends BaseSpecification {
     setCurrentUser()
 
     and: 'an LSN'
-    def order = MESUnitTestUtils.releaseOrder(id: ID, qty: 100.0, lsnTrackingOption: LSNTrackingOption.LSN_ONLY, lotSize: 100.0)
+    def order = MESUnitTestUtils.releaseOrder(qty: 100.0, lsnTrackingOption: LSNTrackingOption.LSN_ONLY, lotSize: 100.0)
     def lsn = order.lsns[0]
 
     and: 'the qty is started'
@@ -183,7 +184,7 @@ class LSNSpec extends BaseSpecification {
     given: 'an order with an LSN'
     LSN lsn = new LSN(lsn: 'SN1047')
     def order = new Order(order: 'M1047')
-    order.addToLsns(lsn)
+    order.lsns << lsn
 
     when: 'the LSN is saved'
     order.save()
@@ -200,7 +201,7 @@ class LSNSpec extends BaseSpecification {
     and: 'an LSN that has qty in queue'
     Order order = null
     Order.withTransaction {
-      order = MESUnitTestUtils.releaseOrder(id: ID, qty: 1, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
+      order = MESUnitTestUtils.releaseOrder(qty: 1, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
     }
 
     when: 'the LSN is started and saved'

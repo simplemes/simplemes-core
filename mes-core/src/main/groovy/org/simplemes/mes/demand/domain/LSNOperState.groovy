@@ -1,5 +1,6 @@
 package org.simplemes.mes.demand.domain
 
+import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.DateCreated
@@ -16,6 +17,8 @@ import org.simplemes.mes.misc.FieldSizes
 import org.simplemes.mes.product.RoutingUtils
 import org.simplemes.mes.product.domain.RoutingOperation
 
+import javax.persistence.ManyToOne
+
 /*
  * Copyright Michael Houston. All rights reserved.
  *
@@ -31,7 +34,7 @@ import org.simplemes.mes.product.domain.RoutingOperation
 @MappedEntity('lsn_oper_state')
 @DomainEntity
 @ToString(includeNames = true, includePackage = false)
-// TODO: Restore @EqualsAndHashCode(includes = ['lsn', 'sequence'])
+@EqualsAndHashCode(includes = ['lsn', 'sequence'])
 class LSNOperState implements WorkStateTrait, WorkableInterface {
   /**
    * A copy of the sequence for the operation this state applies to.
@@ -41,7 +44,8 @@ class LSNOperState implements WorkStateTrait, WorkableInterface {
   /**
    * This operation state always belongs to a single LSN.
    */
-  static belongsTo = [lsn: LSN]
+  @ManyToOne
+  LSN lsn
 
   /**
    * The number of pieces waiting to be worked (in queue) for this object.

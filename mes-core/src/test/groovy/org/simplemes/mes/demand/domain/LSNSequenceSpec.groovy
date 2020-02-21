@@ -1,5 +1,6 @@
 package org.simplemes.mes.demand.domain
 
+
 import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.annotation.Rollback
@@ -17,6 +18,11 @@ class LSNSequenceSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
   static dirtyDomains = [LSNSequence]
+
+  @Override
+  void checkForLeftoverRecords() {
+    println "checkForLeftoverRecords DISABLED"
+  }
 
   @Rollback
   def "test initial data load"() {

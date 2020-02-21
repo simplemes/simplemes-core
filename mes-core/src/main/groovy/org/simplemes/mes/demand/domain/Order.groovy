@@ -21,6 +21,7 @@ import org.simplemes.mes.misc.FieldSizes
 import org.simplemes.mes.product.domain.Product
 import org.simplemes.mes.tracking.domain.ActionLog
 
+import javax.annotation.Nullable
 import javax.persistence.Column
 import javax.persistence.OneToMany
 
@@ -83,6 +84,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject {
    * The product to be produced by this order.
    * <b>(Optional)</b>
    */
+  @Nullable
   Product product
 
   /**
@@ -119,11 +121,13 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject {
   /**
    * The date this order was released.
    */
+  @Nullable
   Date dateReleased
 
   /**
    * The date this order was completed or marked as done.
    */
+  @Nullable
   Date dateCompleted
 
   /**
@@ -149,6 +153,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject {
    * Can be null if the nothing is in queue.
    * <p/><b>WorkStateTrait field</b>.
    */
+  @Nullable
   Date dateQtyQueued
 
   /**
@@ -156,18 +161,21 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject {
    * Can be null if the nothing is in work.
    * <p/><b>WorkStateTrait field</b>.
    */
+  @Nullable
   Date dateQtyStarted
 
   /**
    * The date/time any quantity was first queued at this point (operation or top-level).
    * <p/><b>WorkStateTrait field</b>.
    */
+  @Nullable
   Date dateFirstQueued
 
   /**
    * The date/time any quantity was first started at this point (operation or top-level).
    * <p/><b>WorkStateTrait field</b>.
    */
+  @Nullable
   Date dateFirstStarted
 
   @DateCreated
@@ -260,7 +268,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject {
     overallStatus = overallStatus ?: OrderStatus.getDefault()
 
     // Now handle any stuff to be done on creation only.
-    if (!id) {
+    if (!uuid) {
       if (product) {
         // Copy the LSN tracking option on creation only.
         lsnTrackingOption = product.lsnTrackingOption

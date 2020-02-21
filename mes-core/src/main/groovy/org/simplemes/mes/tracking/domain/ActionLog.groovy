@@ -15,6 +15,9 @@ import org.simplemes.mes.floor.domain.WorkCenter
 import org.simplemes.mes.misc.FieldSizes
 import org.simplemes.mes.product.domain.Product
 
+import javax.annotation.Nullable
+import javax.persistence.Column
+
 /**
  * This class represents a single action by a user in the system.
  */
@@ -26,41 +29,49 @@ class ActionLog {
   /**
    * The action performed.
    */
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String action
 
   /**
    * The date/time the action took place.
    */
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateTime = new Date()
 
   /**
    * The user who performed this action (User name) (<b>Default:</b> current user).
    */
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String userName //= UserUtils.currentUsername
 
   /**
    * The Order affected.
    */
+  @Nullable
   Order order
 
   /**
    * The LSN affected.
    */
+  @Nullable
   LSN lsn
 
   /**
    * The quantity processed during this action.
    */
   BigDecimal qty
+  // TODO: Set scale in DDL for STANDARD_DECIMAL_SCALE (4?).
 
   /**
    * The Product for the LSN/Order.  Determined automatically on save.
    */
+  @Nullable
   Product product
 
   /**
    * The Work Center this action took place at.
    */
+  @Nullable
   WorkCenter workCenter
 
   @DateCreated
@@ -70,16 +81,6 @@ class ActionLog {
   @Id @AutoPopulated UUID uuid
 
 
-  static constraints = {
-    action(maxSize: FieldSizes.MAX_CODE_LENGTH)
-    userName(maxSize: FieldSizes.MAX_CODE_LENGTH, nullable: false, blank: false)
-    lsn(nullable: true)
-    order(nullable: true)
-    product(nullable: true)
-    workCenter(nullable: true)
-    qty(nullable: true, scale: FieldSizes.STANDARD_DECIMAL_SCALE)
-  }
-
   /**
    * Defines the default general field ordering for GUIs and other field listings/reports.
    */
@@ -87,9 +88,8 @@ class ActionLog {
   static fieldOrder = ['action', 'dateTime', 'userName', 'order', 'lsn', 'qty', 'product', 'workCenter']
 
   /**
-   * Called before insert happens.  Used to set the product if needed.
+   * Called before validate happens.  Used to set the product if needed.
    */
-  @SuppressWarnings("GroovyUnusedDeclaration")
   def beforeValidate() {
     product = product ?: order?.product
     userName = userName ?: SecurityUtils.currentUserName

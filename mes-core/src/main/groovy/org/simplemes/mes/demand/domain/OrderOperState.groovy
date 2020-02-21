@@ -1,5 +1,6 @@
 package org.simplemes.mes.demand.domain
 
+import groovy.transform.EqualsAndHashCode
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.DateCreated
 import io.micronaut.data.annotation.DateUpdated
@@ -14,6 +15,8 @@ import org.simplemes.mes.demand.WorkableInterface
 import org.simplemes.mes.misc.FieldSizes
 import org.simplemes.mes.product.RoutingUtils
 import org.simplemes.mes.product.domain.RoutingOperation
+
+import javax.persistence.ManyToOne
 
 /*
  * Copyright Michael Houston. All rights reserved.
@@ -30,7 +33,7 @@ import org.simplemes.mes.product.domain.RoutingOperation
  */
 @MappedEntity
 @DomainEntity
-// TODO: Restore @EqualsAndHashCode(includes = ['order', 'sequence'])
+@EqualsAndHashCode(includes = ['order', 'sequence'])
 class OrderOperState implements WorkStateTrait, WorkableInterface {
   /**
    * A copy of the sequence for the operation this state applies to.
@@ -40,7 +43,8 @@ class OrderOperState implements WorkStateTrait, WorkableInterface {
   /**
    * This operation state always belongs to a single Order.
    */
-  static belongsTo = [order: Order]
+  @ManyToOne
+  Order order
 
   /**
    * The number of pieces waiting to be worked (in queue) for this object.
