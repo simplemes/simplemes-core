@@ -191,7 +191,7 @@ class LSNSpec extends BaseSpecification {
 
     then: 'the dates are set'
     UnitTestUtils.dateIsCloseToNow(lsn.dateCreated)
-    UnitTestUtils.dateIsCloseToNow(lsn.lastUpdated)
+    UnitTestUtils.dateIsCloseToNow(lsn.dateUpdated)
   }
 
   def "verify that workStateTrait method saveChanges forces update of record with transactions"() {

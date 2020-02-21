@@ -20,6 +20,11 @@ class ProductSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static specNeeds = SERVER
 
+  @Override
+  void checkForLeftoverRecords() {
+    println "checkForLeftoverRecords DISABLED"
+  }
+
   @Rollback
   def "test routing update of domain object"() {
     given: 'a product with a routing'
@@ -78,14 +83,21 @@ class ProductSpec extends BaseSpecification {
   def "determineEffectiveRouting with a built-in product routing"() {
     given: 'a product with a routing'
     def product = new Product(product: 'ABC', title: 'description')
-    def pr = new ProductRouting()
-    def o1 = new RoutingOperation(sequence: 1, title: "Prep")
-    pr.addToOperations(o1)
-    product.productRouting = pr
+    product.operations << new ProductOperation(sequence: 1, title: "Prep")
+    product.operations << new ProductOperation(sequence: 2, title: "Load")
     product.save()
 
-    expect: 'the right routing is found'
-    product.determineEffectiveRouting() == pr
+    when: 'the record is read'
+    def product2 = Product.findByUuid(product.uuid)
+
+    then: 'product operations are retrieved'
+    product2.operations.size() == 2
+
+    and: 'the records are in the DB'
+    ProductOperation.list().size() == 2
+
+    and: 'the determineEffectiveRouting method works'
+    product.determineEffectiveRouting() == product
   }
 
   @Rollback

@@ -10,6 +10,7 @@ import org.simplemes.mes.demand.service.OrderService
 import org.simplemes.mes.numbering.domain.CodeSequence
 import org.simplemes.mes.product.domain.MasterRouting
 import org.simplemes.mes.product.domain.Product
+import org.simplemes.mes.product.domain.ProductOperation
 import org.simplemes.mes.product.domain.ProductRouting
 import org.simplemes.mes.product.domain.RoutingOperation
 
@@ -120,38 +121,36 @@ class MESUnitTestUtils {
     def lsnSequence = (LSNSequence) options.lsnSequence
 
     // Create the product we need
-    List<Integer> operations = (List<Integer>) options.operations ?: []
-    def pr = null
+    List<Integer> operationSequences = (List<Integer>) options.operations ?: []
     def mpr = null
-    if (operations) {
+    if (operationSequences) {
+      // Reverse the order to uncover any sorting issues in the test programs or app code.
+      operationSequences.sort() { a, b -> b <=> a }
       if (options.masterRouting) {
         // A master routing is needed.
-        operations.sort() { a, b -> b <=> a }
         mpr = new MasterRouting(routing: "${options.masterRouting}$id")
-        for (sequence in operations) {
+        for (sequence in operationSequences) {
           def operation = new RoutingOperation(sequence: sequence, title: "Oper $sequence $id")
-          mpr.addToOperations(operation)
+          mpr.operations << operation
         }
         mpr.save()
-      } else {
-        // A product-specific routing is needed.
-        // Reverse the order to uncover any sorting issues in the test programs or app code.
-        operations.sort() { a, b -> b <=> a }
-        pr = new ProductRouting()
-        for (sequence in operations) {
-          def operation = new RoutingOperation(sequence: sequence, title: "Oper $sequence $id")
-          pr.addToOperations(operation)
-        }
       }
     }
     Product product = null
 
-    if (operations || lsnTrackingOption != LSNTrackingOption.ORDER_ONLY) {
+    if (operationSequences || lsnTrackingOption != LSNTrackingOption.ORDER_ONLY) {
       // Only need a product for a routing and non-default LSN Tracking Options.
       product = new Product(product: "PC$id", lotSize: lotSize,
                             lsnTrackingOption: lsnTrackingOption,
                             lsnSequence: lsnSequence)
-      product.productRouting = pr
+      if (operationSequences) {
+        // A product-specific routing is needed.
+        for (sequence in operationSequences) {
+          product.operations << new ProductOperation(sequence: sequence, title: "Oper $sequence $id")
+        }
+
+      }
+      //product.productRouting = pr
       product.masterRouting = mpr
       product.save()
     }
@@ -161,7 +160,7 @@ class MESUnitTestUtils {
       def order = new Order(order: "M$seq$id", product: product, qtyToBuild: qty).save()
       for (lsnBase in options?.lsns) {
         def lsnSuffix = nOrders > 1 ? "$nOrders" : ''
-        order.addToLsns(new LSN(lsn: "$lsnBase$id$lsnSuffix"))
+        order.lsns << new LSN(lsn: "$lsnBase$id$lsnSuffix")
       }
       orderService.release(new OrderReleaseRequest(order))
       seq++

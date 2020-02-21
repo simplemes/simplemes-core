@@ -37,10 +37,6 @@ enum LSNTrackingOption {
   final String id
 
   /**
-   * The size of the column needed for persistence.
-   */
-  static final int COLUMN_SIZE = 1
-  /**
    * Build a LSNTrackingOption entry.
    * @param id The ID for the status.
    */
@@ -82,4 +78,15 @@ enum LSNTrackingOption {
     String key = "lsnTrackingOption.${id}.label"
     return GlobalUtils.lookup(key, null, locale)
   }
+
+  /**
+   * An inner class to hold the constant DB column size needed for the enum.
+   */
+  static class Sizes {
+    /**
+     * The size of the column needed for persistence.
+     */
+    public static final int COLUMN_SIZE = 1
+  }
+
 }

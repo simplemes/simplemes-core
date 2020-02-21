@@ -15,7 +15,7 @@ import org.simplemes.mes.product.domain.RoutingOperation
 /**
  * Tests.
  */
-class OrderRoutingSpec extends BaseSpecification {
+class OrderOperationSpec extends BaseSpecification {
 
 
   @SuppressWarnings("unused")
@@ -33,7 +33,7 @@ class OrderRoutingSpec extends BaseSpecification {
     product.save()
 
     when: 'a new OrderRouting is created from the product routing'
-    def orderRouting = new OrderRouting(pr)
+    def orderRouting = new OrderOperation(pr)
 
     then: 'the operations are copied'
     def operations = orderRouting.operations

@@ -163,7 +163,7 @@ class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
    * @return The workable.  Null if there is no other workable left to be processed.
    */
   WorkableInterface determineNextWorkable(LSNOperState currentOperState) {
-    int nextSeq = order.orderRouting?.determineNextOperation(currentOperState.sequence)
+    int nextSeq = order.determineNextOperation(currentOperState.sequence)
     if (nextSeq == 0) {
       return null
     }

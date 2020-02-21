@@ -7,6 +7,8 @@ import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import org.simplemes.eframe.domain.annotation.DomainEntity
 
+import javax.persistence.OneToMany
+
 /*
  * Copyright Michael Houston. All rights reserved.
  *
@@ -32,6 +34,13 @@ class ProductRouting extends Routing {
    * This ProductRouting  always belongs to a single Product record.
    */
   Product product
+
+  /**
+   * This is the list of operations to be performed on this routing.  This list is automatically sorted on the sequence.
+   */
+  @OneToMany(mappedBy = "routing")
+  List<RoutingOperation> operations
+  // This duplicate definition is needed since the normal hasMany injection uses a Set.  A List is easier to use.
 
   @Id @AutoPopulated UUID uuid
 

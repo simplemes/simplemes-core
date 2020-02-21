@@ -5,22 +5,20 @@
 package org.simplemes.mes.demand.domain
 
 
-import io.micronaut.data.model.Pageable
 import io.micronaut.data.repository.CrudRepository
 import org.simplemes.eframe.domain.BaseRepository
 
 /**
- * The sample LSN repository base interface.  Provides the methods for the repo,
+ * The sample LSNOperState repository base interface.  Provides the methods for the repo,
  * but sub-classes need to implement the dialect needed.  The sub-classes will be the concrete
  * beans generated for the runtime.
  */
-interface LSNRepository extends BaseRepository, CrudRepository<LSN, UUID> {
+interface LSNOperStateRepository extends BaseRepository, CrudRepository<LSNOperState, UUID> {
 
-  Optional<LSN> findByUuid(UUID uuid)
+  Optional<LSNOperState> findByUuid(UUID uuid)
 
-  List<LSN> list(Pageable pageable)
+  List<LSNOperState> findAllByLsn(LSN lsn)
 
-  List<LSN> findAllByOrder(Order order)
-  List<LSN> list()
+  List<LSNOperState> list()
 
 }

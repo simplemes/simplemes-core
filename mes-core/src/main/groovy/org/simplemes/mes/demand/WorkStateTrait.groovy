@@ -142,7 +142,7 @@ trait WorkStateTrait {
   }
 
   /**
-   * Queues the given qty at this workable.
+   * Queues the given qty at this workable. This method does not trigger the save() on the workable element.
    * @param qty The quantity to queue.
    * @param dateTime The date/time this qty is queued (<b>Default:</b> now).
    */
@@ -155,7 +155,7 @@ trait WorkStateTrait {
     // Set the date queued if not already set to the given value or now.
     dateQtyQueued = dateQtyQueued ?: dateTime ?: new Date()
     setDatesAsNeeded(dateTime)
-    saveChanges()
+    // TODO: Is this needed still? saveChanges()
   }
 
   /**

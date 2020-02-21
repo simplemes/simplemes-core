@@ -38,7 +38,7 @@ The object big picture looks like this:
 
 object Order
 object Product
-object Routing
+object RoutingTrait
 object RoutingOperation
 object LSN
 
@@ -53,9 +53,9 @@ object WorkCenter
 
 Order o-- LSN
 Order -- Product
-Product -- Routing
+Product -- RoutingTrait
 Routing -- RoutingOperation
-LSN -- Routing
+LSN -- RoutingTrait
 Order -- ActionLog : has actions logged
 Order -- ProductionLog : has production logged
 

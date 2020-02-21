@@ -11,6 +11,10 @@ import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.mes.misc.FieldSizes
+import org.simplemes.mes.product.OperationTrait
+import org.simplemes.mes.product.RoutingTrait
+
+import javax.persistence.OneToMany
 
 /*
  * Copyright Michael Houston. All rights reserved.
@@ -31,7 +35,7 @@ import org.simplemes.mes.misc.FieldSizes
 @DomainEntity
 @ToString(includeNames = true, includePackage = false)
 @EqualsAndHashCode(includes = ['routing'])
-class MasterRouting extends Routing {
+class MasterRouting extends Routing implements RoutingTrait {
   /**
    * The Routing as known to the users.  <b>Primary Code Field</b>.
    * <p/>
@@ -45,6 +49,12 @@ class MasterRouting extends Routing {
    * Maximum length is defined by {@link FieldSizes#MAX_TITLE_LENGTH}.
    */
   String title
+
+  /**
+   * The operations used only by this product.  No other products will use this list of operations.
+   */
+  @OneToMany(mappedBy = "product")
+  List<OperationTrait> operations
 
   /**
    * This domain is a top-level searchable element.

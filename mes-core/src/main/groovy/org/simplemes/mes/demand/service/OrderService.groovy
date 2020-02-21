@@ -16,7 +16,7 @@ import org.simplemes.mes.demand.domain.LSN
 import org.simplemes.mes.demand.domain.LSNOperState
 import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.demand.domain.OrderOperState
-import org.simplemes.mes.demand.domain.OrderRouting
+import org.simplemes.mes.demand.domain.OrderOperation
 import org.simplemes.mes.tracking.domain.ActionLog
 
 import javax.inject.Singleton
@@ -86,13 +86,15 @@ class OrderService {
     quantity = quantity ?: order.qtyToBuild - order.qtyReleased
 
     // Figure out if we have a routing to use here.
-    def routing = order.orderRouting
+    def routing = order.operations ? order : null
     if (!routing) {
-      // No routing already, so see if we should grab it from the product.
+      // No order routing already, so see if we should grab it from the product.
       routing = order?.product?.determineEffectiveRouting()
       if (routing) {
-        // Must copy to the order.
-        order.orderRouting = new OrderRouting(routing)
+        order.operations = []
+        for (operation in routing.operations) {
+          order.operations << new OrderOperation(operation)
+        }
       }
     }
     // Now, populate the LSNs (if needed)
@@ -105,21 +107,15 @@ class OrderService {
       // A routing is to be used, so create the operation state records.
       if (order.lsns) {
         for (lsn in order.lsns) {
-          if (!lsn.id) {
-            // Force the save of the LSN before try to create the LSNOperState records.  GORM will
-            // fail with an error on non-transient record error.
-            // Without this save(), the LSNOperState will call save() before the LSN is saved.
-            lsn.save()
-          }
           for (oper in routing.operations) {
-            lsn.addToOperationStates(new LSNOperState(oper))
+            lsn.operationStates << new LSNOperState(oper)
           }
           lsn.operationStates[0].queueQty(lsn.qty, dateReleased)
         }
       } else {
         // No LSNs, so we will just have order-level states
         for (oper in routing.operations) {
-          order.addToOperationStates(new OrderOperState(oper))
+          order.operationStates << new OrderOperState(oper)
         }
         // Place released Qty in queue at first step.
         order.operationStates[0].queueQty(quantity, dateReleased)
@@ -148,7 +144,7 @@ class OrderService {
     order.qtyReleased += quantity
     order.dateReleased = order.dateReleased ?: dateReleased
 
-    order.save(flush: true)   // Force slush for rollback unit tests.
+    order.save()   // Force slush for rollback unit tests.
     logReleaseActions(orderReleaseRequest, quantity)
 
     def response = new OrderReleaseResponse(order: order, qtyReleased: quantity)

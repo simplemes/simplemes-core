@@ -19,7 +19,7 @@ import org.simplemes.mes.demand.domain.LSNOperState
 import org.simplemes.mes.demand.domain.LSNSequence
 import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.demand.domain.OrderOperState
-import org.simplemes.mes.demand.domain.OrderRouting
+import org.simplemes.mes.demand.domain.OrderOperation
 import org.simplemes.mes.product.domain.Product
 import org.simplemes.mes.product.domain.ProductRouting
 import org.simplemes.mes.product.domain.RoutingOperation
@@ -222,7 +222,7 @@ class OrderServiceSpec extends BaseSpecification {
     then: 'the order has a copy of the routing'
     def order = Order.findByOrder('M001')
     ProductRouting.findAll().size() == 1
-    OrderRouting.findAll().size() == 1
+    OrderOperation.findAll().size() == 1
     RoutingOperation.findAllBySequence(1).size() == 2
     order.orderRouting.operations.size() == 3
 
@@ -249,7 +249,7 @@ class OrderServiceSpec extends BaseSpecification {
     then: 'the order has a copy of the routing'
     def order = Order.findByOrder('M001')
     ProductRouting.findAll().size() == 1
-    OrderRouting.findAll().size() == 1
+    OrderOperation.findAll().size() == 1
     RoutingOperation.findAllBySequence(1).size() == 2
     order.orderRouting.operations.size() == 3
 

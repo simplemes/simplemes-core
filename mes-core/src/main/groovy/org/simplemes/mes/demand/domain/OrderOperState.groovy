@@ -12,10 +12,10 @@ import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.mes.demand.WorkStateTrait
 import org.simplemes.mes.demand.WorkableInterface
-import org.simplemes.mes.misc.FieldSizes
+import org.simplemes.mes.product.OperationTrait
 import org.simplemes.mes.product.RoutingUtils
-import org.simplemes.mes.product.domain.RoutingOperation
 
+import javax.annotation.Nullable
 import javax.persistence.ManyToOne
 
 /*
@@ -69,6 +69,7 @@ class OrderOperState implements WorkStateTrait, WorkableInterface {
    * Can be null if the nothing is in queue.
    * <p/><b>WorkStateTrait field</b>.
    */
+  @Nullable @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateQtyQueued
 
   /**
@@ -76,18 +77,21 @@ class OrderOperState implements WorkStateTrait, WorkableInterface {
    * Can be null if the nothing is in work.
    * <p/><b>WorkStateTrait field</b>.
    */
+  @Nullable @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateQtyStarted
 
   /**
    * The date/time any quantity was first queued at this point (operation or top-level).
    * <p/><b>WorkStateTrait field</b>.
    */
+  @Nullable @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateFirstQueued
 
   /**
    * The date/time any quantity was first started at this point (operation or top-level).
    * <p/><b>WorkStateTrait field</b>.
    */
+  @Nullable @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateFirstStarted
 
   @DateCreated
@@ -100,19 +104,6 @@ class OrderOperState implements WorkStateTrait, WorkableInterface {
   @Id @AutoPopulated UUID uuid
 
   /**
-   * Internal constraint definitions.
-   */
-  static constraints = {
-    qtyInQueue(scale: FieldSizes.STANDARD_DECIMAL_SCALE)
-    qtyInWork(scale: FieldSizes.STANDARD_DECIMAL_SCALE)
-    qtyDone(scale: FieldSizes.STANDARD_DECIMAL_SCALE)
-    dateQtyQueued(nullable: true)
-    dateQtyStarted(nullable: true)
-    dateFirstQueued(nullable: true)
-    dateFirstStarted(nullable: true)
-  }
-
-  /**
    * The empty constructor.  Used by GORM to support Map as an argument.
    */
   OrderOperState() {
@@ -123,7 +114,7 @@ class OrderOperState implements WorkStateTrait, WorkableInterface {
    * A copy constructor to copy the operation info from another operation.
    * @param operation The routing to copy from.
    */
-  OrderOperState(RoutingOperation operation) {
+  OrderOperState(OperationTrait operation) {
     ArgumentUtils.checkMissing(operation, "operation")
     this.sequence = operation.sequence
     setDatesAsNeeded()
@@ -142,7 +133,6 @@ class OrderOperState implements WorkStateTrait, WorkableInterface {
    * Saves any changes to this record.
    */
   void saveChanges() {
-    setLastUpdated(new Date()) // Force GORM/Hibernate to update the record
     save()
   }
 

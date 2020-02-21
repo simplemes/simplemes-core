@@ -27,4 +27,66 @@ Processing of the orders (or LSNs) for actual production is done using the
 <<WorkService>>. This allows you to perform work at specific operations on the
 routing and track what happened to the order/LSN on the shop floor.
 
+=== Order Object Model
+
+The _Order_ object model is somewhat complex.  It supports several optional elements (LSNs, routings,
+etc) at several levels.
+
+The key objects are:
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-build}
+
+[plantuml,"orderModel",align="center"]
+.MES Order Object Model
+----
+@startuml
+
+object OperationTrait
+object Order
+object Product
+object LSN
+object RoutingTrait
+object OrderOperation
+object ProductOperation
+object MasterOperation
+object LSNOperState
+object OrderOperState
+
+
+Order o-- LSN
+Order o-- OrderOperation
+Order -- Product
+Order o-- OrderOperState
+Product -- RoutingTrait
+RoutingTrait o-- OperationTrait
+LSN -- RoutingTrait
+LSN o-- LSNOperState
+OperationTrait <|-- OrderOperation
+OperationTrait <|-- ProductOperation
+OperationTrait <|-- MasterOperation
+
+
+@enduml
+----
+
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+The _Order_ can have zero or more _LSNs_.
+
+The _Order_ can also have a copy of any _RouterTrait_ implementation (e.g. _MasterRouting,
+ProductRouting or OrderRouting_). These routers provide a list of operations to be performed.
+Upon release, these operations are copied to the order to avoid restrictions on the product
+definitions once an order is released.
+
+The _RouterTrait_ and _OperationTrait_ classes provide common logic for processing on the
+shop floor.  The _OperationTrait_ is implemented by the _ProductOperation_,_MasterOperation_,
+and _OrderOperation_.
+
+The current state of the order (or LSN) is stored in the _OrderOperState_
+(and _LSNOperState_).
+
+
 

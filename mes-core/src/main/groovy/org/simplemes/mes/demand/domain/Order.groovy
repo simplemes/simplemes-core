@@ -18,11 +18,13 @@ import org.simplemes.mes.demand.OrderStatus
 import org.simplemes.mes.demand.WorkStateTrait
 import org.simplemes.mes.demand.WorkableInterface
 import org.simplemes.mes.misc.FieldSizes
+import org.simplemes.mes.product.RoutingTrait
 import org.simplemes.mes.product.domain.Product
 import org.simplemes.mes.tracking.domain.ActionLog
 
 import javax.annotation.Nullable
 import javax.persistence.Column
+import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 
 /*
@@ -48,7 +50,7 @@ import org.simplemes.mes.tracking.ActionLog
 @DomainEntity
 @ToString(includeNames = true, includePackage = false, excludes = ['dateCreated', 'dateUpdated'])
 @EqualsAndHashCode(includes = ["order"])
-class Order implements WorkStateTrait, WorkableInterface, DemandObject {
+class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingTrait {
   /**
    * The order's name as it is known to the users.  Upon creation, if an order is not provided,
    * then one is generated from the Sequence.  <b>Primary Key Field</b>.
@@ -85,6 +87,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject {
    * <b>(Optional)</b>
    */
   @Nullable
+  @ManyToOne(targetEntity = Product)
   Product product
 
   /**
@@ -92,7 +95,15 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject {
    * order is deleted.<p/>
    * This orderRouting is the routing used only by this order.  The effective routing is copied to the order upon release.
    */
-  static hasOne = [orderRouting: OrderRouting]
+  static hasOne = [orderRouting: OrderOperation]
+
+  /**
+   * This is the list operation states that corresponds to the current orderRouting's operations.  This holds the quantities
+   * in queue, in work, etc for a given operation. This list is sorted in the same order as the orderRouting's operations
+   *
+   */
+  @OneToMany(mappedBy = "order")
+  List<OrderOperation> operations
 
   /**
    * This is the list operation states that corresponds to the current orderRouting's operations.  This holds the quantities
@@ -201,7 +212,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject {
   /**
    * This domain is a top-level searchable element.
    */
-  // TODO: static searchable = true
+  static searchable = true
 
   /**
    * <i>Internal definitions for GORM framework.</i>
@@ -373,6 +384,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject {
 
     def lotSize = product?.lotSize ?: 1.0
     List<String> numbers = seq.formatValues(nValues, params)
+    lsns = lsns ?: []
     numbers.each { number ->
       // Figure out the qty for this LSN.  Full Lot size until the last LSN (maybe).
       def qty = lotSize
@@ -381,7 +393,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject {
       }
       qtyToAdd -= qty
       LSN lsn = new LSN(lsn: number, qty: qty)
-      addToLsns(lsn)
+      lsns << lsn
     }
   }
 
@@ -408,7 +420,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject {
    * Mainly used to set the OrderRouting.order in the unit tests to work around an issue with the unit test mocks.
    * @param orderRouting The order routing.
    */
-  void setOrderRouting(OrderRouting orderRouting) {
+  void setOrderRouting(OrderOperation orderRouting) {
     this.orderRouting = orderRouting
     orderRouting?.order = this
   }
@@ -419,7 +431,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject {
    * @return The workable.  Null if there is no other workable left to be processed.
    */
   WorkableInterface determineNextWorkable(OrderOperState currentOperState) {
-    int nextSeq = orderRouting?.determineNextOperation(currentOperState.sequence)
+    int nextSeq = determineNextOperation(currentOperState.sequence)
     if (nextSeq == 0) {
       return null
     }
