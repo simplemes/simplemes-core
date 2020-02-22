@@ -155,7 +155,8 @@ can provide.
 [source,groovy]
 .Addition Example - Simple Addition
 ----
-class SimpleAddition extends BaseAddition {
+@Singleton   // <.>
+class SimpleAddition extends BaseAddition implements AdditionInterface {
   AdditionConfiguration addition = Addition.configure {
     encodedType OrderStatus
     initialDataLoader InitialDataLoadRoles
@@ -172,6 +173,7 @@ class SimpleAddition extends BaseAddition {
   }
 }
 ----
+<.> Exposes this addition as standard bean.
 <.> Single-line format for a field definition.
 <.> Provides a GUI display hint for the display <<Markers>>.
 
@@ -207,7 +209,8 @@ to GUIs in core domains and also import/export the values.
 [source,groovy]
 .Addition Example - Field Addition
 ----
-class SimpleAddition extends BaseAddition  {
+@Singleton   // <.>
+class SimpleAddition extends BaseAddition implements AdditionInterface {
   AdditionConfiguration addition = Addition.configure {
     field {  // <.>
       domain SampleParent
@@ -220,6 +223,7 @@ class SimpleAddition extends BaseAddition  {
   }
 }
 ----
+<.> Exposes this addition as a standard bean.
 <.> Defines a single `priority` field added to the _Order_ class.
 
 
@@ -267,7 +271,8 @@ Your addition may provide more encoded types by specifying the _encodedType_ ele
 [source,groovy]
 .Addition Example - Encoded Types Provided by an Addition
 ----
-class SimpleAddition extends BaseAddition {
+@Singleton
+class SimpleAddition extends BaseAddition implements AdditionInterface {
   AdditionConfiguration addition = Addition.configure {
     encodedType OrderStatus  // <.>
      . . .

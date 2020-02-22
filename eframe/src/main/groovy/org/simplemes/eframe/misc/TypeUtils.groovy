@@ -211,4 +211,21 @@ class TypeUtils {
     return false
   }
 
+  /**
+   * Finds the real, underlying class for the given clazz for the bean. This detects when a sub-class is created
+   * by Micronaut with 'Definition$Intercepted' added.
+   * @param clazz The possible intercepted class.
+   * @return The real class.
+   */
+  static Class getRealClassFromBean(Class clazz) {
+    if (clazz.simpleName.endsWith('Definition$Intercepted')) {
+      // Return the super-class, if not Object.
+      def superClass = clazz.superclass
+      if (superClass != Object) {
+        return superClass
+      }
+    }
+    return clazz
+  }
+
 }

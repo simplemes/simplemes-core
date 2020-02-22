@@ -28,7 +28,7 @@ startup time.  Don't add extensive or slow logic if you can avoid it.
 An example is shown below:
 
 [source,groovy]
-.Example Initial Data Load
+.Example Domain Initial Data Load
 ----
 static initialDataRecords = ['User': ['admin']]
 
@@ -56,42 +56,8 @@ NOTE: Most applications will allow the users to modify the defaults using normal
 probably be re-created on the next application startup.
 
 If you need to load data for domains that are in a module (e.g. new User Roles for the module),
-then you probably need to create a dummy initial data load domain class that is not persistent.
-We suggest you use the class name _InitialData_. This would look something like this:
+then look at <<Loading from Non-Domains>>.
 
-[source,groovy]
-.Example InitialData Domain Class
-----
-class InitialData {
-
-  static mapWith = "none" // <1>
-
-  static Map<String,List<String>> initialDataLoad() {
-    createRoles()  // <2>
-    createDashboards()
-    return ...
-  }
-
-  static createRoles() {
-   . . .
-  }
-}
-----
-<1> Makes this domain a non-persistent domain class.
-<2> We suggest you use one method for each type of domain loaded for clarity.
-
-The `initialDataLoad()` method in this domain will be called just like normal domain classes.
-
-This initial data loading works in most settings such as integration test, functional test and runtime.  It is not
-executed automatically for unit tests, but you can manually call the loader in your `setUp()` method of your unit tests:
-
-[source,groovy]
-----
-void setUp() {
-  // Load the default status codes.
-  StatusCode.initialDataLoad()
-}
-----
 
 ==== initialDataLoadBefore and initialDataLoadAfter
 

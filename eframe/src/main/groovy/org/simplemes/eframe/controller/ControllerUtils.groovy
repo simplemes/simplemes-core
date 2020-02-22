@@ -132,6 +132,8 @@ class ControllerUtils {
       // Controller has a specific domain class
       return res as Class
     }
+    // Deal with any odd sub-class types used for some beans.
+    controllerClass = TypeUtils.getRealClassFromBean(controllerClass)
     // Attempt to find it based on the controller name.
     def simpleName = controllerClass.simpleName - "Controller"
     def allDomains = DomainUtils.instance.allDomains

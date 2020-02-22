@@ -9,6 +9,7 @@ import org.simplemes.eframe.controller.StandardModelAndView
 import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
+import sample.controller.AllFieldsDomainController
 import sample.domain.AllFieldsDomain
 import sample.domain.Order
 import sample.domain.SampleParent
@@ -155,8 +156,41 @@ class TypeUtilsSpec extends BaseSpecification {
     TypeUtils.getSuperClasses(clazz).containsAll(results)
 
     where:
-    clazz          | results
-    SampleParent   | []
+    clazz                | results
+    SampleParent         | []
     StandardModelAndView | ModelAndView
   }
+
+  def "verify that getDomain supports the intercepted form of the bean class"() {
+    // Sometimes Micronaut registers the intercepted class, e.g. $SampleParentControllerDefinition$Intercepted.
+    given: 'a mock controller'
+    def src = '''
+    package sample
+    import sample.controller.AllFieldsDomainController
+    
+    class $AllFieldsDomainControllerDefinition$Intercepted extends AllFieldsDomainController {
+    }
+    '''
+    def clazz = CompilerTestUtils.compileSource(src)
+
+
+    expect: 'the correct domain class is found'
+    TypeUtils.getRealClassFromBean(clazz) == AllFieldsDomainController
+  }
+
+  def "verify that getDomain leaves a non-intercepted class as-is"() {
+    given: 'a mock controller'
+    def src = '''
+    package sample
+    import sample.controller.AllFieldsDomainController
+    
+    class AllFieldsDomainController {
+    }
+    '''
+    def clazz = CompilerTestUtils.compileSource(src)
+
+    expect: 'the correct domain class is found'
+    TypeUtils.getRealClassFromBean(clazz) == clazz
+  }
+
 }

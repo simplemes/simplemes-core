@@ -20,6 +20,7 @@ import org.simplemes.eframe.web.ui.UIDefaults
 import sample.controller.AllFieldsDomainController
 import sample.controller.RMAController
 import sample.controller.SampleParentController
+import sample.domain.AllFieldsDomain
 import sample.domain.SampleParent
 
 /**
@@ -27,7 +28,7 @@ import sample.domain.SampleParent
  */
 class ControllerUtilsSpec extends BaseSpecification {
 
-  def "verify that findDomainClass can find by controller class name"() {
+  def "verify that getDomain can find by controller class name"() {
     given: 'a mock list of domains'
     DomainUtils.instance = Mock(DomainUtils)
     DomainUtils.instance.allDomains >> [SampleParent]
@@ -45,7 +46,7 @@ class ControllerUtilsSpec extends BaseSpecification {
     ControllerUtils.instance.getDomainClass(clazz.newInstance()) == SampleParent
   }
 
-  def "verify that findDomainClass supports static domainClass value is supported"() {
+  def "verify that getDomain supports static domainClass value is supported"() {
     given: 'a mock controller'
     def src = """
     package sample
@@ -60,6 +61,25 @@ class ControllerUtilsSpec extends BaseSpecification {
 
     expect: 'the correct domain class is found'
     ControllerUtils.instance.getDomainClass(clazz.newInstance()) == SampleParent
+  }
+
+  def "verify that getDomain supports the intercepted form of the bean class"() {
+    // Sometimes Micronaut registers the intercepted class, e.g. $SampleParentControllerDefinition$Intercepted.
+    given: 'a mock controller'
+    def src = '''
+    package sample
+    import sample.controller.AllFieldsDomainController
+    
+    class $AllFieldsDomainControllerDefinition$Intercepted extends AllFieldsDomainController {
+    }
+    '''
+    def clazz = CompilerTestUtils.compileSource(src)
+
+    and: 'a mocked domain utils'
+    new MockDomainUtils(this, AllFieldsDomain).install()
+
+    expect: 'the correct domain class is found'
+    ControllerUtils.instance.getDomainClass(clazz.newInstance()) == AllFieldsDomain
   }
 
   def "verify calculateFromAndSizeForList works for basic cases"() {
