@@ -189,6 +189,8 @@ class ControllerUtils {
    * @return The root path for the controller.
    */
   String getRootPath(Class controllerClass) {
+    // Deal with any odd sub-class types used for some beans.
+    controllerClass = TypeUtils.getRealClassFromBean(controllerClass)
     def annotation = controllerClass.getAnnotation(Controller)
     return annotation?.value()
   }

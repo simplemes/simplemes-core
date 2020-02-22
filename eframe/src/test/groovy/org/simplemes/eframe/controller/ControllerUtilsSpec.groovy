@@ -159,6 +159,22 @@ class ControllerUtilsSpec extends BaseSpecification {
     RMAController          | '/rma'
   }
 
+  def "verify that getRootPath supports the intercepted form of the bean class"() {
+    // Sometimes Micronaut registers the intercepted class, e.g. $SampleParentControllerDefinition$Intercepted.
+    given: 'a mock controller'
+    def src = '''
+    package sample
+    import sample.controller.AllFieldsDomainController
+    
+    class $AllFieldsDomainControllerDefinition$Intercepted extends AllFieldsDomainController {
+    }
+    '''
+    def clazz = CompilerTestUtils.compileSource(src)
+
+    expect: 'the correct domain class is found'
+    ControllerUtils.instance.getRootPath(clazz) == '/allFieldsDomain'
+  }
+
   def "verify test delay works and logs a warning message"() {
     given: 'a mock appender for Info level only'
     def mockAppender = MockAppender.mock(ControllerUtils, Level.WARN)
