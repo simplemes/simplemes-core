@@ -24,3 +24,57 @@ For detailed field information, see the API Documentation at:
 link:groovydoc/org/simplemes/mes/product/domain/Routing.html[Routing^]
 icon:share-square-o[role="link-blue"].
 
+=== Routing Object Model
+
+The routing-related object model is somewhat complex.  It supports routings at two levels:
+_MasterRouting_ and _ProductRouting_.  There is also a copy of the routing at the order level.
+
+The key objects are:
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-build}
+
+[plantuml,"routingModel",align="center"]
+.MES Routing Object Model
+----
+@startuml
+
+object Order
+object Product
+object LSN
+object RoutingTrait
+object MasterRouting
+object ProductRouting
+object OperationTrait
+object OrderOperation
+object ProductOperation
+object MasterOperation
+
+
+Order o-- LSN
+Order o-- OrderOperation
+Order -- Product
+Product -- RoutingTrait
+RoutingTrait o-- OperationTrait
+RoutingTrait <|-- ProductRouting
+RoutingTrait <|-- MasterRouting
+OperationTrait <|-- OrderOperation
+OperationTrait <|-- ProductOperation
+OperationTrait <|-- MasterOperation
+
+
+@enduml
+----
+
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+A _product_ can refer to a _MasterRouting_ or have its own routing.  When
+released, the _Order_ will have a copy of the routing operations from the
+product/master routings.
+
+Each routing has a list of operations.  These operations all implement
+the _OperationTrait_.  When released, the _Order_ or _LSN_ will have an
+operation state record created for each operation on the routing.  See
+<<Order Object Model>> for details.

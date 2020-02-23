@@ -35,7 +35,7 @@ class Routing {
    * This is the list of operations to be performed on this routing.  This list is automatically sorted on the sequence.
    */
   @OneToMany(mappedBy = "routing")
-  List<RoutingOperation> operations
+  List<MasterOperation> operations
   // This duplicate definition is needed since the normal hasMany injection uses a Set.  A List is easier to use.
 
   @Id @AutoPopulated UUID uuid
@@ -44,7 +44,7 @@ class Routing {
    * This operations are a list of RoutingOperation entries to be performed to produce this product.
    */
   @SuppressWarnings("unused")
-  static hasMany = [operations: RoutingOperation]
+  static hasMany = [operations: MasterOperation]
 
   /**
    * Internal values.
@@ -59,7 +59,7 @@ class Routing {
    * @param obj The routing object.
    */
   @SuppressWarnings("unused")
-  static checkOperations(List<RoutingOperation> routingOperations, Routing routing) {
+  static checkOperations(List<MasterOperation> routingOperations, Routing routing) {
     //println "routingOperations = $routingOperations"
     // Make sure we have some operations.
     if (routingOperations?.size() <= 0) {

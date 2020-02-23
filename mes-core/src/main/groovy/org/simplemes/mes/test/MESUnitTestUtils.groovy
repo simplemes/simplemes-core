@@ -8,11 +8,11 @@ import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.demand.domain.OrderSequence
 import org.simplemes.mes.demand.service.OrderService
 import org.simplemes.mes.numbering.domain.CodeSequence
+import org.simplemes.mes.product.domain.MasterOperation
 import org.simplemes.mes.product.domain.MasterRouting
 import org.simplemes.mes.product.domain.Product
 import org.simplemes.mes.product.domain.ProductOperation
 import org.simplemes.mes.product.domain.ProductRouting
-import org.simplemes.mes.product.domain.RoutingOperation
 
 /*
  * Copyright Michael Houston 2017. All rights reserved.
@@ -44,7 +44,7 @@ class MESUnitTestUtils {
     List<Integer> operations = (List<Integer>) options.operations ?: [1, 2, 3]
     def pr = new ProductRouting()
     for (sequence in operations) {
-      def operation = new RoutingOperation(sequence: sequence, title: "Oper $sequence")
+      def operation = new MasterOperation(sequence: sequence, title: "Oper $sequence")
       pr.addToOperations(operation)
     }
     LSNTrackingOption lsnTrackingOption = (LSNTrackingOption) options.lsnTrackingOption ?: LSNTrackingOption.ORDER_ONLY
@@ -76,7 +76,7 @@ class MESUnitTestUtils {
     List<Integer> operations = (List<Integer>) options.operations ?: [1, 2, 3]
     def masterRouting = new MasterRouting(routing: "ROUTING$id")
     for (sequence in operations) {
-      def operation = new RoutingOperation(sequence: sequence, title: "Oper $sequence")
+      def operation = new MasterOperation(sequence: sequence, title: "Oper $sequence")
       masterRouting.addToOperations(operation)
     }
     return masterRouting.save()
@@ -130,7 +130,7 @@ class MESUnitTestUtils {
         // A master routing is needed.
         mpr = new MasterRouting(routing: "${options.masterRouting}$id")
         for (sequence in operationSequences) {
-          def operation = new RoutingOperation(sequence: sequence, title: "Oper $sequence $id")
+          def operation = new MasterOperation(sequence: sequence, title: "Oper $sequence $id")
           mpr.operations << operation
         }
         mpr.save()

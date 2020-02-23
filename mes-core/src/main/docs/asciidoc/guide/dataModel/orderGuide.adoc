@@ -60,7 +60,6 @@ Order -- Product
 Order o-- OrderOperState
 Product -- RoutingTrait
 RoutingTrait o-- OperationTrait
-LSN -- RoutingTrait
 LSN o-- LSNOperState
 OperationTrait <|-- OrderOperation
 OperationTrait <|-- ProductOperation

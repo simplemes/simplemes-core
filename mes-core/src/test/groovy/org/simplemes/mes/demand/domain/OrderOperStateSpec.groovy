@@ -1,9 +1,8 @@
 package org.simplemes.mes.demand.domain
 
-
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.mes.product.domain.MasterOperation
 import org.simplemes.mes.product.domain.Product
-import org.simplemes.mes.product.domain.RoutingOperation
 import org.simplemes.mes.test.MESUnitTestUtils
 import org.simplemes.mes.tracking.domain.ActionLog
 
@@ -51,7 +50,7 @@ class OrderOperStateSpec extends BaseSpecification {
 
   def "test copy constructor from a RoutingOperation"() {
     given: 'a routing operation object to copy from'
-    def routingOperation = new RoutingOperation(sequence: 100, title: 'XYZ')
+    def routingOperation = new MasterOperation(sequence: 100, title: 'XYZ')
 
     when: 'the constructor is used'
     def orderOperState = new OrderOperState(routingOperation)

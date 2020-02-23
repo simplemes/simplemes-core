@@ -21,8 +21,8 @@ class ProductRoutingSpec extends BaseSpecification {
     given: 'a product with a routing with two duplicate operations'
     def product = new Product(product: 'ABC', title: 'description')
     def pr = new ProductRouting()
-    def o1 = new RoutingOperation(sequence: 1, title: "Prep")
-    def o2 = new RoutingOperation(sequence: 1, title: "Prep")
+    def o1 = new MasterOperation(sequence: 1, title: "Prep")
+    def o2 = new MasterOperation(sequence: 1, title: "Prep")
     pr.addToOperations(o1)
     pr.addToOperations(o2)
     product.productRouting = pr

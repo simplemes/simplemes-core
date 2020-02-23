@@ -39,7 +39,7 @@ class ProductRouting extends Routing {
    * This is the list of operations to be performed on this routing.  This list is automatically sorted on the sequence.
    */
   @OneToMany(mappedBy = "routing")
-  List<RoutingOperation> operations
+  List<MasterOperation> operations
   // This duplicate definition is needed since the normal hasMany injection uses a Set.  A List is easier to use.
 
   @Id @AutoPopulated UUID uuid

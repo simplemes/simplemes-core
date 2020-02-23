@@ -30,8 +30,8 @@ class ProductSpec extends BaseSpecification {
     given: 'a product with a routing'
     def p = new Product(product: 'ABC', title: 'description')
     def pr = new ProductRouting()
-    def o1 = new RoutingOperation(sequence: 1, title: "Orig Prep")
-    def o3 = new RoutingOperation(sequence: 3, title: "Orig Pack")
+    def o1 = new MasterOperation(sequence: 1, title: "Orig Prep")
+    def o3 = new MasterOperation(sequence: 3, title: "Orig Pack")
     pr.addToOperations(o1)
     pr.addToOperations(o3)
     p.productRouting = pr
@@ -42,7 +42,7 @@ class ProductSpec extends BaseSpecification {
     when: 'the product/routing are updated'
     p = Product.get(p.id)
     assert p.product == 'ABC'
-    def o2 = new RoutingOperation()
+    def o2 = new MasterOperation()
     o2.sequence = 2
     o2.title = "New Test the assembly"
     pr.addToOperations(o2)
@@ -60,9 +60,9 @@ class ProductSpec extends BaseSpecification {
 
     and: 'the domain finders work on the record'
     ProductRouting.findAll().size() == 1
-    RoutingOperation.findAllBySequence(1).size() == 1
-    RoutingOperation.findAllBySequence(2).size() == 1
-    RoutingOperation.findAllBySequence(3).size() == 1
+    MasterOperation.findAllBySequence(1).size() == 1
+    MasterOperation.findAllBySequence(2).size() == 1
+    MasterOperation.findAllBySequence(3).size() == 1
   }
 
   @Rollback

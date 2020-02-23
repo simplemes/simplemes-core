@@ -21,7 +21,7 @@ class MasterRoutingSpec extends BaseSpecification {
 
   def "verify domain constraints"() {
     given: 'an oper'
-    def o1 = new RoutingOperation(sequence: 1, title: "Prep")
+    def o1 = new MasterOperation(sequence: 1, title: "Prep")
 
     expect: 'the constraints are enforced'
     DomainTester.test {

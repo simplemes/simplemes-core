@@ -5,8 +5,8 @@ import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.domain.annotation.DomainEntity
-import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.mes.misc.FieldSizes
 import org.simplemes.mes.product.OperationTrait
@@ -36,11 +36,9 @@ class ProductOperation implements OperationTrait {
   @ManyToOne
   Product product
 
-  @Id @AutoPopulated UUID uuid
-
   /**
    * Defines the sequence this operation should be performed in.  The order is relative to other operation records.
-   * Zero is not allowed.
+   * Value must be greater than 0.
    */
   int sequence
 
@@ -49,6 +47,12 @@ class ProductOperation implements OperationTrait {
    */
   @Column(length = FieldSizes.MAX_TITLE_LENGTH, nullable = false)
   String title
+
+  @ExtensibleFieldHolder
+  @Column(length = 1024, nullable = true)
+  String customFields
+
+  @Id @AutoPopulated UUID uuid
 
   /**
    * The empty constructor.
@@ -63,7 +67,7 @@ class ProductOperation implements OperationTrait {
     ArgumentUtils.checkMissing(operation, "operation")
     this.sequence = operation.sequence
     this.title = operation.title
-    //TODO: this.customFields = operation.customFields
+    this.customFields = operation.customFields
   }
 
   /**
@@ -77,13 +81,5 @@ class ProductOperation implements OperationTrait {
    */
   @SuppressWarnings("unused")
   static fieldOrder = ['sequence', 'title']
-
-  def validate() {
-    if (sequence < 1) {
-      //error.136.message=Invalid Value "{1}" for "{0}". Value should be greater than or equal to {2}.
-      return new ValidationError(136, 'sequence', sequence, 1)
-    }
-    return null
-  }
 
 }

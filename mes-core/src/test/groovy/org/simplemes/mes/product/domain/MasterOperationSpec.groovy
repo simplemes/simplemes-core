@@ -1,7 +1,10 @@
 package org.simplemes.mes.product.domain
 
+import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.DomainTester
+import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.misc.FieldSizes
 
@@ -14,10 +17,15 @@ import org.simplemes.mes.misc.FieldSizes
 /**
  * Tests.
  */
-class RoutingOperationSpec extends BaseSpecification {
+class MasterOperationSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
   static specNeeds = SERVER
+
+  @Override
+  void checkForLeftoverRecords() {
+    println "checkForLeftoverRecords DISABLED"
+  }
 
   def "test constraints"() {
     given: 'an oper'
@@ -25,36 +33,36 @@ class RoutingOperationSpec extends BaseSpecification {
 
     expect: 'the constraints are enforced'
     DomainTester.test {
-      domain RoutingOperation
-      requiredValues title: 'n', routing: mr, sequence: 1
+      domain MasterOperation
+      requiredValues title: 'n', masterRouting: mr, sequence: 1
       maxSize 'title', FieldSizes.MAX_TITLE_LENGTH
       fieldOrderCheck false
     }
   }
 
-  // TODO: Restore @Rollback
-  @SuppressWarnings("GroovyAssignabilityCheck")
   def "constraint enforces sequence greater than 0"() {
     given: 'a routing operation'
-    def r = new RoutingOperation(sequence: sequence)
+    def mr = new MasterRouting()
+    def operation = new MasterOperation(sequence: sequence, masterRouting: mr, title: 'X')
 
     when: 'the object is validated'
-    assert !r.validate()
+    def errors = DomainUtils.instance.validate(operation)
 
     then: 'the right validation error is found'
-    r.errors['sequence'].codes.contains(error)
+    //error.137.message=Invalid Value "{1}" for "{0}". Value should be greater than {2}.
+    UnitTestUtils.assertContainsError(errors, 137, 'sequence', [sequence.toString(), '0'])
 
     where:
-    sequence | error
-    0        | 'min.notmet.sequence'
-    -1       | 'min.notmet.sequence'
+    sequence | _
+    0        | _
+    -1       | _
+    -237     | _
   }
 
-  // TODO: Restore @Rollback
   def "test compareTo works"() {
     expect: 'compareTo works'
-    def r1 = new RoutingOperation(sequence: sequenceA)
-    def r2 = new RoutingOperation(sequence: sequenceB)
+    def r1 = new MasterOperation(sequence: sequenceA)
+    def r2 = new MasterOperation(sequence: sequenceB)
     (r1 <=> r2) == result
 
     where:
@@ -67,10 +75,10 @@ class RoutingOperationSpec extends BaseSpecification {
   @Rollback
   def "copy constructor works"() {
     given: 'a routing operation'
-    def r1 = new RoutingOperation(sequence: 100, title: 'XYZ')
+    def r1 = new MasterOperation(sequence: 100, title: 'XYZ')
 
     when: 'the copy constructor is used'
-    def r2 = new RoutingOperation(r1)
+    def r2 = new MasterOperation(r1)
 
     then: 'the fields are copied'
     r1.sequence == r2.sequence
@@ -78,25 +86,21 @@ class RoutingOperationSpec extends BaseSpecification {
     r1 <=> r2 == 0
   }
 
-  // TODO: Enable when custom fields supported.
-/*
+  @Rollback
   def "copy constructor works with custom fields"() {
     given: 'custom field on the routing operation'
-    new FieldExtension(domainClassName: RoutingOperation.name, fieldName: 'color').save()
-    FieldExtensionHelper.setupFieldExtensionsInDomains(????.application)
+    DataGenerator.buildCustomField(fieldName: 'color', domainClass: MasterOperation)
 
     and: 'a routing operation with a custom field value'
-    def r1 = new RoutingOperation(sequence: 100, title: 'XYZ')
-    r1.color = 'green'
-
+    def r1 = new MasterOperation(sequence: 100, title: 'XYZ')
+    r1.setFieldValue('color', 'green')
 
     when: 'the copy constructor is used'
-    def r2 = new RoutingOperation(r1)
+    def r2 = new MasterOperation(r1)
 
     then: 'the custom field is copied'
-    r2.color == 'green'
+    r2.getFieldValue('color') == 'green'
   }
-*/
 
 
 }

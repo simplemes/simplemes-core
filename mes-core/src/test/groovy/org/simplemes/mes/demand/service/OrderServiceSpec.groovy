@@ -20,9 +20,9 @@ import org.simplemes.mes.demand.domain.LSNSequence
 import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.demand.domain.OrderOperState
 import org.simplemes.mes.demand.domain.OrderOperation
+import org.simplemes.mes.product.domain.MasterOperation
 import org.simplemes.mes.product.domain.Product
 import org.simplemes.mes.product.domain.ProductRouting
-import org.simplemes.mes.product.domain.RoutingOperation
 import org.simplemes.mes.test.MESUnitTestUtils
 import org.simplemes.mes.tracking.domain.ActionLog
 
@@ -223,7 +223,7 @@ class OrderServiceSpec extends BaseSpecification {
     def order = Order.findByOrder('M001')
     ProductRouting.findAll().size() == 1
     OrderOperation.findAll().size() == 1
-    RoutingOperation.findAllBySequence(1).size() == 2
+    MasterOperation.findAllBySequence(1).size() == 2
     order.orderRouting.operations.size() == 3
 
     and: 'the lsn operation state records match the routing'
@@ -250,7 +250,7 @@ class OrderServiceSpec extends BaseSpecification {
     def order = Order.findByOrder('M001')
     ProductRouting.findAll().size() == 1
     OrderOperation.findAll().size() == 1
-    RoutingOperation.findAllBySequence(1).size() == 2
+    MasterOperation.findAllBySequence(1).size() == 2
     order.orderRouting.operations.size() == 3
 
     and: 'the order operation state records match the routing'

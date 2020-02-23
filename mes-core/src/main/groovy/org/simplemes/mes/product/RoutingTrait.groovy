@@ -29,9 +29,8 @@ trait RoutingTrait {
       if (operations[i].sequence == sequence) {
         if ((i + 1) < operations.size()) {
           return operations[i + 1].sequence
-        } else {
-          return 0
         }
+        return 0
       }
     }
 
