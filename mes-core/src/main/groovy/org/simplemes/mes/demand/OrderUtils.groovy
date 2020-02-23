@@ -1,6 +1,7 @@
 package org.simplemes.mes.demand
 
 import org.simplemes.eframe.misc.ArgumentUtils
+import org.simplemes.eframe.misc.UUIDUtils
 import org.simplemes.mes.demand.domain.LSN
 import org.simplemes.mes.demand.domain.Order
 
@@ -17,12 +18,12 @@ import org.simplemes.mes.demand.domain.Order
 class OrderUtils {
 
   /**
-   * This resolves an ID or name for an Order/LSN.  This is typically passed as a param in the HTTP request to a controller.
+   * This resolves an UUID or name for an Order/LSN.  This is typically passed as a param in the HTTP request to a controller.
    * <p>
-   * The ID is evaluated with this precedence order:
+   * The UUID is evaluated with this precedence order:
    * <ul>
-   *   <li>LSN - ID (numeric)</li>
-   *   <li>Order - ID (numeric)</li>
+   *   <li>LSN - UUID (uuid string)</li>
+   *   <li>Order - UUID (uuid string)</li>
    *   <li>LSN - name</li>
    *   <li>Order - name</li>
    * </ul>
@@ -30,25 +31,25 @@ class OrderUtils {
    * @param id The ID to find the Order/LSN for.
    * @return The Order or LSN.  Can be null.
    */
-  static Object resolveIdOrName(String id) {
+  static Object resolveUuidOrName(String id) {
     ArgumentUtils.checkMissing(id, 'id')
 
-    if (id.isNumber()) {
-      // Try as ID first.
-      def idNumber = Long.parseLong(id)
+    def uuid = UUIDUtils.convertToUUIDIfPossible(id)
 
-      def lsn = LSN.findById(idNumber)
+    if (uuid instanceof UUID) {
+      // Try as UUID first, it if fits the format correctly.
+      def lsn = LSN.findByUuid(uuid)
       if (lsn) {
         return lsn
       }
 
-      def order = Order.findById(idNumber)
+      def order = Order.findByUuid(uuid)
       if (order) {
         return order
       }
     }
 
-    // Not found, so try as name next
+    // Not found as UUID, so try as name next
     def lsn = LSN.findByLsn(id)
     if (lsn) {
       return lsn

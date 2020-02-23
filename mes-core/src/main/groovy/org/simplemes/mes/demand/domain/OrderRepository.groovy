@@ -19,6 +19,8 @@ interface OrderRepository extends BaseRepository, CrudRepository<Order, UUID> {
 
   Optional<Order> findByUuid(UUID uuid)
 
+  List<Order> findAllByDateCompletedLessThan(Date date, Pageable pageable)
+
   List<Order> list(Pageable pageable)
 
   List<Order> list()

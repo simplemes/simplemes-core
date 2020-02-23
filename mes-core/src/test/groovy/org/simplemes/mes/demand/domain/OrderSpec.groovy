@@ -1,7 +1,7 @@
 package org.simplemes.mes.demand.domain
 
+import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.exception.BusinessException
-import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.system.EnabledStatus
 import org.simplemes.eframe.test.BaseSpecification
@@ -28,20 +28,22 @@ import org.simplemes.mes.tracking.domain.ActionLog
 class OrderSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [SERVER]
+  static specNeeds = SERVER
+
+  @Override
+  void checkForLeftoverRecords() {
+    println "checkForLeftoverRecords DISABLED"
+  }
 
   def "test standard constraints"() {
-    given: 'some initial data loaded'
-    loadInitialData(OrderSequence)
-
     expect: 'the constraints are enforced'
     DomainTester.test {
       domain Order
       requiredValues order: 'M1003', qtyToBuild: 2.0
       maxSize 'order', FieldSizes.MAX_CODE_LENGTH
       notNullCheck 'qtyToBuild'
-      fieldOrderCheck false     // TODO: Re-enable when state is ported
-      //notInFieldOrder (['operationStates', 'dateReleased', 'dateFirstQueued', 'dateFirstStarted', 'dateQtyQueued', 'dateQtyStarted'])
+      //fieldOrderCheck true
+      notInFieldOrder(['operations', 'operationStates', 'dateReleased', 'dateFirstQueued', 'dateFirstStarted', 'dateQtyQueued', 'dateQtyStarted'])
     }
   }
 
@@ -62,25 +64,28 @@ class OrderSpec extends BaseSpecification {
   }
 
   @Rollback
-  def "test local constraints "() {
+  def "verify that qty validations work"() {
     expect: 'negative qtyToBuild'
-    def order1 = new Order(order: 'a', qtyToBuild: -1)
-    !order1.validate()
-    //noinspection SpellCheckingInspection
-    order1.errors["qtyToBuild"].codes.contains('min.notmet.qtyToBuild')
+    def order1 = new Order(order: 'a', qtyToBuild: -237)
+    def errors = DomainUtils.instance.validate(order1)
+    //error.137.message=Invalid Value "{1}" for "{0}". Value should be greater than {2}.
+    UnitTestUtils.assertContainsError(errors, 137, 'qtyToBuild', ['-237', '0'])
 
     and: '0 qtyToBuild'
     def order2 = new Order(order: 'a', qtyToBuild: 0)
-    !order2.validate()
-    //noinspection SpellCheckingInspection
-    order2.errors["qtyToBuild"].codes.contains('min.notmet.qtyToBuild')
+    def errors2 = DomainUtils.instance.validate(order2)
+    //error.137.message=Invalid Value "{1}" for "{0}". Value should be greater than {2}.
+    UnitTestUtils.assertContainsError(errors2, 137, 'qtyToBuild', ['0'])
+
+    and: 'negative qtyReleased'
+    def order3 = new Order(order: 'a', qtyReleased: -437)
+    def errors3 = DomainUtils.instance.validate(order3)
+    //error.136.message=Invalid Value "{1}" for "{0}". Value should be greater than or equal to {2}.
+    UnitTestUtils.assertContainsError(errors3, 136, 'qtyReleased', ['-437', '0'])
   }
 
   @Rollback
   def "test new order name creation from OrderSequence"() {
-    given: 'some initial data loaded'
-    loadInitialData(OrderSequence)
-
     when: 'an order without an order name'
     Order order = new Order()
     order.save()
@@ -115,8 +120,8 @@ class OrderSpec extends BaseSpecification {
     LSN sn1 = new LSN(lsn: '1234-001')
     LSN sn2 = new LSN(lsn: '1234-002')
     Order order = new Order(order: '1234', qtyToBuild: 2.0)
-    order.addToLsns(sn1)
-    order.addToLsns(sn2)
+    order.lsns << sn1
+    order.lsns << sn2
     order.save()
 
     when: 'the LSNs are re-read'
@@ -129,20 +134,20 @@ class OrderSpec extends BaseSpecification {
   }
 
   @Rollback
-  def "wrong number of LSNs can't be saved"() {
+  def "verify that wrong number of LSNs cannot be saved"() {
     given: 'an order with two LSNs saved and a qty of 3.0'
     LSN sn1 = new LSN(lsn: '1234-001')
     LSN sn2 = new LSN(lsn: '1234-002')
     Order order = new Order(order: '1234', qtyToBuild: 3.0)
-    order.addToLsns(sn1)
-    order.addToLsns(sn2)
+    order.lsns << sn1
+    order.lsns << sn2
 
     when: 'the order is checked'
-    order.validate()
+    def errors = DomainUtils.instance.validate(order)
 
     then: 'the error is correct'
-    def s = GlobalUtils.lookupValidationErrors(order).qtyToBuild[0]
-    UnitTestUtils.assertContainsAllIgnoreCase(s, ['1234', '2', '3', 'wrong', 'number', 'LSNs'])
+    //error.3013.message=Wrong number of LSNs {1} provided for order {2}.  Should be {3}.
+    UnitTestUtils.assertContainsError(errors, 3013, 'lsns', ['2', '3', '1234'])
   }
 
   @Rollback
@@ -151,36 +156,45 @@ class OrderSpec extends BaseSpecification {
     LSN sn1 = new LSN(lsn: '1234-001')
     LSN sn2 = new LSN(lsn: '1234-001')
     Order order = new Order(order: '1234', qtyToBuild: 2.0)
-    order.addToLsns(sn1)
-    order.addToLsns(sn2)
+    order.lsns << sn1
+    order.lsns << sn2
 
     when: 'the order is checked'
-    order.validate()
+    def errors = DomainUtils.instance.validate(order)
 
     then: 'the error is correct'
-    def s = GlobalUtils.lookupValidationErrors(order).lsns[0]
-    UnitTestUtils.assertContainsAllIgnoreCase(s, ['1234', '1234-001', 'duplicate', 'LSN'])
+    //error.3015.message=Duplicate LSN {1} provided for order {2}.
+    UnitTestUtils.assertContainsError(errors, 3015, 'lsns', ['1234-001', '1234'])
+  }
+
+  /**
+   * Updates the standard LSN sequence (SERIAL) with the given default sequence setting.
+   * @param isDefault The new setting
+   */
+  def setDefaultLSNSequence(boolean isDefault) {
+    LSNSequence.withTransaction {
+      def sequence = LSNSequence.findBySequence('SERIAL')
+      sequence.setDefaultSequence(isDefault)
+      sequence.save()
+    }
   }
 
   @Rollback
   def "populateLSNs fails when there is no default LSN Sequence"() {
     given: 'no default LSN Sequence exists'
-    LSNSequence.findDefaultSequence()?.delete(flush: true)
+    setDefaultLSNSequence(false)
 
     and: 'an order'
     Order order = new Order(order: '1234', qtyToBuild: 5.0)
-    assert order.validate()
-    assert order.save()
+    order.save()
 
     when: 'the LSN are created'
     order.populateLSNs()
 
     then: 'should fail with proper message'
-    //error.102.message=Could not find expected default value for {0}.
     def e = thrown(BusinessException)
-    assert UnitTestUtils.allParamsHaveValues(e)
-    UnitTestUtils.assertContainsAllIgnoreCase(e.toString(), ['default'])
-    e.code == 2009
+    //error.102.message=Could not find expected default value for {0}.
+    UnitTestUtils.assertExceptionIsValid(e, ['LSNSequence'], 102)
   }
 
   @Rollback
@@ -192,15 +206,15 @@ class OrderSpec extends BaseSpecification {
     Order order = new Order(order: '1234', qtyToBuild: 5.0, product: product)
     order.save()
 
-    and: 'the LSN Sequence is loaded'
-    loadInitialData(LSNSequence)
-
     when: 'the LSN are created'
     order.populateLSNs()
 
     then: 'the right LSNs are created'
     order.lsns.size() == 5
     order.lsns[0].qty == 1.0
+
+    cleanup: 'reset the default LSN Sequence flag for other tests'
+    setDefaultLSNSequence(true)
   }
 
   @Rollback
@@ -211,9 +225,6 @@ class OrderSpec extends BaseSpecification {
     and: 'an order for multiple LSNs'
     Order order = new Order(order: '1234', qtyToBuild: 11.0, product: product)
     order.save()
-
-    and: 'the LSN Sequence is loaded'
-    loadInitialData(LSNSequence)
 
     when: 'the LSN are created'
     order.populateLSNs()
@@ -228,9 +239,6 @@ class OrderSpec extends BaseSpecification {
   def "populateLSNs creates the correct LSNs when qtyToBuild is later increased"() {
     given: 'a product with a lot size of 1.0'
     Product product = new Product(product: 'PC', lotSize: 1.2).save()
-
-    and: 'the LSN Sequence is loaded'
-    loadInitialData(LSNSequence)
 
     and: 'an order for multiple LSNs has LSN populated once'
     Order order = new Order(order: '1234', qtyToBuild: 5.0, product: product)
@@ -266,16 +274,15 @@ class OrderSpec extends BaseSpecification {
     Order order = new Order(order: 'M001', qtyToBuild: 2.0, product: product)
     LSN sn1 = new LSN(lsn: 'M001-010')
     LSN sn2 = new LSN(lsn: 'M001-011')
-    order.addToLsns(sn1)
-    order.addToLsns(sn2)
+    order.lsns << sn1
+    order.lsns << sn2
 
-    when: 'the order is validated'
-    assert !order.validate()
+    when: 'the order is checked'
+    def errors = DomainUtils.instance.validate(order)
 
-    then: 'the correct error is returned'
-    //order.lsns.notAllowed.error=LSNs not allowed for tracking option {3} provided for order {4}.
-    def s = GlobalUtils.lookupValidationErrors(order).lsns[0]
-    UnitTestUtils.assertContainsAllIgnoreCase(s, ['M001', lookup('lsnTrackingOption.O.label'), 'tracking option'])
+    then: 'the error is correct'
+    //error.3014.message=LSNs not allowed for LSN tracking option "{1}" on order {2}.
+    UnitTestUtils.assertContainsError(errors, 3014, 'lsns', [LSNTrackingOption.ORDER_ONLY.toString(), 'M001'])
   }
 
   @Rollback

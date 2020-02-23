@@ -2,6 +2,7 @@ package org.simplemes.mes.demand.service
 
 import groovy.transform.Synchronized
 import groovy.util.logging.Slf4j
+import io.micronaut.data.model.Pageable
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.archive.ArchiverFactoryInterface
 import org.simplemes.eframe.archive.FileArchiver
@@ -303,8 +304,8 @@ class OrderService {
     while (txnCount < maxTxns) {
       // Process one batch of orders inside of its own txn.
       Order.withTransaction {
-        Order[] list = Order.findAllByDateCompletedLessThanAndDateCompletedIsNotNull(archiveDate, [max: maxOrdersPerTxn])
-        //println "list = ${list}"
+        Order[] list = Order.findAllByDateCompletedLessThan(archiveDate, Pageable.from((Integer) 0, (Integer) maxOrdersPerTxn))
+        //println "list = ${list*.order}"
         if (list.size() <= 0) {
           // Since we are inside of a 'withTransaction' closure, we can't use break.  kludge an exit.
           txnCount = maxTxns + 1
@@ -345,7 +346,7 @@ class OrderService {
   List<WorkableInterface> determineQtyStates(Order order) {
     def res = []
 
-    if (order?.orderRouting) {
+    if (order?.operationStates) {
       // Find all operation states than have a qty in queue/work
       for (operationState in order.operationStates) {
         if (operationState.qtyInQueue || operationState.qtyInWork) {

@@ -27,6 +27,7 @@ class InitialData {
   /**
    * Forces MES Roles to be loaded before User, so the admin user will have these roles by default.
    */
+  @SuppressWarnings("unused")
   static initialDataLoadBefore = [User]
 
   /**
@@ -63,7 +64,7 @@ class InitialData {
    */
   private static createRoleIfNeeded(String authority, String title) {
     if (!Role.findByAuthority(authority)) {
-      new Role(authority: authority, title: title).save(flush: true)
+      new Role(authority: authority, title: title).save()
       log.debug("createRoleIfNeeded() Loaded Role: {}", authority)
     }
   }
@@ -81,7 +82,7 @@ class InitialData {
       // Delete existing dashboards for testing in development mode.
       for (record in DashboardConfig.list()) {
         //println "deleting record = $record"
-        record.delete(flush: true)
+        record.delete()
       }
       log.warn("Removed default dashboards for development mode.")
     }
@@ -91,26 +92,26 @@ class InitialData {
     if (DashboardConfig.count() == 0 && shouldLoad) {
       DashboardConfig dashboardConfig
       dashboardConfig = new DashboardConfig(dashboard: 'OPERATOR_DEFAULT', category: 'OPERATOR', title: 'Operator')
-      dashboardConfig.addToPanels(new DashboardPanelSplitter(panelIndex: 0, vertical: false))
-      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 1, defaultURL: '/scan/display', parentPanelIndex: 0))
-      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 2, defaultURL: '/orderAssy/assemblyScanActivity', parentPanelIndex: 0))
+      dashboardConfig.splitterPanels << new DashboardPanelSplitter(panelIndex: 0, vertical: false)
+      dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 1, defaultURL: '/scan/display', parentPanelIndex: 0)
+      dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 2, defaultURL: '/orderAssy/assemblyScanActivity', parentPanelIndex: 0)
       //dashboardConfig.addToButtons(new DashboardButton(label: 'reverseStart.label', url: '/work/reverseStartActivity', panel: 'A',
       //                                                 title: 'reverseStart.title', style: 'font-size:1.0em', buttonID: 'REVERSE_START'))
-      dashboardConfig.addToButtons(new DashboardButton(label: 'complete.label', url: '/work/completeActivity', panel: 'A',
-                                                       title: 'complete.title', css: 'caution-button', buttonID: 'COMPLETE'))
+      dashboardConfig.buttons << new DashboardButton(label: 'complete.label', url: '/work/completeActivity', panel: 'A',
+                                                     title: 'complete.title', css: 'caution-button', buttonID: 'COMPLETE')
       dashboardConfig.save()
       log.warn("Created Dashboard ${dashboardConfig}.")
 
       dashboardConfig = new DashboardConfig(dashboard: 'MANAGER_DEFAULT', category: 'MANAGER', title: 'Manager')
-      dashboardConfig.addToPanels(new DashboardPanelSplitter(panelIndex: 0, vertical: false))
-      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 1, defaultURL: '/selection/workCenterSelection', parentPanelIndex: 0))
-      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 2, defaultURL: '/workList/workListActivity', parentPanelIndex: 0))
-      dashboardConfig.addToButtons(new DashboardButton(label: 'start.label', url: '/work/startActivity', panel: 'A',
-                                                       title: 'start.title', buttonID: 'START'))
-      dashboardConfig.addToButtons(new DashboardButton(label: 'complete.label', url: '/work/completeActivity', panel: 'A',
-                                                       title: 'complete.title', buttonID: 'COMPLETE'))
-      dashboardConfig.addToButtons(new DashboardButton(label: 'reverseStart.label', url: '/work/reverseStartActivity', panel: 'A',
-                                                       title: 'reverseStart.title', buttonID: 'REVERSE_START'))
+      dashboardConfig.splitterPanels << new DashboardPanelSplitter(panelIndex: 0, vertical: false)
+      dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 1, defaultURL: '/selection/workCenterSelection', parentPanelIndex: 0)
+      dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 2, defaultURL: '/workList/workListActivity', parentPanelIndex: 0)
+      dashboardConfig.buttons << new DashboardButton(label: 'start.label', url: '/work/startActivity', panel: 'A',
+                                                     title: 'start.title', buttonID: 'START')
+      dashboardConfig.buttons << new DashboardButton(label: 'complete.label', url: '/work/completeActivity', panel: 'A',
+                                                     title: 'complete.title', buttonID: 'COMPLETE')
+      dashboardConfig.buttons << new DashboardButton(label: 'reverseStart.label', url: '/work/reverseStartActivity', panel: 'A',
+                                                     title: 'reverseStart.title', buttonID: 'REVERSE_START')
       dashboardConfig.save()
       log.warn("Created Dashboard ${dashboardConfig}.")
     }

@@ -4,8 +4,12 @@ import groovy.json.JsonSlurper
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import org.simplemes.eframe.application.Holders
-import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.archive.ArchiverFactoryInterface
+import org.simplemes.eframe.archive.FileArchiver
+import org.simplemes.eframe.security.domain.User
+import org.simplemes.eframe.test.BaseAPISpecification
 import org.simplemes.eframe.test.ControllerTester
+import org.simplemes.eframe.test.MockBean
 import org.simplemes.eframe.test.MockPrincipal
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
@@ -25,22 +29,25 @@ import org.simplemes.mes.tracking.domain.ActionLog
 */
 
 /**
- * Tests.
+ * Tests for the Order Controller and general-purpose tests for Micronaut and Framework logic.
  */
-class OrderControllerSpec extends BaseSpecification {
+class OrderControllerSpec extends BaseAPISpecification {
 
-  static specNeeds = [JSON, SERVER]
+  // TODO: Move API tests to this class
+  @SuppressWarnings("unused")
+  static dirtyDomains = [ActionLog, Order, User]
 
   OrderController controller
 
+  @Override
+  void checkForLeftoverRecords() {
+    println "checkForLeftoverRecords DISABLED"
+  }
+
   void setup() {
-    //loadInitialData(LSNSequence)
-
-    // release() needs the OrderService.
-    controller = new OrderController()
-    controller.setOrderService(new OrderService())
-
+    controller = Holders.getBean(OrderController)
     setCurrentUser()
+    waitForInitialDataLoad()
   }
 
   def "verify that the controller passes the standard controller test - security, task menu, etc"() {
@@ -83,7 +90,7 @@ class OrderControllerSpec extends BaseSpecification {
     """
 
     when: 'the status is updated'
-    HttpResponse res = controller.restPut(order.id.toString(), mockRequest([body: src]), new MockPrincipal('joe', 'SUPERVISOR'))
+    HttpResponse res = controller.restPut(order.uuid.toString(), mockRequest([body: src]), new MockPrincipal('joe', 'SUPERVISOR'))
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint((String) res.getBody().get())}"
 
     then: 'the response is valid'
@@ -99,20 +106,22 @@ class OrderControllerSpec extends BaseSpecification {
     order1.lsns[1].status == originalStatus
   }
 
-  @Rollback
-  def "verify release works"() {
-    given: 'an order to be released'
-    def order = new Order(order: 'ABC', qtyToBuild: 12.0).save()
+  def "verify that release works - via HTTP API"() {
+    given: 'an order that can be released with the JSON content'
+    def order = null
+    def s = null
+    Order.withTransaction {
+      order = new Order(order: 'ABC', qtyToBuild: 12.0).save()
+      def request = new OrderReleaseRequest(order: order, qty: 1.2)
+      s = Holders.objectMapper.writeValueAsString(request)
+    }
 
-    and: 'a release request'
-    def request = Holders.objectMapper.writeValueAsString(new OrderReleaseRequest(order: order, qty: 1.2))
-
-    when: 'the request is sent'
-    HttpResponse res = controller.release(mockRequest([body: request]), null)
+    when: 'the request is made'
+    login()
+    def res = sendRequest(uri: '/order/release', method: 'post', content: s)
 
     then: 'the response is valid'
-    res.status == HttpStatus.OK
-    def json = new JsonSlurper().parseText((String) res.getBody().get())
+    def json = new JsonSlurper().parseText(res)
     json.order.order == order.order
     json.order.qtyReleased == 1.2
 
@@ -120,21 +129,6 @@ class OrderControllerSpec extends BaseSpecification {
     def order1 = Order.findByOrder('ABC')
     order1.qtyInQueue == 1.2
     order1.qtyReleased == 1.2
-  }
-
-  @Rollback
-  def "verify release works fails with wrong order"() {
-    given: 'a release request'
-    def request = """
-      {"order":"GIBBERISH"}
-    """
-
-    when: 'the request is sent'
-    controller.release(mockRequest([body: request]), null)
-
-    then: 'the right exception is thrown'
-    def ex = thrown(Exception)
-    UnitTestUtils.assertExceptionIsValid(ex, ['not', 'find', 'GIBBERISH'])
   }
 
   @Rollback
@@ -148,11 +142,30 @@ class OrderControllerSpec extends BaseSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['Empty', 'body'])
   }
 
+  def "verify that release fails gracefully with invalid input - via HTTP API"() {
+    given: 'a request with an invalid order'
+    def request = """
+      {"order":"GIBBERISH"}
+    """
+
+    and: 'the expected stack trace is not logged'
+    disableStackTraceLogging()
+
+    when: 'the request is made'
+    login()
+    def res = sendRequest(uri: '/order/release', method: 'post', content: request, status: HttpStatus.BAD_REQUEST)
+
+    then: 'the response is a bad request with a valid message'
+    def json = new JsonSlurper().parseText(res)
+    UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['gibberish', 'order'])
+  }
+
   @SuppressWarnings("GroovyAssignabilityCheck")
   def "verify archiveOld with JSON content"() {
     given: 'the controller has a mocked OrderService'
+    def originalService = controller.orderService
     def mock = Mock(OrderService)
-    controller.setOrderService(mock)
+    controller.orderService = mock
 
     and: 'a JSON request'
     def request = """
@@ -176,6 +189,88 @@ class OrderControllerSpec extends BaseSpecification {
 
     and: 'the archive references are returned properly'
     json[0] == 'ABC'
+
+    cleanup:
+    controller.orderService = originalService
+  }
+
+  /**
+   * Remember the last order archived so the mock close() method can remove it.
+   */
+  def orderArchived
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that archiveOld works - via HTTP API"() {
+    given: 'a mock archiver factory that returns an object'
+    def fileArchiver = Mock(FileArchiver)
+    def mockFactory = Mock(ArchiverFactoryInterface)
+    2 * mockFactory.getArchiver() >> fileArchiver
+    new MockBean(this, ArchiverFactoryInterface, mockFactory).install()
+
+    and: '2 really old orders, with 2 recent ones'
+    Date d = new Date() - 1002
+    Order.withTransaction {
+      new Order(order: 'NEW', qtyToBuild: 1).save()
+      new Order(order: 'RECENT1', qtyToBuild: 1, dateCompleted: new Date()).save()
+      new Order(order: 'RECENT2', qtyToBuild: 1, dateCompleted: new Date()).save()
+      new Order(order: 'REALLY_OLD1', qtyToBuild: 1, dateCompleted: d).save()
+      new Order(order: 'REALLY_OLD2', qtyToBuild: 1, dateCompleted: d).save()
+    }
+
+    and: 'the JSON request'
+    def request = """
+      {
+        "ageDays": 1000,
+        "maxOrdersPerTxn": 50,
+        "maxTxns": 1
+      }
+    """
+
+    when: 'the archive is attempted on the 2 oldest orders'
+    login()
+    def res = sendRequest(uri: '/order/archiveOld', method: 'post', content: request)
+
+    then: 'the response is valid'
+    def json = new JsonSlurper().parseText(res)
+    json.size() == 2
+    json[0].startsWith('unit/REALLY_OLD')
+    json[1].startsWith('unit/REALLY_OLD')
+
+    and: 'the other newer orders are not deleted'
+    Order.list().size() == 3
+    Order.findByOrder('RECENT1')
+    Order.findByOrder('RECENT2')
+    Order.findByOrder('NEW')
+    !Order.findByOrder('REALLY_OLD1')
+    !Order.findByOrder('REALLY_OLD2')
+
+    and: 'the archiver is called correctly'
+    2 * fileArchiver.archive(_) >> { args -> orderArchived = args[0] }
+    2 * fileArchiver.close() >> { orderArchived.delete(); "unit/${orderArchived.order}.arc" }
+    0 * fileArchiver._
+  }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that archiveOld fails gracefully works - via HTTP API"() {
+    given: 'the JSON request'
+    def request = """
+      {
+        "ageDays": gibberish,
+        "maxOrdersPerTxn": 50,
+        "maxTxns": 1
+      }
+    """
+
+    and: 'the expected stack trace is not logged'
+    disableStackTraceLogging()
+
+    when: 'the archive is attempted'
+    login()
+    def res = sendRequest(uri: '/order/archiveOld', method: 'post', content: request, status: HttpStatus.BAD_REQUEST)
+
+    then: 'the response is a bad request with a valid message'
+    def json = new JsonSlurper().parseText(res)
+    UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['parse'])
   }
 
   @Rollback
@@ -184,7 +279,7 @@ class OrderControllerSpec extends BaseSpecification {
     def order = new Order(order: 'ABC', qtyToBuild: 12.0).save()
 
     when: 'the delete request is sent'
-    def res = controller.delete(mockRequest(), [id: order.id.toString()], new MockPrincipal('joe', 'SUPERVISOR'))
+    def res = controller.delete(mockRequest(), [id: order.uuid.toString()], new MockPrincipal('joe', 'SUPERVISOR'))
 
     then: 'the response is correct'
     res.status == HttpStatus.FOUND
@@ -199,7 +294,7 @@ class OrderControllerSpec extends BaseSpecification {
     def order = MESUnitTestUtils.releaseOrder()
 
     when: 'the delete request is sent'
-    def res = controller.delete(mockRequest(), [id: order.id.toString()], new MockPrincipal('joe', 'SUPERVISOR'))
+    def res = controller.delete(mockRequest(), [id: order.uuid.toString()], new MockPrincipal('joe', 'SUPERVISOR'))
 
     then: 'the response is correct'
     res.status == HttpStatus.FOUND
@@ -209,13 +304,34 @@ class OrderControllerSpec extends BaseSpecification {
     !ActionLog.list()
   }
 
+  def "verify that delete works - via HTTP API"() {
+    given: 'a test user'
+    setCurrentUser('admin')
+
+    and: 'an order that can be released with the JSON content'
+    def order = null
+    Order.withTransaction {
+      order = MESUnitTestUtils.releaseOrder([:])
+      assert ActionLog.count() != 0
+    }
+
+    when: 'the request is made'
+    login()
+    sendRequest(uri: "/order/delete", method: 'post',
+                content: [id: order.uuid.toString()], status: HttpStatus.FOUND)
+
+    then: 'the database is updated correctly.'
+    Order.count() == 0
+    ActionLog.count() == 0
+  }
+
   @Rollback
   def "test determineQtyStates with JSON output"() {
     given: 'an order'
     def order = MESUnitTestUtils.releaseOrder(qty: 1.2)
 
     when: 'the resolve is attempted in JSON'
-    def res = controller.determineQtyStates(order.id.toString(), new MockPrincipal('joe', 'SUPERVISOR'))
+    def res = controller.determineQtyStates(order.uuid.toString(), new MockPrincipal('joe', 'SUPERVISOR'))
     //println "s = ${res.body.get()}"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body.get())}"
 
@@ -237,6 +353,17 @@ class OrderControllerSpec extends BaseSpecification {
     res.status == HttpStatus.NOT_FOUND
   }
 
+  def "verify that security detects no permission  - via HTTP API"() {
+    given: 'a user without the SUPERVISOR Role'
+    User.withTransaction {
+      new User(userName: 'TEST', password: 'TEST').save()
+    }
 
-  // TODO: Test release() in embedded server
+    when: 'the request is made with a forbidden error'
+    login('TEST', 'TEST')
+    sendRequest(uri: "/order/x", method: 'get', status: HttpStatus.FORBIDDEN)
+
+    then: 'no exception is thrown'
+    notThrown(Throwable)
+  }
 }

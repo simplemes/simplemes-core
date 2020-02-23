@@ -10,7 +10,6 @@ import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.annotation.Post
 import io.micronaut.security.annotation.Secured
 import org.simplemes.eframe.controller.BaseCrudRestController
-import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.web.task.TaskMenuItem
 import org.simplemes.mes.demand.OrderReleaseRequest
@@ -20,7 +19,6 @@ import org.simplemes.mes.demand.service.OrderService
 
 import javax.annotation.Nullable
 import javax.inject.Inject
-import javax.transaction.Transactional
 import java.security.Principal
 
 //import org.simplemes.eframe.controller.ControllerErrorHandlerTrait
@@ -38,7 +36,6 @@ import java.security.Principal
 @Slf4j
 @Secured("SUPERVISOR")
 @Controller("/order")
-//@Transactional
 class OrderController extends BaseCrudRestController {
   /**
    * Injected OrderService.
@@ -57,6 +54,7 @@ class OrderController extends BaseCrudRestController {
    * Executes the {@link org.simplemes.mes.demand.service.OrderService#release(org.simplemes.mes.demand.OrderReleaseRequest)} method.
    */
   @Post(value = "/release")
+  @SuppressWarnings("unused")
   HttpResponse release(HttpRequest request, @Nullable Principal principal) {
     def res = null
     Order.withTransaction {
@@ -65,7 +63,6 @@ class OrderController extends BaseCrudRestController {
         res = buildErrorResponse("Empty body in request")
       } else {
         log.debug('release() request: {}', orderReleaseRequest)
-        DomainUtils.instance.resolveProxies(orderReleaseRequest.order)
         res = buildOkResponse(orderService.release(orderReleaseRequest))
       }
     }
@@ -101,6 +98,7 @@ class OrderController extends BaseCrudRestController {
    *
    */
   @Post(value = "/archiveOld")
+  @SuppressWarnings("unused")
   HttpResponse archiveOld(HttpRequest request, @Nullable Principal principal) {
     def res
     BigDecimal ageDays
@@ -134,14 +132,11 @@ class OrderController extends BaseCrudRestController {
    *   <li>Order - name</li>
    * </ul>
    */
-  @SuppressWarnings("GroovyAssignabilityCheck")
   @Get("/determineQtyStates/{id}")
-  @Transactional
+  @SuppressWarnings(["GroovyAssignabilityCheck", "unused"])
   HttpResponse determineQtyStates(@PathVariable(name = 'id') String id, @Nullable Principal principal) {
-    //println "params = $params"
-    //println "id = ${params.id.class}, order = $order"
     log.debug('determineQtyStates() id: {}', id)
-    def object = OrderUtils.resolveIdOrName(id)
+    def object = OrderUtils.resolveUuidOrName(id)
     if (object) {
       def workables = orderService.determineQtyStates(object)
       def qtyInQueue = 0.0
@@ -152,9 +147,8 @@ class OrderController extends BaseCrudRestController {
       }
       def map = [qtyInQueue: qtyInQueue, qtyInWork: qtyInWork, object: object]
       return buildOkResponse(map)
-    } else {
-      return HttpResponse.status(HttpStatus.NOT_FOUND)
     }
+    return HttpResponse.status(HttpStatus.NOT_FOUND)
   }
 
 }

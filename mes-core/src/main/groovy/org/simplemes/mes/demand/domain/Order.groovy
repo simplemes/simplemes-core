@@ -10,6 +10,7 @@ import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
 import org.simplemes.eframe.domain.annotation.DomainEntity
+import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.mes.demand.CompleteRequest
 import org.simplemes.mes.demand.DemandObject
@@ -61,6 +62,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    */
   @Column(name = 'ordr', length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String order
+  // TODO: Add unique index to DDL.
 
   /**
    * The Order's overall status.  This is one of the pre-defined OrderStatus codes.
@@ -89,13 +91,6 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
   @Nullable
   @ManyToOne(targetEntity = Product)
   Product product
-
-  /**
-   * Defines the 'has' elements.  These are child elements of this order that are deleted when the
-   * order is deleted.<p/>
-   * This orderRouting is the routing used only by this order.  The effective routing is copied to the order upon release.
-   */
-  static hasOne = [orderRouting: OrderOperation]
 
   /**
    * This is the list operation states that corresponds to the current orderRouting's operations.  This holds the quantities
@@ -164,7 +159,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    * Can be null if the nothing is in queue.
    * <p/><b>WorkStateTrait field</b>.
    */
-  @Nullable
+  @Nullable @SuppressWarnings("unused")
   Date dateQtyQueued
 
   /**
@@ -172,30 +167,32 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    * Can be null if the nothing is in work.
    * <p/><b>WorkStateTrait field</b>.
    */
-  @Nullable
+  @Nullable @SuppressWarnings("unused")
   Date dateQtyStarted
 
   /**
    * The date/time any quantity was first queued at this point (operation or top-level).
    * <p/><b>WorkStateTrait field</b>.
    */
-  @Nullable
+  @Nullable @SuppressWarnings("unused")
   Date dateFirstQueued
 
   /**
    * The date/time any quantity was first started at this point (operation or top-level).
    * <p/><b>WorkStateTrait field</b>.
    */
-  @Nullable
+  @Nullable @SuppressWarnings("unused")
   Date dateFirstStarted
 
-  @DateCreated
-  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE') Date dateCreated
+  @DateCreated @SuppressWarnings("unused")
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateCreated
 
-  @DateUpdated
+  @DateUpdated @SuppressWarnings("unused")
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateUpdated
 
+  @SuppressWarnings("unused")
   Integer version = 0
 
   @Id @AutoPopulated UUID uuid
@@ -212,58 +209,22 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
   /**
    * This domain is a top-level searchable element.
    */
+  @SuppressWarnings("unused")
   static searchable = true
-
-  /**
-   * <i>Internal definitions for GORM framework.</i>
-   */
-  static constraints = {
-    order(maxSize: FieldSizes.MAX_CODE_LENGTH, unique: true, nullable: false, blank: false)
-    product(nullable: true)
-    qtyToBuild(min: 0.0001, scale: FieldSizes.STANDARD_DECIMAL_SCALE, validator: { val, obj -> checkQtyToBuild(val, obj) })
-    qtyReleased(min: 0.000, scale: FieldSizes.STANDARD_DECIMAL_SCALE)
-    overallStatus(nullable: false)  // Look at maxSize: OrderStatus.ID_LENGTH,
-    lsns(validator: { val, obj -> checkLSNs(val, obj) })
-    orderRouting(nullable: true)
-    dateCompleted(nullable: true)
-    dateReleased(nullable: true)
-
-    // Fields added by the WorkStateTrait
-    qtyInQueue(scale: FieldSizes.STANDARD_DECIMAL_SCALE)
-    qtyInWork(scale: FieldSizes.STANDARD_DECIMAL_SCALE)
-    qtyDone(scale: FieldSizes.STANDARD_DECIMAL_SCALE)
-    dateQtyQueued(nullable: true)
-    dateQtyStarted(nullable: true)
-    dateFirstQueued(nullable: true)
-    dateFirstStarted(nullable: true)
-  }
-
-  /**
-   * <i>Internal definitions for GORM framework.</i>
-   */
-  static mapping = {
-    table 'ordr'           // ORDER is not a legal table or column name, so use ORDR
-    order column: 'ordr', index: 'Ordr_Idx'
-    autoTimestamp true
-  }
-
-  /**
-   * <i>Internal definitions for GORM framework.</i>
-   */
-  static hasMany = [lsns: LSN, operationStates: OrderOperState]
 
   /**
    * Defines the default general field ordering for GUIs and other field listings/reports.
    */
   @SuppressWarnings("GroovyUnusedDeclaration")
-  static fieldOrder = ['order', 'overallStatus', 'qtyToBuild', 'product', 'orderRouting',
+  static fieldOrder = ['order', 'overallStatus', 'qtyToBuild', 'product',
                        'group:state', 'qtyReleased', 'qtyInQueue', 'qtyInWork', 'qtyDone',
                        'dateCompleted',
-                       'group:lsn', 'lsnTrackingOption', 'lsns']
+                       'group:lsns', 'lsnTrackingOption', 'lsns']
 
   /**
    * Called before validate happens.  Used to set the order if needed.
    */
+  @SuppressWarnings("unused")
   def beforeValidate() {
     // Set the order name if none provided.
     if (!order) {
@@ -271,7 +232,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
       if (values) {
         order = values[0]
       } else {
-        throw new IllegalArgumentException("No default OrderNameSequence")
+        throw new IllegalArgumentException("No default OrderSequence")
       }
     }
 
@@ -294,53 +255,75 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
   }
 
   /**
-   * Validates that the qtyToBuild is legal for the given Order.
-   * @param val The qtyToBuild to be validated.
-   * @param obj The overall order object.
+   * Validates the record before save.
+   * @return The list of errors.
    */
-  static checkQtyToBuild(val, obj) {
-    Order order = obj
-    BigDecimal qtyToBuild = val
-    int nValues = calculateLSNCount(qtyToBuild, order?.product)
-    if (obj.lsns) {
+  List<ValidationError> validate() {
+    def res = []
+    res.addAll(validateQtyToBuild())
+    res.addAll(validateQtyReleased())
+    res.addAll(validateLSNs())
+
+    return res
+  }
+
+  /**
+   * Validates that the qtyToBuild is legal for the given Order.
+   */
+  List<ValidationError> validateQtyToBuild() {
+    int nValues = calculateLSNCount(qtyToBuild)
+    if (lsns) {
       // If LSNs are provided, then make sure they match the qty to build.
-      if (nValues != obj.lsns.size()) {
-        //order.qtyToBuild.wrongLSNCount.error=Wrong number of LSNs {3} provided for order {4}.  Should be {5}.
-        return ['wrongLSNCount.error', obj.lsns.size(), obj.order, nValues]
+      if (nValues != lsns.size()) {
+        //error.3013.message=Wrong number of LSNs {1} provided for order {2}.  Should be {3}.
+        return [new ValidationError(3013, 'lsns', lsns.size(), order, nValues)]
       }
     }
-    return true
+    if (qtyToBuild <= 0) {
+      //error.137.message=Invalid Value "{1}" for "{0}". Value should be greater than {2}.
+      return [new ValidationError(137, 'qtyToBuild', qtyToBuild, 0)]
+    }
+    return []
+  }
+
+  /**
+   * Validates that the qtyReleased is legal for the given Order.
+   */
+  List<ValidationError> validateQtyReleased() {
+    if (qtyReleased < 0) {
+      //error.136.message=Invalid Value "{1}" for "{0}". Value should be greater than or equal to {2}.
+      return [new ValidationError(136, 'qtyReleased', qtyReleased, 0)]
+    }
+    return []
   }
 
   /**
    * Validates that the LSNs are legal for the given Order.
-   * @param val The LSNs to be validated.
-   * @param obj The overall order object.
    */
-  static checkLSNs(val, obj) {
-    Order order = obj
+  List<ValidationError> validateLSNs() {
     // Make sure LSNs are allowed (if we have any)
-    if (order?.product?.lsnTrackingOption) {
-      if ((val?.size() > 0) && !(order?.product?.lsnTrackingOption?.isLSNAllowed())) {
-        //order.lsns.notAllowed.error=LSNs not allowed for tracking option {3} provided for order {4}.
-        return ['notAllowed.error', order?.product?.lsnTrackingOption?.toString(), obj.order]
+    if (product?.lsnTrackingOption) {
+      if ((lsns?.size() > 0) && !(product?.lsnTrackingOption?.isLSNAllowed())) {
+        //error.3014.message=LSNs not allowed for tracking option {1} provided for order {2}.
+        return [new ValidationError(3014, 'lsns', product?.lsnTrackingOption?.toString(), order)]
       }
     }
+
     // Make sure there are no duplicates.
     String dup = null
-    if (val?.size() > 0) {
-      val.each { orig ->
-        if (val.count { orig.lsn == it.lsn } > 1) {
+    if (lsns) {
+      lsns.each { orig ->
+        if (lsns.count { orig.lsn == it.lsn } > 1) {
           dup = orig.lsn
         }
       }
     }
     if (dup) {
-      //order.lsns.duplicate.error=Duplicate LSN {3} provided for order {4}.
-      return ['duplicate.error', dup, obj.order]
-    } else {
-      return true
+      //error.3015.message=Duplicate LSN {1} provided for order {2}.
+      return [new ValidationError(3015, 'lsns', dup, order)]
     }
+
+    return []
 
   }
 
@@ -362,7 +345,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
       return
     }
 
-    int nValues = calculateLSNCount(qtyToAdd, product)
+    int nValues = calculateLSNCount(qtyToAdd)
 
     if (nValues == 0) {
       // Nothing left to generate.
@@ -375,8 +358,8 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
 
     if (!seq) {
       // Still no sequence found, then throw a configuration error.
-      //error.2009.message=Could not find expected default value for {0}.
-      throw new BusinessException(2009, ['Default LSNSequence'])
+      //error.102.message=Could not find expected default value for {0}.
+      throw new BusinessException(102, [LSNSequence.simpleName])
     }
 
     // Build the parameters available to the sequence generator.
@@ -400,10 +383,12 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
   /**
    * Utility method to calculate the number of whole LSNs needed for a given qty.
    * @param qty The quantity needed on the LSNs.  Typically, the qty to release.
-   * @param product The product to check the LSN count for.  Uses lotSize from the product if defined.  Uses lotSize=1.0 if no product.
    * @return The number of LSNs needed.
    */
-  private static int calculateLSNCount(BigDecimal qty, Product product) {
+  private int calculateLSNCount(BigDecimal qty) {
+    if (!qty) {
+      return 0
+    }
     def lotSize = product?.lotSize ?: 1.0
     //noinspection GroovyAssignabilityCheck
     int nValues = qty / lotSize
@@ -450,8 +435,6 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    * Saves any changes to this record.
    */
   void saveChanges() {
-    // Force GORM/Hibernate to update the record
-    setLastUpdated(new Date())
     save()
   }
 
@@ -462,7 +445,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    */
   void checkForOrderDone(CompleteRequest request) {
     // TODO: handle LSN
-    if (orderRouting) {
+    if (operations) {
       // Has some routing steps to check
       qtyDone += request.qty
     }

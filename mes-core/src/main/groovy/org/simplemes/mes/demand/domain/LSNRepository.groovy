@@ -16,6 +16,7 @@ import org.simplemes.eframe.domain.BaseRepository
  */
 interface LSNRepository extends BaseRepository, CrudRepository<LSN, UUID> {
 
+  Optional<LSN> findByLsn(String lsn)
   Optional<LSN> findByUuid(UUID uuid)
 
   List<LSN> list(Pageable pageable)

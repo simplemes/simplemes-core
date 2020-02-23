@@ -34,7 +34,8 @@
   <logger name="org.simplemes.eframe.test" level="warn"/>
   <logger name="org.simplemes.eframe.preference" level="warn"/>
   <logger name="org.simplemes.eframe" level="warn"/>
-  <logger name="org.simplemes.mes" level="warn"/>
+
   <logger name="org.simplemes.mes.demand" level="warn"/>
   <logger name="org.simplemes.mes.system.InitialData" level="error"/>
+  <logger name="org.simplemes.mes" level="trace"/>
 </configuration>

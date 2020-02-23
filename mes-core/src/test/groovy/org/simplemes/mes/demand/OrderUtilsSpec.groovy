@@ -12,14 +12,20 @@ import org.simplemes.mes.test.MESUnitTestUtils
 */
 
 /**
- *
+ *  Tests.
  */
 class OrderUtilsSpec extends BaseSpecification {
 
+  @SuppressWarnings("unused")
   static specNeeds = SERVER
 
   def setup() {
     setCurrentUser()
+  }
+
+  @Override
+  void checkForLeftoverRecords() {
+    println "checkForLeftoverRecords DISABLED"
   }
 
   @Rollback
@@ -28,7 +34,7 @@ class OrderUtilsSpec extends BaseSpecification {
     def order = MESUnitTestUtils.releaseOrder()
 
     when: 'the name is used to resolve the order'
-    def resolved = OrderUtils.resolveIdOrName(order.order)
+    def resolved = OrderUtils.resolveUuidOrName(order.order)
 
     then: 'the right value is returned'
     resolved.order == order.order
@@ -41,7 +47,7 @@ class OrderUtilsSpec extends BaseSpecification {
     def lsn = order.lsns[0]
 
     when: 'the name is used to resolve the LSN'
-    def resolved = OrderUtils.resolveIdOrName(lsn.lsn)
+    def resolved = OrderUtils.resolveUuidOrName(lsn.lsn)
 
     then: 'the right value is returned'
     resolved.lsn == lsn.lsn
@@ -53,7 +59,7 @@ class OrderUtilsSpec extends BaseSpecification {
     def order = MESUnitTestUtils.releaseOrder()
 
     when: 'the name is used to resolve the order'
-    def resolved = OrderUtils.resolveIdOrName(order.id.toString())
+    def resolved = OrderUtils.resolveUuidOrName(order.uuid.toString())
 
     then: 'the right value is returned'
     resolved.order == order.order
@@ -66,7 +72,7 @@ class OrderUtilsSpec extends BaseSpecification {
     def lsn = order.lsns[0]
 
     when: 'the name is used to resolve the LSN'
-    def resolved = OrderUtils.resolveIdOrName(lsn.id.toString())
+    def resolved = OrderUtils.resolveUuidOrName(lsn.uuid.toString())
 
     then: 'the right value is returned'
     resolved.lsn == lsn.lsn
@@ -80,10 +86,10 @@ class OrderUtilsSpec extends BaseSpecification {
 
     and: 'the LSN matches the order exactly'
     lsn.lsn = order.order
-    lsn.save(flush: true)
+    lsn.save()
 
     when: 'the name is used to resolve the LSN'
-    def resolved = OrderUtils.resolveIdOrName(lsn.lsn)
+    def resolved = OrderUtils.resolveUuidOrName(lsn.lsn)
 
     then: 'the right value is returned'
     resolved.lsn == lsn.lsn
@@ -95,7 +101,7 @@ class OrderUtilsSpec extends BaseSpecification {
     MESUnitTestUtils.releaseOrder(lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
 
     when: 'the name is used to resolve nothing'
-    def resolved = OrderUtils.resolveIdOrName('gibberish')
+    def resolved = OrderUtils.resolveUuidOrName('gibberish')
 
     then: 'the right value is returned'
     !resolved
@@ -104,7 +110,7 @@ class OrderUtilsSpec extends BaseSpecification {
   @Rollback
   def "test resolveIdOrName fails with missing argument"() {
     when: 'null is used to resolve nothing'
-    OrderUtils.resolveIdOrName(null)
+    OrderUtils.resolveUuidOrName(null)
 
     then: 'an exception is triggered'
     def ex = thrown(Exception)
@@ -117,7 +123,7 @@ class OrderUtilsSpec extends BaseSpecification {
     MESUnitTestUtils.releaseOrder(lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
 
     when: 'null is used to resolve nothing'
-    def resolved = OrderUtils.resolveIdOrName('')
+    def resolved = OrderUtils.resolveUuidOrName('')
 
     then: 'nothing is found'
     !resolved
@@ -129,7 +135,7 @@ class OrderUtilsSpec extends BaseSpecification {
     MESUnitTestUtils.releaseOrder(lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
 
     when: 'null is used to resolve nothing'
-    def resolved = OrderUtils.resolveIdOrName('  ')
+    def resolved = OrderUtils.resolveUuidOrName('  ')
 
     then: 'nothing is found'
     !resolved
