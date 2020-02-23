@@ -221,6 +221,28 @@ class DomainEntityHelperSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that lazyChildLoad sorts the list after it loads it"() {
+    given: 'a domain record with children'
+    def order = new Order(order: 'M1001')
+    order.orderLines << new OrderLine(order: order, product: 'BIKE', sequence: 5)
+    order.orderLines << new OrderLine(order: order, product: 'BIKE', sequence: 1)
+    order.orderLines << new OrderLine(order: order, product: 'BIKE', sequence: 4)
+    order.orderLines << new OrderLine(order: order, product: 'BIKE', sequence: 2)
+    order.orderLines << new OrderLine(order: order, product: 'BIKE', sequence: 3)
+    order.save()
+
+    when: 'the list is loaded'
+    def order2 = Order.findByUuid(order.uuid)
+
+    then: 'the list is sorted'
+    order2.orderLines[0].sequence == 1
+    order2.orderLines[1].sequence == 2
+    order2.orderLines[2].sequence == 3
+    order2.orderLines[3].sequence == 4
+    order2.orderLines[4].sequence == 5
+  }
+
+  @Rollback
   def "verify that lazyChildLoad keeps a list of the record loaded for later update checks"() {
     given: 'a domain record with children'
     def order = new Order(order: 'M1001')

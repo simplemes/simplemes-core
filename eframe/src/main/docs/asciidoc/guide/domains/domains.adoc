@@ -673,6 +673,8 @@ interface ChildRepository extends BaseRepository, CrudRepository<Child, UUID> {
 NOTE: On the @_ManyToOne_ annotation, do not use _targetEntity_.  It is used as a marker for a
       <<Simple Foreign Reference>>.
 
+Also, if the child class implements the Java Comparable interface, then the list will be sorted
+after it is loaded.  Do not implement this interface if the list is likely to be huge (>1000 records).
 
 ==== Many-to-Many Relationships
 

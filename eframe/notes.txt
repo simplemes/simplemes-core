@@ -7,6 +7,7 @@ Micronaut Data Conversion Tasks
 ===============================
 Undo workarounds that were fixed (323, 264).
   https://github.com/micronaut-projects/micronaut-data/issues/323
+Add workaround for update failure: 299.  Remove sop.
 done - Enforce Transaction for insert/update/delete actions.
 done - @ExtensibleFields replacement - A field level @ExtensibleFieldHolder?
   done - Add support for getFieldValue() and config type getters/setters in GDSL.

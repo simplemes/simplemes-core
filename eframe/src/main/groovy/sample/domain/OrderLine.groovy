@@ -23,7 +23,7 @@ import javax.persistence.ManyToOne
 @ToString(includeNames = true, excludes = ['order'])
 @EqualsAndHashCode(includes = ['uuid'])
 @SuppressWarnings("unused")
-class OrderLine {
+class OrderLine implements Comparable {
   @ManyToOne
   Order order
 
@@ -41,4 +41,17 @@ class OrderLine {
   OrderLine() {
   }
 
+  /**
+   * Compares this object with the specified object for order.  Returns a
+   * negative integer, zero, or a positive integer as this object is less
+   * than, equal to, or greater than the specified object.
+   *
+   * @param o the object to be compared.
+   * @return a negative integer, zero, or a positive integer as this object
+   *          is less than, equal to, or greater than the specified object.
+   */
+  @Override
+  int compareTo(Object o) {
+    return this.sequence <=> o.sequence
+  }
 }

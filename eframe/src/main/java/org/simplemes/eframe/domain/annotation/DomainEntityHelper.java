@@ -649,6 +649,12 @@ public class DomainEntityHelper {
         // Record the last uuid read, so we can test the lazy loading behavior.
         lastLazyChildParentLoaded = object.getUuid();
       }
+
+      // Sort the list, if possible
+      if (Comparable.class.isAssignableFrom(childDomainClazz)) {
+        Collections.sort(list);
+      }
+
       // Remember the UUID's read for the load.
       for (Object child : list) {
         if (child instanceof DomainEntityInterface) {
