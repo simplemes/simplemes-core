@@ -29,14 +29,6 @@ import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 
 /*
-import org.simplemes.mes.numbering.LSNSequence
-import org.simplemes.mes.numbering.OrderSequence
-import org.simplemes.mes.product.Product
-import org.simplemes.mes.system.LSNTrackingOption
-import org.simplemes.mes.tracking.ActionLog
-*/
-
-/*
  * Copyright Michael Houston. All rights reserved.
  *
 */
@@ -127,12 +119,14 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    * The date this order was released.
    */
   @Nullable
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateReleased
 
   /**
    * The date this order was completed or marked as done.
    */
   @Nullable
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateCompleted
 
   /**
@@ -159,6 +153,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    * <p/><b>WorkStateTrait field</b>.
    */
   @Nullable @SuppressWarnings("unused")
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateQtyQueued
 
   /**
@@ -167,6 +162,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    * <p/><b>WorkStateTrait field</b>.
    */
   @Nullable @SuppressWarnings("unused")
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateQtyStarted
 
   /**
@@ -174,6 +170,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    * <p/><b>WorkStateTrait field</b>.
    */
   @Nullable @SuppressWarnings("unused")
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateFirstQueued
 
   /**
@@ -181,6 +178,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    * <p/><b>WorkStateTrait field</b>.
    */
   @Nullable @SuppressWarnings("unused")
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateFirstStarted
 
   @DateCreated @SuppressWarnings("unused")

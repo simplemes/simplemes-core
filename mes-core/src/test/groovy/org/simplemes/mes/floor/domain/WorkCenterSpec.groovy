@@ -22,12 +22,6 @@ class WorkCenterSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static specNeeds = SERVER
 
-  @Override
-  void checkForLeftoverRecords() {
-    // TODO: Remove when all repos are defined.
-    println "checkForLeftoverRecords DISABLED"
-  }
-
   def "test standard constraints"() {
     expect: 'the constraints are enforced'
     DomainTester.test {
@@ -47,20 +41,21 @@ class WorkCenterSpec extends BaseSpecification {
     /**
      * A legal Unicode string suitable for key Unit Tests (uppercase, no spaces).
      * String is: "ABC" followed by Greek A, Accent A, Russian A and 2 Chinese/Japanese/Korean chars.
+     *
      */
-    def UNICODE_KEY_TEST_STRING = "ABC\u0391\u00C0\u0410\u4E10\u4F11"
+    def unicodeKey = "ABC\u0391\u00C0\u0410\u4E10\u4F11"
 
     given: 'a domain object with bad key field'
     WorkCenter workCenter = new WorkCenter()
-    workCenter.workCenter = UNICODE_KEY_TEST_STRING
-    workCenter.title = UNICODE_KEY_TEST_STRING
+    workCenter.workCenter = unicodeKey
+    workCenter.title = unicodeKey
 
     when: 'the record is saved'
     workCenter.save()
 
     then: 'the unicode values can be retrieved'
-    workCenter.workCenter == UNICODE_KEY_TEST_STRING
-    workCenter.title == UNICODE_KEY_TEST_STRING
+    workCenter.workCenter == unicodeKey
+    workCenter.title == unicodeKey
   }
 
   @Rollback

@@ -142,6 +142,6 @@ class OrderOperState implements WorkStateTrait, WorkableInterface {
    */
   @Override
   String toString() {
-    return RoutingUtils.combineKeyAndSequence(order?.order, sequence)
+    return RoutingUtils.combineKeyAndSequence(order?.order, sequence) + " " + qtyInQueue + "/" + qtyInWork
   }
 }

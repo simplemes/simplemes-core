@@ -7,6 +7,7 @@ package org.simplemes.mes.tracking.domain
 import io.micronaut.data.model.Pageable
 import io.micronaut.data.repository.CrudRepository
 import org.simplemes.eframe.domain.BaseRepository
+import org.simplemes.mes.demand.domain.LSN
 import org.simplemes.mes.demand.domain.Order
 
 /**
@@ -23,5 +24,9 @@ interface ActionLogRepository extends BaseRepository, CrudRepository<ActionLog, 
   List<ActionLog> list()
 
   List<ActionLog> findAllByOrder(Order order)
+
+  List<ActionLog> findAllByLsn(LSN lsn)
+
+  List<ActionLog> findAllByAction(String action)
 
 }

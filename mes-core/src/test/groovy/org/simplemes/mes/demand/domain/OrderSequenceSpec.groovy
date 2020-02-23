@@ -16,11 +16,6 @@ class OrderSequenceSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static dirtyDomains = [OrderSequence]
 
-  @Override
-  void checkForLeftoverRecords() {
-    // TODO: Remove when all repos are defined.
-  }
-
   @Rollback
   def "test initial data load"() {
     when: 'the initial data is loaded'
@@ -42,10 +37,10 @@ class OrderSequenceSpec extends BaseSpecification {
   @Rollback
   def "test multiple sequence generation"() {
     given: 'a simple sequence'
-    def OrderSequence = new OrderSequence(sequence: 'ABC', formatString: 'SX$currentSequence').save()
+    def orderSequence = new OrderSequence(sequence: 'ABC', formatString: 'SX$currentSequence').save()
 
     when: 'multiple sequences are generated'
-    String[] numbers = OrderSequence.formatValues(3)
+    String[] numbers = orderSequence.formatValues(3)
 
     then: 'the right sequences are generated'
     numbers.size() == 3

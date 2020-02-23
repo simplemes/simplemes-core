@@ -21,11 +21,6 @@ class CodeSequenceTraitSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static dirtyDomains = [OrderSequence]
 
-  @Override
-  void checkForLeftoverRecords() {
-    // TODO: Remove when all repos are defined.
-  }
-
   def "test standard constraints"() {
     expect: 'the constraints are enforced'
     DomainTester.test {

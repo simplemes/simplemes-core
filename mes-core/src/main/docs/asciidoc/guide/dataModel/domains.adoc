@@ -38,14 +38,13 @@ The object big picture looks like this:
 
 object Order
 object Product
-object RoutingTrait
-object RoutingOperation
+interface RoutingTrait
 object LSN
 
 object ActionLog
 object ProductionLog
 
-object CodeSequence
+interface CodeSequenceTrait
 object OrderSequence
 object LSNSequence
 
@@ -54,13 +53,12 @@ object WorkCenter
 Order o-- LSN
 Order -- Product
 Product -- RoutingTrait
-Routing -- RoutingOperation
 LSN -- RoutingTrait
 Order -- ActionLog : has actions logged
 Order -- ProductionLog : has production logged
 
-CodeSequence -- OrderSequence
-CodeSequence -- LSNSequence
+CodeSequenceTrait -- OrderSequence
+CodeSequenceTrait -- LSNSequence
 
 @enduml
 ----

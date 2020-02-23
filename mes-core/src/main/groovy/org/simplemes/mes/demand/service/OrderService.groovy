@@ -62,7 +62,7 @@ class OrderService {
   /**
    * Internal field used for performance testing support.
    */
-  private static Integer stableRowCount = null
+  private static Long stableRowCount = null
 
   /**
    * Release the given order for production.  The order cannot be worked on the shop floor until it is released.
@@ -106,6 +106,7 @@ class OrderService {
     // Figure out where to place the qtyInQueue.
     if (routing) {
       // A routing is to be used, so create the operation state records.
+      routing.operations.sort()
       if (order.lsns) {
         for (lsn in order.lsns) {
           for (oper in routing.operations) {
@@ -248,8 +249,9 @@ class OrderService {
    * @param maxTxns The max number of orders to archive per transaction.  <b>Default:</b> 5. <b>Maximum:</b> 50.
    * @return The list of archive references created by this archive process.
    */
+  @SuppressWarnings("JavaIoPackageAccess")
   @Synchronized
-  List<String> archiveOld(BigDecimal ageDays = 0, Integer maxOrdersPerTxn = 100, Integer maxTxns = 5) {
+  List<String> archiveOld(BigDecimal ageDays = 0, Long maxOrdersPerTxn = 100, Integer maxTxns = 5) {
     /*
       This method also has an undocumented archiving mode to support long-term performance testing.
       If you pass in all values with a value of -1, then all calls to this method will attempt to
@@ -353,7 +355,7 @@ class OrderService {
           res << operationState
         }
       }
-      res.sort() { a, b -> a.sequence <=> b.sequence }
+      res.sort { a, b -> a.sequence <=> b.sequence }
     } else {
       // Find simple order, no routing state
       if (order.qtyInQueue || order.qtyInWork) {
@@ -379,7 +381,7 @@ class OrderService {
           res << operationState
         }
       }
-      res.sort() { a, b -> a.sequence <=> b.sequence }
+      res.sort { a, b -> a.sequence <=> b.sequence }
     } else {
       // Find simple lsn, no routing state
       if (lsn.qtyInQueue || lsn.qtyInWork) {

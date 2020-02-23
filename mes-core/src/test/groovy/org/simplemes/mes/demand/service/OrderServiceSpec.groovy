@@ -3,7 +3,6 @@ package org.simplemes.mes.demand.service
 import ch.qos.logback.classic.Level
 import org.simplemes.eframe.archive.ArchiverFactoryInterface
 import org.simplemes.eframe.archive.FileArchiver
-import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.MockAppender
@@ -19,8 +18,6 @@ import org.simplemes.mes.demand.domain.LSNOperState
 import org.simplemes.mes.demand.domain.LSNSequence
 import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.demand.domain.OrderOperState
-import org.simplemes.mes.demand.domain.OrderOperation
-import org.simplemes.mes.product.domain.MasterOperation
 import org.simplemes.mes.product.domain.Product
 import org.simplemes.mes.test.MESUnitTestUtils
 import org.simplemes.mes.tracking.domain.ActionLog
@@ -67,18 +64,11 @@ class OrderServiceSpec extends BaseSpecification {
   @Rollback
   def "test release with LSN creation"() {
     given: 'a product that will force creation of LSNs'
-    Product product = null
-    LSNSequence.withNewSession { session ->
-      LSNSequence.withNewTransaction {
-        // Needs a new session to avoid the dreaded DuplicateKeyException that happens with @Rollback and existing Sequence records.
-        loadInitialData(LSNSequence)
-        def lsnSequence = LSNSequence.findDefaultSequence()
-        lsnSequence.currentSequence = 1000
-        lsnSequence.save()
-        product = new Product(product: 'PC', lsnSequence: LSNSequence.findDefaultSequence(),
+    def lsnSequence = LSNSequence.findDefaultSequence()
+    lsnSequence.currentSequence = 1000
+    lsnSequence.save()
+    def product = new Product(product: 'PC', lsnSequence: LSNSequence.findDefaultSequence(),
                               lsnTrackingOption: LSNTrackingOption.LSN_ONLY).save()
-      }
-    }
     def order1 = new Order(order: 'M001', qtyToBuild: 5.0, product: product).save()
 
     when: 'the order is released'
@@ -107,25 +97,20 @@ class OrderServiceSpec extends BaseSpecification {
 
     and: 'the right ActionLog record was created for each LSN'
     for (lsn in lsns) {
-      def al = ActionLog.findByLsn(lsn)
-      al.order == order
-      al.lsn == lsn
-      al.qty == 1.0
+      def list = ActionLog.findAllByLsn(lsn)
+      for (al in list) {
+        al.order == order
+        al.lsn == lsn
+        al.qty == 1.0
+      }
     }
   }
 
   @Rollback
   def "test release with date-time passed in "() {
     given: 'an order that will force creation of LSNs'
-    def product = null
-    Product.withNewSession {
-      Product.withNewTransaction {
-        // Needs a new session to avoid the dreaded DuplicateKeyException that happens with @Rollback and existing Sequence records.
-        product = new Product(product: 'PC', lsnSequence: LSNSequence.get(1),
+    def product = new Product(product: 'PC', lsnSequence: LSNSequence.findBySequence('SERIAL'),
                               lsnTrackingOption: LSNTrackingOption.LSN_ONLY).save()
-        LSNSequence.initialDataLoad()
-      }
-    }
     def order1 = new Order(order: 'M001', qtyToBuild: 1.0, product: product).save()
 
     and: 'a date/time to log the creation on'
@@ -148,29 +133,21 @@ class OrderServiceSpec extends BaseSpecification {
 
     and: 'the right ActionLog record was created for each LSN'
     for (lsn in lsns) {
-      def al = ActionLog.findByLsn(lsn)
-      al.dateTime == dateTime
+      def list = ActionLog.findAllByLsn(lsn)
+      list[0].dateTime == dateTime
     }
   }
 
+  @Rollback
   def "test release with LSN creation using parameters in the LSNSequence"() {
     given: 'a product that will use parameters to create the LSNs'
-    LSNSequence lsnSequence = null
-    LSNSequence.withTransaction {
-      lsnSequence = new LSNSequence(sequence: 'ABC',
-                                    formatString: 'X${order.order}_$product.product-$currentSequence').save()
-    }
+    def lsnSequence = new LSNSequence(sequence: 'ABC',
+                                      formatString: 'X${order.order}_$product.product-$currentSequence').save()
 
     when: 'the order is released'
-    def order = null
-    Order.withTransaction {
-      // Must re-read the sequence because we can't use it from the other session above
-      lsnSequence = LSNSequence.load(lsnSequence.id)
-      order = MESUnitTestUtils.releaseOrder(qty: 5.0,
-                                            lsnSequence: lsnSequence,
-                                            lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
-      DomainUtils.instance.resolveProxies(order)
-    }
+    def order = MESUnitTestUtils.releaseOrder(qty: 5.0,
+                                              lsnSequence: lsnSequence,
+                                              lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
 
     then: 'the LSNs use the correct sequence with the right parameter values'
     List<LSN> lsns = order.lsns
@@ -185,8 +162,8 @@ class OrderServiceSpec extends BaseSpecification {
     LSN sn1 = new LSN(lsn: '1234-001')
     LSN sn2 = new LSN(lsn: '1234-002')
     Order order1 = new Order(order: '1234', qtyToBuild: 2.0)
-    order1.addToLsns(sn1)
-    order1.addToLsns(sn2)
+    order1.lsns << sn1
+    order1.lsns << sn2
     order1.save()
 
     when: 'the order is released'
@@ -205,14 +182,7 @@ class OrderServiceSpec extends BaseSpecification {
   @Rollback
   def "test release with routing and LSNs"() {
     given: 'the LSN sequence and an order with a product routing ready for release'
-    def product = null
-    LSNSequence.withNewSession { session ->
-      LSNSequence.withNewTransaction {
-        // Needs a new session to avoid the dreaded DuplicateKeyException that happens with @Rollback and existing Sequence records.
-        loadInitialData(LSNSequence)
-        product = MESUnitTestUtils.buildSimpleProductWithRouting(lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
-      }
-    }
+    def product = MESUnitTestUtils.buildSimpleProductWithRouting(lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
     def order1 = new Order(order: 'M001', qtyToBuild: 5, product: product).save()
 
     when: 'the order is released'
@@ -220,9 +190,12 @@ class OrderServiceSpec extends BaseSpecification {
 
     then: 'the order has a copy of the routing'
     def order = Order.findByOrder('M001')
-    OrderOperation.findAll().size() == 1
-    MasterOperation.findAllBySequence(1).size() == 2
     order.operations.size() == 3
+
+    and: 'it is sorted in the right order'
+    order.operations[0].sequence == 1
+    order.operations[1].sequence == 2
+    order.operations[2].sequence == 3
 
     and: 'the lsn operation state records match the routing'
     def lsn = order.lsns[0]
@@ -246,8 +219,6 @@ class OrderServiceSpec extends BaseSpecification {
 
     then: 'the order has a copy of the routing'
     def order = Order.findByOrder('M001')
-    OrderOperation.findAll().size() == 1
-    MasterOperation.findAllBySequence(1).size() == 2
     order.operations.size() == 3
 
     and: 'the order operation state records match the routing'
@@ -263,10 +234,10 @@ class OrderServiceSpec extends BaseSpecification {
 
     and: 'there is one Action Log record.'
     ActionLog.list().size() == 1
-    def al = ActionLog.findByAction(OrderService.ACTION_RELEASE_ORDER)
-    al.order == order
-    al.product == order1.product
-    al.qty == 5.0
+    def list = ActionLog.findAllByAction(OrderService.ACTION_RELEASE_ORDER)
+    list[0].order == order
+    list[0].product == order1.product
+    list[0].qty == 5.0
   }
 
   @Rollback
@@ -345,7 +316,7 @@ class OrderServiceSpec extends BaseSpecification {
    */
   def orderArchived
 
-  @SuppressWarnings("GroovyAssignabilityCheck")
+  @Rollback
   def "test archiveOld with multiple transactions"() {
     given: 'a mock archiver factory that returns an object'
     def fileArchiver = Mock(FileArchiver)
@@ -353,39 +324,36 @@ class OrderServiceSpec extends BaseSpecification {
     mockFactory.getArchiver() >> fileArchiver
     new MockBean(this, ArchiverFactoryInterface, mockFactory).install()
 
-    and: 'enough orders to test 2 batches of 2 orders.  '
-    Order.withTransaction {
-      Date d = new Date() - 1002
-      new Order(order: '1', dateCompleted: d).save()
-      new Order(order: '2', dateCompleted: d).save()
-      new Order(order: '3', dateCompleted: d).save()
-      new Order(order: '4', dateCompleted: d).save()
-      new Order(order: '5', dateCompleted: d).save()
-    }
+    and: 'enough orders to test 1 batches of 2 orders.  '
+    Date d = new Date() - 1002
+    new Order(order: '1', dateCompleted: d).save()
+    new Order(order: '2', dateCompleted: d).save()
+    new Order(order: '3', dateCompleted: d).save()
+    new Order(order: '4', dateCompleted: d).save()
+    new Order(order: '5', dateCompleted: d).save()
 
     when: 'the archive is attempted with small txn size'
     def refs = null
     Order.withTransaction {
-      refs = new OrderService().archiveOld(0, 2, 2)
+      refs = new OrderService().archiveOld(0.0, 2, 2)
     }
 
     then: '4 orders are archived'
     refs.size() == 4
 
     and: 'one order is not deleted (random)'
-    Order.withTransaction {
-      assert Order.findAll().size() == 1
-      true
-    }
+    Order.list().size() == 1
 
     and: 'the archiver is called correctly'
-    4 * fileArchiver.archive(_) >> { args -> orderArchived = args[0] }
-    4 * fileArchiver.close() >> { orderArchived.delete(flush: true); "unit/${orderArchived.order}.arc" }
+    4 * fileArchiver.archive(_) >> { args ->
+      //noinspection GroovyAssignabilityCheck
+      orderArchived = args[0]
+    }
+    4 * fileArchiver.close() >> { orderArchived.delete(); "unit/${orderArchived.order}.arc" }
     0 * fileArchiver._
   }
 
   @Rollback
-  @SuppressWarnings("GroovyAssignabilityCheck")
   def "test archiveOld with system default settings"() {
     given: 'a mock archiver factory that returns an object'
     def fileArchiver = Mock(FileArchiver)
@@ -407,18 +375,20 @@ class OrderServiceSpec extends BaseSpecification {
     !Order.findByOrder('REALLY_OLD')
 
     and: 'other orders were not deleted'
-    Order.findAll().size() == 2
+    Order.list().size() == 2
     Order.findByOrder('RECENT')
     Order.findByOrder('NEW')
 
     and: 'the archiver is called correctly'
-    1 * fileArchiver.archive(_) >> { args -> orderArchived = args[0] }
-    1 * fileArchiver.close() >> { orderArchived.delete(flush: true); "unit/${orderArchived.order}.arc" }
+    1 * fileArchiver.archive(_) >> { args ->
+      //noinspection GroovyAssignabilityCheck
+      orderArchived = args[0]
+    }
+    1 * fileArchiver.close() >> { orderArchived.delete(); "unit/${orderArchived.order}.arc" }
     0 * fileArchiver._
   }
 
   @Rollback
-  @SuppressWarnings("GroovyAssignabilityCheck")
   def "test archiveOld with specific age passed in"() {
     given: 'a mock archiver factory that returns an object'
     def fileArchiver = Mock(FileArchiver)
@@ -435,7 +405,7 @@ class OrderServiceSpec extends BaseSpecification {
     new Order(order: 'REALLY_OLD2', qtyToBuild: 1, dateCompleted: d).save()
 
     when: 'the archive is attempted on the 2 oldest orders'
-    def refs = new OrderService().archiveOld(1000)
+    def refs = new OrderService().archiveOld(1000.0)
 
     then: 'the 2 orders are archived'
     refs.size() == 2
@@ -443,7 +413,7 @@ class OrderServiceSpec extends BaseSpecification {
     refs[1].startsWith('unit/REALLY_OLD')
 
     and: 'the other newer orders are not deleted'
-    Order.findAll().size() == 3
+    Order.list().size() == 3
     Order.findByOrder('RECENT1')
     Order.findByOrder('RECENT2')
     Order.findByOrder('NEW')
@@ -451,13 +421,15 @@ class OrderServiceSpec extends BaseSpecification {
     !Order.findByOrder('REALLY_OLD2')
 
     and: 'the archiver is called correctly'
-    2 * fileArchiver.archive(_) >> { args -> orderArchived = args[0] }
-    2 * fileArchiver.close() >> { orderArchived.delete(flush: true); "unit/${orderArchived.order}.arc" }
+    2 * fileArchiver.archive(_) >> { args ->
+      //noinspection GroovyAssignabilityCheck
+      orderArchived = args[0]
+    }
+    2 * fileArchiver.close() >> { orderArchived.delete(); "unit/${orderArchived.order}.arc" }
     0 * fileArchiver._
   }
 
   @Rollback
-  @SuppressWarnings("GroovyAssignabilityCheck")
   def "test archiveOld in stable-mode"() {
     given: 'a mock archiver factory that returns an object'
     def fileArchiver = Mock(FileArchiver)
@@ -491,8 +463,11 @@ class OrderServiceSpec extends BaseSpecification {
     Order.count() == 3
 
     and: 'the archiver is called correctly'
-    2 * fileArchiver.archive(_) >> { args -> orderArchived = args[0] }
-    2 * fileArchiver.close() >> { orderArchived.delete(flush: true); "unit/${orderArchived.order}.arc" }
+    2 * fileArchiver.archive(_) >> { args ->
+      //noinspection GroovyAssignabilityCheck
+      orderArchived = args[0]
+    }
+    2 * fileArchiver.close() >> { orderArchived.delete(); "unit/${orderArchived.order}.arc" }
     0 * fileArchiver._
 
     and: 'a message is logged'

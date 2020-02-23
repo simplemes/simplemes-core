@@ -20,41 +20,36 @@ class ProductSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static specNeeds = SERVER
 
-@Rollback
+  @Rollback
   def "test routing update of domain object"() {
     given: 'a product with a routing'
-    def p = new Product(product: 'ABC', title: 'description')
-    def o1 = new MasterOperation(sequence: 1, title: "Orig Prep")
-    def o3 = new MasterOperation(sequence: 3, title: "Orig Pack")
-    pr.addToOperations(o1)
-    pr.addToOperations(o3)
-    p.validate()
-    assert !p.errors.allErrors
-    assert p.save()
+    def product = new Product(product: 'ABC', title: 'description')
+    product.operations << new ProductOperation(sequence: 1, title: "Orig Prep")
+    product.operations << new ProductOperation(sequence: 3, title: "Orig Pack")
+    product.save()
 
     when: 'the product/routing are updated'
-    p = Product.get(p.id)
-    assert p.product == 'ABC'
-    def o2 = new MasterOperation()
-    o2.sequence = 2
-    o2.title = "New Test the assembly"
-    pr.addToOperations(o2)
-    assert p.save(flush: true)
+    product = Product.findByUuid(product.uuid)
+    product.operations << new ProductOperation(sequence: 2, title: "New Test the assembly")
+    product.save()
 
     then: 'the records are updated'
-    def product2 = Product.get(p.id)
+    def product2 = Product.findByUuid(product.uuid)
     product2.product == 'ABC'
 
     def ops = product2.operations
+    product2.sortOperations()
     ops.size() == 3
     ops[0].sequence == 1
     ops[1].sequence == 2
     ops[2].sequence == 3
 
     and: 'the domain finders work on the record'
-    MasterOperation.findAllBySequence(1).size() == 1
-    MasterOperation.findAllBySequence(2).size() == 1
-    MasterOperation.findAllBySequence(3).size() == 1
+    def list = ProductOperation.list()
+    list.size() == 3
+    list.find { it.sequence == 1 }
+    list.find { it.sequence == 2 }
+    list.find { it.sequence == 3 }
   }
 
   @Rollback
@@ -66,7 +61,6 @@ class ProductSpec extends BaseSpecification {
       maxSize 'product', FieldSizes.MAX_PRODUCT_LENGTH
       maxSize 'title', FieldSizes.MAX_TITLE_LENGTH
       notNullCheck 'product'
-      fieldOrderCheck false     // TODO: Re-enable when state is ported
       //notInFieldOrder (['operationStates', 'dateReleased', 'dateFirstQueued', 'dateFirstStarted', 'dateQtyQueued', 'dateQtyStarted'])
     }
   }

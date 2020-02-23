@@ -33,6 +33,7 @@ import javax.persistence.OneToMany
  */
 @MappedEntity
 @DomainEntity
+@SuppressWarnings("unused")
 @ToString(includeNames = true, includePackage = false)
 @EqualsAndHashCode(includes = ["product"])
 class Product implements RoutingTrait {
@@ -55,8 +56,7 @@ class Product implements RoutingTrait {
   String title
 
   @Column(nullable = true)
-  @MappedProperty(type = DataType.STRING, definition = 'TEXT')
-  String description
+  @MappedProperty(type = DataType.STRING, definition = 'TEXT') String description
 
   /**
    * Defines if LSNs are used with the product.  Affects how orders can use LSNs.
@@ -110,7 +110,7 @@ class Product implements RoutingTrait {
    * Defines the default general field ordering for GUIs and other field listings/reports.
    */
   @SuppressWarnings("GroovyUnusedDeclaration")
-  static fieldOrder = ['product', 'title', 'lsnTrackingOption', 'lsnSequence', 'lotSize',
+  static fieldOrder = ['product', 'title', 'lsnTrackingOption', 'lsnSequence', 'lotSize', 'description',
                        'group:routing', 'masterRouting', 'operations']
 
   /**

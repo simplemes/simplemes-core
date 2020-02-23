@@ -92,5 +92,24 @@ trait CodeSequenceTrait {
     return sequence.formatValuesInternal(nValues, params)
   }
 
+  abstract String getSequence()
+
+  abstract void setSequence(String sequence)
+
+  abstract String getTitle()
+
+  abstract void setTitle(String title)
+
+  abstract String getFormatString()
+
+  abstract void setFormatString(String formatString)
+
+  abstract long getCurrentSequence()
+
+  abstract void setCurrentSequence(long currentSequence)
+
+  abstract boolean getDefaultSequence()
+
+  abstract void setDefaultSequence(boolean defaultSequence)
 
 }

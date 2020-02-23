@@ -42,11 +42,11 @@ The key objects are:
 ----
 @startuml
 
-object OperationTrait
+interface OperationTrait
 object Order
 object Product
 object LSN
-object RoutingTrait
+interface RoutingTrait
 object OrderOperation
 object ProductOperation
 object MasterOperation

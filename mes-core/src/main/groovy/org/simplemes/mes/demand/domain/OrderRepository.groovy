@@ -25,4 +25,6 @@ interface OrderRepository extends BaseRepository, CrudRepository<Order, UUID> {
 
   List<Order> list()
 
+  long count()
+
 }

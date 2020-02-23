@@ -18,6 +18,7 @@ import org.simplemes.mes.product.domain.Product
 
 import javax.annotation.Nullable
 import javax.persistence.Column
+import javax.persistence.ManyToOne
 
 /**
  * This class represents a single action by a user in the system.
@@ -25,6 +26,7 @@ import javax.persistence.Column
 
 @MappedEntity
 @DomainEntity
+@SuppressWarnings("unused")
 @ToString(includeNames = true, includePackage = false)
 @EqualsAndHashCode(includes = ['uuid'])
 class ActionLog {
@@ -50,12 +52,14 @@ class ActionLog {
    * The Order affected.
    */
   @Nullable
+  @ManyToOne(targetEntity = Order)
   Order order
 
   /**
    * The LSN affected.
    */
   @Nullable
+  @ManyToOne(targetEntity = LSN)
   LSN lsn
 
   /**
@@ -68,17 +72,18 @@ class ActionLog {
    * The Product for the LSN/Order.  Determined automatically on save.
    */
   @Nullable
+  @ManyToOne(targetEntity = Product)
   Product product
 
   /**
    * The Work Center this action took place at.
    */
   @Nullable
+  @ManyToOne(targetEntity = WorkCenter)
   WorkCenter workCenter
 
   @DateCreated
-  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
-  Date dateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE') Date dateCreated
 
   @Id @AutoPopulated UUID uuid
 

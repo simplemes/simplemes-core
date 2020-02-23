@@ -1,5 +1,6 @@
 package org.simplemes.mes.demand
 
+
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.misc.TypeUtils
 
@@ -194,6 +195,9 @@ trait WorkStateTrait {
    * Implementers must provide a save() method.  This should save() changes to the record.
    */
   abstract void saveChanges()
+
+  // Getters and setters for the required fields.
+  abstract BigDecimal getQtyInQueue()
 
 
 }
