@@ -404,12 +404,22 @@ public class DomainEntityHelper {
                             String parentFieldName)
       throws NoSuchFieldException, IllegalAccessException, InstantiationException {
     Map domainSettings = getDomainSettings(object);
-    Field parentField = childClass.getDeclaredField(parentFieldName);
-    parentField.setAccessible(true);  // Need to bypass any setters.
+
+    // We can't use the childClass directly in all cases, so we will just use the child objects' classes as
+    // we process them.  To avoid reflection on each record, we will remember the last one.
+    Field parentField = null;  // The reference to the parent field in the child object.
+    Class lastChildClass = childClass;
     if (list != null) {
       List<Object> newRecordList = new ArrayList();
       for (Object child : list) {
         if (child instanceof DomainEntityInterface && parentFieldName.length() > 0) {
+          if (!lastChildClass.equals(child.getClass())) {
+            lastChildClass = child.getClass();
+          }
+          if (parentField == null) {
+            parentField = lastChildClass.getDeclaredField(parentFieldName);
+            parentField.setAccessible(true);  // Need to bypass any setters.
+          }
           //System.out.println("  child:" + child);
           // Make sure the parent element is set before the save.
           if (parentField.get(child) == null) {
@@ -420,8 +430,8 @@ public class DomainEntityHelper {
         }
       }
       // Sort the list, if possible
-      if (Comparable.class.isAssignableFrom(childClass)) {
-        log.trace("Sorting {} list {}", childClass, list);
+      if (Comparable.class.isAssignableFrom(lastChildClass)) {
+        log.trace("Sorting {} list {}", lastChildClass, list);
         Collections.sort(list);
       }
 
@@ -432,8 +442,8 @@ public class DomainEntityHelper {
         if (previouslyLoadedList != null) {
           for (UUID uuid : previouslyLoadedList) {
             if (!newRecordList.contains(uuid)) {
-              // The child record is no longer in the ths list, so delete it.
-              DomainEntityInterface childObject = (DomainEntityInterface) childClass.newInstance();
+              // The child record is no longer in the the list, so delete it.
+              DomainEntityInterface childObject = (DomainEntityInterface) lastChildClass.newInstance();
               childObject.setUuid(uuid);
               childObject.delete();
             }

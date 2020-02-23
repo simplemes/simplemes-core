@@ -314,6 +314,7 @@ class AlterableUpdateOperation implements UpdateOperation {
 
 }
 
+@Slf4j
 class AlterableAnnotationMetadata implements AnnotationMetadata {
   /*@Delegate*/
   AnnotationMetadata originalAnnotationMetadata
@@ -348,7 +349,7 @@ class AlterableAnnotationMetadata implements AnnotationMetadata {
       if (query.endsWith(whereClause)) {
         def loc = query.indexOf(whereClause) - 1
         query = query[0..loc] + "$whereClause and (${quote}version${quote} = ${version - 1})"
-        System.out.println "altered query for optimistic locking= $query"
+        log.debug('altered query for optimistic locking: {} ', query)
         res = Optional.of(query)
       }
     }
