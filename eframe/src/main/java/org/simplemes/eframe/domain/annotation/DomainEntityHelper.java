@@ -21,7 +21,6 @@ import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder;
 import org.simplemes.eframe.domain.PersistentProperty;
 import org.simplemes.eframe.domain.validate.ValidationError;
 import org.simplemes.eframe.domain.validate.ValidationErrorInterface;
-import org.simplemes.eframe.web.asset.EFrameAssetPipelineService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -45,7 +44,7 @@ public class DomainEntityHelper {
   /**
    * The logger.
    */
-  private static final Logger log = LoggerFactory.getLogger(EFrameAssetPipelineService.class);
+  private static final Logger log = LoggerFactory.getLogger(DomainEntityHelper.class);
 
   /**
    * A singleton, used for simplified unit testing with a mocked class.
