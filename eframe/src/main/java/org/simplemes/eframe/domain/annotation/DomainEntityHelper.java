@@ -319,6 +319,16 @@ public class DomainEntityHelper {
   }
 
   /**
+   * Clear any internal caches used to speed up execution.   Many used by tests that mock the applicationContext.
+   */
+  public void clearCaches() {
+    applicationContext = null;
+    isEnvironmentDev = null;
+    isEnvironmentTest = null;
+    simplifiedSQLExceptionConstructor = null;
+  }
+
+  /**
    * Get the current transaction manager.
    *
    * @return The transaction manager.

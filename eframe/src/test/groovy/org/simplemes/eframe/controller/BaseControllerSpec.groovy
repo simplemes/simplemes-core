@@ -62,6 +62,16 @@ class BaseControllerSpec extends BaseAPISpecification {
     json.message.text == ex.toString() //.contains('a bad exception')
   }
 
+  def "verify that error does not get stuck in a loop when an error happens in the error handler itself - live server"() {
+    when: 'the controller throws an error'
+    disableStackTraceLogging()
+    def res = sendRequest(uri: "/sample/throwsInfiniteException", method: 'post', content: '{}', status: HttpStatus.BAD_REQUEST)
+
+    then: 'the response is a bad request with a valid message'
+    def json = new JsonSlurper().parseText(res)
+    UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['infinite', 'loop', 'detected'])
+  }
+
   def "verify parseBody parses the body as JSON correctly"() {
     given: 'a controller for the base class for SampleParent'
     Class clazz = buildSampleParentController()

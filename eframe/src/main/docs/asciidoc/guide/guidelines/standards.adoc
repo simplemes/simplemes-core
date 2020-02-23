@@ -197,11 +197,11 @@ An example set of messages will look like this in JSON:
 [source,json]
 ----
 {
-  message: {
+  "message": {
    "level": "warn",
    "text": "Order 'M1657334' is not enabled",
    "otherMessages": [
-     message: {
+     "message": {
       "level": "info",
       "text": "Order 'M1657334' is marked urgent",
      }

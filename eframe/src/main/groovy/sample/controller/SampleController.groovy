@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package sample.controller
 
 
@@ -9,12 +13,6 @@ import io.micronaut.security.rules.SecurityRule
 import org.simplemes.eframe.controller.BaseCrudRestController
 import org.simplemes.eframe.i18n.GlobalUtils
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Test controller for extension mechanism.
@@ -36,6 +34,12 @@ class SampleController extends BaseCrudRestController {
   @Post("/throwsException")
   String throwsException() {
     throw new IllegalArgumentException('a bad argument')
+  }
+
+  @Secured(SecurityRule.IS_ANONYMOUS)
+  @Post("/throwsInfiniteException")
+  String throwsInfiniteException() {
+    throw new IllegalArgumentException('an infinite exception loop')
   }
 
   /**

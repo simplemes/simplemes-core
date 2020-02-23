@@ -53,34 +53,56 @@ abstract class BaseController {
    */
   @Error
   HttpResponse error(HttpRequest request, Throwable throwable) {
-    if (throwable.cause) {
-      throwable = throwable.cause
-    }
-    if (throwable instanceof InvocationTargetException) {
-      if (throwable.hasProperty('target')) {
-        //noinspection GroovyAccessibility
-        throwable = throwable.target
+    try {
+      if (throwable.cause) {
+        throwable = throwable.cause
       }
-    }
-    if (Holders.environmentDev || Holders.environmentTest) {
-      LogUtils.logStackTrace(log, throwable, null)
-    }
-    def accept = request.headers?.get(HttpHeaders.ACCEPT)
-    if (accept?.contains(MediaType.TEXT_HTML)) {
-      def modelAndView = new StandardModelAndView('home/error', null, this)
-      modelAndView[StandardModelAndView.FLASH] = throwable.toString()
+      if (throwable instanceof InvocationTargetException) {
+        if (throwable.hasProperty('target')) {
+          //noinspection GroovyAccessibility
+          throwable = throwable.target
+        }
+      }
       if (Holders.environmentDev || Holders.environmentTest) {
-        modelAndView[StandardModelAndView.FLASH_DETAILS] = HTMLUtils.formatExceptionForHTML(throwable)
+        LogUtils.logStackTrace(log, throwable, null)
+        if (throwable instanceof IllegalArgumentException) {
+          // Trigger an infinite exception case for a special exception.
+          if (throwable.toString().contains('an infinite exception loop')) {
+            throw new IllegalArgumentException('simulated error handler exception - possible infinite loop - test mode only')
+          }
+        }
       }
-      def renderer = Holders.applicationContext.getBean(ViewsRenderer)
-      Writable writable = renderer.render(modelAndView.view.get(), modelAndView.model.get())
+      def accept = request.headers?.get(HttpHeaders.ACCEPT)
+      if (accept?.contains(MediaType.TEXT_HTML)) {
+        def modelAndView = new StandardModelAndView('home/error', null, this)
+        modelAndView[StandardModelAndView.FLASH] = throwable.toString()
+        if (Holders.environmentDev || Holders.environmentTest) {
+          modelAndView[StandardModelAndView.FLASH_DETAILS] = HTMLUtils.formatExceptionForHTML(throwable)
+        }
+        def renderer = Holders.applicationContext.getBean(ViewsRenderer)
+        Writable writable = renderer.render(modelAndView.view.get(), modelAndView.model.get())
 
-      return HttpResponse.status(HttpStatus.OK).contentType(MediaType.TEXT_HTML).body(writable)
-    } else {
-      def holder = new MessageHolder(text: throwable.toString())
-      //println "(base) throwable = $throwable"
-      log.trace("error(): Handling exception {}", throwable)
-      return HttpResponse.status(HttpStatus.BAD_REQUEST).body(Holders.objectMapper.writeValueAsString(holder))
+        return HttpResponse.status(HttpStatus.OK).contentType(MediaType.TEXT_HTML).body(writable)
+      } else {
+        def holder = new MessageHolder(text: throwable.toString())
+        //println "(base) throwable = $throwable"
+        log.trace("error(): Handling exception {}", throwable)
+        return HttpResponse.status(HttpStatus.BAD_REQUEST).body(Holders.objectMapper.writeValueAsString(holder))
+      }
+    } catch (Throwable ex) {
+      // Make sure this error handler doesn't throw an infinite loop of exceptions.
+      LogUtils.logStackTrace(log, ex, null)
+      def s = ex.toString()
+      def msg = """
+        {
+          "message": {
+           "level": "error",
+           "text": "Infinite exception loop detected: $s",
+           "otherMessages": [ ]
+          }
+        }      
+      """
+      return HttpResponse.status(HttpStatus.BAD_REQUEST).body(msg)
     }
   }
 

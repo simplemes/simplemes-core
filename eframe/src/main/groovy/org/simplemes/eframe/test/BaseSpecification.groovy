@@ -240,6 +240,8 @@ class BaseSpecification extends GebSpec {
    */
   void cleanup() {
     doAutoCleanups()
+    // Make sure any cached applicationContext is re-read from the real Holder, if needed.
+    DomainEntityHelper.instance.clearCaches()
     if (embeddedServer) {
       FieldExtension.withTransaction {
         cleanupDomainRecords()

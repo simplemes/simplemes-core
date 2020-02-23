@@ -1,19 +1,18 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 import io.micronaut.context.ApplicationContext
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.misc.TypeUtils
 import org.spockframework.mock.IDefaultResponse
 import org.spockframework.mock.IMockInvocation
 import org.spockframework.mock.ZeroOrNullResponse
 import spock.mock.DetachedMockFactory
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Builds a very simple mock/stub context and lets the context find the given bean with the getBean() method.
@@ -124,6 +123,9 @@ class MockBean implements AutoCleanupMockInterface, IDefaultResponse {
         // Only return the impl if it is the right class for the impl we have
         return o
       } else {
+        if (originalApplicationContext && !TypeUtils.isMock(originalApplicationContext)) {
+          return originalApplicationContext.getBean(expectedClass)
+        }
         return null
       }
     } else if (invocation.method.name == 'findOrInstantiateBean') {
