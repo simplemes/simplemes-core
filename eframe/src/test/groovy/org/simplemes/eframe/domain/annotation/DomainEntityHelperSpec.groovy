@@ -243,6 +243,25 @@ class DomainEntityHelperSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that saveChildList sorts the list before saving it"() {
+    when: 'list is saved'
+    def order = new Order(order: 'M1001')
+    order.orderLines << new OrderLine(order: order, product: 'BIKE', sequence: 5)
+    order.orderLines << new OrderLine(order: order, product: 'BIKE', sequence: 1)
+    order.orderLines << new OrderLine(order: order, product: 'BIKE', sequence: 4)
+    order.orderLines << new OrderLine(order: order, product: 'BIKE', sequence: 2)
+    order.orderLines << new OrderLine(order: order, product: 'BIKE', sequence: 3)
+    order.save()
+
+    then: 'the list is sorted'
+    order.orderLines[0].sequence == 1
+    order.orderLines[1].sequence == 2
+    order.orderLines[2].sequence == 3
+    order.orderLines[3].sequence == 4
+    order.orderLines[4].sequence == 5
+  }
+
+  @Rollback
   def "verify that lazyChildLoad keeps a list of the record loaded for later update checks"() {
     given: 'a domain record with children'
     def order = new Order(order: 'M1001')

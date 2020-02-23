@@ -45,7 +45,7 @@ public class DomainEntityHelper {
   /**
    * The logger.
    */
-  private static final Logger LOG = LoggerFactory.getLogger(EFrameAssetPipelineService.class);
+  private static final Logger log = LoggerFactory.getLogger(EFrameAssetPipelineService.class);
 
   /**
    * A singleton, used for simplified unit testing with a mocked class.
@@ -420,6 +420,12 @@ public class DomainEntityHelper {
           newRecordList.add(((DomainEntityInterface) child).getUuid());
         }
       }
+      // Sort the list, if possible
+      if (Comparable.class.isAssignableFrom(childClass)) {
+        log.trace("Sorting {} list {}", childClass, list);
+        Collections.sort(list);
+      }
+
       // Now, delete any removed records from the previous read.
       if (domainSettings != null) {
         List<UUID> previouslyLoadedList = (List) domainSettings.get(SETTINGS_LOADED_CHILDREN_PREFIX + fieldName);
@@ -652,6 +658,7 @@ public class DomainEntityHelper {
 
       // Sort the list, if possible
       if (Comparable.class.isAssignableFrom(childDomainClazz)) {
+        log.trace("Sorting {} list {}", childDomainClazz, list);
         Collections.sort(list);
       }
 
@@ -1172,7 +1179,7 @@ public class DomainEntityHelper {
       Method method = ((Class<?>) holdersClass).getMethod(methodName, paramTypes);
       return method.invoke(null, args);
     } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException e) {
-      LOG.warn("Error invoking method " + className + "." + methodName + "(). ", e);
+      log.warn("Error invoking method " + className + "." + methodName + "(). ", e);
       return null;
     } catch (InvocationTargetException e) {
       // We need to wrap the original exception in a runtime exception to avoid adding InvocationTargetException
