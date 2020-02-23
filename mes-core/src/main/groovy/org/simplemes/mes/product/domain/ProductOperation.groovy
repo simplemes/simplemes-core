@@ -7,6 +7,7 @@ import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.domain.annotation.DomainEntity
+import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.mes.misc.FieldSizes
 import org.simplemes.mes.product.OperationTrait
@@ -21,7 +22,7 @@ import javax.persistence.ManyToOne
 
 /**
  * This defines a single operation performed to produce a product.  These are normally grouped together in
- * a {@link org.simplemes.mes.product.domain.Routing} to be performed in a specific sequence.  Operations can be assigned
+ * a {@link org.simplemes.mes.product.RoutingTrait} to be performed in a specific sequence.  Operations can be assigned
  * to be worked in a given Work Center, but that is optional.
  */
 @MappedEntity
@@ -81,5 +82,13 @@ class ProductOperation implements OperationTrait {
    */
   @SuppressWarnings("unused")
   static fieldOrder = ['sequence', 'title']
+
+  /**
+   * Validates the record before save.
+   * @return The list of errors.
+   */
+  List<ValidationError> validate() {
+    return validateOperation()
+  }
 
 }

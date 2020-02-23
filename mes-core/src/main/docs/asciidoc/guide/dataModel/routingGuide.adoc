@@ -27,7 +27,7 @@ icon:share-square-o[role="link-blue"].
 === Routing Object Model
 
 The routing-related object model is somewhat complex.  It supports routings at two levels:
-_MasterRouting_ and _ProductRouting_.  There is also a copy of the routing at the order level.
+_MasterRouting_ and _Product_.  There is also a copy of the routing at the order level.
 
 The key objects are:
 
@@ -44,7 +44,6 @@ object Product
 object LSN
 object RoutingTrait
 object MasterRouting
-object ProductRouting
 object OperationTrait
 object OrderOperation
 object ProductOperation
@@ -56,11 +55,11 @@ Order o-- OrderOperation
 Order -- Product
 Product -- RoutingTrait
 RoutingTrait o-- OperationTrait
-RoutingTrait <|-- ProductRouting
 RoutingTrait <|-- MasterRouting
 OperationTrait <|-- OrderOperation
 OperationTrait <|-- ProductOperation
 OperationTrait <|-- MasterOperation
+Product o-- ProductOperation
 
 
 @enduml

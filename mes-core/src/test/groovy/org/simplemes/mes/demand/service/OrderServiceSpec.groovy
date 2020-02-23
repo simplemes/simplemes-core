@@ -22,7 +22,6 @@ import org.simplemes.mes.demand.domain.OrderOperState
 import org.simplemes.mes.demand.domain.OrderOperation
 import org.simplemes.mes.product.domain.MasterOperation
 import org.simplemes.mes.product.domain.Product
-import org.simplemes.mes.product.domain.ProductRouting
 import org.simplemes.mes.test.MESUnitTestUtils
 import org.simplemes.mes.tracking.domain.ActionLog
 
@@ -221,16 +220,15 @@ class OrderServiceSpec extends BaseSpecification {
 
     then: 'the order has a copy of the routing'
     def order = Order.findByOrder('M001')
-    ProductRouting.findAll().size() == 1
     OrderOperation.findAll().size() == 1
     MasterOperation.findAllBySequence(1).size() == 2
-    order.orderRouting.operations.size() == 3
+    order.operations.size() == 3
 
     and: 'the lsn operation state records match the routing'
     def lsn = order.lsns[0]
     lsn.operationStates.size() == 3
     for (int i = 0; i < lsn.operationStates.size(); i++) {
-      lsn.operationStates[i].sequence == order.orderRouting.operations[i].sequence
+      lsn.operationStates[i].sequence == order.operations[i].sequence
     }
     lsn.operationStates[0].qtyInQueue == 1.0
     lsn.operationStates[1].qtyInQueue == 0.0
@@ -248,15 +246,14 @@ class OrderServiceSpec extends BaseSpecification {
 
     then: 'the order has a copy of the routing'
     def order = Order.findByOrder('M001')
-    ProductRouting.findAll().size() == 1
     OrderOperation.findAll().size() == 1
     MasterOperation.findAllBySequence(1).size() == 2
-    order.orderRouting.operations.size() == 3
+    order.operations.size() == 3
 
     and: 'the order operation state records match the routing'
     order.operationStates.size() == 3
     for (int i = 0; i < order.operationStates.size(); i++) {
-      order.operationStates[i].sequence == order.orderRouting.operations[i].sequence
+      order.operationStates[i].sequence == order.operations[i].sequence
     }
     order.operationStates[0].qtyInQueue == 5.0
     order.operationStates[1].qtyInQueue == 0.0

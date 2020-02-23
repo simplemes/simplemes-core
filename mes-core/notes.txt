@@ -7,13 +7,9 @@ Remove references to GORM/Grails/Hibernate/.id.
 Remove disabled check for leftover records.
 DDL creation - QTY scale = STANDARD_DECIMAL_SCALE?  4?
 Add tests for new domains (copy constructor and methods):
-  RoutingTrait
-  MasterRouting
-  ProductRouting?
-  OrderRouting?
   LSNOperState
   OrderOperState
-Add getters/setters to the RoutingTrait, OperationTrait, WorkStateTrait and CodeSequenceTrait.
+Add getters to the RoutingTrait, WorkStateTrait and CodeSequenceTrait.
 
 Tasks
 =====

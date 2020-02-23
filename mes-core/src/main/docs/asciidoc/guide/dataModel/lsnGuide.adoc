@@ -124,15 +124,15 @@ tracking options are shown below:
 |          c4CF|
 +------+-------+
        |                                                                     ---+
-       |  may have routing   +--------------+                                   |
-       +-------------------->|              |qtyInQueue                         |
-                             |    Order     |qtyInWork                          |
-                             |          c6D6|qtyDone                            |
-                             ++-------------++     +------------+               |
-                              |              |     |            |qtyInQueue     |
-                              | OrderRouting |---->| Operations |qtyInWork      |     +----------+
-                              |          c6D6|     |        c4CF|qtyDone        |     |          |
-                              +--------------+     +------------+               +-----+ Resolve  |
+       |  may have routing   +---------------+                                  |
+       +-------------------->|               |qtyInQueue                        |
+                             |    Order      |qtyInWork                         |
+                             |          c6D6 |qtyDone                           |
+                             |               |     +------------+               |
+                             |               |     |            |qtyInQueue     |
+                             |               |---->| Operations |qtyInWork      |     +----------+
+                             |               |     |        c4CF|qtyDone        |     |          |
+                             ++--------------+     +------------+               +-----+ Resolve  |
                               |              |qtyInQueue                        |     | Service  |
                               |   LSN        |qtyInWork                         |     |      c6D6|
                               |          c6D6|qtyDone                           |     +----------+
@@ -203,8 +203,8 @@ NOTE: The quantities are always tracked at one level for a given order.
    No Routing  |    Order     |     LSN      |     LSN      |
                |              |              |              |
  --------------+--------------+--------------+--------------+
-               |              |              |              |
-    Routing    | OrderRouting |  LSNRouting  |  LSNRouting  |
+               | Order        | Order        | Order        |
+    Routing    |  .operations |  .operations |  .operations |
                |          cCCC|         cCCC |          cCCC|
  --------------+--------------+--------------+--------------+
 
@@ -214,10 +214,9 @@ NOTE: The quantities are always tracked at one level for a given order.
 :imagesdir: {imagesdir-src}
 
 
-Upon order release, the _LSNRouting_ or _OrderRouting_ records are created.  These are copied from the
-effective routing from the Product to the _OrderRouting_ or _LSNRouting_ as needed.  It is also possible
-to import an order with its own _OrderRouting_ if needed.  This imported _OrderRouting_ will be used if
-available.
+Upon order release, the _Order_ copy of the operations are created.  These are copied from the
+effective routing from the _Product_  or _MasterRouting_.  It is also possible
+to import an order with its own _operations_ if needed.
 
 The detailed operation states are stored in various places, depending on how work is tracked.  All of these
 places implement the

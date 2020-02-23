@@ -93,16 +93,15 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
   Product product
 
   /**
-   * This is the list operation states that corresponds to the current orderRouting's operations.  This holds the quantities
-   * in queue, in work, etc for a given operation. This list is sorted in the same order as the orderRouting's operations
+   * This is the list of operations this order should be processed at.
    *
    */
   @OneToMany(mappedBy = "order")
   List<OrderOperation> operations
 
   /**
-   * This is the list operation states that corresponds to the current orderRouting's operations.  This holds the quantities
-   * in queue, in work, etc for a given operation. This list is sorted in the same order as the orderRouting's operations
+   * This is the list operation states that corresponds to the current operations.  This holds the quantities
+   * in queue, in work, etc for a given operation.
    *
    */
   @OneToMany(mappedBy = "order")
@@ -399,16 +398,6 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
     nValues
   }
 
-
-  /**
-   * Setter needed to save OrderRouting records in Unit Tests.
-   * Mainly used to set the OrderRouting.order in the unit tests to work around an issue with the unit test mocks.
-   * @param orderRouting The order routing.
-   */
-  void setOrderRouting(OrderOperation orderRouting) {
-    this.orderRouting = orderRouting
-    orderRouting?.order = this
-  }
 
   /**
    * Determines the next workable to be performed after the given operation is done.

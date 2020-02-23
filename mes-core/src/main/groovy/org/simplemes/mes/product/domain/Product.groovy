@@ -77,8 +77,8 @@ class Product implements RoutingTrait {
   BigDecimal lotSize = 1.0
 
   /**
-   * Defines a shared master routing to be used to produce this product.  If the productRouting is non-null,
-   * then this master routing is generally ignored.
+   * Defines a shared master routing to be used to produce this product.
+   * This is ignored if the Product-level `operations` are defined.
    */
   @Nullable
   MasterRouting masterRouting
@@ -120,20 +120,8 @@ class Product implements RoutingTrait {
   RoutingTrait determineEffectiveRouting() {
     if (operations) {
       return this
-    } else {
-      return masterRouting
     }
+    return masterRouting
   }
-
-  /**
-   * Sets the routing.  Used to fix the reference ProductRouting.product in unit tests/
-   * @param productRouting The routing.
-   */
-/*
-  void setProductRouting(ProductRouting productRouting) {
-    this.productRouting = productRouting
-    productRouting?.product = this
-  }
-*/
 
 }

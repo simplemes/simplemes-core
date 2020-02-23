@@ -251,14 +251,17 @@ This class represents a customer order:
 ----
 public class Order {
   String order             // <.>
-  String product           // <.>
-  BigDecimal quantity      // <.>
+  String product
+  BigDecimal quantity
      . . .
+  @ExtensibleFieldHolder <.>
+  @Column(length = 1024, nullable = true)
+  String customFields
 }
 ----
-<.> The order name.
-<.> The product the customer ordered.
-<.> The number ordered.
+<.> The order name, product and quantity ordered.
+<.> Defines the column that will hold the JSON values of the custom fields.
+    Up to 1024 characters of JSON data can be stored here.
 
 The end user of your application wants to add some custom fields to help them process orders more
 easily. The fields needed are:

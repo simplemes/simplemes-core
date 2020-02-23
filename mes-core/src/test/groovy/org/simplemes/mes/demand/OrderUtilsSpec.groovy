@@ -23,12 +23,7 @@ class OrderUtilsSpec extends BaseSpecification {
     setCurrentUser()
   }
 
-  @Override
-  void checkForLeftoverRecords() {
-    println "checkForLeftoverRecords DISABLED"
-  }
-
-  @Rollback
+@Rollback
   def "test resolveIdOrName with an order name"() {
     given: 'an order'
     def order = MESUnitTestUtils.releaseOrder()

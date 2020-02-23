@@ -1,7 +1,7 @@
 package org.simplemes.mes.product
 
+import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.exception.BusinessException
-import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
@@ -20,6 +20,9 @@ import org.simplemes.mes.test.MESUnitTestUtils
  */
 class RoutingTraitSpec extends BaseSpecification {
 
+  @SuppressWarnings("unused")
+  static specNeeds = SERVER
+
   @Rollback
   def "verify sort works"() {
     given: 'a routing with operations in random order'
@@ -36,19 +39,17 @@ class RoutingTraitSpec extends BaseSpecification {
   @Rollback
   def "validate detects duplication operations"() {
     given: 'a routing with a duplicate oper sequence'
-    def routing = new MasterRouting(routing: 'ROUTING')
+    def routing = new MasterRouting(routing: 'ROUTING_237')
     routing.operations << new MasterOperation(sequence: 1, title: "Prep")
     routing.operations << new MasterOperation(sequence: 823, title: "Test")
     routing.operations << new MasterOperation(sequence: 823, title: "Pack")
 
-    expect: 'validation to fail'
-    !routing.validate()
+    when: 'the object is validated'
+    def errors = DomainUtils.instance.validate(routing)
 
-    and: 'has the right error info'
-    //routing.operations.duplicate.error=Two or more routing operations have the same sequence {3}.  Each sequence must be unique.
-    def s = GlobalUtils.lookupValidationErrors(routing).operations[0]
-    s.contains('823')
-    s.contains('unique')
+    then: 'the right validation error is found'
+    //error.4003.message=Two or more routing operations have the same sequence {1} on routing "{2}".  Each sequence must be unique.
+    UnitTestUtils.assertContainsError(errors, 4003, 'sequence', ['823', 'ROUTING_237'])
   }
 
   @Rollback
@@ -72,13 +73,12 @@ class RoutingTraitSpec extends BaseSpecification {
     given: 'a routing with no operations'
     def routing = new MasterRouting(routing: 'ABC')
 
-    expect: 'validation to fail'
-    !routing.validate()
+    when: 'the object is validated'
+    def errors = DomainUtils.instance.validate(routing)
 
-    and: 'has the right error info'
-    //routing.operations.noOperations.error=Operations missing for routing.  At least one operation is required.
-    def s = GlobalUtils.lookupValidationErrors(routing).operations[0]
-    assert s.contains('missing')
+    then: 'the right validation error is found'
+    //error.4002.message=Operations missing for routing "{1}".  At least one operation is required.
+    UnitTestUtils.assertContainsError(errors, 4002, 'operations', ['ABC'])
   }
 
   def "determineNextOperation finds the correct operation"() {

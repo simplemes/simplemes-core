@@ -12,7 +12,6 @@ import org.simplemes.mes.product.domain.MasterOperation
 import org.simplemes.mes.product.domain.MasterRouting
 import org.simplemes.mes.product.domain.Product
 import org.simplemes.mes.product.domain.ProductOperation
-import org.simplemes.mes.product.domain.ProductRouting
 
 /*
  * Copyright Michael Houston 2017. All rights reserved.
@@ -41,21 +40,22 @@ class MESUnitTestUtils {
    * @return The product.
    */
   static Product buildSimpleProductWithRouting(Map options = [:]) {
-    List<Integer> operations = (List<Integer>) options.operations ?: [1, 2, 3]
-    def pr = new ProductRouting()
-    for (sequence in operations) {
-      def operation = new MasterOperation(sequence: sequence, title: "Oper $sequence")
-      pr.addToOperations(operation)
-    }
     LSNTrackingOption lsnTrackingOption = (LSNTrackingOption) options.lsnTrackingOption ?: LSNTrackingOption.ORDER_ONLY
     def lsnSequence = null
     if (lsnTrackingOption == LSNTrackingOption.LSN_ONLY) {
       lsnSequence = LSNSequence.findDefaultSequence()
     }
 
-    def ID = options.product ?: 'PC'
-    Product product = new Product(product: ID, lsnTrackingOption: lsnTrackingOption, lsnSequence: lsnSequence,
-                                  productRouting: pr).save()
+    def id = options.product ?: 'PC'
+    Product product = new Product(product: id, lsnTrackingOption: lsnTrackingOption, lsnSequence: lsnSequence,)
+
+    List<Integer> operations = (List<Integer>) options.operations ?: [1, 2, 3]
+    for (sequence in operations) {
+      def operation = new ProductOperation(sequence: sequence, title: "Oper $sequence")
+      product.operations << operation
+    }
+    product.save()
+
     return product
   }
 
@@ -77,7 +77,7 @@ class MESUnitTestUtils {
     def masterRouting = new MasterRouting(routing: "ROUTING$id")
     for (sequence in operations) {
       def operation = new MasterOperation(sequence: sequence, title: "Oper $sequence")
-      masterRouting.addToOperations(operation)
+      masterRouting.operations << operation
     }
     return masterRouting.save()
   }
@@ -125,7 +125,7 @@ class MESUnitTestUtils {
     def mpr = null
     if (operationSequences) {
       // Reverse the order to uncover any sorting issues in the test programs or app code.
-      operationSequences.sort() { a, b -> b <=> a }
+      operationSequences.sort { a, b -> b <=> a }
       if (options.masterRouting) {
         // A master routing is needed.
         mpr = new MasterRouting(routing: "${options.masterRouting}$id")
@@ -150,7 +150,6 @@ class MESUnitTestUtils {
         }
 
       }
-      //product.productRouting = pr
       product.masterRouting = mpr
       product.save()
     }
@@ -214,7 +213,7 @@ class MESUnitTestUtils {
     for (sequence in sequences) {
       sequence.currentSequence = newSequence
       // Flush to avoid the dreaded DuplicateKeyException that happens with @Rollback and existing Sequence records.
-      sequence.save(flush: true)
+      sequence.save()
     }
   }
 

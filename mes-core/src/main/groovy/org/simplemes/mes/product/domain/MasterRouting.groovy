@@ -10,10 +10,11 @@ import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
 import org.simplemes.eframe.domain.annotation.DomainEntity
+import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.mes.misc.FieldSizes
-import org.simplemes.mes.product.OperationTrait
 import org.simplemes.mes.product.RoutingTrait
 
+import javax.persistence.Column
 import javax.persistence.OneToMany
 
 /*
@@ -35,12 +36,13 @@ import javax.persistence.OneToMany
 @DomainEntity
 @ToString(includeNames = true, includePackage = false)
 @EqualsAndHashCode(includes = ['routing'])
-class MasterRouting extends Routing implements RoutingTrait {
+class MasterRouting implements RoutingTrait {
   /**
    * The Routing as known to the users.  <b>Primary Code Field</b>.
    * <p/>
    * Maximum length is defined by {@link FieldSizes#MAX_PRODUCT_LENGTH}.
    */
+  @Column(length = FieldSizes.MAX_PRODUCT_LENGTH, nullable = false)
   String routing
 
   /**
@@ -48,13 +50,14 @@ class MasterRouting extends Routing implements RoutingTrait {
    * <p/>
    * Maximum length is defined by {@link FieldSizes#MAX_TITLE_LENGTH}.
    */
+  @Column(length = FieldSizes.MAX_TITLE_LENGTH, nullable = true)
   String title
 
   /**
-   * The operations used only by this product.  No other products will use this list of operations.
+   * The operations used only by this master routing.
    */
-  @OneToMany(mappedBy = "product")
-  List<OperationTrait> operations
+  @OneToMany(mappedBy = "masterRouting")
+  List<MasterOperation> operations
 
   /**
    * This domain is a top-level searchable element.
@@ -74,17 +77,24 @@ class MasterRouting extends Routing implements RoutingTrait {
   @Id @AutoPopulated UUID uuid
 
   /**
-   * Internal values.
-   */
-  static constraints = {
-    routing(maxSize: FieldSizes.MAX_PRODUCT_LENGTH, unique: true, nullable: false, blank: false)
-    title(maxSize: FieldSizes.MAX_TITLE_LENGTH, nullable: true)
-  }
-
-  /**
    * Defines the default general field ordering for GUIs and other field listings/reports.
    */
   @SuppressWarnings("GroovyUnusedDeclaration")
   static fieldOrder = ['routing', 'title', 'operations']
+
+  /**
+   * Validates the record before save.
+   * @return The list of errors.
+   */
+  List<ValidationError> validate() {
+    return validateOperations(routing)
+  }
+
+  /**
+   * Sorts the operations before save.
+   */
+  def beforeSave() {
+    sortOperations()
+  }
 
 }

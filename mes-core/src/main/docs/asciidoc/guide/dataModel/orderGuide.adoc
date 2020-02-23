@@ -75,8 +75,7 @@ OperationTrait <|-- MasterOperation
 
 The _Order_ can have zero or more _LSNs_.
 
-The _Order_ can also have a copy of any _RouterTrait_ implementation (e.g. _MasterRouting,
-ProductRouting or OrderRouting_). These routers provide a list of operations to be performed.
+The _Order_ will also have a copy of the Product's effective routing.
 Upon release, these operations are copied to the order to avoid restrictions on the product
 definitions once an order is released.
 

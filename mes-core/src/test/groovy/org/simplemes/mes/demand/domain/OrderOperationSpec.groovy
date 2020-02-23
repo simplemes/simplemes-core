@@ -20,23 +20,18 @@ class OrderOperationSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static specNeeds = SERVER
 
-  @Override
-  void checkForLeftoverRecords() {
-    println "checkForLeftoverRecords DISABLED"
-  }
+def "test constraints"() {
+  given: 'an oper'
+  def order = new Order()
 
-  def "test constraints"() {
-    given: 'an oper'
-    def order = new Order()
-
-    expect: 'the constraints are enforced'
-    DomainTester.test {
-      domain OrderOperation
-      requiredValues title: 'n', order: order, sequence: 1
-      maxSize 'title', FieldSizes.MAX_TITLE_LENGTH
-      fieldOrderCheck false
-    }
+  expect: 'the constraints are enforced'
+  DomainTester.test {
+    domain OrderOperation
+    requiredValues title: 'n', order: order, sequence: 1
+    maxSize 'title', FieldSizes.MAX_TITLE_LENGTH
+    fieldOrderCheck false
   }
+}
 
   @Rollback
   def "copy constructor works"() {

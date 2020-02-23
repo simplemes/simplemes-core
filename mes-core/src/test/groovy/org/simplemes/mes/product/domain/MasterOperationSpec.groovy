@@ -22,23 +22,18 @@ class MasterOperationSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static specNeeds = SERVER
 
-  @Override
-  void checkForLeftoverRecords() {
-    println "checkForLeftoverRecords DISABLED"
-  }
+def "test constraints"() {
+  given: 'an oper'
+  def mr = new MasterRouting()
 
-  def "test constraints"() {
-    given: 'an oper'
-    def mr = new MasterRouting()
-
-    expect: 'the constraints are enforced'
-    DomainTester.test {
-      domain MasterOperation
-      requiredValues title: 'n', masterRouting: mr, sequence: 1
-      maxSize 'title', FieldSizes.MAX_TITLE_LENGTH
-      fieldOrderCheck false
-    }
+  expect: 'the constraints are enforced'
+  DomainTester.test {
+    domain MasterOperation
+    requiredValues title: 'n', masterRouting: mr, sequence: 1
+    maxSize 'title', FieldSizes.MAX_TITLE_LENGTH
+    fieldOrderCheck false
   }
+}
 
   def "constraint enforces sequence greater than 0"() {
     given: 'a routing operation'

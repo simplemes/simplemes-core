@@ -30,22 +30,17 @@ class OrderSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static specNeeds = SERVER
 
-  @Override
-  void checkForLeftoverRecords() {
-    println "checkForLeftoverRecords DISABLED"
+def "test standard constraints"() {
+  expect: 'the constraints are enforced'
+  DomainTester.test {
+    domain Order
+    requiredValues order: 'M1003', qtyToBuild: 2.0
+    maxSize 'order', FieldSizes.MAX_CODE_LENGTH
+    notNullCheck 'qtyToBuild'
+    //fieldOrderCheck true
+    notInFieldOrder(['operations', 'operationStates', 'dateReleased', 'dateFirstQueued', 'dateFirstStarted', 'dateQtyQueued', 'dateQtyStarted'])
   }
-
-  def "test standard constraints"() {
-    expect: 'the constraints are enforced'
-    DomainTester.test {
-      domain Order
-      requiredValues order: 'M1003', qtyToBuild: 2.0
-      maxSize 'order', FieldSizes.MAX_CODE_LENGTH
-      notNullCheck 'qtyToBuild'
-      //fieldOrderCheck true
-      notInFieldOrder(['operations', 'operationStates', 'dateReleased', 'dateFirstQueued', 'dateFirstStarted', 'dateQtyQueued', 'dateQtyStarted'])
-    }
-  }
+}
 
   @Rollback
   def "verify that toShortString and toString works on the order with child LSNs"() {

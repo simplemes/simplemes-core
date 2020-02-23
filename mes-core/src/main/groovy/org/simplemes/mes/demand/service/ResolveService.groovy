@@ -165,7 +165,7 @@ class ResolveService {
     }
 
     // Now, see if we should check for operations instead of top-level workables.
-    if (order?.orderRouting) {
+    if (order?.operations) {
       if (useLSN) {
         // TODO: Find the LSN operation
       } else {

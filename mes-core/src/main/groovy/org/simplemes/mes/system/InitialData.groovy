@@ -34,7 +34,7 @@ class InitialData {
    * A list of the records created by the initial data load.
    * Used only for test cleanup by {@link org.simplemes.eframe.test.BaseSpecification}.
    */
-  static Map<String, List<String>> initialDataRecords = [Role           : ['Supervisor', 'Engineer', 'Lead', 'Operator'],
+  static Map<String, List<String>> initialDataRecords = [Role           : ['SUPERVISOR', 'ENGINEER', 'LEAD', 'OPERATOR'],
                                                          DashboardConfig: ['OPERATOR_DEFAULT', 'MANAGER_DEFAULT']]
 
   /**

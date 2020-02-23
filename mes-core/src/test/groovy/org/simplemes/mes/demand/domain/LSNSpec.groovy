@@ -31,24 +31,19 @@ class LSNSpec extends BaseSpecification {
     waitForInitialDataLoad()
   }
 
-  @Override
-  void checkForLeftoverRecords() {
-    println "checkForLeftoverRecords DISABLED"
-  }
+def "test constraints"() {
+  given: 'an order'
+  def order = new Order()
 
-  def "test constraints"() {
-    given: 'an order'
-    def order = new Order()
-
-    expect: 'the constraints are enforced'
-    DomainTester.test {
-      domain LSN
-      requiredValues lsn: 'SN10024', order: order
-      maxSize 'lsn', FieldSizes.MAX_LSN_LENGTH
-      notNullCheck 'lsn'
-      fieldOrderCheck false
-    }
+  expect: 'the constraints are enforced'
+  DomainTester.test {
+    domain LSN
+    requiredValues lsn: 'SN10024', order: order
+    maxSize 'lsn', FieldSizes.MAX_LSN_LENGTH
+    notNullCheck 'lsn'
+    fieldOrderCheck false
   }
+}
 
   @Rollback
   def "test default LSNStatus is found on save"() {

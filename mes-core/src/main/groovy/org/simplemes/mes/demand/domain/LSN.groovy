@@ -56,8 +56,8 @@ class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
   BigDecimal qty = 1.0
 
   /**
-   * This is the list operation states that corresponds to the current LSN's orderRouting's operations.  This holds the quantities
-   * in queue, in work, etc for a given operation. This list is sorted in the same order as the orderRouting's operations
+   * This is the list operation states that corresponds to the current Order's operations.  This holds the quantities
+   * in queue, in work, etc for a given operation.
    *
    */
   @OneToMany(mappedBy = "lsn")

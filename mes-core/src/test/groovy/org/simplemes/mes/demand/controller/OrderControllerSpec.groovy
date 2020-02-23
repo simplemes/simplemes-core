@@ -39,16 +39,11 @@ class OrderControllerSpec extends BaseAPISpecification {
 
   OrderController controller
 
-  @Override
-  void checkForLeftoverRecords() {
-    println "checkForLeftoverRecords DISABLED"
-  }
-
-  void setup() {
-    controller = Holders.getBean(OrderController)
-    setCurrentUser()
-    waitForInitialDataLoad()
-  }
+void setup() {
+  controller = Holders.getBean(OrderController)
+  setCurrentUser()
+  waitForInitialDataLoad()
+}
 
   def "verify that the controller passes the standard controller test - security, task menu, etc"() {
     expect: 'the controller passes'

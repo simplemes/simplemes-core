@@ -20,21 +20,14 @@ class ProductSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static specNeeds = SERVER
 
-  @Override
-  void checkForLeftoverRecords() {
-    println "checkForLeftoverRecords DISABLED"
-  }
-
-  @Rollback
+@Rollback
   def "test routing update of domain object"() {
     given: 'a product with a routing'
     def p = new Product(product: 'ABC', title: 'description')
-    def pr = new ProductRouting()
     def o1 = new MasterOperation(sequence: 1, title: "Orig Prep")
     def o3 = new MasterOperation(sequence: 3, title: "Orig Pack")
     pr.addToOperations(o1)
     pr.addToOperations(o3)
-    p.productRouting = pr
     p.validate()
     assert !p.errors.allErrors
     assert p.save()
@@ -52,14 +45,13 @@ class ProductSpec extends BaseSpecification {
     def product2 = Product.get(p.id)
     product2.product == 'ABC'
 
-    def ops = product2.productRouting.operations
+    def ops = product2.operations
     ops.size() == 3
     ops[0].sequence == 1
     ops[1].sequence == 2
     ops[2].sequence == 3
 
     and: 'the domain finders work on the record'
-    ProductRouting.findAll().size() == 1
     MasterOperation.findAllBySequence(1).size() == 1
     MasterOperation.findAllBySequence(2).size() == 1
     MasterOperation.findAllBySequence(3).size() == 1

@@ -45,7 +45,7 @@ trait OperationTrait implements Comparable<OperationTrait> {
    * Validates the record before save.
    * @return The list of errors.
    */
-  List<ValidationError> validate() {
+  List<ValidationError> validateOperation() {
     def res = []
     if (sequence <= 0) {
       //error.137.message=Invalid Value "{1}" for "{0}". Value should be greater than {2}.

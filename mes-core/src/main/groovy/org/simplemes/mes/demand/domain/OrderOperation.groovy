@@ -7,6 +7,7 @@ import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.domain.annotation.DomainEntity
+import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.mes.misc.FieldSizes
 import org.simplemes.mes.product.OperationTrait
@@ -83,5 +84,13 @@ class OrderOperation implements OperationTrait {
    */
   @SuppressWarnings("unused")
   static fieldOrder = ['sequence', 'title']
+
+  /**
+   * Validates the record before save.
+   * @return The list of errors.
+   */
+  List<ValidationError> validate() {
+    return validateOperation()
+  }
 
 }

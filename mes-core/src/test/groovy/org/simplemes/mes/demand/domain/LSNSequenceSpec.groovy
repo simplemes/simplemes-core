@@ -19,12 +19,7 @@ class LSNSequenceSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static dirtyDomains = [LSNSequence]
 
-  @Override
-  void checkForLeftoverRecords() {
-    println "checkForLeftoverRecords DISABLED"
-  }
-
-  @Rollback
+@Rollback
   def "test initial data load"() {
     when: 'the initial data is loaded'
     LSNSequence.initialDataLoad()

@@ -21,11 +21,15 @@ for an overview.
 
 | *product*| The Product name.(*key field*)
 | *title*| The title (short description) of the product.
-| *lsnTrackingOption* | Defines if <<lsn,LSNs>> are used with the product.  Affects how orders can use LSNs.
-| *lsnSequence* | The LSN sequence to use.  If not specified, then LSNs will not be created for the order on creation.  If not defined, then no LSNs will be automatically created for orders.
+| *lsnTrackingOption* | Defines if <<lsn,LSNs>> are used with the product.  Affects how
+                        orders can use LSNs.
+| *lsnSequence* | The LSN sequence to use.  If not specified, then LSNs will not be created
+                  for the order on creation.  If not defined, then no LSNs will be
+                  automatically created for orders.
 | *lotSize* | The lot size (size of child LSN if LSNs are used).
-| *masterRouting* | Defines a shared master routing to be used to produce this product.  If the `productRouting` is non-null, then this master routing is generally ignored.
-| *productRouting* | This `productRouting` is the routing used only by this product.  No other products will use this routing.
+| *operations* | The list of operations, if this Product needs a Product-level routing.
+| *masterRouting* | Defines a shared master routing to be used to produce this product.
+                    This is ignored if the Product-level `operations` are defined.
 |
 |=== 
 
