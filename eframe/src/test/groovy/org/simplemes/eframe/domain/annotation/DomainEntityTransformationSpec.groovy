@@ -223,7 +223,7 @@ class DomainEntityTransformationSpec extends BaseSpecification {
   }
 
   @Rollback
-  def "verify that lazy load getter for child record is added to the domain"() {
+  def "verify that lazy load getter for child record is added to the domain - simple case"() {
     given: 'a mocked domainEntityHelper for the lazy method call'
     def domainEntityHelper = Mock(DomainEntityHelper)
     DomainEntityHelper.instance = domainEntityHelper
@@ -257,7 +257,7 @@ class DomainEntityTransformationSpec extends BaseSpecification {
     instance.uuid = UUID.randomUUID()
     def orderLines = instance.getOrderLines()
 
-    then: 'the right exception is thrown'
+    then: 'the right list is returned'
     orderLines.size() == 1
     orderLines == ["ABC"]
 
@@ -270,10 +270,59 @@ class DomainEntityTransformationSpec extends BaseSpecification {
       return ["ABC"]
     }
 
+    cleanup:
+    DomainEntityHelper.instance = new DomainEntityHelper()
+  }
+
+  @Rollback
+  def "verify that lazy load getter for child record is added to the domain - targetEntity case"() {
+    given: 'a mocked domainEntityHelper for the lazy method call'
+    def domainEntityHelper = Mock(DomainEntityHelper)
+    DomainEntityHelper.instance = domainEntityHelper
+
+    and: 'a compiled domain class'
+    def src = """
+      import sample.domain.OrderLine
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import io.micronaut.data.annotation.MappedEntity
+      import io.micronaut.data.annotation.MappedProperty
+      import groovy.transform.EqualsAndHashCode
+      import javax.persistence.CascadeType
+      import javax.persistence.Column
+      import javax.persistence.OneToMany
+      
+      @DomainEntity
+      @MappedEntity()
+      @EqualsAndHashCode(includes = ['uuid'])
+      class Order2 {
+        UUID uuid
+        
+        @OneToMany(targetEntity= OrderLine, cascade= CascadeType.ALL, mappedBy="order")
+        List<Object> orderLines
+      }
+    """
+    def clazz = CompilerTestUtils.compileSource(src)
+
+    when: 'the method is available'
+    def instance = clazz.newInstance()
+    instance.uuid = UUID.randomUUID()
+    def orderLines = instance.getOrderLines()
+
+    then: 'the right list is returned'
+    orderLines.size() == 1
+    orderLines == ["ABC"]
+
+    and: 'the method is called correctly'
+    1 * domainEntityHelper.lazyChildLoad(_, 'orderLines', 'order', OrderLine) >> { args ->
+      //println "args = $args";
+      // For some reason, Spock does not match the instance variable in the DSL above.  Instead, we need to do this manually.
+      //noinspection GroovyAssignabilityCheck
+      assert instance.is(args[0])
+      return ["ABC"]
+    }
 
     cleanup:
     DomainEntityHelper.instance = new DomainEntityHelper()
-
   }
 
   @Rollback

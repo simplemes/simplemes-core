@@ -133,15 +133,23 @@ public class DomainEntityTransformation implements ASTTransformation {
       for (AnnotationNode annotationNode : fieldNode.getAnnotations(new ClassNode(OneToMany.class))) {
         //System.out.println(fieldNode.getName()+" ann:" + annotationNode+" "+annotationNode.getClassNode()+" mappedBy:"+annotationNode.getMembers());
         String mappedByFieldName = annotationNode.getMember("mappedBy").getText();
-        ClassNode childDomainClassNode = fieldNode.getType();
-        GenericsType[] genericsTypes = childDomainClassNode.getGenericsTypes();
-        if (genericsTypes == null || genericsTypes.length == 0) {
-          String fqName = classNode.getName();
-          String s = "Child field " + fieldNode.getName() + " must be have a parameterized type (e.g. List<XYZ>) in " + fqName;
-          sourceUnit.getErrorCollector().addError(new SimpleMessage(s, sourceUnit));
-          return;
+
+        // Figure out the target class for this OneToMany.  From teh List<T> or from the targetEntity element.
+        ClassNode childDomainTypeNode;
+        Expression targetEntityExpression = annotationNode.getMember("targetEntity");
+        if (targetEntityExpression != null) {
+          childDomainTypeNode = targetEntityExpression.getType();
+        } else {
+          ClassNode childDomainClassNode = fieldNode.getType();
+          GenericsType[] genericsTypes = childDomainClassNode.getGenericsTypes();
+          if (genericsTypes == null || genericsTypes.length == 0) {
+            String fqName = classNode.getName();
+            String s = "Child field " + fieldNode.getName() + " must be have a parameterized type (e.g. List<XYZ>) in " + fqName;
+            sourceUnit.getErrorCollector().addError(new SimpleMessage(s, sourceUnit));
+            return;
+          }
+          childDomainTypeNode = genericsTypes[0].getType();
         }
-        ClassNode childDomainTypeNode = genericsTypes[0].getType();
         String getterName = "get" + StringUtils.capitalize(fieldNode.getName());
         //  public List lazyChildLoad(Object object,String fieldName, String mappedByFieldName, Class childDomainClazz)
         List<Expression> delegateArgs = new ArrayList<>();

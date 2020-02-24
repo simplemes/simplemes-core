@@ -666,6 +666,8 @@ interface ChildRepository extends BaseRepository, CrudRepository<Child, UUID> {
 ----
 <.> The child list must default to null, not an empty list. The lazy loader sets the field
     to an empty list when no records are found in the DB.
+    This reference either needs a parameterized _List<>_ type or the _@OneToMany_ needs to
+    specify a `targetEntity`.
 <.> The reference to the parent record is one of the primary keys in the child record.
 <.> The finder `findByXYZ()` must be defined to find the child records.  This is used by the lazy
     loader.
