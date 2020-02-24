@@ -4,6 +4,8 @@ package org.simplemes.mes.demand
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.misc.TypeUtils
 
+import javax.annotation.Nullable
+
 /*
  * Copyright Michael Houston 2017. All rights reserved.
  * Original Author: mph
@@ -199,5 +201,28 @@ trait WorkStateTrait {
   // Getters and setters for the required fields.
   abstract BigDecimal getQtyInQueue()
 
+
+  abstract BigDecimal getQtyInWork()
+
+
+  abstract BigDecimal getQtyDone()
+
+  abstract void setQtyDone(BigDecimal qtyDone)
+
+  abstract Date getDateQtyQueued()
+
+  abstract void setDateQtyQueued(@Nullable Date dateQtyQueued)
+
+  abstract Date getDateQtyStarted()
+
+  abstract void setDateQtyStarted(@Nullable Date dateQtyStarted)
+
+  abstract Date getDateFirstQueued()
+
+  abstract void setDateFirstQueued(@Nullable Date dateFirstQueued)
+
+  abstract Date getDateFirstStarted()
+
+  abstract void setDateFirstStarted(@Nullable Date dateFirstStarted)
 
 }

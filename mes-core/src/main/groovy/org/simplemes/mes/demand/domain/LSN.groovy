@@ -119,6 +119,7 @@ class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateUpdated
 
+  @SuppressWarnings("unused")
   Integer version = 0
 
   @Id @AutoPopulated UUID uuid

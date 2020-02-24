@@ -13,6 +13,7 @@ import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.mes.demand.LSNTrackingOption
 import org.simplemes.mes.demand.domain.LSNSequence
 import org.simplemes.mes.misc.FieldSizes
+import org.simplemes.mes.product.OperationTrait
 import org.simplemes.mes.product.RoutingTrait
 
 import javax.annotation.Nullable
@@ -86,8 +87,8 @@ class Product implements RoutingTrait {
   /**
    * The operations used only by this product.  No other products will use this list of operations.
    */
-  @OneToMany(mappedBy = "product")
-  List<ProductOperation> operations
+  @OneToMany(mappedBy = "product", targetEntity = ProductOperation)
+  List<OperationTrait> operations
 
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
@@ -123,5 +124,4 @@ class Product implements RoutingTrait {
     }
     return masterRouting
   }
-
 }

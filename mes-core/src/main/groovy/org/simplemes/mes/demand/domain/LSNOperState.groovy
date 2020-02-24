@@ -97,14 +97,19 @@ class LSNOperState implements WorkStateTrait, WorkableInterface {
   Date dateFirstStarted
 
   @DateCreated
-  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE') Date dateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  @SuppressWarnings("unused")
+  Date dateCreated
 
   @DateUpdated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  @SuppressWarnings("unused")
   Date dateUpdated
 
+  @SuppressWarnings("unused")
   Integer version = 0
 
+  @SuppressWarnings("unused")
   @Id @AutoPopulated UUID uuid
 
   /**

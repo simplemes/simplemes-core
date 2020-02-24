@@ -12,6 +12,7 @@ import io.micronaut.data.model.DataType
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.mes.misc.FieldSizes
+import org.simplemes.mes.product.OperationTrait
 import org.simplemes.mes.product.RoutingTrait
 
 import javax.persistence.Column
@@ -51,29 +52,35 @@ class MasterRouting implements RoutingTrait {
    * Maximum length is defined by {@link FieldSizes#MAX_TITLE_LENGTH}.
    */
   @Column(length = FieldSizes.MAX_TITLE_LENGTH, nullable = true)
+  @SuppressWarnings("unused")
   String title
 
   /**
    * The operations used only by this master routing.
    */
-  @OneToMany(mappedBy = "masterRouting")
-  List<MasterOperation> operations
+  @OneToMany(targetEntity = MasterOperation, mappedBy = "masterRouting")
+  List<OperationTrait> operations
 
   /**
    * This domain is a top-level searchable element.
    */
+  @SuppressWarnings("unused")
   static searchable = true
 
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  @SuppressWarnings("unused")
   Date dateCreated
 
   @DateUpdated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  @SuppressWarnings("unused")
   Date dateUpdated
 
+  @SuppressWarnings("unused")
   Integer version = 0
 
+  @SuppressWarnings("unused")
   @Id @AutoPopulated UUID uuid
 
   /**
@@ -93,8 +100,8 @@ class MasterRouting implements RoutingTrait {
   /**
    * Sorts the operations before save.
    */
+  @SuppressWarnings("unused")
   def beforeSave() {
     sortOperations()
   }
-
 }

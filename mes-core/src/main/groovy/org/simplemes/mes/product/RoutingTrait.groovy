@@ -28,6 +28,12 @@ trait RoutingTrait {
   abstract List<OperationTrait> getOperations()
 
   /**
+   * Sets the operations.
+   * @param operations The operations.
+   */
+  abstract void setOperations(List<OperationTrait> operations)
+
+  /**
    * Determines the next operation to be performed after the given operation is completed.
    * @param sequence The operation sequence to find the next operation for.
    * @return The sequence of the next operation.

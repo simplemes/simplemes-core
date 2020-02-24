@@ -19,6 +19,7 @@ import org.simplemes.mes.demand.OrderStatus
 import org.simplemes.mes.demand.WorkStateTrait
 import org.simplemes.mes.demand.WorkableInterface
 import org.simplemes.mes.misc.FieldSizes
+import org.simplemes.mes.product.OperationTrait
 import org.simplemes.mes.product.RoutingTrait
 import org.simplemes.mes.product.domain.Product
 import org.simplemes.mes.tracking.domain.ActionLog
@@ -88,8 +89,8 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    * This is the list of operations this order should be processed at.
    *
    */
-  @OneToMany(mappedBy = "order")
-  List<OrderOperation> operations
+  @OneToMany(targetEntity = OrderOperation, mappedBy = "order")
+  List<OperationTrait> operations
 
   /**
    * This is the list operation states that corresponds to the current operations.  This holds the quantities
