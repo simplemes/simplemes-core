@@ -105,7 +105,7 @@ class OrderSequence implements CodeSequenceTrait {
    *
    */
   static OrderSequence findDefaultSequence() {
-    // Note: This is functionally the same as the CodeSequence method, but we need one here to limit
+    // Note: This is functionally the same as the CodeSequenceTrait method, but we need one here to limit
     //       the search to just OrderSequences.
     OrderSequence.findByDefaultSequence(true)
   }

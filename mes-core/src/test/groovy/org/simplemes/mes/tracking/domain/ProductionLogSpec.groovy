@@ -61,12 +61,10 @@ class ProductionLogSpec extends BaseSpecification {
   }
 
   @SuppressWarnings("GroovyAssignabilityCheck")
+  @Rollback
   def "verify that production log records can be archived to JSON correctly"() {
     given: 'a production log record'
-    def record = null
-    ProductionLog.withTransaction {
-      record = new ProductionLog(action: 'ABC', userName: 'DEF').save()
-    }
+    def record = new ProductionLog(action: 'ABC', userName: 'DEF').save()
 
     and: 'a mock file archiver to avoid file operations'
     def stringWriter = new StringWriter()
@@ -76,18 +74,12 @@ class ProductionLogSpec extends BaseSpecification {
     new MockObjectMapper(this).install()
 
     when: 'the record is archived'
-    def reference = null
-    ProductionLog.withTransaction {
-      def archiver = new FileArchiver()
-      archiver.archive(record)
-      reference = archiver.close()
-    }
+    def archiver = new FileArchiver()
+    archiver.archive(record)
+    def reference = archiver.close()
 
     then: 'the old records are removed'
-    ProductionLog.withTransaction {
-      assert ProductionLog.findAllByAction('OLD').size() == 0
-      true
-    }
+    ProductionLog.list().size() == 0
 
     and: 'the records are written to the JSON file correctly'
     def s = stringWriter.toString()
@@ -101,5 +93,4 @@ class ProductionLogSpec extends BaseSpecification {
     reference.size() < 20
   }
 
-  // TODO: Add toShortString() for archive file name purposes.
 }

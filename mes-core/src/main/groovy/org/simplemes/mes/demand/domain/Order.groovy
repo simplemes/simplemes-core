@@ -244,12 +244,6 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
         lsnTrackingOption = product.lsnTrackingOption
       }
     }
-
-    //Finally, a work around for GORM bug: http://jira.grails.org/browse/GRAILS-8158
-    // Call beforeValidate() on the SN explicitly
-    lsns?.each { lsn ->
-      lsn.beforeValidate()
-    }
   }
 
   /**

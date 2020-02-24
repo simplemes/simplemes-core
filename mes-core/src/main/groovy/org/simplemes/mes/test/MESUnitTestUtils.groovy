@@ -7,7 +7,7 @@ import org.simplemes.mes.demand.domain.LSNSequence
 import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.demand.domain.OrderSequence
 import org.simplemes.mes.demand.service.OrderService
-import org.simplemes.mes.numbering.domain.CodeSequence
+import org.simplemes.mes.numbering.CodeSequenceTrait
 import org.simplemes.mes.product.domain.MasterOperation
 import org.simplemes.mes.product.domain.MasterRouting
 import org.simplemes.mes.product.domain.Product
@@ -204,12 +204,12 @@ class MESUnitTestUtils {
   }
 
   /**
-   * Resets the currentSequence for thie given CodeSequence to the given sequence.  This is used to clean up after tests
+   * Resets the currentSequence for thie given CodeSequenceTrait to the given sequence.  This is used to clean up after tests
    * @param sequenceClass The sequence to reset all sequences for.
    * @param newSequence The new current sequence to use.  (<b>Default:</b> 1000)
    */
   static resetSequence(Class sequenceClass, long newSequence = 1000) {
-    List<CodeSequence> sequences = sequenceClass.list()
+    List<CodeSequenceTrait> sequences = sequenceClass.list()
     for (sequence in sequences) {
       sequence.currentSequence = newSequence
       // Flush to avoid the dreaded DuplicateKeyException that happens with @Rollback and existing Sequence records.

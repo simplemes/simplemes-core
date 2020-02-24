@@ -52,7 +52,7 @@ trait CodeSequenceTrait {
     if (nValues <= 0) {
       throw new IllegalArgumentException("nValues must be > 0")
     }
-    // Delegate to the static method so it can discard this instance from the Hibernate cache before locking the record.
+    // Delegate to the static method so it can lock the record.
     return formatValuesStatic(this, nValues, params)
 
   }

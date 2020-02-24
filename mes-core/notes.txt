@@ -3,12 +3,12 @@ Scratch
 
 Micronaut-Data Migration
 ========================
-Remove references to GORM/Grails/Hibernate/.id.
-Remove disabled check for leftover records.
-DDL creation - QTY scale = STANDARD_DECIMAL_SCALE?  4?
-Add tests for new domains (copy constructor and methods):
-  LSNOperState
-  OrderOperState
+Remove references to  mapping
+DDL creation -
+  QTY scale = STANDARD_DECIMAL_SCALE?  4?
+  Unique Key Fields
+  Indexes
+
 
 Tasks
 =====

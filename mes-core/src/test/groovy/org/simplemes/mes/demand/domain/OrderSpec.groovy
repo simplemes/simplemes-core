@@ -80,6 +80,30 @@ def "test standard constraints"() {
   }
 
   @Rollback
+  def "verify that lsn child validations are made"() {
+    when: 'the order is saved'
+    def order = new Order(order: 'a', qtyToBuild: 1.0)
+    order.lsns << new LSN()
+    order.save()
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['missing', 'lsn'])
+  }
+
+  @Rollback
+  def "verify that lsn child beforeValidate methods are called"() {
+    when: 'the order is saved'
+    def order = new Order(order: 'a', qtyToBuild: 1.0)
+    order.lsns << new LSN(lsn: 'x')
+    order.save()
+
+    then: 'the LSN beforeValidate was called'
+    def lsn = LSN.findByUuid(order.lsns[0].uuid)
+    lsn.status != null
+  }
+
+  @Rollback
   def "test new order name creation from OrderSequence"() {
     when: 'an order without an order name'
     Order order = new Order()

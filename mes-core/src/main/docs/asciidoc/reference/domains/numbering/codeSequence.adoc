@@ -1,7 +1,7 @@
 
 === CodeSequence
 
-link:groovydoc/org/simplemes/mes/numbering/domain/CodeSequence.html[CodeSequences^] icon:share-square-o[role="link-blue"]
+link:groovydoc/org/simplemes/mes/numbering/CodeSequenceTrait.html[CodeSequenceTrait^] icon:share-square-o[role="link-blue"]
 control how various system generated key values are generated within SimpleMES.
 There are a number of specific classes used to generate keys for objects such
 as <<lsn,LSN's>> or <<Order,Orders>>. This section covers features common to all code sequences.

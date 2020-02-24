@@ -20,18 +20,18 @@ class ProductOperationSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static specNeeds = SERVER
 
-def "test constraints"() {
-  given: 'an oper'
-  def product = new Product()
+  def "test constraints"() {
+    given: 'an oper'
+    def product = new Product()
 
-  expect: 'the constraints are enforced'
-  DomainTester.test {
-    domain ProductOperation
-    requiredValues title: 'n', product: product, sequence: 1
-    maxSize 'title', FieldSizes.MAX_TITLE_LENGTH
-    fieldOrderCheck false
+    expect: 'the constraints are enforced'
+    DomainTester.test {
+      domain ProductOperation
+      requiredValues title: 'n', product: product, sequence: 1
+      maxSize 'title', FieldSizes.MAX_TITLE_LENGTH
+      fieldOrderCheck false
+    }
   }
-}
 
   @Rollback
   def "copy constructor works"() {

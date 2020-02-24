@@ -12,7 +12,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc-header]#Floor#
 [inline-toc]#<<WorkCenter>>#
 
-[inline-toc-header]#Numering#
+[inline-toc-header]#Numbering#
 [inline-toc]#<<CodeSequence>>#
 
 [inline-toc-header]#Product#

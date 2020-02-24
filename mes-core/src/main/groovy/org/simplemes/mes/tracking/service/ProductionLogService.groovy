@@ -1,6 +1,7 @@
 package org.simplemes.mes.tracking.service
 
 import groovy.util.logging.Slf4j
+import io.micronaut.data.model.Pageable
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.archive.ArchiverFactoryInterface
 import org.simplemes.eframe.date.DateUtils
@@ -77,7 +78,7 @@ class ProductionLogService {
    * @param request The configuration to use for this archive run.
    * @return The list of archive references, if delete=false.
    */
-  @SuppressWarnings("GroovyMissingReturnStatement")
+  @SuppressWarnings(["GroovyMissingReturnStatement", "NestedBlockDepth"])
   List<String> archiveOld(ProductionLogArchiveRequest request) {
     def res = []
     ArgumentUtils.checkMissing(request, 'request')
@@ -89,6 +90,7 @@ class ProductionLogService {
     def now = new Date()
     long offset = (long) (DateUtils.MILLIS_PER_DAY * request.ageDays)
     def ageDate = new Date(now.time - offset)
+    //println "ageDate = $ageDate $ageDate.time"
     def batchSize = request.batchSize ?: 500
     log.debug("archiveOld: request = {}, ageDate = {}", request, ageDate)
 
@@ -104,7 +106,8 @@ class ProductionLogService {
       ProductionLog.withTransaction { txnStatus ->
         try {
           //println "list1 = ${ProductionLog.list().size()}:${ProductionLog.list()*.dateTime}"
-          def recs = ProductionLog.findAllByDateTimeLessThan(ageDate, [max: batchSize])
+          def recs = ProductionLog.findAllByDateTimeLessThan(ageDate, Pageable.from((Integer) 0, (Integer) batchSize))
+
           recCount = recs.size()
           //println " recs = ${recs*.dateTime}"
 

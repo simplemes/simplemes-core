@@ -24,7 +24,7 @@ ifeval::["{backend}" != "pdf"]
 
 endif::[]
 
-The SimpleMES data model contains many domain classes to support production operations.
+The SimpleMESX data model contains many domain classes to support production operations.
 The object big picture looks like this:
 
 
@@ -38,13 +38,13 @@ The object big picture looks like this:
 
 object Order
 object Product
-interface RoutingTrait
+object RoutingTrait
 object LSN
 
 object ActionLog
 object ProductionLog
 
-interface CodeSequenceTrait
+object CodeSequenceTrait
 object OrderSequence
 object LSNSequence
 

@@ -108,7 +108,7 @@ class OrderOperState implements WorkStateTrait, WorkableInterface {
   @Id @AutoPopulated UUID uuid
 
   /**
-   * The empty constructor.  Used by GORM to support Map as an argument.
+   * The empty constructor.
    */
   OrderOperState() {
     setDatesAsNeeded()

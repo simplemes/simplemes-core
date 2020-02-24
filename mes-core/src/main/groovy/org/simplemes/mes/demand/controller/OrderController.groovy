@@ -79,7 +79,7 @@ class OrderController extends BaseCrudRestController {
    * batches archived at a time.  This last option is used to limit the slowdown from archiving during 'catch-up' scenarios when
    * archiving has not been run recently.  Values that exceed the maximum will be ignored and the maximum will be used.
    * <p/>
-   * This method is called automatically once per day using the job scheduler in Grails.
+   * This method is called automatically once per day using the job scheduler in production/dev environments.
    * <p/>
    * The JSON is in the format:
    * <pre>

@@ -17,6 +17,8 @@ interface ProductionLogRepository extends BaseRepository, CrudRepository<Product
 
   Optional<ProductionLog> findByUuid(UUID uuid)
 
+  List<ProductionLog> findAllByDateTimeLessThan(Date date, Pageable pageable)
+
   List<ProductionLog> list(Pageable pageable)
 
   List<ProductionLog> list()

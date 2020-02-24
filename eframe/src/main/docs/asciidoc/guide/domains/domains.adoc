@@ -27,6 +27,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<beforeDelete Method>>#
 [inline-toc]#<<Transactions>>#
 [inline-toc]#<<Initial Data Load>>#
+[inline-toc]#<<Locking>>#
 
 
 [inline-toc-header]#Relationships/Encoding#
@@ -89,7 +90,7 @@ We found that very few of the Hibernate features were very important.  This incl
 * Lazy Loading or Proxying of Associations - Important, but we added work-arounds for
   the key cases (<<Simple Foreign Reference>> and <<parent-child-one-to-many>>.
 
-* Optimistic Locking - We implemented a work-around for this too.
+* Optimistic <<Locking>> - We implemented a work-around for this too.
 
 
 The features we did not really need include:
@@ -154,7 +155,7 @@ used by the <<StandardModelAndView>>.
 There are a few requirements needed to implement domains in this framework:
 
 * A UUID identifier with the name _'uuid'_.
-* A version field (integer) for optimistic locking.
+* A version field (integer) for optimistic <<Locking>>.
 * See <<Repository Requirements>> for more requirements on the domain's repository.
 
 ==== Duplicate Data (Sub-Classes)
@@ -547,6 +548,39 @@ with a transaction.
 The most common cases are automatically wrapped when needed in the framework.
 
 
+==== Locking
+
+Database locking is a tricky subject.  We take a very simplistic approach to locking:
+Most updates take place using optimistic locking with a `version` field.
+Pessimistic locking is possible with a specific query annotation.
+
+Also, we enforce that all UPDATE/INSERT SQL requests must be in a database transaction.
+
+===== Optimistic Locking
+
+Optimistic locking is handled by altering the update queries to add _'and version = :version'_ and
+to increment the version during the update.  This means an exception will be thrown if a
+version field is not given or the record was updated by another user.
+
+===== Pessimistic Locking
+
+Pessimistic locking is handled by using an explicit SQL query in your repository.
+You must handle this in your application code. For example:
+
+[source,groovy]
+.Example - Pessimistic Locking
+----
+interface LSNSequenceRepository extends BaseRepository, CrudRepository<LSNSequence, UUID> {
+  @Query("select * from lsn_sequence o where o.uuid = :uuid for update ")  // <.>
+  Optional<LSNSequence> findByUuidWithLock(UUID uuid)  // <.>
+}
+----
+<.> Forces a lock on the record when read.
+<.> We recommend that you add _'withLock'_ on the method name.
+
+This will place the lock on the record when the query is executed.  It also means the lock
+record values are returned with the `find()` method.  This prevents all other users from
+changing this record until you commit/rollback the transaction.
 
 // Relationships/Encoding
 ==== Relationships

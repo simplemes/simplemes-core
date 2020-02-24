@@ -11,6 +11,9 @@ import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.mes.misc.FieldSizes
 
+import javax.annotation.Nullable
+import javax.persistence.Column
+
 /**
  * This class represents the result of a production action on the shop floor.
  * Typically, this is written when the order/LSN is taken out of work so that the
@@ -30,16 +33,19 @@ class ProductionLog {
   /**
    * The action performed (<b>Required</b>).
    */
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String action
 
   /**
    * The date/time the action took place  (<b>Default:</b> now).
    */
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateTime = new Date()
 
   /**
    * The date/time the action took place  (<b>Default:</b> dateTime).
    */
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date startDateTime = new Date()
 
   /**
@@ -50,36 +56,43 @@ class ProductionLog {
   /**
    * The user who performed this action (User ID) (<b>Required</b>).
    */
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String userName
 
   /**
    * The Order processed.
    */
+  @Column(name = 'ordr', length = FieldSizes.MAX_CODE_LENGTH, nullable = true)
   String order
 
   /**
    * The LSN processed.
    */
+  @Column(length = FieldSizes.MAX_LSN_LENGTH, nullable = true)
   String lsn
 
   /**
    * The Product for the LSN/Order.  Determined automatically on save.
    */
+  @Column(length = FieldSizes.MAX_PRODUCT_LENGTH, nullable = true)
   String product
 
   /**
    * The master routing this production action took place on.
    */
+  @Column(length = FieldSizes.MAX_PRODUCT_LENGTH, nullable = true)
   String masterRouting
 
   /**
    * The routing operation sequence where this action was performed.
    */
+  @Nullable
   Integer operationSequence = 0
 
   /**
    * The Work Center this action took place at.
    */
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = true)
   String workCenter
 
   /**
@@ -100,33 +113,14 @@ class ProductionLog {
   //BigDecimal qtyWithDefects
   //BigDecimal qtyScrapped
 
+  @SuppressWarnings("unused")
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateCreated
 
+  @SuppressWarnings("unused")
   @Id @AutoPopulated UUID uuid
 
-
-  static constraints = {
-    action(maxSize: FieldSizes.MAX_CODE_LENGTH, nullable: false, blank: false)
-    userName(maxSize: FieldSizes.MAX_CODE_LENGTH, nullable: false, blank: false)
-    order(maxSize: FieldSizes.MAX_CODE_LENGTH, nullable: true, blank: true)
-    lsn(maxSize: FieldSizes.MAX_LSN_LENGTH, nullable: true, blank: true)
-    product(maxSize: FieldSizes.MAX_PRODUCT_LENGTH, nullable: true, blank: true)
-    masterRouting(maxSize: FieldSizes.MAX_PRODUCT_LENGTH, nullable: true, blank: true)
-    operationSequence(nullable: true)
-    workCenter(maxSize: FieldSizes.MAX_CODE_LENGTH, nullable: true, blank: true)
-    qty(nullable: true, scale: FieldSizes.STANDARD_DECIMAL_SCALE)
-    qtyStarted(nullable: true, scale: FieldSizes.STANDARD_DECIMAL_SCALE)
-    qtyCompleted(nullable: true, scale: FieldSizes.STANDARD_DECIMAL_SCALE)
-  }
-
-  /**
-   * <i>Internal definitions for GORM framework.</i>
-   */
-  static mapping = {
-    order column: 'ordr'
-  }
 
   /**
    * Defines the default general field ordering for GUIs and other field listings/reports.

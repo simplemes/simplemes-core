@@ -19,6 +19,7 @@ import org.simplemes.mes.demand.domain.Order
  */
 class WorkStateTraitSpec extends BaseSpecification {
 
+  @SuppressWarnings("unused")
   static specNeeds = SERVER
 
   /**
@@ -30,10 +31,10 @@ class WorkStateTraitSpec extends BaseSpecification {
   LSNOperState buildLSNOperState(Map options) {
     def order = new Order(order: 'ABC')
     def lsn = new LSN(lsn: 'SN001')
-    order.addToLsns(lsn)
+    order.lsns << lsn
 
     def lsnOperState = new LSNOperState(options)
-    lsn.addToOperationStates(lsnOperState)
+    lsn.operationStates << lsnOperState
     order.save()
 
     return lsnOperState

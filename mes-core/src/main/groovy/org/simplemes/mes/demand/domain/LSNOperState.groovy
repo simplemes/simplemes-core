@@ -113,7 +113,7 @@ class LSNOperState implements WorkStateTrait, WorkableInterface {
   @Id @AutoPopulated UUID uuid
 
   /**
-   * The empty constructor.  Used by GORM to support Map as an argument.
+   * The empty constructor.  
    */
   LSNOperState() {
     setDatesAsNeeded()
@@ -151,6 +151,6 @@ class LSNOperState implements WorkStateTrait, WorkableInterface {
    */
   @Override
   String toString() {
-    return RoutingUtils.combineKeyAndSequence(lsn?.lsn, sequence)
+    return RoutingUtils.combineKeyAndSequence(lsn?.lsn, sequence) + " " + qtyInQueue + "/" + qtyInWork
   }
 }

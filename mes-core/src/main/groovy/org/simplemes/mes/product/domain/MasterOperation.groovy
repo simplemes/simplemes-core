@@ -54,10 +54,11 @@ class MasterOperation implements OperationTrait {
   String customFields
 
 
+  @SuppressWarnings("unused")
   @Id @AutoPopulated UUID uuid
 
   /**
-   * The empty constructor.  Used by GORM to support Map as an argument.
+   * The empty constructor.
    */
   MasterOperation() {}
 
@@ -75,6 +76,7 @@ class MasterOperation implements OperationTrait {
   /**
    * The primary keys for this record are routing and sequence.  Routing is the parent key.
    */
+  @SuppressWarnings("unused")
   static keys = ['sequence']
 
   /**

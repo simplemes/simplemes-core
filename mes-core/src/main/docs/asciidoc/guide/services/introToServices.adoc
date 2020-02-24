@@ -81,34 +81,6 @@ If the service fails, then it will throw an exception and the transaction will b
 
 ==== Transactions
 
-Services follow the normal Hibernate/JTA transaction logic.  Most service methods are transactional. If you call several
-transactional methods from outside of a transaction, then each method will normally be executed
-in its own transaction.
+Services follow the normal framework transaction logic.  See <<Enterprise Framework>> for details.
 
-You can combine multiple service methods into one transaction by creating your own transactional service
-method that calls the other service methods.  Hibernate/JTA will use your method's transaction for all method calls within
-your service method.  For example:
-
-[source,groovy]
-.Transaction Example
-----
-@Transactional          // <.>
-class MyService {
-  def workService       // <.>
-  def otherService
-
-  void combinedMethod(...) {
-    workService.start(...)
-    otherService.someMethod(...)
-  }
-  . . .
-}
-----
-<.> GOTM @Transactional defaults to 'requires' a transaction.
-<.> Injected automatically by _@javax.inject.Inject_ at run time.
-
-When you call the `combinedMethod()`, it will create a single transaction and then call `start()` and `someMethod()`.
-Those methods will be called within the same transaction as the `combinedMethod()`.
-
-NOTE: GORM also provides a domain method `withTransaction()` that can create a transaction.
 
