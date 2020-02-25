@@ -29,7 +29,7 @@ import org.simplemes.mes.tracking.service.ProductionLogService
 class WorkServiceSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [SERVER, JSON]
+  static specNeeds = SERVER
 
   /**
    * The work service being tested.
@@ -63,7 +63,7 @@ class WorkServiceSpec extends BaseSpecification {
     order2.qtyInQueue == 89.8
 
     and: 'the action is logged'
-    def l = ActionLog.findAllByAction(WorkService.ACTION_START)
+    def l = ActionLog.list().findAll { it.action == WorkService.ACTION_START }
     l.size() == 1
     l[0].order == order
     l[0].qty == 10.2
@@ -175,12 +175,12 @@ class WorkServiceSpec extends BaseSpecification {
     order2.qtyInQueue == 89.8
 
     and: 'the action is logged'
-    def al = ActionLog.findByAction(WorkService.ACTION_COMPLETE)
+    def al = ActionLog.list().find { it.action == WorkService.ACTION_COMPLETE }
     al.order == order
     al.qty == 10.2
 
     and: 'the production log is written correctly'
-    def pl = ProductionLog.findByAction(WorkService.ACTION_COMPLETE)
+    def pl = ProductionLog.list().find { it.action == WorkService.ACTION_COMPLETE }
     pl.order == order.order
     pl.qty == 10.2
     pl.elapsedTime == 10000
@@ -189,7 +189,7 @@ class WorkServiceSpec extends BaseSpecification {
   }
 
   @Rollback
-  def "verify that complete works with product, LSN, work center no no dates"() {
+  def "verify that complete works with product, LSN, work center and no dates"() {
     given: 'a released order'
     def order = MESUnitTestUtils.releaseOrder(qty: 1, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
     def lsn = order.lsns[0]
@@ -204,7 +204,7 @@ class WorkServiceSpec extends BaseSpecification {
     service.complete(new CompleteRequest(order: order, lsn: lsn, qty: 1, workCenter: workCenter))
 
     then: 'the action is logged correctly'
-    def al = ActionLog.findByAction(WorkService.ACTION_COMPLETE)
+    def al = ActionLog.list().find { it.action == WorkService.ACTION_COMPLETE }
     al.order == order
     al.lsn == lsn
     al.qty == 1
@@ -212,7 +212,7 @@ class WorkServiceSpec extends BaseSpecification {
     al.product == order.product
 
     and: 'the production log is written correctly'
-    def pl = ProductionLog.findByAction(WorkService.ACTION_COMPLETE)
+    def pl = ProductionLog.list().find { WorkService.ACTION_COMPLETE }
     pl.order == order.order
     pl.qty == 1
     pl.elapsedTime < 1000
@@ -332,13 +332,13 @@ class WorkServiceSpec extends BaseSpecification {
     order2.qtyInQueue == 100.0
 
     and: 'the action is logged'
-    def al = ActionLog.findByAction(WorkService.ACTION_REVERSE_START)
+    def al = ActionLog.list().find { it.action == WorkService.ACTION_REVERSE_START }
     al.order == order
     al.qty == 10.2
     al.dateTime == reverseStartTime
 
     and: 'the production log is written correctly'
-    def pl = ProductionLog.findByAction(WorkService.ACTION_REVERSE_START)
+    def pl = ProductionLog.list().find { it.action == WorkService.ACTION_REVERSE_START }
     pl.order == order.order
     pl.qty == 10.2
     pl.qtyStarted == 10.2
@@ -364,7 +364,7 @@ class WorkServiceSpec extends BaseSpecification {
     service.reverseStart(new StartRequest(order: order, lsn: lsn, qty: 1, workCenter: workCenter))
 
     then: 'the action is logged'
-    def al = ActionLog.findByAction(WorkService.ACTION_REVERSE_START)
+    def al = ActionLog.list().find { it.action == WorkService.ACTION_REVERSE_START }
     al.order == order
     al.lsn == lsn
     al.qty == 1
@@ -372,7 +372,7 @@ class WorkServiceSpec extends BaseSpecification {
     al.product == order.product
 
     and: 'the production log is written correctly'
-    def pl = ProductionLog.findByAction(WorkService.ACTION_REVERSE_START)
+    def pl = ProductionLog.list().find { it.action == WorkService.ACTION_REVERSE_START }
     pl.order == order.order
     pl.qty == 1
     pl.elapsedTime < 1000
@@ -406,7 +406,7 @@ class WorkServiceSpec extends BaseSpecification {
     order2.qtyInQueue == 100.0
 
     and: 'the action is logged'
-    def l = ActionLog.findAllByAction(WorkService.ACTION_REVERSE_START)
+    def l = ActionLog.list().findAll { it.action == WorkService.ACTION_REVERSE_START }
     l.size() == 1
     l[0].order == order
     l[0].qty == 10.2

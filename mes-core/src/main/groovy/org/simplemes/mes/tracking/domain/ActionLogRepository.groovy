@@ -27,6 +27,4 @@ interface ActionLogRepository extends BaseRepository, CrudRepository<ActionLog, 
 
   List<ActionLog> findAllByLsn(LSN lsn)
 
-  List<ActionLog> findAllByAction(String action)
-
 }

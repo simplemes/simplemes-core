@@ -55,7 +55,7 @@ class OrderServiceSpec extends BaseSpecification {
     UnitTestUtils.dateIsCloseToNow(order.dateReleased)
 
     and: 'the right ActionLog record was created'
-    def l = ActionLog.findAllByAction(OrderService.ACTION_RELEASE_ORDER)
+    def l = ActionLog.list().findAll { it.action == OrderService.ACTION_RELEASE_ORDER }
     assert l.size() == 1
     assert l[0].order == order
     assert l[0].qty == 10
@@ -90,7 +90,7 @@ class OrderServiceSpec extends BaseSpecification {
     order.qtyInQueue == 0
 
     and: 'the right ActionLog record was created for the order'
-    def l = ActionLog.findAllByAction(OrderService.ACTION_RELEASE_ORDER)
+    def l = ActionLog.list().findAll { it.action == OrderService.ACTION_RELEASE_ORDER }
     assert l.size() == 1
     assert l[0].order == order
     assert l[0].qty == 5
@@ -128,8 +128,8 @@ class OrderServiceSpec extends BaseSpecification {
     lsns[0].dateFirstQueued == dateTime
 
     and: 'the right ActionLog record was created for the order'
-    def l = ActionLog.findAllByAction(OrderService.ACTION_RELEASE_ORDER)
-    l[0].dateTime == dateTime
+    def l = ActionLog.list().find { it.action == OrderService.ACTION_RELEASE_ORDER }
+    l.dateTime == dateTime
 
     and: 'the right ActionLog record was created for each LSN'
     for (lsn in lsns) {
@@ -234,10 +234,10 @@ class OrderServiceSpec extends BaseSpecification {
 
     and: 'there is one Action Log record.'
     ActionLog.list().size() == 1
-    def list = ActionLog.findAllByAction(OrderService.ACTION_RELEASE_ORDER)
-    list[0].order == order
-    list[0].product == order1.product
-    list[0].qty == 5.0
+    def al = ActionLog.list().find { it.action == OrderService.ACTION_RELEASE_ORDER }
+    al.order == order
+    al.product == order1.product
+    al.qty == 5.0
   }
 
   @Rollback

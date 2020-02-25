@@ -73,7 +73,7 @@ class WorkServiceRoutingSpec extends BaseSpecification {
     order.operationStates[1].qtyInQueue == 1.2
 
     and: 'the action is logged'
-    def l = ActionLog.findAllByAction(WorkService.ACTION_COMPLETE)
+    def l = ActionLog.list().findAll { it.action == WorkService.ACTION_COMPLETE }
     assert l.size() == 1
     assert l[0].order == order
     assert l[0].qty == 1.2
