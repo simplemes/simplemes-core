@@ -207,8 +207,7 @@ public class DomainEntityTransformation implements ASTTransformation {
     // Find all fields that are simple references to another domain entity.
     for (FieldNode fieldNode : classNode.getFields()) {
       ClassNode typeNode = fieldNode.getType();
-      boolean mappedEntity = typeNode.getAnnotations(new ClassNode(MappedEntity.class)).size() > 0;
-      if (mappedEntity && isForeignReference(fieldNode)) {
+      if (isSingleReference(fieldNode)) {
         String getterName = "get" + StringUtils.capitalize(fieldNode.getName());
         //  public List lazyReferenceLoad(Object object)
         List<Expression> delegateArgs = new ArrayList<>();
@@ -219,19 +218,22 @@ public class DomainEntityTransformation implements ASTTransformation {
     }
   }
 
-  private boolean isForeignReference(FieldNode fieldNode) {
-    List<AnnotationNode> annotations = fieldNode.getAnnotations(new ClassNode(ManyToOne.class));
-    if (annotations.size() > 0) {
-      AnnotationNode annotationNode = annotations.get(0);
-      if (annotationNode != null) {
-        Expression targetEntity = annotationNode.getMember("targetEntity");
-        if (targetEntity instanceof ClassExpression) {
-          String target = targetEntity.getText();
-          return target.equals(fieldNode.getType().getText());
-        }
-      }
+  /**
+   * Returns true if the given field is a single reference to another domain entity.
+   *
+   * @param fieldNode The field to check.
+   * @return True if a single reference.
+   */
+  private boolean isSingleReference(FieldNode fieldNode) {
+    // The field must be a domainEntity.
+    boolean mappedEntity = fieldNode.getType().getAnnotations(new ClassNode(MappedEntity.class)).size() > 0;
+    if (!mappedEntity) {
+      return false;
     }
-    return false;
+
+    // And it must have a ManyToOne annotation.
+    List<AnnotationNode> annotations = fieldNode.getAnnotations(new ClassNode(ManyToOne.class));
+    return (annotations.size() > 0);
   }
 
   /**

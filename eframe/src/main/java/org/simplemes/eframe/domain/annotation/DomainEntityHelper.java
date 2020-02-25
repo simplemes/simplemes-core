@@ -678,7 +678,13 @@ public class DomainEntityHelper {
           // Force the parent reference to work around issue with children and grand children.
           Method m1 = child.getClass().getDeclaredMethod("set" + StringUtils.capitalize(mappedByFieldName), object.getClass());
           m1.invoke(child, object);
-          //System.out.println("  parent:" + parent);
+          //System.out.println("  parent:" + object);
+          // And mark that it was loaded already
+          Map<String, Object> domainSettingsChild = getDomainSettings((DomainEntityInterface) child);
+          if (domainSettingsChild != null) {
+            String alreadyLoadedName = SETTINGS_LOADED_REFERENCE + mappedByFieldName;
+            domainSettingsChild.put(alreadyLoadedName, true);
+          }
         }
       }
     }
@@ -1130,6 +1136,7 @@ public class DomainEntityHelper {
    *
    * @return True if in test mode.
    */
+  @SuppressWarnings("unused")
   public static boolean isEnvironmentDev() {
     if (isEnvironmentDev == null) {
       isEnvironmentDev = (Boolean) invokeGroovyMethod("org.simplemes.eframe.application.Holders", "isEnvironmentDev");

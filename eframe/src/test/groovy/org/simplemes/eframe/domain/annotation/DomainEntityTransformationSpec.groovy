@@ -333,8 +333,7 @@ class DomainEntityTransformationSpec extends BaseSpecification {
     new OrderLine(order: order, product: 'BIKE', sequence: 1).save()
     new OrderLine(order: order, qty: 2.0, product: 'WHEEL', sequence: 2).save()
 
-    when: 'the get and join method is called to read the value'
-    //def order2 = Order.get(order.uuid)
+    when: 'the parent record is read'
     def order2 = Order.findByUuid(order.uuid)
 
     then: 'the orderLines are populated'
@@ -476,7 +475,7 @@ class DomainEntityTransformationSpec extends BaseSpecification {
 
   @SuppressWarnings("GroovyAssignabilityCheck")
   @Rollback
-  def "verify that parent reference lazy load getter is not added for parent-style references"() {
+  def "verify that parent reference lazy load getter is added for parent-style references"() {
     given: 'a mocked domainEntityHelper for the lazy method call'
     def domainEntityHelper = Mock(DomainEntityHelper)
     DomainEntityHelper.instance = domainEntityHelper
@@ -511,7 +510,7 @@ class DomainEntityTransformationSpec extends BaseSpecification {
     order.getOrderLine()
 
     then: 'the method is called correctly'
-    0 * domainEntityHelper.lazyReferenceLoad(_, 'orderLine', _) >> { args ->
+    1 * domainEntityHelper.lazyReferenceLoad(_, 'orderLine', _) >> { args ->
       //println "args = $args";
       // For some reason, Spock does not match the instance variable in the DSL above.  Instead, we need to do this manually.
       //noinspection GroovyAssignabilityCheck

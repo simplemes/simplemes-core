@@ -1,14 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package sample.domain
 
 
 import io.micronaut.data.repository.CrudRepository
 import org.simplemes.eframe.domain.BaseRepository
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * The sample order repository base interface.  Provides the methods for the repo,
@@ -19,7 +17,7 @@ interface OrderLineRepository extends BaseRepository, CrudRepository<OrderLine, 
 
   List<OrderLine> findAllByOrder(Order order)
 
-  Optional<OrderLine> findById(UUID uuid)
+  Optional<OrderLine> findByUuid(UUID uuid)
 
   List<OrderLine> list()
 

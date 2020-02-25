@@ -1108,6 +1108,35 @@ class DomainEntityHelperSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that the parent reference is fully loaded when a child record is retrieved outside of the parent domain"() {
+    given: 'a domain record with a foreign reference to a record with children'
+    def order = new Order(order: 'M1001')
+    order.save()
+    def ol = new OrderLine(order: order, qty: 2.0, product: 'WHEEL', sequence: 2).save()
+
+    when: 'the child record is read directly - no parent record'
+    def ol2 = OrderLine.findByUuid(ol.uuid)
+
+    then: 'the parent reference is populated'
+    ol2.order.order == 'M1001'
+  }
+
+  @Rollback
+  def "verify that the parent reference is not re-read from a child getter"() {
+    given: 'a domain with children'
+    def sampleParent = new SampleParent(name: 'ABC').save()
+    new SampleChild(sampleParent: sampleParent, key: 'XYZ').save()
+
+    when: 'the parent record is read'
+    def sampleParent2 = SampleParent.findByUuid(sampleParent.uuid)
+    DomainEntityHelper.instance.lastLazyRefLoaded = null
+
+    then: 'the parent ref is populated correctly without another read'
+    sampleParent2.sampleChildren[0].sampleParent.name == 'ABC'
+    DomainEntityHelper.instance.lastLazyRefLoaded == null
+  }
+
+  @Rollback
   def "verify that single foreign reference relationships are null when not found"() {
     given: 'a domain with no list of foreign references'
     def sampleParent = new SampleParent(name: 'ABC').save()
