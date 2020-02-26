@@ -1,6 +1,5 @@
 package org.simplemes.mes.demand.service
 
-
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.mes.demand.ResolveIDRequest
@@ -64,20 +63,13 @@ class ResolveService {
             // Just one found, so use it.
             lsn = lsns[0]
           } else {
-            // error.3011.message=More than one LSN matches the input {0}.
-            throw new BusinessException(3011, [barcode])
+            //error.3011.message=More than one LSN matches "{0}".  {1} LSNs exist with the same ID.
+            throw new BusinessException(3011, [barcode, lsns.size()])
           }
         } else {
-          // Try finding orders that match the barcode.
-          def orders = Order.findAllByOrder(barcode)
-          if (orders) {
-            // Matches at least one Order
-            if (orders.size() == 1) {
-              // Just one found, so use it.
-              order = orders[0]
-              // No else needed since the Order has a unique constraint on it.
-            }
-          } else {
+          // Try finding an order that matches the barcode.
+          order = Order.findByOrder(barcode)
+          if (!order) {
             // No matches found.
             // error.3012.message=No Orders or LSNs found for the input {0}.
             throw new BusinessException(3012, [barcode])
@@ -172,15 +164,15 @@ class ResolveService {
         // Find the right order operation.
         if (request.operationSequence) {
           // A specific operation was given, so use the order state that matches (if any)
-          return [order.operationStates.find() { it.sequence == request.operationSequence }]
-        } else {
-          // No specific operation was given, so use first operation with a qtyInQueue or qtyInWork
-          for (op in order.operationStates) {
-            if (op.qtyInQueue > 0 || op.qtyInWork > 0) {
-              return [op]
-            }
+          return [order.operationStates.find { it.sequence == request.operationSequence }]
+        }
+        // No specific operation was given, so use first operation with a qtyInQueue or qtyInWork
+        for (op in order.operationStates) {
+          if (op.qtyInQueue > 0 || op.qtyInWork > 0) {
+            return [op]
           }
         }
+
       }
     } else {
       // No routing, so just resolve to top-level objects (LSN or Order)
@@ -188,13 +180,11 @@ class ResolveService {
         if (request.lsn) {
           // We have a specific LSN, so just use it.
           return [request.lsn]
-        } else {
-          // Find the first LSN(s) that have a qty in queue
-          return order.resolveSpecificLSNs(1.0)
         }
-      } else {
-        return [order]
+        // Find the first LSN(s) that have a qty in queue
+        return order.resolveSpecificLSNs(1.0)
       }
+      return [order]
     }
     return []
 
@@ -238,10 +228,9 @@ class ResolveService {
       return w.order
     } else if (w instanceof OrderOperState) {
       return w.order
-    } else {
-      // Must be an order
-      return w as Order
     }
+    // Must be an order
+    return w as Order
   }
 
   /**
@@ -253,9 +242,8 @@ class ResolveService {
   LSN determineLSNForWorkable(WorkableInterface w) {
     if (w instanceof LSN) {
       return w
-    } else {
-      return null
     }
+    return null
   }
 
   /**
@@ -271,10 +259,14 @@ class ResolveService {
     ArgumentUtils.checkMissing(request.barcode, 'request.barcode')
     def response = new ResolveIDResponse(barcode: request.barcode)
 
-    def lsn = LSN.findByLsn(request.barcode)
-    if (lsn) {
-      response.lsn = lsn
-      return response
+    def lsns = LSN.findAllByLsn(request.barcode)
+    if (lsns) {
+      if (lsns.size() == 1) {
+        response.lsn = lsns[0]
+        return response
+      }
+      //error.3011.message=More than one LSN matches "{0}".  {1} LSNs exist with the same ID.
+      throw new BusinessException(3011, [request.barcode, lsns.size()])
     }
 
     def order = Order.findByOrder(request.barcode)

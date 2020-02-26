@@ -1,11 +1,13 @@
 package org.simplemes.mes.demand.service
 
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.LSNTrackingOption
 import org.simplemes.mes.demand.OrderReleaseRequest
+import org.simplemes.mes.demand.ResolveIDRequest
 import org.simplemes.mes.demand.ResolveWorkableRequest
 import org.simplemes.mes.demand.StartRequest
 import org.simplemes.mes.demand.domain.LSNSequence
@@ -28,9 +30,11 @@ class ResolveServiceSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static dirtyDomains = [ActionLog, ProductionLog, Order, Product, LSNSequence]
 
+  ResolveService resolveService
+
   def setup() {
     setCurrentUser()
-    loadInitialData(LSNSequence)
+    resolveService = Holders.getBean(ResolveService)
   }
 
   @Rollback
@@ -42,7 +46,7 @@ class ResolveServiceSpec extends BaseSpecification {
     ResolveWorkableRequest req = new ResolveWorkableRequest(order: order)
 
     then: 'the correct order is returned'
-    new ResolveService().resolveWorkable(req)[0] == order
+    resolveService.resolveWorkable(req)[0] == order
   }
 
   @Rollback
@@ -54,8 +58,8 @@ class ResolveServiceSpec extends BaseSpecification {
     ResolveWorkableRequest req = new ResolveWorkableRequest(lsn: order.lsns[0])
 
     then: 'the correct LSN is returned'
-    new ResolveService().resolveWorkable(req)[0] == order.lsns[0]
-    new ResolveService().resolveWorkable(req).size() == 1
+    resolveService.resolveWorkable(req)[0] == order.lsns[0]
+    resolveService.resolveWorkable(req).size() == 1
   }
 
   def "test resolveWorkable when using when passing order and LSN in the request for LSN-based processing"() {
@@ -75,7 +79,7 @@ class ResolveServiceSpec extends BaseSpecification {
     Order.withTransaction {
       def order2 = Order.findByOrder('1234')
       ResolveWorkableRequest req = new ResolveWorkableRequest(lsn: order2.lsns[0], order: order2)
-      assert new ResolveService().resolveWorkable(req)[0] == order.lsns[0]
+      assert resolveService.resolveWorkable(req)[0] == order.lsns[0]
       true
     }
   }
@@ -89,13 +93,13 @@ class ResolveServiceSpec extends BaseSpecification {
     ResolveWorkableRequest req = new ResolveWorkableRequest(lsn: order.lsns[0], order: order)
 
     then: 'the correct LSN is returned'
-    new ResolveService().resolveWorkable(req)[0] == order.lsns[0]
+    resolveService.resolveWorkable(req)[0] == order.lsns[0]
   }
 
   @Rollback
   def "test resolveWorkable with null input"() {
     when: 'method is called with null'
-    new ResolveService().resolveWorkable(null)
+    resolveService.resolveWorkable(null)
 
     then: 'fails with an exception'
     def e = thrown(BusinessException)
@@ -105,7 +109,7 @@ class ResolveServiceSpec extends BaseSpecification {
   @Rollback
   def "test resolveWorkable with empty request"() {
     when: 'method is called with null'
-    new ResolveService().resolveWorkable(new ResolveWorkableRequest())
+    resolveService.resolveWorkable(new ResolveWorkableRequest())
 
     then: 'fails with an exception'
     def e = thrown(BusinessException)
@@ -119,7 +123,7 @@ class ResolveServiceSpec extends BaseSpecification {
 
     when: 'the resolve is attempted'
     def req = new StartRequest(barcode: order.order)
-    new ResolveService().resolveProductionRequest(req)
+    resolveService.resolveProductionRequest(req)
 
     then: 'the request is updated with the resolved info'
     req.order == order
@@ -132,7 +136,7 @@ class ResolveServiceSpec extends BaseSpecification {
 
     when: 'the resolve is attempted'
     def req = new StartRequest(barcode: order.lsns[0].lsn)
-    new ResolveService().resolveProductionRequest(req)
+    resolveService.resolveProductionRequest(req)
 
     then: 'the request is updated with the resolved info'
     req.order == order
@@ -149,7 +153,7 @@ class ResolveServiceSpec extends BaseSpecification {
 
     when: 'the resolve is attempted'
     def req = new StartRequest(barcode: order.lsns[0].lsn)
-    new ResolveService().resolveProductionRequest(req)
+    resolveService.resolveProductionRequest(req)
 
     then: 'the request is updated with the resolved info'
     req.order == order
@@ -164,27 +168,25 @@ class ResolveServiceSpec extends BaseSpecification {
 
     and: 'LSNs that match'
     order2.lsns[0].lsn = order1.lsns[0].lsn
-    order2.save(flush: true)
+    order2.save()
     // Make sure we two LSNs that match.
     assert order2.lsns[0].lsn == order1.lsns[0].lsn
 
     when: 'the resolve is attempted'
     def req = new StartRequest(barcode: order1.lsns[0].lsn)
-    new ResolveService().resolveProductionRequest(req)
+    resolveService.resolveProductionRequest(req)
 
     then: 'an exception is thrown'
     def ex = thrown(BusinessException)
-    // error.3011.message=More than one LSN matches the input {0}.
-    UnitTestUtils.allParamsHaveValues(ex)
-    UnitTestUtils.assertContainsAllIgnoreCase(ex.toString(), ['LSN', order1.lsns[0].lsn])
-    ex.code == 3011
+    //error.3011.message=More than one LSN matches "{0}".  {1} LSNs exist with the same ID.
+    UnitTestUtils.assertExceptionIsValid(ex, ['LSN', order1.lsns[0].lsn], 3011)
   }
 
   @Rollback
   def "test resolveProductionRequest with a barcode that matches no LSN or Order"() {
     when: 'the resolve is attempted on non-existent LSN/Order'
     def req = new StartRequest(barcode: 'gibberish')
-    new ResolveService().resolveProductionRequest(req)
+    resolveService.resolveProductionRequest(req)
 
     then: 'an exception is thrown'
     def ex = thrown(BusinessException)
@@ -194,51 +196,21 @@ class ResolveServiceSpec extends BaseSpecification {
     ex.code == 3012
   }
 
-/*
-// This is disabled until we support lightweight LSN (LSN with no tracking).
-  void testResolveWorkableLSNWithOrderOnly() {
-    LSNStatus.initialDataLoad()
-    LSNSequence.initialDataLoad()
-    OrderStatus.initialDataLoad()
+  @Rollback
+  def "test resolveID with duplicate LSN - gracefully fails"() {
+    given: 'create two LSNs with the same ID'
+    def order1 = MESUnitTestUtils.releaseOrder(lsnTrackingOption: LSNTrackingOption.LSN_ONLY, lsns: ['SNX001'])
+    MESUnitTestUtils.releaseOrder(lsnTrackingOption: LSNTrackingOption.LSN_ONLY, lsns: ['SNX001'])
 
-    Product product = new Product(product: 'PC', lsnSequence: LSNSequence.get(1), lsnTrackingOption: LSNTrackingOption.ORDER_ONLY)
-    Order order = new Order(order: '1234', qtyToBuild: 1.0, product: product)
-    order.validate()
-    //println "order.errors = ${order.errors}"
-    //assert order.errors
-    assert order.save()
+    when: 'the resolve is attempted'
+    resolveService.resolveID(new ResolveIDRequest(barcode: order1.lsns[0].lsn))
 
-    order=Order.findByOrder('1234')
-    assert order != null
-
-    ResolveWorkableRequest req = new ResolveWorkableRequest(lsn: order.lsns[0])
-    assert new ResolveService().resolveWorkable(req)[0] == order
+    then: 'an exception is thrown'
+    def ex = thrown(BusinessException)
+    //error.3011.message=More than one LSN matches "{0}".  {1} LSNs exist with the same ID.
+    UnitTestUtils.assertExceptionIsValid(ex, ['LSN', order1.lsns[0].lsn, '2 LSNs'], 3011)
   }
 
-*/
-/*
-// This is disabled until we support lightweight LSN (LSN with no tracking).
-  void testResolveWorkableBoth2() {
-    LSNStatus.initialDataLoad()
-    LSNSequence.initialDataLoad()
-    OrderStatus.initialDataLoad()
-
-    Product product = new Product(product: 'PC', lsnSequence: LSNSequence.get(1), lsnTrackingOption: LSNTrackingOption.ORDER_ONLY)
-    Order order = new Order(order: '1234', qtyToBuild: 5.0, product: product)
-    order.populateLSNs()  // Must populate LSNs manually.
-    order.validate()
-    assert order.errors.allErrors.size()==0
-    assert order.save()
-    new OrderService().release(order)
-
-    order=Order.findByOrder('1234')
-    assert order != null
-
-    ResolveWorkableRequest req = new ResolveWorkableRequest(lsn: order.lsns[0], order: order)
-    assert new ResolveService().resolveWorkable(req)[0] == order
-  }
-
-*/
 
 }
 

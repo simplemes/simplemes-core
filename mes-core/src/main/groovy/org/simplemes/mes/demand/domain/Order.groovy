@@ -99,7 +99,6 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    */
   @OneToMany(mappedBy = "order")
   List<OrderOperState> operationStates
-  // This duplicate definition is needed since the normal hasMany injection uses a Set.  A List is easier to use.
 
   /**
    * The Order can have child lot/serial numbers (LSNs) that can be processed for many actions.
@@ -107,9 +106,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    */
   @OneToMany(mappedBy = "order")
   List<LSN> lsns
-  // This duplicate definition is needed since the normal hasMany injection uses a Set.  A List is easier to use.
 
-  // Automatically updated values.
   /**
    * Copied from Product on creation to determine what type of tracking is needed.  If product is not given,
    * then defaults to Order only.
@@ -433,6 +430,9 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
     }
     if (qtyToBuild == qtyDone) {
       markAsDone()
+    } else if (operations) {
+      // Just a qtyDone update, so force the save.
+      save()
     }
   }
 

@@ -1,5 +1,6 @@
 package org.simplemes.mes.demand.service
 
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.LSNTrackingOption
@@ -25,9 +26,11 @@ class ResolveServiceIDSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static dirtyDomains = [ActionLog, ProductionLog, Order, Product, LSNSequence]
 
+  ResolveService resolveService
+
   def setup() {
     setCurrentUser()
-    loadInitialData(LSNSequence)
+    resolveService = Holders.getBean(ResolveService)
   }
 
   @Rollback
@@ -39,7 +42,7 @@ class ResolveServiceIDSpec extends BaseSpecification {
     ResolveIDRequest resolveIDRequest = new ResolveIDRequest(barcode: order.order)
 
     when: 'resolve is attempted'
-    def resolveIDResponse = new ResolveService().resolveID(resolveIDRequest)
+    def resolveIDResponse = resolveService.resolveID(resolveIDRequest)
 
     then: 'the correct order is returned'
     resolveIDResponse.order == order
@@ -61,7 +64,7 @@ class ResolveServiceIDSpec extends BaseSpecification {
     ResolveIDRequest resolveIDRequest = new ResolveIDRequest(barcode: lsn.lsn)
 
     when: 'resolve is attempted'
-    def resolveIDResponse = new ResolveService().resolveID(resolveIDRequest)
+    def resolveIDResponse = resolveService.resolveID(resolveIDRequest)
 
     then: 'the correct lsn is returned'
     resolveIDResponse.lsn == lsn
@@ -81,13 +84,13 @@ class ResolveServiceIDSpec extends BaseSpecification {
 
     and: 'the LSN matches the order exactly'
     lsn.lsn = order.order
-    lsn.save(flush: true)
+    lsn.save()
 
     and: 'a resolve request with the right ID'
     ResolveIDRequest resolveIDRequest = new ResolveIDRequest(barcode: lsn.lsn)
 
     when: 'resolve is attempted'
-    def resolveIDResponse = new ResolveService().resolveID(resolveIDRequest)
+    def resolveIDResponse = resolveService.resolveID(resolveIDRequest)
 
     then: 'the correct lsn is returned'
     resolveIDResponse.lsn == lsn
@@ -102,7 +105,7 @@ class ResolveServiceIDSpec extends BaseSpecification {
     ResolveIDRequest resolveIDRequest = new ResolveIDRequest(barcode: 'GIBBERISH')
 
     when: 'resolve is attempted'
-    def resolveIDResponse = new ResolveService().resolveID(resolveIDRequest)
+    def resolveIDResponse = resolveService.resolveID(resolveIDRequest)
 
     then: 'resolve fails'
     !resolveIDResponse.resolved

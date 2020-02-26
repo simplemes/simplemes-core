@@ -1,10 +1,11 @@
 package org.simplemes.mes.demand
 
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.UUIDUtils
 import org.simplemes.mes.demand.domain.LSN
 import org.simplemes.mes.demand.domain.Order
-
+import org.simplemes.mes.demand.service.ResolveService
 
 /*
  * Copyright Michael Houston 2017. All rights reserved.
@@ -28,6 +29,8 @@ class OrderUtils {
    *   <li>Order - name</li>
    * </ul>
    *
+   * This will fallback to the ResolveService if the id is not a UUID.
+   *
    * @param id The ID to find the Order/LSN for.
    * @return The Order or LSN.  Can be null.
    */
@@ -49,15 +52,14 @@ class OrderUtils {
       }
     }
 
-    // Not found as UUID, so try as name next
-    def lsn = LSN.findByLsn(id)
-    if (lsn) {
-      return lsn
+    // Not found as UUID, so try as name next using the resolve service
+    ResolveService resolveService = Holders.getBean(ResolveService)
+    def resolveResponse = resolveService.resolveID(new ResolveIDRequest(barcode: id))
+    if (resolveResponse.lsn) {
+      return resolveResponse.lsn
     }
-
-    def order = Order.findByOrder(id)
-    if (order) {
-      return order
+    if (resolveResponse.order) {
+      return resolveResponse.order
     }
 
     return null

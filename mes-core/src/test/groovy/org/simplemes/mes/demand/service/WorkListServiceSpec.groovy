@@ -23,7 +23,7 @@ import org.simplemes.mes.tracking.domain.ProductionLog
 */
 
 /**
- *
+ * Tests.
  */
 class WorkListServiceSpec extends BaseSpecification {
 
