@@ -818,6 +818,20 @@ class DomainBinderSpec extends BaseSpecification {
     order2.version == 237
   }
 
+  @Rollback
+  def "verify that bind supports JDBC ResultSet - domain reference case"() {
+    given: 'populate raw table for the query'
+    def order = new Order(order: 'M1001', version: 237).save()
+    new AllFieldsDomain(name: 'ABC', order: order).save()
+
+    when: 'an SQL query result set is created'
+    def list = SQLUtils.instance.executeQuery("SELECT * FROM all_fields_domain", AllFieldsDomain)
+
+    then: 'record fields are populated'
+    list.size() == 1
+    list[0].order == order
+  }
+
   // remove foreign domain from list.
   // foreign add row to list
 

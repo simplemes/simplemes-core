@@ -11,12 +11,14 @@ import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.data.FieldDefinitions
 import org.simplemes.eframe.data.format.ConfigurableTypeDomainFormat
+import org.simplemes.eframe.data.format.DomainReferenceFieldFormat
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.domain.validate.ValidationErrorInterface
 import org.simplemes.eframe.exception.ValidationException
 import org.simplemes.eframe.misc.ArgumentUtils
+import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.TypeUtils
 
 import java.sql.ResultSet
@@ -230,6 +232,14 @@ class DomainBinder {
     preBindSpecialColumn(map, 'version', object)
 
     bind(object, map, false)
+
+    // Now, handle any domain references
+    for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
+      String name = rs.getMetaData().getColumnName(i).toLowerCase()
+      if (!mappings[name] && name.endsWith('_id')) {
+        bindPossibleDomainReference(name, object, rs.getObject(i))
+      }
+    }
 
     // Add the UUID since the basic bind() ignores it (it is not in the fieldDefinitions).
     def uuidColumnName = namingStrategy.mappedName('uuid').toUpperCase()
@@ -457,5 +467,18 @@ class DomainBinder {
     return object
   }
 
-
+  /**
+   * Attempt to bind the given value to the given object as a domain reference.
+   * @param columnName The column Name.
+   * @param object The parent object to bind the value into.
+   * @param value The value (a uuid).
+   */
+  void bindPossibleDomainReference(String columnName, Object object, Object value) {
+    // Find the field definition that this column is for.
+    def fieldName = NameUtils.convertFromColumnName(columnName - '_id')
+    def fieldDef = fieldDefs[fieldName]
+    if (fieldDef && fieldDef.format == DomainReferenceFieldFormat.instance) {
+      fieldDef.setFieldValue(object, fieldDef.format.decode((String) value, fieldDef))
+    }
+  }
 }
