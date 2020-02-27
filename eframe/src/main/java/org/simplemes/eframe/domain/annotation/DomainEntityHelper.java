@@ -614,7 +614,7 @@ public class DomainEntityHelper {
    * @param domainClass The domain class (a @MappedEntity).
    * @return The table name.
    */
-  String getTableName(Class domainClass) throws IllegalAccessException, InstantiationException {
+  public String getTableName(Class domainClass) throws IllegalAccessException, InstantiationException {
     // Check for specific name in the annotation.
     MappedEntity annotation = (MappedEntity) domainClass.getAnnotation(MappedEntity.class);
     if (annotation != null && annotation.value().length() > 0) {
