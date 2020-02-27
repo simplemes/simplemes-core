@@ -19,6 +19,11 @@ interface FieldDefinitionInterface {
   String getName()
 
   /**
+   * The field's Database column name.  
+   */
+  String getColumnName()
+
+  /**
    * The display label.  If not provided, then the field name +".label" is used.  This value can be looked up
    * in the messages.properties file.
    */

@@ -10,6 +10,7 @@ import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.test.BaseSpecification
 import sample.domain.AllFieldsDomain
+import sample.domain.Order
 import sample.domain.SampleChild
 import sample.domain.SampleParent
 import sample.domain.SampleSubClass
@@ -24,12 +25,13 @@ class SimpleFieldDefinitionSpec extends BaseSpecification {
 
   def "verify that persistent property constructor works"() {
     when: 'the constructor is used'
-    def field = new SimpleFieldDefinition(DomainUtils.instance.getPersistentField(AllFieldsDomain, 'qty'))
+    def field = new SimpleFieldDefinition(DomainUtils.instance.getPersistentField(Order, 'order'))
 
     then: 'the correct field is created'
-    field.name == 'qty'
-    field.type == BigDecimal
-    field.label == 'qty.label'
+    field.name == 'order'
+    field.type == String
+    field.label == 'order.label'
+    field.columnName == 'ordr'
   }
 
   def "verify that Map constructor works"() {

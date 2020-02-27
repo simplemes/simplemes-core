@@ -779,7 +779,37 @@ class DomainBinderSpec extends BaseSpecification {
     afd.dateTime == date
     afd.reportTimeInterval == ReportTimeIntervalEnum.LAST_6_MONTHS
     afd.status == EnabledStatus.instance
+  }
 
+  @SuppressWarnings("GroovyUnusedAssignment")
+  @Rollback
+  def "verify that bind supports JDBC ResultSet - column name mapping case"() {
+    given: 'populate raw table for the query'
+    def order1 = new Order(order: 'M1001').save()
+
+    when: 'an SQL query result set is created'
+    PreparedStatement ps = null
+    ResultSet rs = null
+    def order2 = null
+    try {
+      ps = getPreparedStatement("SELECT *  from ordr")
+      ps.execute()
+      rs = ps.getResultSet()
+      while (rs.next()) {
+        order2 = DomainBinder.bindResultSet(rs, Order) as Order
+      }
+    } finally {
+      if (ps != null) {
+        ps.close()
+      }
+      if (rs != null) {
+        rs.close()
+      }
+    }
+
+    then: 'record fields are populated'
+    order2.uuid == order1.uuid
+    order2.order == order1.order
   }
 
   // remove foreign domain from list.

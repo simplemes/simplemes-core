@@ -21,6 +21,11 @@ class SimpleFieldDefinition implements FieldDefinitionInterface {
   String name
 
   /**
+   * The field's Database column name.
+   */
+  String columnName
+
+  /**
    * The display label.  If not provided, then the field name is used.
    */
   String label
@@ -123,6 +128,7 @@ class SimpleFieldDefinition implements FieldDefinitionInterface {
   SimpleFieldDefinition(PersistentProperty property) {
     ArgumentUtils.checkMissing(property, 'property')
     name = property.name
+    columnName = property.columnName
     type = property.type
     this.property = property
     referenceType = property.referenceType

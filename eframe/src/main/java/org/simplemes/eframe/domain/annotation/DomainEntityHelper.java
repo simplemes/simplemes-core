@@ -586,7 +586,7 @@ public class DomainEntityHelper {
    * @param sql The SQL.
    * @return The statement.
    */
-  protected PreparedStatement getPreparedStatement(String sql) throws SQLException {
+  public PreparedStatement getPreparedStatement(String sql) throws SQLException {
     checkForTransaction();
     DataSource dataSource = getApplicationContext().getBean(DataSource.class);
     Connection connection = DataSourceUtils.getConnection(dataSource);

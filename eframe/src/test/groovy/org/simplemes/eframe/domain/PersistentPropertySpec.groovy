@@ -27,6 +27,23 @@ class PersistentPropertySpec extends BaseSpecification {
     prop.field == field
   }
 
+  def "verify that the columnName is correct"() {
+    given: 'a field'
+    def field = Order.getDeclaredField(fieldName)
+
+    when: 'the constructor is used'
+    def prop = new PersistentProperty(field)
+
+    then: 'the column is correct'
+    prop.columnName == columnName
+
+    where:
+    fieldName | columnName
+    'order'   | 'ordr'
+    'status'  | 'status'
+    'product' | 'product'
+  }
+
   def "verify that the field constructor works - column maxLength"() {
     given: 'a field'
     def field = Order.getDeclaredField('order')

@@ -10,6 +10,7 @@ package org.simplemes.eframe.domain;/*
 
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.annotation.MappedProperty;
+import io.micronaut.data.model.naming.NamingStrategy;
 
 import javax.annotation.Nullable;
 import javax.persistence.Column;
@@ -29,6 +30,11 @@ public class PersistentProperty {
    * The property/field Name.
    */
   String name;
+
+  /**
+   * The database column name.
+   */
+  String columnName;
 
   /**
    * The field type.
@@ -90,9 +96,30 @@ public class PersistentProperty {
     if (type == String.class) {
       maxLength = getFieldMaxLength(field);
     }
+
     if (column != null) {
       nullable = column.nullable();
+      if (!column.name().equals("")) {
+        columnName = column.name();
+      }
     }
+    if (columnName == null) {
+      // No column from the annotation, so try to use the right naming strategy.
+      NamingStrategy namingStrategy = null;
+      MappedEntity annotation = field.getDeclaringClass().getAnnotation(MappedEntity.class);
+      if (annotation != null) {
+        Class<? extends NamingStrategy> namingStrategyClass = annotation.namingStrategy();
+        try {
+          namingStrategy = namingStrategyClass.newInstance();
+        } catch (InstantiationException | IllegalAccessException ignored) {
+        }
+      }
+      if (namingStrategy == null) {
+        namingStrategy = NamingStrategy.DEFAULT;
+      }
+      columnName = namingStrategy.mappedName(name);
+    }
+
     this.field = field;
 
     //  Figure out if this is a domain reference of any type or parent/child.
@@ -170,6 +197,14 @@ public class PersistentProperty {
 
   public void setName(String name) {
     this.name = name;
+  }
+
+  public String getColumnName() {
+    return columnName;
+  }
+
+  public void setColumnName(String columnName) {
+    this.columnName = columnName;
   }
 
   public Class<?> getType() {

@@ -21,10 +21,7 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc-header]#Persistence#
 [inline-toc]#<<Repository Requirements>>#
-[inline-toc]#<<validate Method>>#
-[inline-toc]#<<beforeValidate Method>>#
-[inline-toc]#<<beforeSave Method>>#
-[inline-toc]#<<beforeDelete Method>>#
+[inline-toc]#<<Event Methods>>#
 [inline-toc]#<<Transactions>>#
 [inline-toc]#<<Initial Data Load>>#
 [inline-toc]#<<Locking>>#
@@ -40,6 +37,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc-header]#Others#
 [inline-toc]#<<Field Definitions>>#
 [inline-toc]#<<toStringLocalized()>>#
+[inline-toc]#<<Dynamic SQL - PreparedStatement>>#
 
 endif::[]
 
@@ -452,6 +450,22 @@ interface OrderRepositoryPostgres extends OrderRepository {  // <.>
 NOTE: The H2 version of the repository is normally defined in the production src.  This allows
       other modules to use these repositories in their test scenarios.  This bloats the
       .jar files somewhat, but is unavoidable.
+
+==== Event Methods
+
+The object life-cycle events methods are called when certain events take place:
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<validate Method>>#
+[inline-toc]#<<beforeValidate Method>>#
+[inline-toc]#<<beforeSave Method>>#
+[inline-toc]#<<beforeDelete Method>>#
+
+endif::[]
+
+
+
 
 ==== validate Method
 
@@ -1038,5 +1052,104 @@ if your domain has a single key and it is the first field in the <<Field Orderin
 static value.
 
 
+==== Dynamic SQL - PreparedStatement
+
+Sometimes, you just have to use SQL directly in your application code.  This is needed when
+the _where_ clause criteria is flexible and changes based on user input.  You will need to use
+the SQL directly.  This framework provides some helper classes to make this easier.
+It also tries to make sure you use safe and portable SQL capabilities.
+
+If you need dynamic sorting, then we recommend you the _Pageable_ support on most `list()`
+repository methods.  See <<Standard Repository Methods>> for an example.
+
+The most common scenario is to use a dynamically-generated SQL statement to find domain records.
+The framework provides a simplified way to handle the most common case:
+
+[source,groovy]
+.Example - PreparedStatement - Query with limits
+----
+
+String sql = "SELECT * FROM LSN where order=?" // <.>
+def list = SQLUtils.instance.executeQuery(sql,                   // <.>
+                                          LSN,                   // <.>
+                                          Pageable.from(0, 20),  // <.>
+                                          order.uuid.toString()) // <.>
+
+----
+<.> We want to find a list of LSN records for the given Order (using UUID).
+    This SQL could be created based on dynamic needs.
+    See <<SQL Injection>> below for restrictions on this SQL query.
+<.> The `execute()` method will execute the SQL, and return a list objects from the result set.
+<.> The Domain object return (in a list).
+<.> The results are limited to the first 20 rows.  Default: Page 0, page size 100.
+<.> The parameters used in the SQL.
+
+
+This will return a list of objects that match the selection criteria.  You need to make sure
+the SQL includes at least one replaceable parameter.
+
+WARNING: To avoid SQL Inject attacks on your application, always use static SQL queries.
+         Never build the SQL directly from user inputs.  This method will reject
+         queries that look like they might be used for injection attacks.  See <<SQL Injection>>
+         below for details.
+
+NOTE: To avoid connection leaks, the SQL must be executed in a transaction.
+      This is enforced by the framework.
+
+
+As an alternative, you can process the result set yourself if the normal binding mechanism
+doesn't handle the cases you need (complex joins, etc).
+
+[source,groovy]
+.Example - PreparedStatement - Use ResultSet Directly
+----
+
+def list = []
+String sql = "SELECT * FROM LSN where order=?"  // <.>
+PreparedStatement ps
+ResultSet rs
+try {
+  ps = SQLUtils.instance.getPreparedStatement(sql)
+  ps.setString(1, order.getUuid().toString())
+  ps.execute()
+  rs = ps.getResultSet()
+  while (rs.next()) {  // <.>
+    list << SQLUtils.instance.bindResultSet(rs, LSN)  // <.>
+  }
+} finally {  // <.>
+  try {
+    rs?.close()
+  } catch (Exception ignored) {  // <.>
+  }
+  ps?.close()
+}
+
+----
+<.> We want to find a list of LSN records for the given Order (using UUID).
+<.> Loop on the result set to build the domain object(s) (without saving).
+<.> Will bind the columns from the result set, where possible. Ignored columns will be
+    logged as warning messages.
+<.> Must always close the prepared statement and result set.
+<.> Need to make sure the prepared statement is closed, even if the result set close fails.
+
+
+===== SQL Injection
+
+SQL Injection is a serious security threat to all web-applications that use SQL.
+The simplest way to avoid this is to never use any sort of dynamic SQL.  Chances are,
+your application will require some sort of dynamic capability.
+
+The framework provides this SQL access with some limitations.  These limitations reduce
+the chance that an SQL injection attack will work on the query.
+
+The limitations include:
+
+* All dynamic SQL features will use the JDBC PreparedStatement approach.  PreparedStatement
+  prevents most forms of SQL injection attacks using the values.  It does not prevent
+  attacks if you build the SQL in an unsafe manner.
+* Quotes (single or double) not allowed. For example,  _WHERE column='READY'_ is not allowed.
+  You will need to use a parameter for cases like this.
+
+The execute methods will fail if your SQL violates these rules.
 
 include::configurableTypes.adoc[]

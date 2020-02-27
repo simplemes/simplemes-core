@@ -207,8 +207,7 @@ class DomainBinder {
     def mappings = [:]
     def props = DomainUtils.instance.getPersistentFields(object.getClass())
     for (prop in props) {
-      def columnName = namingStrategy.mappedName(prop.name).toLowerCase()
-      mappings[columnName] = prop.name
+      mappings[prop.columnName] = prop.name
     }
     // Now, build a list of values for the binder to use.
     def map = [:]
@@ -218,6 +217,7 @@ class DomainBinder {
         map[mappings[name]] = adjustSQLValue(rs, i)
       }
     }
+    log.trace('bind() Mapping columns: {}', map)
     // Now, fix the dateCreated and dateUpdated since those are ignored by the bind() method.
     if (map.dateCreated) {
       object.dateCreated = map.dateCreated
