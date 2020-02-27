@@ -4,6 +4,8 @@
 
 package org.simplemes.eframe.misc
 
+import io.micronaut.data.model.naming.NamingStrategy
+
 /**
  * Miscellaneous utilities for manipulating names in the application and for the framework.
  * <p/>
@@ -48,6 +50,16 @@ class NameUtils {
       value = value.simpleName
     }
     return lowercaseFirstLetter(value - 'Controller')
+  }
+
+  /**
+   * Converts the given field name to a standard column name.  Does not check the @Column annotation.
+   * Use the default naming strategy.
+   * @param fieldName The field name.
+   * @return The column name.
+   */
+  static String toColumnName(String fieldName) {
+    return NamingStrategy.DEFAULT.mappedName(fieldName)
   }
 
   /**

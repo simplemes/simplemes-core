@@ -1,13 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.misc
 
 import org.simplemes.eframe.test.BaseSpecification
 import sample.controller.SampleParentController
-
-/*
- * Copyright Michael Houston 2017. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -150,6 +148,18 @@ class NameUtilsSpec extends BaseSpecification {
     'REPORT_TIME_INTERVAL' | 'reportTimeInterval'
     ''                     | ''
     null                   | null
+  }
+
+  def "test toColumnName with supported inputs"() {
+    expect: 'the right value is returned'
+    NameUtils.toColumnName(fieldName) == result
+
+    where:
+    fieldName       | result
+    'column'        | 'column'
+    'overallStatus' | 'overall_status'
+    'orderId'       | 'order_id'
+    ''              | ''
   }
 
 
