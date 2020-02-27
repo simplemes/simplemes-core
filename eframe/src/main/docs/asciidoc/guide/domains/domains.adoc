@@ -1097,6 +1097,25 @@ NOTE: To avoid connection leaks, the SQL must be executed in a transaction.
       This is enforced by the framework.
 
 
+You can also use _Map_ as the result class in the query.  This makes simple SQL _COUNT(*)_ cases
+easier to use:
+
+[source,groovy]
+.Example - PreparedStatement - Simple Count Scenario
+----
+
+def tableName = DomainEntityHelper.instance.getTableName(Order)  // <.>
+def list = SQLUtils.instance.executeQuery("SELECT COUNT(*) as count FROM ${tableName}", Map) // <.>
+
+def count = list[0].count  // <.>
+
+----
+<.> The _Order_ table name is _ordr_.
+<.> We want to count the total number of records in the table.
+<.> The count is saved in a map in row 0, with a name of _'count'_.  The column name
+    is shifted to lowercase.  This handles databases that always return column names in upper case.
+    (e.g. Postgres).
+
 As an alternative, you can process the result set yourself if the normal binding mechanism
 doesn't handle the cases you need (complex joins, etc).
 

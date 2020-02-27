@@ -32,7 +32,8 @@ class SQLUtils {
    * Executes the given SQL as a prepared statement with the given arguments.
    * The row offset/limit defaults to offset 0, 100 rows max.
    * @param sql The SQL.
-   * @param domainClass The domain class to bind the result set to.
+   * @param domainClass The domain class to bind the result set to or Map.  If Map, then the results will be a list of Maps.
+   *        The Map element names are the lower-case form of the column names from the DB.
    * @param args Optional arguments for the query.  The first element can be a Pageable for row limits.
    * @return The list of records found.
    */
@@ -84,7 +85,16 @@ class SQLUtils {
       ps.execute()
       rs = ps.getResultSet()
       while (rs.next()) {
-        list << bindResultSet(rs, domainClass)
+        if (domainClass == Map) {
+          def map = [:]
+          for (int i = 1; i <= rs.metaData.columnCount; i++) {
+            String name = rs.getMetaData().getColumnName(i).toLowerCase()
+            map[name] = rs.getObject(i)
+          }
+          list << map
+        } else {
+          list << bindResultSet(rs, domainClass)
+        }
       }
     } finally {
       try {

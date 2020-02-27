@@ -211,7 +211,7 @@ class DomainBinder {
     }
     // Now, build a list of values for the binder to use.
     def map = [:]
-    for (int i = 1; i < rs.getMetaData().getColumnCount(); i++) {
+    for (int i = 1; i <= rs.getMetaData().getColumnCount(); i++) {
       String name = rs.getMetaData().getColumnName(i).toLowerCase()
       if (mappings[name]) {
         map[mappings[name]] = adjustSQLValue(rs, i)

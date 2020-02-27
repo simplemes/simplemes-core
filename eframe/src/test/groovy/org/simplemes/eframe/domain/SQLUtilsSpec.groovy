@@ -102,6 +102,23 @@ class SQLUtilsSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that executeQuery works - Map option"() {
+    given: 'some records to count'
+    for (i in (0..9)) {
+      new AllFieldsDomain(name: "M100$i", qty: 1.2).save()
+    }
+
+    when: 'the query is executed'
+    def list = SQLUtils.instance.executeQuery("SELECT COUNT(*) as count FROM all_fields_domain where qty=?", Map, 1.2)
+
+    then: 'the list is correct'
+    list.size() == 1
+
+    and: 'the record is mapped correctly'
+    list[0].count == 10
+  }
+
+  @Rollback
   def "verify that getPreparedStatement and bind work together"() {
     given: 'a domain record to find'
     def order = new Order(order: 'M1001').save()
