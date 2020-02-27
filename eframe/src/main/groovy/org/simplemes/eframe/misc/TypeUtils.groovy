@@ -4,6 +4,8 @@
 
 package org.simplemes.eframe.misc
 
+import groovy.transform.CompileDynamic
+import groovy.transform.CompileStatic
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.domain.DomainUtils
 
@@ -14,6 +16,7 @@ import java.lang.reflect.Field
  *
  */
 @SuppressWarnings("NonFinalPublicField")
+@CompileStatic
 class TypeUtils {
 
   /**
@@ -38,6 +41,7 @@ class TypeUtils {
    * @param name The name of the property.
    * @return The property value.
    */
+  @CompileDynamic
   static Object getStaticProperty(Object object, String name) {
     ArgumentUtils.checkMissing(object, 'object')
     if (object instanceof Class) {
@@ -58,6 +62,7 @@ class TypeUtils {
    * @param propertyName The static property to find.
    * @return A list of lists of values, top-level parent first.
    */
+  @CompileDynamic
   static List<List> getStaticPropertyInSuperClasses(Class c, String propertyName) {
     // TODO: Consider simplifying this since we no longer supported domain sub-classes?
     List<List> list = []
@@ -142,6 +147,7 @@ class TypeUtils {
    * @param addTitle If true, then add the title to the short string (e.g. 'ABC (title)').  (<b>Default:</b> false).
    * @return The short string representation of this (e.g. primary key value).  Can be null.
    */
+  @CompileDynamic
   static String toShortString(Object object, Boolean addTitle = false) {
     if (object == null) {
       return null
@@ -226,6 +232,47 @@ class TypeUtils {
       }
     }
     return clazz
+  }
+
+  /**
+   * Determines if the two classes can be assigned to each other if one is a primitive.
+   * Supports Integer, Long and Boolean.
+   * @param from The from assignment class.
+   * @param to The to assignment class.
+   * @return True if one is a primitive and can be assigned to the other.  If one is not a
+   */
+  @SuppressWarnings("GrEqualsBetweenInconvertibleTypes")
+  static boolean isPrimitiveAssignableTo(Class from, Class to) {
+    Class primitive = from.isPrimitive() ? from : to.isPrimitive() ? to : null
+    Class other = (to == primitive ? from : to)
+    if (!primitive) {
+      return false
+    }
+
+    // Make the to class the non-primitive.
+    switch (other) {
+      case int:
+        other = Integer
+        break
+      case long:
+        other = Long
+        break
+      case boolean:
+        other = Boolean
+        break
+    }
+
+    switch (primitive) {
+      case int:
+        return (other == Integer)
+      case long:
+        return (other == Long)
+      case boolean:
+        return (other == Boolean)
+    }
+
+    return false
+
   }
 
 }

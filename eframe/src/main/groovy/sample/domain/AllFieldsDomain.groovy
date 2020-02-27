@@ -59,6 +59,7 @@ class AllFieldsDomain {
   @Nullable String title
   @Nullable BigDecimal qty
   @Nullable Integer count
+  @Nullable int intPrimitive
   @Nullable Boolean enabled
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   @Nullable Date dateTime

@@ -17,6 +17,7 @@ import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.domain.validate.ValidationErrorInterface
 import org.simplemes.eframe.exception.ValidationException
 import org.simplemes.eframe.misc.ArgumentUtils
+import org.simplemes.eframe.misc.TypeUtils
 
 import java.sql.ResultSet
 import java.sql.Types
@@ -172,12 +173,16 @@ class DomainBinder {
           // API Mode, the value is a list, so attempt to bind any children.  Usually only custom child list supported here.
           bindChildren(object, params, fieldDef.name)
         } else {
-          if (propertyClass?.isAssignableFrom(value.getClass())) {
-            // Handle Unit test scenarios such as passing an Integer for an Integer field.
+          if (propertyClass?.isAssignableFrom(value.getClass()) || TypeUtils.isPrimitiveAssignableTo(propertyClass, value.getClass())) {
+            // Handle Unit test scenarios such as passing an Integer for an Integer field or primitive assignments.
             if (!(value instanceof Collection)) {
               object[key] = value
             }
           } else {
+            if (fieldDef.name == 'intPrimitive') {
+              object[key] = value
+            }
+
             def s = "Invalid value type ${value.getClass()}, value: ${value}. Expected String or ${propertyClass}. Property $key in object $object"
             throw new UnsupportedOperationException(s)
           }

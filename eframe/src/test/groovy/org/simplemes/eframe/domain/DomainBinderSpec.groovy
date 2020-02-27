@@ -739,7 +739,7 @@ class DomainBinderSpec extends BaseSpecification {
     def date = new Date()
     def afd1 = new AllFieldsDomain(name: 'ABC', title: 'DEF', qty: 1.2, count: 437, enabled: true, dueDate: dateOnly,
                                    dateTime: date, reportTimeInterval: ReportTimeIntervalEnum.LAST_6_MONTHS,
-                                   status: EnabledStatus.instance).save()
+                                   intPrimitive: 537, status: EnabledStatus.instance).save()
 
     def sampleParent = new SampleParent(name: 'ABC')
     sampleParent.allFieldsDomains = [afd1] as List<AllFieldsDomain>
@@ -774,6 +774,7 @@ class DomainBinderSpec extends BaseSpecification {
     afd.title == 'DEF'
     afd.qty == 1.2
     afd.count == 437
+    afd.intPrimitive == 537
     afd.enabled
     afd.dueDate == dateOnly
     afd.dateTime == date
