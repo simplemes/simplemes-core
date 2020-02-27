@@ -608,6 +608,26 @@ public class DomainEntityHelper {
     return namingStrategy.newInstance();
   }
 
+  /**
+   * Returns the table name for the given domain entityt
+   *
+   * @param domainClass The domain class (a @MappedEntity).
+   * @return The table name.
+   */
+  String getTableName(Class domainClass) throws IllegalAccessException, InstantiationException {
+    // Check for specific name in the annotation.
+    MappedEntity annotation = (MappedEntity) domainClass.getAnnotation(MappedEntity.class);
+    if (annotation != null && annotation.value().length() > 0) {
+      return annotation.value();
+    }
+
+    // No specific name, so use the naming strategy.
+    Class<? extends NamingStrategy> namingStrategyClass = ((MappedEntity) domainClass.getAnnotation(MappedEntity.class)).namingStrategy();
+    NamingStrategy namingStrategy = namingStrategyClass.newInstance();
+
+    return namingStrategy.mappedName(domainClass.getSimpleName());
+  }
+
 
   /**
    * Gets the (first) generic type for the given field.  Works for fields like: List&lt;XYZ&gt;.

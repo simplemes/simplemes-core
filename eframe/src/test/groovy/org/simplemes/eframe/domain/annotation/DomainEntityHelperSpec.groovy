@@ -1317,4 +1317,14 @@ class DomainEntityHelperSpec extends BaseSpecification {
     countRecords('sample_parent_all_fields_domain') == 0
   }
 
+  def "verify that getTableName works for supported cases"() {
+    expect: 'the table name is correct'
+    DomainEntityHelper.instance.getTableName(domainClass) == value
+
+    where:
+    domainClass | value
+    Order       | 'ordr'
+    OrderLine   | 'order_line'
+  }
+
 }

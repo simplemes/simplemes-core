@@ -173,7 +173,6 @@ class NameUtils {
     }
 
     return sb.toString()
-
   }
 
   /**
