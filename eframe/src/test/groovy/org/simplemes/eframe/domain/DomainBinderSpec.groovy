@@ -785,12 +785,12 @@ class DomainBinderSpec extends BaseSpecification {
   @Rollback
   def "verify that bind supports JDBC ResultSet - column name mapping case"() {
     given: 'populate raw table for the query'
-    def order1 = new Order(order: 'M1001').save()
+    def order1 = new Order(order: 'M1001', version: 237).save()
 
     when: 'an SQL query result set is created'
     PreparedStatement ps = null
     ResultSet rs = null
-    def order2 = null
+    Order order2 = null
     try {
       ps = getPreparedStatement("SELECT *  from ordr")
       ps.execute()
@@ -810,6 +810,11 @@ class DomainBinderSpec extends BaseSpecification {
     then: 'record fields are populated'
     order2.uuid == order1.uuid
     order2.order == order1.order
+
+    and: 'the special fields are populated'
+    order2.dateCreated
+    order2.dateUpdated
+    order2.version == 237
   }
 
   // remove foreign domain from list.

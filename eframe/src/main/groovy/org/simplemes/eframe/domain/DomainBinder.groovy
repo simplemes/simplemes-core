@@ -218,15 +218,11 @@ class DomainBinder {
       }
     }
     log.trace('bind() Mapping columns: {}', map)
-    // Now, fix the dateCreated and dateUpdated since those are ignored by the bind() method.
-    if (map.dateCreated) {
-      object.dateCreated = map.dateCreated
-      map.remove('dateCreated')
-    }
-    if (map.dateUpdated) {
-      object.dateUpdated = map.dateUpdated
-      map.remove('dateUpdated')
-    }
+
+    // Now, fix the version, dateCreated and dateUpdated fields since those are ignored by the bind() method.
+    preBindSpecialColumn(map, 'dateCreated', object)
+    preBindSpecialColumn(map, 'dateUpdated', object)
+    preBindSpecialColumn(map, 'version', object)
 
     bind(object, map, false)
 
@@ -236,16 +232,28 @@ class DomainBinder {
     if (uuidString) {
       object.uuid = UUID.fromString(uuidString)
     }
-
-/*
-    UUID toID = UUID.fromString(rs.getString("uuid"));
-    DomainEntityInterface o = (DomainEntityInterface) childDomainClazz.newInstance();
-    o.setUuid(toID);
-    list.add(o);
-*/
-
   }
 
+  /**
+   * Handles mapping of some special values that are usually ignored by the bind() method.
+   * The value will be removed from the map.
+   * @param map The map containing the possible value to pre-bind.
+   * @param fieldName The field to pre-bind.
+   * @param object The object pre-bind the value into.
+   */
+  void preBindSpecialColumn(Map map, String fieldName, Object object) {
+    if (map[fieldName] != null) {
+      object[fieldName] = map[fieldName]
+      map.remove(fieldName)
+    }
+
+  }
+  /**
+   * Converts some special SQL types to internal types (mainly dates).
+   * @param rs The result set to fix.
+   * @param columnIndex The column to adjust.
+   * @return The adjusted value.
+   */
   Object adjustSQLValue(ResultSet rs, int columnIndex) {
     Object value = rs.getObject(columnIndex)
     if (value != null) {
