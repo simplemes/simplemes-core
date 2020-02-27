@@ -65,7 +65,7 @@ class WorkListServiceSpec extends BaseSpecification {
           timeStamp = setDates(lsnOperState, timeStamp)
         }
       }
-      order.save(flush: true)
+      order.save()
     }
   }
 
@@ -117,7 +117,7 @@ class WorkListServiceSpec extends BaseSpecification {
           timeStamp = moveQtyToInWork(lsnOperState, timeStamp)
         }
       }
-      order.save(flush: true)
+      order.save()
     }
   }
 
@@ -193,14 +193,18 @@ class WorkListServiceSpec extends BaseSpecification {
     list[0].order == orders[0].order
   }
 
-  // TODO: Restore @Rollback
   def "test max/offset inQueue orders with no routing"() {
     given: 'multiple released orders'
-    def orders = MESUnitTestUtils.releaseOrders(nOrders: 10)
-    spreadDates(orders)
+    Order.withTransaction {
+      def orders = MESUnitTestUtils.releaseOrders(nOrders: 10)
+      spreadDates(orders)
+    }
 
     when: 'a work list is generated'
-    FindWorkResponse response = service.findWork(new FindWorkRequest(max: max, offset: offset))
+    FindWorkResponse response = null
+    Order.withTransaction {
+      response = service.findWork(new FindWorkRequest(max: max, from: from))
+    }
 
     then: 'the right list is returned'
     response.totalAvailable == 10
@@ -210,12 +214,12 @@ class WorkListServiceSpec extends BaseSpecification {
     response.list[0].order == first
 
     where:
-    max | offset | size | first
-    5   | 0      | 5    | 'M1000'
-    5   | 3      | 5    | 'M1003'
+    max | from | size | first
+    5   | 0    | 5    | 'M1000'
+    5   | 1    | 5    | 'M1005'
   }
 
-  // TODO: Restore @Rollback
+  @Rollback
   def "test inQueue for orders with routing"() {
     given: 'multiple released orders'
     def orders = MESUnitTestUtils.releaseOrders(nOrders: 3, operations: [3])
@@ -234,14 +238,18 @@ class WorkListServiceSpec extends BaseSpecification {
     list[0].operationSequence == 3
   }
 
-  // TODO: Restore @Rollback
   def "test max/offset inQueue orders with routing"() {
     given: 'multiple released orders'
-    def orders = MESUnitTestUtils.releaseOrders(nOrders: 10, operations: [3])
-    spreadDates(orders)
+    Order.withTransaction {
+      def orders = MESUnitTestUtils.releaseOrders(nOrders: 10, operations: [3])
+      spreadDates(orders)
+    }
 
     when: 'a work list is generated'
-    FindWorkResponse response = service.findWork(new FindWorkRequest(max: max, offset: offset))
+    FindWorkResponse response = null
+    Order.withTransaction {
+      response = service.findWork(new FindWorkRequest(max: max, from: from))
+    }
 
     then: 'the right list is returned'
     response.totalAvailable == 10
@@ -251,9 +259,9 @@ class WorkListServiceSpec extends BaseSpecification {
     response.list[0].order == first
 
     where:
-    max | offset | size | first
-    5   | 0      | 5    | 'M1000'
-    5   | 3      | 5    | 'M1003'
+    max | from | size | first
+    5   | 0    | 5    | 'M1000'
+    5   | 1    | 5    | 'M1005'
   }
 
   @Rollback
@@ -280,15 +288,19 @@ class WorkListServiceSpec extends BaseSpecification {
     !responseDetail.inWork
   }
 
-  // TODO: Restore @Rollback
   def "test max/offset inQueue LSNs with no routing"() {
     given: 'a single released order with multiple LSNs'
-    MESUnitTestUtils.resetCodeSequences()
-    Order order = MESUnitTestUtils.releaseOrder(qty: 10, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
-    spreadDates(order)
+    Order.withTransaction {
+      MESUnitTestUtils.resetCodeSequences()
+      Order order = MESUnitTestUtils.releaseOrder(qty: 10, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
+      spreadDates(order)
+    }
 
     when: 'a work list is generated'
-    FindWorkResponse response = service.findWork(new FindWorkRequest(max: max, offset: offset))
+    FindWorkResponse response = null
+    Order.withTransaction {
+      response = service.findWork(new FindWorkRequest(max: max, from: from))
+    }
 
     then: 'the right list is returned'
     response.totalAvailable == 10
@@ -298,20 +310,24 @@ class WorkListServiceSpec extends BaseSpecification {
     response.list[0].lsn == first
 
     where:
-    max | offset | size | first
-    5   | 0      | 5    | 'SN1000'
-    5   | 3      | 5    | 'SN1003'
+    max | from | size | first
+    5   | 0    | 5    | 'SN1000'
+    5   | 1    | 5    | 'SN1005'
   }
 
-  // TODO: Restore @Rollback
   def "test inQueue for LSNs with routing"() {
     given: 'multiple released LSNs'
-    MESUnitTestUtils.resetCodeSequences()
-    def order = MESUnitTestUtils.releaseOrder(operations: [3], qty: 5, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
-    spreadDates(order)
+    Order.withTransaction {
+      MESUnitTestUtils.resetCodeSequences()
+      def order = MESUnitTestUtils.releaseOrder(operations: [3], qty: 5, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
+      spreadDates(order)
+    }
 
     when: 'a work list is generated'
-    FindWorkResponse response = service.findWork(new FindWorkRequest())
+    FindWorkResponse response = null
+    Order.withTransaction {
+      response = service.findWork(new FindWorkRequest())
+    }
 
     then: 'the right list is returned'
     response.totalAvailable == 5
@@ -326,12 +342,17 @@ class WorkListServiceSpec extends BaseSpecification {
   // TODO: Restore @Rollback
   def "test max/offset inQueue LSNs with routing"() {
     given: 'multiple released LSNs'
-    MESUnitTestUtils.resetCodeSequences()
-    def order = MESUnitTestUtils.releaseOrder(operations: [3], qty: 10, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
-    spreadDates(order)
+    Order.withTransaction {
+      MESUnitTestUtils.resetCodeSequences()
+      def order = MESUnitTestUtils.releaseOrder(operations: [3], qty: 10, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
+      spreadDates(order)
+    }
 
     when: 'a work list is generated'
-    FindWorkResponse response = service.findWork(new FindWorkRequest(max: max, offset: offset))
+    FindWorkResponse response = null
+    Order.withTransaction {
+      response = service.findWork(new FindWorkRequest(max: max, from: from))
+    }
 
     then: 'the right list is returned'
     response.totalAvailable == 10
@@ -341,31 +362,33 @@ class WorkListServiceSpec extends BaseSpecification {
     response.list[0].lsn == first
 
     where:
-    max | offset | size | first
-    5   | 0      | 5    | 'SN1000'
-    5   | 3      | 5    | 'SN1003'
+    max | from | size | first
+    5   | 0    | 5    | 'SN1000'
+    5   | 1    | 5    | 'SN1005'
   }
 
-  // TODO: Restore @Rollback
   def "test max/offset inQueue all 4 sources"() {
     given: 'multiple released LSNs'
-    def order = MESUnitTestUtils.releaseOrder(id: "1WLS", operations: [3], qty: 10, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
-    spreadDates(order)
+    Order.withTransaction {
+      def order = MESUnitTestUtils.releaseOrder(id: "1WLS", operations: [3], qty: 10, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
+      spreadDates(order)
+      // and a single released order with multiple LSNs and no routing
+      order = MESUnitTestUtils.releaseOrder(id: "2WLS", qty: 10, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
+      spreadDates(order)
+      // and multiple released orders with no routing
+      def orders = MESUnitTestUtils.releaseOrders(nOrders: 10, id: "3WLS")
+      spreadDates(orders)
 
-    and: 'a single released order with multiple LSNs and no routing'
-    order = MESUnitTestUtils.releaseOrder(id: "2WLS", qty: 10, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
-    spreadDates(order)
-
-    and: 'multiple released orders with no routing'
-    def orders = MESUnitTestUtils.releaseOrders(nOrders: 10, id: "3WLS")
-    spreadDates(orders)
-
-    and: 'multiple released orders with a routing'
-    orders = MESUnitTestUtils.releaseOrders(nOrders: 10, id: "4WLS", operations: [3])
-    spreadDates(orders)
+      // and multiple released orders with a routing
+      orders = MESUnitTestUtils.releaseOrders(nOrders: 10, id: "4WLS", operations: [3])
+      spreadDates(orders)
+    }
 
     when: 'a work list is generated'
-    FindWorkResponse response = service.findWork(new FindWorkRequest(max: max, offset: offset))
+    FindWorkResponse response = null
+    Order.withTransaction {
+      response = service.findWork(new FindWorkRequest(max: max, from: from))
+    }
 
     then: 'the right list is returned'
     response.totalAvailable == 40
@@ -375,31 +398,35 @@ class WorkListServiceSpec extends BaseSpecification {
     response.list[0].toString().contains(first)
 
     where:
-    max | offset | size | first
-    5   | 0      | 20   | 'M1000-3WLS'
-    5   | 3      | 20   | 'M1003-3WLS'
+    max | from | size | first
+    5   | 0    | 20   | 'M1000-3WLS'
+    5   | 1    | 20   | 'M1005-3WLS'
   }
 
-  // TODO: Restore @Rollback
   def "test max/offset with inQueue and inWork at all 4 sources"() {
     given: 'multiple released LSNs'
-    def order = MESUnitTestUtils.releaseOrder(id: "1WLS", operations: [3], qty: 10, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
-    spreadDates(order)
+    Order.withTransaction {
+      def order = MESUnitTestUtils.releaseOrder(id: "1WLS", operations: [3], qty: 10, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
+      spreadDates(order)
 
-    and: 'a single released order with multiple LSNs and no routing'
-    order = MESUnitTestUtils.releaseOrder(id: "2WLS", qty: 10, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
-    moveQtyToInWork(order)
+      // and a single released order with multiple LSNs and no routing
+      order = MESUnitTestUtils.releaseOrder(id: "2WLS", qty: 10, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
+      moveQtyToInWork(order)
 
-    and: 'multiple released orders with no routing'
-    def orders = MESUnitTestUtils.releaseOrders(nOrders: 10, id: "3WLS")
-    spreadDates(orders)
+      // and multiple released orders with no routing
+      def orders = MESUnitTestUtils.releaseOrders(nOrders: 10, id: "3WLS")
+      spreadDates(orders)
 
-    and: 'multiple released orders with a routing'
-    orders = MESUnitTestUtils.releaseOrders(nOrders: 10, id: "4WLS", operations: [3])
-    moveQtyToInWork(orders)
+      // and multiple released orders with a routing
+      orders = MESUnitTestUtils.releaseOrders(nOrders: 10, id: "4WLS", operations: [3])
+      moveQtyToInWork(orders)
+    }
 
     when: 'a work list is generated'
-    FindWorkResponse response = service.findWork(new FindWorkRequest(max: max, offset: offset))
+    FindWorkResponse response = null
+    Order.withTransaction {
+      response = service.findWork(new FindWorkRequest(max: max, from: from))
+    }
 
     then: 'the right list is returned'
     response.totalAvailable == 40
@@ -409,9 +436,9 @@ class WorkListServiceSpec extends BaseSpecification {
     response.list[0].toString().contains(first)
 
     where:
-    max | offset | size | first
-    5   | 0      | 20   | 'M1000-3WLS'
-    5   | 3      | 20   | 'M1003-3WLS'
+    max | from | size | first
+    5   | 0    | 20   | 'M1000-3WLS'
+    5   | 1    | 20   | 'M1005-3WLS'
   }
 
   @Rollback

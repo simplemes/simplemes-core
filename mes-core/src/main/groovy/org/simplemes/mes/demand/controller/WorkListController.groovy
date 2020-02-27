@@ -60,7 +60,7 @@ class WorkListController extends BaseController {
   @Get('/findWork')
   HttpResponse findWork(HttpRequest request, @Nullable Principal principal) {
     def params = ControllerUtils.instance.convertToMap(request.parameters)
-    def (offset, max) = ControllerUtils.instance.calculateOffsetAndMaxForList(params)
+    def (from, size) = ControllerUtils.instance.calculateFromAndSizeForList(params)
 
     def findWorkResponse = null
     WorkCenter.withTransaction {
@@ -68,8 +68,8 @@ class WorkListController extends BaseController {
       if (params.workCenter) {
         findWorkRequest.workCenter = WorkCenter.findByWorkCenter((String) params.workCenter)
       }
-      findWorkRequest.max = max ?: findWorkRequest.max
-      findWorkRequest.offset = offset ?: findWorkRequest.offset
+      findWorkRequest.max = size ?: findWorkRequest.max
+      findWorkRequest.from = from ?: findWorkRequest.from
       if (params.findInWork) {
         findWorkRequest.findInWork = Boolean.valueOf((String) params.findInWork)
       }

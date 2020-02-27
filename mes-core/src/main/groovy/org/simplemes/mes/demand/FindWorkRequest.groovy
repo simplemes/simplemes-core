@@ -43,8 +43,8 @@ class FindWorkRequest {
   int max = UIDefaults.PAGE_SIZE
 
   /**
-   * The starting row to retrieve.  (<b>Default:</b> 0).
+   * The starting page to retrieve from.  (<b>Default:</b> 0).  Page size is max above.
    */
-  int offset = 0
+  int from = 0
 
 }

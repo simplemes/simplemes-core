@@ -87,7 +87,7 @@ class FindWorkResponseDetail {
    */
   FindWorkResponseDetail(Order order) {
     this.order = order.order
-    this.orderID = order.id
+    this.orderID = order.uuid
     qtyInQueue = order.qtyInQueue
     qtyInWork = order.qtyInWork
     init()
@@ -100,9 +100,9 @@ class FindWorkResponseDetail {
    */
   FindWorkResponseDetail(LSN lsn) {
     this.order = lsn.order.order
-    this.orderID = lsn.order.id
+    this.orderID = lsn.order.uuid
     this.lsn = lsn.lsn
-    this.lsnID = lsn.id
+    this.lsnID = lsn.uuid
     qtyInQueue = lsn.qtyInQueue
     qtyInWork = lsn.qtyInWork
     init()
@@ -115,7 +115,7 @@ class FindWorkResponseDetail {
    */
   FindWorkResponseDetail(OrderOperState orderOperState) {
     this.order = orderOperState.order.order
-    this.orderID = orderOperState.order.id
+    this.orderID = orderOperState.order.uuid
     qtyInQueue = orderOperState.qtyInQueue
     qtyInWork = orderOperState.qtyInWork
     operationSequence = orderOperState.sequence
@@ -129,9 +129,9 @@ class FindWorkResponseDetail {
    */
   FindWorkResponseDetail(LSNOperState lsnOperState) {
     order = lsnOperState.lsn.order.order
-    orderID = lsnOperState.lsn.order.id
+    orderID = lsnOperState.lsn.order.uuid
     lsn = lsnOperState.lsn.lsn
-    lsnID = lsnOperState.lsn.id
+    lsnID = lsnOperState.lsn.uuid
     qtyInQueue = lsnOperState.qtyInQueue
     qtyInWork = lsnOperState.qtyInWork
     operationSequence = lsnOperState.sequence

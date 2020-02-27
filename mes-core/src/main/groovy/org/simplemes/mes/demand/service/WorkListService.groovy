@@ -1,7 +1,11 @@
 package org.simplemes.mes.demand.service
 
 import groovy.util.logging.Slf4j
+import io.micronaut.data.model.Pageable
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.domain.SQLUtils
+import org.simplemes.eframe.domain.annotation.DomainEntityHelper
+import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.mes.demand.FindWorkRequest
 import org.simplemes.mes.demand.FindWorkResponse
 import org.simplemes.mes.demand.FindWorkResponseDetail
@@ -98,22 +102,10 @@ class WorkListService {
    * @return The list of matching records.
    */
   private List findWorkDetails(Class domainClass, FindWorkRequest findWorkRequest) {
-    def criteria = domainClass.createCriteria()
-    List list = criteria.list {
-      maxResults(findWorkRequest.max)
-      firstResult(findWorkRequest.offset)
-      or {
-        if (findWorkRequest.findInQueue) {
-          gt("qtyInQueue", 0.0)
-        }
-        if (findWorkRequest.findInWork) {
+    def sql = "SELECT * ${buildSQL(domainClass, findWorkRequest)}" +
+      " ORDER BY ${NameUtils.toColumnName('dateFirstQueued')} ASC "
 
-          gt("qtyInWork", 0.0)
-        }
-      }
-      order("dateFirstQueued", "asc")
-    }
-    return list
+    return SQLUtils.instance.executeQuery(sql, domainClass, Pageable.from(findWorkRequest.from, findWorkRequest.max))
   }
 
   /**
@@ -123,20 +115,32 @@ class WorkListService {
    * @return The count.
    */
   private int findWorkTotalCount(Class domainClass, FindWorkRequest findWorkRequest) {
-    def countCriteria = domainClass.createCriteria()
-    return countCriteria.count {
-      or {
-        if (findWorkRequest.findInQueue) {
-          gt("qtyInQueue", 0.0)
-        }
-        if (findWorkRequest.findInWork) {
-
-          gt("qtyInWork", 0.0)
-        }
-      }
-    }
+    def sql = "SELECT COUNT(*) as count ${buildSQL(domainClass, findWorkRequest)}"
+    def list = SQLUtils.instance.executeQuery(sql, Map)
+    return list[0].count as int
   }
 
+  /**
+   * Build the FROM...WHERE clause for the given domainClass and work request.
+   * @param domainClass The domain class to retrieve the data from.
+   * @param findWorkRequest Defines the request restrictions for the search.
+   * @return The SQL fragment with the FROM..WHERE clauses.
+   */
+  String buildSQL(Class domainClass, FindWorkRequest findWorkRequest) {
+    def tableName = DomainEntityHelper.instance.getTableName(domainClass)
+    def sb = new StringBuilder()
+    sb << "FROM $tableName WHERE "
+    if (findWorkRequest.findInQueue) {
+      sb << " ${NameUtils.toColumnName('qtyInQueue')} > 0.0"
+    }
+    if (findWorkRequest.findInQueue && findWorkRequest.findInWork) {
+      sb << " OR "
+    }
+    if (findWorkRequest.findInWork) {
+      sb << " ${NameUtils.toColumnName('qtyInWork')} > 0.0"
+    }
+    return sb.toString()
+  }
 
 }
 
