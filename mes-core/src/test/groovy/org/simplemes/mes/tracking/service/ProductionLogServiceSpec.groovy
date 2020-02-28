@@ -251,10 +251,8 @@ class ProductionLogServiceSpec extends BaseSpecification {
 
     where:
     beginDateTime  | dateIncrement | ageDays | nRecordsArchived
-    new Date() - 5 | 0.5           | 2.5     | 5
-    //new Date() - 1 | 0.1           | 0.55    | 5
-    // Fails without any adjust for timezone.  The query is off by 5 hours.  Uncomment when the query issue is fixed.
-
+    new Date() - 5 | 0.5           | 2.6     | 5
+    new Date() - 1 | 0.1           | 0.55    | 5
   }
 
   @SuppressWarnings("GroovyAssignabilityCheck")

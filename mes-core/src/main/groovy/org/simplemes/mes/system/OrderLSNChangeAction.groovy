@@ -1,4 +1,7 @@
 package org.simplemes.mes.system
+
+import groovy.transform.ToString
+
 /*
  * Copyright Michael Houston. All rights reserved.
  *
@@ -8,11 +11,17 @@ package org.simplemes.mes.system
  * The suggested client dashboard action is the change the current order/LSN.
  * This action is recommended based on the barcode scanned.
  */
+@ToString(includePackage = false, includeNames = true)
 class OrderLSNChangeAction extends ScanAction {
   /**
    * The action.type for this action.
    */
   static final String TYPE_ORDER_LSN_CHANGE = 'ORDER_LSN_CHANGE'
+
+  /**
+   * The recommended client action.
+   */
+  String type = TYPE_ORDER_LSN_CHANGE
 
   /**
    * The new order.
@@ -34,11 +43,4 @@ class OrderLSNChangeAction extends ScanAction {
    */
   BigDecimal qtyInWork
 
-  /**
-   * The recommended client action.
-   */
-  @Override
-  String getType() {
-    return TYPE_ORDER_LSN_CHANGE
-  }
 }

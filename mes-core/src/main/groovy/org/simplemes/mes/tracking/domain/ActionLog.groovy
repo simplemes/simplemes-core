@@ -65,6 +65,7 @@ class ActionLog {
   /**
    * The quantity processed during this action.
    */
+  @Nullable
   BigDecimal qty
   // TODO: Set scale in DDL for STANDARD_DECIMAL_SCALE (4?).
 

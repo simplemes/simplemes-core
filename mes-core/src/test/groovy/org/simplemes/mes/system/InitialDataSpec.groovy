@@ -32,7 +32,7 @@ class InitialDataSpec extends BaseSpecification {
     Role.findByAuthority('OPERATOR')
 
     and: 'the records listed are correct'
-    res.Role.containsAll(['Supervisor', 'Engineer', 'Lead', 'Operator'])
+    res.Role.containsAll(['SUPERVISOR', 'ENGINEER', 'LEAD', 'OPERATOR'])
   }
 
   @Rollback

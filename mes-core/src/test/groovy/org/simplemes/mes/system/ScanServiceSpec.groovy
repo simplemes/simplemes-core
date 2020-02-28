@@ -1,16 +1,14 @@
 package org.simplemes.mes.system
 
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.exception.MessageHolder
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.StartUndoAction
-import org.simplemes.mes.demand.service.OrderService
-import org.simplemes.mes.demand.service.ResolveService
-import org.simplemes.mes.demand.service.WorkService
+import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.system.service.ScanService
 import org.simplemes.mes.test.MESUnitTestUtils
-import org.simplemes.mes.tracking.service.ProductionLogService
 
 /*
  * Copyright Michael Houston 2017. All rights reserved.
@@ -22,7 +20,8 @@ import org.simplemes.mes.tracking.service.ProductionLogService
  * Tests.
  */
 class ScanServiceSpec extends BaseSpecification {
-  static specNeeds = [JSON, SERVER]
+  @SuppressWarnings("unused")
+  static specNeeds = SERVER
 
   /**
    * The scan service being tested.
@@ -31,12 +30,14 @@ class ScanServiceSpec extends BaseSpecification {
 
   def setup() {
     setCurrentUser()
-    service = new ScanService()
+    service = Holders.getBean(ScanService)
+/*
     service.resolveService = new ResolveService()
     service.orderService = new OrderService()
     service.workService = new WorkService()
     service.workService.resolveService = service.resolveService
     service.workService.productionLogService = new ProductionLogService()
+*/
   }
 
   def "test scan with unresolved barcode"() {
@@ -76,18 +77,21 @@ class ScanServiceSpec extends BaseSpecification {
     when: 'the scan is processed'
     def scanResponse = service.scan(scanRequest)
 
+    and: 'the order is re-read from the DB'
+    order = Order.findByUuid(order.uuid)
+
     then: 'the scan is returned with the order'
     scanResponse.resolved
     scanResponse.order == order
 
     and: 'scan action tells the client to refresh the Order status with a type REFRESH_ORDER_STATUS'
-    def refreshAction = scanResponse.scanActions.find() {
+    def refreshAction = scanResponse.scanActions.find {
       it.type == RefreshOrderStatusAction.TYPE_REFRESH_ORDER_STATUS
     }
     refreshAction.order == order.order
 
     and: 'scan action tells the client that the order changed'
-    def orderChangedAction = scanResponse.scanActions.find() { it.type == OrderLSNChangeAction.TYPE_ORDER_LSN_CHANGE }
+    def orderChangedAction = scanResponse.scanActions.find { it.type == OrderLSNChangeAction.TYPE_ORDER_LSN_CHANGE }
     orderChangedAction.order == order.order
     orderChangedAction.qtyInQueue == order.qtyInQueue
     orderChangedAction.qtyInWork == order.qtyInWork

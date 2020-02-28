@@ -90,7 +90,8 @@ class ProductionLogService {
     def now = new Date()
     long offset = (long) (DateUtils.MILLIS_PER_DAY * request.ageDays)
     def ageDate = new Date(now.time - offset)
-    //println "ageDate = $ageDate $ageDate.time"
+    //println "ageDate = $ageDate"
+    //println "  $ageDate.time"
     def batchSize = request.batchSize ?: 500
     log.debug("archiveOld: request = {}, ageDate = {}", request, ageDate)
 

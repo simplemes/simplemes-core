@@ -7,6 +7,7 @@ import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.ControllerTester
 import org.simplemes.eframe.test.MockPrincipal
+import org.simplemes.eframe.test.annotation.Rollback
 
 /*
  * Copyright Michael Houston 2019. All rights reserved.
@@ -15,12 +16,12 @@ import org.simplemes.eframe.test.MockPrincipal
 */
 
 /**
- *
+ *  Tests.
  */
 class SelectionControllerSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, SERVER]
+  static specNeeds = SERVER
 
   def "verify that controller has secured methods and meets standard requirements"() {
     expect: 'the controller follows the standard requirements'
@@ -30,6 +31,7 @@ class SelectionControllerSpec extends BaseSpecification {
     }
   }
 
+  @Rollback
   def "verify that workCenterChanged persists the preference"() {
     given: 'a simulated current user is set'
     setCurrentUser()
@@ -43,16 +45,13 @@ class SelectionControllerSpec extends BaseSpecification {
     new SelectionController().workCenterChanged(s, new MockPrincipal('jane', 'OPERATOR'))
 
     then: 'the new value is in the preferences'
-    UserPreference.withTransaction {
-      def preference = PreferenceHolder.find {
-        page '/dashboard'
-        user SecurityUtils.TEST_USER
-        element SelectionController.WORK_CENTER_ELEMENT
-      }
-      SimpleStringPreference stringPreference = (SimpleStringPreference) preference[SelectionController.WORK_CENTER_ELEMENT]
-      assert stringPreference.value == 'WC137'
-      true
+    def preference = PreferenceHolder.find {
+      page '/dashboard'
+      user SecurityUtils.TEST_USER
+      element SelectionController.WORK_CENTER_ELEMENT
     }
+    SimpleStringPreference stringPreference = (SimpleStringPreference) preference[SelectionController.WORK_CENTER_ELEMENT]
+    stringPreference.value == 'WC137'
   }
 
   def "verify that workCenterSelection use the latest workCenter from the user preferences"() {

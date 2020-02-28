@@ -21,15 +21,13 @@ class ButtonPressAction extends ScanAction {
   static final String TYPE_BUTTON_PRESS = 'BUTTON_PRESS'
 
   /**
+   * The recommended client action.
+   */
+  String type = TYPE_BUTTON_PRESS
+
+  /**
    * The button ID of the dashboard button to press.
    */
   String button
 
-  /**
-   * The recommended client action.
-   */
-  @Override
-  String getType() {
-    return TYPE_BUTTON_PRESS
-  }
 }

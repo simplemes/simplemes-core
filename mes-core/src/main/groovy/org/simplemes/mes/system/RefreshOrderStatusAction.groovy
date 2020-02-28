@@ -1,4 +1,7 @@
 package org.simplemes.mes.system
+
+import groovy.transform.ToString
+
 /*
  * Copyright Michael Houston. All rights reserved.
  *
@@ -8,6 +11,7 @@ package org.simplemes.mes.system
  * The suggested client dashboard action is to refresh the order/LSN status in the display.
  * This action is recommended based on the barcode scanned.
  */
+@ToString(includePackage = false, includeNames = true)
 class RefreshOrderStatusAction extends ScanAction {
   /**
    * The action.type for this action.
@@ -22,8 +26,5 @@ class RefreshOrderStatusAction extends ScanAction {
   /**
    * The recommended client action.
    */
-  @Override
-  String getType() {
-    return TYPE_REFRESH_ORDER_STATUS
-  }
+  String type = TYPE_REFRESH_ORDER_STATUS
 }

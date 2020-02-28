@@ -5,6 +5,9 @@ import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.mes.demand.ResolveIDRequest
 import org.simplemes.mes.demand.StartRequest
 import org.simplemes.mes.demand.WorkableInterface
+import org.simplemes.mes.demand.service.OrderService
+import org.simplemes.mes.demand.service.ResolveService
+import org.simplemes.mes.demand.service.WorkService
 import org.simplemes.mes.system.ButtonPressAction
 import org.simplemes.mes.system.OrderLSNChangeAction
 import org.simplemes.mes.system.RefreshOrderStatusAction
@@ -12,6 +15,7 @@ import org.simplemes.mes.system.ScanRequestInterface
 import org.simplemes.mes.system.ScanResponse
 import org.simplemes.mes.system.ScanResponseInterface
 
+import javax.inject.Inject
 import javax.transaction.Transactional
 
 /*
@@ -32,17 +36,20 @@ class ScanService {
   /**
    * The resolve service used to find Orders/LSNs
    */
-  def resolveService
+  @Inject
+  ResolveService resolveService
 
   /**
    * The order service used to find Orders/LSNs states.
    */
-  def orderService
+  @Inject
+  OrderService orderService
 
   /**
    * The work service used to start/complete orders/LSNs.
    */
-  def workService
+  @Inject
+  WorkService workService
 
   /**
    * The logical element name for a GUI button.  This is used by internal logic for determining what to do with a scan.
@@ -53,7 +60,7 @@ class ScanService {
   /**
    * The mapping between barcode prefixes and the logical meaning of those prefixes.  Maps 'BTN' to 'BUTTON' for clarify.
    */
-  private Map<String, String> defaultBarcodePrefixMapping = ['BTN': BARCODE_BUTTON]
+  private final Map<String, String> defaultBarcodePrefixMapping = ['BTN': BARCODE_BUTTON]
 
   /**
    * Handles the scan from the user.  This resolves the ID and will sometimes process the ID.
@@ -88,7 +95,7 @@ class ScanService {
 
         // Now, try to start the order/lsn if it is in queue
         if (response.lsn) {
-
+          // TODO: Support LSN
         } else if (response.order) {
           processOrder(response)
         }
