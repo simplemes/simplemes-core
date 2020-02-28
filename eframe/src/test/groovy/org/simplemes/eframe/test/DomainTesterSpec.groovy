@@ -26,7 +26,8 @@ class DomainTesterSpec extends BaseSpecification {
       domain SampleParent
       requiredValues name: 'ABC', sampleChildren: [sampleChild]
       maxSize 'name', 40
-      fieldOrderCheck false
+      notInFieldOrder(['notDisplayed'])
+      //fieldOrderCheck true
     }
   }
 }

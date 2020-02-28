@@ -6,6 +6,7 @@ package org.simplemes.eframe.test
 
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
+import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.data.format.ChildListFieldFormat
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.domain.validate.ValidationErrorInterface
@@ -200,7 +201,6 @@ class DomainTester {
 
   /**
    * Verifies that all fields are listed in the fieldOrder static value.
-   * Checks parent classes too.
    */
   void testFieldOrder() {
     if (!_fieldOrderCheck) {
@@ -219,7 +219,9 @@ class DomainTester {
       propNames = propNames.findAll { !_notInFieldOrder.contains(it) }
     }
     for (name in propNames) {
-      if (!DomainUtils.instance.isPropertySpecial(_domain, name) && !_notInFieldOrder?.contains(name)) {
+      if (!DomainUtils.instance.isPropertySpecial(_domain, name)
+        && !_notInFieldOrder?.contains(name)
+        && !isCustomFieldHolder(name)) {
         assert fields.contains(name): "Field $name not in fieldOrder"
       }
       fields.remove(name)
@@ -236,6 +238,15 @@ class DomainTester {
 
     // Now, make sure no extra properties are added to the fieldOrder array.
     assert fields.size() == 0: "Fields (${fields}) is in fieldOrder but not a property in the domain class."
+  }
+
+  /**
+   * Returns true if the field is the custom field holder.
+   * @param name The field name.
+   * @return True if custom field holder.
+   */
+  boolean isCustomFieldHolder(String name) {
+    return name == ExtensibleFieldHelper.instance.getCustomHolderFieldName(_domain)
   }
 
 }

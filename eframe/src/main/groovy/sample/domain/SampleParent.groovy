@@ -54,7 +54,8 @@ class SampleParent implements SampleParentInterface {
   @Nullable String moreNotes = 'Default Notes'
 
   @DateCreated
-  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE') Date dateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateCreated
 
   @DateUpdated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
