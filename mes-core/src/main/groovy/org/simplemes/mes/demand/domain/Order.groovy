@@ -9,6 +9,7 @@ import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.exception.BusinessException
@@ -178,6 +179,15 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
   @Nullable @SuppressWarnings("unused")
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateFirstStarted
+
+  /**
+   * The custom field holder.  Unlimited size.
+   */
+  @ExtensibleFieldHolder
+  @Column(nullable = true)
+  @MappedProperty(type = DataType.STRING, definition = 'TEXT')
+  @SuppressWarnings("unused")
+  String customFields
 
   @DateCreated @SuppressWarnings("unused")
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')

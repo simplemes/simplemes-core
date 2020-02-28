@@ -9,14 +9,17 @@ import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.mes.demand.WorkStateTrait
 import org.simplemes.mes.demand.WorkableInterface
+import org.simplemes.mes.misc.FieldSizes
 import org.simplemes.mes.product.OperationTrait
 import org.simplemes.mes.product.RoutingUtils
 
 import javax.annotation.Nullable
+import javax.persistence.Column
 import javax.persistence.ManyToOne
 
 /*
@@ -95,6 +98,14 @@ class LSNOperState implements WorkStateTrait, WorkableInterface {
    */
   @Nullable @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateFirstStarted
+
+  /**
+   * The custom field holder.  Max size: {@link FieldSizes#MAX_CUSTOM_FIELDS_LENGTH}
+   */
+  @ExtensibleFieldHolder
+  @Column(length = FieldSizes.MAX_CUSTOM_FIELDS_LENGTH, nullable = true)
+  @SuppressWarnings("unused")
+  String customFields
 
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')

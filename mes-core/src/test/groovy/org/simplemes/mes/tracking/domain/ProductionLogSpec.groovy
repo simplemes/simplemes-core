@@ -8,7 +8,6 @@ import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
 import org.simplemes.eframe.test.MockFileFactory
-import org.simplemes.eframe.test.MockObjectMapper
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.misc.FieldSizes
@@ -69,9 +68,6 @@ class ProductionLogSpec extends BaseSpecification {
     and: 'a mock file archiver to avoid file operations'
     def stringWriter = new StringWriter()
     FileFactory.instance = new MockFileFactory(stringWriter)
-
-    and: 'The Jackson mapper is setup in the mocked application context'
-    new MockObjectMapper(this).install()
 
     when: 'the record is archived'
     def archiver = new FileArchiver()

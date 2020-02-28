@@ -154,7 +154,7 @@ include::statusGuide.adoc[]
 ==== Custom Field Extensions
 
 Most domain classes in SimpleMES can be extended with a limited number of custom fields.
-These are marked with the `@ExtensibleFields` annotation in the
+These are marked with the `@ExtensibleFieldHolder` annotation in the
 link:groovydoc/index.html[Groovy API^] documents.  See the Field Extension documentation in
 the <<Enterprise Framework>> allows you to add new fields.
 Most SimpleMES definition GUIs allow you to edit these custom fields:

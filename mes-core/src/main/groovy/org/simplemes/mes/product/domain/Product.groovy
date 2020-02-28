@@ -9,6 +9,7 @@ import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.mes.demand.LSNTrackingOption
 import org.simplemes.mes.demand.domain.LSNSequence
@@ -89,6 +90,14 @@ class Product implements RoutingTrait {
    */
   @OneToMany(mappedBy = "product", targetEntity = ProductOperation)
   List<OperationTrait> operations
+
+  /**
+   * The custom field holder.  Max size: {@link FieldSizes#MAX_CUSTOM_FIELDS_LENGTH}
+   */
+  @ExtensibleFieldHolder
+  @Column(length = FieldSizes.MAX_CUSTOM_FIELDS_LENGTH, nullable = true)
+  @SuppressWarnings("unused")
+  String customFields
 
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')

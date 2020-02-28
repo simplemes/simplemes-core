@@ -17,7 +17,7 @@ import org.simplemes.mes.tracking.domain.ActionLog
 */
 
 /**
- * Tests Release/Sasrt/Complete cycle for performance.
+ * Tests Release/Start/Complete cycle for performance.
  */
 class WorkCycleE2ESpec extends BaseSpecification {
 

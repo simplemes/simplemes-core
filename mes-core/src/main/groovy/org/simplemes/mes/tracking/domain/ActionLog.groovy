@@ -8,6 +8,7 @@ import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.mes.demand.domain.LSN
@@ -83,8 +84,17 @@ class ActionLog {
   @ManyToOne(targetEntity = WorkCenter)
   WorkCenter workCenter
 
+  /**
+   * The custom field holder.  Max size: {@link FieldSizes#MAX_CUSTOM_FIELDS_LENGTH}
+   */
+  @ExtensibleFieldHolder
+  @Column(length = FieldSizes.MAX_CUSTOM_FIELDS_LENGTH, nullable = true)
+  @SuppressWarnings("unused")
+  String customFields
+
   @DateCreated
-  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE') Date dateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateCreated
 
   @Id @AutoPopulated UUID uuid
 

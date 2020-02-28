@@ -14,7 +14,7 @@ import spock.lang.IgnoreIf
 */
 
 /**
- *
+ * Tests.
  */
 @IgnoreIf({ !sys['geb.env'] })
 class WorkCenterSelectionGUISpec extends BaseDashboardSpecification {

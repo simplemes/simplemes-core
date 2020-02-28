@@ -49,10 +49,13 @@ class MasterOperation implements OperationTrait {
   @Column(length = FieldSizes.MAX_TITLE_LENGTH, nullable = false)
   String title
 
+  /**
+   * The custom field holder.  Max size: {@link FieldSizes#MAX_CUSTOM_FIELDS_LENGTH}
+   */
   @ExtensibleFieldHolder
-  @Column(length = 1024, nullable = true)
+  @Column(length = FieldSizes.MAX_CUSTOM_FIELDS_LENGTH, nullable = true)
+  @SuppressWarnings("unused")
   String customFields
-
 
   @SuppressWarnings("unused")
   @Id @AutoPopulated UUID uuid

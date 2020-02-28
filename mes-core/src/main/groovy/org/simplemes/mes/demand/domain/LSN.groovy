@@ -9,6 +9,7 @@ import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.mes.demand.DemandObject
 import org.simplemes.mes.demand.LSNStatus
@@ -110,6 +111,14 @@ class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
    */
   @Nullable @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateFirstStarted
+
+  /**
+   * The custom field holder.  Max size: 1024.
+   */
+  @ExtensibleFieldHolder
+  @Column(length = 1024, nullable = true)
+  @SuppressWarnings("unused")
+  String customFields
 
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')

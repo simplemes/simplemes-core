@@ -14,7 +14,6 @@ import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.MockAppender
 import org.simplemes.eframe.test.MockBean
 import org.simplemes.eframe.test.MockFileFactory
-import org.simplemes.eframe.test.MockObjectMapper
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.LSNTrackingOption
@@ -350,9 +349,6 @@ class ProductionLogServiceSpec extends BaseSpecification {
     def stringWriter = new StringWriter()
     FileFactory.instance = new MockFileFactory(stringWriter)
 
-    and: 'The Jackson mapper is setup in the mocked application context'
-    new MockObjectMapper(this).install()
-
     and: 'the archiver is mocked'
     new MockBean(this, ArchiverFactoryInterface, new ArchiverFactory()).install()  // Auto cleaned up
 
@@ -393,9 +389,6 @@ class ProductionLogServiceSpec extends BaseSpecification {
     and: 'a mock file archiver to avoid file operations'
     def stringWriter = new StringWriter()
     FileFactory.instance = new MockFileFactory(stringWriter)
-
-    and: 'The Jackson mapper is setup in the mocked application context'
-    new MockObjectMapper(this).install()
 
     and: 'the archiver is mocked'
     new MockBean(this, ArchiverFactoryInterface, new ArchiverFactory()).install()  // Auto cleaned up
