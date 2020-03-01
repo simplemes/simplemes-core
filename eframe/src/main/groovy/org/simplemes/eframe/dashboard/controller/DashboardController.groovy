@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.dashboard.controller
 
 import groovy.util.logging.Slf4j
@@ -24,13 +28,20 @@ import java.security.Principal
  */
 @Slf4j
 @Secured(['ADMIN', 'DESIGNER'])
-@Controller("/dashboard")
+@Controller('/dashboard')
 class DashboardController extends BaseController {
 
   /**
    * The URL parameters not passed to dashboard activities.
    */
   static final PARAMS_NOT_PASSED = ['controller', 'format', 'action', 'category', 'dashboard']
+
+  /**
+   * Root of the URI this controller services.  <b>("/dashboard")</b>.
+   * This is also the page used for user preferences.
+   */
+  @SuppressWarnings("unused")
+  public static final String ROOT_URI = '/dashboard'
 
   /**
    * Defines the standard end-user task entry points that this controller handles.

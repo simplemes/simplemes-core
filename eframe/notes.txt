@@ -85,6 +85,7 @@ Add SQL DDL logic and Liquid-base/FlyWay support.
 done - Micronaut-data does not support traits or sub-classes in most cases.
 Look at using an environment for DB type: h2, postgres.  Change command line to use it.
 Move Asset Pipeline to groovy to avoid missing bean when used by a module.  Can a .java file compiled under groovy work Ok?
+Figure out why sample reports are in the built .jar.  Why ArchiveLog report does not work.
 
 
 Vue Investigation
