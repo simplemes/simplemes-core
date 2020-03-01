@@ -1,6 +1,11 @@
 Scratch
 -------
 
+<ef:list id="${panel}WorkList" controller="WorkList" action="findWork"
+           model="${FindWorkResponseDetail}" onSelectFunction="selectionChanged${panel}"
+           showToolbar="false" columns="order,lsn,qtyInQueue,qtyInWork"/>
+
+
 Micronaut-Data Migration
 ========================
 Remove references to  mapping
@@ -13,10 +18,23 @@ DDL creation -
 Tasks
 =====
 Migrate dashboard activities (Scan, wcSel, workList)
-Controller
- tests:
-   Order, Scan,Work,WorkList
-   Demand: API (old Int) Tests+ GUI
+Missing GUIs
+  Product, WorkCenter, LSNSequence, OrderSequence
+  Action Log Report (Jasper?).
+Missing tests
+  ActionLogControllerSpec
+  CompleteActivityGUISpec
+  LoginGUISpec
+  MasterRoutingGUISpec
+  ProductGUISpec
+  ReportEngineGUISpec
+  ReverseStartGUISpec
+  ScanDashboardGUISpec
+  StartActivityGUISpec
+  WorkListActivityGUISpec
+  ProductionE2EGUISpec
+Move views to package-based layout (order -> demand/order, selection -> system/selection)
+Make changeWorkCenterDialog use a drop-down (combo) and validate the selected value.
 
 docs\asciidoc\guide
   admin
@@ -28,8 +46,8 @@ docs\asciidoc\reference
 
 Performance
 ------------
-WorkCycleE2ESpec - averages = 15.57,9.2,9.04 12/9/2019.
-
+WorkCycleE2ESpec - averages = 15.57, 9.2 , 9.04 12/9/2019.
+       after Micronaut-Data =  1.51, 0.16, 0.68 2/28/2020
 
 
 MES Plan

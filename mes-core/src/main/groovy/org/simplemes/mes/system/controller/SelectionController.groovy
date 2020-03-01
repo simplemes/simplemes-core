@@ -12,6 +12,7 @@ import io.micronaut.security.annotation.Secured
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.controller.BaseController
 import org.simplemes.eframe.controller.StandardModelAndView
+import org.simplemes.eframe.dashboard.controller.DashboardController
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.preference.PreferenceHolder
 import org.simplemes.eframe.preference.SimpleStringPreference
@@ -64,7 +65,7 @@ class SelectionController extends BaseController {
     if (!params.workCenter) {
       UserPreference.withTransaction {
         def preference = PreferenceHolder.find {
-          page '/dashboard'
+          page DashboardController.ROOT_URI
           user SecurityUtils.instance.currentUserName
           element WORK_CENTER_ELEMENT
         }

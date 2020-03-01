@@ -5,6 +5,7 @@ import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseAPISpecification
 import org.simplemes.eframe.test.ControllerTester
 import org.simplemes.eframe.test.MockPrincipal
+import org.simplemes.eframe.test.MockRenderer
 import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.FindWorkRequest
 import org.simplemes.mes.demand.FindWorkResponse
@@ -106,6 +107,22 @@ class WorkListControllerSpec extends BaseAPISpecification {
     json.totalAvailable == 1
     json.list.size() == 1
     json.list[0].order == order.order
+  }
+
+  def "verify index creates the correct model and view"() {
+    given: 'a controller'
+    def controller = Holders.getBean(WorkListController)
+
+    and: 'a mock renderer'
+    def mock = new MockRenderer(this).install()
+
+    when: 'the index is called from the controller'
+    def modelAndView = controller.workListActivity(mockRequest([_panel: 'A', _variable: 'B']), new MockPrincipal('jane', 'OPERATOR'))
+
+    then: 'the work center is part of the model'
+    modelAndView.model.get().params._panel == 'A'
+    modelAndView.model.get().params._variable == 'B'
+    modelAndView.view.get() == 'demand/workList/workList'
 
   }
 

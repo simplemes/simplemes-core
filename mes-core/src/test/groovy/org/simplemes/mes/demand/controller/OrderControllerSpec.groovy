@@ -33,7 +33,6 @@ import org.simplemes.mes.tracking.domain.ActionLog
  */
 class OrderControllerSpec extends BaseAPISpecification {
 
-  // TODO: Move API tests to this class
   @SuppressWarnings("unused")
   static dirtyDomains = [ActionLog, Order, User]
 

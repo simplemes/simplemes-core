@@ -1,5 +1,6 @@
 package org.simplemes.mes.system.controller
 
+import org.simplemes.eframe.dashboard.controller.DashboardController
 import org.simplemes.eframe.preference.PreferenceHolder
 import org.simplemes.eframe.preference.SimpleStringPreference
 import org.simplemes.eframe.preference.domain.UserPreference
@@ -38,7 +39,7 @@ class SelectionControllerSpec extends BaseSpecification {
 
     when: 'the request is made'
     def s = """ {
-      "page": "/dashboard",
+      "page": "${DashboardController.ROOT_URI}",
       "workCenter": "WC137"
     }
     """
@@ -46,7 +47,7 @@ class SelectionControllerSpec extends BaseSpecification {
 
     then: 'the new value is in the preferences'
     def preference = PreferenceHolder.find {
-      page '/dashboard'
+      page DashboardController.ROOT_URI
       user SecurityUtils.TEST_USER
       element SelectionController.WORK_CENTER_ELEMENT
     }
@@ -61,7 +62,7 @@ class SelectionControllerSpec extends BaseSpecification {
     and: 'a value is set in the user preferences'
     UserPreference.withTransaction {
       PreferenceHolder holder = PreferenceHolder.find {
-        page '/dashboard'
+        page DashboardController.ROOT_URI
         user SecurityUtils.TEST_USER
         element SelectionController.WORK_CENTER_ELEMENT
       }
@@ -92,7 +93,7 @@ class SelectionControllerSpec extends BaseSpecification {
     and: 'a value is set in the user preferences'
     UserPreference.withTransaction {
       PreferenceHolder holder = PreferenceHolder.find {
-        page '/dashboard'
+        page DashboardController.ROOT_URI
         user SecurityUtils.TEST_USER
         element SelectionController.WORK_CENTER_ELEMENT
       }

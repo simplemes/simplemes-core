@@ -3,11 +3,14 @@ package org.simplemes.mes.demand.controller
 import groovy.util.logging.Slf4j
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
+import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.Produces
 import io.micronaut.security.annotation.Secured
 import org.simplemes.eframe.controller.BaseController
 import org.simplemes.eframe.controller.ControllerUtils
+import org.simplemes.eframe.controller.StandardModelAndView
 import org.simplemes.mes.demand.FindWorkRequest
 import org.simplemes.mes.demand.service.WorkListService
 import org.simplemes.mes.floor.domain.WorkCenter
@@ -44,10 +47,20 @@ class WorkListController extends BaseController {
 
   /**
    * Displays the core workList activity page.
+   * @param request The request.
+   * @param principal The user logged in.
+   * @return The model/view to display.
    */
-  def workListActivity() {
+  @Produces(MediaType.TEXT_HTML)
+  @Get("/workListActivity")
+  StandardModelAndView workListActivity(HttpRequest request, @Nullable Principal principal) {
+    def view = "demand/workList/workList"
+    def modelAndView = new StandardModelAndView(view, principal, this)
 
+    // No model is used here.
+    return modelAndView
   }
+
 
   /**
    * Provides a list of active/queued work.  This exposes the

@@ -13,7 +13,7 @@
   </root>
   <logger name="StackTrace" level="error"/>
   <!--<logger name="io.micronaut" level="trace"/>-->
-  <!--<logger name="io.micronaut.context" level="trace" />-->
+  <logger name="io.micronaut.http" level="warn"/> <!--trace for routing issues -->
   <logger name="io.micronaut.context" level="warn"/> <!--trace for issues creating beans-->
   <logger name="io.micronaut.data" level="warn"/>  <!--debug for SQL, trace for values-->
   <logger name="io.micronaut.runtime.Micronaut" level="info"/>
