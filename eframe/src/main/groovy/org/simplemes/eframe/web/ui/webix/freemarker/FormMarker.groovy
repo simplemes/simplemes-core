@@ -1,15 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.web.ui.WidgetFactory
 
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Provides the efForm Freemarker marker implementation.
@@ -82,7 +80,7 @@ class FormMarker extends BaseMarker {
       def res = """
         $preScript
         ${variable}.display = {
-          view: 'form', id: '${id}', type: 'clean', margin: 0,
+          view: 'form', id: '${id}', type: 'clean', margin: 0,paddingX: 10,
           rows: [
             {height: 10}
             ${content}

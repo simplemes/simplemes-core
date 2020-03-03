@@ -157,6 +157,22 @@ class NameUtils {
   }
 
   /**
+   * Converts the given text to a legal Java identifier.
+   * Mainly converts '.' to '_'.
+   * @param s The text to convert.
+   * @return The text as a legal identifier.
+   */
+  static String toLegalIdentifier(String s) {
+    if (!s) {
+      return s
+    }
+    if (s.contains('.')) {
+      s = s.replaceAll('\\.', '_')
+    }
+    return s
+  }
+
+  /**
    * Converts a given DB column name to the standard mixed case field name in a domain class.
    * Only works with proper name mapping.
    * @param columnName The DB column name (e.g. 'REPORT_TIME_INTERVAL').

@@ -693,4 +693,24 @@ class BaseSpecification extends GebSpec {
     throw new TimeoutException("${record.getClass().simpleName} record '${TypeUtils.toShortString(record)}' did not change within ${elapsed}ms.")
   }
 
+  /**
+   * Checks the HTML and Javascript for basic format errors.  If the page contains no 'script' tag, the whole page
+   * will be tested as Javascript (not HTML).
+   * @param page The page content to check.
+   * @return True if Ok.  Exception if not.
+   */
+  boolean checkPage(String page) {
+    HTMLTestUtils.checkHTML(page)
+
+    if (page.contains('<')) {  // Some HTML (probably).
+      if (page.contains('<script')) {
+        return JavascriptTestUtils.checkScriptsOnPage(page)
+      }
+    } else {
+      // Just Javascript (probably).
+      return JavascriptTestUtils.checkScriptFragment(page)
+    }
+    return true
+  }
+
 }

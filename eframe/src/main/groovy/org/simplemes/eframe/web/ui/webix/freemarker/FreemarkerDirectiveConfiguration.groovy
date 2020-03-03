@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import freemarker.template.Configuration
@@ -5,12 +9,6 @@ import freemarker.template.TemplateModelException
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.misc.LogUtils
 import org.simplemes.eframe.misc.TypeUtils
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Updates the Freemarker configuration needed for a standard freemarker setup.
@@ -21,7 +19,7 @@ import org.simplemes.eframe.misc.TypeUtils
 class FreemarkerDirectiveConfiguration {
 
   static markers = ['Asset', 'Button', 'ButtonGroup', 'Create', 'Dashboard', 'Edit', 'Field', 'Form', 'GUISetup',
-                    'HTML', 'Lookup', 'Language', 'List', 'Messages', 'PreloadMessages', 'Show', 'Title']
+                    'HTML', 'Lookup', 'Language', 'List', 'Menu', 'MenuItem', 'Messages', 'PreloadMessages', 'Show', 'Title']
 
   /**
    * Adds all of the framework markers to the freemarker configuration.

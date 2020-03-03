@@ -20,7 +20,7 @@ class CustomChildListE2ESpec extends BaseDefinitionEditorSpecification {
 
 
   @SuppressWarnings("unused")
-  static dirtyDomains = [Order, CustomOrderComponent]
+  static dirtyDomains = [CustomOrderComponent, Order]
 
 
   def "verify that the custom child list can be created in a definition GUI"() {

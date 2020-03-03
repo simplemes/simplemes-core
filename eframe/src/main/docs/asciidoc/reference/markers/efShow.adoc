@@ -42,7 +42,7 @@ The main parameters/body supported are:
 |===
 |Argument|Description
 
-| *(body)*    |Ignored.
+| *(body)*    | Supports one or more <<efMenuItem>>.  These will be added to the "More..." menu.
 | *fields*    | A comma-delimited list of fields to display
                (*Default:* The list from the domain's <<fieldOrder>>).
 | *labelWidth* | The width of the label section of the page.
@@ -76,6 +76,27 @@ This includes labels and sizes.
 ----
 <.> Specific fields are displayed in the show page.
 <.> The title field has a custom title that is different from the default ('title.label').
+
+
+
+
+[source,html]
+.Standard Show Page - Add Action to More... menu
+----
+<#assign title><@efTitle type='show'/></#assign>
+
+<#include "../includes/header.ftl" />
+<#include "../includes/definition.ftl" />
+
+<@efForm id="show">
+  <@efShow fields="order,qtyToBuild">
+    <@efMenuItem key="release" uri="/order/release"/>     // <.>
+  </@efShow>
+</@efForm>
+
+<#include "../includes/footer.ftl" />
+----
+<.> Will perform a get on the _'/order/release'_ URI.  Other options are supported.
 
 
 

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 
@@ -9,12 +13,6 @@ import org.simplemes.eframe.system.controller.LoggingController
 import org.simplemes.eframe.web.ui.webix.DomainToolkitUtils
 
 import java.text.SimpleDateFormat
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Provides the efGUISetup freemarker implementation.
@@ -39,7 +37,7 @@ class GUISetupMarker extends BaseMarker {
     sb << """</script>\n"""
 
     write(sb.toString())
-    body?.render(environment.getOut())
+    //body?.render(environment.getOut())
   }
 
   /**

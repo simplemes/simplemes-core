@@ -1,13 +1,15 @@
-package org.simplemes.eframe.test
 /*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
+package org.simplemes.eframe.test
+
+import groovy.util.logging.Slf4j
 
 /**
  * This is a base class that provide additional support for testing the Freemarker marker (helper) classes.
  */
+@Slf4j
 class BaseMarkerSpecification extends BaseSpecification {
 
   /**
@@ -20,16 +22,6 @@ class BaseMarkerSpecification extends BaseSpecification {
   @SuppressWarnings("GroovyAssignabilityCheck")
   String execute(Map options) {
     return new UnitTestRenderer(options).render()
-  }
-
-  /**
-   * Checks the HTML and Javascript for basic format errors.
-   * @param page The page content to check.
-   * @return True if Ok.  Exception if not.
-   */
-  boolean checkPage(String page) {
-    HTMLTestUtils.checkHTML(page)
-    return JavascriptTestUtils.checkScriptsOnPage(page)
   }
 
 }

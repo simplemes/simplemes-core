@@ -171,4 +171,29 @@ class BaseMarkerSpec extends BaseMarkerSpecification {
     widgetContext.parameters['required'] == 'false'
   }
 
+  def "verify that lookupLabelAndTooltip handles supported cases"() {
+    when: 'the marker is built'
+    def marker = buildMarker(ListMarker, [parameters: attributes])
+
+    then: 'the escape works on the supported cases'
+    marker.lookupLabelAndTooltip(defaultKey) == results
+
+    and: 'one entry is really in the messages.properties'
+    lookup('list.menu.label') != 'list.menu.label'
+    lookup('list.menu.tooltip') != 'list.menu.tooltip'
+
+
+    where:
+    defaultKey   | attributes                               | results
+    null         | ['label': 'ABC', 'tooltip': 'XYZ']       | new Tuple2('ABC', 'XYZ')
+    'other'      | ['label': 'ABC.label', 'tooltip': 'XYZ'] | new Tuple2('ABC.label', 'XYZ')
+    'menu'       | ['tooltip': 'XYZ']                       | new Tuple2('menu', 'XYZ')
+    'menu.label' | ['label': 'ABC', 'tooltip': 'XYZ']       | new Tuple2('ABC', 'XYZ')
+    'menu.label' | ['label': 'ABC']                         | new Tuple2('ABC', 'ABC')
+    'menu.label' | ['label': 'list.menu.label']             | new Tuple2(lookup('list.menu.label'), lookup('list.menu.tooltip'))
+    'menu.label' | ['tooltip': 'XYZ']                       | new Tuple2('menu.label', 'XYZ')
+    null         | ['label': 'ABC.label', 'tooltip': 'XYZ'] | new Tuple2('ABC.label', 'XYZ')
+    null         | ['label': 'ABC', 'tooltip': 'XYZ.label'] | new Tuple2('ABC', 'XYZ.label')
+  }
+
 }

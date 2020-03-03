@@ -1,0 +1,55 @@
+
+=== efMenuItem
+
+Menus are used in most applications.  This marker allows you to define a menu item that
+triggers a single action or links to a standard controller URI.
+This marker can be used in menus and sub-menus.  This marker can also be used in the <<efShow>>
+page to add menu items to the "More..." toolbar menu.
+The `<@efMenuItem>` marker is typically used in conjunction with <<efMenu>> marker.
+
+image::guis/menus.png[menus,align="center", width="30%"]
+
+[source,html]
+.Menu Example
+----
+<@efForm id="addPanel" dashboard="true">  // <.>
+  <@efMenu id="configMenu">
+    <@efMenu key="customFields">  // <.>
+      <@efMenuItem key="addCustomField" uri="/order/create"/>     // <.>
+      <@efMenuItem key="addPanel" onClick="addPanel();"/>  // <.>
+      <@efMenuItem/>  // <.>
+      <@efMenuItem key="create" action="create"/>
+    </@efMenu>
+  </@efMenu>
+</@efForm>
+----
+<.> The menu must be inside of a <<efForm>>.
+<.> First menu has sub-menu items and the label is _"menu.customFields.label"_ and
+    _"menu.customFields.tooltip"_ (if defined).
+<.> Sends request to a URI as an HTTP GET request (forces page refresh).
+<.> Executes a local javascript method.
+<.> Displays a separator line in the menu.
+
+
+==== Parameters/Body
+
+The main parameters/body supported are:
+
+.Parameters
+[cols="1,6"]
+|===
+|Argument|Description
+
+|*key*       | The menu ID and _messages.properties_ lookup key for the menu item
+               (e.g. 'menu._key_.label').
+               Also supports the standard label logic.
+               See link:guide.html#markers-andlabels[Markers and Labels^]
+               icon:share-square-o[role="link-blue"] for details.
+| *onClick*  | The javascript to execute when the menu entry is triggered.
+               (*onClick* or *uri* are *required* for non-separator menus)
+| *uri*      | When the menu item is clicked, this is the controller URI to send the get request
+               to. (*onClick* or *uri* are *required* for non-separator menus)
+|===
+
+NOTE:  If there are no attributes, then a menu separator line is generated.
+

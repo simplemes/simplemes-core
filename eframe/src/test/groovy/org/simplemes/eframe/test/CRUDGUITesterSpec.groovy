@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import ch.qos.logback.classic.Level
@@ -10,12 +14,6 @@ import sample.domain.Order
 import sample.domain.SampleParent
 import spock.lang.IgnoreIf
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * Tests the CRUD GUI Tester with most of the options.
  */
@@ -26,28 +24,6 @@ class CRUDGUITesterSpec extends BaseGUISpecification {
   static dirtyDomains = [AllFieldsDomain, Order]
 
   def "verify that the standard GUI definition pages work"() {
-    given: 'some dates'
-    def date = new Date()
-    def dateOnly = new DateOnly()
-
-    and: 'another domain record to reference'
-    def (Order order) = (List) DataGenerator.generate {
-      domain Order
-    }
-
-    expect: 'the test is run'
-    CRUDGUITester.test {
-      tester this
-      domain AllFieldsDomain
-      recordParams name: 'ABC', title: 'abc', qty: 12.20, count: 237, enabled: true, dueDate: dateOnly, dateTime: date,
-                   notes: 'some notes', reportTimeInterval: ReportTimeIntervalEnum.LAST_7_DAYS,
-                   order: order
-      minimalParams name: 'XYZ'
-      readOnlyFields 'displayOnlyText'
-    }
-  }
-
-  def "verify that the standard GUI definition pages work with BigDecimal of 0.0"() {
     given: 'some dates'
     def date = new Date()
     def dateOnly = new DateOnly()

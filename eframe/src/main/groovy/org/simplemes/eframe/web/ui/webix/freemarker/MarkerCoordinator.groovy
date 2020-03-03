@@ -1,13 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 
 import org.simplemes.eframe.misc.LogUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * This is used to coordinate between multiple markers that need to produce a legal web page.
@@ -49,6 +47,11 @@ class MarkerCoordinator {
   Map others = [:]
 
   /**
+   * A counter that can be used to generate unique IDs when non are provided by the caller.
+   */
+  private Integer uniqueIDCounter = 0
+
+  /**
    * Simple constructor.
    */
   MarkerCoordinator() {
@@ -86,6 +89,15 @@ class MarkerCoordinator {
     prescript.toString()
   }
 
+  /**
+   * Increments the unique counter and returns the value.
+   *
+   * @return A counter that can be used to generate unique IDs when non are provided by the caller.
+   */
+  Integer getUniqueIDCounter() {
+    uniqueIDCounter++
+    return uniqueIDCounter
+  }
 
   @Override
   String toString() {

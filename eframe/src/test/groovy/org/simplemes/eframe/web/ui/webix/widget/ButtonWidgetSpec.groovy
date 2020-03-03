@@ -1,15 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.test.BaseWidgetSpecification
 import org.simplemes.eframe.test.HTMLTestUtils
 import org.simplemes.eframe.test.JavascriptTestUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -196,5 +194,20 @@ class ButtonWidgetSpec extends BaseWidgetSpecification {
     then: 'the javascript is legal'
     checkPage(page)
   }
+
+  def "verify that apply handles a label that is not a lookup key with .label"() {
+    given: 'some options the widget'
+    def widgetContext = new WidgetContext(parameters: [label: 'XYZZY'])
+
+    when: 'the widget text is built'
+    def page = new ButtonWidget(widgetContext).build().toString()
+
+    then: 'the javascript is legal'
+    checkPage(page)
+
+    and: 'the basic properties are correct'
+    JavascriptTestUtils.extractProperty(page, 'label') == 'XYZZY'
+  }
+
 
 }

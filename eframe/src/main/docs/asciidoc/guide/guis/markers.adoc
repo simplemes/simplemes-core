@@ -4,9 +4,10 @@
 ifeval::["{backend}" != "pdf"]
 
 [inline-toc-header]#Overview#
-[inline-toc]#<<Common Features>>#
+[inline-toc]#<<markers-common-features>>#
 [inline-toc]#<<markers-and-models,Markers and Models - Displaying Values>>#
 [inline-toc]#<<Markers and Options>>#
+[inline-toc]#<<Markers and Labels>>#
 [inline-toc]#<<Adding to the HTML Head>>#
 [inline-toc]#<<pagination-filtering-and-sorting>>#
 
@@ -17,6 +18,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<efHTML>>#
 [inline-toc]#<<efLanguage>>#
 [inline-toc]#<<efLookup>>#
+[inline-toc]#<<efMenu>>#
 [inline-toc]#<<efMessages>>#
 [inline-toc]#<<efTitle>>#
 
@@ -78,6 +80,8 @@ include::markers/efLanguage.adoc[]
 include::markers/efLookup.adoc[]
 
 include::markers/efList.adoc[]
+
+include::markers/efMenu.adoc[]
 
 include::markers/efMessages.adoc[]
 

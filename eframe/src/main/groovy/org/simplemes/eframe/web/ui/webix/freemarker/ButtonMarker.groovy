@@ -1,18 +1,15 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import groovy.util.logging.Slf4j
-import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.web.ui.webix.widget.ButtonWidget
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
- * Provides the efField freemarker marker implementation.
- * This builds an input field for user data entry.
+ * Provides the freemarker marker implementation.
+ * This builds a general-purpose button.
  */
 @Slf4j
 @SuppressWarnings("unused")
@@ -70,7 +67,7 @@ class ButtonMarker extends BaseMarker {
     def tooltip = ''
     def label = ''
     if (parameters.label) {
-      (label, tooltip) = GlobalUtils.lookupLabelAndTooltip((String) parameters.label, (String) parameters.tooltip)
+      (label, tooltip) = lookupLabelAndTooltip(null)
     }
     if (parameters.tooltip) {
       // Just a tooltip, with no label case

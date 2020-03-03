@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import org.simplemes.eframe.data.CustomFieldDefinition
@@ -7,31 +11,10 @@ import org.simplemes.eframe.web.ui.webix.freemarker.MarkerCoordinator
 import org.simplemes.eframe.web.ui.webix.widget.WidgetContext
 import sample.controller.AllFieldsDomainController
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * This is a base class that provide additional support for testing the UI widget classes.
  */
 class BaseWidgetSpecification extends BaseSpecification {
-
-  /**
-   * Checks the HTML and Javascript for basic format errors.
-   * @param page The page content to check.
-   * @return True if Ok.  Exception if not.
-   */
-  boolean checkPage(String page) {
-    HTMLTestUtils.checkHTML(page)
-
-    if (page.contains('<script>')) {
-      return JavascriptTestUtils.checkScriptsOnPage(page)
-    } else {
-      return JavascriptTestUtils.checkScriptFragment(page)
-    }
-  }
 
   /**
    * Builds a WidgetContext with a mock field definition with the given options.

@@ -1,10 +1,8 @@
-package org.simplemes.eframe.test
 /*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
 
+package org.simplemes.eframe.test
 /**
  * Tests.
  */
@@ -378,6 +376,7 @@ class JavascriptTestUtilsSpec extends BaseSpecification {
     '{id: "name", name: "ABC"}'       | 'name'   | 'ABC'
     ' view: "ABC"'                    | 'view'   | 'ABC'
     " view: 'ABC'"                    | 'view'   | "ABC"
+    " view:'ABC'" | 'view' | "ABC"
     '{view: "ABC"}'                   | 'name'   | null
     '{margin: 6}'                     | 'margin' | '6'
     '{ok: true}'                      | 'ok'     | 'true'

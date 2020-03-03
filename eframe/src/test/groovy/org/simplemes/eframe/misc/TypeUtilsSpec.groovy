@@ -13,7 +13,6 @@ import sample.controller.AllFieldsDomainController
 import sample.domain.AllFieldsDomain
 import sample.domain.Order
 import sample.domain.SampleParent
-import spock.lang.Unroll
 
 /**
  * Tests.
@@ -194,7 +193,6 @@ class TypeUtilsSpec extends BaseSpecification {
     TypeUtils.getRealClassFromBean(clazz) == clazz
   }
 
-  @Unroll
   def "verify that "() {
     expect: ''
     TypeUtils.isPrimitiveAssignableTo(clazz1, clazz2) == result

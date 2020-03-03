@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import groovy.util.logging.Slf4j
@@ -6,12 +10,6 @@ import javax.script.Compilable
 import javax.script.ScriptEngine
 import javax.script.ScriptEngineManager
 import java.text.ParseException
-
-/*
- * Copyright Michael Houston. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Some utilities for testing generated Javascript code.  Basic testing only.
@@ -30,16 +28,10 @@ class JavascriptTestUtils {
    */
   @SuppressWarnings('CatchThrowable')
   static boolean checkScriptsOnPage(String page) {
-    ScriptEngineManager factory = new ScriptEngineManager()
-    ScriptEngine engine = factory.getEngineByName("ECMAScript")
     //println "engine = $engine"
-    if (engine instanceof Compilable) {
       for (script in extractScriptsFromPage(page)) {
-        //println "${SourceUtils.addLineNumbersToSource(script)}"
-        log.trace('checkScriptsOnPage() checking {}', script)
-        engine.compile(new StringReader(script))
+        checkScript(script)
       }
-    }
     return true
   }
 
@@ -50,8 +42,24 @@ class JavascriptTestUtils {
    */
   @SuppressWarnings('CatchThrowable')
   static boolean checkScriptFragment(String fragment) {
-    // Build a simple set of HTML script tags with a variable.
-    return checkScriptsOnPage("<script>var x = $fragment;</script>")
+    // Wrap with 'var x =' in case the fragment is meant to be used in an expression.
+    return checkScript("var x = $fragment;")
+  }
+
+  /**
+   * Checks the syntax for the given valid javascript formatting.  This is used on the actual Javascript.
+   * @param script The javascript.
+   * @return True if passed.
+   */
+  @SuppressWarnings('CatchThrowable')
+  static boolean checkScript(String script) {
+    ScriptEngineManager factory = new ScriptEngineManager()
+    ScriptEngine engine = factory.getEngineByName("ECMAScript")
+    if (engine instanceof Compilable) {
+      log.trace('checkScripts() checking {}', script)
+      engine.compile(new StringReader(script))
+    }
+    return true
   }
 
   /**
@@ -97,8 +105,9 @@ class JavascriptTestUtils {
       count++
       start = page.indexOf('</script>', start + 1)
     }
-    if ((res.size() + includeCount) != count) {
-      throw new ParseException("Too many($count) </script> tags.  Perhaps a <script> tag is in a quoted string (not supported).", start)
+    def expectedCount = res.size() + includeCount
+    if (expectedCount != count) {
+      throw new ParseException("Too many($count) </script> tags.  Expected ($expectedCount).  Perhaps a <script> tag is in a quoted string (not supported).", start)
     }
 
     return res
@@ -203,7 +212,11 @@ class JavascriptTestUtils {
     }
     def loc = page.indexOf("$name:")
     if (loc >= 0) {
-      loc += name.size() + 2
+      loc += name.size() + 1
+      // Skip past the space after the colon
+      if (page[loc] == ' ') {
+        loc++
+      }
       if (loc >= page.size()) {
         return null
       }

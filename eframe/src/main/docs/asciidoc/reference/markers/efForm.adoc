@@ -43,7 +43,7 @@ The main parameters/body supported are:
 | *(body)*| The form contents. See above for details on what elements can be in the body.
 | *id*    | The ID of the form to submit.  This is also used to define a number of javascript
             variables in the page. (*Default:* 'form').
-| *dashboard* | If set, then the form is assumed to be a dashboard activity style form.
+| *dashboard* *dialog*| If set, then the form is assumed to be a dashboard activity style form.
                 This type does not create the HTML content around the Javascript values used
                 to create the GUI elements.
                 See link:guide.html#dashboard-activities[Dashboard Activities^]

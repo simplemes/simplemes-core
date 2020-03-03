@@ -122,6 +122,7 @@ class BaseControllerSpec extends BaseAPISpecification {
   def "verify error works correctly for HTML content requests"() {
     given: 'a controller for the base class for SampleParent'
     Class clazz = buildSampleParentController()
+    disableStackTraceLogging()
 
     and: 'a mock renderer'
     def mock = new MockRenderer(this).install()

@@ -162,5 +162,17 @@ class NameUtilsSpec extends BaseSpecification {
     ''              | ''
   }
 
+  def "test toLegalIdentifier with supported inputs"() {
+    expect: 'the right value is returned'
+    NameUtils.toLegalIdentifier(value) == result
+
+    where:
+    value | result
+    'a'   | 'a'
+    'a.b' | 'a_b'
+    ''    | ''
+    null  | null
+  }
+
 
 }

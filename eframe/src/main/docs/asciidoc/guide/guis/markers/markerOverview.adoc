@@ -6,12 +6,14 @@ Most markers require the framework Javascript and CSS files. See the common
 _views/includes/header.ftl_ for an example.
 
 
+[[markers-common-features]]
 ==== Common Features
 
 ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<Markers and Models>>#
 [inline-toc]#<<Markers and Options,Markers and Options (Field-Specific)>>#
+[inline-toc]#<<Markers and Labels>>#
 [inline-toc]#<<Pagination, Filtering and Sorting>>#
 
 endif::[]
@@ -153,6 +155,19 @@ javascript.  To do this easily, the _header.ftl_ supports a block `head`.  It ca
 
 ----
 <.> The style sheet _logging.css_ is included in the _<head>_ section.
+
+===== Markers and Labels
+
+Many markers support labels and tooltips.  We have some general rules for defining labels.
+In places where labels are required (e.g. menus), then the marker determines the label
+in precedence as follows:
+
+. _label="value"_ - Uses the label value.  If it ends in .label, then it is looked up in the
+ _messages.properties_ file and an optional tooltip is looked up by adding _".tooltip"_ instead
+ of _".label"_.
+. Uses some internal value (e.g. ID or key) to create the label by adding _".label"_ to the end.
+
+Many markers that generate label elements support the _label_ and _tooltip_ options.
 
 
 [[pagination-filtering-and-sorting]]

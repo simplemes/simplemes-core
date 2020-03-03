@@ -1,0 +1,41 @@
+
+==== efMenu
+
+The link:reference.html#efmenu[efMenu^] icon:share-square-o[role="link-blue"] and
+link:reference.html#efmenuitem[efMenuItem^] icon:share-square-o[role="link-blue"]
+markers generate a generic menu that
+can trigger controller actions or Javascript functions.  The menus can be nested as needed.
+
+
+image::guis/menus.png[menus,align="center", width="30%"]
+
+[source,html]
+.Menu Example
+----
+<@efForm id="addPanel" dashboard="true">  // <.>
+  <@efMenu id="configMenu">
+    <@efMenu key="customFields">  // <.>
+      <@efMenuItem key="addCustomField" uri="/order/create"/>     // <.>
+      <@efMenuItem key="addPanel" onClick="addPanel();"/>  // <.>
+      <@efMenuItem/>  // <.>
+      <@efMenuItem key="create" action="create"/>
+    </@efMenu>
+  </@efMenu>
+</@efForm>
+----
+<.> The menu must be inside of a <<efForm>>.
+<.> First menu has sub-menu items and the label is _"menu.customFields.label"_ and
+    _"menu.customFields.tooltip"_ (if defined).
+<.> Sends request to a URI as an HTTP GET request (forces page refresh).
+<.> Executes a local javascript method.
+<.> Displays a separator line in the menu.
+
+This marker can also be used in dialog pages as part of a <<efForm>>.
+The labels and tooltips are constructed from key name and looked up in the
+_messages.properties_ file.  See <<Markers and Labels>> for some more details.
+
+
+
+
+
+

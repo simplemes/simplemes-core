@@ -66,8 +66,8 @@ abstract class BaseMarker implements MarkerInterface {
   MarkerContext markerContext
 
   /**
-   * The base HTML element/view ID to use for the marker.  This can be overridden at
-   * the
+   * The base HTML element/view ID to use for the marker.  This can be overridden by specific markers.
+   *
    */
   String id
 
@@ -135,6 +135,7 @@ abstract class BaseMarker implements MarkerInterface {
     paramsIn.each { k, v ->
       parameters[k] = unwrap(paramsIn[k])
     }
+    id = parameters.id
 
     markerContext = objectWrapper.unwrap(env.dataModel?.get(StandardModelAndView.MARKER_CONTEXT), MarkerContext)
     //println "markerContext (${markerContext.hashCode()}, ${markerContext.getClass()}) = $markerContext"
@@ -345,4 +346,64 @@ abstract class BaseMarker implements MarkerInterface {
     }
     return contentWriter.toString()
   }
+
+  /**
+   * Increments the unique counter and returns the value.
+   *
+   * @return A counter that can be used to generate unique IDs when non are provided by the caller.
+   */
+  Integer getUniqueIDCounter() {
+    return markerContext?.markerCoordinator?.uniqueIDCounter ?: 1
+  }
+
+  /**
+   * Looks up the given label using the given key or the label/tooltip attributes for this marker.
+   * @param defaultKey The key to use if the standard label/tooltip attributes are not set for this marker.
+   * @param locale The locale (optional).
+   * @return The label and tooltip as a tuple.  Either can be null.
+   */
+  Tuple2 lookupLabelAndTooltip(String defaultKey, Locale locale = null) {
+    def labelKey = null
+    def tooltipKey = null
+    def originalLabel = null  // Keep track of the original value, before we add .label/.tooltip.
+    def originalTooltip = null
+    if (defaultKey) {
+      labelKey = "${defaultKey}.label"
+      tooltipKey = "${defaultKey}.tooltip"
+      originalLabel = defaultKey
+      originalTooltip = tooltipKey
+    }
+
+    if (parameters.label) {
+      labelKey = parameters.label
+      originalLabel = labelKey
+      if (!labelKey.endsWith('.label')) {
+        originalTooltip = labelKey
+        labelKey += ".label"
+      } else {
+        originalTooltip = labelKey
+      }
+      tooltipKey = labelKey - '.label' + ".tooltip"
+    }
+    if (parameters.tooltip) {
+      tooltipKey = parameters.tooltip
+      originalTooltip = tooltipKey
+      if (!tooltipKey.endsWith('.tooltip')) {
+        tooltipKey = tooltipKey - '.label' + ".tooltip"
+      }
+    }
+
+    def (labelValue, tooltipValue) = GlobalUtils.lookupLabelAndTooltip(labelKey, tooltipKey)
+
+    // Now, see if the values were not found in the messages.properties.
+    if (labelValue == labelKey) {
+      labelValue = originalLabel
+    }
+    if (tooltipValue == tooltipKey) {
+      tooltipValue = originalTooltip
+    }
+
+    return [labelValue, tooltipValue]
+  }
+
 }

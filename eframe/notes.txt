@@ -1,5 +1,62 @@
 Scratch
 =======
+<#--@formatter:off-->
+<script>
+
+  <@efPreloadMessages codes="cancel.label,
+                             definitionEditor.addField.title,definitionEditor.editField.title,panel.label,
+                             fieldName.label,fieldLabel.label,fieldFormat.label,maxLength.label,valueClassName.label,
+                             definitionEditor.saveField.label,definitionEditor.saveField.tooltip
+                             error.1.message,error.133.message"/>
+
+  ${params._variable}.display = {
+    type: "clean", paddingX: 6,
+    rows: [
+      {height: tk.ph("0.2em")},
+
+  <@efForm id="editField" dashboard="true">
+    <@efMenu id="menu">
+      <@efMenu key="customFields">
+        <@efMenuItem key="create" onClick="addCustomField();"/>
+        <@efMenuItem key="editCustomField" onClick="editCustomField();"/>
+        <@efMenuItem/>
+        <@efMenuItem key="deleteCustomField" onClick="deleteCustomField();"/>
+      </@efMenu>
+      <@efMenu key="customFields">
+        <@efMenuItem key="create" onClick="addCustomField();"/>
+        <@efMenuItem key="editCustomField" onClick="editCustomField();"/>
+        <@efMenuItem/>
+        <@efMenuItem key="deleteCustomField" onClick="deleteCustomField();"/>
+      </@efMenu>
+    </@efMenu>
+            data: [
+              {
+                id: "panels", value: ef.lookup("panels.label"), autowidth: true,
+                submenu: [
+                  {
+                    id: "addPanel",
+                    value: ef.lookup('definitionEditorMenu.addPanel.label'),
+                    tooltip: ef.lookup('definitionEditorMenu.addPanel.tooltip')
+                  },
+                  {
+                    id: "editPanel", value: ef.lookup('definitionEditorMenu.editPanel.label'),
+                    tooltip: ef.lookup('definitionEditorMenu.editPanel.tooltip')
+                  }
+                ]
+              }
+            ],
+    <@efButtonGroup>
+      <@efButton id='saveField' label="definitionEditor.saveField.label" click="efd._editorFieldSave()" />
+      <@efButton id='cancelField' label="cancel.label" click="efd._editorFieldCancel()"/>
+    </@efButtonGroup>
+  </@efForm>
+  };
+
+  // use id:
+  ${params._variable}.postScript = 'ef.focus("fieldName");$$("editField").setValues({id: "${params.id!''}"},true)';
+
+</script>
+
 
 
 
@@ -8,84 +65,20 @@ Micronaut Data Conversion Tasks
 Undo workarounds that were fixed (323, 264).
   https://github.com/micronaut-projects/micronaut-data/issues/323
 Add workaround for update failure: 299.  Remove sop.
-Investigate timezone issues on findAllByDateTimeLessThan(Date) queries.  Seems to be off by 5 hours.
-done - Enforce Transaction for insert/update/delete actions.
-done - @ExtensibleFields replacement - A field level @ExtensibleFieldHolder?
-  done - Add support for getFieldValue() and config type getters/setters in GDSL.
-done - Entity annotation replacement with GDSL.
-  done - Convert Domains
-    done - AllFieldsDomain
-    done - SampleParent
-    done - FlexField
-    done - FlexType
-    done - FieldExtension
-    done - FieldGUIExtension
-    done - UserPreference
-    done - SampleChild
-    done - SampleGrandChild
-    done - SampleSubClass
-    done - RMA
-    done - ArchiveLog
-    done - Dashboard*
-  done - Verify @JOIN and single/multiple foreign references. - fails for optionals.
-    done - @JOIN does not work for H2 OUTER join when foreign ref is null.
-      done - - Add getter that lazy loads the value.
-      done - - Add .adoc note on lazy loader.
-  done - needs work in app
-    Needs:
-      Routing >> ProductRouting, MasterRouting - RoutingService?
-        Routing
-          List<RoutingOperation> operations
-          checkOperations()
-          determineNextOperation()
-        MasterRouting
-          String routing
-          String title
-        ProductRouting
-          Product product
-        OrderRouting
-          Order order
-      Operation >>
-      CodeSequence >> LSNSequence, OrderSequence (Logic in Service?)
-  done - EncodedTypes - Status on Order?
-  done - Use GDSL to handle code completion.  See https://www.tothenew.com/blog/gdsl-awesomeness-introduction-to-gdsl-in-intellij-idea/
-  done - Adds these methods
-    done = Lazy load
-      done - reference - uses txn.
-      done - getChildRecords, addToChildRecords, save logic.
-    done - save, list, delete.save findByXYZ(),findById(), @Rollback
-  done - withTransaction {} ?
-  done - Validation support.
-    done - validate() returns ValidationError(s).
-    done - DomainEntityHelper.validate()
-    done - MessageSource fix.
-    done - Sub-classes of BusinessException
-      done - String too long for {0} in {1}.  Length {2} > Max length {3}.
-      done - Invalid value {0} for field {1} in {2}.
-      done - Missing value for field {0} in {1}.
-  Version and opt locking (custom JDBCOperations).
-done- Converters needed
-  done - DateOnly
-  done - EncodedTypes.
-done - Verify Jackson handlers for domain entities.
-
-done - DateOnly conversion.
+Investigate timezone issues on findAllByDateTimeLessThan(Date) queries.  Seems to be off by 5 hours?  ProductionLog.archive()?
+Version and opt locking (custom JDBCOperations).
 
 Support cache in specific use cases:
   UserPreferences - timed, any update for user flushed cache? done in PreferenceHolder?
   FieldExtension/GUI - Already cached at the domainUtils level with FieldGUIExtension via ExtensibleFieldHelper
   Others as needed.
-done - Fix BaseSpecification for new startup logic.
-done - Solve list() method ad-hoc sorting.
-  done - Add pagination support.
-  done - Find way to execute dynamic query and populate domain from result set.  Maybe use DomainBinder?
-done - Fix save/update/delete of custom OrderLine records. Generic hook mechanism?
 Add SQL DDL logic and Liquid-base/FlyWay support.
   Find way to auto-generate core stuff?.
-done - Micronaut-data does not support traits or sub-classes in most cases.
 Look at using an environment for DB type: h2, postgres.  Change command line to use it.
 Move Asset Pipeline to groovy to avoid missing bean when used by a module.  Can a .java file compiled under groovy work Ok?
 Figure out why sample reports are in the built .jar.  Why ArchiveLog report does not work.
+<@efField> supports foreign reference.  Value="" causes failure.  Maybe use UUID or key in value?
+Fix mess with efForm.dashboard.  Support type='dashboard', 'buttonHolder' and 'dialog'.
 
 
 Vue Investigation
