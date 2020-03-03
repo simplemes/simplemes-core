@@ -1,17 +1,15 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.JavascriptUtils
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
- * The tool bar widget.  Produces the toolkit elements needed to build a generic button.
+ * The tool bar widget.  Produces the toolkit elements needed to build a generic button with optional sub-menu elements.
  * This supports a link-style button or regular HTML button element.
  *
  * <h3>Parameters</h3>
@@ -27,7 +25,9 @@ import org.simplemes.eframe.misc.JavascriptUtils
  *   <li><b>width</b> - The width of the button.  (<b>Default</b>: 'tk.pw('10%')')  </li>
  *   <li><b>height</b> - The height of the button (<b>Default</b>: Toolkit default - 1em)  </li>
  *   <li><b>css</b> - Extra CSS style(s) for the button. </li>
- *   <li><b>subMenus</b> - The sub-menus for a menu button. The subMenus support these parameters: id (<b>Required</b>),label,click  </li>
+ *   <li><b>subMenus</b> - The sub-menus for a menu button. The subMenus support these parameters: id (<b>Required</b>),label,click
+ *                         Also supports a menu separator (separator: true).
+ *   </li>
  * </ul>
  */
 class ButtonWidget extends BaseWidget {
@@ -164,29 +164,34 @@ class ButtonWidget extends BaseWidget {
       if (subMenus) {
         subMenus << ",\n"
       }
-      def subID = subMenu.id
-      ArgumentUtils.checkMissing(subID, 'subMenu.id')
-      def (label, tooltip) = GlobalUtils.lookupLabelAndTooltip(subMenu.label, subMenu.tooltip)
-      def tooltipS2 = ''
-      if (tooltip) {
-        tooltipS2 = """tooltip: "${tooltip}" """
+      if (!subMenu.separator) {
+        def subID = subMenu.id
+        ArgumentUtils.checkMissing(subID, 'subMenu.id')
+        def (label, tooltip) = GlobalUtils.lookupLabelAndTooltip(subMenu.label, subMenu.tooltip)
+        def tooltipS2 = ''
+        if (tooltip) {
+          tooltipS2 = """tooltip: "${tooltip}" """
+        }
+        subMenus << """ {id: "$subID", value: "${label}", ${tooltipS2}} """
+      } else {
+        subMenus << '{$template: "Separator"}\n'
       }
-
-      subMenus << """ {id: "$subID", value: "${label}", ${tooltipS2}} """
     }
 
     def clickHandlers = new StringBuilder()
     for (subMenu in widgetContext.parameters.subMenus) {
-      if (clickHandlers) {
-        clickHandlers << "\n"
+      if (!subMenu.separator) {
+        if (clickHandlers) {
+          clickHandlers << "\n"
+        }
+        def subID = subMenu.id
+        def click = subMenu.click
+        if (!click.contains('(')) {
+          // Turn the click function name into a function call.
+          click += "()"
+        }
+        clickHandlers << """ if (id=="$subID") {$click};  """
       }
-      def subID = subMenu.id
-      def click = subMenu.click
-      if (!click.contains('(')) {
-        // Turn the click function name into a function call.
-        click += "()"
-      }
-      clickHandlers << """ if (id=="$subID") {$click};  """
     }
 
     def s = """
@@ -196,6 +201,11 @@ class ButtonWidget extends BaseWidget {
             ${subMenus}
           ]}
         ],
+        submenuConfig: {
+          tooltip: function (item) {
+            return item.tooltip || "??";
+          }
+        },
         on: {
           onMenuItemClick: function (id) {
             $clickHandlers

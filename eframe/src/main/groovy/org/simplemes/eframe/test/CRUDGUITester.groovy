@@ -56,8 +56,8 @@ import org.simplemes.eframe.web.PanelUtils
  * <h3>Logging</h3>
  * The logging for this class that can be enabled:
  * <ul>
- *   <li><b>debug</b> - Debugging information. Typically includes inputs and outputs. </li>
- *   <li><b>trace</b> - Logs each field as it is tested and records processed. </li>
+ *   <li><b>debug</b> - Logs each field as it is tested. </li>
+ *   <li><b>trace</b> - Logs each field as it is tested and records processed with times. </li>
  * </ul>
  * */
 @Slf4j
@@ -397,7 +397,7 @@ class CRUDGUITester {
     _uri = _uri ?: "/${domainName}"
     fieldOrder = DomainUtils.instance.getStaticFieldOrder(_domain)
     fieldDefinitions = DomainUtils.instance.getFieldDefinitions(_domain)
-    log.trace("doSetup(): ID = {}, URI = {}, fieldOrder = {}", _htmlIDBase, _uri, fieldOrder)
+    log.debug("doSetup(): ID = {}, URI = {}, fieldOrder = {}", _htmlIDBase, _uri, fieldOrder)
     // The code value overrides the -D option for testing purposes.
     _dashDOption = _dashDOption ?: System.getProperty('testOnly')
     slowTest = System.getProperty('slowTest') != null
@@ -491,21 +491,29 @@ class CRUDGUITester {
 
     try {
       if (_enableListTests) {
+        def start = System.currentTimeMillis()
         testListPage()
+        log.trace('List Test Total Elapsed Time {}ms', System.currentTimeMillis() - start)
         testCount++
       }
       if (_enableShowTests) {
+        def start = System.currentTimeMillis()
         testShowPage()
+        log.trace('Show Test Total Elapsed Time {}ms', System.currentTimeMillis() - start)
         testCount++
       }
       if (_enableCreateTests) {
+        def start = System.currentTimeMillis()
         createMode = true
         testCreatePage()
+        log.trace('Create Test Total Elapsed Time {}ms', System.currentTimeMillis() - start)
         testCount++
       }
       if (_enableEditTests) {
+        def start = System.currentTimeMillis()
         createMode = false
         testEditPage()
+        log.trace('Edit Test Total Elapsed Time {}ms', System.currentTimeMillis() - start)
         testCount++
       }
 /*
@@ -523,7 +531,7 @@ class CRUDGUITester {
    */
   void testListPage() {
     def mainRecord = createRecord(_recordParams)
-    log.trace("testListPage(): Checking columns {}", effectiveListColumns)
+    log.debug("testListPage(): Checking columns {}", effectiveListColumns)
     createRecord(_minimalParams)
     go("")
     waitForCompletion()
@@ -532,8 +540,11 @@ class CRUDGUITester {
 
     // Now, check the columns
     for (column in effectiveListColumns) {
+      def start = System.currentTimeMillis()
       def domainReference = DomainReference.buildDomainReference(column, mainRecord)
       checkListColumn(column, "${_htmlIDBase}DefinitionList", domainReference.value, 0)
+      //checkListColumnFast(column, "${_htmlIDBase}DefinitionList", domainReference.value, 0)
+      log.trace('    List Column {} Elapsed Time {}ms', column, System.currentTimeMillis() - start)
     }
 
     def buttonID = NameUtils.lowercaseFirstLetter(domainName)
@@ -551,6 +562,9 @@ class CRUDGUITester {
    * @param row The list row the value is expected in.
    */
   protected checkListColumn(String columnName, String listHTMLID, Object value, int row) {
+    // Faster approach to finding data.  Get the raw HTML from the DOM and search it.
+    //    def inner = _tester.$("div#${listHTMLID}").@innerHTML
+    //    println "inner = $inner"
     //log.trace('Checking list column {} for value {}', columnName, value)
     // Check the header first.
     def columnTitle = lookup("${columnName}.label")
@@ -631,7 +645,7 @@ class CRUDGUITester {
    */
   void testShowPageFields() {
     def mainRecord = createRecord(_recordParams)
-    log.trace("testShowPage(): Checking fields {}", effectiveShowFields)
+    log.debug("testShowPage(): Checking fields {}", effectiveShowFields)
     go("/show/${mainRecord.uuid}")
     waitForCompletion()
     assert browser.title == lookup('show.title', [TypeUtils.toShortString(mainRecord), lookup("${domainName}.label"), Holders.configuration.appName])
@@ -707,7 +721,7 @@ class CRUDGUITester {
   void testCreatePage() {
     // Create a a default record for comparison to the displayed values.
     def mainRecord = _domain.newInstance()
-    log.trace("testCreatePage(): Checking fields {}", effectiveCreateFields)
+    log.debug("testCreatePage(): Checking fields {}", effectiveCreateFields)
     go("/create")
     waitForCompletion()
     assert browser.title == lookup('create.title', [lookup("${domainName}.label"), Holders.configuration.appName])
@@ -721,7 +735,7 @@ class CRUDGUITester {
     if (effectiveCreateFieldsByPanel) {
       // Check each panel, one at a time
       for (panel in effectiveCreateFieldsByPanel.keySet()) {
-        log.trace('Checking panel "{}"', panel)
+        log.debug('Checking panel "{}"', panel)
         clickPanel(panel)
         for (field in effectiveCreateFieldsByPanel[panel]) {
           def domainReference = DomainReference.buildDomainReference(field, mainRecord)
@@ -761,7 +775,7 @@ class CRUDGUITester {
   void testEditPage() {
     // Create a a default record with the minimal values.
     def mainRecord = createRecord(_minimalParams)
-    log.trace("testEditPage(): Checking fields {}", effectiveEditFields)
+    log.debug("testEditPage(): Checking fields {}", effectiveEditFields)
     go("/edit/${mainRecord.uuid}")
     waitForCompletion()
     assert browser.title == lookup('edit.title', [TypeUtils.toShortString(mainRecord), lookup("${domainName}.label"), Holders.configuration.appName])
@@ -775,7 +789,7 @@ class CRUDGUITester {
     if (effectiveEditFieldsByPanel) {
       // Check each panel, one at a time
       for (panel in effectiveEditFieldsByPanel.keySet()) {
-        log.trace('Checking panel "{}"', panel)
+        log.debug('Checking panel "{}"', panel)
         clickPanel(panel)
         for (field in effectiveEditFieldsByPanel[panel]) {
           def domainReference = DomainReference.buildDomainReference(field, mainRecord)
@@ -815,7 +829,7 @@ class CRUDGUITester {
    * @param expectedRef The domain reference for the expected value that should be displayed in the value section.
    */
   protected checkShowField(String fieldName, DomainReference expectedRef) {
-    log.trace('  Checking show field "{}" for value "{}"', fieldName, expectedRef?.value)
+    log.debug('  Checking show field "{}" for value "{}"', fieldName, expectedRef?.value)
     def fieldDef = fieldDefinitions?.get(fieldName)
     checkFieldLabel(fieldName)
     checkFieldValue(fieldName, expectedRef, fieldDef, false)
@@ -829,7 +843,7 @@ class CRUDGUITester {
    * @param fillInValue The value to fill in the field.  Optional.
    */
   protected checkAndFillInField(String fieldName, DomainReference expectedRef, Object fillInValue = null) {
-    log.trace('  Check and Fill field "{}" for value "{}".  Fill In: "{}"', fieldName, expectedRef?.value, fillInValue)
+    log.debug('  Check and Fill field "{}" for value "{}".  Fill In: "{}"', fieldName, expectedRef?.value, fillInValue)
     def fieldDef = fieldDefinitions?.get(fieldName)
     checkFieldLabel(fieldName)
     checkFieldValue(fieldName, expectedRef, fieldDef, true)
@@ -1084,7 +1098,7 @@ class CRUDGUITester {
    */
   @SuppressWarnings("unused")
   protected void checkRecord(Object record, Map expectedValues, boolean ignoreDateFields = false) {
-    log.trace('checkRecord: record {} expectedValue {}', record, expectedValues)
+    log.debug('checkRecord: record {} expectedValue {}', record, expectedValues)
 
     for (String fieldName in expectedValues.keySet()) {
       def fieldDef = fieldDefinitions[fieldName]
@@ -1096,7 +1110,7 @@ class CRUDGUITester {
         log.warn('Altered title from "{}" to "{}" to avoid errors in checkRecord().', 'XYZZY', expectedValue)
       }
 
-      log.trace('  Checking db field "{}" for expected value "{}". Found "{}"', fieldName, expectedValue, value)
+      log.debug('  Checking db field "{}" for expected value "{}". Found "{}"', fieldName, expectedValue, value)
       if (fieldName == 'password' && record instanceof User) {
         // Special case password checks to account for encryption.
         def matches = record.passwordMatches((String) expectedValue)
@@ -1207,7 +1221,7 @@ class CRUDGUITester {
         recordsCreated[_domain] = list
       }
       list << object.uuid
-      log.trace("Created record {}({}) id = {} ", object, _domain, object.uuid)
+      log.debug("Created record {}({}) id = {} ", object, _domain, object.uuid)
       res = object
     }
 
@@ -1226,7 +1240,7 @@ class CRUDGUITester {
           def record = clazz.findByUuid(id)
           if (record) {
             record.delete()
-            log.trace("Deleted record {}({}) id = {}", record, clazz, record.uuid)
+            log.debug("Deleted record {}({}) id = {}", record, clazz, record.uuid)
           }
         }
       }
@@ -1318,7 +1332,7 @@ class CRUDGUITester {
    */
   void clickPanel(String panel) {
     //println "panel = $panel"
-    log.trace('Clicking panel "{}"', panel)
+    log.debug('Clicking panel "{}"', panel)
     _tester.$('div.webix_item_tab', button_id: "${panel}Body").click()
   }
 

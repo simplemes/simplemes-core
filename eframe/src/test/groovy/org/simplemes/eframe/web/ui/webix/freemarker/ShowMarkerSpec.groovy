@@ -192,4 +192,32 @@ class ShowMarkerSpec extends BaseMarkerSpecification {
     page.indexOf('id: "title"') < page.indexOf('id: "custom1"')
   }
 
+  def "verify that the marker supports an efMenuItem for content"() {
+    given: 'a mocked FieldDefinitions for the domain'
+    new MockDomainUtils(this, new MockFieldDefinitions(['name', 'title'])).install()
+
+    when: 'the marker is built'
+    def src = """
+      <@efForm id="show">
+        <@efShow fields="name,title">
+          <@efMenuItem id="release" key="release" onClick="release()"/>
+        </@efShow>
+      </@efForm>
+    """
+
+    def page = execute(source: src, controllerClass: SampleParentController,
+                       domainObject: new SampleParent(name: 'ABC', title: 'xyz'), uri: '/sampleParent/show/5')
+
+    then: 'the javascript is legal'
+    checkPage(page)
+
+    and: 'the correct standard show toolbar more..delete button is generated'
+    def moreButtonText = TextUtils.findLine(page, 'view: "menu"')
+    JavascriptTestUtils.extractProperty(moreButtonText, 'id') == 'showMore'
+
+    def releaseMenuText = TextUtils.findLine(page, 'id: "release"')
+    JavascriptTestUtils.extractProperty(releaseMenuText, 'value') == lookup('release')
+    JavascriptTestUtils.extractProperty(releaseMenuText, 'tooltip') == lookup('release.tooltip')
+  }
+
 }

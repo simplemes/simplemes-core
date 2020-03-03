@@ -209,5 +209,24 @@ class ButtonWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(page, 'label') == 'XYZZY'
   }
 
+  def "verify that the widget supports submenu with menu separator option"() {
+    given: 'the buttons for the sub menu'
+    def subMenu1 = [separator: true]
+
+    and: 'some options the widget'
+    def widgetContext = new WidgetContext(parameters: [id: 'moreButton', label: 'more.menu.label', subMenus: [subMenu1]])
+
+    when: 'the widget text is built'
+    def page = new ButtonWidget(widgetContext).build().toString()
+
+    then: 'the javascript is legal'
+    checkPage(page)
+
+    and: 'the separator is correct'
+    def dataText = JavascriptTestUtils.extractBlock(page, 'data')
+    def subMenuText = JavascriptTestUtils.extractBlock(dataText, 'submenu: [')
+    subMenuText.contains('{$template: "Separator"}')
+  }
+
 
 }

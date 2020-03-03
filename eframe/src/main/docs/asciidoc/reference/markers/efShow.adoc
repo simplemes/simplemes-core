@@ -42,7 +42,8 @@ The main parameters/body supported are:
 |===
 |Argument|Description
 
-| *(body)*    | Supports one or more <<efMenuItem>>.  These will be added to the "More..." menu.
+| *(body)*    | Supports one or more <<efMenuItem>>.  These will be added to the "More..." menu
+                before the standard delete menu entry.
 | *fields*    | A comma-delimited list of fields to display
                (*Default:* The list from the domain's <<fieldOrder>>).
 | *labelWidth* | The width of the label section of the page.
@@ -96,7 +97,7 @@ This includes labels and sizes.
 
 <#include "../includes/footer.ftl" />
 ----
-<.> Will perform a get on the _'/order/release'_ URI.  Other options are supported.
+<.> Will perform a get on the _'/order/release'_ URI.  The normal <<efMenuItem>> options are supported.
 
 
 

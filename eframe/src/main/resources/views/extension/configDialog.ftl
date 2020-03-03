@@ -2,13 +2,8 @@
 <#--@formatter:off-->
 <@efPreloadMessages codes="save.label,save.tooltip,cancel.label,cancel.tooltip,ok.label,
                            definitionEditor.title,definitionEditor.drag.label,
-                           panels.label,customFields.label,customField.label,
+                           customField.label,
                            delete.confirm.message,delete.confirm.title,
-                           definitionEditorMenu.addPanel.label,definitionEditorMenu.addPanel.tooltip,
-                           definitionEditorMenu.editPanel.label,definitionEditorMenu.editPanel.tooltip,
-                           definitionEditorMenu.deleteCustomField.label,definitionEditorMenu.deleteCustomField.tooltip,
-                           definitionEditorMenu.editCustomField.label,definitionEditorMenu.editCustomField.tooltip
-                           definitionEditorMenu.addCustomField.label,definitionEditorMenu.addCustomField.tooltip,
                            error.132.message,error.135.message"/>
 
 <script>

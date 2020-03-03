@@ -7,12 +7,19 @@ package org.simplemes.eframe.web.ui.webix.freemarker
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.test.BaseMarkerSpecification
 import org.simplemes.eframe.test.JavascriptTestUtils
+import org.simplemes.eframe.test.MockDomainUtils
+import org.simplemes.eframe.test.MockFieldDefinitions
 import org.simplemes.eframe.test.UnitTestUtils
+import sample.controller.SampleParentController
+import sample.domain.SampleParent
 
 /**
  * Tests.
  */
 class MenuItemMarkerSpec extends BaseMarkerSpecification {
+
+  @SuppressWarnings("unused")
+  static specNeeds = [EXTENSION_MOCK]
 
   def "verify that the marker builds a separator when called with no attributes"() {
     when: 'the marker is built'
@@ -139,7 +146,6 @@ class MenuItemMarkerSpec extends BaseMarkerSpecification {
     actionText.contains('window.location=\\"/controller/method\\"')
   }
 
-  // TODO: add support for show.
   def "verify that the marker detects when not used inside of an efMenu or efShow"() {
     when: 'the marker is built'
     def src = """
@@ -155,6 +161,54 @@ class MenuItemMarkerSpec extends BaseMarkerSpecification {
     then: 'the right exception is thrown'
     def ex = thrown(Exception)
     UnitTestUtils.assertExceptionIsValid(ex, ['efMenuItem', 'efMenu', 'efShow'])
+  }
+
+  def "verify that the marker supports use inside of the showMarker"() {
+    given: 'a mocked FieldDefinitions for the domain'
+    new MockDomainUtils(this, new MockFieldDefinitions(['name', 'title'])).install()
+
+    when: 'the marker is built'
+    def src = """
+      <@efForm>
+        <@efShow fields="name,title">
+          <@efMenuItem id="release" key="release" onClick="release()"/>
+        </@efShow>
+      </@efForm>
+    """
+
+    def page = execute(source: src, controllerClass: SampleParentController,
+                       domainObject: new SampleParent(name: 'ABC', title: 'xyz'), uri: '/sampleParent/show/5')
+
+    then: 'the javascript is legal'
+    checkPage("[$page]")
+
+    and: 'the uri is in the actions list correctly'
+    def subMenuText = JavascriptTestUtils.extractBlock(page, 'submenu: [')
+    subMenuText.contains('id: "release"')
+  }
+
+  def "verify that the marker supports use as menu separator inside of the showMarker"() {
+    given: 'a mocked FieldDefinitions for the domain'
+    new MockDomainUtils(this, new MockFieldDefinitions(['name', 'title'])).install()
+
+    when: 'the marker is built'
+    def src = """
+      <@efForm>
+        <@efShow fields="name,title">
+          <@efMenuItem/>
+        </@efShow>
+      </@efForm>
+    """
+
+    def page = execute(source: src, controllerClass: SampleParentController,
+                       domainObject: new SampleParent(name: 'ABC', title: 'xyz'), uri: '/sampleParent/show/5')
+
+    then: 'the javascript is legal'
+    checkPage("[$page]")
+
+    and: 'the uri is in the actions list correctly'
+    def subMenuText = JavascriptTestUtils.extractBlock(page, 'submenu: [')
+    subMenuText.contains('{$template: "Separator"}')
   }
 
 }

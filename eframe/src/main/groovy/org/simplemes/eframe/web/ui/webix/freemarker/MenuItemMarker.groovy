@@ -9,6 +9,7 @@ import groovy.util.logging.Slf4j
 import org.simplemes.eframe.misc.JavascriptUtils
 import org.simplemes.eframe.misc.NameUtils
 
+
 /**
  * Provides the freemarker marker implementation.
  * This builds a menu item (child menu).
@@ -23,7 +24,8 @@ class MenuItemMarker extends BaseMarker {
   @Override
   void execute() {
     def level = markerContext.markerCoordinator.others[MenuMarker.MENU_LEVEL]
-    if (!(level)) {
+    def showInProcess = markerContext.markerCoordinator.others[ShowMarker.SHOW_MARKER_IN_PROCESS_NAME]
+    if (!(level) && !(showInProcess)) {
       throw new MarkerException("efMenuItem must be enclosed in an efMenu or efShow marker.", this)
     }
     id = id ?: parameters.key ?: "menuItem${uniqueIDCounter}"
@@ -33,7 +35,15 @@ class MenuItemMarker extends BaseMarker {
     } else {
       buildMenuItem()
     }
+  }
 
+  /**
+   * Writes the JS a normal menu item.
+   */
+  protected void buildMenuItem() {
+    def showInProcess = markerContext.markerCoordinator.others[ShowMarker.SHOW_MARKER_IN_PROCESS_NAME]
+
+    def (label, tooltip) = lookupLabelAndTooltip(parameters.key ?: id)
     def handler = """ef.alert("No onClick or uri for menu item $id");"""
     if (parameters.onClick) {
       handler = parameters.onClick
@@ -41,32 +51,43 @@ class MenuItemMarker extends BaseMarker {
       handler = """window.location="$parameters.uri" """
     }
 
-    def arrayName = markerContext.markerCoordinator.others[MenuMarker.ACTION_ARRAY_NAME]
-    def element = NameUtils.toLegalIdentifier(id)
-    markerContext.markerCoordinator.addPostscript("${arrayName}.$element='${JavascriptUtils.escapeForJavascript(handler)}';\n")
-  }
+    if (showInProcess) {
+      // Used in a efShow tag, so put the menu the the marker coordinator so it can be used by efShow.
+      def list = markerContext.markerCoordinator.others[ShowMarker.ADDED_SUB_MENUS_NAME] ?: []
+      list << [id: "${NameUtils.toLegalIdentifier(id)}", label: "$label", tooltip: "${tooltip ?: ''}", click: handler]
+      markerContext.markerCoordinator.others[ShowMarker.ADDED_SUB_MENUS_NAME] = list
+    } else {
+      // Used in a normal efMenu
+      def s = """
+      {
+        id: "${NameUtils.toLegalIdentifier(id)}",
+        value: "$label",
+        tooltip: "${tooltip ?: ''}",
+      }, 
+      """
 
-  /**
-   * Writes the JS a normal menu item.
-   */
-  protected void buildMenuItem() {
-    def (label, tooltip) = lookupLabelAndTooltip(parameters.key ?: id)
-    def s = """
-    {
-      id: "${NameUtils.toLegalIdentifier(id)}",
-      value: "$label",
-      tooltip: "${tooltip ?: ''}",
-    }, 
-    """
+      write("$s\n")
 
-    write("$s\n")
+      def arrayName = markerContext.markerCoordinator.others[MenuMarker.ACTION_ARRAY_NAME]
+      def element = NameUtils.toLegalIdentifier(id)
+      markerContext.markerCoordinator.addPostscript("${arrayName}.$element='${JavascriptUtils.escapeForJavascript(handler)}';\n")
+    }
   }
 
   /**
    * Writes the JS a separator menu item.
    */
   protected void buildSeparatorMenuItem() {
-    write('{$template: "Separator"},\n')
+    def showInProcess = markerContext.markerCoordinator.others[ShowMarker.SHOW_MARKER_IN_PROCESS_NAME]
+
+    if (showInProcess) {
+      // Used in a efShow tag, so put the menu the the marker coordinator so it can be used by efShow.
+      def list = markerContext.markerCoordinator.others[ShowMarker.ADDED_SUB_MENUS_NAME] ?: []
+      list << [separator: true]
+      markerContext.markerCoordinator.others[ShowMarker.ADDED_SUB_MENUS_NAME] = list
+    } else {
+      write('{$template: "Separator"},\n')
+    }
   }
 
   /**
