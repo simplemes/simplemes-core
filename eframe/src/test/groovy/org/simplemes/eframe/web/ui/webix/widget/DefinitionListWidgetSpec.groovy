@@ -42,10 +42,6 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
     page.contains('<script>')
     page.contains('</script>')
 
-    and: 'the URL is checked for messages'
-    page.contains('efd._checkURLMessages();')
-
-
     and: 'the columns are sortable with server sorting'
     def name = TextUtils.findLine(page, 'id: "name"')
     JavascriptTestUtils.extractProperty(name, 'sort') == 'server'

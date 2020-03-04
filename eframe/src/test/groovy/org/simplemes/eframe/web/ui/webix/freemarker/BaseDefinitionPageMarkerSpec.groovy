@@ -59,6 +59,9 @@ class BaseDefinitionPageMarkerSpec extends BaseMarkerSpecification {
     and: 'the fields are created correctly'
     def titleFieldLine = TextUtils.findLine(page, 'id: "title"')
     JavascriptTestUtils.extractProperty(titleFieldLine, 'label') == "xyz"
+
+    and: 'the URL is checked for messages'
+    page.contains('efd._checkURLMessages();')
   }
 
   def "verify that execute flags required fields correctly - create"() {

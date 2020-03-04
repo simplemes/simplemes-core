@@ -70,6 +70,7 @@ abstract class BaseDefinitionPageMarker extends BaseMarker {
       ${buildDefaultPanelSelection()}
       ${buildPostScript()}
       ef.loadDialogPreferences();
+      efd._checkURLMessages();
     """
     markerContext?.markerCoordinator?.addPostscript(post)
 

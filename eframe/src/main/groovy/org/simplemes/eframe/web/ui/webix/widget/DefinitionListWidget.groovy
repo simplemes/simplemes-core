@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 import org.simplemes.eframe.controller.ControllerUtils
@@ -9,12 +13,6 @@ import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.web.PanelUtils
 import org.simplemes.eframe.web.ui.UIDefaults
 import org.simplemes.eframe.web.ui.webix.DomainToolkitUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * The base definition list widget class.  Produces the UI elements needed for a list definition page.
@@ -91,7 +89,6 @@ class DefinitionListWidget extends BaseWidget {
   def buildHTMLStart() {
     builder << """<div id="$id"></div>\n"""
     builder << """<script>\n"""
-    builder << """efd._checkURLMessages();\n"""
 
     addClosingText("""</script>\n""")
 

@@ -1,6 +1,16 @@
 
 === Definition Pages
 
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Definition Page Flow>>#
+[inline-toc]#<<BaseCrudController and Models>>#
+[inline-toc]#<<Definition Page Messages>>#
+
+endif::[]
+
+
+
 The main goal of this framework is to make your job as easy as possible.
 One of the ways we do this is to provide a common pattern for basic things your
 application must do.
@@ -17,6 +27,7 @@ complex domain objects.  This is done with a combination of convention, high-lev
 Using standardized pages, markers and controllers, the framework supports this standard
 definition page flow:
 
+==== Definition Page Flow
 
 
 //workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271  and IDEA plugin dir issue
@@ -127,3 +138,12 @@ Due Date: ${order.dueDate}  // <.>
 ----
 <.> The `dueDate` from the model is displayed before the normal show fields.
 <.> The normal show portion of the display.
+
+==== Definition Page Messages
+
+All core definition pages support the ability to display a message at the top of the page.
+This is done by adding a URL parameter for _info_ or _error_ messages (URL Encoded):
+
+  /order/show/99585d6d-9681-4407-ba49-9c7d0297044d?_error=Can%27t+release+more+quantity.
+
+
