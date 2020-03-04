@@ -55,6 +55,12 @@ groovydoc {
   source = [sourceSets.main.groovy,sourceSets.main.java]
 }
 
+allprojects {
+  tasks.withType(Javadoc) {
+    options.addStringOption('Xdoclint:none', '-quiet')
+  }
+}
+
 // Disable compilation of Java and Groovy due to classpath issues when groovyDoc is used.
 gradle.taskGraph.whenReady { graph ->
   if (graph.hasTask(':groovydoc')) {
