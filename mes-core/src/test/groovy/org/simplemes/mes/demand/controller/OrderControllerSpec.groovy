@@ -1,11 +1,13 @@
 package org.simplemes.mes.demand.controller
 
 import groovy.json.JsonSlurper
+import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.archive.ArchiverFactoryInterface
 import org.simplemes.eframe.archive.FileArchiver
+import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.BaseAPISpecification
 import org.simplemes.eframe.test.ControllerTester
@@ -123,6 +125,69 @@ void setup() {
     def order1 = Order.findByOrder('ABC')
     order1.qtyInQueue == 1.2
     order1.qtyReleased == 1.2
+  }
+
+  def "verify that releaseUI works - via HTTP API"() {
+    given: 'an order that can be released'
+    def order = null
+    Order.withTransaction {
+      order = new Order(order: 'ABC', qtyToBuild: 12.0).save()
+    }
+
+    when: 'the request is made'
+    login()
+    sendRequest(uri: '/order/releaseUI', method: 'post', content: [uuid: order.uuid], status: HttpStatus.FOUND)
+
+    then: 'the order is released'
+    def order1 = Order.findByOrder('ABC')
+    order1.qtyInQueue == 12.0
+    order1.qtyReleased == 12.0
+  }
+
+  def "verify that releaseUI redirects to the show page"() {
+    given: 'an order that can be released'
+    def order = null
+    Order.withTransaction {
+      order = new Order(order: 'ABC', qtyToBuild: 12.0).save()
+    }
+
+    when: 'the request is made'
+    login()
+    def res = controller.releaseUI(mockRequest(), [uuid: order.uuid.toString()], new MockPrincipal('joe', 'SUPERVISOR'))
+
+    then: 'the order is released'
+    def order1 = Order.findByOrder('ABC')
+    order1.qtyInQueue == 12.0
+    order1.qtyReleased == 12.0
+
+    and: 'the UI is redirected to the right show page'
+    res.status == HttpStatus.FOUND
+    res.headers.get(HttpHeaders.LOCATION).startsWith("/order/show/${order.uuid}")
+
+    and: 'the info message is in the response'
+    def msg = URLEncoder.encode(GlobalUtils.lookup('released.message', null, order.order, 12.0), "UTF-8")
+    res.headers.get(HttpHeaders.LOCATION).endsWith("?_info=$msg")
+  }
+
+  def "verify that releaseUI gracefully handles BusinessExceptions"() {
+    given: 'an order that is already released'
+    def order = null
+    Order.withTransaction {
+      order = new Order(order: 'ABC', qtyToBuild: 12.0, qtyReleased: 12.0).save()
+    }
+
+    when: 'the request is made'
+    login()
+    def res = controller.releaseUI(mockRequest(), [uuid: order.uuid.toString()], new MockPrincipal('joe', 'SUPERVISOR'))
+
+    then: 'the UI is redirected to the right show page'
+    res.status == HttpStatus.FOUND
+    res.headers.get(HttpHeaders.LOCATION).startsWith("/order/show/${order.uuid}")
+
+    and: 'the info message is in the response'
+    //error.3005.message=Can''t release more quantity.  All of the quantity to build ({0}) has been released.
+    def msg = URLEncoder.encode(GlobalUtils.lookup('error.3005.message', null, 12.0), "UTF-8")
+    res.headers.get(HttpHeaders.LOCATION).contains("?_error=$msg")
   }
 
   @Rollback

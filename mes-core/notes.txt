@@ -17,6 +17,7 @@ DDL creation -
 
 Tasks
 =====
+Migrate WorkList with efGrid use.
 Migrate dashboard activities (Scan, wcSel, workList)
 Missing GUIs
   Product, WorkCenter, LSNSequence, OrderSequence

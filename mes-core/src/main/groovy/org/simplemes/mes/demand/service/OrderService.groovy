@@ -73,7 +73,7 @@ class OrderService {
    * @param quantity The quantity to release.  If not given, then the entire un-released quantity will be released.
    */
   @SuppressWarnings("GrUnnecessaryDefModifier")
-  //@Transactional
+  @Transactional
   OrderReleaseResponse release(OrderReleaseRequest orderReleaseRequest) {
     log.debug('release() params: {}', orderReleaseRequest)
     ArgumentUtils.checkMissing(orderReleaseRequest, 'orderReleaseRequest')

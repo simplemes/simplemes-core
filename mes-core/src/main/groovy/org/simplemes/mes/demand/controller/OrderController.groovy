@@ -1,15 +1,22 @@
 package org.simplemes.mes.demand.controller
 
 import groovy.util.logging.Slf4j
+import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
+import io.micronaut.http.MediaType
+import io.micronaut.http.annotation.Body
+import io.micronaut.http.annotation.Consumes
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.PathVariable
 import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.Produces
 import io.micronaut.security.annotation.Secured
 import org.simplemes.eframe.controller.BaseCrudRestController
+import org.simplemes.eframe.exception.BusinessException
+import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.web.task.TaskMenuItem
 import org.simplemes.mes.demand.OrderReleaseRequest
@@ -67,6 +74,33 @@ class OrderController extends BaseCrudRestController {
       }
     }
     return res
+  }
+
+  /**
+   * API entry for release() action.  Supports JSON format using standard framework parsing.
+   * Executes the {@link org.simplemes.mes.demand.service.OrderService#release(org.simplemes.mes.demand.OrderReleaseRequest)} method.
+   */
+  @Produces(MediaType.TEXT_HTML)
+  @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
+  @Post("/releaseUI")
+  HttpResponse releaseUI(HttpRequest request, @Body Object bodyParams, @Nullable Principal principal) {
+    def uuid = UUID.fromString(bodyParams.uuid)
+    def order = Order.findByUuid(uuid)
+    if (!order) {
+      return buildErrorResponse("Could not find order with uuid='$uuid'")
+    }
+    def orderReleaseRequest = new OrderReleaseRequest(order)
+    log.debug('release() request: {}', orderReleaseRequest)
+    def msg
+    try {
+      def res = orderService.release(orderReleaseRequest)
+      msg = '?_info=' + URLEncoder.encode(GlobalUtils.lookup('released.message', null, order.order, res.qtyReleased), "UTF-8")
+    } catch (BusinessException ex) {
+      // Display any errors on the show page.
+      msg = '?_error=' + URLEncoder.encode(ex.toString(), "UTF-8")
+    }
+    //released.message=Released {1} on order {0}
+    return HttpResponse.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, "${rootPath}/show/${order.uuid}$msg")
   }
 
   /**
