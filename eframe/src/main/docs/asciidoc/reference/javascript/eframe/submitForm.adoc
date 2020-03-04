@@ -15,8 +15,9 @@ NOTE: This function submits the request in the foreground and the response
 |===
 |Parameter|Type|Description
 
-|*formID*   |string| The toolkit form view ID that holds the fields to send (*Required*).
+|*formID*   |string| The toolkit form view ID that holds the fields to send (*Optional*).
                      This is usually the form ID specified in the <<efForm>> marker.
+                     If _undefined_, then only the *otherData* will be submitted.
 |*uri*      |string| The URI to send the request to (*Required*).
 |*otherData*|map| Additional values to send with the post request (*Optional*).
 |===

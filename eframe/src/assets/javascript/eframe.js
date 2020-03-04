@@ -309,7 +309,10 @@ _ef.eframe = function () {
     },
     // Submits a toolkit form as a normal page.
     submitForm: function (formID, url, otherData) {
-      var values = $$(formID).getValues();
+      var values = {};
+      if (formID) {
+        values = $$(formID).getValues();
+      }
       if (otherData) {
         Object.assign(values, otherData);
       }
