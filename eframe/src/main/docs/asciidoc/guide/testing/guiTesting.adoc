@@ -377,7 +377,15 @@ elements that might be useful, such as `headers` and `rows`.
 
 Some of the supported modules include:
 
+* link:groovydoc/org/simplemes/eframe/test/page/ButtonModule.html[ButtonModule^] icon:share-square-o[role="link-blue"]
+* link:groovydoc/org/simplemes/eframe/test/page/BooleanFieldModule.html[BooleanFieldModule^] icon:share-square-o[role="link-blue"]
+* link:groovydoc/org/simplemes/eframe/test/page/ComboboxModule.html[ComboboxModule^] icon:share-square-o[role="link-blue"]
+* link:groovydoc/org/simplemes/eframe/test/page/DateFieldModule.html[DateFieldModule^] icon:share-square-o[role="link-blue"]
+* link:groovydoc/org/simplemes/eframe/test/page/DefinitionListModule.html[DefinitionListModule^] icon:share-square-o[role="link-blue"]
+* link:groovydoc/org/simplemes/eframe/test/page/DialogModule.html[DialogModule^] icon:share-square-o[role="link-blue"]
 * link:groovydoc/org/simplemes/eframe/test/page/GridModule.html[GridModule^] icon:share-square-o[role="link-blue"]
+* link:groovydoc/org/simplemes/eframe/test/page/ReadOnlyFieldModule.html[ReadOnlyFieldModule^] icon:share-square-o[role="link-blue"]
+* link:groovydoc/org/simplemes/eframe/test/page/TextFieldModule.html[TextFieldModule^] icon:share-square-o[role="link-blue"]
 
 
 

@@ -1,15 +1,29 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test.page
 
 import geb.Module
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * Defines the GEB page elements for a standard framework dialog.  The default index is '0'.
+ * <p>
+ * <h4>Example Page Definition:</h4>
+ * <pre>
+ *   static content = &#123;
+ *     dialog0 &#123; module(new DialogModule()) &#125;
+ *   &#125;
+ * </pre>
+ *
+ * <p>
+ * <h4>Example Test Spec Usage:</h4>
+ * <pre>
+ *   waitFor &#125; dialog0.exists &#125;
+ *   dialog0.title == 'Edit Order'
+ * </pre>
+ *
+ * <h4>This contains these elements:</h4>
  * Defines these elements:
  * <ul>
  *   <li><b>exists</b> - True if the dialog is displayed.</li>
