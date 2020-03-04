@@ -192,14 +192,14 @@ class ShowMarkerSpec extends BaseMarkerSpecification {
     page.indexOf('id: "title"') < page.indexOf('id: "custom1"')
   }
 
-  def "verify that the marker supports an efMenuItem for content"() {
+  def "verify that the marker supports an efMenuItem for content - after placement"() {
     given: 'a mocked FieldDefinitions for the domain'
     new MockDomainUtils(this, new MockFieldDefinitions(['name', 'title'])).install()
 
     when: 'the marker is built'
     def src = """
       <@efForm id="show">
-        <@efShow fields="name,title">
+        <@efShow fields="name,title" $menuPlacementAttribute>
           <@efMenuItem id="release" key="release" onClick="release()"/>
         </@efShow>
       </@efForm>
@@ -211,7 +211,43 @@ class ShowMarkerSpec extends BaseMarkerSpecification {
     then: 'the javascript is legal'
     checkPage(page)
 
-    and: 'the correct standard show toolbar more..delete button is generated'
+    and: 'the correct standard show toolbar button is generated'
+    def loc = page.indexOf('id: "showToolbar"')
+    def secondToolbar = page[loc..-1]
+    def elementsText = JavascriptTestUtils.extractBlock(secondToolbar, 'elements: [')
+
+    def releaseButtonText = TextUtils.findLine(elementsText, 'id: "release"')
+    JavascriptTestUtils.extractProperty(releaseButtonText, 'view') == 'button'
+    JavascriptTestUtils.extractProperty(releaseButtonText, 'label').contains(lookup('release'))
+    JavascriptTestUtils.extractProperty(releaseButtonText, 'tooltip') == lookup('release.tooltip')
+    JavascriptTestUtils.extractProperty(releaseButtonText, 'click') == "release()"
+
+    where:
+    menuPlacementAttribute  | _
+    'menuPlacement="after"' | _
+    ''                      | _
+  }
+
+  def "verify that the marker supports an efMenuItem for content - more menu placement"() {
+    given: 'a mocked FieldDefinitions for the domain'
+    new MockDomainUtils(this, new MockFieldDefinitions(['name', 'title'])).install()
+
+    when: 'the marker is built'
+    def src = """
+      <@efForm id="show">
+        <@efShow fields="name,title" menuPlacement="more">
+          <@efMenuItem id="release" key="release" onClick="release()"/>
+        </@efShow>
+      </@efForm>
+    """
+
+    def page = execute(source: src, controllerClass: SampleParentController,
+                       domainObject: new SampleParent(name: 'ABC', title: 'xyz'), uri: '/sampleParent/show/5')
+
+    then: 'the javascript is legal'
+    checkPage(page)
+
+    and: 'the correct standard show toolbar more.. menu is generated with the added menu item'
     def moreButtonText = TextUtils.findLine(page, 'view: "menu"')
     JavascriptTestUtils.extractProperty(moreButtonText, 'id') == 'showMore'
 

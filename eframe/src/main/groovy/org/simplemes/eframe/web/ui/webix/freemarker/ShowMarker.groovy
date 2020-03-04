@@ -23,9 +23,9 @@ class ShowMarker extends BaseDefinitionPageMarker {
   public static final String SHOW_MARKER_IN_PROCESS_NAME = '_showMarkerInProcess'
 
   /**
-   * The name of the element in the marker coordinator defines any additional submenus to the More.. menu.
+   * The name of the element in the marker coordinator defines any additional submenus to the toolbar.
    */
-  public static final String ADDED_SUB_MENUS_NAME = '_addedSubMenus'
+  public static final String ADDED_MENUS_NAME = '_addedSubMenus'
 
   /**
    * Executes the directive, with the values passed by the setValues() method.
@@ -55,10 +55,17 @@ class ShowMarker extends BaseDefinitionPageMarker {
    * Builds the toolbar element for the show page.
    * @return The toolbar element.
    */
+  @SuppressWarnings("GroovyAssignabilityCheck")
   String buildToolbar() {
+    def subMenusMore = []
+
     // Get any added sub-menus.
     renderContent() // Ignored since menuItemMarker will need to set a List<Map> in the context.
-    def subMenus = markerContext.markerCoordinator.others[ADDED_SUB_MENUS_NAME] ?: []
+    List<Map> addedMenuItems = markerContext.markerCoordinator.others[ADDED_MENUS_NAME] ?: [] as List<Map>
+    def menuPlacement = parameters.menuPlacement ?: 'after'
+    if (menuPlacement == 'more') {
+      subMenusMore.addAll(addedMenuItems)
+    }
 
     def widgetContext = buildWidgetContext(null)
     def uri = '?'
@@ -71,9 +78,16 @@ class ShowMarker extends BaseDefinitionPageMarker {
 
     def shortString = escape(TypeUtils.toShortString(domainObject))
     def click = "efd._confirmDelete('$uri/delete','${domainObject?.uuid}','${domainClass.simpleName}','${shortString}')"
-    subMenus << [id: "${id}Delete", label: 'delete.menu.label', click: click]
-    def more = [id: "${id}More", label: 'more.menu.label', icon: 'fa-th-list', 'subMenus': subMenus]
-    def buttons = [list, create, edit, more]
+    subMenusMore << [id: "${id}Delete", label: 'delete.menu.label', click: click]
+    def more = [id: "${id}More", label: 'more.menu.label', icon: 'fa-th-list', 'subMenus': subMenusMore]
+    List<Map> buttons = [list, create, edit, more]
+
+    if (menuPlacement == 'after') {
+      for (Map addedMenu in addedMenuItems) {
+        addedMenu.link = addedMenu.uri
+        buttons << addedMenu
+      }
+    }
 
     widgetContext.parameters.id = "${id}Toolbar"
     widgetContext.parameters.buttons = buttons

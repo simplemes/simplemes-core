@@ -1,10 +1,8 @@
-package org.simplemes.eframe.web.ui.webix.widget
 /*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
 
+package org.simplemes.eframe.web.ui.webix.widget
 /**
  * The tool bar widget.  Produces the toolkit elements needed for toolbars.  This is a configurable
  * toolbar.
@@ -58,8 +56,7 @@ class ToolbarWidget extends BaseWidget {
     }
 
     def s = """
-      { view: "toolbar", $id paddingY: $paddingY,
-        elements: [
+      { view: "toolbar", $id paddingY: $paddingY, elements: [
           $buttonScript
         ]
       }

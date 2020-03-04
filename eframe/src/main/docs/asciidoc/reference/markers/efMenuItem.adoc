@@ -4,7 +4,7 @@
 Menus are used in most applications.  This marker allows you to define a menu item that
 triggers a single action or links to a standard controller URI.
 This marker can be used in menus and sub-menus.  This marker can also be used in the <<efShow>>
-page to add menu items to the "More..." toolbar menu.
+page to add menu items to the toolbar menu.
 The `<@efMenuItem>` marker is typically used in conjunction with <<efMenu>> marker.
 
 image::guis/menus.png[menus,align="center", width="30%"]

@@ -53,9 +53,16 @@ class MenuItemMarker extends BaseMarker {
 
     if (showInProcess) {
       // Used in a efShow tag, so put the menu the the marker coordinator so it can be used by efShow.
-      def list = markerContext.markerCoordinator.others[ShowMarker.ADDED_SUB_MENUS_NAME] ?: []
-      list << [id: "${NameUtils.toLegalIdentifier(id)}", label: "$label", tooltip: "${tooltip ?: ''}", click: handler]
-      markerContext.markerCoordinator.others[ShowMarker.ADDED_SUB_MENUS_NAME] = list
+      def list = markerContext.markerCoordinator.others[ShowMarker.ADDED_MENUS_NAME] ?: []
+      def click = handler
+      def link = null
+      if (parameters.uri) {
+        click = null
+        link = parameters.uri
+      }
+      list << [id   : "${NameUtils.toLegalIdentifier(id)}", label: "$label", tooltip: "${tooltip ?: ''}",
+               click: click, uri: link]
+      markerContext.markerCoordinator.others[ShowMarker.ADDED_MENUS_NAME] = list
     } else {
       // Used in a normal efMenu
       def s = """
@@ -82,9 +89,9 @@ class MenuItemMarker extends BaseMarker {
 
     if (showInProcess) {
       // Used in a efShow tag, so put the menu the the marker coordinator so it can be used by efShow.
-      def list = markerContext.markerCoordinator.others[ShowMarker.ADDED_SUB_MENUS_NAME] ?: []
+      def list = markerContext.markerCoordinator.others[ShowMarker.ADDED_MENUS_NAME] ?: []
       list << [separator: true]
-      markerContext.markerCoordinator.others[ShowMarker.ADDED_SUB_MENUS_NAME] = list
+      markerContext.markerCoordinator.others[ShowMarker.ADDED_MENUS_NAME] = list
     } else {
       write('{$template: "Separator"},\n')
     }

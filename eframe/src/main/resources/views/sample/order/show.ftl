@@ -11,8 +11,7 @@
 
 <@efForm id="show">
     <@efShow>
-        <@efMenuItem id="release" key="release" onClick="release()"/>
-        <@efMenuItem/>
+        <@efMenuItem id="release" key="Release" onClick="release()"/>
     </@efShow>
 </@efForm>
 

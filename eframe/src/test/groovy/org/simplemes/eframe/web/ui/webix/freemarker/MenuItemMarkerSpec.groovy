@@ -170,7 +170,7 @@ class MenuItemMarkerSpec extends BaseMarkerSpecification {
     when: 'the marker is built'
     def src = """
       <@efForm>
-        <@efShow fields="name,title">
+        <@efShow fields="name,title" menuPlacement="more">
           <@efMenuItem id="release" key="release" onClick="release()"/>
         </@efShow>
       </@efForm>
@@ -194,7 +194,7 @@ class MenuItemMarkerSpec extends BaseMarkerSpecification {
     when: 'the marker is built'
     def src = """
       <@efForm>
-        <@efShow fields="name,title">
+        <@efShow fields="name,title" menuPlacement="more">
           <@efMenuItem/>
         </@efShow>
       </@efForm>
