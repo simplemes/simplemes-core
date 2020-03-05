@@ -65,7 +65,7 @@ If you use the standard markers and GUIs, then your users will get these feature
 ** <<efShow>>
 ** <<efCreate>>
 ** <<efEdit>>
-** <<efList>>
+** <<efDefinitionList>>
 *** Sortable
 *** Searchable
 *** Configurable Column Sizes

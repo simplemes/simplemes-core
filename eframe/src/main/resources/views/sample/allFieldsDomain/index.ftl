@@ -3,7 +3,7 @@
 <#include "../../includes/header.ftl" />
 <#include "../../includes/definition.ftl" />
 
-<@efList/>
+<@efDefinitionList/>
 <@efPreloadMessages codes="cancel.label"/>
 
 <#include "../../includes/footer.ftl" />

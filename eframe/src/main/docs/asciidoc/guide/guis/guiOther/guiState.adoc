@@ -11,7 +11,7 @@ The elements that remember state are:
 * <<efShow>>
 * <<efCreate>>
 * <<efEdit>>
-* <<efList>>
+* <<efDefinitionList>>
 * <<Reports And Charts>>
 * <<Dashboards>>
 
@@ -113,7 +113,7 @@ main domain class that is saved for each user (or a default for all users). Insi
 class, the actual preferences are stored in various POGOs and saved in the `preferencesXML` column
 (typically a CLOB or large text object).
 
-In the example above, the column settings for a <<efList,list column>> are shown.
+In the example above, the column settings for a <<efDefinitionList,list column>> are shown.
 The link:groovydoc/org/simplemes/eframe/user/Preference.html[Preference^]
 object is defined for each HTML element that needs preferences.  The _Preference_ object contains
 a List that holds a number of POGO elements with the actual preferences.  The _ColumnPreference_

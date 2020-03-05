@@ -23,7 +23,7 @@ See the <<domains>> section for additional _messages.properties_ notes.
 
 Most markers use a default label for most fields.  This means you won't need to specify the
 label in your HTML pages.  It just requires an entry in your _messages.properties_ file.
-For example, the <<reference.adoc#eflist,efList>> marker will use the field's name to
+For example, the <<efDefinitionList>> marker will use the field's name to
 generate the list column header.  For example, if you display a field _order_
 in your list, then the label for the header will be taken from the _messages.properties_ file:
 

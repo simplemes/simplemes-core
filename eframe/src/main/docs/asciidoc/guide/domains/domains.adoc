@@ -186,11 +186,11 @@ some labelling conventions to reduce the boiler-plate code in your application.
 
 Most of the GUI markers will determine the right label needed for a domain field based on the field's
 name.  For example, if you want to display a list of orders, you would use the
-<<reference.adoc#eflist,efList>> marker in your pages like this:
+<<efDefinitionList>> marker in your pages like this:
 
 [source,html]
 ----
-<@efList columns="order,product,status,qtyToBuild"/>
+<@efDefinitionList columns="order,product,status,qtyToBuild"/>
 ----
 
 The _messages.properties_ file for you application would include these entries:
@@ -233,7 +233,7 @@ example is an order object.  It will have a unique order name (ID) that
 customers will reference when creating or working with the order.
 
 A number of the framework features rely on this key field definition to make your application
-coding simpler.  For example, the <<reference.adoc#eflist,efList>> marker relies on the key field
+coding simpler.  For example, the <<efDefinitionList>> marker relies on the key field
 to implement the standard filter/search feature and
 the hyper-links in lists.
 
@@ -1043,7 +1043,7 @@ A number of places in the framework rely on the `toStringLocalized()` in the
 link:groovydoc/org/simplemes/eframe/i18n/GlobalUtils.html[GlobalUtils^]
 icon:share-square-o[role="link-blue"] utility class.
 This allows the framework to provide a human-readable representation of your domain record for display.
-For example, this is used in the <<reference.adoc#eflist,efList>> marker to build the
+For example, this is used in the <<efDefinitionList>> marker to build the
 hyper-link text for the links generated.  Also, drop-down lists and archiving use this short
 string format.
 

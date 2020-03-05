@@ -360,7 +360,7 @@ domain class.  Various portions of the framework support these custom lists of o
 * CRUD actions in the controller base classes
   (e.g. link:groovydoc/org/simplemes/eframe/controller/BaseCrudController.html[BaseCrudController^]
   icon:share-square-o[role="link-blue"] )
-* The GUI tags <<efList>>, <<efShow>> , <<efCreate>> and <<efEdit>>.
+* The GUI tags <<efDefinitionList>>, <<efShow>> , <<efCreate>> and <<efEdit>>.
 * Support for auto save/delete from core domain objects
   (see link:groovydoc/org/simplemes/eframe/custom/EframePersistenceListener.html[EframePersistenceListener^]
   icon:share-square[role="link-blue"]).

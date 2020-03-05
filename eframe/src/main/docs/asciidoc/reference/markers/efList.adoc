@@ -4,34 +4,48 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<ef-list-parameters>>#
 [inline-toc]#<<ef-list-requirements>>#
+[inline-toc]#<<List Examples>>#
 
 endif::[]
 
 
-
-The link:guide.html#eflist[efList^] icon:share-square-o[role="link-blue"] marker
-is used to build a definition list page with one or more columns of data.
-By default, the row values are found by a controller `list()` method using the json format.
+The link:guide.html#eflist[efGird^] icon:share-square-o[role="link-blue"] marker
+is used to build a stand-alone list with values supplied by the server or
+locally in the javascript.
+By default, the row values are found by a controller method using json format.
+This can be used to display domain classes or display any arbitrary POGO classes.
 
 For an overview, see link:guide.html#eflist[efList^] icon:share-square-o[role="link-blue"].
 See the groovydoc
 link:groovydoc/org/simplemes/eframe/web/ui/webix/freemarker/ListMarker.html[ListMarker^]
 icon:share-square-o[role="link-blue"] for additional details.
 
+See link:guide.html#markers[Markers^] icon:share-square-o[role="link-blue"] for common features
+of markers such as Pagination, Filtering and Sorting.
+See link:guide.html#controllers[Controllers^] icon:share-square-o[role="link-blue"] for details
+on helper classes that can provide the `list()` method logic for you.
 
-See <<guide.adoc#markers,Markers>> for common features of markers such as Pagination, Filtering
-and Sorting. See <<guide.adoc#controllers,Controllers>> for details on helper classes that
-can provide the `list()` method logic for you.
+An example list is shown below:
 
-This marker relies on the common <<Grid Widget>> to implement most of the list features.
-All common <<Grid Widget>> features are supported.
-
+image::guis/dashboardWorkList.png[title="dashboardWorkList",align="center", width=50%]
 
 [source,html]
-.efList Example - Display a List of Orders
+.efList Example - List Available Work (WorkListController)
 ----
-<@efList columns="order,product,qtyToBuild,qtyDone,dateCompleted"/>
+<@efForm id="show" dashboard=true>  // <.>
+  <@efList columns="order,lsn,qtyInQueue,qtyInWork"/>  // <.>
+</@efForm>
 ----
+<.> This list is rendered as if was a field in the given form.  This variant is suitable
+    for use in one of the link:guide.html#dashboard-activities[Dashboard Activities^]
+    icon:share-square-o[role="link-blue"].
+<.> Will display values from the current controller using data from the `list()` method.
+
+This works with the controller that is rendering the page to supply the values for display.
+By default, the list will use the controller's `list()` method to get the list of value to display.
+
+NOTE: This marker must be used inside of a <<efForm>> marker.
+
 
 
 
@@ -47,17 +61,21 @@ The main parameters/body supported are:
 
 |*(body)*    |Ignored.
 | *columns*  | A comma-delimited list of columns to display
-              (*Default:* The list from the domain's <<fieldOrder>>).
+| *uri*      | The URI to get the values from.  If this starts with a '/', then the
+               URI is assumed to be a Root-level URI.  If not, then the controller
+               will be added to this URI.
+               (*Default:* The `list()` method in the controller that rendered this page.
+| *onSelectFunction* | The name of the event handler for list select events.
+                       Will be passed: (String listID, int rowIndex,Object rowData).
 
 |===
 
 
 
-This marker also supports most of the <<Grid Widget>> options to control the list display,
+This marker also supports most of the
+link:groovydoc/org/simplemes/eframe/web/ui/webix/widget/GridWidget.html[GridWidget^]
+icon:share-square-o[role="link-blue"] options to control the list display,
 This includes default widths, specific links needed, etc.
-
-NOTE: This marker assumes the controller serving up this page is the same used for the
-      edit/create/show/delete actions.
 
 
 [[ef-list-requirements]]
@@ -67,17 +85,13 @@ NOTE: This marker assumes the controller serving up this page is the same used f
   and structures the output with two top-level elements:
 ** `total_count` - The total number of rows available (integer).
 ** `data` - The actual list data (an array of each row's values).
-* One or more key fields are defined in your domain class. See <<guide.adoc#domains,Domains>>
 * The columns have standard labels defined in _messages.properties_.
-  See <<guide.adoc#internationalization,Internationalization>>
-* The main domain class (if found) has a standard label defined in _messages.properties_.
+  See link:guide.html#internationalization[Internationalization^] icon:share-square-o[role="link-blue"].
 * The domain classes for child and foreign key references have
   link:guide.html#key-fields[Key Fields^] icon:share-square-o[role="link-blue"]
   defined for the top-level domain object.
 
-NOTE: Any sub-object references in the list of columns will be ignored (not displayed).  This includes
-column references such as _flexType.fields_.
 
-
+==== List Examples
 
 

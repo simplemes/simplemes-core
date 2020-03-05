@@ -5,7 +5,7 @@
 <#include "../../includes/definition.ftl" />
 
 
-<@efList id="rmaGrid" columns="rma,status,product,qty,returnDate,rmaType,rmaSummary"/>
+<@efDefinitionList id="rmaGrid" columns="rma,status,product,qty,returnDate,rmaType,rmaSummary"/>
 
 <@efPreloadMessages codes="cancel.label"/>
 

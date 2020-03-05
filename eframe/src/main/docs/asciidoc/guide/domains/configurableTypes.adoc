@@ -117,7 +117,7 @@ The framework markers that support these configurable types include:
 * <<efEdit>>
 * <<efCreate>>
 * <<efShow>>
-* <<efList>>
+* <<efDefinitionList>>
 * <<efField>>
 
 

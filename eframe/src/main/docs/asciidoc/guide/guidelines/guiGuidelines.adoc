@@ -26,7 +26,7 @@ all of your pages should include the standard header:
 <#include "../includes/header.ftl" />  // <.>
 <#include "../includes/definition.ftl" />
 
-<@efList/>
+<@efDefinitionList/>
 <@efPreloadMessages codes="cancel.label"/>
 
 <#include "../includes/footer.ftl" />   // <.>

@@ -85,7 +85,7 @@ image::guis/DefFlow.png[title="Definition Flow",align="center", width=95%]
 
 The markers that support these pages are:
 
-* <<efList>>
+* <<efDefinitionList>>
 * <<efShow>>
 * <<efCreate>>
 * <<efEdit>>
@@ -101,7 +101,7 @@ include file:
 <#include "../includes/header.ftl" />
 <#include "../includes/definition.ftl" />  // <.>
 
-<@efList/>
+<@efDefinitionList/>
 <@efPreloadMessages codes="cancel.label"/>
 
 <#include "../includes/footer.ftl" />

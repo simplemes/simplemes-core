@@ -80,7 +80,7 @@ class BaseMarkerSpec extends BaseMarkerSpecification {
 
   def "verify that toStringForException re-creates the marker usage as closely as possible"() {
     when: 'the marker is built'
-    def marker = buildMarker(ListMarker, [parameters: [columns: 'a,b'], uri: '/sampleParent/show', view: 'showList.ftl', controllerClass: SampleParentController])
+    def marker = buildMarker(DefinitionListMarker, [parameters: [columns: 'a,b'], uri: '/sampleParent/show', view: 'showList.ftl', controllerClass: SampleParentController])
 
     then: 'the toString has the right info'
     def s = marker.toStringForException()
@@ -88,13 +88,13 @@ class BaseMarkerSpec extends BaseMarkerSpecification {
     s.contains('SampleParentController')
 
     and: 'the marker text approximates how it would look in the hbs file'
-    s.contains('efList')
+    s.contains('efDefinitionList')
     s.contains("columns='a,b'")
   }
 
   def "verify that buildWidgetContext gathers the correct data for the marker"() {
     when: 'the widget context is built'
-    def marker = buildMarker(ListMarker, [parameters: [columns: 'a,b'], uri: '/logging', view: 'logging/index', controllerClass: SampleParentController])
+    def marker = buildMarker(DefinitionListMarker, [parameters: [columns: 'a,b'], uri: '/logging', view: 'logging/index', controllerClass: SampleParentController])
     def widgetContext = marker.buildWidgetContext()
 
     then: 'the widget context is correct'
@@ -107,7 +107,7 @@ class BaseMarkerSpec extends BaseMarkerSpecification {
 
   def "verify that buildWidgetContext clones the parameters to allow local changes for a single widget"() {
     when: 'the widget context is built'
-    def marker = buildMarker(ListMarker, [uri: '/logging', view: 'logging/index', controllerClass: SampleParentController])
+    def marker = buildMarker(DefinitionListMarker, [uri: '/logging', view: 'logging/index', controllerClass: SampleParentController])
     def widgetContext1 = marker.buildWidgetContext()
     def widgetContext2 = marker.buildWidgetContext()
 
@@ -122,7 +122,7 @@ class BaseMarkerSpec extends BaseMarkerSpecification {
 
   def "verify that escape works"() {
     when: 'the marker is built'
-    def marker = buildMarker(ListMarker, [:])
+    def marker = buildMarker(DefinitionListMarker, [:])
 
     then: 'the escape works on the supported cases'
     marker.escape(value) == results
@@ -141,7 +141,7 @@ class BaseMarkerSpec extends BaseMarkerSpecification {
     when: 'the marker is built'
     def model = [:]
     model[ControllerUtils.MODEL_KEY_DOMAIN_OBJECT] = 'ABC'
-    def marker = buildMarker(ListMarker, [uri: '/extension', controllerClass: ExtensionController, model: model])
+    def marker = buildMarker(DefinitionListMarker, [uri: '/extension', controllerClass: ExtensionController, model: model])
 
     then: 'the domain object is correct'
     marker.domainObject.toString() == 'ABC'
@@ -173,7 +173,7 @@ class BaseMarkerSpec extends BaseMarkerSpecification {
 
   def "verify that lookupLabelAndTooltip handles supported cases"() {
     when: 'the marker is built'
-    def marker = buildMarker(ListMarker, [parameters: attributes])
+    def marker = buildMarker(DefinitionListMarker, [parameters: attributes])
 
     then: 'the escape works on the supported cases'
     marker.lookupLabelAndTooltip(defaultKey) == results

@@ -7,14 +7,14 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<efButtonGroup>>#
 [inline-toc]#<<efCreate>>#
 [inline-toc]#<<efDashboard>>#
+[inline-toc]#<<efDefinitionList>>#
 [inline-toc]#<<efEdit>>#
 [inline-toc]#<<efField>>#
 [inline-toc]#<<efForm>>#
-[inline-toc]#<<efGrid>>#
 [inline-toc]#<<efGUISetup>>#
 [inline-toc]#<<efHTML>>#
-[inline-toc]#<<efList>>#
 [inline-toc]#<<efLanguage>>#
+[inline-toc]#<<efList>>#
 [inline-toc]#<<efLookup>>#
 [inline-toc]#<<efMenu>>#
 [inline-toc]#<<efMenuItem>>#
@@ -73,9 +73,9 @@ include::efField.adoc[]
 
 include::efForm.adoc[]
 
-include::efList.adoc[]
+include::efDefinitionList.adoc[]
 
-include::efGrid.adoc[]
+include::efList.adoc[]
 
 include::efGUISetup.adoc[]
 

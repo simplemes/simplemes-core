@@ -1,24 +1,30 @@
 ==== efList
 
 The link:reference.html#eflist[efList^] icon:share-square-o[role="link-blue"] marker
-is used to build a definition list page with one or more columns of data.
-By default, the row values are found by a controller `list()` method using the json format
-with toolkit-style controller parameters.
+is used to build a stand-alone list with values supplied by the server or
+locally in the javascript.
+By default, the row values are found by a controller `list()` method using json format.
 This can be used to display domain classes or display any arbitrary POGO classes.
 
 See <<pagination-filtering-and-sorting>> for details on the paging mechanism.
 
 [source,html]
-.efList Example - List of Users
+.efList Example - List Available Work (WorkListController)
 ----
-<@efList columns="userName,title,enabled..."/>
+<@efForm id="show" dashboard=true>  // <.>
+  <@efList columns="order,lsn,qtyInQueue,qtyInWork"/>  // <.>
+</@efForm>
 ----
+<.> This list is rendered as if was a field in the given form.  This variant is suitable
+    for use in one of the <<Dashboard Activities>>.
+<.> Will display values from the current controller using data from the `list()` method.
 
-This works well with domain classes that have key fields defined.  If it is linked to a
-controller for a domain class, then it is assumed to be a standard definition list.
-This means the 'Create' button will be displayed and linked to the standard create page.
+This works with the controller that is rendering the page to supply the values for display.
+By default, the list will use the controller's `list()` method to get the list of value to display.
+
+NOTE: This marker must be used inside of a <<efForm>> marker.
 
 An example list is shown below:
 
-image::guis/grid.png[title="List",align="center", width=75%]
+image::guis/dashboardWorkList.png[title="dashboardWorkList",align="center", width=50%]
 

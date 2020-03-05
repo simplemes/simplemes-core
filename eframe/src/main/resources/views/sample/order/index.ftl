@@ -5,7 +5,7 @@
 <#include "../../includes/definition.ftl" />
 
 
-<@efList id="orderGrid"/>
+<@efDefinitionList id="orderGrid"/>
 
 <@efPreloadMessages codes="cancel.label"/>
 

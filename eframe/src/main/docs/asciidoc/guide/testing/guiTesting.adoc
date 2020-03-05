@@ -78,7 +78,7 @@ endif::[]
 
 Most definition GUIs provide the common CRUD actions in your application.  These are fairly
 standardized and follow a consistent pattern that uses the common GUI markers such as
-<<efList>>.  GUI testing is where you test how your controller,
+<<efDefinitionList>>.  GUI testing is where you test how your controller,
 views and domains work together.  These pieces are usually tested separately in a unit
 test, so most of the GUI testing is done to test the mapping of your domain classes to the
 GUI and to verify end-to-end functionality.

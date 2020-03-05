@@ -133,7 +133,7 @@ The link:groovydoc/org/simplemes/eframe/controller/BaseCrudController.html[BaseC
 icon:share-square-o[role="link-blue"] base class provides many of the common controller methods
 used in standard CRUD pages. This includes methods like _list(), create(), edit()_ etc.
 
-GUI <<Markers>> such as <<efList>> rely on methods in this base class to display data for the domain.
+GUI <<Markers>> such as <<efDefinitionList>> rely on methods in this base class to display data for the domain.
 
 ==== BaseCrudController Options
 

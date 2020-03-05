@@ -1,5 +1,6 @@
 Scratch
 =======
+Create ListWidget -> DefinitionListWidget
 
 
 
@@ -37,7 +38,6 @@ Tasks left out
   CrudGUITester - combobox - Enum, Domain Ref, Option objects.
   Look into Jackson skipping foreign references.  Only need key and ID fields to import.
   Simplify Client.javascript to one per Controller by default -  Add GUI test of logging level in EFrameJSLoggingGUISpec.
-  Rename efList to efGrid? for Defn pages? Doc/Code
   Add E2E test for optimistic locking detection.  In definition GUIs.
   Add Dashboard editor.
   Add splitter position remember in dashboard.

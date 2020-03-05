@@ -13,10 +13,10 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc-header]#Support Elements#
 [inline-toc]#<<efAsset>>#
-[inline-toc]#<<efGrid>>#
 [inline-toc]#<<efGUISetup>>#
 [inline-toc]#<<efHTML>>#
 [inline-toc]#<<efLanguage>>#
+[inline-toc]#<<efList>>#
 [inline-toc]#<<efLookup>>#
 [inline-toc]#<<efMenu>>#
 [inline-toc]#<<efMessages>>#
@@ -31,7 +31,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc-header]#Definition Pages#
 [inline-toc]#<<efCreate>>#
 [inline-toc]#<<efEdit>>#
-[inline-toc]#<<efList>>#
+[inline-toc]#<<efDefinitionList>>#
 [inline-toc]#<<efShow>>#
 
 [inline-toc-header]#Others#
@@ -69,7 +69,7 @@ include::markers/efField.adoc[]
 
 include::markers/efForm.adoc[]
 
-include::markers/efGrid.adoc[]
+include::markers/efList.adoc[]
 
 include::markers/efGUISetup.adoc[]
 
@@ -79,7 +79,7 @@ include::markers/efLanguage.adoc[]
 
 include::markers/efLookup.adoc[]
 
-include::markers/efList.adoc[]
+include::markers/efDefinitionList.adoc[]
 
 include::markers/efMenu.adoc[]
 
