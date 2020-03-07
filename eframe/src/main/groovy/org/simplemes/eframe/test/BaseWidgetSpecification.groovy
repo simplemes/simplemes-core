@@ -68,7 +68,7 @@ class BaseWidgetSpecification extends BaseSpecification {
 
     def parameters = options?.parameters ?: [:]
     def widgetContext = new WidgetContext(fieldDefinition: fieldDef,
-                                          controllerClass: AllFieldsDomainController,
+                                          controllerClass: options?.controllerClass ?: AllFieldsDomainController,
                                           error: options?.error,
                                           object: object,
                                           parameters: parameters,

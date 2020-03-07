@@ -71,19 +71,19 @@ guidelines as the production code.
 The main goal here is to keep all tests in obvious places.  When a developer needs to add a test,
 the specification it belongs in should be obvious.
 
-Some naming conventions for a _GridWidget_ test:
+Some naming conventions for a _SomeWidget_ test:
 
-* _GridWidgetSpec_ - Basic tests.  Some may need real database for tests using domain objects.
-* _GridWidgetAPISpec_ - Non-GUI tests that need a live embedded server.  Typically tests REST API via an HTTP client. See <<API Testing>>.
-* _GridWidgetGUISpec_ - The GUI tests for the widget.  Runs a live embedded server and tests via GEB. See <<GUI Testing>>.
+* _SomeWidgetSpec_ - Basic tests.  Some may need real database for tests using domain objects.
+* _SomeWidgetAPISpec_ - Non-GUI tests that need a live embedded server.  Typically tests REST API via an HTTP client. See <<API Testing>>.
+* _SomeWidgetGUISpec_ - The GUI tests for the widget.  Runs a live embedded server and tests via GEB. See <<GUI Testing>>.
 
-So basically, all _GridWidget_ tests should be in specifications that start with _GridWidget_.
+So basically, all _SomeWidget_ tests should be in specifications that start with _SomeWidget_.
 
 
 ===== Use of core domain objects
 
 It is tempting to use core domain objects such as _User_ or _FlexType_ as test classes.
-For example, when testing the _GridWidget_, it was tempting to use the _User_ domain as a test subject.
+For example, when testing the _SomeWidget_, it was tempting to use the _User_ domain as a test subject.
 Instead, we chose to use domains for the _sample.domain_ package.
 
 This allows us more flexibility to change the core classes without breaking dozens of tests.
@@ -102,8 +102,8 @@ We will not create a new test specification for a specific issue. Instead, we wi
 correct test specification and add a new method.  It is ok to use the Spock _@Issue()_ annotation
 to document what issue the test verifies.
 
-For example, we have a bug in _GridWidget_ with the localization of the column header.
-We would add a new test method to the _GridWidgetSpec_ such as:
+For example, we have a bug in _SomeWidget_ with the localization of the column header.
+We would add a new test method to the _SomeWidgetSpec_ such as:
 
 [source,groovy]
 .Example Issue Verification Test
@@ -116,8 +116,8 @@ We would add a new test method to the _GridWidgetSpec_ such as:
   }
 ----
 
-The main goal here is to keep all tests in obvious places.  All _GridWidget_ tests should be in
-specifications that start with _GridWidget_.
+The main goal here is to keep all tests in obvious places.  All _SomeWidget_ tests should be in
+specifications that start with _SomeWidget_.
 
 ==== BaseSpecification
 

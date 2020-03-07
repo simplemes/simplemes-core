@@ -9,7 +9,6 @@ import org.simplemes.eframe.preference.ColumnPreference
 import org.simplemes.eframe.test.BaseWidgetSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.JavascriptTestUtils
-import org.simplemes.eframe.test.MockControllerUtils
 import org.simplemes.eframe.test.MockDomainUtils
 import org.simplemes.eframe.test.MockPreferenceHolder
 import org.simplemes.eframe.test.UnitTestUtils
@@ -32,37 +31,17 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
 
   def "verify that basic HTML structure is correct for a simple grid"() {
     when: 'the UI element is built'
-    def page = new DefinitionListWidget(new WidgetContext(parameters: [id: 'dummyID'], controllerClass: SampleParentController)).build().toString()
+    def widgetContext = buildWidgetContext(parameters: [id: 'dummyID'], controllerClass: SampleParentController)
+    def page = new DefinitionListWidget(widgetContext).build().toString()
+    def postscript = widgetContext.markerCoordinator.postscript
 
     then: 'the page is valid'
-    checkPage(page)
-
-    and: 'the correct div and script tags are created'
-    page.contains('<div id="dummyID"></div>')
-    page.contains('<script>')
-    page.contains('</script>')
+    checkJavascriptFragment(page)
+    checkJavascript(postscript)
 
     and: 'the columns are sortable with server sorting'
     def name = TextUtils.findLine(page, 'id: "name"')
     JavascriptTestUtils.extractProperty(name, 'sort') == 'server'
-  }
-
-  def "verify that layout script is correct for a simple grid"() {
-    given: 'a mocked domain'
-    new MockDomainUtils(this, SampleParent).install()
-
-    when: 'the UI element is built'
-    def page = new DefinitionListWidget(new WidgetContext(parameters: [id: 'dummyID'], controllerClass: SampleParentController)).build().toString()
-
-    then: 'the page is valid'
-    checkPage(page)
-
-    and: 'the right layout is started'
-    def uiBlock = JavascriptTestUtils.extractBlock(page, 'webix.ui({')
-    uiBlock.contains('container: "dummyID",')
-    def typeLine = TextUtils.findLine(uiBlock, 'type')
-    typeLine.contains('id: "dummyIDLayout"')
-    typeLine.contains('rows: [')
   }
 
   def "verify that the table toolbar is correct for a simple grid"() {
@@ -70,10 +49,12 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
     new MockDomainUtils(this, SampleParent).install()
 
     when: 'the UI element is built'
-    def page = new DefinitionListWidget(new WidgetContext(parameters: [id: 'dummyID'], controllerClass: SampleParentController)).build().toString()
+    def widgetContext = buildWidgetContext(parameters: [id: 'dummyID'], controllerClass: SampleParentController)
+    def page = new DefinitionListWidget(widgetContext).build().toString()
 
     then: 'the page is valid'
-    checkPage(page)
+    checkJavascriptFragment(page)
+    checkJavascript(widgetContext.markerCoordinator.postscript)
 
     and: 'the toolbar is correct'
     def viewBlock = JavascriptTestUtils.extractBlock(page, '{ view: "toolbar"')
@@ -110,10 +91,12 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
     new MockDomainUtils(this, RMA).install()
 
     when: 'the UI element is built'
-    def page = new DefinitionListWidget(new WidgetContext(parameters: [id: 'dummyID'], controllerClass: RMAController)).build().toString()
+    def widgetContext = buildWidgetContext(parameters: [id: 'dummyID'], controllerClass: RMAController)
+    def page = new DefinitionListWidget(widgetContext).build().toString()
 
     then: 'the page is valid'
-    checkPage(page)
+    checkJavascriptFragment(page)
+    checkJavascript(widgetContext.markerCoordinator.postscript)
 
     and: 'the create button has the right URL'
     def elementsBlock = JavascriptTestUtils.extractBlock(page, 'elements: [')
@@ -126,19 +109,21 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
     new MockDomainUtils(this, SampleParent).install()
 
     when: 'the UI element is built'
-    def page = new DefinitionListWidget(new WidgetContext(parameters: [id: 'dummyID'], controllerClass: SampleParentController)).build().toString()
+    def widgetContext = buildWidgetContext(parameters: [id: 'dummyID'], controllerClass: SampleParentController)
+    def page = new DefinitionListWidget(widgetContext).build().toString()
 
     then: 'the page is valid'
-    checkPage(page)
+    checkJavascriptFragment(page)
+    checkJavascript(widgetContext.markerCoordinator.postscript)
 
     and: 'the grid view is created'
     def viewBlock = JavascriptTestUtils.extractBlock(page, '{view: "datatable"')
     viewBlock
     //println "viewBlock = $viewBlock"
 
-    and: 'the height is specified'
-    def heightLine = TextUtils.findLine(viewBlock, 'height:')
-    heightLine =~ /tk\.ph\("[0-9][0-9]%"\)/   // tk.ph("70%")
+    //and: 'the height is specified'
+    //def heightLine = TextUtils.findLine(viewBlock, 'height:')
+    //heightLine =~ /tk\.ph\("[0-9][0-9]%"\)/   // tk.ph("70%")
 
     and: 'the id passed in is used'
     TextUtils.findLine(viewBlock, 'id:').contains('dummyID')
@@ -170,11 +155,13 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
     new MockDomainUtils(this, SampleParent).install()
 
     when: 'the UI element is built'
-    def page = new DefinitionListWidget(new WidgetContext(parameters: [id: 'dummyID'], controllerClass: SampleParentController)).build().toString()
+    def widgetContext = buildWidgetContext(parameters: [id: 'dummyID'], controllerClass: SampleParentController)
+    def page = new DefinitionListWidget(widgetContext).build().toString()
     //println "page = $page"
 
     then: 'the page is valid'
-    checkPage(page)
+    checkJavascriptFragment(page)
+    checkJavascript(widgetContext.markerCoordinator.postscript)
 
     and: 'the correct fields are in the column list'
     def columnsBlock = JavascriptTestUtils.extractBlock(page, 'columns: [')
@@ -188,11 +175,12 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
     new MockDomainUtils(this, SampleParent).install()
 
     when: 'the UI element is built'
-    def widgetContext = new WidgetContext(parameters: [id: 'dummyID', columns: 'title,name'], controllerClass: SampleParentController)
+    def widgetContext = buildWidgetContext(parameters: [id: 'dummyID', columns: 'title,name'], controllerClass: SampleParentController)
     def page = new DefinitionListWidget(widgetContext).build().toString()
 
     then: 'the page is valid'
-    checkPage(page)
+    checkJavascriptFragment(page)
+    checkJavascript(widgetContext.markerCoordinator.postscript)
 
     and: 'the correct fields are in the column list'
     def columnsBlock = JavascriptTestUtils.extractBlock(page, 'columns: [')
@@ -211,11 +199,12 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
     new MockDomainUtils(this, SampleParent).install()
 
     when: 'the UI element is built'
-    def widgetContext = new WidgetContext(parameters: [id: 'dummyID', columns: 'title,name'], controllerClass: SampleParentController)
+    def widgetContext = buildWidgetContext(parameters: [id: 'dummyID', columns: 'title,name'], controllerClass: SampleParentController)
     def page = new DefinitionListWidget(widgetContext).build().toString()
 
     then: 'the page is valid'
-    checkPage(page)
+    checkJavascriptFragment(page)
+    checkJavascript(widgetContext.markerCoordinator.postscript)
 
     and: 'the correct fields are in the column list'
     def pagerBlock = JavascriptTestUtils.extractBlock(page, '{view: "pager"')
@@ -228,14 +217,16 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
     new MockDomainUtils(this, SampleParent).install()
 
     when: 'the UI element is built'
-    def widgetContext = new WidgetContext(parameters: [id: 'dummyID', columns: 'title,name'], controllerClass: SampleParentController)
+    def widgetContext = buildWidgetContext(parameters: [id: 'dummyID', columns: 'title,name'], controllerClass: SampleParentController)
     def page = new DefinitionListWidget(widgetContext).build().toString()
+    def postscript = widgetContext.markerCoordinator.postscript
 
     then: 'the page is valid'
-    checkPage(page)
+    checkJavascriptFragment(page)
+    checkJavascript(postscript)
 
     and: 'the event handler is correct'
-    def eventBlock = JavascriptTestUtils.extractBlock(page, '$$("dummyID").data.attachEvent("onStoreLoad", function (driver, data) {')
+    def eventBlock = JavascriptTestUtils.extractBlock(postscript, '$$("dummyID").data.attachEvent("onStoreLoad", function (driver, data) {')
     eventBlock.contains('$$("dummyID").markSorting(data.sort, data.sortDir);')
   }
 
@@ -244,12 +235,12 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
     new MockDomainUtils(this, AllFieldsDomain).install()
 
     when: 'the UI element is built'
-    def widgetContext = new WidgetContext(parameters: [id: 'dummyID', columns: 'status,reportTimeInterval'],
-                                          controllerClass: AllFieldsDomainController)
+    def widgetContext = buildWidgetContext(parameters: [id: 'dummyID', columns: 'status,reportTimeInterval'], controllerClass: AllFieldsDomainController)
     def page = new DefinitionListWidget(widgetContext).build().toString()
 
     then: 'the page is valid'
-    checkPage(page)
+    checkJavascriptFragment(page)
+    checkJavascript(widgetContext.markerCoordinator.postscript)
 
     and: 'the status template is correct'
     def statusLine = TextUtils.findLine(page, 'id: "status"')
@@ -265,14 +256,16 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
     new MockDomainUtils(this, SampleParent).install()
 
     when: 'the UI element is built'
-    def widgetContext = new WidgetContext(parameters: [id: 'dummyID', columns: 'title,name'], controllerClass: SampleParentController)
+    def widgetContext = buildWidgetContext(parameters: [id: 'dummyID', columns: 'title,name'], controllerClass: SampleParentController)
     def page = new DefinitionListWidget(widgetContext).build().toString()
+    def postscript = widgetContext.markerCoordinator.postscript
 
     then: 'the page is valid'
-    checkPage(page)
+    checkJavascriptFragment(page)
+    checkJavascript(postscript)
 
     and: 'the event handler is correct'
-    def eventBlock = JavascriptTestUtils.extractBlock(page, '$$("dummyIDSearch").attachEvent("onEnter", function (id) {')
+    def eventBlock = JavascriptTestUtils.extractBlock(postscript, '$$("dummyIDSearch").attachEvent("onEnter", function (id) {')
     eventBlock
 
     and: 'the default enter behavior is prevented'
@@ -284,14 +277,16 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
     new MockDomainUtils(this, SampleParent).install()
 
     when: 'the UI element is built'
-    def widgetContext = new WidgetContext(parameters: [id: 'dummyID', columns: 'title,name'], controllerClass: SampleParentController)
+    def widgetContext = buildWidgetContext(parameters: [id: 'dummyID', columns: 'title,name'], controllerClass: SampleParentController)
     def page = new DefinitionListWidget(widgetContext).build().toString()
+    def postscript = widgetContext.markerCoordinator.postscript
 
     then: 'the page is valid'
-    checkPage(page)
+    checkJavascriptFragment(page)
+    checkJavascript(postscript)
 
     and: 'the event handler is correct'
-    def eventBlock = JavascriptTestUtils.extractBlock(page, '$$("dummyID").attachEvent("onColumnResize", function(id,newWidth,oldWidth,user_action) {')
+    def eventBlock = JavascriptTestUtils.extractBlock(postscript, '$$("dummyID").attachEvent("onColumnResize", function(id,newWidth,oldWidth,user_action) {')
     eventBlock.contains('tk._columnResized("dummyID",window.location.pathname,id,newWidth);')
   }
 
@@ -307,11 +302,12 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
     new MockPreferenceHolder(this, preferences).install()
 
     when: 'the UI element is built'
-    def widgetContext = new WidgetContext(parameters: [id: 'dummyID', columns: 'title,name'], controllerClass: SampleParentController)
+    def widgetContext = buildWidgetContext(parameters: [id: 'dummyID', columns: 'title,name'], controllerClass: SampleParentController)
     def page = new DefinitionListWidget(widgetContext).build().toString()
 
     then: 'the page is valid'
-    checkPage(page)
+    checkJavascriptFragment(page)
+    checkJavascript(widgetContext.markerCoordinator.postscript)
 
     and: 'the title column is the correct width'
     def columnsBlock = JavascriptTestUtils.extractBlock(page, 'columns: [')
@@ -332,7 +328,7 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
     new MockPreferenceHolder(this, [new ColumnPreference(column: 'title', sortLevel: 1, sortAscending: false)]).install()
 
     when: 'the UI element is built'
-    def widgetContext = new WidgetContext(parameters: [id: 'dummyID', columns: 'title,name'], controllerClass: SampleParentController)
+    def widgetContext = buildWidgetContext(parameters: [id: 'dummyID', columns: 'title,name'], controllerClass: SampleParentController)
     def page = new DefinitionListWidget(widgetContext).build().toString()
 
     then: 'the page is valid'
@@ -349,11 +345,12 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
     new MockDomainUtils(this, AllFieldsDomain).install()
 
     when: 'the UI element is built'
-    def widgetContext = new WidgetContext(controllerClass: AllFieldsDomainController)
+    def widgetContext = buildWidgetContext(controllerClass: AllFieldsDomainController)
     def page = new DefinitionListWidget(widgetContext).build().toString()
 
     then: 'the page is valid'
-    checkPage(page)
+    checkJavascriptFragment(page)
+    checkJavascript(widgetContext.markerCoordinator.postscript)
 
     and: 'the parsing logic is in the javascript'
     def scheme = JavascriptTestUtils.extractBlock(page, 'scheme:{')
@@ -381,7 +378,7 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
     new MockDomainUtils(this, domainClass).install()
 
     when: 'the UI element is built'
-    def widgetContext = new WidgetContext(controllerClass: controllerClass)
+    def widgetContext = buildWidgetContext(controllerClass: controllerClass)
     new DefinitionListWidget(widgetContext).build().toString()
 
     then: 'the right exception is thrown'
@@ -389,21 +386,4 @@ class DefinitionListWidgetSpec extends BaseWidgetSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['columns', 'fieldOrder', 'SampleDomain'])
   }
 
-  def "verify that controller name is used in the default ID"() {
-    given: 'a mocked domain'
-    new MockDomainUtils(this, [SampleParent]).install()
-    new MockControllerUtils(this, [SampleParentController]).install()
-
-    when: 'the UI element is built'
-    def widgetContext = new WidgetContext(parameters: [:], controllerClass: SampleParentController)
-    def page = new DefinitionListWidget(widgetContext).build().toString()
-
-    then: 'the page is valid'
-    checkPage(page)
-
-    and: 'the correct controller is used'
-    page.contains('<div id="sampleParentDefinitionList"></div>')
-    def viewBlock = JavascriptTestUtils.extractBlock(page, '{view: "datatable"')
-    TextUtils.findLine(viewBlock, 'url:').contains('/sampleParent/list')
-  }
 }

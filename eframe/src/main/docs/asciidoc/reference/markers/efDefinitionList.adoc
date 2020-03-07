@@ -24,7 +24,7 @@ and Sorting. See <<guide.adoc#controllers,Controllers>> for details on helper cl
 can provide the `list()` method logic for you.
 
 This marker relies on the common
-link:groovydoc/org/simplemes/eframe/web/ui/webix/widget/GridWidget.html[GridWidget^]
+link:groovydoc/org/simplemes/eframe/web/ui/webix/widget/ListWidget.html[ListWidget^]
 icon:share-square-o[role="link-blue"] to implement most of the list features.
 
 
@@ -50,13 +50,15 @@ The main parameters/body supported are:
 |*(body)*    |Ignored.
 | *columns*  | A comma-delimited list of columns to display
               (*Default:* The list from the domain's <<fieldOrder>>).
+|*height*    | The height of the definition list (*Default:* '74%').
+|*paddingX*  | The width of extra horizontal padding (*e.g.:* '74%' or '20em').
 
 |===
 
 
 
 This marker also supports most of the
-link:groovydoc/org/simplemes/eframe/web/ui/webix/widget/GridWidget.html[GridWidget^]
+link:groovydoc/org/simplemes/eframe/web/ui/webix/widget/ListWidget.html[ListWidget^]
 icon:share-square-o[role="link-blue"] options to control the list display,
 This includes default widths, specific links needed, etc.
 

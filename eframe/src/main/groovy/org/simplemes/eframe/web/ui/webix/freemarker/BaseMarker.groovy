@@ -185,6 +185,14 @@ abstract class BaseMarker implements MarkerInterface {
   }
 
   /**
+   * Gets the parameters from the HTTP request that called this marker.
+   * @return The parameters from the HTTP request.
+   */
+  Map getRequestParameters() {
+    return getModelValue(StandardModelAndView.PARAMS) as Map
+  }
+
+  /**
    * A cached object wrapper for accessing the raw objects in a freemarker data model.
    */
   static ObjectWrapper _objectWrapper

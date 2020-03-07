@@ -243,6 +243,9 @@ When the user presses the RMA button, the parameters are sent to the controller 
 which calls a service to create the RMA.  This service in turn, may call other services or
 extensions that need to return messages.
 
+See <<GUI Page Fragments and Dialogs>> for more details on the API used to generate dashboard
+activities.  Most of the time, you won't need to directly use this API.
+
 ===== Non-GUI Activity
 
 Dashboard activities with no or limited GUIs tend to use the values/inputs from the other activities

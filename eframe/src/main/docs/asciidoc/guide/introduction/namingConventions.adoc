@@ -13,7 +13,7 @@ These follow the basic Micronaut conventions, but add a few conventions for simp
 * `*Service` - The business logic service.  These are typically transactional.
 * `*Interface` - A public interface.
 * `*Marker` - The helper implementation for the Freemarker markers (template directive models).
-* `*Widget` - A general GUI widget such as link:groovydoc/org/simplemes/eframe/web/widget/GridWidget.html[GridWidget^].
+* `*Widget` - A general GUI widget.
 * `*FieldBuilder` - Creates a GUI field for a specific object type with edit capability.  Example: link:groovydoc/org/simplemes/eframe/web/builder/LinkListBuilder.html[LinkListBuilder^].
 * `*Factory` - Abstracts object creation for extension purposes such as link:groovydoc/org/simplemes/eframe/web/builder/FieldBuilderFactory.html[FieldBuilderFactory^].
 * `*Utils` - Various utilities packages as static methods on the Utils class. Example: link:groovydoc/org/simplemes/eframe/misc/DateUtils.html[DateUtils^].

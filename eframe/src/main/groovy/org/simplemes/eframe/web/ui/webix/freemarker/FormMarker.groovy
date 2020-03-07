@@ -8,7 +8,6 @@ import groovy.util.logging.Slf4j
 import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.web.ui.WidgetFactory
 
-
 /**
  * Provides the efForm Freemarker marker implementation.
  * This builds a form for user data entry and provides access to a submit function.
@@ -59,8 +58,16 @@ class FormMarker extends BaseMarker {
       toolbar += ',\n'
     }
 
+
     def postScript = markerContext?.markerCoordinator?.getPostscript() ?: ''
     def preScript = markerContext?.markerCoordinator?.getPrescript() ?: ''
+    if (dashboard && postScript) {
+      def params = getModelValue('params')
+      def variable = params?._variable
+      // Need to wrap the post-script logic in a function since the dashboard activity is not
+      // executed immediately.
+      postScript = """ ${variable}.postScript= function ${id}Postscript() { $postScript};"""
+    }
 
     def width = parameters.width ?: '90%'
 
@@ -85,7 +92,7 @@ class FormMarker extends BaseMarker {
             {height: 10}
             ${content}
             ${buttonsHolder}
-            ,{}
+            ,{height: 10}
           ]
         };
         $postScript

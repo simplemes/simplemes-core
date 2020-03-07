@@ -67,15 +67,21 @@ The main parameters/body supported are:
                (*Default:* The `list()` method in the controller that rendered this page.
 | *onSelectFunction* | The name of the event handler for list select events.
                        Will be passed: (String listID, int rowIndex,Object rowData).
+| *modelName*  | A fully-qualified class name that specifies the contents of the rows displayed.
+                 This can be a domain or a POGO. (*Default:* the controller's domain)
+|*height*    | The height of the list (*Default:* '74%').
+|*paddingX*  | The width of extra horizontal padding (*e.g.:* '74%' or '20em').
 
 |===
 
 
 
 This marker also supports most of the
-link:groovydoc/org/simplemes/eframe/web/ui/webix/widget/GridWidget.html[GridWidget^]
+link:groovydoc/org/simplemes/eframe/web/ui/webix/widget/ListWidget.html[ListWidget^]
 icon:share-square-o[role="link-blue"] options to control the list display,
 This includes default widths, specific links needed, etc.
+
+If the controller has no domain defined for it, then the `modelName` must be specified.
 
 
 [[ef-list-requirements]]
@@ -95,3 +101,16 @@ This includes default widths, specific links needed, etc.
 ==== List Examples
 
 
+
+[source,html]
+.efList Example - Use of list() method - Dashboard Activity
+----
+<script>
+  <@efForm id="workList" dashboard="true">  // <.>
+    <@efList columns="order,product,qtyToBuild,qtyReleased"/>
+  </@efForm>
+----
+<.> The list must be inside of a <<efForm>>.  This example is used as a dashboard activity.
+
+This example is served up from the OrderController, which has a `list()` method.  It has
+a domain defined: Order.

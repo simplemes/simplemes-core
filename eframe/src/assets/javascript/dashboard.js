@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 // Define the dashboard 'module' for the enterprise framework Dashboard display library.
 // noinspection JSUnusedAssignment JSUnusedGlobalSymbols
 /*
@@ -414,6 +418,7 @@ ef.dashboard = function () {
         var sharedVarName = '_' + panelName;
         url = eframe.addArgToURI(url, '_variable', sharedVarName);
         url = eframe.addArgToURI(url, '_panelCount', panels.length);
+        url = eframe.addArgToURI(url, '_pageSrc', window.location.pathname);
 
         // Now, add any extra params to the URI.
         var params = dashboard._buildParams(activityParams, extraParams);
@@ -449,6 +454,15 @@ ef.dashboard = function () {
             $$(parentViewName).addView({view: 'form', type: "clean", borderless: true, id: contentViewName, margin: 0, rows: [content]}, 0);
             dashboard._addButtonsIfNeeded(panelName);
           }
+          var postScript = window[sharedVarName].postScript;
+          if (postScript) {
+            if (ef._isString(postScript)) {
+              eval(postScript);
+            } else {
+              postScript();
+            }
+          }
+
         });
       }
     },
@@ -459,8 +473,8 @@ ef.dashboard = function () {
       }
     },
     _splitterResized: function (element, panel, resizer, vertical) {
-      var value = 1;
-      var maximum = 1;
+      var value;
+      var maximum;
       if (vertical) {
         value = $$("Panel" + panel).$width;
         maximum = window.innerWidth;

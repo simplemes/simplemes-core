@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 import org.simplemes.eframe.controller.ControllerUtils
@@ -8,12 +12,6 @@ import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.web.ui.JSPageOptions
 import org.simplemes.eframe.web.ui.WidgetInterface
 import org.simplemes.eframe.web.ui.webix.freemarker.BaseMarker
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Common elements used by most UI widgets.  Include HTML ID's and generating the HTML code along with the
@@ -132,11 +130,12 @@ class BaseWidget implements WidgetInterface {
 
   /**
    * Adds the given text in a holding area to be added to the generated UI text at the end.  This is processed
-   * by the generate method.
+   * by the caller to add the postscript to the page after the top-level marker is finished.
+   * Usually, this is standalone javascript that can't be inside of element defintions.
    * @param s The closing text.
    */
-  void addClosingText(String s) {
-    closingTexts << s
+  void addPostscriptText(String s) {
+    widgetContext.markerCoordinator.addPostscript(s)
   }
 
 
@@ -170,6 +169,11 @@ class BaseWidget implements WidgetInterface {
   }
 
   /**
+   * A cached domain/POGO class for this widget.
+   */
+  private Class _domainClass
+
+  /**
    * Determines the Class for the domain related to the controller.
    * <p>
    * <b>Note:</b> If the {@link #isControllerOverrideAllowed()}is set to true, then
@@ -177,11 +181,20 @@ class BaseWidget implements WidgetInterface {
    * @return The domain class.  Can be null.
    */
   Class getDomainClass() {
-    def controllerClass = getControllerClass()
-    if (controllerClass) {
-      return ControllerUtils.instance.getDomainClass(controllerClass)
+    if (_domainClass) {
+      return _domainClass
     }
-    return null
+
+    if (widgetContext.parameters.model) {
+      // See if the caller wants to override the controller/domain lookup logic.
+      _domainClass = ControllerUtils.instance.getListElementFromPOGO(widgetContext.parameters.model as String)
+    } else {
+      def controllerClass = getControllerClass()
+      if (controllerClass) {
+        _domainClass = ControllerUtils.instance.getDomainClass(controllerClass)
+      }
+    }
+    return _domainClass
   }
 
   /**
@@ -219,5 +232,32 @@ class BaseWidget implements WidgetInterface {
       return """width: tk.pw(ef.getPageOption('${name}','$width')) """
     }
   }
+
+  /**
+   * Returns the given size attribute as a string input to tk.pw() or tk.ph().
+   * Converts input of '20' to '20em'.  Supports '20%' or '20em' as input option.
+   * @param attributeName The attribute (parameter) name in the marker.
+   * @return The size as a string.
+   */
+  String getSizeAttribute(String attributeName) {
+    def value = widgetContext?.parameters[attributeName] as String
+    if (value) {
+      if (!value.contains('em') && !value.contains('%')) {
+        // assume it is a number only, so add em for the tk.pw() type methods.
+        value = value + 'em'
+      }
+    }
+
+    return value
+  }
+
+  /**
+   * Gets the parameters from the HTTP request that called this marker.
+   * @return The parameters from the HTTP request.
+   */
+  Map getRequestParameters() {
+    return widgetContext?.marker?.getRequestParameters() as Map
+  }
+
 
 }

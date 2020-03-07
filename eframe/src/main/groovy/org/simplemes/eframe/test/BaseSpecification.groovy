@@ -710,7 +710,26 @@ class BaseSpecification extends GebSpec {
       // Just Javascript (probably).
       return JavascriptTestUtils.checkScriptFragment(page)
     }
+    log.warn("Script check disabled probably due to presence of < on page. Try checkJavascript() or checkPageFragment().  Test = {}", this)
     return true
+  }
+
+  /**
+   * Checks the page for JS errors.  Adds some JS to make the page fragment legal JS.
+   * @param page The page.
+   * @return true
+   */
+  boolean checkJavascript(String page) {
+    return JavascriptTestUtils.checkScript(page)
+  }
+
+  /**
+   * Checks the page for JS errors.  Adds some JS to make the page fragment legal JS.
+   * @param page The page.
+   * @return true
+   */
+  boolean checkJavascriptFragment(String page) {
+    return JavascriptTestUtils.checkScript("var x = [ $page ];")
   }
 
 }

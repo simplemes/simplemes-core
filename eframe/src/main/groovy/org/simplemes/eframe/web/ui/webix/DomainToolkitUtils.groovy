@@ -47,7 +47,7 @@ class DomainToolkitUtils {
    *   <li><b>displayValueForCombo</b> - If true, then display the _${filed}Display_ in the grid instead of the ID.  Used for definition lists.  (<b>Default:</b> false).  </li>
    * </ul>
    *
-   * @param domainClass The domain class.
+   * @param domainClass The domain class or POGO.
    * @param columns The list of columns to display.
    * @param options The options used to generate the column definition.  Typically passed in as-is from the marker.
    * @return The column javascript code, with correct types.
@@ -70,7 +70,7 @@ class DomainToolkitUtils {
 
       def keyHyperlink = (options?.keyHyperlink != null) ? options.keyHyperLink : true
       //println "field = $field"
-      Class type = DomainUtils.instance.getFieldType(domainClass, fieldName)
+      Class type = DomainUtils.instance.getFieldType(domainClass, fieldName) ?: String
       def fieldDef = fieldDefinitions[fieldName]
       def label = GlobalUtils.lookup("${fieldName}.label")
       def sort = ''
@@ -138,7 +138,7 @@ class DomainToolkitUtils {
         if (widths[fieldName]) {
           sb << """,width: tk.pw("${widths[fieldName]}%")"""
         }
-      } else {
+      } else if (options?.totalWidth) {
         // Not user-defined widths, so just use a fixed percentage so all fields show up
         def totalWidth = options?.totalWidth ?: 95.0
         def percent = totalWidth / columns.size()
@@ -235,7 +235,7 @@ class DomainToolkitUtils {
         // Ignore panels.
         continue
       }
-      Class type = DomainUtils.instance.getFieldType(domainClass, fieldName)
+      Class type = DomainUtils.instance.getFieldType(domainClass, fieldName) ?: String
 
       if (Date.isAssignableFrom(type) || DateOnly.isAssignableFrom(type)) {
         // We need to parse the date with some special handling of TZ for the gui toolkit.

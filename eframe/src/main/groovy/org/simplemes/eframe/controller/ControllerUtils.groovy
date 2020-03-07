@@ -17,6 +17,9 @@ import org.simplemes.eframe.misc.UUIDUtils
 import org.simplemes.eframe.web.task.TaskMenuControllerUtils
 import org.simplemes.eframe.web.ui.UIDefaults
 
+import java.lang.reflect.ParameterizedType
+import java.lang.reflect.Type
+
 /**
  * Controller support utilities.
  * These class provide common controller class utilities that simplify
@@ -41,6 +44,12 @@ class ControllerUtils {
    * The domain errors is a list of ValidationError's.
    */
   static final String MODEL_KEY_DOMAIN_ERRORS = '_domainErrors'
+
+  /**
+   * The name of the HTTP request parameter that will hold the source page that made this request.
+   * This is used mainly in loading dialogs/page fragments that are generated on the server using markers.
+   */
+  public static final String PARAM_PAGE_SOURCE = '_pageSrc'
 
   /**
    * Returns all of the controller classes defined in the system.
@@ -306,6 +315,28 @@ class ControllerUtils {
     }
 
     return uri
+  }
+
+  /**
+   * Gets the list content class for the given POGO class.  Uses the class passed in, unless the class
+   * matches the pattern for a list() method result: (has fields: totalAvailable  List<T> definition).
+   * @param pogoName The fully qualified class name for the POGO.
+   * @return Return the element that is the list content.    Can be the value from a List<T> field.
+   */
+  Class getListElementFromPOGO(String pogoName) {
+    def clazz = TypeUtils.loadClass(pogoName)
+
+    // See if this model has a totalAvailable and a list.  Then we will look into the list for the domain class.
+    if (clazz.metaClass.getMetaProperty('totalAvailable') && clazz.metaClass.getMetaProperty('list')) {
+      def field = clazz.getDeclaredField('list')
+      Type childType = field.getGenericType()
+      if (childType instanceof ParameterizedType) {
+        ParameterizedType childParameterizedType = (ParameterizedType) childType
+        return (Class<?>) childParameterizedType.getActualTypeArguments()[0]
+      }
+
+    }
+    return clazz
   }
 
 }

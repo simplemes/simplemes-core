@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import freemarker.core.Environment
@@ -5,12 +9,6 @@ import freemarker.template.TemplateDirectiveBody
 import freemarker.template.TemplateModel
 import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.web.ui.webix.widget.WidgetContext
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Defines the methods that a freemarker marker implementation will provide.  This is used to generate the
@@ -46,5 +44,9 @@ interface MarkerInterface {
    */
   WidgetContext buildWidgetContext(FieldDefinitionInterface fieldDefinition)
 
-
+  /**
+   * Gets the parameters from the HTTP request that called this marker.
+   * @return The parameters from the HTTP request.
+   */
+  Map getRequestParameters()
 }

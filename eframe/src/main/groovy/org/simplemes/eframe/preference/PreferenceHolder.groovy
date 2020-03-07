@@ -29,6 +29,12 @@ import org.simplemes.eframe.preference.domain.UserPreference
  </pre>
  *
  * <b>Note:</b> You can switch to a different element if needed using: <code>preference.element = 'OrderListB'</code>
+ * <p>
+ * <p>
+ * <p>
+ * <b>Note:</b> Due the quirks in Groovy DSL processing, do not use values for the values (page, user, element) such
+ *              as <b>'id', 'page', 'user' or 'element'</b>.  These get set to null if used.  Use another variable
+ *              name such as 'idParam', 'pageParam', 'userParam' or 'elementParam'.</code>
  */
 @Slf4j
 @SuppressWarnings("ConfusingMethodName")

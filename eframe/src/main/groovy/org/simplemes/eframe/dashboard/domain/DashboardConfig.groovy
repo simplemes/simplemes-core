@@ -262,21 +262,20 @@ class DashboardConfig {
   static initialDataLoad() {
     // Load some test dashboard configs, but only for eframe development.
     if (DashboardConfig.count() == 0 && Holders.configuration.appName == 'EFrame' && Holders.environmentDev) {
-/*
       DashboardConfig dashboardConfig
 
       dashboardConfig = new DashboardConfig(dashboard: 'SUPERVISOR_DEFAULT', category: 'SUPERVISOR', title: 'Supervisor')
-      dashboardConfig.addToPanels(new DashboardPanelSplitter(panelIndex: 0, vertical: false))
-      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 1, defaultURL: '/parent/activityA', parentPanelIndex: 0))
-      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 2, defaultURL: '/parent/activityB', parentPanelIndex: 0))
+      dashboardConfig.splitterPanels << (new DashboardPanelSplitter(panelIndex: 0, vertical: false))
+      dashboardConfig.dashboardPanels << (new DashboardPanel(panelIndex: 1, defaultURL: '/test/dashboard/page?view=sample/dashboard/wcSelection', parentPanelIndex: 0))
+      dashboardConfig.dashboardPanels << (new DashboardPanel(panelIndex: 2, defaultURL: '/order/orderWorkList', parentPanelIndex: 0))
       assert dashboardConfig.save()
 
       dashboardConfig = new DashboardConfig(dashboard: 'OPERATOR_DEFAULT', category: 'OPERATOR', title: 'Operator')
-      dashboardConfig.addToPanels(new DashboardPanelSplitter(panelIndex: 0, vertical: false))
-      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 1, parentPanelIndex: 0,
-                                                     defaultURL: '/test/dashboard/page?view=sample/dashboard/wcSelection'))
-      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 2, parentPanelIndex: 0,
-                                                     defaultURL: '/test/dashboard/page?view=sample/dashboard/workList'))
+      dashboardConfig.splitterPanels << (new DashboardPanelSplitter(panelIndex: 0, vertical: false))
+      dashboardConfig.dashboardPanels << (new DashboardPanel(panelIndex: 1, parentPanelIndex: 0,
+                                                             defaultURL: '/test/dashboard/page?view=sample/dashboard/wcSelection'))
+      dashboardConfig.dashboardPanels << (new DashboardPanel(panelIndex: 2, parentPanelIndex: 0,
+                                                             defaultURL: '/test/dashboard/page?view=sample/dashboard/workList'))
       def button1 = new DashboardButton(label: 'pass.label', url: '/dashSample/display?page=pass', panel: 'A',
                                         title: 'pass.title', size: 1.5, buttonID: 'PASS')
       def button2 = new DashboardButton(label: 'Complete', url: '/test/dashboard/page?view=sample/dashboard/complete', panel: 'B',
@@ -285,25 +284,22 @@ class DashboardConfig {
                                         css: 'caution-button', buttonID: 'FAIL')
       def button4 = new DashboardButton(label: 'Reports', url: '/dashSample/display?page=fail', panel: 'B',
                                         buttonID: 'REPORTS')
-      dashboardConfig.addToButtons(button1)
-      dashboardConfig.addToButtons(button2)
-      dashboardConfig.addToButtons(button3)
-      dashboardConfig.addToButtons(button4)
+      dashboardConfig.buttons << (button1)
+      dashboardConfig.buttons << (button2)
+      dashboardConfig.buttons << (button3)
+      dashboardConfig.buttons << (button4)
       assert dashboardConfig.save()
 
       dashboardConfig = new DashboardConfig(dashboard: 'MANAGER_DEFAULT', category: 'MANAGER', title: 'Manager')
-      dashboardConfig.addToPanels(new DashboardPanelSplitter(panelIndex: 0, vertical: false))
-      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 1, defaultURL: '/test/dashboard/page?view=sample/dashboard/wcSelection', parentPanelIndex: 0))
-      dashboardConfig.addToPanels(new DashboardPanelSplitter(panelIndex: 2, vertical: true, parentPanelIndex: 0))
-      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 3, defaultURL: '/test/dashboard/page?view=sample/dashboard/workList', parentPanelIndex: 2))
-      dashboardConfig.addToPanels(new DashboardPanelSplitter(panelIndex: 4, vertical: true, parentPanelIndex: 2))
-      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 5, defaultURL: '/test/dashboard/page?view=sample/dashboard/workList', parentPanelIndex: 4))
-      dashboardConfig.addToPanels(new DashboardPanel(panelIndex: 6, defaultURL: '/test/dashboard/page?view=sample/dashboard/workList', parentPanelIndex: 4))
+      dashboardConfig.splitterPanels << (new DashboardPanelSplitter(panelIndex: 0, vertical: false))
+      dashboardConfig.dashboardPanels << (new DashboardPanel(panelIndex: 1, defaultURL: '/test/dashboard/page?view=sample/dashboard/wcSelection', parentPanelIndex: 0))
+      dashboardConfig.splitterPanels << (new DashboardPanelSplitter(panelIndex: 2, vertical: true, parentPanelIndex: 0))
+      dashboardConfig.dashboardPanels << (new DashboardPanel(panelIndex: 3, defaultURL: '/test/dashboard/page?view=sample/dashboard/workList', parentPanelIndex: 2))
+      dashboardConfig.dashboardPanels << (new DashboardPanel(panelIndex: 6, defaultURL: '/test/dashboard/page?view=sample/dashboard/workList', parentPanelIndex: 2))
       dashboardConfig.save()
 
       //noinspection UnnecessaryQualifiedReference
       log.warn("Created ${DashboardConfig.count()} default dashboards.")
-*/
     }
 
     return null // No real initial data loaded, yet.

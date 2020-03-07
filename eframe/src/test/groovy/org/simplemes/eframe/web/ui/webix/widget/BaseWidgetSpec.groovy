@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 import org.simplemes.eframe.test.BaseWidgetSpecification
@@ -8,12 +12,6 @@ import sample.controller.AllFieldsDomainController
 import sample.controller.SampleParentController
 import sample.domain.AllFieldsDomain
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -140,6 +138,19 @@ class BaseWidgetSpec extends BaseWidgetSpecification {
 
     then: 'the controller class reflects the controller parameter value'
     baseWidget.controllerClass == SampleParentController
+  }
+
+  def "verify that getSizeAttribute works on supported cases"() {
+    expect: 'the HTML value to be escaped for safe display'
+    new BaseWidget(new WidgetContext(parameters: [height: input])).getSizeAttribute('height') == res
+
+    where:
+    input   | res
+    "237"   | "237em"
+    "237em" | "237em"
+    "237%"  | "237%"
+    ""      | ""
+    null    | null
   }
 
 }

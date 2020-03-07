@@ -22,6 +22,7 @@ import sample.controller.RMAController
 import sample.controller.SampleParentController
 import sample.domain.AllFieldsDomain
 import sample.domain.SampleParent
+import sample.pogo.FindWorkResponseDetail
 
 /**
  * Tests.
@@ -255,6 +256,16 @@ class ControllerUtilsSpec extends BaseSpecification {
     '/sampleParent'          | [a: 'b c', c: 'd e'] | '/sampleParent?a=b+c&c=d+e'
     '/sampleParent/show'     | [a: 'b', c: 'd']     | '/sampleParent/show?a=b&c=d'
     '/sampleParent/show?x=z' | [a: 'b', c: 'd']     | '/sampleParent/show?x=z&a=b&c=d'
+  }
+
+  def "verify that getListElementFromPOGO works for the supported cases"() {
+    expect: 'the correct domain class is found'
+    ControllerUtils.instance.getListElementFromPOGO(name) == result
+
+    where:
+    name                                 | result
+    'sample.pogo.FindWorkResponse'       | FindWorkResponseDetail
+    'sample.pogo.FindWorkResponseDetail' | FindWorkResponseDetail
   }
 
 }

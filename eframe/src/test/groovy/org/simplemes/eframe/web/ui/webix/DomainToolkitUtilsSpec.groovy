@@ -71,6 +71,20 @@ class DomainToolkitUtilsSpec extends BaseSpecification {
     !enabled.contains("""webix.template.escape""")
   }
 
+  def "verify that buildTableColumns gracefully handles unknown field type"() {
+    given: 'a mocked domain'
+    new MockDomainUtils(this, AllFieldsDomain).install()
+
+    when: 'the columns are created for a domain'
+    def page = DomainToolkitUtils.instance.buildTableColumns(AllFieldsDomain, ['unknownField'])
+
+    then: 'the missing field is treated as a string'
+    def unknownField = TextUtils.findLine(page, 'id: "unknownField"')
+    unknownField.contains("""adjust: false""")
+    unknownField.contains("""format: webix.template.escape""")
+    !unknownField.contains("""href""")
+  }
+
   def "verify that buildTableColumns builds formatters for special columns"() {
     given: 'a mocked domain'
     new MockDomainUtils(this, AllFieldsDomain).install()

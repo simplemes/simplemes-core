@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 // Define the eframe_toolkit 'module' for the enterprise framework API in case of name conflicts.
 // Provides javascript features for use with the GUI toolkit.
 // noinspection JSUnusedAssignment JSUnusedGlobalSymbols JSUnusedLocalSymbols JSUnresolvedFunction
@@ -397,7 +401,11 @@ _ef_tk.toolkit = function () {
       // Call any script to done after the dialog content is rendered
       if (options.postScript) {
         webix.delay(function () {
-          eval(options.postScript);
+          if (ef._isString(options.postScript)) {
+            eval(options.postScript);
+          } else {
+            options.postScript();
+          }
         })
       }
       return dialogID;
