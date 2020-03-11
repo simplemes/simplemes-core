@@ -3,6 +3,11 @@
   <#assign panel = "${params._panel}"/>
   <#assign variable = "${params._variable}"/>
 
+  ${params._variable}.provideParameters = function() {
+    return {
+      workCenter: 'WC237',
+    }
+  }
   // Testbed for dashboard layout work
   <@efForm id="logFailure" dashboard='buttonHolder'>
   <@efField field="order" id="order" label="Order/LSN" value="M1008"

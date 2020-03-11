@@ -1,12 +1,10 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test.page
 
 import geb.Module
-
-/*
- * Copyright Michael Houston. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Defines the GEB page elements for a toolkit-based grid used for inline grids.
@@ -58,6 +56,8 @@ class GridModule extends Module {
 
     addRowButton { $("div.webix_el_button", view_id: "${field}Add").find('button') }
     removeRowButton { $("div.webix_el_button", view_id: "${field}Remove").find('button') }
+
+    pagerButtons { $("div.webix_pager", view_id: "${field}Pager").find('button') }
   }
 
   /**

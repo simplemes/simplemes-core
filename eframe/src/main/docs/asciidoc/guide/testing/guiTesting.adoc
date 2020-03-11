@@ -349,7 +349,7 @@ class ProductGUITests extends BaseGUISpecification {
 ==== GEB Page Modules
 
 The framework supports many types of common GUI elements such as grids, input fields, buttons and
-drop-down lists.  Interacting with them in GEB tests cane be tedious.  The <<GUI Toolkit>>
+drop-down lists.  Interacting with them in GEB tests can be tedious.  The <<GUI Toolkit>>
 has complex HTML structures for even simple elements like input fields.
 
 To make working with these elements easier, we provide some GEB Modules to access them easier.
@@ -387,6 +387,19 @@ Some of the supported modules include:
 * link:groovydoc/org/simplemes/eframe/test/page/ReadOnlyFieldModule.html[ReadOnlyFieldModule^] icon:share-square-o[role="link-blue"]
 * link:groovydoc/org/simplemes/eframe/test/page/TextFieldModule.html[TextFieldModule^] icon:share-square-o[role="link-blue"]
 
+===== Using GEB Page Modules Outside of Pages
+
+Most of the time, you will use GEB modules in a Page content section.  Sometimes, you will need to
+use them in test code for dynamic fields.  To do this, you create one like this:
+
+[source,groovy]
+.Example - Direct GEB Module Use
+----
+def workList = $("body").module(new GridModule(field: 'theOrderListA'))  // <.>
+workList.cell(0, 0).text() == 'M1001'  // <.>
+----
+<.> Create the workList GEB navigator object directly.
+<.> Access the cell's text at row 2, column 'order'.  (0,0) is the first cell in the first row.
 
 
 ==== Testing and Logging in

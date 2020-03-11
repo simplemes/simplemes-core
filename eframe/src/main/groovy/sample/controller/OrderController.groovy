@@ -36,6 +36,11 @@ import java.security.Principal
 @SuppressWarnings("unused")
 class OrderController extends BaseCrudRestController {
 
+  /**
+   * The number of rows available for the dummy findWork() method.
+   */
+  public static final int WORK_RECORD_COUNT = 105
+
   static domainClass = Order
 
   /**
@@ -51,22 +56,66 @@ class OrderController extends BaseCrudRestController {
   }
 
   /**
-   * Returns a list (JSON formatted) that contains a POGO list of values.
+   * The dummy work list values.
+   */
+  static workList
+
+  /**
+   * Returns a list (JSON formatted) that contains a POGO list of values.  Dummy static list.
    * @param request The request.
    * @param principal The user logged in.
    * @return The data for the list.
    */
+  @SuppressWarnings("GroovyAssignabilityCheck")
   @Get("/findWork")
   HttpResponse findWork(HttpRequest request, @Nullable Principal principal) {
     def params = ControllerUtils.instance.convertToMap(request.parameters)
     def (from, max) = ControllerUtils.instance.calculateFromAndSizeForList(params)
-    def (sortField, sortDir) = ControllerUtils.instance.calculateSortingForList(params)
+    def (String sortField, String sortDir) = ControllerUtils.instance.calculateSortingForList(params)
+    sortField = sortField ?: 'order'
+    sortDir = sortDir ?: 'asc'
 
     // Build some dummy data
-    def response = new FindWorkResponse()
-    response.totalAvailable = 1
-    response.list = [new FindWorkResponseDetail(qtyInQueue: 237.1, order: 'M1003', qtyInWork: 437.2)]
+    if (!workList) {
+      def products = ['BIKE-27', 'BIKE-24', 'BIKE-21']
+      workList = []
+      def rng = new Random(1)
+      for (i in (1..WORK_RECORD_COUNT)) {
+        def qtyInQueue = 10.0 * rng.nextDouble() as BigDecimal
+        def qtyInWork = 10.0 * rng.nextDouble() as BigDecimal
+        def order = "M1${sprintf("%03d", i)}"
+        def product = products[rng.nextInt(products.size())]
+        workList << new FindWorkResponseDetail(qtyInQueue: qtyInQueue, order: order, qtyInWork: qtyInWork, product: product)
+      }
+    }
 
+    // Now, sort the list as needed
+    workList.sort { FindWorkResponseDetail a, FindWorkResponseDetail b ->
+      if (sortDir == 'desc') {
+        // Swap the elements to compare
+        def x = b
+        b = a
+        a = x
+      }
+      def valueA = a[sortField]
+      def valueB = b[sortField]
+      if (valueA != null && valueB != null) {
+        return valueA <=> valueB
+      }
+      return 0
+    }
+
+    def response = new FindWorkResponse()
+    response.totalAvailable = workList.size()
+    response.list = []
+
+    // Find the right records
+    int start = from * max
+    for (int i = 0; i <= max; i++) {
+      if (start + i < workList.size()) {
+        response.list << (workList[start + i] as FindWorkResponseDetail)
+      }
+    }
 
     def json = Holders.objectMapper.writeValueAsString([data: response.list, total_count: response.totalAvailable,
                                                         pos : from * max, sort: sortField, sortDir: sortDir])

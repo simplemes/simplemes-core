@@ -30,6 +30,11 @@ class FindWorkResponseDetail {
   String lsn = ''
 
   /**
+   * The the product.
+   */
+  String product = ''
+
+  /**
    * The ID of the LSN that is in work or queue.  This can be used to find the original record.
    */
   def lsnID

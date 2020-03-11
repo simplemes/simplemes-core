@@ -168,12 +168,5 @@ class ListWidgetSpec extends BaseWidgetSpecification {
   }
 
 
-  // test with arguments from dashboard (work center).
-  // test controller argument
-  // test no hyperlinks option
-
-  // GUI Tests.
-  //   Basic display
-  //   column resizing
-  //   sorting.
+  // test with arguments from dashboard (work center).  provideParameters
 }
