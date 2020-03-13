@@ -252,6 +252,20 @@ class BaseWidget implements WidgetInterface {
   }
 
   /**
+   * Returns the given boolean attribute as a boolean if the value is "true".
+   * @param attributeName The attribute (parameter) name in the marker.
+   * @return True or false.  False if not set.
+   */
+  boolean getBooleanAttribute(String attributeName) {
+    def value = widgetContext?.parameters[attributeName] as String
+    if (value) {
+      return Boolean.valueOf(value)
+    }
+
+    return false
+  }
+
+  /**
    * Gets the parameters from the HTTP request that called this marker.
    * @return The parameters from the HTTP request.
    */

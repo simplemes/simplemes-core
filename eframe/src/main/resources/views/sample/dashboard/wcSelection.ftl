@@ -4,6 +4,7 @@
   <#assign variable = "${params._variable}"/>
 
   ${params._variable}.provideParameters = function() {
+    console.log('called');
     return {
       workCenter: 'WC237',
     }

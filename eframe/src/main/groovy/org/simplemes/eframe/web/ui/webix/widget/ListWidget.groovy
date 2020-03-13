@@ -21,6 +21,8 @@ import org.simplemes.eframe.web.ui.webix.DomainToolkitUtils
  * <ul>
  *   <li><b>height</b> - The height (e.g. '74%' or '20em' or '20') </li>
  *   <li><b>paddingX</b> - The padding to the left and right (e.g. '74%' or '20em' or '20') </li>
+ *   <li><b>copyParameters</b> - If true, then copy the parameters from the HTTP request to the data URI (unless
+ *                               they start with underscore.</li>
  * </ul>
  *
  */
@@ -252,8 +254,19 @@ class ListWidget extends BaseWidget {
     if (sortColumnPreference) {
       sort = "?sort=${sortColumnPreference.column}&order=${sortColumnPreference.sortAscending ? 'asc' : 'desc'}"
     }
+    def url = "$uri$sort"
+    // copy any request parameters if desired.
+    if (getBooleanAttribute('copyParameters')) {
+      requestParameters?.each { k, v ->
+        if (!k.startsWith('_')) {
+          def map = [:]
+          map[k] = v
+          url = ControllerUtils.instance.buildURI(url, map)
+        }
+      }
+    }
 
-    return "$uri$sort"
+    return url
   }
 
 }

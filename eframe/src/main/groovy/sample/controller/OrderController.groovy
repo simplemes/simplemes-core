@@ -52,7 +52,8 @@ class OrderController extends BaseCrudRestController {
   @Get("/orderWorkList")
   @Produces(MediaType.TEXT_HTML)
   StandardModelAndView orderWorkList(@Nullable Principal principal) {
-    return new StandardModelAndView("sample/order/orderWorkList", principal, this)
+    def res = new StandardModelAndView("sample/order/orderWorkList", principal, this)
+    return res
   }
 
   /**
@@ -78,6 +79,7 @@ class OrderController extends BaseCrudRestController {
     // Build some dummy data
     if (!workList) {
       def products = ['BIKE-27', 'BIKE-24', 'BIKE-21']
+      def workCenter = params.workCenter ?: ''
       workList = []
       def rng = new Random(1)
       for (i in (1..WORK_RECORD_COUNT)) {
@@ -85,7 +87,8 @@ class OrderController extends BaseCrudRestController {
         def qtyInWork = 10.0 * rng.nextDouble() as BigDecimal
         def order = "M1${sprintf("%03d", i)}"
         def product = products[rng.nextInt(products.size())]
-        workList << new FindWorkResponseDetail(qtyInQueue: qtyInQueue, order: order, qtyInWork: qtyInWork, product: product)
+        workList << new FindWorkResponseDetail(qtyInQueue: qtyInQueue, order: order, qtyInWork: qtyInWork,
+                                               product: product, workCenter: workCenter)
       }
     }
 

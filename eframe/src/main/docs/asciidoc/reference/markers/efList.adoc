@@ -71,6 +71,8 @@ The main parameters/body supported are:
                  This can be a domain or a POGO. (*Default:* the controller's domain)
 |*height*    | The height of the list (*Default:* '74%').
 |*paddingX*  | The width of extra horizontal padding (*e.g.:* '74%' or '20em').
+|*copyParameters*  | If *true*, then copy any HTTP request parameters to the data URI for
+                     the list.  Ignores any parameters that start with underscore.
 
 |===
 

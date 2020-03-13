@@ -168,5 +168,5 @@ class ListWidgetSpec extends BaseWidgetSpecification {
   }
 
 
-  // test with arguments from dashboard (work center).  provideParameters
+  // test with arguments from dashboard (work center).  provideParameters on startup and on each page display.
 }

@@ -64,4 +64,9 @@ class FindWorkResponseDetail {
    */
   boolean inQueue
 
+  /**
+   * THe work center.
+   */
+  String workCenter
+
 }

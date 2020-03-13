@@ -23,7 +23,7 @@ class ListWidgetGUISpec extends BaseDashboardSpecification {
     buildDashboard(defaults: ['/order/orderWorkList'])
 
     when: 'the dashboard is displayed'
-    displayDashboard()
+    displayDashboard([workCenter: 'WC637'])
 
     then: 'the list is displayed'
     def workList = $("body").module(new GridModule(field: 'theOrderListA'))
@@ -38,6 +38,10 @@ class ListWidgetGUISpec extends BaseDashboardSpecification {
 
     and: 'the default sort order is marked in the column header'
     workList.sortAsc.text() == lookup('order.label')
+
+    and: 'the argument passed to the activity is used in the list'
+    workList.cell(0, 4).text() == "WC637"
+
   }
 
   def "verify that a basic list widget works - pager works"() {
