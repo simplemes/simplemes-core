@@ -4,11 +4,8 @@
 
 package org.simplemes.eframe.web.ui.webix.freemarker
 
-
 import groovy.util.logging.Slf4j
-import org.simplemes.eframe.misc.JavascriptUtils
 import org.simplemes.eframe.misc.NameUtils
-
 
 /**
  * Provides the freemarker marker implementation.
@@ -48,18 +45,19 @@ class MenuItemMarker extends BaseMarker {
     if (parameters.onClick) {
       handler = parameters.onClick
     } else if (parameters.uri) {
-      handler = """window.location="$parameters.uri" """
+      handler = """window.location="$parameters.uri";"""
+    }
+
+    def click = handler
+    def link = null
+    if (parameters.uri) {
+      click = null
+      link = parameters.uri
     }
 
     if (showInProcess) {
       // Used in a efShow tag, so put the menu the the marker coordinator so it can be used by efShow.
       def list = markerContext.markerCoordinator.others[ShowMarker.ADDED_MENUS_NAME] ?: []
-      def click = handler
-      def link = null
-      if (parameters.uri) {
-        click = null
-        link = parameters.uri
-      }
       list << [id   : "${NameUtils.toLegalIdentifier(id)}", label: "$label", tooltip: "${tooltip ?: ''}",
                click: click, uri: link]
       markerContext.markerCoordinator.others[ShowMarker.ADDED_MENUS_NAME] = list
@@ -75,9 +73,11 @@ class MenuItemMarker extends BaseMarker {
 
       write("$s\n")
 
-      def arrayName = markerContext.markerCoordinator.others[MenuMarker.ACTION_ARRAY_NAME]
       def element = NameUtils.toLegalIdentifier(id)
-      markerContext.markerCoordinator.addPostscript("${arrayName}.$element='${JavascriptUtils.escapeForJavascript(handler)}';\n")
+      def list = markerContext.markerCoordinator.others[MenuMarker.MENU_ITEM_DEFINITION_LIST_NAME] ?: []
+      list << [id   : "$element", label: "$label", tooltip: "${tooltip ?: ''}",
+               click: handler]
+      markerContext.markerCoordinator.others[MenuMarker.MENU_ITEM_DEFINITION_LIST_NAME] = list
     }
   }
 

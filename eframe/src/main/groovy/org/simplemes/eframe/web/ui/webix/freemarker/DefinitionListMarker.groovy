@@ -39,6 +39,7 @@ class DefinitionListMarker extends BaseMarker {
         ${new DefinitionListWidget(widgetContext).build()}
       ]}) ;
       ${markerContext?.markerCoordinator?.postscript}
+      efd._checkURLMessages();
     </script>
     """
 

@@ -65,14 +65,17 @@ The main parameters/body supported are:
                URI is assumed to be a Root-level URI.  If not, then the controller
                will be added to this URI.
                (*Default:* The `list()` method in the controller that rendered this page.
-| *onSelectFunction* | The name of the event handler for list select events.
-                       Will be passed: (String listID, int rowIndex,Object rowData).
+| *onSelect* | The name of the event handler function for list select events.
+               Will be passed: (Object rowData, String listID).
 | *modelName*  | A fully-qualified class name that specifies the contents of the rows displayed.
                  This can be a domain or a POGO. (*Default:* the controller's domain)
 |*height*    | The height of the list (*Default:* '74%').
 |*paddingX*  | The width of extra horizontal padding (*e.g.:* '74%' or '20em').
 |*copyParameters*  | If *true*, then copy any HTTP request parameters to the data URI for
                      the list.  Ignores any parameters that start with underscore.
+| *dataFunction* | The name of a function that returns the row data.  Ignored
+                   if *uri* is passed in.  See <<List Examples>> below.
+                   No pager is used for this type of list.
 
 |===
 
@@ -102,7 +105,20 @@ If the controller has no domain defined for it, then the `modelName` must be spe
 
 ==== List Examples
 
+ifeval::["{backend}" != "pdf"]
 
+[inline-toc]#<<Basic List Example>>#
+[inline-toc]#<<List dataFunction Example>>#
+[inline-toc]#<<List onSelect Example>>#
+
+endif::[]
+
+
+
+===== Basic List Example
+
+This example is served up from the OrderController, which has a `list()` method.  It has
+a domain defined: Order.
 
 [source,html]
 .efList Example - Use of list() method - Dashboard Activity
@@ -111,8 +127,53 @@ If the controller has no domain defined for it, then the `modelName` must be spe
   <@efForm id="workList" dashboard="true">  // <.>
     <@efList columns="order,product,qtyToBuild,qtyReleased"/>
   </@efForm>
+</script>
 ----
 <.> The list must be inside of a <<efForm>>.  This example is used as a dashboard activity.
 
-This example is served up from the OrderController, which has a `list()` method.  It has
-a domain defined: Order.
+
+===== List dataFunction Example
+
+This example provides the data in a function.  This should not be used in production, but is
+a good way to mock up the list behavior.
+
+[source,html]
+.efList Example - Use of dataFunction
+----
+<script>
+  ${params._variable}.buildData = function() {  // <.>
+    return [{order: 'ABC1'}, {order: 'ABC1'}];
+  }
+
+  <@efForm id="theOrderListForm${params._panel}" dashboard="true">
+    <@efList id="theOrderList${params._panel}" columns="order,product,qtyInQueue"
+             dataFunction="${params._variable}.buildData" model="sample.pogo.FindWorkResponse"/>  // <.>
+  </@efForm>
+</script>
+----
+<.> This function returns the data to display in the list.
+<.> The `dataFunction` parameter is used to generate the list of data.
+
+===== List onSelect Example
+
+This example provides the data in a function.  This should not be used in production, but is
+a good way to mock up the list behavior.
+
+[source,html]
+.efList Example - Use of onSelect.
+----
+<script>
+  ${params._variable}.onSelect = function(rowData, listID) {  // <.>
+    console.log(rowData);
+  }
+
+  <@efForm id="theOrderListForm${params._panel}" dashboard="true">
+    <@efList id="theOrderList${params._panel}" columns="order,product,workCenter"
+             uri="/order/findWork" model="sample.pogo.FindWorkResponse"
+             onSelect="${params._variable}.onSelect" />  // <.>
+  </@efForm>
+</script>
+----
+<.> The function that handles the selection event.
+<.> Specifies the function name on the `onSelect` attribute.
+

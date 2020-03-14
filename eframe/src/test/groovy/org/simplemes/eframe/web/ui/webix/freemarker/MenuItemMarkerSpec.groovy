@@ -4,7 +4,7 @@
 
 package org.simplemes.eframe.web.ui.webix.freemarker
 
-import org.simplemes.eframe.misc.TextUtils
+
 import org.simplemes.eframe.test.BaseMarkerSpecification
 import org.simplemes.eframe.test.JavascriptTestUtils
 import org.simplemes.eframe.test.MockDomainUtils
@@ -142,8 +142,9 @@ class MenuItemMarkerSpec extends BaseMarkerSpecification {
     checkPage("[$page]")
 
     and: 'the uri is in the actions list correctly'
-    def actionText = TextUtils.findLine(page, 'menu1Actions.aMenu')
-    actionText.contains('window.location=\\"/controller/method\\"')
+    def onItemClickText = JavascriptTestUtils.extractBlock(page, 'onMenuItemClick: function (id) {')
+    onItemClickText.contains("if (id=='aMenu') {")
+    onItemClickText.contains('window.location="/controller/method"')
   }
 
   def "verify that the marker detects when not used inside of an efMenu or efShow"() {

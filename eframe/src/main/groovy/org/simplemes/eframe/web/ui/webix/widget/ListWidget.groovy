@@ -29,11 +29,6 @@ import org.simplemes.eframe.web.ui.webix.DomainToolkitUtils
 class ListWidget extends BaseWidget {
 
   /**
-   * The URL to use to retrieve tha values.
-   */
-  String dataUrl = '?'
-
-  /**
    * The controller URI path for the controller.  This is the URI prefix for all actions under the controller.
    */
   String controllerRoot = '?'
@@ -56,7 +51,7 @@ class ListWidget extends BaseWidget {
     // This widget can use the controller option on the marker.
     controllerOverrideAllowed = true
 
-    String pageSource = requestParameters?.get(ControllerUtils.PARAM_PAGE_SOURCE) ?: '/dashboard'
+    String pageSource = requestParameters?.get(ControllerUtils.PARAM_PAGE_SOURCE) ?: widgetContext?.uri
     def idParam = id
 
     preference = PreferenceHolder.find {
@@ -67,7 +62,6 @@ class ListWidget extends BaseWidget {
 
     if (controllerClass) {
       controllerRoot = ControllerUtils.instance.getRootPath(controllerClass)
-      dataUrl = buildURL(controllerRoot)
     }
   }
 
@@ -101,6 +95,7 @@ class ListWidget extends BaseWidget {
     buildColumnSizingEventHandler()
     buildColumnSortEventHandler()
     buildSortingMarkEventHandler()
+    buildSelectionHandler()
   }
 
   /**
@@ -140,7 +135,7 @@ class ListWidget extends BaseWidget {
        type: {readOnlyCheckbox: tk._readOnlyCheckbox},
        pager: "${id}Pager",
        autowidth: false,
-       url: "$dataUrl",
+       ${buildDataSource(controllerRoot)},
        ${DomainToolkitUtils.instance.buildTableDataParser(domainClass, columns, (Map) widgetContext.parameters)}
        columns: [ ${DomainToolkitUtils.instance.buildTableColumns(domainClass, columns, buildColumnOptions(columns))}
        ]
@@ -201,6 +196,19 @@ class ListWidget extends BaseWidget {
   }
 
   /**
+   * Build the event handler that handles row select events.
+   */
+  void buildSelectionHandler() {
+    def onSelect = widgetContext?.parameters?.onSelect
+    if (onSelect) {
+      addPostscriptText("""    ${$$}("$id").attachEvent("onAfterSelect", function (selection) {
+        $onSelect(${$$}("$id").getSelectedItem(),"$id");
+      });
+      """)
+    }
+  }
+
+  /**
    * Build the event handler that marks the sort direction based on the server's list() result.
    */
   void buildSortingMarkEventHandler() {
@@ -241,11 +249,15 @@ class ListWidget extends BaseWidget {
   }
 
   /**
-   * Builds the URL to retrieve the data.
+   * Builds the data source element for the datatable.
    * @param controllerName
-   * @return
+   * @return The data source (data or url).
    */
-  private String buildURL(String controllerName) {
+  protected String buildDataSource(String controllerName) {
+    if (!widgetContext?.parameters?.uri && widgetContext?.parameters?.dataFunction) {
+      return "data: ${widgetContext.parameters.dataFunction}()"
+    }
+
     def sort = ''
 
     def uri = widgetContext?.parameters?.uri ?: "$controllerName/list"
@@ -266,7 +278,7 @@ class ListWidget extends BaseWidget {
       }
     }
 
-    return url
+    return """url: "${url}" """
   }
 
 }

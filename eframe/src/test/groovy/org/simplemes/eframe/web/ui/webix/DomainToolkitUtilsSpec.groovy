@@ -321,7 +321,7 @@ class DomainToolkitUtilsSpec extends BaseSpecification {
     new MockDomainUtils(this, AllFieldsDomain).install()
 
     when: 'the columns are created for a domain'
-    def page = DomainToolkitUtils.instance.buildTableColumns(AllFieldsDomain, ['title', 'name'])
+    def page = DomainToolkitUtils.instance.buildTableColumns(AllFieldsDomain, ['title', 'name'], [totalWidth: 95.0])
 
     then: 'the title width is used'
     def titleLine = TextUtils.findLine(page, 'id: "title"')

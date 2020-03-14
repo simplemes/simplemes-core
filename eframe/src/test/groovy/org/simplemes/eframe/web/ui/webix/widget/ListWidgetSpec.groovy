@@ -167,6 +167,42 @@ class ListWidgetSpec extends BaseWidgetSpecification {
     nameColumn.contains('width: tk.pw("14.23%")')
   }
 
+  def "verify that the widget supports data array in javascript"() {
+    when: 'the UI element is built'
+    def widgetContext = buildWidgetContext(parameters: [dataFunction: "ABC.buildData"], controllerClass: SampleParentController)
+    def page = new ListWidget(widgetContext).build().toString()
+    def postscript = widgetContext.markerCoordinator.postscript
+    //println "page = $page"
 
-  // test with arguments from dashboard (work center).  provideParameters on startup and on each page display.
+    then: 'the page is valid'
+    checkJavascriptFragment(page)
+    checkJavascript(postscript)
+
+    and: 'the datatable uses the dataFunction'
+    def tableText = JavascriptTestUtils.extractBlock(page, '{view: "datatable"')
+    JavascriptTestUtils.extractProperty(tableText, 'data') == "ABC.buildData()"
+
+    and: 'the datatable contains no url'
+    JavascriptTestUtils.extractProperty(tableText, 'url') == null
+  }
+
+  def "verify that the widget supports onSelection"() {
+    when: 'the UI element is built'
+    def widgetContext = buildWidgetContext(parameters: [onSelect: "ABC.selectedRow"], controllerClass: SampleParentController)
+    def page = new ListWidget(widgetContext).build().toString()
+    def postscript = widgetContext.markerCoordinator.postscript
+    //println "page = $page"
+    //println "postscript = $postscript"
+
+    then: 'the page is valid'
+    checkJavascriptFragment(page)
+    checkJavascript(postscript)
+
+    and: 'the event handler is correct'
+    def eventBlock = JavascriptTestUtils.extractBlock(postscript, '$$("sampleParentList").attachEvent("onAfterSelect", function (selection) {')
+    //def eventBlock = JavascriptTestUtils.extractBlock(postscript, '$$("dummyID").attachEvent("onAfterSelect"')
+    eventBlock.contains('ABC.selectedRow($$("sampleParentList").getSelectedItem(),"sampleParentList");')
+  }
+
+
 }

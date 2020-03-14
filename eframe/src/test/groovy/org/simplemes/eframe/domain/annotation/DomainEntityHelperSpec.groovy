@@ -488,6 +488,23 @@ class DomainEntityHelperSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that delete of parent removes child records even if the lazy loader has not loaded them"() {
+    given: 'a domain with child records'
+    def order = new Order(order: 'M1001')
+    order.orderLines << new OrderLine(product: 'BIKE', sequence: 1)
+    order.orderLines << new OrderLine(product: 'SEAT', sequence: 2)
+    order.orderLines << new OrderLine(product: 'WHEEL', sequence: 3)
+    order.save()
+
+    when: 'the parent is deleted without a lazy load'
+    def order2 = Order.findByUuid(order.uuid)
+    order2.delete()
+
+    then: 'all of the children are removed'
+    OrderLine.list().size() == 0
+  }
+
+  @Rollback
   def "verify that save handles many-to-many relationship on creation"() {
     given: 'some roles'
     new Role(authority: 'AUTH1', title: 'X').save()

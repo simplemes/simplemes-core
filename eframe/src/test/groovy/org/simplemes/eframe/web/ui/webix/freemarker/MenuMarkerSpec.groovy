@@ -44,17 +44,15 @@ class MenuMarkerSpec extends BaseMarkerSpecification {
     subMenuConfigText.contains('return item.tooltip')
 
     and: 'the click handler is correct'
-    page.contains("var configMenuActions = {};")
     def onItemClickText = JavascriptTestUtils.extractBlock(page, 'onMenuItemClick: function (id) {')
-    onItemClickText.contains('var s = configMenuActions[id];')
-    onItemClickText.contains('eval(s)')
+    onItemClickText.contains("if (id=='release') {")
+    onItemClickText.contains("someMethod()")
 
     and: 'the menu items are defined'
     def dataText = JavascriptTestUtils.extractBlock(page, 'data:[')
     dataText.contains('id: "release"')
     JavascriptTestUtils.extractProperty(dataText, 'value') == "release"
     JavascriptTestUtils.extractProperty(dataText, 'tooltip') == "release.tooltip"
-    page.contains("configMenuActions.release='someMethod()';")
   }
 
   def "verify that the marker generates a nested menu"() {
@@ -102,11 +100,11 @@ class MenuMarkerSpec extends BaseMarkerSpecification {
     then: 'the javascript is legal'
     checkPage(page)
 
-    and: 'the action array is set correctly'
-    page.contains("var configMenuActions = {};")
-    TextUtils.findLine(page, 'xyz()').contains("configMenuActions.xyz='xyz()';")
-    TextUtils.findLine(page, 'abc()').contains("configMenuActions.abc='abc()';")
-    TextUtils.findLine(page, 'pdq()').contains("configMenuActions.pdq='pdq()';")
+    and: 'the click handler is correct'
+    def onItemClickText = JavascriptTestUtils.extractBlock(page, 'onMenuItemClick: function (id) {')
+    JavascriptTestUtils.extractBlock(onItemClickText, "if (id=='xyz') {").contains("xyz()")
+    JavascriptTestUtils.extractBlock(onItemClickText, "if (id=='abc') {").contains("abc()")
+    JavascriptTestUtils.extractBlock(onItemClickText, "if (id=='pdq') {").contains("pdq()")
   }
 
   def "verify that the key can be used for label lookups on subMenus"() {

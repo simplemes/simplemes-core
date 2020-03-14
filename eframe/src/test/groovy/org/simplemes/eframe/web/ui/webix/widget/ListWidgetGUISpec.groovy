@@ -41,7 +41,6 @@ class ListWidgetGUISpec extends BaseDashboardSpecification {
 
     and: 'the argument passed to the activity is used in the list'
     workList.cell(0, 4).text() == "WC637"
-
   }
 
   def "verify that a basic list widget works - pager works"() {
@@ -113,6 +112,34 @@ class ListWidgetGUISpec extends BaseDashboardSpecification {
     def headers2 = workList.headers
     def finalWidth = headers2[1].width
     Math.abs(finalWidth - origWidth - 50) < 5
+  }
+
+  def "verify that a dataFunction is supported"() {
+    given: 'a dashboard with the sample work list activity'
+    buildDashboard(defaults: ['/order/orderWorkList'])
+
+    when: 'the dashboard is displayed using data from a JS function'
+    displayDashboard([js: 'true'])
+
+    then: 'the list is displayed with the generated data'
+    def workList = $("body").module(new GridModule(field: 'theOrderListA'))
+    workList.cell(0, 0).text() == 'ABC1'
+  }
+
+  def "verify that the onSelect attribute is supported"() {
+    given: 'a dashboard with the sample work list activity'
+    buildDashboard(defaults: ['/order/orderWorkList'])
+
+    when: 'the dashboard is displayed using data from a JS function'
+    displayDashboard([js: 'true'])
+
+    then: 'the list is displayed with the generated data'
+    def workList = $("body").module(new GridModule(field: 'theOrderListA'))
+    workList.cell(0, 0).click()
+    waitFor() {
+      messages.text()
+    }
+    messages.text().contains('ABC1')
   }
 
 }

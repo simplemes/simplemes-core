@@ -27,9 +27,9 @@ class MenuMarker extends BaseMarker {
   public static final String SUB_MENU_COUNTER_NAME = '_subMenuCounter'
 
   /**
-   * The name of the current JS action array in the marker coordinator.
+   * The name of the holder in the marker coordinator that holds the list of menu items defined by menuItem markers.
    */
-  public static final String ACTION_ARRAY_NAME = '_actionArray'
+  public static final String MENU_ITEM_DEFINITION_LIST_NAME = '_menuItemDefList'
 
   /**
    * The current indent level.
@@ -47,7 +47,6 @@ class MenuMarker extends BaseMarker {
     level = adjustMenuLevel(1)
     id = id ?: "menu$level"
     if (topLevel) {
-      markerContext.markerCoordinator.others[ACTION_ARRAY_NAME] = "${id}Actions"
       markerContext.markerCoordinator.others[SUB_MENU_COUNTER_NAME] = 1
       buildTopLevelMenu()
     } else {
@@ -63,10 +62,24 @@ class MenuMarker extends BaseMarker {
    * Writes the JS a menu and its content.
    */
   protected void buildTopLevelMenu() {
-    def arrayName = markerContext.markerCoordinator.others[ACTION_ARRAY_NAME]
-    markerContext.markerCoordinator.addPostscript("var $arrayName = {};\n")
-
     def content = renderContent()
+
+    // Build an if block to handle the menu item clicks.
+    def menuItemList = markerContext.markerCoordinator.others[MENU_ITEM_DEFINITION_LIST_NAME]
+    def sb = new StringBuilder()
+    for (menuItem in menuItemList) {
+      def click = menuItem.click
+      def menuItemId = menuItem.id
+      if (sb) {
+        sb << "} else if (id=='$menuItemId') {\n"
+      } else {
+        sb << "if (id=='$menuItemId') {\n"
+      }
+      sb << "$click\n"
+    }
+    if (sb) {
+      sb << '}\n'
+    }
 
     def s = """
       ,{ view: "menu", openAction: "click", autowidth: true,type:{ subsign: true }, 
@@ -80,10 +93,7 @@ class MenuMarker extends BaseMarker {
         },
         on: {
           onMenuItemClick: function (id) {
-            var s = ${arrayName}[id];
-            if (s!=undefined) {
-              eval(s);
-            }
+            $sb
           }
         }
       } 
