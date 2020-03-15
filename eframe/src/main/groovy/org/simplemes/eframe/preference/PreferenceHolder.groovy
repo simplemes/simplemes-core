@@ -109,7 +109,16 @@ class PreferenceHolder {
     PreferenceHolder preferenceHolder = new PreferenceHolder()
     preferenceHolder.with config
 
-    preferenceHolder.load()
+    if (!preferenceHolder._element) {
+      log.warn('find() element is null. User: {}, Page: {}  Check for un-qualified reference to a constant in the find DSL.',
+               preferenceHolder._user, preferenceHolder._page)
+    }
+    if (preferenceHolder._page) {
+      preferenceHolder.load()
+    } else {
+      def msg = "find() page is null. User: ${preferenceHolder._user}, Page: ${preferenceHolder._page}  Check for un-qualified reference to a constant in the find DSL."
+      throw new IllegalArgumentException(msg)
+    }
 
     return preferenceHolder
   }

@@ -18,7 +18,7 @@ The elements that remember state are:
 As the user changes the settings in the GUI, these changes are stored in the
 server-side database.  If the user is not logged in, then the changes are not saved.
 
-The link:groovydoc/org/simplemes/eframe/user/PreferenceHolder.html[PreferenceHolder^] provides
+The link:groovydoc/org/simplemes/eframe/preference/PreferenceHolder.html[PreferenceHolder^] provides
 access to this persisted state.
 Each major HTML element on the page has a settings object that is stored in XML in the database.
 These settings are used the next time the user displays the page.
@@ -138,7 +138,7 @@ The basic objects are shown below.  This includes an example of the values store
 the size of an Order grid column.
 
 
-You should use the link:groovydoc/org/simplemes/eframe/user/PreferenceHolder.html[PreferenceHolder^]
+You should use the link:groovydoc/org/simplemes/eframe/preference/PreferenceHolder.html[PreferenceHolder^]
 DSL class to access the users preferences.  For example, to set a column size preference, the
 code would be:
 
@@ -167,6 +167,11 @@ This finds the preference for the given page and user for the HTML element 'Orde
 This preference contains a List of _ColumnPreference_ (objects).
 Each type of HTML element has different sets of preferences, but each one needs a unique key.
 
+WARNING: The value used in the PreferenceHolder DSL might evaluate to null.  Be careful
+         with constants from the class you are using the preference holder in.
+         You might need to use a qualified reference to the constant.  For example:
+         `SelectionController.WORK_CENTER`.  If you just use `WORK_CENTER`, then that value
+         might evaluate to null.
 
 Below is an example of retrieving the column size preference:
 
