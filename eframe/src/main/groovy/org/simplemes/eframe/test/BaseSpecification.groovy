@@ -461,8 +461,9 @@ class BaseSpecification extends GebSpec {
    * @param tester The tester class <b>Required</b>.  Used to access the GEB features.
    */
   void cleanupDomainRecords() {
-    if (this.hasProperty('dirtyDomains')) {
-      for (domainClass in this.dirtyDomains) {
+    def list = TypeUtils.getStaticPropertyInSuperClasses(this.getClass(), 'dirtyDomains')
+    for (l in list) {
+      for (domainClass in l) {
         deleteAllRecords((Class) domainClass)
       }
     }

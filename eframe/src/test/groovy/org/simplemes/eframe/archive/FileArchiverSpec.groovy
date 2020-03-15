@@ -28,7 +28,7 @@ import sample.domain.SampleParent
 class FileArchiverSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  def dirtyDomains = [SampleParent, AllFieldsDomain, ArchiveLog]
+  static dirtyDomains = [SampleParent, AllFieldsDomain, ArchiveLog]
 
   /**
    * The string writer to contain the mocked file contents.

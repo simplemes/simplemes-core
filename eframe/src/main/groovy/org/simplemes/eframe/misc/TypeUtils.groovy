@@ -10,6 +10,7 @@ import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.domain.DomainUtils
 
 import java.lang.reflect.Field
+import java.lang.reflect.Modifier
 
 /**
  * Various utilities that operate on generic types (or classes).
@@ -64,10 +65,9 @@ class TypeUtils {
    */
   @CompileDynamic
   static List<List> getStaticPropertyInSuperClasses(Class c, String propertyName) {
-    // TODO: Consider simplifying this since we no longer supported domain sub-classes?
     List<List> list = []
     def fields = c.metaClass.properties
-    def prop = fields.find() { it.name == propertyName }
+    def prop = fields.find() { it.name == propertyName && Modifier.isStatic(it.modifiers) }
     //println "prop = $prop, ${prop.dump()}"
     //println "prop = $prop + has = ${c.metaClass.hasProperty(propertyName)}"
     if (prop?.getter?.declaringClass?.name == c.name) {

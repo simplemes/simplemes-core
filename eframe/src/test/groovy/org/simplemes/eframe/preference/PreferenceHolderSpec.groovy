@@ -8,6 +8,7 @@ package org.simplemes.eframe.preference
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 
 /**
@@ -528,5 +529,16 @@ class PreferenceHolderSpec extends BaseSpecification {
     pref.settings[0].width == 437
   }
 
+  def "verify that find gracefully detects a null page"() {
+    when: 'two existing preferences with different elements exist'
+    PreferenceHolder.find {
+      user SecurityUtils.API_TEST_USER
+      element 'OrderListA'
+    }
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['page', SecurityUtils.API_TEST_USER, 'OrderListA'])
+  }
 
 }
