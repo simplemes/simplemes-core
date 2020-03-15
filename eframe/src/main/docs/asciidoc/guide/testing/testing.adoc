@@ -16,6 +16,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<domain-testing>>#
 [inline-toc]#<<GUI Testing>>#
 [inline-toc]#<<API Testing>>#
+[inline-toc]#<<Dashboard Activity Testing>>#
 
 endif::[]
 
@@ -42,5 +43,7 @@ include::domainTesting.adoc[]
 include::guiTesting.adoc[]
 
 include::apiTesting.adoc[]
+
+include::dashboardActivityTesting.adoc[]
 
 

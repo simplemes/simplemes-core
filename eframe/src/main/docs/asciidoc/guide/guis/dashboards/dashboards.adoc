@@ -9,6 +9,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Dashboard Configuration>>#
 [inline-toc]#<<Dashboard API>>#
 [inline-toc]#<<Undo>>#
+[inline-toc]#<<Dashboard Activity Testing>>#
 
 
 endif::[]

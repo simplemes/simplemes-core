@@ -10,10 +10,11 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Info/Warning Messages to Clients>>#
 [inline-toc]#<<Static Methods>>#
 [inline-toc]#<<Multiple Return Values>>#
+[inline-toc]#<<ASCIIDoctor Standards>>#
 
 endif::[]
 
-There are a number of programming standards that the framework follows to give you a consistent
+There are a number of programming and design standards that the framework follows to give you a consistent
 API to work with. These conventions help the framework work with your application with minimal
 coding on your part. These standards are described here.
 
@@ -244,3 +245,20 @@ class should use the _.instance_ approach.
 
 include::multiReturn.adoc[]
 
+==== ASCIIDoctor Standards
+
+The ASCIIDoctor library is the source for documents such as this Guide.  It has a few quirks that
+you need to be aware of when creating _.adoc_ files.
+
+===== Image Widths
+
+The `image` tag has a `width` option.  You should not use a percentage since the PDF images will
+will interpret this as pixels, not percent.  This will make a very small image.
+
+[source,asciidoc]
+.Example - ASCII Doctor Image Width
+----
+image::guis/DashboardWorkList.png[Dashboard - Work List,align="center",width="600"] // <.>
+
+----
+<.> The width should be in pixels.  600 is typically a good value for 60% of the width.

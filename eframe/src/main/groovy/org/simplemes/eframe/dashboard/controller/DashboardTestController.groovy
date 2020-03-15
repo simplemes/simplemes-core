@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.dashboard.controller
 
 import groovy.util.logging.Slf4j
@@ -25,12 +29,6 @@ import sample.StartResponse
 
 import javax.annotation.Nullable
 import java.security.Principal
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Test controller for dashboard testing.  This is only exposed in test mode.
@@ -104,8 +102,10 @@ final class DashboardTestController extends BaseController {
           <@efButton id="triggerEvent" label="Trigger" click="${params._variable}.sendEvent()"/>
         </@efButtonGroup>
         <@efHTML>
+          <h4"">Events Sent</h4>
+          <div id="eventsSent"></div>
           <h4"">Events</h4>
-          <span id="events"></span>
+          <div id="events"></div>
         </@efHTML>
       </@efForm>
       ${params._variable}.handleEvent = function(event) { 
@@ -113,7 +113,7 @@ final class DashboardTestController extends BaseController {
       }
       ${params._variable}.sendEvent = function() {
         var s = document.getElementById("eventSource").value;
-        document.getElementById("events").innerHTML += s+"new <br>";
+        document.getElementById("eventsSent").innerHTML += s+"<br>";
         var event = JSON.parse(s);  
         dashboard.sendEvent(event);
       }
