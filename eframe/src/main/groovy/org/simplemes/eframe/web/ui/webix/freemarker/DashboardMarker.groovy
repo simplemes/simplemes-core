@@ -415,6 +415,7 @@ class DashboardMarker extends BaseMarker {
     preferenceHolder = PreferenceHolder.find {
       page pageParam
       user SecurityUtils.currentUserName
+      element 'none'
     }
   }
 

@@ -4,10 +4,11 @@
 
 package org.simplemes.eframe.preference
 
-
+import ch.qos.logback.classic.Level
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.MockAppender
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 
@@ -384,6 +385,9 @@ class PreferenceHolderSpec extends BaseSpecification {
 
   @Rollback
   def "verify that the holder can support access to multiple elements without an element on the initial query"() {
+    given: 'a mock appender to disable the logging message '
+    MockAppender.mock(PreferenceHolder, Level.WARN)
+
     when: 'two existing preferences with different elements exist'
     PreferenceHolder.find {
       page '/app/testPage'
@@ -444,6 +448,9 @@ class PreferenceHolderSpec extends BaseSpecification {
 
   @Rollback
   def "verify that the holder can set values in multiple elements with a single find without an initial element"() {
+    given: 'a mock appender to disable the logging message '
+    MockAppender.mock(PreferenceHolder, Level.WARN)
+
     when: 'a preference is started'
     def preferenceHolder = PreferenceHolder.find {
       page '/app/testPage'
@@ -539,6 +546,22 @@ class PreferenceHolderSpec extends BaseSpecification {
     then: 'the right exception is thrown'
     def ex = thrown(Exception)
     UnitTestUtils.assertExceptionIsValid(ex, ['page', SecurityUtils.API_TEST_USER, 'OrderListA'])
+  }
+
+  def "verify that find logs a trace message with the stack trace when the element is null"() {
+    given: 'a mock appender to capture the logging message '
+    def mockAppender = MockAppender.mock(PreferenceHolder, Level.TRACE)
+
+    when: 'an exception is logged'
+    PreferenceHolder.find {
+      page '/app/testPage'
+      user SecurityUtils.API_TEST_USER
+    }
+
+    then: 'the message is logged'
+    UnitTestUtils.assertContainsAllIgnoreCase(mockAppender.message, ['TRACE', 'stack trace for null element',
+                                                                     '/app/testPage', SecurityUtils.API_TEST_USER,
+                                                                     this.getClass().name])
   }
 
 }

@@ -39,7 +39,7 @@
   <logger name="org.simplemes.eframe.web.ui" level="warn"/>
   <logger name="org.simplemes.eframe.security" level="warn"/>
   <logger name="org.simplemes.eframe.test" level="warn"/>
-  <logger name="org.simplemes.eframe.preference" level="warn"/>
+  <logger name="org.simplemes.eframe.preference" level="warn"/> <!--trace for stack trace on null element warning-->
   <logger name="sample" level="warn"/>
   <logger name="client.to-server" level="warn"/>
   <logger name="client.dashboard" level="warn"/>

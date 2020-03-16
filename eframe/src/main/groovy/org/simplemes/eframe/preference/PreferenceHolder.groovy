@@ -35,6 +35,14 @@ import org.simplemes.eframe.preference.domain.UserPreference
  * <b>Note:</b> Due the quirks in Groovy DSL processing, do not use values for the values (page, user, element) such
  *              as <b>'id', 'page', 'user' or 'element'</b>.  These get set to null if used.  Use another variable
  *              name such as 'idParam', 'pageParam', 'userParam' or 'elementParam'.</code>
+ *
+ *  <h3>Logging</h3>
+ * The logging for this class that can be enabled:
+ * <ul>
+ *   <li><b>warn</b> - Warns if a null element is used in the find() call. </li>
+ *   <li><b>trace</b> - Logs a stack trace when a null element is used in the find() call. </li>
+ * </ul>
+
  */
 @Slf4j
 @SuppressWarnings("ConfusingMethodName")
@@ -110,8 +118,16 @@ class PreferenceHolder {
     preferenceHolder.with config
 
     if (!preferenceHolder._element) {
-      log.warn('find() element is null. User: {}, Page: {}  Check for un-qualified reference to a constant in the find DSL.',
+      log.warn('find() element is null. User: {}, Page: {}  Check for un-qualified reference to a constant in the find DSL.  Also, try the TRACE logging level.',
                preferenceHolder._user, preferenceHolder._page)
+      if (log.traceEnabled) {
+        def e = new IllegalArgumentException('Stack trace for null element on find()')
+        def sw = new StringWriter()
+        def printWriter = new PrintWriter(sw)
+        e.printStackTrace(printWriter)
+        log.trace("Null element found in find() call user = ${preferenceHolder._user}, page = ${preferenceHolder._page}\n Stack:\n {}", sw)
+        printWriter.close()
+      }
     }
     if (preferenceHolder._page) {
       preferenceHolder.load()
