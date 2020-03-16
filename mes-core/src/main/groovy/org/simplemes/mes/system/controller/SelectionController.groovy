@@ -46,7 +46,7 @@ class SelectionController extends BaseController {
   /**
    * The user preference element the current work center is stored under.  Also used as the preference key.
    */
-  static final String WORK_CENTER_ELEMENT = 'workCenter'
+  public static final String WORK_CENTER_ELEMENT = 'workCenter'
 
   /**
    * Displays the work center selection dashboard activity.
@@ -56,7 +56,7 @@ class SelectionController extends BaseController {
    */
   @Get("/workCenterSelection")
   @Produces(MediaType.TEXT_HTML)
-  @SuppressWarnings("unused")
+  @SuppressWarnings(["unused", "UnnecessaryQualifiedReference"])
   StandardModelAndView workCenterSelection(HttpRequest request, @Nullable Principal principal) {
     def res = new StandardModelAndView("selection/workCenterSelection", principal, this)
     def params = res.model.get().params
@@ -67,7 +67,7 @@ class SelectionController extends BaseController {
         def preference = PreferenceHolder.find {
           page DashboardController.ROOT_URI
           user SecurityUtils.instance.currentUserName
-          element WORK_CENTER_ELEMENT
+          element SelectionController.WORK_CENTER_ELEMENT
         }
         params.workCenter = preference[WORK_CENTER_ELEMENT]?.value
       }

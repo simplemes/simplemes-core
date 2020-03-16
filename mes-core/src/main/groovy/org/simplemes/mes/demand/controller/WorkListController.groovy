@@ -3,11 +3,13 @@ package org.simplemes.mes.demand.controller
 import groovy.util.logging.Slf4j
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Produces
 import io.micronaut.security.annotation.Secured
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.controller.BaseController
 import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.controller.StandardModelAndView
@@ -65,6 +67,7 @@ class WorkListController extends BaseController {
   /**
    * Provides a list of active/queued work.  This exposes the
    * {@link org.simplemes.mes.demand.service.WorkListService#findWork(org.simplemes.mes.demand.FindWorkRequest)} method.
+   * The response is a JSON form used for data lists for the toolkit (e.g. data:...).
    * The input objects supported are JSON forms from that method.
    * <p>
    * <b>Note:</b> The max/offset values are typically overridden by the value(s) passed in as a HTTP URL parameter.
@@ -74,6 +77,9 @@ class WorkListController extends BaseController {
   HttpResponse findWork(HttpRequest request, @Nullable Principal principal) {
     def params = ControllerUtils.instance.convertToMap(request.parameters)
     def (from, size) = ControllerUtils.instance.calculateFromAndSizeForList(params)
+    def (String sortField, String sortDir) = ControllerUtils.instance.calculateSortingForList(params)
+    sortField = sortField ?: 'order'
+    sortDir = sortDir ?: 'asc'
 
     def findWorkResponse = null
     WorkCenter.withTransaction {
@@ -94,6 +100,10 @@ class WorkListController extends BaseController {
       findWorkResponse = workListService.findWork(findWorkRequest)
       //DomainUtils.instance.resolveProxies(findWorkResponse)
     }
-    return HttpResponse.ok(findWorkResponse)
+
+    def json = Holders.objectMapper.writeValueAsString([data: findWorkResponse.list, total_count: findWorkResponse.totalAvailable,
+                                                        pos : from * size, sort: sortField, sortDir: sortDir])
+
+    return HttpResponse.status(HttpStatus.OK).body(json)
   }
 }

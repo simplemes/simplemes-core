@@ -32,7 +32,7 @@ import org.simplemes.mes.tracking.domain.ProductionLog
 class WorkListControllerSpec extends BaseAPISpecification {
 
   @SuppressWarnings("unused")
-  def dirtyDomains = [ActionLog, ProductionLog, Order, Product, WorkCenter]
+  static dirtyDomains = [ActionLog, ProductionLog, Order, Product, WorkCenter]
 
   def "verify that the controller passes the standard controller test - security, task menu, etc"() {
     expect: 'the controller passes'
@@ -56,8 +56,8 @@ class WorkListControllerSpec extends BaseAPISpecification {
     def res = controller.findWork(mockRequest([count: '13', start: '26', findInWork: 'false', findInQueue: 'false']), new MockPrincipal('jane', 'OPERATOR'))
 
     then: 'the response is correct'
-    FindWorkResponse findWorkResponse = res.body.get() as FindWorkResponse
-    findWorkResponse.totalAvailable == 231
+    def json = new JsonSlurper().parseText(res.body.get() as String)
+    json.total_count == 231
   }
 
   @Rollback
@@ -81,8 +81,8 @@ class WorkListControllerSpec extends BaseAPISpecification {
     def res = controller.findWork(mockRequest([workCenter: 'ABC']), new MockPrincipal('jane', 'OPERATOR'))
 
     then: 'the response is correct'
-    FindWorkResponse findWorkResponse = res.body.get() as FindWorkResponse
-    findWorkResponse.totalAvailable == 237
+    def json = new JsonSlurper().parseText(res.body.get() as String)
+    json.total_count == 237
   }
 
   @SuppressWarnings("GroovyAssignabilityCheck")
@@ -104,9 +104,9 @@ class WorkListControllerSpec extends BaseAPISpecification {
 
     then: 'the released order is in the list'
     def json = new JsonSlurper().parseText((String) res)
-    json.totalAvailable == 1
-    json.list.size() == 1
-    json.list[0].order == order.order
+    json.total_count == 1
+    json.data.size() == 1
+    json.data[0].order == order.order
   }
 
   def "verify index creates the correct model and view"() {
@@ -114,7 +114,7 @@ class WorkListControllerSpec extends BaseAPISpecification {
     def controller = Holders.getBean(WorkListController)
 
     and: 'a mock renderer'
-    def mock = new MockRenderer(this).install()
+    new MockRenderer(this).install()
 
     when: 'the index is called from the controller'
     def modelAndView = controller.workListActivity(mockRequest([_panel: 'A', _variable: 'B']), new MockPrincipal('jane', 'OPERATOR'))

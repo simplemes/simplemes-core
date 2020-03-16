@@ -22,6 +22,13 @@ import org.simplemes.mes.floor.domain.WorkCenter
 class FindWorkResponseDetail {
 
   /**
+   * The unique ID of this row.  The lowest element for the row will be used (LSNOperState, OrderOperState, LNS then Order).
+   * This will be consistent for later requests.  Suitable for use
+   * in identifying the selected records.
+   */
+  def id
+
+  /**
    * The order that is in work or queue.  This is a simple string to reduce the size of this object.
    */
   String order
@@ -90,6 +97,7 @@ class FindWorkResponseDetail {
     this.orderID = order.uuid
     qtyInQueue = order.qtyInQueue
     qtyInWork = order.qtyInWork
+    id = order.uuid
     init()
   }
 
@@ -105,6 +113,7 @@ class FindWorkResponseDetail {
     this.lsnID = lsn.uuid
     qtyInQueue = lsn.qtyInQueue
     qtyInWork = lsn.qtyInWork
+    id = lsn.uuid
     init()
   }
 
@@ -119,6 +128,7 @@ class FindWorkResponseDetail {
     qtyInQueue = orderOperState.qtyInQueue
     qtyInWork = orderOperState.qtyInWork
     operationSequence = orderOperState.sequence
+    id = orderOperState.uuid
     init()
   }
 
@@ -135,12 +145,13 @@ class FindWorkResponseDetail {
     qtyInQueue = lsnOperState.qtyInQueue
     qtyInWork = lsnOperState.qtyInWork
     operationSequence = lsnOperState.sequence
+    id = lsnOperState.uuid
     init()
   }
 
   /**
    * Finishes the common logic for most of the copy constructors.
-   * Mainly sets the inWork/Queue flags based on the qtys.
+   * Mainly sets the inWork/Queue flags based on the quantities.
    */
   def init() {
     inQueue = (qtyInQueue)

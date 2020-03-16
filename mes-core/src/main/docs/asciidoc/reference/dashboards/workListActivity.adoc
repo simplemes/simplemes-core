@@ -1,6 +1,6 @@
 
 [[dashboard-work-list]]
-==== Work List
+==== Work List Activity
 
 *uri:* `/workList/workListActivity`
 
@@ -9,7 +9,7 @@ The current Work Center (<<Work Center Selection>>) is used to filter this work 
 manageable level, but it is not required.
 
 
-image::guis/DashboardWorkList.png[Dashboard - Work List,align="center",width="750"]
+image::guis/DashboardWorkList.png[Dashboard - Work List,align="center",width="600"]
 
 As the operator selects entries, the current selection is coordinated with the
 selection activity to keep the actions in synch.
@@ -33,6 +33,9 @@ This activity will handle these events:
 
 * <<ORDER_LSN_CHANGED>> -  Sent when the user changes the order/LSN field value manually.
    This updates the selected entry(s) in this list.
+
+* <<WORK_CENTER_CHANGED>> -  Sent when the user changes the Work Center field value manually.
+   This updates the list elements.
 
 
 ===== Parameters Provided

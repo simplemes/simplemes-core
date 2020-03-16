@@ -1,9 +1,6 @@
 Scratch
 -------
 
-<ef:list id="${panel}WorkList" controller="WorkList" action="findWork"
-           model="${FindWorkResponseDetail}" onSelectFunction="selectionChanged${panel}"
-           showToolbar="false" columns="order,lsn,qtyInQueue,qtyInWork"/>
 
 
 Micronaut-Data Migration

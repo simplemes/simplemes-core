@@ -1,5 +1,6 @@
 package org.simplemes.mes.test
 
+import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.mes.demand.LSNTrackingOption
 import org.simplemes.mes.demand.OrderReleaseRequest
 import org.simplemes.mes.demand.domain.LSN
@@ -83,7 +84,7 @@ class MESUnitTestUtils {
   }
 
   /**
-   * Create and release orders, optionally on a routing with or without LSNs.
+   * Create and release orders, optionally on a routing with or without LSNs.  <b>Requires an active transaction</b>.
    *
    * <h3>Options</h3>
    * The options can be:
@@ -99,10 +100,10 @@ class MESUnitTestUtils {
    *   <li><b>lsns</b> - A list of LSN names (Strings) to use for the order. LSNs are created using this and the ID and the order # (if needed).  (<b>Default</b>: default LSN Sequence) </li>
    * </ul>
    * <b>Note:</b> If the lsnTrackingOption is LSNTrackingOption.LSN_ONLY, then an LSNSequence is used for the product.
-   *
+   * <p>
    * <b>Note:</b> The records created by this utility should be cleaned up using this option (for sub-classes of the test specs).
    * <pre>
-   *   static domainClassesToClearOnEachRun = [ActionLog, Order, Product]
+   *   static dirtyDomains = [ActionLog, Order, Product]
    * </pre>
    *
    * @param options See options above. (<b>Optional</b>)
@@ -113,60 +114,63 @@ class MESUnitTestUtils {
     setLoginUser()
 
     List<Order> list = []
-    def nOrders = options.nOrders ?: 1
-    def id = options.id ? "-${options.id}" : ''
-    def lotSize = (BigDecimal) options.lotSize ?: 1.0
-    def qty = (BigDecimal) options.qty ?: 1.0
-    def lsnTrackingOption = (LSNTrackingOption) options.lsnTrackingOption ?: LSNTrackingOption.ORDER_ONLY
-    def lsnSequence = (LSNSequence) options.lsnSequence
+    try {
+      def nOrders = options.nOrders ?: 1
+      def id = options.id ? "-${options.id}" : ''
+      def lotSize = (BigDecimal) options.lotSize ?: 1.0
+      def qty = (BigDecimal) options.qty ?: 1.0
+      def lsnTrackingOption = (LSNTrackingOption) options.lsnTrackingOption ?: LSNTrackingOption.ORDER_ONLY
+      def lsnSequence = (LSNSequence) options.lsnSequence
 
-    // Create the product we need
-    List<Integer> operationSequences = (List<Integer>) options.operations ?: []
-    def mpr = null
-    if (operationSequences) {
-      // Reverse the order to uncover any sorting issues in the test programs or app code.
-      operationSequences.sort { a, b -> b <=> a }
-      if (options.masterRouting) {
-        // A master routing is needed.
-        mpr = new MasterRouting(routing: "${options.masterRouting}$id")
-        for (sequence in operationSequences) {
-          def operation = new MasterOperation(sequence: sequence, title: "Oper $sequence $id")
-          mpr.operations << operation
-        }
-        mpr.save()
-      }
-    }
-    Product product = null
-
-    if (operationSequences || lsnTrackingOption != LSNTrackingOption.ORDER_ONLY) {
-      // Only need a product for a routing and non-default LSN Tracking Options.
-      product = new Product(product: "PC$id", lotSize: lotSize,
-                            lsnTrackingOption: lsnTrackingOption,
-                            lsnSequence: lsnSequence)
+      // Create the product we need
+      List<Integer> operationSequences = (List<Integer>) options.operations ?: []
+      def mpr = null
       if (operationSequences) {
-        // A product-specific routing is needed.
-        for (sequence in operationSequences) {
-          product.operations << new ProductOperation(sequence: sequence, title: "Oper $sequence $id")
+        // Reverse the order to uncover any sorting issues in the test programs or app code.
+        operationSequences.sort { a, b -> b <=> a }
+        if (options.masterRouting) {
+          // A master routing is needed.
+          mpr = new MasterRouting(routing: "${options.masterRouting}$id")
+          for (sequence in operationSequences) {
+            def operation = new MasterOperation(sequence: sequence, title: "Oper $sequence $id")
+            mpr.operations << operation
+          }
+          mpr.save()
         }
-
       }
-      product.masterRouting = mpr
-      product.save()
-    }
-    def orderService = new OrderService()
-    def seq = 1000
-    (1..nOrders).each {
-      def order = new Order(order: "M$seq$id", product: product, qtyToBuild: qty).save()
-      for (lsnBase in options?.lsns) {
-        def lsnSuffix = nOrders > 1 ? "$nOrders" : ''
-        order.lsns << new LSN(lsn: "$lsnBase$id$lsnSuffix")
+      Product product = null
+
+      if (operationSequences || lsnTrackingOption != LSNTrackingOption.ORDER_ONLY) {
+        // Only need a product for a routing and non-default LSN Tracking Options.
+        product = new Product(product: "PC$id", lotSize: lotSize,
+                              lsnTrackingOption: lsnTrackingOption,
+                              lsnSequence: lsnSequence)
+        if (operationSequences) {
+          // A product-specific routing is needed.
+          for (sequence in operationSequences) {
+            product.operations << new ProductOperation(sequence: sequence, title: "Oper $sequence $id")
+          }
+
+        }
+        product.masterRouting = mpr
+        product.save()
       }
-      orderService.release(new OrderReleaseRequest(order))
-      seq++
-      list << order
+      def orderService = new OrderService()
+      def seq = 1000
+      (1..nOrders).each {
+        def order = new Order(order: "M$seq$id", product: product, qtyToBuild: qty).save()
+        for (lsnBase in options?.lsns) {
+          def lsnSuffix = nOrders > 1 ? "$nOrders" : ''
+          order.lsns << new LSN(lsn: "$lsnBase$id$lsnSuffix")
+        }
+        orderService.release(new OrderReleaseRequest(order))
+        seq++
+        list << order
+      }
+    } finally {
+      clearLoginUser()
     }
 
-    clearLoginUser()
     return list
   }
 
@@ -217,10 +221,23 @@ class MESUnitTestUtils {
     }
   }
 
+  static String originalUserOverride = null
+
+  /**
+   * Sets the current user for order release and other actions.
+   */
   static void setLoginUser() {
+    originalUserOverride = SecurityUtils.currentUserOverride
+    SecurityUtils.currentUserOverride = SecurityUtils.TEST_USER
   }
 
+  /**
+   * Resets the user override to the value we found on setLoginUser().
+   */
   static void clearLoginUser() {
+    SecurityUtils.currentUserOverride = originalUserOverride
+    originalUserOverride = null
+
   }
 
 

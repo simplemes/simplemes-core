@@ -47,4 +47,6 @@ class FindWorkRequest {
    */
   int from = 0
 
+  // TODO: Support sorting in findWork and controller.  Currently sorts by dateFirstQueued.  Maybe add queue Time to display.
+
 }

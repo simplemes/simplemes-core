@@ -121,17 +121,15 @@ is retained and used as the default the next time the user uses this dashboard.
 
 *uri:* `/workList/workListActivity`
 
-This <<reference.adoc#dashboard-work-list,Work List>> activity
+This link:reference.html#dashboard-work-list[Work List^] icon:share-square-o[role="link-blue"] activity
 is used to display active or queued work for the operator.
 The current Work Center (<<Work Center Selection>>) is used to filter this work to
 manageable level, but it is not required.
 
-image::guis/dashboardWorkList.png[Dashboard - Work List,align="center",width="750"]
+image::guis/dashboardWorkList.png[Dashboard - Work List,align="center",width="600"]
 
 As the operator selects entries, the current selection is coordinated with the
 selection activity to keep the actions in synch.
 
-// perhaps use standard config button and store as user preference only.
-// MES Dashboard JS library?  Events?
 
 

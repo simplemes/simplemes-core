@@ -37,6 +37,7 @@ class FindWorkResponseDetailSpec extends BaseSpecification {
     detail.orderID == order.uuid
     detail.qtyInQueue == order.qtyInQueue
     detail.qtyInWork == order.qtyInWork
+    detail.id == order.uuid
   }
 
   @Rollback
@@ -55,6 +56,7 @@ class FindWorkResponseDetailSpec extends BaseSpecification {
     detail.orderID == lsn.order.uuid
     detail.qtyInQueue == lsn.qtyInQueue
     detail.qtyInWork == lsn.qtyInWork
+    detail.id == lsn.uuid
   }
 
   @Rollback
@@ -73,6 +75,7 @@ class FindWorkResponseDetailSpec extends BaseSpecification {
     detail.qtyInQueue == orderOperState.qtyInQueue
     detail.qtyInWork == orderOperState.qtyInWork
     detail.operationSequence == orderOperState.sequence
+    detail.id == orderOperState.uuid
   }
 
   @Rollback
@@ -94,6 +97,7 @@ class FindWorkResponseDetailSpec extends BaseSpecification {
     detail.qtyInQueue == lsnOperState.qtyInQueue
     detail.qtyInWork == lsnOperState.qtyInWork
     detail.operationSequence == lsnOperState.sequence
+    detail.id == lsnOperState.uuid
   }
 
   def "test common constructor status tests"() {

@@ -54,6 +54,9 @@ ${variable}.handleEvent = function(event) {
 <@efForm id="wcSelection" dashboard="buttonHolder">
   <@efField field="LSN.lsn" id="order" label="orderLsn.label" onChange="${variable}.orderLSNChangeByUser(newValue)">
     <@efHTML spacer="before" width="20%">
+    </@efHTML>
+    <@efButton type='undo' id="undoButton" tooltip='undo.title' click='dashboard.undoAction();'/>
+    <@efHTML spacer="before" width="20%">
       <#--noinspection JSUnresolvedVariable,UnterminatedStatementJS-->
       <b><span id="workCenterLabel"><@efLookup key="workCenter.label"/></span></b>
       <#--noinspection JSUnresolvedVariable,UnterminatedStatementJS-->
