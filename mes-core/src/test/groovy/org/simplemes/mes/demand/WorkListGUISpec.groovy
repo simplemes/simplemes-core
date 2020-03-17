@@ -1,7 +1,9 @@
 package org.simplemes.mes.demand
 
+import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import org.simplemes.eframe.dashboard.controller.DashboardTestController
+import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.test.BaseDashboardSpecification
 import org.simplemes.eframe.test.page.GridModule
@@ -114,9 +116,39 @@ class WorkListGUISpec extends BaseDashboardSpecification {
     json.list[0].order == orders[1].order
   }
 
+  def "verify that the activity handles the ORDER_LSN_STATUS_CHANGED event - single Order case"() {
+    given: 'a dashboard with the activity'
+    buildDashboard(defaults: ['/workList/workListActivity', DashboardTestController.TRIGGER_EVENT_ACTIVITY])
 
-  //  def "test work list update when event ORDER_LSN_STATUS_CHANGED is triggered"() {
-  // test click updates the workCenterSelection (sends event).
+    and: 'a test order'
+    Order order = null
+    Order.withTransaction {
+      order = MESUnitTestUtils.releaseOrder()
+    }
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the order is changed by another mechanism'
+    Order.withTransaction {
+      order = Order.findByUuid(order.uuid)
+      order.qtyInWork = order.qtyInQueue
+      order.qtyInQueue = 0.0
+      order.save()
+    }
+
+    and: 'the event is triggered'
+    def event = [type: 'ORDER_LSN_STATUS_CHANGED', source: 'abc', list: [[order: order.order]]]
+    textField("eventSource").input.value(JsonOutput.toJson(event))
+    clickButton('triggerEvent')
+    waitForCompletion()
+
+    then: 'the list is updated'
+    def workList = $("body").module(new GridModule(field: 'workListA'))
+    NumberUtils.parseNumber(workList.cell(0, 2).text() as String) == order.qtyInQueue
+    NumberUtils.parseNumber(workList.cell(0, 3).text() as String) == order.qtyInWork
+  }
+
 
   // When work center is supported in findWork.
   //   test WC on URL

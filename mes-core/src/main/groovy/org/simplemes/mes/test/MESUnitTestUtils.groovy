@@ -84,7 +84,9 @@ class MESUnitTestUtils {
   }
 
   /**
-   * Create and release orders, optionally on a routing with or without LSNs.  <b>Requires an active transaction</b>.
+   * Create and release orders, optionally on a routing with or without LSNs.  
+   * <p>
+   * <b>Requires an active transaction</b>.
    *
    * <h3>Options</h3>
    * The options can be:
@@ -177,6 +179,8 @@ class MESUnitTestUtils {
   /**
    * Create and release a single order, optionally on a routing with or without LSNs.
    * This is a convenience function that calls {@link #releaseOrders(java.util.Map)}.
+   * <p>
+   * <b>Requires an active transaction</b>.
    *
    * @param options See for the {@link #releaseOrders(java.util.Map)} for details.  (<b>Optional</b>)
    * @return The order(s) created and released.

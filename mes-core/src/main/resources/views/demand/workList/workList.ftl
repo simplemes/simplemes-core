@@ -3,14 +3,14 @@
   <#assign panel = "${params._panel}"/>
   <#assign variable = "${params._variable}"/>
 
-  ${variable}.onSelect = function(rowData, listID) {
+  ${variable}.onSelect = function(rowData) {
     console.log(rowData);
     var list = [{order: rowData.order}];
     dashboard.sendEvent({type: 'WORK_LIST_SELECTED',source: "/workList/workListActivity",  list: list});
   }
   ${variable}.handleEvent = function(event) {
     if (event.type == 'ORDER_LSN_STATUS_CHANGED') {
-      tk.refreshGrid('workList${panel}');
+      tk.refreshList('workList${panel}');
     }
   }
 
@@ -18,7 +18,7 @@
     <@efList id="workList${panel}" columns="order,lsn,qtyInQueue,qtyInWork,workCenter"
              uri="/workList/findWork" model="org.simplemes.mes.demand.FindWorkResponse"
              paddingX="5%" copyParameters=true
-             onSelect="${variable}.onSelect" />
+             onSelect="${variable}.onSelect(rowData, listID)" />
   </@efForm>
 
 
