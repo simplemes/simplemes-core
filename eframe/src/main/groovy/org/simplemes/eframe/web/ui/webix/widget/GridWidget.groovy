@@ -72,10 +72,11 @@ class GridWidget extends BaseLabeledFieldWidget {
    */
   void loadPreferences() {
     def s = widgetContext.uri
+    def elementS = id ?: 'none'
     preference = PreferenceHolder.find {
       page s
       user SecurityUtils.currentUserName
-      element id
+      element elementS
     }
 
   }

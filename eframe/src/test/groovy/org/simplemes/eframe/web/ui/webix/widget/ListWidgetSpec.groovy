@@ -201,7 +201,7 @@ class ListWidgetSpec extends BaseWidgetSpecification {
     and: 'the event handler is correct'
     def eventBlock = JavascriptTestUtils.extractBlock(postscript, '$$("sampleParentList").attachEvent("onAfterSelect", function (selection) {')
     //def eventBlock = JavascriptTestUtils.extractBlock(postscript, '$$("dummyID").attachEvent("onAfterSelect"')
-    eventBlock.contains('ABC.selectedRow($$("sampleParentList").getSelectedItem(),"sampleParentList");')
+    eventBlock.contains('{ABC.selectedRow})(rowData,"sampleParentList")')
   }
 
 

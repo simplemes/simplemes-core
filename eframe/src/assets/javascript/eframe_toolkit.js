@@ -15,6 +15,7 @@ _ef_tk.toolkit = function () {
   var _dialogPreferences = {};      // Holds the pre-loaded the dialog preferences.
   var _taskMenuString;              // Holds the task menu definition (string form).
   var _taskMenuPopup;               // The popup window that holds the task menu.
+  var _ignoreSelectionList = [];    // A list of IDs to ignore on the next selection event in a list.
 
   // noinspection
   // noinspection JSUnusedLocalSymbols JSUnusedGlobalSymbols JSUnresolvedFunction
@@ -105,6 +106,47 @@ _ef_tk.toolkit = function () {
       }
 
       return res;
+    },
+    // Refreshes the list, using the current query data and preserving the current selection (if possible).
+    refreshList: function (listID) {
+      let list = $$(listID);
+      var url = list.config.url;
+      var pager = list.getPager();
+      if (pager) {
+        // Need to add page/sort attributes to the URL manually since the original URL does not have them.
+        // Otherwise, the request will be made twice.
+        if (pager.data.page > 0) {
+          var start = pager.data.page * pager.data.size + 1;
+          url = ef.addArgToURI(url, 'start', start);
+          url = ef.addArgToURI(url, 'count', pager.data.size);
+        }
+      }
+      // Now, fix the current sort order.  This adds the toolkit-style sorting values since the user may have
+      // changed the sort order without a refresh.
+      var sortState = list.getState().sort;
+      if (sortState) {
+        var key = 'sort[' + sortState.id + ']';
+        url = ef.addArgToURI(url, key, sortState.dir);
+      }
+      if (url) {
+        //console.log('url:'+url);
+        var rowData = list.getSelectedItem();
+        //list.clearAll();
+        list.load(url, function () {
+          if (rowData) {
+            var id = rowData.id;
+            if (id) {
+              var loadedRowData = tk._findListRowData(listID, id);
+              if (loadedRowData) {
+                tk._ignoreSelectionAdd(id);
+                $$(listID).select(id);
+              }
+            }
+          }
+        });
+      } else {
+        console.log('refreshList(): No url defined for ' + listID);
+      }
     },
     // *************************************
     // Internal Function
@@ -451,6 +493,23 @@ _ef_tk.toolkit = function () {
       }
       return -1;
     },
+    _findListRowData: function (listID, id) {
+      // Find the row data for the given ID from the given list/grid.
+      var data = $$(listID).data;
+      if (data.count == 0) {
+        return undefined;
+      }
+
+      var res = undefined;
+      data.each(function (obj) {
+        //console.log(obj);
+        if (obj.id == id) {
+          //console.log(' found');
+          res = obj;
+        }
+      });
+      return res;
+    },
     // Gets the list of open dialogs.  First is the dialog on top.
     _getOpenDialogs: function () {
       var elements = document.getElementsByClassName('webix_window');
@@ -621,6 +680,27 @@ _ef_tk.toolkit = function () {
         }
       }
       return true;
+    },
+    // Returns true if the selection of this element should be ignored.
+    // Use _ignoreSelectionAdd(id) to add to the list when programmatically selecting in a list..
+    _ignoreSelection: function (id) {
+      for (var i = 0; i < _ignoreSelectionList.length; i++) {
+        if (_ignoreSelectionList[i] == id) {
+          _ignoreSelectionList.slice(i, 1);
+          return true;
+        }
+      }
+      return false;
+    },
+    // The next selection event for this ID will be ignored.  Used for programmatically selecting in a list.
+    // Use _ignoreSelection(id) to check for entries in this list.
+    _ignoreSelectionAdd: function (id) {
+      for (var i = 0; i < _ignoreSelectionList.length; i++) {
+        if (_ignoreSelectionList[i] == id) {
+          return;
+        }
+      }
+      _ignoreSelectionList.push(id);
     },
     // Loads all of the dialog preferences for the current page and caches them for later use.
     _loadDialogPreferences: function () {

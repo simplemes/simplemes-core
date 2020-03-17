@@ -5,10 +5,12 @@
 package org.simplemes.eframe.test
 
 import sample.domain.Order
+import spock.lang.IgnoreIf
 
 /**
  * Tests for the BaseDashboardSpecification logic.
  */
+@IgnoreIf({ !sys['geb.env'] })
 class BaseDashboardSpec extends BaseDashboardSpecification {
 
 

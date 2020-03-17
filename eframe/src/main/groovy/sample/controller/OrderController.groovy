@@ -88,8 +88,13 @@ class OrderController extends BaseCrudRestController {
         def order = "M1${sprintf("%03d", i)}"
         def product = products[rng.nextInt(products.size())]
         workList << new FindWorkResponseDetail(qtyInQueue: qtyInQueue, order: order, qtyInWork: qtyInWork,
-                                               product: product, workCenter: workCenter)
+                                               product: product, workCenter: workCenter,
+                                               id: UUID.randomUUID())
       }
+    }
+    def rng = new Random()
+    workList.each {
+      it.qtyInWork = 10.0 * rng.nextDouble() as BigDecimal
     }
 
     // Now, sort the list as needed

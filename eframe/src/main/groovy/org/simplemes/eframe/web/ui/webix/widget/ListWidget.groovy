@@ -201,8 +201,16 @@ class ListWidget extends BaseWidget {
   void buildSelectionHandler() {
     def onSelect = widgetContext?.parameters?.onSelect
     if (onSelect) {
+      // This handler uses the _ignoreSelection() method to see if the selection was made by a
+      // programmatic selection in the list (like tk.refreshList()).
       addPostscriptText("""    ${$$}("$id").attachEvent("onAfterSelect", function (selection) {
-        $onSelect(${$$}("$id").getSelectedItem(),"$id");
+        var rowData =${$$}("$id").getSelectedItem();
+        if (rowData) {
+          var id = rowData.id;
+          if (!tk._ignoreSelection(id)) {
+            (function(rowData, listID) {$widgetContext.parameters.onSelect})(rowData,"$id");
+          }
+        }
       });
       """)
     }
@@ -264,7 +272,10 @@ class ListWidget extends BaseWidget {
 
     def sortColumnPreference = (ColumnPreference) preference?.settings?.find { it instanceof ColumnPreference && it.sortLevel > 0 }
     if (sortColumnPreference) {
+      // We need to use the simple-style sorting for the default sort order.
+      // tk.refreshList() will not work since the datatable adds the toolkit-style sort to the end for dynamic sorting.
       sort = "?sort=${sortColumnPreference.column}&order=${sortColumnPreference.sortAscending ? 'asc' : 'desc'}"
+      //sort = "?sort[${sortColumnPreference.column}]=${sortColumnPreference.sortAscending ? 'asc' : 'desc'}"
     }
     def url = "$uri$sort"
     // copy any request parameters if desired.

@@ -65,8 +65,8 @@ The main parameters/body supported are:
                URI is assumed to be a Root-level URI.  If not, then the controller
                will be added to this URI.
                (*Default:* The `list()` method in the controller that rendered this page.
-| *onSelect* | The name of the event handler function for list select events.
-               Will be passed: (Object rowData, String listID).
+| *onSelect* | The javascript to execute when a row is selected in the list.
+               Available variables: (Object rowData, String listID).
 | *modelName*  | A fully-qualified class name that specifies the contents of the rows displayed.
                  This can be a domain or a POGO. (*Default:* the controller's domain)
 |*height*    | The height of the list (*Default:* '74%').
@@ -156,8 +156,7 @@ a good way to mock up the list behavior.
 
 ===== List onSelect Example
 
-This example provides the data in a function.  This should not be used in production, but is
-a good way to mock up the list behavior.
+This example use javascript logic executed when the user selects a row.  
 
 [source,html]
 .efList Example - Use of onSelect.
@@ -170,10 +169,10 @@ a good way to mock up the list behavior.
   <@efForm id="theOrderListForm${params._panel}" dashboard="true">
     <@efList id="theOrderList${params._panel}" columns="order,product,workCenter"
              uri="/order/findWork" model="sample.pogo.FindWorkResponse"
-             onSelect="${params._variable}.onSelect" />  // <.>
+             onSelect="${params._variable}.onSelect(rowData, listID)" />  // <.>
   </@efForm>
 </script>
 ----
 <.> The function that handles the selection event.
-<.> Specifies the function name on the `onSelect` attribute.
+<.> Specifies the javascript to execute when the selection happens.
 

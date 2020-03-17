@@ -15,6 +15,11 @@ import groovy.transform.ToString
 class FindWorkResponseDetail {
 
   /**
+   * A unique ID for the order.
+   */
+  def id
+
+  /**
    * The order that is in work or queue.  This is a simple string to reduce the size of this object.
    */
   String order

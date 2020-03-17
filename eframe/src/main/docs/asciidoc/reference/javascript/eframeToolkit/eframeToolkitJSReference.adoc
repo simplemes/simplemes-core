@@ -5,6 +5,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<eframe-toolkit-ph>>#
 [inline-toc]#<<eframe-toolkit-pw>>#
 [inline-toc]#<<findMaxGridValue>>#
+[inline-toc]#<<refreshList>>#
 
 endif::[]
 
@@ -23,3 +24,5 @@ include::pw_and_ph.adoc[]
 
 
 include::findMaxGridValue.adoc[]
+
+include::refreshList.adoc[]
