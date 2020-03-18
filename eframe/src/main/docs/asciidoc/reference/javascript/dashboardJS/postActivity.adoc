@@ -43,7 +43,7 @@ NOTE: This function uses the <<postAjaxForm>> method from the <<eframe-js>> libr
 ----
 <script>
   <#assign panel = "${params._panel}"/>
-  <@efForm id="logFailure" dashboard=true>
+  <@efForm id="logFailure" dashboard="buttonHolder">
     <@efField field="rma" value="RMA1001" width=20/>
     <@efField field="product" value="CM3056857"/>
     <@efButtonGroup>

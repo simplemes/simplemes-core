@@ -5,7 +5,6 @@ Scratch
 
 Micronaut-Data Migration
 ========================
-Remove references to  mapping
 DDL creation -
   QTY scale = STANDARD_DECIMAL_SCALE?  4?
   Unique Key Fields
@@ -14,7 +13,7 @@ DDL creation -
 
 Tasks
 =====
-Migrate WorkList with efGrid use.
+Migrate Start/Complete/UndoStart
 Migrate dashboard activities (Scan, wcSel, workList)
 Missing GUIs
   Product, WorkCenter, LSNSequence, OrderSequence

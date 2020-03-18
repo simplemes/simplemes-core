@@ -41,7 +41,9 @@ ef.dashboard = function () {
   var undoActionStackSize = 8;  // max size of the undo action stack.
   var undoActionStack = [];  // The stack of undo action lists.  Each entry is a list of undoActions
 
-  var eventStack = [];  // A list of the last 8 events.  Used for testing only.
+  var eventStack = [];          // A list of the last 8 events.  Used for testing only.
+  var cachedActivities = {};    // The cached activities that don't need to be reloaded from the server.
+  var displacedActivities = {}; // A holder for temporarily displaced activities that are displaced by non-GUI activities.
 
   // Constants
   var ATTRIBUTE_PANEL_INDEX = 'panel-index';      // The attribute name of the panel index (name)
@@ -218,14 +220,24 @@ ef.dashboard = function () {
     },
     // Sends an event to all panel activities.  Event has only one require field 'type'.
     sendEvent: function (event) {
-      JL().trace(event);
+      JL().trace("sendEvent(): " + JSON.stringify(event));
       for (var p in panels) {
         // See if the activity has a handleEvent() function.
         var sharedVarName = '_' + p;
         var fn = window[sharedVarName].handleEvent;
+        JL().trace("sendEvent() delivered to: " + JSON.stringify(window[sharedVarName]));
         if (typeof fn === 'function') {
           JL().trace('handler function:' + fn);
           fn(event);
+        }
+        // Deliver to any displaced activities (displaced by non-GUI activity execution).
+        if (displacedActivities[sharedVarName]) {
+          fn = displacedActivities[sharedVarName].handleEvent;
+          JL().trace("sendEvent() delivered to: " + JSON.stringify(window[sharedVarName]));
+          if (typeof fn === 'function') {
+            JL().trace('handler function:' + fn);
+            fn(event);
+          }
         }
       }
       // Now, Push the event into the stack for testing purposes.
@@ -412,12 +424,11 @@ ef.dashboard = function () {
     // extraParams: an array of objects with extra parameters to add to the page load URI (optional).
     _load: function (panelName, url, extraParams) {
       if (url) {
-        // TODO: Use to toolkit._getPage() method instead.
+        // Consider using toolkit._getPage() method instead.  A lot of overlap, but no cache support.
         //console.log(' loading '+panelName+' with '+url);  // log.debug candidate
         url = eframe.addArgToURI(url, '_panel', panelName);
         var sharedVarName = '_' + panelName;
         url = eframe.addArgToURI(url, '_variable', sharedVarName);
-        url = eframe.addArgToURI(url, '_panelCount', panels.length);
         url = eframe.addArgToURI(url, '_pageSrc', window.location.pathname);
 
         // Now, add any extra params to the URI.
@@ -428,13 +439,16 @@ ef.dashboard = function () {
         }
 
         nonGUIPanels[panelName] = false;
-        window[sharedVarName] = {};  // Clear any previous values from the shared object.
-        ef.get(url, {}, function (src) {
+        var originalVariable = window[sharedVarName];  // Save the original value, in case we are about to execute a non-GUI activity.
+        var loadFunction = function (src) {
           var s = ef._sanitizeJavascript(src);
           if (s.indexOf(sharedVarName + '.display') < 0) {
             nonGUIPanels[panelName] = true;
           }
           try {
+            window[sharedVarName] = {};  // Clear any previous values from the shared object.
+            //console.log(url);
+            //console.log(s);
             JL().trace(url);
             JL().trace(s);
             var res = eval(s);
@@ -444,26 +458,62 @@ ef.dashboard = function () {
             JL().error(msg);
             JL().info(s);
           }
+
+          if (window[sharedVarName].cache) {
+            cachedActivities[url] = s;
+          }
           //console.log(window[sharedVarName]);
           var content = window[sharedVarName].display;
           if (content) {
-            // Remove current content.
+            // Has something to display, so remove current content.
             var parentViewName = 'Panel' + panelName;
             var contentViewName = 'Content' + panelName;
             $$(parentViewName).removeView(contentViewName);
             $$(parentViewName).addView({view: 'form', type: "clean", borderless: true, id: contentViewName, margin: 0, rows: [content]}, 0);
             dashboard._addButtonsIfNeeded(panelName);
-          }
-          var postScript = window[sharedVarName].postScript;
-          if (postScript) {
-            if (ef._isString(postScript)) {
-              eval(postScript);
-            } else {
-              postScript();
-            }
-          }
+            dashboard._runScriptOrFunction(window[sharedVarName].postScript);
+          } else {
+            // Non-GUI activity.
 
-        });
+            // Make sure the original activity can receive events from this non-GUI activity.
+            displacedActivities[sharedVarName] = originalVariable;
+            try {
+              var execute = window[sharedVarName].execute;
+              if (execute) {
+                JL().trace('Executing ' + sharedVarName + '.execute()');
+                execute();
+              }
+              dashboard._runScriptOrFunction(window[sharedVarName].postScript);
+            } catch (e) {
+              var msg2 = "Invalid Javascript for dashboard. Error: '" + e.toString() + "' on " + url + '. (Set client.dashboard Trace log level for details).';
+              ef.displayMessage({error: msg2});
+              JL().error(msg2);
+              JL().info(window[sharedVarName]);
+            }
+            // We need to restore the panel's original shared data for event handling after the non-GUI activity is executed.
+            window[sharedVarName] = originalVariable;
+            displacedActivities[sharedVarName] = undefined;
+          }
+        };
+
+        var src = cachedActivities[url];
+        if (src) {
+          JL().trace('Using value from cache for url: ' + url);
+          //console.log('Using value from cache for url: '+url);
+          loadFunction(src);
+        } else {
+          ef.get(url, {}, loadFunction);
+        }
+      }
+    },
+    _runScriptOrFunction: function (scriptOrFunction) {
+      // Runs the given script/function.
+      if (scriptOrFunction) {
+        if (ef._isString(scriptOrFunction)) {
+          eval(scriptOrFunction);
+        } else {
+          scriptOrFunction();
+        }
       }
     },
     _resetToDefaults: function () {

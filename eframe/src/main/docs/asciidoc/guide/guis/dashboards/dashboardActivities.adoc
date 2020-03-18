@@ -7,6 +7,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Form Submission (Ajax)>>#
 [inline-toc]#<<Activity Variable Collisions>>#
 [inline-toc]#<<Activities with Limited GUIs>>#
+[inline-toc]#<<Debugging Dashboard Activities>>#
 
 [inline-toc-header]#Examples#
 [inline-toc]#<<GUI Activity>>#
@@ -46,7 +47,7 @@ HttpResponse start(HttpRequest request, @Nullable Principal principal) {
 .Example - FTL Page for a Dashboard Activity
 ----
 <script>
-  <@efForm id="logFailure" dashboard=true>  // <.>
+  <@efForm id="logFailure" dashboard="buttonHolder">  // <.>
     <@efField field="rma" value="RMA1001" width=20/>
     <@efField field="product" value="CM3056857"/>
     <@efButtonGroup>
@@ -80,7 +81,6 @@ to interact with the dashboard itself:
 |Parameter|Type|Description
 
 |_panel|String|The panel (name) this activity is displayed in.  This is needed for some of the javascript API methods.
-|_panelCount|Integer|The total number of panels in the dashboard.
 |_variable|String|The name of a Javascript variable that you can use to define the
                   the elements to be displayed or define functions executed by your code.
                   Normally, the display element is created by the <<efForm>> marker.
@@ -133,7 +133,7 @@ unique names on the page.
     dashboard.postActivity('logFailure','/test/dashboard/log','${params._panel}');
     ef.displaymessage({info: 'Finished.});
   }
-  <@efForm id="logFailure" dashboard=true>
+  <@efForm id="logFailure" dashboard="buttonHolder">
     <@efField field="rma" value="RMA1001" width=20/>
     <@efButtonGroup>
       <@efButton label="Log Failure"
@@ -176,7 +176,16 @@ Javascript methods from the browser.
 See <<Non-GUI Activity>> example below for details on how you can use this feature.
 
 
+===== Debugging Dashboard Activities
 
+Debugging complex activity interaction in a dashboard can be difficult.  To make this a little
+easier, you can use the <<Javascript Client Logging>> features.  This means setting these logging
+levels to _TRACE_ or _DEBUG_:
+
+  client.dashboard
+  client.to-server
+
+This log events, and executions of activities to the console (and optionally to the server).
 
 ==== Activity Examples
 
@@ -220,7 +229,7 @@ HttpResponse rma(HttpRequest request, @Nullable Principal principal) {  // <.>
   <#assign panel = "${params._panel}"/>  // <.>
   <#assign variable = "${params._variable}"/>
 
-  <@efForm id="logFailure" dashboard=true>  // <.>
+  <@efForm id="logFailure" dashboard="buttonHolder">  // <.>
     <@efField field="serial" value="RMA1001" width=20/>  // <.>
     <@efField field="customer" value="ACME_101"/>
     <@efButtonGroup>
@@ -262,16 +271,23 @@ value from that field. When the button is pressed, the following non-GUI activit
 .Example - .FTL Page for Non-GUI Activity
 ----
 <script>  // <.>
-  var order = document.getElementById('order').value;  // <.>
-  dashboard.postActivity({order: order},'/test/dashboard/start','${params._panel}', // <.>
-                         {success: function(res) {ef.displayMessage({info: res})} });
+  ${params._variable}.execute =  function() {  // <.>
+    var order = document.getElementById('order').value;  // <.>
+    dashboard.postActivity({order: order},'/test/dashboard/start','${params._panel}', // <.>
+                           {success: function(res) {ef.displayMessage({info: res})} });
+  }
+  ${params._variable}.cache =  true;  // <.>
+
 </script>
 
 ----
 <.> The non-GUI activity is javascript content that does not define the .display element.
+<.> A function to be executed when the the activity is triggered.
 <.> Gets the value of the order field (HTML Element ID='order').
 <.> Sends the request to the server, with the order value.
+<.> This activity content can be cached on the client since the content does not vary.
 
+NOTE: Only use the *cache=true* setting if the activity content will never, ever change.
 
 The <<reference.adoc#postactivity,postActivity()>> convenience function sends the request
 to the server.  It will convert the object to a JSON payload and POST it to a URL.

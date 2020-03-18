@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import groovy.util.logging.Slf4j
@@ -5,12 +9,6 @@ import org.simplemes.eframe.dashboard.controller.DashboardTestController
 import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.test.page.DashboardPage
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * This is the common Spock specification base class for testing Dashboard related activities.
@@ -31,10 +29,13 @@ import org.simplemes.eframe.test.page.DashboardPage
  *   clickButton(0)  // Displays page3 in the Panel 'B'.
  * </pre>
  * <p>
- * <b>Note</b>: Some of this base class is tested in the DashboardJSFormGUISpec.
+ * <b>Note</b>: The activity content should be wrapped in <script></script> tags.  If not, it will be treated
+ * as HTML test to render in the page.
+ * <p>
  */
 @Slf4j
 class BaseDashboardSpecification extends BaseGUISpecification {
+  // Note: Some of this base class is tested in the DashboardJSFormGUISpec.
 
   /**
    * The panel content used to generate only dashboard buttons.

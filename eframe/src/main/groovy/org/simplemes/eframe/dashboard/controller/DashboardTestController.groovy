@@ -142,6 +142,7 @@ final class DashboardTestController extends BaseController {
       throw new IllegalArgumentException('Missing parameter view')
     }
     def modelAndView = new StandardModelAndView((String) params.view, principal, this)
+    modelAndView.model.get().put('timeStamp', System.currentTimeMillis().toString())
     def renderer = Holders.applicationContext.getBean(ViewsRenderer)
     Writable writable = renderer.render(modelAndView.view.get(), modelAndView.model.get())
     return HttpResponse.status(HttpStatus.OK).body(writable)
@@ -171,7 +172,7 @@ final class DashboardTestController extends BaseController {
 
     def options = [source   : memory[(String) params.page], controllerClass: DashboardTestController,
                    uri      : '/test/dashboard/memory',
-                   dataModel: [params: params]]
+                   dataModel: [params: params, timeStamp: System.currentTimeMillis().toString()]]
     log.trace('memory(): options {}', options)
     def s = new UnitTestRenderer(options).render()
     return HttpResponse.status(HttpStatus.OK).body(s)
