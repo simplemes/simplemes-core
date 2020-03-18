@@ -198,28 +198,33 @@ controller method to process the inputs and show the results.  A simple RMA cont
 [source,groovy]
 .Example - Dashboard Activity with Input Fields - Controller
 ----
-@Get("/rma")
-@View("sample/dashboard/rma")
-@Produces(MediaType.TEXT_HTML)
-StandardModelAndView index(@Nullable Principal principal) { // <.>
-  def modelAndView = new StandardModelAndView("sample/dashboard/rma", principal, this)
-  Map model = (Map) modelAndView.model.get()
-  return modelAndView
-}
 
-@Produces(MediaType.APPLICATION_JSON)
-@Post("/rma")
-HttpResponse rma(HttpRequest request, @Nullable Principal principal) {  // <.>
-  def rmaRequest = Holders.objectMapper.readValue(request.body.get(), RMARequest)
-  def service = Holders.applicationContext.getBean(RMAService)
-  def res = service.createRMA(rmaRequest)
-  return HttpResponse.status(HttpStatus.OK).body(Holders.objectMapper.writeValueAsString(res))
+@Secured('OPERATOR')
+@Controller("/rma")
+class RMAController extends BaseController {
+  @Inject RMAService rmaService  // <.>
+
+  @Get("/rmaActivity")
+  @Produces(MediaType.TEXT_HTML)
+  StandardModelAndView index(@Nullable Principal principal) { // <.>
+    def modelAndView = new StandardModelAndView("sample/dashboard/rmaActivity", principal, this)
+    return modelAndView
+  }
+
+  @Post("/rma")
+  @Produces(MediaType.APPLICATION_JSON)
+  HttpResponse rma(HttpRequest request, @Nullable Principal principal) {  // <.>
+    def rmaRequest = Holders.objectMapper.readValue(request.body.get(), RMARequest)
+    def res = rmaService.createRMA(rmaRequest)
+    return HttpResponse.status(HttpStatus.OK).body(Holders.objectMapper.writeValueAsString(res))
+  }
 }
 
 ----
-<.> Provides the display page for the _rma.ftl_ file.
-<.> Creates the RMA using the service _RMAService_. Uses the Micronaut application context to
-    find the bean.  Returns a response in JSON format.
+<.> This controller uses the service _RMAService_ as an injected service.
+<.> Provides the display page for the _rmaActivity.ftl_ file.
+<.> The browser client submits the create request to this method.
+    It uses JSON as the input and output format.
 
 
 [source,html]

@@ -15,6 +15,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<GUI State Persistence>>#
 [inline-toc]#<<GUI Testing>>#
 [inline-toc]#<<GUI Guidelines>>#
+[inline-toc]#<<Controller Method for Page Display>>#
 
 [inline-toc]#<<Dashboards>>#
 [inline-toc]#<<Reports>>#

@@ -10,6 +10,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<controller-logging,Logging>>#
 [inline-toc]#<<Controller Task Menus>>#
 [inline-toc]#<<Standard Domain Model and Markers>>#
+[inline-toc]#<<Controller Method for Page Display>>#
 
 endif::[]
 
@@ -305,7 +306,7 @@ You can test your settings in the <<Controller Test Helper>>.  You will need to 
 the details on the Task Menu Item expected in the controller.
 
 
-==== Standard Domain Model and Markers
+=== Standard Domain Model and Markers
 
 This <<BaseCrudController>> stores the domain object being displayed/edited in the standard location
 for your .ftl/HTML pages to display.  The domain object is stored in the <<Markers>> context data
@@ -329,3 +330,27 @@ Due Date: ${order.dueDate}
 <.> The fields from the _Order_ record are displayed in the page.
 
 
+=== Controller Method for Page Display
+
+Most pages will be served up by some controller method.  This is usually very simple, but
+needs some specific annotations to work with the browsers:
+
+[source,groovy]
+.Example - Controller Support for Page Display
+----
+@Secured('OPERATOR')
+@Controller("/work")
+class WorkController extends BaseController {
+
+  @Get("/startActivity")  // <.>
+  @Produces(MediaType.TEXT_HTML) // <.>
+  StandardModelAndView workListActivity(HttpRequest request, @Nullable Principal principal) {
+    return new StandardModelAndView("demand/work/start", principal, this)  // <.>
+  }
+
+}
+----
+<.> Defines the controller endpoint to render this page (e.g. _'/work/startActivity'_).
+<.> This tells the browser the type of data to expect (an HTML page).
+<.> Generates a page (_'main/resources/views/demand/work/start.ftl'_) using the normal
+    <<StandardModelAndView>> to provide access to common settings such as the logged in state.
