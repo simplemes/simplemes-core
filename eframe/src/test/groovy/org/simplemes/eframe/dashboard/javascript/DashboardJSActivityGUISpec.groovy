@@ -4,6 +4,7 @@
 
 package org.simplemes.eframe.dashboard.javascript
 
+import groovy.json.JsonSlurper
 import org.simplemes.eframe.test.BaseDashboardSpecification
 import spock.lang.IgnoreIf
 
@@ -153,6 +154,54 @@ class DashboardJSActivityGUISpec extends BaseDashboardSpecification {
 
     then: 'the GUI activity was active and received the event'
     messages.text().contains('XYZZY-123')
+  }
+
+  def "verify that non-gui activity with caching and changing parameters is still cached"() {
+    given: 'a dashboard with a non-gui activity and a gui activity that will change on call'
+    def guiActivity = '''
+    <script>
+      <@efForm id="logFailure" dashboard="buttonHolder">  
+        <@efField field="serial" value="RMA1001" width=20/>  
+      </@efForm>
+      window['_test_counter'] = 0;
+      ${params._variable}.provideParameters = function() {
+        window['_test_counter'] = window['_test_counter'] +1;
+        return { workCenter: 'XYZZY-'+window['_test_counter'] };
+      }
+    </script>
+    '''
+    def nonGUIActivity = '''<script>
+      ${params._variable}.execute =  function() {
+        var p = dashboard.getCurrentProvidedParameters();
+        p[p.length] = {timeStamp: "${timeStamp}"}; 
+        ef.displayMessage(JSON.stringify(p));
+      }
+      ${params._variable}.cache = true;
+      ${params._variable}.timeStamp = "${timeStamp}";
+    </script>  
+    '''
+    buildDashboard(defaults: [guiActivity], buttons: [nonGUIActivity])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the non-gui activity is clicked'
+    clickButton(0)
+    waitForCompletion()
+    def originalText = messages.text()
+    def originalJson = new JsonSlurper().parseText(originalText)
+
+    and: 'the non-gui activity is clicked again'
+    clickButton(0)
+    waitForCompletion()
+
+    then: 'the new value for the parameter is displayed'
+    def json = new JsonSlurper().parseText(messages.text())
+    messages.text() != originalText
+
+    and: 'no new request was made to the server - the timestamp is the same'
+    //noinspection GroovyAssignabilityCheck
+    originalJson[1].timeStamp == json[1].timeStamp
   }
 
 }

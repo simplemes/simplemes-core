@@ -156,6 +156,9 @@ and handle it differently.  In this scenario, the page will contain no display e
 displaying a page in a panel, the Javascript will be evaluated without a change to the panel display.
 When this Javascript finishes, the dashboard will remove the Javascript from the page.
 
+NOTE: The panels will still have the current activities active while the non-GUI activity is
+      executing.
+
 These non-GUI activities can have these capabilities:
 
 * Execute Ajax call(s) to perform the actions.
@@ -168,10 +171,9 @@ This non-GUI flow is shown below:
 image::models/Non-GUIDashboardActivity.png[Non-GUIDashboardActivity,align="center"]
 
 The user presses a configured button in the dashboard.  This button triggers an activity that has
-no GUI elements.  It has just a single `<script>` tag.  The dashboard evaluates this script in the
-appropriate panel.  When the script codes finishes, it must call the standard
-dashboard <<dashboard-finished>> method.  The dashboard then removes the
-Javascript methods from the browser.
+no GUI elements.  If conforms to the <<Non-GUI Activity>> below.  The dashboard evaluates this
+script.  When the script's `execute()` method exists, the dashboard then removes the
+Javascript methods from the browser.  There is no need to call the <<dashboard-finished>>.
 
 See <<Non-GUI Activity>> example below for details on how you can use this feature.
 
@@ -288,11 +290,17 @@ value from that field. When the button is pressed, the following non-GUI activit
 ----
 <.> The non-GUI activity is javascript content that does not define the .display element.
 <.> A function to be executed when the the activity is triggered.
-<.> Gets the value of the order field (HTML Element ID='order').
+<.> Gets the value of the order field (HTML Element ID='order').  See note below for other ways
+    to get the values from the other activities.
 <.> Sends the request to the server, with the order value.
 <.> This activity content can be cached on the client since the content does not vary.
 
 NOTE: Only use the *cache=true* setting if the activity content will never, ever change.
+      This also means your activity should access any dynamic parameters from the
+      other activities itself.  You can't rely on parameters passed to your
+      activity when it was rendered since those might be old values from the user.
+      See link:reference.html#getcurrentprovidedparameters[getCurrentProvidedParameters^] icon:share-square-o[role="link-blue"]
+      for one way to get the current values.
 
 The <<reference.adoc#postactivity,postActivity()>> convenience function sends the request
 to the server.  It will convert the object to a JSON payload and POST it to a URL.

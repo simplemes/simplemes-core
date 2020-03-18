@@ -137,7 +137,11 @@ ef.dashboard = function () {
         }
       }
     },
-
+    // Gets an array of maps from each loaded activity (panel).
+    // This is used to find providedParameters from the activities.
+    getCurrentProvidedParameters: function () {
+      return dashboard._getExtraParamsFromActivities();
+    },
     // Loads one or more pages.  Clear messages before starting.
     // extraParams will contain the list of additional parameters to pass to the loaded page(s).
     load: function (pageMap, extraParams) {
@@ -469,7 +473,9 @@ ef.dashboard = function () {
           }
 
           if (window[sharedVarName].cache) {
-            cachedActivities[url] = s;
+            let s1 = dashboard._stringAfter(url, '&_pageSrc=');
+            cachedActivities[s1] = s;
+            JL().trace('Caching[' + s1 + ']: ' + s);
           }
           //console.log(window[sharedVarName]);
           var content = window[sharedVarName].display;
@@ -505,7 +511,7 @@ ef.dashboard = function () {
           }
         };
 
-        var src = cachedActivities[url];
+        var src = cachedActivities[dashboard._stringAfter(url, '&_pageSrc=')];
         if (src) {
           JL().trace('Using value from cache for url: ' + url);
           //console.log('Using value from cache for url: '+url);
@@ -552,7 +558,6 @@ ef.dashboard = function () {
         data.resizer = resizer;
         ef.post("/userPreference/guiStateChanged", data);
       }
-
     },
     // Sets the undo button appearance (css class) for the given state.
     _setUndoButtonState: function (state) {
@@ -564,6 +569,14 @@ ef.dashboard = function () {
         element.classList.remove("undo-button");
         element.classList.add("undo-button-disabled");
       }
+    },
+    _stringAfter: function (s, stripAfter) {
+      // Strips the trailing text after the given text.
+      var loc = s.indexOf(stripAfter);
+      if (loc > 0) {
+        s = s.substring(0, loc + stripAfter.length)
+      }
+      return s;
     },
     _validatePanelIndex: function (panelName, functionName) {
       var panelIsValid = true;

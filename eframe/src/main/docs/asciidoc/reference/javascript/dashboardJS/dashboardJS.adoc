@@ -9,6 +9,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<checkForUndoActions>>#
 [inline-toc]#<<clickButton>>#
 [inline-toc]#<<finished>>#
+[inline-toc]#<<getCurrentProvidedParameters>>#
 [inline-toc]#<<load>>#
 [inline-toc]#<<postActivity>>#
 [inline-toc]#<<sendEvent>>#
@@ -32,6 +33,8 @@ include::checkForUndoActions.adoc[]
 include::clickButton.adoc[]
 
 include::finished.adoc[]
+
+include::getCurrentProvidedParameters.adoc[]
 
 include::load.adoc[]
 
