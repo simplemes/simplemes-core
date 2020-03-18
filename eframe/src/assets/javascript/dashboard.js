@@ -221,23 +221,14 @@ ef.dashboard = function () {
     // Sends an event to all panel activities.  Event has only one require field 'type'.
     sendEvent: function (event) {
       JL().trace("sendEvent(): " + JSON.stringify(event));
-      for (var p in panels) {
+      var variables = dashboard._getActivePanelVariables();
+      for (var i = 0; i < variables.length; i++) {
         // See if the activity has a handleEvent() function.
-        var sharedVarName = '_' + p;
-        var fn = window[sharedVarName].handleEvent;
-        JL().trace("sendEvent() delivered to: " + JSON.stringify(window[sharedVarName]));
+        var fn = variables[i].handleEvent;
+        JL().trace("sendEvent() delivered to: " + JSON.stringify(variables[i]));
         if (typeof fn === 'function') {
           JL().trace('handler function:' + fn);
           fn(event);
-        }
-        // Deliver to any displaced activities (displaced by non-GUI activity execution).
-        if (displacedActivities[sharedVarName]) {
-          fn = displacedActivities[sharedVarName].handleEvent;
-          JL().trace("sendEvent() delivered to: " + JSON.stringify(window[sharedVarName]));
-          if (typeof fn === 'function') {
-            JL().trace('handler function:' + fn);
-            fn(event);
-          }
         }
       }
       // Now, Push the event into the stack for testing purposes.
@@ -351,25 +342,43 @@ ef.dashboard = function () {
       pendingPages = [];
       this._resetToDefaults();
     },
+    // Returns a list of shared variables for all active parameters.  Includes any temporarily displaced activities.
+    _getActivePanelVariables: function () {
+      var list = [];
+      // Find all currently displayed activities.
+      for (var p in panels) {
+        var sharedVarName = '_' + p;
+        if (window[sharedVarName]) {
+          list[list.length] = window[sharedVarName];
+        }
+      }
+      // Now, add any variables from displaced activities too.
+      for (var a in displacedActivities) {
+        if (displacedActivities[a]) {
+          list[list.length] = displacedActivities[a];
+        }
+      }
+      return list;
+    },
     // Test support method to return the current event stack.
     _getEventStack: function () {
       return eventStack;
     },
     // Gets an array of maps from each loaded activity (panel).
     // This is used to find providedParameters from the activities.
-    _getExtraParamsFromActivities: function (methodBaseName) {
+    _getExtraParamsFromActivities: function () {
       var extraParams = [];
-      for (var p in panels) {
+      var variables = dashboard._getActivePanelVariables();
+      for (var i = 0; i < variables.length; i++) {
         // See if the activity has a provideParameters() method.
-        var sharedVarName = '_' + p;
-        var fn = window[sharedVarName].provideParameters;
+        var fn = variables[i].provideParameters;
         if (typeof fn === 'function') {
           // Call the method dynamically.
           var params = fn();
           if (params != undefined) {
             extraParams[extraParams.length] = params;
           }
-          JL().trace('extra params panel=' + p + ', values=' + params);
+          JL().trace('extra params panel=' + i + ', values=' + params);
         }
       }
       return extraParams;

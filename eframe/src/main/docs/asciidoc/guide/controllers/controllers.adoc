@@ -344,7 +344,7 @@ class WorkController extends BaseController {
 
   @Get("/startActivity")  // <.>
   @Produces(MediaType.TEXT_HTML) // <.>
-  StandardModelAndView workListActivity(HttpRequest request, @Nullable Principal principal) {
+  StandardModelAndView startActivity(HttpRequest request, @Nullable Principal principal) {
     return new StandardModelAndView("demand/work/start", principal, this)  // <.>
   }
 

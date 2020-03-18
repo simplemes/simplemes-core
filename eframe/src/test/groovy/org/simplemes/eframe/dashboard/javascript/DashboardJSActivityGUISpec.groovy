@@ -91,7 +91,7 @@ class DashboardJSActivityGUISpec extends BaseDashboardSpecification {
     messages.text() != originalText
   }
 
-  def "verify that non-gui activity works keeps all GUI activities active in the dashboard"() {
+  def "verify that non-gui activity keeps all GUI activities active in the dashboard"() {
     given: 'a dashboard with a simple non-gui activity'
     def guiActivity = '''
     <script>
@@ -121,6 +121,38 @@ class DashboardJSActivityGUISpec extends BaseDashboardSpecification {
     then: 'the GUI activity was active and received the event'
     messages.text().contains('ABC')
     messages.text().contains('XYZZY')
+  }
+
+  def "verify that non-gui activity can get parameters from displaced activities"() {
+    given: 'a dashboard with a simple non-gui activity'
+    def guiActivity = '''
+    <script>
+      <@efForm id="logFailure" dashboard="buttonHolder">  
+        <@efField field="serial" value="RMA1001" width=20/>  
+      </@efForm>
+      ${params._variable}.provideParameters = function() {
+        return { workCenter: 'XYZZY-123' };
+      }
+    </script>
+    '''
+    def nonGUIActivity = '''<script>
+      ${params._variable}.execute =  function() {
+        var params = dashboard._getExtraParamsFromActivities();
+        ef.displayMessage(JSON.stringify(params));
+      }
+    </script>  
+    '''
+    buildDashboard(defaults: [guiActivity], buttons: [nonGUIActivity])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the non-gui activity is clicked'
+    clickButton(0)
+    waitForCompletion()
+
+    then: 'the GUI activity was active and received the event'
+    messages.text().contains('XYZZY-123')
   }
 
 }
