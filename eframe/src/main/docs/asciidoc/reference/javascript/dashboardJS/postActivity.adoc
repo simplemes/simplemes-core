@@ -23,7 +23,8 @@ NOTE: This function uses the <<postAjaxForm>> method from the <<eframe-js>> libr
                          Can also be a Javascript object (map) with the data to send.
                          This is usually the form specified in the <<efForm>> marker.
 |*uri*          |string| The URI to send the request to (*Required*).
-|*panel*        |string| The URI to send the request to (*Required*).
+|*panel*        |string| The Panel this request is being sent from.  If given,
+                         the <<finished>> method will be called on the given.
 |*options*      |map| Additional options (*Optional*).  See below.
 |===
 
