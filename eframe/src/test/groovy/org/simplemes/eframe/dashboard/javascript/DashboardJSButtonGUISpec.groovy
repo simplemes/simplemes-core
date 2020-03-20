@@ -1,13 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.dashboard.javascript
 
 import org.simplemes.eframe.test.BaseDashboardSpecification
 import spock.lang.IgnoreIf
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests of the dashboard.js methods related to buttons.
@@ -106,14 +104,14 @@ class DashboardJSButtonGUISpec extends BaseDashboardSpecification {
 
     when: 'the dashboard is displayed and other GUI activity is triggered'
     displayDashboard()
-    clickButton(1)
+    clickDashboardButton(1)
     waitForCompletion()
 
     then: 'the GUI activity is displayed in the second panel'
     panel('B').text().contains('Other GUI Activity')
 
     when: 'the non-gui activity is executed'
-    clickButton(0)
+    clickDashboardButton(0)
     waitForCompletion()
 
     then: 'the GUI activity in the second panel is unchanged'
@@ -137,7 +135,7 @@ class DashboardJSButtonGUISpec extends BaseDashboardSpecification {
 
     when: 'the dashboard is displayed and the non-GUI activity is triggered'
     displayDashboard()
-    clickButton(0)
+    clickDashboardButton(0)
     waitForCompletion()
 
     then: 'the error message is displayed'
@@ -164,7 +162,7 @@ class DashboardJSButtonGUISpec extends BaseDashboardSpecification {
 
     when: 'the dashboard is displayed and other GUI activity is triggered'
     displayDashboard()
-    clickButton(0)
+    clickDashboardButton(0)
     waitForCompletion()
 
     then: 'the second activity is executed which displays a message'

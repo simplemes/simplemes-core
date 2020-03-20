@@ -8,6 +8,7 @@ import groovy.util.logging.Slf4j
 import org.simplemes.eframe.dashboard.controller.DashboardTestController
 import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.misc.ArgumentUtils
+import org.simplemes.eframe.misc.JavascriptUtils
 import org.simplemes.eframe.test.page.DashboardPage
 
 /**
@@ -35,7 +36,6 @@ import org.simplemes.eframe.test.page.DashboardPage
  */
 @Slf4j
 class BaseDashboardSpecification extends BaseGUISpecification {
-  // Note: Some of this base class is tested in the DashboardJSFormGUISpec.
 
   /**
    * The panel content used to generate only dashboard buttons.
@@ -142,7 +142,8 @@ class BaseDashboardSpecification extends BaseGUISpecification {
     // See if this might be simple text (no <script> tags).
     if (!activity.contains("<script>") && !activity.contains("<@efForm")) {
       // Probably just plain text to display, so convert to a .display = expression with a simple template element.
-      activity = """_\${params._panel}.display = {view: "template", template: "$activity"};  // Server """
+      def escapeForJavascript = JavascriptUtils.escapeForJavascript(activity)
+      activity = """_\${params._panel}.display = {view: "template", template: "${escapeForJavascript}"};  // Server """
     }
 
     // Needs a dynamic activity defined for this request.
@@ -190,19 +191,25 @@ class BaseDashboardSpecification extends BaseGUISpecification {
    * <h3>Options</h3>
    * <ul>
    *   <li><b>dashboard</b> - The dashboard to display (<b>Default</b>: '_TEST'). </li>
+   *   <li><b>page</b> - The dashboard GEB page object to use.  Should be a sub-class of DashboardPage (<b>Default</b>: DashboardPage). </li>
    *   <li><b>(other options)</b> - Passed as URL parameters to the dashboard. </li>
    * </ul>
 
-   * @param options Supported options: dashboard - the dasboard nameThe dashboard config to navigate to (<b>Default</b>: '_TEST').
+   * @param options Supported options: dashboard - the dashboard nameThe dashboard config to navigate to (<b>Default</b>: '_TEST').
    */
   void displayDashboard(Map options) {
     options = options ?: [:]
     if (!options.dashboard) {
       options.dashboard = '_TEST'
     }
+    def page = DashboardPage
+    if (options.page) {
+      page = options.page
+      options.remove('page')  // Don't pass to GUI.
+    }
 
     login()
-    to options, DashboardPage
+    to options, page
   }
 
 
@@ -211,7 +218,7 @@ class BaseDashboardSpecification extends BaseGUISpecification {
    * corresponds to the index in the buttons list passed to the {@link #buildDashboard(java.util.Map)} method.
    * @param id The ID of the button (0 = first button in the button list).
    */
-  void clickButton(Integer id) {
+  void clickDashboardButton(Integer id) {
     clickButton("B$id")
   }
 }

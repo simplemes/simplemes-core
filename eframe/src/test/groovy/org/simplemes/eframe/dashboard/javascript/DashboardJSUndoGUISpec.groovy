@@ -41,7 +41,7 @@ class DashboardJSUndoGUISpec extends BaseDashboardSpecification {
     !undoButton.classes().contains('undo-button')
 
     when: 'the increment button is pressed'
-    clickButton(0)
+    clickDashboardButton(0)
     waitForCompletion()
 
     then: 'the undo button is enabled'
@@ -87,7 +87,7 @@ class DashboardJSUndoGUISpec extends BaseDashboardSpecification {
     and: '10 start actions are triggered'
     for (count in 1..10) {
       $('#order').value("ABC_$count")
-      clickButton(0)
+      clickDashboardButton(0)
       waitForCompletion()
     }
 

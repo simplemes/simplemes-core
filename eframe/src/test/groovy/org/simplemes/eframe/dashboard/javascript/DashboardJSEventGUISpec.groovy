@@ -1,13 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.dashboard.javascript
 
 import org.simplemes.eframe.test.BaseDashboardSpecification
 import spock.lang.IgnoreIf
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests of the dashboard.js methods related to events.
@@ -48,7 +46,7 @@ class DashboardJSEventGUISpec extends BaseDashboardSpecification {
 
     when: 'the dashboard is displayed the event is sent'
     displayDashboard()
-    clickButton(0)
+    clickDashboardButton(0)
     waitForCompletion()
 
     then: 'the handler displayed the value as a message'
@@ -90,7 +88,7 @@ class DashboardJSEventGUISpec extends BaseDashboardSpecification {
 
     when: 'the dashboard is displayed the event is sent'
     displayDashboard()
-    clickButton(0)
+    clickDashboardButton(0)
     waitForCompletion()
 
     then: 'the provided parameter was used'
@@ -155,7 +153,7 @@ class DashboardJSEventGUISpec extends BaseDashboardSpecification {
 
     when: 'the dashboard is displayed the event is sent'
     displayDashboard()
-    clickButton(0)
+    clickDashboardButton(0)
     waitForCompletion()
 
     then: 'the provided parameters were used'

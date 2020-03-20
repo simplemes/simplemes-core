@@ -29,7 +29,7 @@ class DashboardJSActivityGUISpec extends BaseDashboardSpecification {
     displayDashboard()
 
     and: 'the non-gui activity is clicked'
-    clickButton(0)
+    clickDashboardButton(0)
     waitForCompletion()
 
     then: 'the response is displayed'
@@ -52,12 +52,12 @@ class DashboardJSActivityGUISpec extends BaseDashboardSpecification {
     displayDashboard()
 
     and: 'the non-gui activity is clicked'
-    clickButton(0)
+    clickDashboardButton(0)
     waitForCompletion()
     def originalText = messages.text()
 
     and: 'the non-gui activity is clicked again'
-    clickButton(0)
+    clickDashboardButton(0)
     waitForCompletion()
 
     then: 'the response is displayed'
@@ -80,12 +80,12 @@ class DashboardJSActivityGUISpec extends BaseDashboardSpecification {
     displayDashboard()
 
     and: 'the non-gui activity is clicked'
-    clickButton(0)
+    clickDashboardButton(0)
     waitForCompletion()
     def originalText = messages.text()
 
     and: 'the non-gui activity is clicked again'
-    clickButton(0)
+    clickDashboardButton(0)
     waitForCompletion()
 
     then: 'the response is displayed'
@@ -116,7 +116,7 @@ class DashboardJSActivityGUISpec extends BaseDashboardSpecification {
     displayDashboard()
 
     and: 'the non-gui activity is clicked'
-    clickButton(0)
+    clickDashboardButton(0)
     waitForCompletion()
 
     then: 'the GUI activity was active and received the event'
@@ -149,7 +149,7 @@ class DashboardJSActivityGUISpec extends BaseDashboardSpecification {
     displayDashboard()
 
     and: 'the non-gui activity is clicked'
-    clickButton(0)
+    clickDashboardButton(0)
     waitForCompletion()
 
     then: 'the GUI activity was active and received the event'
@@ -186,13 +186,13 @@ class DashboardJSActivityGUISpec extends BaseDashboardSpecification {
     displayDashboard()
 
     and: 'the non-gui activity is clicked'
-    clickButton(0)
+    clickDashboardButton(0)
     waitForCompletion()
     def originalText = messages.text()
     def originalJson = new JsonSlurper().parseText(originalText)
 
     and: 'the non-gui activity is clicked again'
-    clickButton(0)
+    clickDashboardButton(0)
     waitForCompletion()
 
     then: 'the new value for the parameter is displayed'

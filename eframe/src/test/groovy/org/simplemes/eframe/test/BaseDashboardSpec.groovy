@@ -30,4 +30,33 @@ class BaseDashboardSpec extends BaseDashboardSpecification {
     Order.list().size() > 0
   }
 
+  def "verify that displayDashboard supports a sub-class of DashboardPage"() {
+    given: 'a dashboard with some page content'
+    buildDashboard(defaults: ['<span id="ID237">Content B</span>'])
+
+    and: 'a sub-class of the standard DashboardPage'
+    def src = '''
+    package sample
+    
+    import org.simplemes.eframe.custom.Addition
+    import org.simplemes.eframe.custom.BaseAddition
+    import org.simplemes.eframe.custom.AdditionConfiguration
+    import org.simplemes.eframe.data.format.LongFieldFormat
+    import sample.domain.SampleParent
+    
+    class TestDashboardPage extends org.simplemes.eframe.test.page.DashboardPage {
+      static content = {
+        testSpan {$('span#ID237')}
+      }
+    }
+    '''
+    def clazz = CompilerTestUtils.compileSource(src)
+
+    when: 'the dashboard is displayed - with a a sub-class of the dashboard page'
+    displayDashboard([page: clazz])
+
+    then: 'the content defined in the sub-class page can be used'
+    testSpan.text() == 'Content B'
+  }
+
 }
