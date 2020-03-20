@@ -112,65 +112,67 @@ class MESUnitTestUtils {
    * @return The order(s) created and released.
    */
   static List<Order> releaseOrders(Map options = [:]) {
-    loadOrderInitialDataNeeded(options)
-    setLoginUser()
-
     List<Order> list = []
-    try {
-      def nOrders = options.nOrders ?: 1
-      def id = options.id ? "-${options.id}" : ''
-      def lotSize = (BigDecimal) options.lotSize ?: 1.0
-      def qty = (BigDecimal) options.qty ?: 1.0
-      def lsnTrackingOption = (LSNTrackingOption) options.lsnTrackingOption ?: LSNTrackingOption.ORDER_ONLY
-      def lsnSequence = (LSNSequence) options.lsnSequence
+    Order.withTransaction {
+      loadOrderInitialDataNeeded(options)
+      setLoginUser()
 
-      // Create the product we need
-      List<Integer> operationSequences = (List<Integer>) options.operations ?: []
-      def mpr = null
-      if (operationSequences) {
-        // Reverse the order to uncover any sorting issues in the test programs or app code.
-        operationSequences.sort { a, b -> b <=> a }
-        if (options.masterRouting) {
-          // A master routing is needed.
-          mpr = new MasterRouting(routing: "${options.masterRouting}$id")
-          for (sequence in operationSequences) {
-            def operation = new MasterOperation(sequence: sequence, title: "Oper $sequence $id")
-            mpr.operations << operation
-          }
-          mpr.save()
-        }
-      }
-      Product product = null
+      try {
+        def nOrders = options.nOrders ?: 1
+        def id = options.id ? "-${options.id}" : ''
+        def lotSize = (BigDecimal) options.lotSize ?: 1.0
+        def qty = (BigDecimal) options.qty ?: 1.0
+        def lsnTrackingOption = (LSNTrackingOption) options.lsnTrackingOption ?: LSNTrackingOption.ORDER_ONLY
+        def lsnSequence = (LSNSequence) options.lsnSequence
 
-      if (operationSequences || lsnTrackingOption != LSNTrackingOption.ORDER_ONLY) {
-        // Only need a product for a routing and non-default LSN Tracking Options.
-        product = new Product(product: "PC$id", lotSize: lotSize,
-                              lsnTrackingOption: lsnTrackingOption,
-                              lsnSequence: lsnSequence)
+        // Create the product we need
+        List<Integer> operationSequences = (List<Integer>) options.operations ?: []
+        def mpr = null
         if (operationSequences) {
-          // A product-specific routing is needed.
-          for (sequence in operationSequences) {
-            product.operations << new ProductOperation(sequence: sequence, title: "Oper $sequence $id")
+          // Reverse the order to uncover any sorting issues in the test programs or app code.
+          operationSequences.sort { a, b -> b <=> a }
+          if (options.masterRouting) {
+            // A master routing is needed.
+            mpr = new MasterRouting(routing: "${options.masterRouting}$id")
+            for (sequence in operationSequences) {
+              def operation = new MasterOperation(sequence: sequence, title: "Oper $sequence $id")
+              mpr.operations << operation
+            }
+            mpr.save()
           }
+        }
+        Product product = null
 
+        if (operationSequences || lsnTrackingOption != LSNTrackingOption.ORDER_ONLY) {
+          // Only need a product for a routing and non-default LSN Tracking Options.
+          product = new Product(product: "PC$id", lotSize: lotSize,
+                                lsnTrackingOption: lsnTrackingOption,
+                                lsnSequence: lsnSequence)
+          if (operationSequences) {
+            // A product-specific routing is needed.
+            for (sequence in operationSequences) {
+              product.operations << new ProductOperation(sequence: sequence, title: "Oper $sequence $id")
+            }
+
+          }
+          product.masterRouting = mpr
+          product.save()
         }
-        product.masterRouting = mpr
-        product.save()
-      }
-      def orderService = new OrderService()
-      def seq = 1000
-      (1..nOrders).each {
-        def order = new Order(order: "M$seq$id", product: product, qtyToBuild: qty).save()
-        for (lsnBase in options?.lsns) {
-          def lsnSuffix = nOrders > 1 ? "$nOrders" : ''
-          order.lsns << new LSN(lsn: "$lsnBase$id$lsnSuffix")
+        def orderService = new OrderService()
+        def seq = 1000
+        (1..nOrders).each {
+          def order = new Order(order: "M$seq$id", product: product, qtyToBuild: qty).save()
+          for (lsnBase in options?.lsns) {
+            def lsnSuffix = nOrders > 1 ? "$nOrders" : ''
+            order.lsns << new LSN(lsn: "$lsnBase$id$lsnSuffix")
+          }
+          orderService.release(new OrderReleaseRequest(order))
+          seq++
+          list << order
         }
-        orderService.release(new OrderReleaseRequest(order))
-        seq++
-        list << order
+      } finally {
+        clearLoginUser()
       }
-    } finally {
-      clearLoginUser()
     }
 
     return list

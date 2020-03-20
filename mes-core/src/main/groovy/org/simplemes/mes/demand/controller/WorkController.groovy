@@ -1,15 +1,18 @@
 package org.simplemes.mes.demand.controller
 
-
 import groovy.util.logging.Slf4j
 import io.micronaut.http.HttpResponse
+import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
+import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.Produces
 import io.micronaut.security.annotation.Secured
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.controller.BaseController
 import org.simplemes.eframe.controller.ControllerUtils
+import org.simplemes.eframe.controller.StandardModelAndView
 import org.simplemes.mes.demand.CompleteRequest
 import org.simplemes.mes.demand.StartRequest
 import org.simplemes.mes.demand.domain.Order
@@ -40,6 +43,8 @@ class WorkController extends BaseController {
   /**
    * Handle start WorkService requests.  The parameters/content matches the fields of the request object
    * {@link org.simplemes.mes.demand.StartRequest}.
+   * <p>
+   * <b>Response</b>: JSON list {@link org.simplemes.mes.demand.StartResponse}
    */
   @Post('/start')
   HttpResponse start(@Body String body, @Nullable Principal principal) {
@@ -55,10 +60,15 @@ class WorkController extends BaseController {
   }
 
   /**
-   * The start activity for the dashboard.
+   * Displays the core start activity page.
+   * @param request The request.
+   * @param principal The user logged in.
+   * @return The model/view to display.
    */
-  def startActivity() {
-    // TODO: Impl the activities.
+  @Get("/startActivity")
+  @Produces(MediaType.TEXT_HTML)
+  StandardModelAndView startActivity(@Nullable Principal principal) {
+    return new StandardModelAndView("demand/work/start", principal, this)
   }
 
   /**

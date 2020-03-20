@@ -29,13 +29,14 @@ ${variable}.handleChangeWorkCenter = function() {
   });
 }
 ${variable}.orderLSNChangeByUser = function(newValue) {
-  console.log('changed '+newValue);
+  //console.log('changed '+newValue);
   var list = [{order: newValue}];
   dashboard.sendEvent({type: 'ORDER_LSN_CHANGED',source: "/selection/workCenterSelection",  list: list});
 }
 ${variable}.provideParameters = function() {
   var wc= document.getElementById("workCenter").innerText;
   var order= document.getElementById("order").value;
+  //console.log(wc+order);
   return {
     workCenter: wc, order: order
   }
