@@ -38,6 +38,7 @@ NOTE: This function uses the <<postAjaxForm>> method from the <<eframe-js>> libr
                            This function is passed a single argument (the response text).
 |===
 
+==== Examples
 
 [source,html]
 .Example - Simple Dashboard Activity Form Submit
@@ -61,3 +62,21 @@ Server-side errors and other messages are displayed in the standard message loca
 link:guide.html#message-display[location^] icon:share-square-o[role="link-blue"].
 This function also detects link:guide.html#undo[Undo^] icon:share-square-o[role="link-blue"]
 actions a registers them with the dashboard.
+
+===== postActivity() Success Handler Example
+
+[source,javascript]
+.Example - postActivity with Success Handler
+----
+  var startRequest = {barcode: order};
+  dashboard.postActivity(startRequest,'/work/start',undefined,{success: function(response) { // <.>
+    var json = JSON.parse(response);
+    var order = json[0].order;   // <.>
+    var qty = json[0].qty;
+    var msg = ef.lookup('started.message',order,qty);
+    ef.displayMessage(msg);
+  }});
+----
+<.> The response is JSON text.
+<.> The response is the JSON form for a List of POGO's.
+

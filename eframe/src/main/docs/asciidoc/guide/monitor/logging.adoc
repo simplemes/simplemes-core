@@ -8,6 +8,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Dynamic Logging Configuration>>#
 [inline-toc]#<<Stack Trace Logging>>#
 [inline-toc]#<<Javascript Client Logging>>#
+[inline-toc]#<<Useful Logging Settings>>#
 endif::[]
 
 Logging is a key part of monitoring and diagnosing enterprise applications.
