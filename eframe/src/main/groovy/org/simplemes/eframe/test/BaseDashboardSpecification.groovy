@@ -180,6 +180,7 @@ class BaseDashboardSpecification extends BaseGUISpecification {
 
   /**
    * Navigates to the dashboard page with the given dashboard.
+   * See {@link BaseDashboardSpecification#displayDashboard(java.util.Map)} for details.
    * @param dashboard The dashboard config to navigate to (<b>Default</b>: '_TEST').
    */
   void displayDashboard(String dashboard = '_TEST') {
@@ -194,7 +195,9 @@ class BaseDashboardSpecification extends BaseGUISpecification {
    *   <li><b>page</b> - The dashboard GEB page object to use.  Should be a sub-class of DashboardPage (<b>Default</b>: DashboardPage). </li>
    *   <li><b>(other options)</b> - Passed as URL parameters to the dashboard. </li>
    * </ul>
-
+   *
+   * <b>Note</b>: This method will wait until all pending panels are finished loading.
+   *
    * @param options Supported options: dashboard - the dashboard nameThe dashboard config to navigate to (<b>Default</b>: '_TEST').
    */
   void displayDashboard(Map options) {
@@ -210,6 +213,10 @@ class BaseDashboardSpecification extends BaseGUISpecification {
 
     login()
     to options, page
+    waitFor {
+      def count = driver.executeScript("return dashboard._getLoadingPanelCount()")
+      return count == 0
+    }
   }
 
 

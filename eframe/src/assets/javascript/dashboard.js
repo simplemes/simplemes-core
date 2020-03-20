@@ -44,6 +44,7 @@ ef.dashboard = function () {
   var eventStack = [];          // A list of the last 8 events.  Used for testing only.
   var cachedActivities = {};    // The cached activities that don't need to be reloaded from the server.
   var displacedActivities = {}; // A holder for temporarily displaced activities that are displaced by non-GUI activities.
+  var loadingPanels = 0;        // The current number of panels being loaded.
 
   // Constants
   var ATTRIBUTE_PANEL_INDEX = 'panel-index';      // The attribute name of the panel index (name)
@@ -390,6 +391,10 @@ ef.dashboard = function () {
       }
       return extraParams;
     },
+    // Returns the number of panels still being loaded.  used only for GUI tests.
+    _getLoadingPanelCount: function () {
+      return loadingPanels;
+    },
     // Handles the missing parameter exception dialog display.
     _handleMPEDialog: function (msg) {
       //console.log(msg);
@@ -512,6 +517,7 @@ ef.dashboard = function () {
             window[sharedVarName] = originalVariable;
             displacedActivities[sharedVarName] = undefined;
           }
+          loadingPanels--;
         };
 
         var src = cachedActivities[dashboard._stringAfter(url, '&_pageSrc=')];
@@ -520,6 +526,7 @@ ef.dashboard = function () {
           //console.log('Using value from cache for url: '+url);
           loadFunction(src);
         } else {
+          loadingPanels++;
           ef.get(url, {}, loadFunction);
         }
       }
