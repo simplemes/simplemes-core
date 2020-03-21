@@ -1,6 +1,7 @@
 package org.simplemes.mes.demand.page
 
-import org.simplemes.eframe.test.page.AbstractShowPage
+
+import org.simplemes.eframe.test.page.DashboardPage
 import org.simplemes.eframe.test.page.TextFieldModule
 
 /*
@@ -13,13 +14,11 @@ import org.simplemes.eframe.test.page.TextFieldModule
  * The page definition for a dashboard with the standard work center selection page.
  */
 @SuppressWarnings("unused")
-class WorkCenterSelectionDashboardPage extends AbstractShowPage {
-
-  static url = "/dashboard"
-  static at = { title.contains(lookup('dashboard.label')) }
+class WorkCenterSelectionDashboardPage extends DashboardPage {
 
   static content = {
     orderLSNField { module(new TextFieldModule(field: 'order')) }
   }
 
 }
+

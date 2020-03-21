@@ -148,7 +148,7 @@ class WorkCenterSelectionGUISpec extends BaseDashboardSpecification {
 
 
     and: 'the display parameters activity is displayed'
-    clickButton(0)
+    clickDashboardButton(0)
     waitForCompletion()
 
     then: 'the parameter is displayed with the correct values - current work center value'

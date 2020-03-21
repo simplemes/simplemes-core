@@ -12,12 +12,15 @@
     }
     if (order) {
       var startRequest = {barcode: order};
-      dashboard.postActivity(startRequest,'/work/start',undefined,{success: function(response) {
+      dashboard.postActivity(startRequest,'/work/start','${params._panel}',{success: function(response) {
         var json = JSON.parse(response);
         var order = json[0].order;
         var qty = json[0].qty;
         var msg = ef.lookup('started.message',order,qty);
         ef.displayMessage(msg);
+        var list = [{order: order}];
+        var event = {type: 'ORDER_LSN_STATUS_CHANGED', source: '/work/startActivity', list: list};
+        dashboard.sendEvent(event);
       }});
     } else {
       ef.displayMessage({error: ef.lookup('orderLSN.missing.message')});
