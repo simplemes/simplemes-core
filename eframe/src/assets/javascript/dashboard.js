@@ -107,9 +107,6 @@ ef.dashboard = function () {
         }
       }
       var panelName = map.panel;
-      if (panelName == undefined) {
-        return;
-      }
       if (!this._validatePanelIndex(panelName, 'finished()')) {
         return;
       }

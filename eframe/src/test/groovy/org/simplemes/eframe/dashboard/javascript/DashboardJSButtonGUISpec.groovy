@@ -92,12 +92,101 @@ class DashboardJSButtonGUISpec extends BaseDashboardSpecification {
     panel('C').text().contains('Content C')
   }
 
+  def "verify that one button with two gui activities work in sequence"() {
+    given: 'a dashboard with two activities on a button'
+    def guiActivity = '''
+    <script>
+      <@efForm id="logFailure" dashboard="buttonHolder">  
+        <@efField field="serial1" value="RMA1001" width=20/>
+          <@efButtonGroup>
+            <@efButton id="DONE" label="Done" click="dashboard.finished({panel: '${params._panel}',info: 'Finished1'});"/>
+          </@efButtonGroup>
+      </@efForm>
+    </script>
+    '''
+    def guiActivity2 = '''
+    <script>
+      <@efForm id="logFailure" dashboard="buttonHolder">  
+        <@efField field="serial2" value="RMA1002" width=20/>
+          <@efButtonGroup>
+            <@efButton id="DONE" label="Done" click="dashboard.finished({panel: '${params._panel}',info: 'Finished1'});"/>
+          </@efButtonGroup>
+      </@efForm>
+    </script>
+    '''
+    buildDashboard(defaults: [BUTTON_PANEL], buttons: [[guiActivity, guiActivity2]])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+    clickDashboardButton(0)
+    waitForCompletion()
+
+    then: 'the GUI activity is displayed in the second panel'
+    panel('A').text().contains('serial1')
+
+    when: 'the activity is finished'
+    clickButton('DONE')
+    waitForPanelsToLoad()
+
+    then: 'the second GUI activity is displayed'
+    panel('A').text().contains('serial2')
+
+    when: 'the activity is finished'
+    clickButton('DONE')
+    waitForPanelsToLoad()
+
+    then: 'the original activity is re-displayed'
+    isButtonPanelDisplayed()
+  }
+
+  def "verify that one button with non-gui and gui activities work in sequence"() {
+    given: 'a dashboard with two activities on a button'
+    def guiActivity = '''
+    <script>
+      <@efForm id="logFailure" dashboard="buttonHolder">  
+        <@efField field="serial1" value="RMA1001" width=20/>
+          <@efButtonGroup>
+            <@efButton id="DONE" label="Done" click="dashboard.finished({panel: '${params._panel}',info: 'Finished1'});"/>
+          </@efButtonGroup>
+      </@efForm>
+    </script>
+    '''
+    def nonGUIActivity = '''<script>
+      ${params._variable}.execute =  function() {
+        ef.displayMessage({info: 'Finished Non-GUI'});
+        dashboard.finished('${params._panel}');
+      }
+    </script>  
+    '''
+    buildDashboard(defaults: [BUTTON_PANEL], buttons: [[nonGUIActivity, guiActivity]])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+    clickDashboardButton(0)
+    waitForCompletion()
+
+    then: 'the non-GUI activity is finished'
+    messages.text.contains('Finished Non-GUI')
+
+    and: 'the next GUI activity is displayed'
+    panel('A').text().contains('serial1')
+
+    when: 'the activity is finished'
+    clickButton('DONE')
+    waitForPanelsToLoad()
+
+    then: 'the original activity is re-displayed'
+    isButtonPanelDisplayed()
+  }
+
   def "verify that one button with non-gui activity works and does not affect the displayed panel"() {
     given: 'a dashboard with 1 non-gui activity'
     def activity = '''
       <script>
-        ef.displayMessage({info: "Non-GUI Message"});
-        dashboard.finished("${params._panel}");
+        ${params._variable}.execute =  function() {
+          ef.displayMessage({info: 'Non-GUI Message'});
+          dashboard.finished('${params._panel}');
+        }
       </script>
     '''
     buildDashboard(defaults: [BUTTON_PANEL, 'Content B'], buttons: [activity, 'Other GUI Activity'])
@@ -146,16 +235,20 @@ class DashboardJSButtonGUISpec extends BaseDashboardSpecification {
     given: 'a dashboard with two activities - one to display call clickButton and another to respond to the clickButton'
     def activity1 = '''
       <script>
-        dashboard.finished("${params._panel}");
-        ef.displayMessage({info: 'Finished1'});
-        dashboard.clickButton('B1');
-        ef.displayMessage({info: 'Click2'});
+        ${params._variable}.execute =  function() {
+          dashboard.finished("${params._panel}");
+          ef.displayMessage({info: 'Finished1'});
+          dashboard.clickButton('B1');
+          ef.displayMessage({info: 'Click2'});
+        }
       </script>
     '''
     def activity2 = '''
       <script>
-        ef.displayMessage({info: "Non-GUI Message"});
-        dashboard.finished("${params._panel}");
+        ${params._variable}.execute =  function() {
+          ef.displayMessage({info: "Non-GUI Message"});
+          dashboard.finished("${params._panel}");
+        }
       </script>
     '''
     buildDashboard(defaults: [BUTTON_PANEL, 'Content B'], buttons: [activity1, activity2])

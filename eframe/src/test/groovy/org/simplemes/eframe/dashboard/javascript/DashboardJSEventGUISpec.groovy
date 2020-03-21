@@ -38,8 +38,10 @@ class DashboardJSEventGUISpec extends BaseDashboardSpecification {
     '''
     def sendEventActivity = '''
       <script>
-        dashboard.sendEvent({type: 'ABC',otherField: 'XYZZY'});
-        dashboard.finished("${params._panel}");
+        ${params._variable}.execute =  function() {
+          dashboard.sendEvent({type: 'ABC',otherField: 'XYZZY'});
+          dashboard.finished("${params._panel}");
+        }
       </script>
     '''
     buildDashboard(defaults: [handlerActivity, 'No Content'], buttons: [sendEventActivity])
@@ -80,8 +82,10 @@ class DashboardJSEventGUISpec extends BaseDashboardSpecification {
     '''
     def activity = '''
       <script>
-        ef.displayMessage({info: 'Work Center: ${params.workCenter}'});
-        dashboard.finished("${params._panel}");
+        ${params._variable}.execute =  function() {
+          ef.displayMessage({info: 'Work Center: ${params.workCenter}'});
+          dashboard.finished("${params._panel}");
+        }
       </script>
     '''
     buildDashboard(defaults: [providerActivity, 'No Content'], buttons: [activity])
@@ -145,8 +149,10 @@ class DashboardJSEventGUISpec extends BaseDashboardSpecification {
     '''
     def buttonActivity = '''
       <script>
-        ef.displayMessage({info: 'Work Center: ${params.workCenter}, Order: ${params.order}'});
-        dashboard.finished("${params._panel}");
+        ${params._variable}.execute =  function() {
+          ef.displayMessage({info: 'Work Center: ${params.workCenter}, Order: ${params.order}'});
+          dashboard.finished("${params._panel}");
+        }
       </script>
     '''
     buildDashboard(defaults: [providerActivity1, providerActivity2], buttons: [buttonActivity])

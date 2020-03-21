@@ -48,9 +48,18 @@ class BaseDashboardSpecification extends BaseGUISpecification {
         <@efField field="order" label="Order/LSN" value="M1008" width=20 labelWidth='35%'>
           <@efButton type='undo' id="undoButton" tooltip='undo.title' click='dashboard.undoAction();'/>
         </@efField>
+        <@efField field="buttonPanel" label="Button Panel"width=20 labelWidth='35%'/>
       </@efForm>
     </script>
   '''
+
+  /**
+   * Returns true if the test BUTTON_PANEL is displayed (somewhere).
+   * @return True if displayed.
+   */
+  boolean isButtonPanelDisplayed() {
+    return $('#buttonPanel').displayed
+  }
 
   @SuppressWarnings("unused")
   static dirtyDomains = [DashboardConfig]
@@ -107,19 +116,7 @@ class BaseDashboardSpecification extends BaseGUISpecification {
     if (options.buttons) {
       def id = 0
       for (buttonContent in options.buttons) {
-        if (buttonContent instanceof Map) {
-          //def buttons = [[label: 'b10', url: '/page10', panel: 'A', title: 'title10', css: 'caution-button', size: 1.2, buttonID: 'B10']]
-          buttonContent.url = buildActivity((String) buttonContent.url, "B$id")
-          if (!buttonContent.label) {
-            buttonContent.label = "B$id"
-          }
-          buttons << buttonContent
-        } else {
-          // A simple string is the content itself.
-          //def buttons = [[label: 'b10', url: '/page10', panel: 'A', title: 'title10', css: 'caution-button', size: 1.2, buttonID: 'B10']]
-          def content = buildActivity((String) buttonContent, "B$id")
-          buttons << [label: "B${id}", url: content, panel: buttonActionPanel, buttonID: "B$id"]
-        }
+        buttons << buildButton(buttonContent, buttonActionPanel, "B$id", 0)
         id++
       }
     }
@@ -149,6 +146,45 @@ class BaseDashboardSpecification extends BaseGUISpecification {
     // Needs a dynamic activity defined for this request.
     DashboardTestController.setMemoryPages(page, activity)
     return "/test/dashboard/memory?page=$page"
+  }
+
+  /**
+   * Builds the button activities based on the inputs.
+   *
+   * @param buttonContent The content.  Can be a Map/List/String.
+   * @param buttonActionPanel The panel this button activity should execute in.
+   * @param id The ID of the button.
+   * @param sequence The sequence for the button.
+   * @return A single button definition (Map/List of Maps).
+   */
+  protected Object buildButton(Object buttonContent, String buttonActionPanel, String id, int sequence) {
+    // Make a unique activity ID so we can serve up multiple pages from memory in the DashboardTestController.
+    def activityID = id
+    if (sequence) {
+      activityID = "${activityID}_$sequence"
+    }
+
+    if (buttonContent instanceof Map) {
+      //def buttons = [[label: 'b10', url: '/page10', panel: 'A', title: 'title10', css: 'caution-button', size: 1.2, buttonID: 'B10']]
+      buttonContent.url = buildActivity((String) buttonContent.url, activityID)
+      if (!buttonContent.label) {
+        buttonContent.label = id
+      }
+      return buttonContent
+    } else if (buttonContent instanceof List) {
+      def buttons = []
+      int buttonSequence = 0
+      for (b in buttonContent) {
+        buttons << buildButton(b, buttonActionPanel, id, buttonSequence)
+        buttonSequence++
+      }
+      return buttons
+    } else {
+      // A simple string is the content itself.
+      //def buttons = [[label: 'b10', url: '/page10', panel: 'A', title: 'title10', css: 'caution-button', size: 1.2, buttonID: 'B10']]
+      def content = buildActivity((String) buttonContent, activityID)
+      return [label: id, url: content, panel: buttonActionPanel, buttonID: id]
+    }
   }
 
   /**
@@ -213,6 +249,13 @@ class BaseDashboardSpecification extends BaseGUISpecification {
 
     login()
     to options, page
+    waitForPanelsToLoad()
+  }
+
+  /**
+   * Waits for any outstanding panels to finish loading.
+   */
+  void waitForPanelsToLoad() {
     waitFor {
       def count = driver.executeScript("return dashboard._getLoadingPanelCount()")
       return count == 0

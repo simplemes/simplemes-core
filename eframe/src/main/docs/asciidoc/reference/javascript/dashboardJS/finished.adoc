@@ -23,7 +23,8 @@ The parameters supported by the function are:
 
 The `status` can contain a javascript object (map) with these elements for various options upon completion of the activity:
 
-* `panel` - This panel (name) is passed to your page as an HTTP parameter `_panel`.  (*Required* - String)
+* `panel` - This panel (name) is passed to your page as an HTTP parameter `_panel`.
+            If _undefined_, then only the messages are displayed.
 * `info` - A simple text message or array of info messages, shown as a blue non-error information message.
 * `warn` - A simple text message or array of warning messages, shown as a yellow warning message.
 * `error` - A simple error message or array of error messages, shown as a red error message.

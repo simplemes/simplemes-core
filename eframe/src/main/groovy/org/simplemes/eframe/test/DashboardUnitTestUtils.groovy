@@ -49,10 +49,22 @@ class DashboardUnitTestUtils {
     }
     // Now, create the buttons (if any)
     for (button in buttons) {
-      // Must handle child Map separately since in functional (GEB) test mode, the child activities are not saved.
-      //button.activities = null
-      def dashboardButton = new DashboardButton(button)
-      dashboardConfig.buttons << dashboardButton
+      if (button instanceof Map) {
+        // Must handle child Map separately since in functional (GEB) test mode, the child activities are not saved.
+        def dashboardButton = new DashboardButton(button)
+        dashboardConfig.buttons << dashboardButton
+      } else if (button instanceof List) {
+        // Multiple activities on one button.  Save them as a new record in button list with the same ID.
+        int sequence = 1
+        List<Map> list = button
+        for (activity in list) {
+          // Must handle child Map separately since in functional (GEB) test mode, the child activities are not saved.
+          activity.sequence = activity.sequence ?: sequence
+          def dashboardButton = new DashboardButton(activity)
+          dashboardConfig.buttons << dashboardButton
+          sequence++
+        }
+      }
     }
 
     dashboardConfig.save()

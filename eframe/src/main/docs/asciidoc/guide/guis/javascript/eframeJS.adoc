@@ -15,6 +15,7 @@ link:reference.html#eframe-js[eframe.js^] icon:share-square-o[role="link-blue"] 
 Some important functions are:
 
 * link:reference.html#display-dialog[displayDialog^] icon:share-square-o[role="link-blue"]
+* link:reference.html#eframe-display-message[displayMessage^] icon:share-square-o[role="link-blue"]
 * link:reference.html#display-question-dialog[displayQuestionDialog^] icon:share-square-o[role="link-blue"]
 * link:reference.html#displaytextfielddialog[displayTextFieldDialog^] icon:share-square-o[role="link-blue"]
 * link:reference.html#eframe-lookup[lookup^] icon:share-square-o[role="link-blue"]

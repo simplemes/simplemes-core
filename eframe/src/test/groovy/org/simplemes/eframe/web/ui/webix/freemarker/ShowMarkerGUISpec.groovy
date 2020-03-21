@@ -220,7 +220,7 @@ class ShowMarkerGUISpec extends BaseGUISpecification {
     def msg = GlobalUtils.lookup('deleted.message', null, domainName, s)
 
     messages.text() == msg
-    messages.find('div').classes().contains('info-message')
+    messages.info
   }
 
   def "verify that the delete fails gracefully when the record cannot be found"() {
@@ -255,8 +255,8 @@ class ShowMarkerGUISpec extends BaseGUISpecification {
 
     and: 'the error message is displayed'
     def msg = GlobalUtils.lookup('error.105.message', null, allFieldsDomain.uuid)
-    messages.text() == msg
-    messages.find('div').classes().contains('error-message')
+    messages.text == msg
+    messages.isError()
   }
 
   def "verify that the delete dialog can be canceled"() {

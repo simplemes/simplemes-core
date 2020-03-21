@@ -7,6 +7,8 @@ Create ListWidget -> DefinitionListWidget
 
 Micronaut Data Conversion Tasks
 ===============================
+Test with locale=DE.  Fails in CRUDGUITester.  Update 'GUI Language Testing' .adoc for any changes.
+  Issue with GlobalUtils.lookup() from the test thread (e.g. lookup() in spec).
 Undo workarounds that were fixed (323, 264).
   https://github.com/micronaut-projects/micronaut-data/issues/323
 Add workaround for update failure: 299.  Remove sop.

@@ -1,13 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test.page
 
 import geb.Page
 import org.simplemes.eframe.i18n.GlobalUtils
-
-/*
- * Copyright Michael Houston. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * The general base class for all pages tested in the framework.
@@ -23,7 +21,7 @@ import org.simplemes.eframe.i18n.GlobalUtils
  * <p/>
  * This page defines these content sections:
  * <ul>
- *   <li><b>message</b> - The error/info/warning message section.</li>
+ *   <li><b>messages</b> - The error/info/warning message section.  See {@link MessagesModule} for details.</li>
  *   <li><b>button</b> - A parameterized generic toolkit button (e.g. button('BUTTON').click()).  Supports clicked() and text() methods.</li>
  *   <li><b>toggleConfigButtons</b> - The main button to toggle configuration buttons on a page.</li>
  *   <li><b>logoutButton</b> - The logout button.</li>
@@ -36,7 +34,7 @@ class AbstractPage extends Page {
    * The page content available for this page.  See above.
    */
   static content = {
-    messages { $("div#messages") }
+    messages { module(new MessagesModule(divID: 'messages')) }
     button { id -> $('div.webix_el_button', view_id: id) }
     buttonTooltip { id -> $('div.webix_el_button', view_id: id).find('div').@title }
     textField { id -> module(new TextFieldModule(field: id)) }

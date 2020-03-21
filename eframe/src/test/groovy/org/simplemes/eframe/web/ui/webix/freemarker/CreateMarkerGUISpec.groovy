@@ -131,7 +131,7 @@ class CreateMarkerGUISpec extends BaseGUISpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(messages.text(), ['count', '-237'])
 
     and: 'the message is displayed with the right class'
-    messages.find('div').classes().contains('error-message')
+    messages.isError()
 
     and: 'the bad field has the focus'
     sendKey('888')

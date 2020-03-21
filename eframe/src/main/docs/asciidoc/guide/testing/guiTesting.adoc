@@ -384,8 +384,44 @@ Some of the supported modules include:
 * link:groovydoc/org/simplemes/eframe/test/page/DefinitionListModule.html[DefinitionListModule^] icon:share-square-o[role="link-blue"]
 * link:groovydoc/org/simplemes/eframe/test/page/DialogModule.html[DialogModule^] icon:share-square-o[role="link-blue"]
 * link:groovydoc/org/simplemes/eframe/test/page/GridModule.html[GridModule^] icon:share-square-o[role="link-blue"]
+* link:groovydoc/org/simplemes/eframe/test/page/MessagesModule.html[MessagesModule^] icon:share-square-o[role="link-blue"]
 * link:groovydoc/org/simplemes/eframe/test/page/ReadOnlyFieldModule.html[ReadOnlyFieldModule^] icon:share-square-o[role="link-blue"]
 * link:groovydoc/org/simplemes/eframe/test/page/TextFieldModule.html[TextFieldModule^] icon:share-square-o[role="link-blue"]
+
+===== Testing Messages Area using GEB
+
+Many pages will display some sort of message using the Javascript function
+link:reference.html#eframe-display-message[displayMessage^] icon:share-square-o[role="link-blue"].
+This is displayed in a standard `<div id="messages"">` section at the top of the page.
+To make testing easier, the standard
+link:groovydoc/org/simplemes/eframe/test/page/AbstractPage.html[AbstractPage^] icon:share-square-o[role="link-blue"]
+defines a `messages` content element as a
+link:groovydoc/org/simplemes/eframe/test/page/MessagesModule.html[MessagesModule^] icon:share-square-o[role="link-blue"].
+
+This `messages` content element can be used to test the content of the message and type:
+
+
+[source,groovy]
+.Example - Checking GUI Messages
+----
+
+to SomePage    // <.>
+
+then: 'the error messages are displayed'
+messages.text() == lookup('error.message')
+messages.isEerror()                         // <.>
+messages.error                              // <.>
+
+----
+<.> Some page is displayed that is a sub-class of AbstractPage.
+<.> Returns true if any message displayed is an error.
+<.> Alternate groovy property syntax.
+
+
+
+NOTE: You should not use the `messages.error` (`info` or `warn`) checks when multiple messages
+      are displayed. The check will return true if any message is flagged as an error
+      (info or warning).
 
 ===== Using GEB Page Modules Outside of Pages
 

@@ -1,15 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.javascript
 
 
 import org.simplemes.eframe.test.BaseJSSpecification
 import org.simplemes.eframe.test.UnitTestUtils
 import spock.lang.IgnoreIf
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests of the eframe.js displayMessage function.
@@ -42,6 +40,7 @@ class EFrameJSDisplayMessageGUISpec extends BaseJSSpecification {
 
     and: 'the message is displayed with the right class'
     messageClass == 'info-message'
+    messages.info
   }
 
   def "verify that displayMessage works with single map input - all types"() {
@@ -66,6 +65,25 @@ class EFrameJSDisplayMessageGUISpec extends BaseJSSpecification {
     'error'   | 'error-message'
     'warn'    | 'warning-message'
     'warning' | 'warning-message'
+  }
+
+  def "verify that displayMessage works with warning messages"() {
+    given: 'a script to load and display a looked up label'
+    def src = """
+      ef.clearMessages();
+      ef.displayMessage({warn: 'the warning message'});
+    """
+
+    when: 'the JS is executed'
+    execute(src)
+
+    then: 'the info message was displayed correctly'
+    messages.text.contains("the warning message")
+
+    and: 'the message is displayed with the correct severity'
+    messages.warn
+    messages.warning
+
   }
 
   def "verify that displayMessage works array of strings"() {
