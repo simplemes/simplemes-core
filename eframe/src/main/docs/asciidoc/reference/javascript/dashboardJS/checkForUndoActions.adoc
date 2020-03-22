@@ -12,6 +12,8 @@ later execution (if needed).  Each undo action must have the elements: `URI` and
 
 This function is provided in the _dashboard.js_ library.
 
+NOTE: You do not need to call this directly if you use the <<postActivity>> method to send
+      requests to the server.  That method calls this `checkForUndoActions()` for you.
 
 The parameters supported by the function are:
 
@@ -19,7 +21,7 @@ The parameters supported by the function are:
 |===
 |Parameter|Type|Description
 
-|*json*|Object| The response from the request to check.  Typically a JSON object that might have undo actions list (*Required* ).
+|*json*|Object| The response from the request to check.  Typically a parsed JSON object that might have undo actions list (*Required* ).
 |===
 
 
@@ -31,7 +33,7 @@ The parameters supported by the function are:
   ef.post("/production/pass", {'arg1': value},   // <.>
     function (responseText) {  // <.>
       var json = JSON.parse(responseText);
-      dashboard.checkForUndoActions(responseText);                      // <.>
+      dashboard.checkForUndoActions(json);                      // <.>
       dashboard.finished('${params._panel}');
     }
   );

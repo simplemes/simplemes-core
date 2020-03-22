@@ -62,9 +62,19 @@ ef.dashboard = function () {
       // Find a plain list of undoActions, depending on format of the input json.
       var undoActionList = [];
 
-      if (json.hasOwnProperty('undoActions')) {
-        for (var k = 0; k < json.undoActions.length; k++) {
-          undoActionList.push(json.undoActions[k]);
+      // Handle simple object or array as input.
+      if (ef._isPlainObject(json)) {
+        // Convert to array
+        json = [json];
+      }
+
+      for (var i = 0; i < json.length; i++) {
+        var row = json[i];
+        JL().trace(["checkForUndoActions():", row]);
+        if (row.hasOwnProperty('undoActions')) {
+          for (var k = 0; k < row.undoActions.length; k++) {
+            undoActionList.push(row.undoActions[k]);
+          }
         }
       }
 
@@ -205,6 +215,15 @@ ef.dashboard = function () {
       }
     },
     postActivity: function (formOrData, url, panel, options) {
+      // Support options.otherData
+      if (options != undefined) {
+        let map = options.otherData;
+        if (map) {
+          for (var key in map) {
+            url = ef.addArgToURI(url, key, map[key]);
+          }
+        }
+      }
       ef.postAjaxForm(formOrData, url, null,
         function (response) {
           dashboard.finished(panel);
@@ -214,7 +233,6 @@ ef.dashboard = function () {
           }
           dashboard.checkForUndoActions(res);
 
-          // TODO: Support options.otherData
           // Call the success function.
           if (options != undefined) {
             if (options.success) {

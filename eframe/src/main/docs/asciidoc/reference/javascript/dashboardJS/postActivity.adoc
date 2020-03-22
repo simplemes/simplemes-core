@@ -13,6 +13,9 @@ and handle MPE responses.  If there are no errors, then this function will also 
 the <<finished>> method on the given panel.
 
 NOTE: This function uses the <<postAjaxForm>> method from the <<eframe-js>> library.
+      This also calls the <<checkForUndoActions>> method to discover any undo actions
+      in the response.
+
 
 .Parameters
 [cols="1,1,5"]

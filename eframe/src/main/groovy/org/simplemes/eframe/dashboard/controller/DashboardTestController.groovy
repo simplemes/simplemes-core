@@ -256,12 +256,20 @@ final class DashboardTestController extends BaseController {
   HttpResponse start(HttpRequest request, @Nullable Principal principal) {
     String body = request.body.get()
     log.debug("echo() body {}", body)
+    def params = ControllerUtils.instance.convertToMap(request.parameters)
     def startRequest = Holders.objectMapper.readValue(body, StartRequest)
     Integer counter = (Integer) startCounters[startRequest.order] ?: Integer.valueOf(0)
     counter++
     startCounters[startRequest.order] = counter
     def response = new StartResponse(order: startRequest.order, counter: counter)
-    return HttpResponse.status(HttpStatus.OK).body(Holders.objectMapper.writeValueAsString(response))
+    def s
+    if (params.listResponse) {
+      // Wrap the response in a list to simulate multiple response from the server.
+      s = Holders.objectMapper.writeValueAsString([response])
+    } else {
+      s = Holders.objectMapper.writeValueAsString(response)
+    }
+    return HttpResponse.status(HttpStatus.OK).body(s)
   }
 
   /**
