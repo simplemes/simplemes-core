@@ -37,16 +37,14 @@ class DashboardJSUndoGUISpec extends BaseDashboardSpecification {
     displayDashboard()
 
     then: 'the undo button is disabled'
-    undoButton.classes().contains('undo-button-disabled')
-    !undoButton.classes().contains('undo-button')
+    !undoButtonEnabled
 
     when: 'the increment button is pressed'
     clickDashboardButton(0)
     waitForCompletion()
 
     then: 'the undo button is enabled'
-    !undoButton.classes().contains('undo-button-disabled')
-    undoButton.classes().contains('undo-button')
+    undoButtonEnabled
 
     and: 'the counter is correct'
     messages.text().contains('"counter":1')
@@ -56,8 +54,7 @@ class DashboardJSUndoGUISpec extends BaseDashboardSpecification {
     waitForCompletion()
 
     then: 'the undo is disabled again'
-    undoButton.classes().contains('undo-button-disabled')
-    !undoButton.classes().contains('undo-button')
+    !undoButtonEnabled
 
     and: 'the counter is correct'
     messages.text().contains('counter=0')
@@ -84,16 +81,14 @@ class DashboardJSUndoGUISpec extends BaseDashboardSpecification {
     displayDashboard()
 
     then: 'the undo button is disabled'
-    undoButton.classes().contains('undo-button-disabled')
-    !undoButton.classes().contains('undo-button')
+    !undoButtonEnabled
 
     when: 'the increment button is pressed'
     clickDashboardButton(0)
     waitForCompletion()
 
     then: 'the undo button is enabled'
-    !undoButton.classes().contains('undo-button-disabled')
-    undoButton.classes().contains('undo-button')
+    undoButtonEnabled
 
     and: 'the counter is correct'
     messages.text().contains('"counter":1')
@@ -103,8 +98,7 @@ class DashboardJSUndoGUISpec extends BaseDashboardSpecification {
     waitForCompletion()
 
     then: 'the undo is disabled again'
-    undoButton.classes().contains('undo-button-disabled')
-    !undoButton.classes().contains('undo-button')
+    !undoButtonEnabled
 
     and: 'the counter is correct'
     messages.text().contains('counter=0')
@@ -139,8 +133,7 @@ class DashboardJSUndoGUISpec extends BaseDashboardSpecification {
     }
 
     then: 'the undo button is enabled'
-    !undoButton.classes().contains('undo-button-disabled')
-    undoButton.classes().contains('undo-button')
+    undoButtonEnabled
 
     when: 'the undo is triggered 9 times'
     for (count in 1..9) {
@@ -149,8 +142,7 @@ class DashboardJSUndoGUISpec extends BaseDashboardSpecification {
     }
 
     then: 'the undo is disabled again'
-    undoButton.classes().contains('undo-button-disabled')
-    !undoButton.classes().contains('undo-button')
+    !undoButtonEnabled
 
     and: 'the start for orders 1 and 2 are undone'
     !messages.text().contains('ABC_2')

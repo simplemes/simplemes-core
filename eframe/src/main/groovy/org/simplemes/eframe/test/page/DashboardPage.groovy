@@ -1,10 +1,8 @@
-package org.simplemes.eframe.test.page
-
 /*
- * Copyright Michael Houston. All rights reserved.
- * Original Author: mph
- *
-*/
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
+package org.simplemes.eframe.test.page
 
 /**
  * Defines the GEB Page for the framework's standard dashboard page.
@@ -29,6 +27,7 @@ class DashboardPage extends AbstractPage {
   static content = {
     panel { id -> $('div.webix_form', view_id: "Content$id") }
     undoButton { $('#undoButton') }
+    undoButtonEnabled { !$('#undoButton').classes().contains('undo-button-disabled') }
   }
 
   /**
