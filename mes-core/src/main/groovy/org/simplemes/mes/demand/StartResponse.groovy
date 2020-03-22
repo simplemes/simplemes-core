@@ -43,10 +43,18 @@ class StartResponse {
   BigDecimal qty
 
   /**
+   * If false, then no undo actions will be provided.
+   */
+  boolean allowUndo = true
+
+  /**
    * The undo action(s) needed to undo this start.
    */
   List<UndoActionInterface> getUndoActions() {
-    return [new StartUndoAction(this)]
+    if (allowUndo) {
+      return [new StartUndoAction(this)]
+    }
+    return []
   }
 
 }

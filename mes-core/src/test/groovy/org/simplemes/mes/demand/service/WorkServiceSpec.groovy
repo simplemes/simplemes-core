@@ -346,6 +346,9 @@ class WorkServiceSpec extends BaseSpecification {
     UnitTestUtils.dateIsCloseToNow(pl.dateTime)
     UnitTestUtils.compareDates(pl.startDateTime, startTime)
     pl.elapsedTime == 10000
+
+    and: 'the response has no undo actions'
+    reverseStartResponses[0].undoActions.size() == 0
   }
 
   @Rollback

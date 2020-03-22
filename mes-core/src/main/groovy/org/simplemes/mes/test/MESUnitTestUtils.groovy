@@ -96,6 +96,7 @@ class MESUnitTestUtils {
    *   <li><b>operations</b> - A List of operation sequences (Integers).  This list is sorted in reverse order before save().  (<b>Default</b>: No routing)</li>
    *   <li><b>masterRouting</b> - The name of the master routing to create for this order.  Will use the unique ID in the key.  (<b>Default</b>: No routing)</li>
    *   <li><b>qty</b> - The number of pieces to build for each order (<b>Default</b>: 1.0) </li>
+   *   <li><b>qtyInWork</b> - The number of pieces to move to in work (<b>Default</b>: 0.0).  Allows easy testing of inWork orders. </li>
    *   <li><b>lotSize</b> - The size of each LSN created (if configured for LSNs) (<b>Default</b>: 1.0) </li>
    *   <li><b>lsnTrackingOption</b> - Configures the LSN option (<b>Default</b>: LSNTrackingOption.ORDER_ONLY) </li>
    *   <li><b>lsnSequence</b> - The LSN Sequence to use to generate the LSN names (<b>Default</b>: default LSN Sequence) </li>
@@ -122,6 +123,7 @@ class MESUnitTestUtils {
         def id = options.id ? "-${options.id}" : ''
         def lotSize = (BigDecimal) options.lotSize ?: 1.0
         def qty = (BigDecimal) options.qty ?: 1.0
+        def qtyInWork = (BigDecimal) options.qtyInWork
         def lsnTrackingOption = (LSNTrackingOption) options.lsnTrackingOption ?: LSNTrackingOption.ORDER_ONLY
         def lsnSequence = (LSNSequence) options.lsnSequence
 
@@ -169,6 +171,9 @@ class MESUnitTestUtils {
           orderService.release(new OrderReleaseRequest(order))
           seq++
           list << order
+          if (qtyInWork) {
+            forceQtyInWork(order, qtyInWork)
+          }
         }
       } finally {
         clearLoginUser()
@@ -176,6 +181,26 @@ class MESUnitTestUtils {
     }
 
     return list
+  }
+
+  /**
+   * Forces the qtyInQueue to in work for the given order (and LSNs if any).
+   * @param order The order.
+   * @param qtyInWork The qty to take from inQueue and move to in work.  Only moved if the qtyInQueue is large enough.
+   */
+  static void forceQtyInWork(Order order, BigDecimal qtyInWork) {
+    if (order.qtyInQueue >= qtyInWork) {
+      order.qtyInWork += qtyInWork
+      order.qtyInQueue -= qtyInWork
+    }
+    for (lsn in order.lsns) {
+      if (lsn.qtyInQueue >= qtyInWork) {
+        lsn.qtyInWork += qtyInWork
+        lsn.qtyInQueue -= qtyInWork
+      }
+    }
+    // force a second save
+    order.save()
   }
 
   /**

@@ -41,7 +41,7 @@ class StartUndoAction implements UndoActionInterface {
    * @param startResponse The start response this undo action was generated from.
    */
   StartUndoAction(StartResponse startResponse) {
-    infoMsg = GlobalUtils.lookup('reversedStart.message', startResponse.order, startResponse.qty)
+    infoMsg = GlobalUtils.lookup('reversedStart.message', startResponse.order?.order, startResponse.qty)
 
     def startRequest = new StartRequest(order: startResponse.order, qty: startResponse.qty,
                                         operationSequence: startResponse.operationSequence)

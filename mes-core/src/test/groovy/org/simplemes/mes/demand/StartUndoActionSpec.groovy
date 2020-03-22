@@ -31,7 +31,7 @@ class StartUndoActionSpec extends BaseSpecification {
 
     then: 'the values for undo action are correct'
     startUndoAction.URI == '/work/reverseStart?format=json'
-    startUndoAction.infoMsg == GlobalUtils.lookup('reversedStart.message', order, 1.2)
+    startUndoAction.infoMsg == GlobalUtils.lookup('reversedStart.message', order.order, 1.2)
 
     and: 'the JSON is correct'
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(startUndoAction.JSON)}"

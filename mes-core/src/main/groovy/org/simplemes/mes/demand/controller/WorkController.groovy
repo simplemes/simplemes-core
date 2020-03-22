@@ -11,7 +11,6 @@ import io.micronaut.http.annotation.Produces
 import io.micronaut.security.annotation.Secured
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.controller.BaseController
-import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.controller.StandardModelAndView
 import org.simplemes.mes.demand.CompleteRequest
 import org.simplemes.mes.demand.StartRequest
@@ -112,16 +111,15 @@ class WorkController extends BaseController {
   }
 
   /**
-   * The reverse start activity for the dashboard.
+   * Displays the core reverse start activity page.
+   * @param request The request.
+   * @param principal The user logged in.
+   * @return The model/view to display.
    */
-  def reverseStartActivity() {
-  }
-
-  /**
-   * Handle all un-caught exceptions from our controller.
-   */
-  def handleException(Exception e) {
-    ControllerUtils.handleException(this, e)
+  @Get("/reverseStartActivity")
+  @Produces(MediaType.TEXT_HTML)
+  StandardModelAndView reverseStartActivity(@Nullable Principal principal) {
+    return new StandardModelAndView("demand/work/reverseStart", principal, this)
   }
 
 

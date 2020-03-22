@@ -105,7 +105,7 @@ class WorkService {
 
   /**
    * Reverses the start of work on an Order/LSN.  The quantity processed is optional.
-   * This moves the in work qty back to in queue.
+   * This moves the in work qty back to in queue.  No undo actions are supported for this.
    *
    * @param request The start request data itself.  This request is refined by the method
    * {@link org.simplemes.mes.demand.service.ResolveService#resolveProductionRequest}.
@@ -154,7 +154,7 @@ class WorkService {
       plRequest.qtyStarted = qty
       productionLogService.log(plRequest)
 
-      res << new StartResponse(order: order, lsn: lsn, qty: qty)
+      res << new StartResponse(order: order, lsn: lsn, qty: qty, allowUndo: false)
     }
 
     return res
@@ -175,6 +175,7 @@ class WorkService {
    * {@link org.simplemes.mes.demand.service.ResolveService#resolveProductionRequest}.
    * @return The order/LSN(s) that were completed.
    */
+  @SuppressWarnings("AbcMetric")
   List<CompleteResponse> complete(CompleteRequest request) {
     def res = []
     def now = new Date()
