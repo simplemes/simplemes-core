@@ -32,7 +32,7 @@ class WorkListGUISpec extends BaseDashboardSpecification {
     buildDashboard(defaults: ['/workList/workListActivity'])
     List<Order> orders = null
     Order.withTransaction {
-      orders = MESUnitTestUtils.releaseOrders(nOrders: 4)
+      orders = MESUnitTestUtils.releaseOrders(nOrders: 4, spreadQueuedDates: true)
     }
 
     when: 'the dashboard is displayed'
@@ -89,7 +89,7 @@ class WorkListGUISpec extends BaseDashboardSpecification {
     and: 'some orders to select from'
     List<Order> orders = null
     Order.withTransaction {
-      orders = MESUnitTestUtils.releaseOrders(nOrders: 4)
+      orders = MESUnitTestUtils.releaseOrders(nOrders: 4, spreadQueuedDates: true)
     }
 
     when: 'the dashboard is displayed'

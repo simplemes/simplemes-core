@@ -1,8 +1,10 @@
 package org.simplemes.mes.test
 
+import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.mes.demand.LSNTrackingOption
 import org.simplemes.mes.demand.OrderReleaseRequest
+import org.simplemes.mes.demand.WorkStateTrait
 import org.simplemes.mes.demand.domain.LSN
 import org.simplemes.mes.demand.domain.LSNSequence
 import org.simplemes.mes.demand.domain.Order
@@ -86,7 +88,7 @@ class MESUnitTestUtils {
   /**
    * Create and release orders, optionally on a routing with or without LSNs.  
    * <p>
-   * <b>Requires an active transaction</b>.
+   * <b>This method creates a <b>transaction</b> (if needed).</b>.
    *
    * <h3>Options</h3>
    * The options can be:
@@ -101,6 +103,7 @@ class MESUnitTestUtils {
    *   <li><b>lsnTrackingOption</b> - Configures the LSN option (<b>Default</b>: LSNTrackingOption.ORDER_ONLY) </li>
    *   <li><b>lsnSequence</b> - The LSN Sequence to use to generate the LSN names (<b>Default</b>: default LSN Sequence) </li>
    *   <li><b>lsns</b> - A list of LSN names (Strings) to use for the order. LSNs are created using this and the ID and the order # (if needed).  (<b>Default</b>: default LSN Sequence) </li>
+   *   <li><b>spreadQueuedDates</b> - If true, then the dateFirstQueued for all created objects will be spread from a date 14 days ago (+1 second for each).  (<b>Default</b>: false) </li>
    * </ul>
    * <b>Note:</b> If the lsnTrackingOption is LSNTrackingOption.LSN_ONLY, then an LSNSequence is used for the product.
    * <p>
@@ -175,6 +178,9 @@ class MESUnitTestUtils {
             forceQtyInWork(order, qtyInWork)
           }
         }
+        if (options.spreadQueuedDates) {
+          spreadDates(list)
+        }
       } finally {
         clearLoginUser()
       }
@@ -188,7 +194,7 @@ class MESUnitTestUtils {
    * @param order The order.
    * @param qtyInWork The qty to take from inQueue and move to in work.  Only moved if the qtyInQueue is large enough.
    */
-  static void forceQtyInWork(Order order, BigDecimal qtyInWork) {
+  static protected void forceQtyInWork(Order order, BigDecimal qtyInWork) {
     if (order.qtyInQueue >= qtyInWork) {
       order.qtyInWork += qtyInWork
       order.qtyInQueue -= qtyInWork
@@ -207,7 +213,7 @@ class MESUnitTestUtils {
    * Create and release a single order, optionally on a routing with or without LSNs.
    * This is a convenience function that calls {@link #releaseOrders(java.util.Map)}.
    * <p>
-   * <b>Requires an active transaction</b>.
+   * <b>This method creates a <b>transaction</b> (if needed).</b>.
    *
    * @param options See for the {@link #releaseOrders(java.util.Map)} for details.  (<b>Optional</b>)
    * @return The order(s) created and released.
@@ -217,6 +223,48 @@ class MESUnitTestUtils {
     def list = releaseOrders(options)
     return list[0]
   }
+
+  /**
+   * Utility method to set the dates queued/started to a known value for a list of orders/LSNs.
+   * Processes all LSNs in the orders for all possible routing steps.
+   * @param orders The orders to set the dates on.
+   */
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  static protected void spreadDates(List<Order> orders) {
+    def timeStamp = System.currentTimeMillis() - DateUtils.MILLIS_PER_DAY * 14
+    for (order in orders) {
+      timeStamp = setDates(order, timeStamp)
+      for (orderOperState in order.operationStates) {
+        timeStamp = setDates(orderOperState, timeStamp)
+      }
+      for (lsn in order.lsns) {
+        timeStamp = setDates(lsn, timeStamp)
+        for (lsnOperState in lsn.operationStates) {
+          timeStamp = setDates(lsnOperState, timeStamp)
+        }
+      }
+      order.save()
+    }
+  }
+
+  /**
+   * Sets the date queued/started (if already set) to the given timestamp and then increments the timestamp.
+   * @param workState The state object to update.
+   * @param timeStamp The time to set the dates to.
+   * @return The updated timestamp.
+   */
+  static protected long setDates(WorkStateTrait workState, long timeStamp) {
+    if (workState.dateFirstQueued) {
+      workState.dateFirstQueued = new Date(timeStamp)
+      timeStamp += 1001
+    }
+    if (workState.dateFirstStarted) {
+      workState.dateFirstStarted = new Date(timeStamp)
+      timeStamp += 1001
+    }
+    return timeStamp
+  }
+
 
   /**
    * Loads any initial data needed for order release.  Always loads the OrderStatus.
