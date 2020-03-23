@@ -14,12 +14,13 @@ import org.simplemes.eframe.web.undo.UndoActionInterface
 /**
  * Defines the action needed to undo a single start action.
  */
+@SuppressWarnings(["FieldName", "GetterMethodCouldBeProperty"])
 @ToString(includePackage = false, includeNames = true)
 class StartUndoAction implements UndoActionInterface {
   /**
    * The URI to submit the JSON content to in order to undo a previous action.
    */
-  protected String URI = '/work/reverseStart?format=json'
+  protected String URI = '/work/reverseStart'
 
   /**
    * The JSON content to submit in order to undo a previous action.

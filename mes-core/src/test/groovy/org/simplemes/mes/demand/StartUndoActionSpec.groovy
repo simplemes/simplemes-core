@@ -30,7 +30,7 @@ class StartUndoActionSpec extends BaseSpecification {
     //println "startUndoAction = $startUndoAction"
 
     then: 'the values for undo action are correct'
-    startUndoAction.URI == '/work/reverseStart?format=json'
+    startUndoAction.URI == '/work/reverseStart'
     startUndoAction.infoMsg == GlobalUtils.lookup('reversedStart.message', order.order, 1.2)
 
     and: 'the JSON is correct'

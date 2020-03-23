@@ -94,6 +94,18 @@ class WorkController extends BaseController {
   }
 
   /**
+   * Displays the core complete activity page.
+   * @param request The request.
+   * @param principal The user logged in.
+   * @return The model/view to display.
+   */
+  @Get("/completeActivity")
+  @Produces(MediaType.TEXT_HTML)
+  StandardModelAndView completeActivity(@Nullable Principal principal) {
+    return new StandardModelAndView("demand/work/complete", principal, this)
+  }
+
+  /**
    * Handle reverse start WorkService requests.  The parameters/content matches the fields of the request object
    * {@link org.simplemes.mes.demand.StartRequest}.
    */
