@@ -25,7 +25,9 @@ beans (e.g. @Singleton or @Controller) in Java and Groovy in the same module.  T
 Micronaut to create two _'META-INF/services/io.micronaut.inject.BeanDefinitionReference'_ files.
 When the module is used, the run-time logic can't always find the beans from the Java tree.
 
-This means you should avoid defining beans in the Java source tree if you use Groovy for other
+This usually only affects the contents of the .jar file that your module is distributed as.
+
+This means you should never define beans in the Java source tree if you use Groovy for other
 beans. 
 
 
