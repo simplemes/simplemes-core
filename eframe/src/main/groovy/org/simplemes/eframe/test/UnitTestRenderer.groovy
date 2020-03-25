@@ -19,6 +19,7 @@ import org.simplemes.eframe.web.ui.webix.freemarker.MarkerContext
  *   <li><b>source</b> - The .ftl source to expand (<b>Required</b>) </li>
  *   <li><b>controllerClass</b> - The controller used to serve up this page. </li>
  *   <li><b>uri</b> - The URI for this page (<b>Default:</b> based on the controller name). </li>
+ *   <li><b>view</b> - The view the marker is executing in (<b>Default:</b> 'index'). </li>
  *   <li><b>domainObject</b> - The domain object to store in the data model for the marker. </li>
  *   <li><b>errors</b> - The domain object errors to store in the data model for the marker. </li>
  *   <li><b>dataModel</b> - The data model for the marker to use. </li>
@@ -44,6 +45,7 @@ class UnitTestRenderer {
 
     def markerContext = new MarkerContext((Class) options.controllerClass)
     markerContext.uri = uri
+    markerContext.view = options?.view ?: markerContext.view
     Map map = [(StandardModelAndView.MARKER_CONTEXT): markerContext]
 
     if (options.domainObject) {

@@ -20,7 +20,7 @@
     <@efGUISetup/>
     ${head!""}
   <script defer src="/taskMenu" type="text/javascript"></script>
-
+  <@efAddition assets=true/>
 </head>
 <body>
 <form action="logout" method="POST" id="logoutForm" name="logoutForm"></form>

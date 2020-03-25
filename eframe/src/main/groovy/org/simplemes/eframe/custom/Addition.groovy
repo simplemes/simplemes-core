@@ -89,6 +89,23 @@ class AdditionConfiguration {
   }
 
   /**
+   * The list of assets defined for this addition.
+   */
+  List<AdditionAssetConfiguration> assets = []
+
+  /**
+   * Defines a single addition asset.
+   * @param assetClosure The asset configuration.  See {@link AdditionAssetConfiguration}.
+   */
+  void asset(@DelegatesTo(AdditionAssetConfiguration) Closure assetClosure) {
+    def assetConfiguration = new AdditionAssetConfiguration()
+    def code = assetClosure.rehydrate(assetConfiguration, this, this)
+    code.resolveStrategy = Closure.DELEGATE_ONLY
+    code()
+    assets << assetConfiguration
+  }
+
+  /**
    * The addition name.
    */
   void name(String name) {
@@ -271,4 +288,33 @@ class AdditionFieldOrderConfiguration {
    * @param after The field this new field is inserted after.
    */
   void after(String after) { this.after = after }
+}
+
+/**
+ * Defines a single asset addition to page(s).
+ */
+@ToString(includePackage = false, includeNames = true, ignoreNulls = true)
+class AdditionAssetConfiguration {
+  String page
+  String script
+  String css
+
+  /**
+   * The page the asset should be applied to.
+   * @param page The page (e.g. 'dashboard/index', does not include .ftl).
+   */
+  void page(String page) { this.page = page }
+
+  /**
+   * The javascript asset that should be used on the page.
+   * @param script The javascript asset that should be used on the page.
+   */
+  void script(String script) { this.script = script }
+
+  /**
+   * The CSS asset that should be used on the page.
+   * @param css The css asset that should be used on the page.
+   */
+  void css(String css) { this.css = css }
+
 }

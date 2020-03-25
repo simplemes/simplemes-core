@@ -58,6 +58,16 @@ class SampleAddition extends BaseAddition implements AdditionInterface {
       guiHints 'sequence@default="tk.findMaxGridValue(gridName, \'sequence\')+10"' +
                  'product@default="\'P\'+tk.findMaxGridValue(gridName, \'sequence\')+10"'
     }
+
+    // Sample assets added to all pages
+    asset {
+      page "home/index"
+      script "/assets/sample.js"
+    }
+    asset {
+      page "home/index"
+      css "/assets/sample.css"
+    }
   }
 
 }

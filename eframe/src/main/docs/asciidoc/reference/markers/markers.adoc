@@ -2,6 +2,7 @@
 
 ifeval::["{backend}" != "pdf"]
 
+[inline-toc]#<<efAddition>>#
 [inline-toc]#<<efAsset>>#
 [inline-toc]#<<efButton>>#
 [inline-toc]#<<efButtonGroup>>#
@@ -56,6 +57,8 @@ When describing the markers below, we use this terminology:
 
 NOTE: Unless otherwise noted, the body is generally not used.
 
+
+include::efAddition.adoc[]
 
 include::efAsset.adoc[]
 

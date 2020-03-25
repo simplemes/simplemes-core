@@ -16,6 +16,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Encoded Types Provided By Additions>>#
 [inline-toc]#<<Addition Field Extensions>>#
 [inline-toc]#<<Initial Data Loaders and Additions>>#
+[inline-toc]#<<Assets Provided by Additions>>#
 [inline-toc]#<<Addition Errors>>#
 
 endif::[]
@@ -195,6 +196,7 @@ The Addition supports these top-level options:
 |field | Defines a single field added to a domain.  See <<Addition Field Extensions>> (*Optional*).
 |encodedType | One of the <<Encoded Types Provided By Additions>> (*Optional*).
 |initialDataLoader | A class that is the initial data loader.  See <<Initial Data Loaders and Additions>> (*Optional*).
+|asset | An asset needed for a specific page.  See <<Assets Provided by Additions>> (*Optional*).
 |===
 
 
@@ -313,6 +315,44 @@ class SetupRoles {
 <.> Registers this addition within the application context for discovery at runtime.
 <.> Specifies the class that performs the initial data loading.
 <.> Performs the actual initial data loading.
+
+===== Assets Provided by Additions
+
+Some modules have specific client assets (Javascript or CSS files) that are needed on specific
+core pages.  The addition logic lets you add assets to specific views as needed.  These assets are
+added to the page using the <<Standard Header>> include file.
+
+[source,groovy]
+.Addition Example - Assets Provided by Additions
+----
+
+@Singleton                            // <.>
+class SimpleAddition extends BaseAddition implements AdditionInterface {
+  AdditionConfiguration addition = Addition.configure {
+    asset {    // <.>
+      page "dashboard/index"
+      script "/assets/mes_dashboard.js"
+    }
+    asset {    // <.>
+      page "dashboard/index"
+      css "/assets/mes_dashboard.css"
+    }
+  }
+}
+
+----
+<.> Registers this addition within the application context for discovery at runtime.
+<.> Specifies the javascript asset (_mes_dashboard.js_) to add to the page (_dashboard/index.ftl_).
+<.> Specifies the CSS asset (_mes_dashboard.css_) to add to the page (_dashboard/index.ftl_).
+
+The supported types include:
+
+* _script:_  - A Javascript file.
+* _css:_  - A CSS file.
+
+NOTE: The module needs to make sure the asset can be found.  See <<efAsset>> for
+      examples.
+
 
 ===== Addition Errors
 

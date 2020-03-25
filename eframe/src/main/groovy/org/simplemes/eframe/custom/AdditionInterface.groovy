@@ -42,4 +42,11 @@ interface AdditionInterface {
    */
   List<AdditionFieldConfiguration> getFields()
 
+  /**
+   * Returns the assets defined in this addition.
+   *
+   * @return The asset additions.
+   */
+  List<AdditionAssetConfiguration> getAssets()
+
 }

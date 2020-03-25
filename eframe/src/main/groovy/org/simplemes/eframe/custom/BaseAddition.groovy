@@ -46,4 +46,14 @@ abstract class BaseAddition implements AdditionInterface {
   List<AdditionFieldConfiguration> getFields() {
     return addition.fields
   }
+
+  /**
+   * Returns the assets defined in this addition.
+   *
+   * @return The asset additions.
+   */
+  @Override
+  List<AdditionAssetConfiguration> getAssets() {
+    return addition.assets
+  }
 }

@@ -38,6 +38,8 @@ all of your pages should include the standard header:
 <.> The standard header.  Brings in the assets for the framework and the <<GUI Toolkit>>.
 <.> A standard footer (no visible content).
 
+NOTE: This standard header (_header.ftl_) also includes any <<Assets Provided by Additions>>.
+      This is done with the <<efAddition>> marker with the 'assets' option.
 
 ==== Message Display
 

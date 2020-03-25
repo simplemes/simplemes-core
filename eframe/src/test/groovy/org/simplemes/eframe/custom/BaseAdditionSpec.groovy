@@ -114,5 +114,23 @@ class BaseAdditionSpec extends BaseSpecification {
     addition.fields[1].domainClass == SampleChild
   }
 
+  def "verify that getAssets works"() {
+    given: 'the DSL content for the addition'
+    def content = """
+      asset { 
+        page 'dashboard.index'
+        script 'xyz'
+      }
+    """
+
+    when: 'the configuration is generated'
+    AdditionInterface addition = buildAddition(content)
+
+    then: 'the values are correct'
+    addition.assets.size() == 1
+    addition.assets[0].page == 'dashboard.index'
+    addition.assets[0].script == 'xyz'
+  }
+
 
 }

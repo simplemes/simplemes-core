@@ -1,0 +1,11 @@
+==== efAddition
+
+The link:reference.html#efaddition[efAddition^] icon:share-square-o[role="link-blue"] marker
+is a support marker that is used mainly by internal elements such as the <<Standard Header>>.
+Your application-level code will rarely use this marker.  This marker is not
+documented in detail here.  Refer to the groovy doc
+link:groovydoc/org/simplemes/eframe/web/ui/webix/freemarker/AdditionMarker.html[AdditionMarker^]
+icon:share-square-o[role="link-blue"] for details.
+
+WARNING: This marker is subject to change.
+

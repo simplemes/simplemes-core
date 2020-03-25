@@ -164,6 +164,8 @@ jar {
   exclude "application-test.yml"
   exclude "/org/simplemes/eframe/application/Application.class"
   exclude "/sample/**"
+  exclude "/assets/javascript/sample*.*"
+  exclude "/assets/stylesheets/sample*.*"
   exclude "/views/sample/**"
   exclude "/i18n/sample*.*"
 }

@@ -216,6 +216,49 @@ class AdditionSpec extends BaseSpecification {
     'field {name "abc"; domain SampleParent; fieldOrder {after "xyz"} }' | ['field', 'abc', 'name']
   }
 
+  def "verify that asset DSL works - top-level elements"() {
+    def src = """
+    package sample
+    
+    import org.simplemes.eframe.custom.Addition
+    import org.simplemes.eframe.custom.BaseAddition
+    import org.simplemes.eframe.custom.AdditionConfiguration
+    import org.simplemes.eframe.data.format.LongFieldFormat
+    import sample.domain.SampleParent
+    import org.simplemes.eframe.data.format.BasicFieldFormat
+    import org.simplemes.eframe.system.BasicStatus
+    
+    class SimpleAddition extends BaseAddition {
+      AdditionConfiguration addition = Addition.configure {
+        asset {    
+          page "dashboard/index1"
+          script "/assets/mes_dashboard.js"
+        }
+        asset {    
+          page "dashboard/index2"
+          css "/assets/mes_dashboard.css"
+        }
+      }
+    }
+    """
+    def clazz = CompilerTestUtils.compileSource(src)
+
+    when: 'the configuration is generated'
+    AdditionConfiguration addition = clazz.newInstance().addition
+
+    then: 'the top-level values are correct'
+    addition.assets.size() == 2
+
+    and: 'the assets are correct'
+    addition.assets[0].page == 'dashboard/index1'
+    addition.assets[0].script == '/assets/mes_dashboard.js'
+    addition.assets[0].css == null
+    addition.assets[1].page == 'dashboard/index2'
+    addition.assets[1].script == null
+    addition.assets[1].css == '/assets/mes_dashboard.css'
+
+  }
+
   // test validations.  When enforced?
   /*
     fieldConfig has correct types: domainClass name format maxLength valueClass guiHints

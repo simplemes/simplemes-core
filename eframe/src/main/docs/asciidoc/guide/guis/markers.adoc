@@ -12,6 +12,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<pagination-filtering-and-sorting>>#
 
 [inline-toc-header]#Support Elements#
+[inline-toc]#<<efAddition>>#
 [inline-toc]#<<efAsset>>#
 [inline-toc]#<<efGUISetup>>#
 [inline-toc]#<<efHTML>>#
@@ -56,6 +57,8 @@ NOTE: This framework uses the term _Marker_ instead of _Helper_ when referring t
 include::markers/markerOverview.adoc[]
 
 include::markers/efAsset.adoc[]
+
+include::markers/efAddition.adoc[]
 
 include::markers/efButton.adoc[]
 
