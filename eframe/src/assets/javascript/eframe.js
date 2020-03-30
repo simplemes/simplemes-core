@@ -401,6 +401,11 @@ _ef.eframe = function () {
     _getElement: function (id) {
       return document.getElementById(id);
     },
+    // Gets the inner HTML to the given element.
+    _getInnerHTML: function (id, text) {
+      var element = document.getElementById(id);
+      return element.innerHTML;
+    },
     // Gets the member of an object, safely.  Returns '' if not found.  Can get subField too.
     _getMemberSafely: function (obj, field, subField) {
       if (typeof obj === "undefined") {
@@ -497,6 +502,11 @@ _ef.eframe = function () {
       js = js.replace(/<script>/g, "");
       js = js.replace(/<\/script>/g, "");
       return js;
+    },
+    // Sets the inner HTML to the given value on the element.
+    _setInnerHTML: function (id, text) {
+      var element = document.getElementById(id);
+      element.innerHTML = text;
     },
     // Stores a given value in local storage for the current page.
     // The internal storage key is made of the current page with the key appended.
