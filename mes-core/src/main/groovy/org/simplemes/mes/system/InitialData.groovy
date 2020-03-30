@@ -93,8 +93,8 @@ class InitialData {
       DashboardConfig dashboardConfig
       dashboardConfig = new DashboardConfig(dashboard: 'OPERATOR_DEFAULT', category: 'OPERATOR', title: 'Operator')
       dashboardConfig.splitterPanels << new DashboardPanelSplitter(panelIndex: 0, vertical: false)
-      dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 1, defaultURL: '/scan/display', parentPanelIndex: 0)
-      dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 2, defaultURL: '/orderAssy/assemblyScanActivity', parentPanelIndex: 0)
+      dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 1, defaultURL: '/scan/scanActivity', parentPanelIndex: 0)
+      dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 2, defaultURL: '/workList/workListActivity', parentPanelIndex: 0)
       //dashboardConfig.addToButtons(new DashboardButton(label: 'reverseStart.label', url: '/work/reverseStartActivity', panel: 'A',
       //                                                 title: 'reverseStart.title', style: 'font-size:1.0em', buttonID: 'REVERSE_START'))
       dashboardConfig.buttons << new DashboardButton(label: 'complete.label', url: '/work/completeActivity', panel: 'A',

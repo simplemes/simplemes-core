@@ -2,13 +2,16 @@ package org.simplemes.mes.system
 
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.exception.MessageHolder
+import org.simplemes.eframe.i18n.GlobalUtils
+import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
-import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.StartUndoAction
 import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.system.service.ScanService
 import org.simplemes.mes.test.MESUnitTestUtils
+import org.simplemes.mes.tracking.domain.ActionLog
+import org.simplemes.mes.tracking.domain.ProductionLog
 
 /*
  * Copyright Michael Houston 2017. All rights reserved.
@@ -21,7 +24,7 @@ import org.simplemes.mes.test.MESUnitTestUtils
  */
 class ScanServiceSpec extends BaseSpecification {
   @SuppressWarnings("unused")
-  static specNeeds = SERVER
+  static dirtyDomains = [ActionLog, ProductionLog, Order]
 
   /**
    * The scan service being tested.
@@ -31,13 +34,6 @@ class ScanServiceSpec extends BaseSpecification {
   def setup() {
     setCurrentUser()
     service = Holders.getBean(ScanService)
-/*
-    service.resolveService = new ResolveService()
-    service.orderService = new OrderService()
-    service.workService = new WorkService()
-    service.workService.resolveService = service.resolveService
-    service.workService.productionLogService = new ProductionLogService()
-*/
   }
 
   def "test scan with unresolved barcode"() {
@@ -65,11 +61,10 @@ class ScanServiceSpec extends BaseSpecification {
     scanResponse.scanActions[0].button == 'START'
   }
 
-  @Rollback
   def "test scan with order scanned"() {
     given: 'a released order'
-    def order = MESUnitTestUtils.releaseOrder()
-    //Order.findByOrder(order.order)  // Force the order to be read so the service can see it.
+    def order = MESUnitTestUtils.releaseOrder(qty: 1.2)
+    GlobalUtils.defaultLocale = locale
 
     and: 'a scan request'
     def scanRequest = new ScanRequest(barcode: order.order)
@@ -98,11 +93,11 @@ class ScanServiceSpec extends BaseSpecification {
 
     and: 'order was started'
     order.qtyInQueue == 0.0
-    order.qtyInWork == 1.0
+    order.qtyInWork == 1.2
 
     and: 'scan messages indicate the order was started'
     scanResponse.messageHolder.level == MessageHolder.LEVEL_INFO
-    UnitTestUtils.assertContainsAllIgnoreCase(scanResponse.messageHolder.text, [order.order, '1'])
+    scanResponse.messageHolder.text == GlobalUtils.lookup('started.message', order.order, NumberUtils.formatNumber(order.qtyInWork, locale))
 
     and: 'the response has the right undo action'
     scanResponse.undoActions.size() == 1
@@ -110,6 +105,11 @@ class ScanServiceSpec extends BaseSpecification {
     undoAction instanceof StartUndoAction
     UnitTestUtils.assertContainsAllIgnoreCase(undoAction.JSON, [order.order, '1'])
     UnitTestUtils.assertContainsAllIgnoreCase(undoAction.infoMsg, [order.order, '1'])
+
+    where:
+    locale         | _
+    Locale.US      | _
+    Locale.GERMANY | _
   }
 
   def "test parseScan with badly formed internal format - odd number of values - 3"() {

@@ -2,6 +2,7 @@ package org.simplemes.mes.system.service
 
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.ArgumentUtils
+import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.mes.demand.ResolveIDRequest
 import org.simplemes.mes.demand.StartRequest
 import org.simplemes.mes.demand.WorkableInterface
@@ -50,6 +51,11 @@ class ScanService {
    */
   @Inject
   WorkService workService
+
+  /**
+   * The source for actions/events sent back to the client.
+   */
+  public static final String EVENT_SOURCE = 'scanService'
 
   /**
    * The logical element name for a GUI button.  This is used by internal logic for determining what to do with a scan.
@@ -157,14 +163,15 @@ class ScanService {
       // Attempt a start
       def startRequest = new StartRequest(barcode: scanResponse.barcode, order: scanResponse.order,
                                           operationSequence: scanResponse.operationSequence)
-      def startResponse = workService.start(startRequest)
+      def startResponseList = workService.start(startRequest)
+      def startResponse = startResponseList[0]  // Scan can only work with single items for now.
 
       // Add the message to the response
-      def msg = GlobalUtils.lookup('started.message', startResponse.order.order, startResponse.qty)
+      def msg = GlobalUtils.lookup('started.message', startResponse.order.order, NumberUtils.formatNumber(startResponse.qty))
       scanResponse.messageHolder.addInfo(text: msg)
 
       // Let the client know it should refresh the order status.
-      scanResponse.scanActions << new RefreshOrderStatusAction(order: order.order)
+      scanResponse.scanActions << new RefreshOrderStatusAction(order: order.order, source: EVENT_SOURCE)
       qtyInQueue -= startResponse.qty
       qtyInWork += startResponse.qty
 
@@ -176,7 +183,7 @@ class ScanService {
     }
 
     // Let the client know the order might have changed.
-    scanResponse.scanActions << new OrderLSNChangeAction(order: order.order,
+    scanResponse.scanActions << new OrderLSNChangeAction(order: order.order, source: EVENT_SOURCE,
                                                          qtyInQueue: qtyInQueue, qtyInWork: qtyInWork)
 
   }

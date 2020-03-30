@@ -21,7 +21,7 @@ These actions are generally published as a dashboard event so all activities can
 receive these actions. In general, the scan dashboard will handle these action requests.
 See
 link:{eframe-path}/guide.html#dashboard-events[Dashboard Events^] icon:share-square-o[role="link-blue"]
-for details.
+for an overview.
 
 NOTE: These actions may be related to similarly name dashboard events.  For example,
       the <<OrderLSNChangeAction>> will likely trigger the <<ORDER_LSN_CHANGED>> event

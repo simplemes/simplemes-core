@@ -21,4 +21,8 @@ class ScanAction implements ScanActionInterface, TypeableJSONInterface {
    */
   String type
 
+  /**
+   * The server.
+   */
+  String source = 'server'
 }

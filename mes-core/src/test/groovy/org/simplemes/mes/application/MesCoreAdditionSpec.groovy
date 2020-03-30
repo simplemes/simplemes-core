@@ -27,5 +27,19 @@ class MesCoreAdditionSpec extends BaseSpecification {
     new MesCoreAddition().initialDataLoaders.containsAll([InitialData])
   }
 
-  // TODO: Port Search additions from old mes-core module.
+  def "verify that getAssets contains the mes dashboard assets"() {
+    when: 'the addition is loaded'
+    def assets = new MesCoreAddition().assets
+
+    then: 'the correct assets are in the list'
+    assets.size() == 2
+    and: 'the assets are correct'
+    assets[0].page == 'dashboard/index'
+    assets[0].script == '/assets/mes_dashboard.js'
+    assets[0].css == null
+    assets[1].page == 'dashboard/index'
+    assets[1].script == null
+    assets[1].css == '/assets/mes_dashboard.css'
+  }
+
 }

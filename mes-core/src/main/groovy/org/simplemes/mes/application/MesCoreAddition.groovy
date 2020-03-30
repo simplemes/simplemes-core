@@ -35,6 +35,14 @@ class MesCoreAddition extends BaseAddition implements AdditionInterface {
     encodedType LSNStatus
     encodedType OrderStatus
     encodedType WorkCenterStatus
+    asset {
+      page "dashboard/index"
+      script "/assets/mes_dashboard.js"
+    }
+    asset {
+      page "dashboard/index"
+      css "/assets/mes_dashboard.css"
+    }
   }
 
 }
