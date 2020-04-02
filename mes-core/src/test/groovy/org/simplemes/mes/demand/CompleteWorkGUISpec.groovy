@@ -170,7 +170,7 @@ class CompleteWorkGUISpec extends BaseDashboardSpecification {
     buildDashboard(defaults: ['/selection/workCenterSelection'], buttons: ['/work/completeActivity'])
 
     and: 'an order with a hold status that can not be worked'
-    def order = MESUnitTestUtils.releaseOrder(qty: 1.2)
+    def order = MESUnitTestUtils.releaseOrder(qty: 1.2, qtyInWork: 1.2)
     Order.withTransaction {
       order.overallStatus = OrderHoldStatus.instance
       order.save()

@@ -10,6 +10,7 @@ import org.simplemes.mes.demand.OrderCreatedStatus
 import org.simplemes.mes.demand.OrderHoldStatus
 import org.simplemes.mes.demand.StartRequest
 import org.simplemes.mes.demand.StartUndoAction
+import org.simplemes.mes.demand.domain.LSN
 import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.floor.domain.WorkCenter
 import org.simplemes.mes.test.MESUnitTestUtils
@@ -79,7 +80,7 @@ class WorkServiceSpec extends BaseSpecification {
   @Rollback
   def "verify that order start fails with order in non-workable status"() {
     given: 'an un-released order'
-    Order order = new Order(order: 'M002', overallStatus: OrderCreatedStatus.instance).save()
+    Order order = new Order(order: 'M002', qtyInQueue: 1.0, overallStatus: OrderCreatedStatus.instance).save()
 
     when: 'the start request is made'
     service.start(new StartRequest(order: order))
@@ -440,13 +441,14 @@ class WorkServiceSpec extends BaseSpecification {
     def order = MESUnitTestUtils.releaseOrder(qty: 100, qtyDone: 1.2)
 
     and: 'the times the order was started and reversed - 10 seconds elapsed'
-    def reverseCompleteTime = new Date()
+    def reverseCompleteTime = new Date(UnitTestUtils.SAMPLE_TIME_MS)
 
     when: 'the reverse start request is made'
     def reverseCompleteResponses = service.reverseComplete(new CompleteRequest(order: order, qty: 1.2, dateTime: reverseCompleteTime))
 
     then: 'the response is correct'
     reverseCompleteResponses[0].order.order == order.order
+    reverseCompleteResponses[0].order.qtyDone == 0.0
     reverseCompleteResponses[0].order.qtyInWork == 0.0
     reverseCompleteResponses[0].order.qtyInQueue == 100.0
 
@@ -454,26 +456,98 @@ class WorkServiceSpec extends BaseSpecification {
     def order2 = Order.findByOrder(order.order)
     order2 == order
     order2.qtyInWork == 0.0
+    order2.qtyDone == 0.0
     order2.qtyInQueue == 100.0
 
     and: 'the action is logged'
-    def al = ActionLog.list().find { it.action == WorkService.ACTION_REVERSE_START }
+    def al = ActionLog.list().find { it.action == WorkService.ACTION_REVERSE_COMPLETE }
     al.order == order
-    al.qty == 10.2
+    al.qty == 1.2
     al.dateTime == reverseCompleteTime
 
     and: 'the production log is written correctly'
-    def pl = ProductionLog.list().find { it.action == WorkService.ACTION_REVERSE_START }
+    def pl = ProductionLog.list().find { it.action == WorkService.ACTION_REVERSE_COMPLETE }
     pl.order == order.order
-    pl.qty == 10.2
-    pl.qtyStarted == 10.2
+    pl.qty == -1.2
+    pl.qtyStarted == -1.2
     pl.qtyCompleted == 0.0
-    UnitTestUtils.dateIsCloseToNow(pl.dateTime)
-    UnitTestUtils.compareDates(pl.startDateTime, startTime)
-    pl.elapsedTime == 10000
+    UnitTestUtils.compareDates(pl.startDateTime, reverseCompleteTime)
+    UnitTestUtils.compareDates(pl.dateTime, reverseCompleteTime)
+    pl.elapsedTime == 0
 
     and: 'the response has no undo actions'
     reverseCompleteResponses[0].undoActions.size() == 0
+  }
+
+  @Rollback
+  def "verify that lsn reverseComplete works with dates and no routing"() {
+    given: 'a released order'
+    def order = MESUnitTestUtils.releaseOrder(qty: 1, qtyDone: 1, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
+    def lsn = order.lsns[0]
+
+    and: 'the times the order was started and reversed - 10 seconds elapsed'
+    def reverseCompleteTime = new Date(UnitTestUtils.SAMPLE_TIME_MS)
+
+    when: 'the reverse start request is made'
+    def reverseCompleteResponses = service.reverseComplete(new CompleteRequest(lsn: lsn, qty: 1.0, dateTime: reverseCompleteTime))
+
+    then: 'the response is correct'
+    reverseCompleteResponses[0].lsn.lsn == lsn.lsn
+    reverseCompleteResponses[0].lsn.qtyDone == 0.0
+    reverseCompleteResponses[0].lsn.qtyInWork == 0.0
+    reverseCompleteResponses[0].lsn.qtyInQueue == 1.0
+
+    and: 'the lsn is no longer in work'
+    def lsn2 = LSN.findByUuid(lsn.uuid)
+    lsn2.qtyInWork == 0.0
+    lsn2.qtyDone == 0.0
+    lsn2.qtyInQueue == 1.0
+
+    and: 'the action is logged'
+    def al = ActionLog.list().find { it.action == WorkService.ACTION_REVERSE_COMPLETE }
+    al.lsn == lsn
+    al.order == order
+    al.qty == 1.0
+    al.dateTime == reverseCompleteTime
+
+    and: 'the production log is written correctly'
+    def pl = ProductionLog.list().find { it.action == WorkService.ACTION_REVERSE_COMPLETE }
+    pl.order == order.order
+    pl.lsn == lsn.lsn
+    pl.qty == -1.0
+    pl.qtyStarted == -1.0
+    pl.qtyCompleted == 0.0
+    UnitTestUtils.compareDates(pl.startDateTime, reverseCompleteTime)
+    UnitTestUtils.compareDates(pl.dateTime, reverseCompleteTime)
+    pl.elapsedTime == 0
+
+    and: 'the response has no undo actions'
+    reverseCompleteResponses[0].undoActions.size() == 0
+  }
+
+  @Rollback
+  def "verify that order partial reverseComplete works with order, dates and no routing"() {
+    given: 'a released order'
+    def order = MESUnitTestUtils.releaseOrder(qty: 100, qtyDone: 2.2)
+
+    and: 'the times the order was started and reversed - 10 seconds elapsed'
+    def reverseCompleteTime = new Date(UnitTestUtils.SAMPLE_TIME_MS)
+
+    when: 'the reverse start request is made'
+    def reverseCompleteResponses = service.reverseComplete(new CompleteRequest(order: order, qty: 1.2, dateTime: reverseCompleteTime))
+
+    then: 'the response is correct'
+    reverseCompleteResponses[0].order.order == order.order
+    reverseCompleteResponses[0].order.qtyDone == 1.0
+    reverseCompleteResponses[0].order.qtyInWork == 0.0
+    reverseCompleteResponses[0].order.qtyInQueue == 99.0
+
+    and: 'the order is no longer in work'
+    def order2 = Order.findByOrder(order.order)
+    order2 == order
+    order2.qtyInWork == 0.0
+    order2.qtyDone == 1.0
+    order2.qtyInQueue == 99.0
   }
 
   // testStartLSN

@@ -123,7 +123,7 @@ class ReverseStartWorkGUISpec extends BaseDashboardSpecification {
     }
 
     then: 'the message is correct'
-    messages.text().contains('(3007)')
+    messages.text().contains('(3017)')
     messages.isError()
   }
 

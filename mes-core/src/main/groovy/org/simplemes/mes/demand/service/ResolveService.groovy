@@ -84,18 +84,33 @@ class ResolveService {
     }
 
     // Now, see if we can determine the operationSequence
-    if (!operationSequence && order?.operationStates) {
-      // Has routing, so find the first state it is in queue with.
-      if (lsn) {
-        // Check the LSN for routing states
-      } else {
-        // Just an order, so see which operation is the 'current'
-        for (op in order.operationStates) {
-          // Let the preference enum figure out if this is an Ok entry.
-          if (qtyPreference.areQuantitiesPreferred(op.qtyInQueue, op.qtyInWork)) {
-            operationSequence = op.sequence
-            break   // Stop after first found that is acceptable to the caller.
+    if (order?.operationStates) {
+      if (!operationSequence) {
+        // Has routing, so find the first state it is in queue with.
+        if (lsn) {
+          // Check the LSN for routing states
+        } else {
+          // Just an order, so see which operation is the 'current'
+          for (op in order.operationStates) {
+            // Let the preference enum figure out if this is an Ok entry.
+            if (qtyPreference.areQuantitiesPreferred(op.qtyInQueue, op.qtyInWork, op.qtyDone)) {
+              operationSequence = op.sequence
+              break   // Stop after first found that is acceptable to the caller.
+            }
           }
+        }
+      }
+    } else {
+      // No routing, so just make sure the top-level element matches the requested qty state preference.
+      if (lsn) {
+        if (!qtyPreference.areQuantitiesPreferred(lsn.qtyInQueue, lsn.qtyInWork, lsn.qtyDone)) {
+          //error.3017.message=No Orders or LSNs found matching {0} with quantity available.
+          throw new BusinessException(3017, [lsn.lsn])
+        }
+      } else if (order) {
+        if (!qtyPreference.areQuantitiesPreferred(order.qtyInQueue, order.qtyInWork, order.qtyDone)) {
+          //error.3017.message=No Orders or LSNs found matching {0} with quantity available.
+          throw new BusinessException(3017, [order.order])
         }
       }
     }

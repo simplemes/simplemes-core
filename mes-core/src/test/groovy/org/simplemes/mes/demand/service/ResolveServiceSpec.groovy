@@ -8,6 +8,7 @@ import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.LSNTrackingOption
 import org.simplemes.mes.demand.OrderReleaseRequest
 import org.simplemes.mes.demand.ResolveIDRequest
+import org.simplemes.mes.demand.ResolveQuantityPreference
 import org.simplemes.mes.demand.ResolveWorkableRequest
 import org.simplemes.mes.demand.StartRequest
 import org.simplemes.mes.demand.domain.LSNSequence
@@ -130,6 +131,19 @@ class ResolveServiceSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "test resolveProductionRequest with a done qty"() {
+    given: 'a released order'
+    def order = MESUnitTestUtils.releaseOrder(qty: 5.0, qtyDone: 5.0, lsnTrackingOption: LSNTrackingOption.ORDER_ONLY)
+
+    when: 'the resolve is attempted'
+    def req = new StartRequest(barcode: order.order)
+    resolveService.resolveProductionRequest(req, ResolveQuantityPreference.DONE)
+
+    then: 'the request is updated with the resolved info'
+    req.order == order
+  }
+
+  @Rollback
   def "test resolveProductionRequest with a StartRequest and an LSN barcode ID"() {
     given: 'a released order'
     def order = MESUnitTestUtils.releaseOrder(id: 'RS', qtyToBuild: 1.0, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
@@ -194,6 +208,23 @@ class ResolveServiceSpec extends BaseSpecification {
     UnitTestUtils.allParamsHaveValues(ex)
     UnitTestUtils.assertContainsAllIgnoreCase(ex.toString(), ['LSN', 'gibberish'])
     ex.code == 3012
+  }
+
+  @Rollback
+  def "verify that resolveProductionRequest with no qty done fails gracefully"() {
+    given: 'a released order'
+    def order = MESUnitTestUtils.releaseOrder(qty: 1.0)
+
+    when: 'the resolve is attempted on non-existent LSN/Order'
+    def req = new StartRequest(barcode: order.order)
+    resolveService.resolveProductionRequest(req, ResolveQuantityPreference.DONE)
+
+    then: 'an exception is thrown'
+    def ex = thrown(BusinessException)
+    //error.3017.message=No Orders or LSNs found matching {0} with quantity available.
+    UnitTestUtils.allParamsHaveValues(ex)
+    UnitTestUtils.assertContainsAllIgnoreCase(ex.toString(), ['LSN', order.order])
+    ex.code == 3017
   }
 
   @Rollback

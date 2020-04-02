@@ -50,6 +50,11 @@ class WorkService {
   public static final String ACTION_COMPLETE = "COMPLETE"
 
   /**
+   * The ActionLog {@link org.simplemes.mes.tracking.domain.ActionLog} entry used for reverse complete work requests.
+   */
+  public static final String ACTION_REVERSE_COMPLETE = "REVERSE_COMPLETE"
+
+  /**
    * Begin work on an Order/LSN.  The quantity processed is optional.
    * Below is a typical usage:
    * <pre>
@@ -109,7 +114,7 @@ class WorkService {
    *
    * @param request The start request data itself.  This request is refined by the method
    * {@link org.simplemes.mes.demand.service.ResolveService#resolveProductionRequest}.
-   * @return The order/LSN(s) that were started.
+   * @return The order/LSN(s) that were reversed.
    */
 
   List<StartResponse> reverseStart(StartRequest request) {
@@ -232,6 +237,63 @@ class WorkService {
       productionLogService.log(plRequest)
 
       res << new CompleteResponse(order: order, lsn: lsn, qty: qty, done: order.overallStatus.done)
+    }
+
+    return res
+  }
+
+  /**
+   * Reverses the complete of work on an Order/LSN.  The quantity processed is optional.
+   * This moves the done qty back to in queue.  No undo actions are supported for this.
+   *
+   * @param request The complete request data itself.  This request is refined by the method
+   * {@link org.simplemes.mes.demand.service.ResolveService#resolveProductionRequest}.
+   * @return The order/LSN(s) that were reversed.
+   */
+
+  List<CompleteResponse> reverseComplete(CompleteRequest request) {
+    def res = []
+    def now = new Date()
+    resolveService.resolveProductionRequest(request, ResolveQuantityPreference.DONE)
+    def resolveRequest = new ResolveWorkableRequest(order: request?.order,
+                                                    lsn: request?.lsn,
+                                                    qty: request?.qty,
+                                                    operationSequence: request?.operationSequence)
+    def workables = resolveService.resolveWorkable(resolveRequest)
+    for (w in workables) {
+      // Make sure the order for the workable can be worked.
+      Order order = resolveService.determineOrderForWorkable(w)
+      //order.lastUpdated = new Date()+1
+      def lsn = resolveService.determineLSNForWorkable(w)
+      BigDecimal qty = request?.qty
+      if (qty == null) {
+        qty = w.qtyInWork
+      }
+      def dateQtyStarted = w.dateQtyStarted
+      qty = w.reverseCompleteQty(qty)
+
+      // now, log the action of the order
+      ActionLog l = new ActionLog()
+      l.action = ACTION_REVERSE_COMPLETE
+      l.qty = qty
+      l.lsn = lsn
+      l.order = order
+      l.workCenter = request.workCenter
+      l.dateTime = request.dateTime ?: now
+      l.save()
+
+      // Log the production totals for this action
+      def plRequest = new ProductionLogRequest(action: ACTION_REVERSE_COMPLETE)
+      plRequest.dateTime = request.dateTime ?: now
+      plRequest.startDateTime = dateQtyStarted
+      plRequest.order = order
+      plRequest.lsn = lsn
+      plRequest.workCenter = request.workCenter
+      plRequest.qty = -qty
+      plRequest.qtyStarted = -qty
+      productionLogService.log(plRequest)
+
+      res << new StartResponse(order: order, lsn: lsn, qty: qty, allowUndo: false)
     }
 
     return res

@@ -62,6 +62,14 @@ interface WorkableInterface {
   BigDecimal validateCompleteQty(BigDecimal qty)
 
   /**
+   * Reverses the complete of work on an Order/LSN.
+   * This moves the done qty back to in queue.
+   * @param qty The quantity to start.  <b>Default:</b> all of the done quantity
+   * @return The quantity actually reversed.
+   */
+  BigDecimal reverseCompleteQty(BigDecimal qty)
+
+  /**
    * Determines the next workable to be performed after this workable is completed.
    * @return The workable.  Null if there is no other workable left to be processed.
    */

@@ -18,19 +18,25 @@ enum ResolveQuantityPreference {
    * The logic prefers in queue quantities first, then in work.
    *
    */
-  QUEUE_OR_WORK("O", true, true),
+  QUEUE_OR_WORK("O", true, true, false),
 
   /**
    * The logic prefers in queue quantities.  In work quantities are ignored.
    *
    */
-  QUEUE("Q", true, false),
+  QUEUE("Q", true, false, false),
 
   /**
    * The logic prefers in work quantities.  In queue quantities are ignored.
    *
    */
-  WORK("W", false, true),
+  WORK("W", false, true, false),
+
+  /**
+   * The logic prefers done quantities.  In queue/work quantities are ignored.
+   *
+   */
+  DONE("D", false, false, true),
 
   /**
    * The ID used for XML references.
@@ -50,28 +56,40 @@ enum ResolveQuantityPreference {
   final boolean inWorkPreferred
 
   /**
+   * If true, then this enum means the caller wants done quantities.  Used only by the
+   * areQuantitiesPreferred() method to avoid large switch statements.
+   */
+  final boolean donePreferred
+
+  /**
    * Build a ResolvePreference entry.  Used only for enums above.
    * @param id The ID for the status.
    * @param inQueuePreferred The quantity in queue is preferred.
    * @param inWorkPreferred The quantity in work is preferred.
+   * @param donePreferred The quantity done is preferred.
    */
-  ResolveQuantityPreference(String id, boolean inQueuePreferred, boolean inWorkPreferred) {
+  ResolveQuantityPreference(String id, boolean inQueuePreferred, boolean inWorkPreferred, boolean donePreferred) {
     this.id = id
     this.inQueuePreferred = inQueuePreferred
     this.inWorkPreferred = inWorkPreferred
+    this.donePreferred = donePreferred
   }
 
   /**
    * Determines if the given quantities match the desired preferences.
    * @param qtyInQueue The quantity in queue.
    * @param qtyInWork The quantity in work.
+   * @param qtyDone The quantity done.
    * @return True if the given quantities match the preferences.
    */
-  boolean areQuantitiesPreferred(BigDecimal qtyInQueue, BigDecimal qtyInWork) {
+  boolean areQuantitiesPreferred(BigDecimal qtyInQueue, BigDecimal qtyInWork, BigDecimal qtyDone) {
     if (inQueuePreferred && qtyInQueue > 0) {
       return true
     }
     if (inWorkPreferred && qtyInWork > 0) {
+      return true
+    }
+    if (donePreferred && qtyDone > 0) {
       return true
     }
     return false
