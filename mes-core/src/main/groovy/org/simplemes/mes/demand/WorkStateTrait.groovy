@@ -145,6 +145,44 @@ trait WorkStateTrait {
   }
 
   /**
+   * Reverses the complete of work on an Order/LSN.
+   * This moves the in work qty back to in queue.
+   * @param qty The quantity to reverse the complete for.
+   * @param dateTime The date/time this qty completed is reversed (<b>Default:</b> now).
+   * @return The quantity actually reversed.
+   */
+  BigDecimal reverseCompleteQty(BigDecimal qty, Date dateTime = null) {
+    // Make sure we have something done to reverse.
+    qty = validateReverseCompleteQty(qty)
+    // Now, just move the qty to the right place.
+    qtyDone -= qty
+    qtyInQueue += qty
+    // Set the date queued if not already set to the given value or now.
+    dateQtyQueued = dateQtyQueued ?: dateTime ?: new Date()
+    saveChanges()
+    return qty
+  }
+
+  /**
+   * Validates that the given qty can be reverse completed at this workable location.
+   * @param qty The quantity to reverse complete.  <b>Default:</b> all quantity done
+   * @return The quantity that would be actually reversed completed.
+   */
+  BigDecimal validateReverseCompleteQty(BigDecimal qty) {
+    qty = qty ?: qtyDone
+    if (qty <= 0) {
+      // error.3007.message=Quantity to process ({0}) must be greater than 0
+      throw new BusinessException(3007, [qty])
+    }
+    if (qty > qtyDone) {
+      //error.3016.message=Quantity to process ({0}) must be less than or equal to the quantity done ({1}) for {2}
+      throw new BusinessException(3016, [qty, qtyDone, TypeUtils.toShortString(this)])
+    }
+
+    return qty
+  }
+
+  /**
    * Queues the given qty at this workable. This method does not trigger the save() on the workable element.
    * @param qty The quantity to queue.
    * @param dateTime The date/time this qty is queued (<b>Default:</b> now).

@@ -9,6 +9,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc-header]#Activities#
 [inline-toc]#<<Complete Activity>>#
 [inline-toc]#<<Start Activity>>#
+[inline-toc]#<<Reverse Complete Activity>>#
 [inline-toc]#<<Reverse Start Activity>>#
 [inline-toc]#<<Work Center Selection>>#
 [inline-toc]#<<Work List Activity>>#

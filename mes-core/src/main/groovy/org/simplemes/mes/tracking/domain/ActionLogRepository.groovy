@@ -11,7 +11,7 @@ import org.simplemes.mes.demand.domain.LSN
 import org.simplemes.mes.demand.domain.Order
 
 /**
- * The sample ActionLog repository base interface.  Provides the methods for the repo,
+ * The ActionLog repository base interface.  Provides the methods for the repo,
  * but sub-classes need to implement the dialect needed.  The sub-classes will be the concrete
  * beans generated for the runtime.
  */

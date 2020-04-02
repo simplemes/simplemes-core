@@ -8,6 +8,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc-header]#Activities#
 [inline-toc]#<<Complete Activity>>#
 [inline-toc]#<<Start Activity>>#
+[inline-toc]#<<Reverse Complete Activity>>#
 [inline-toc]#<<Reverse Start Activity>>#
 [inline-toc]#<<Work Center Selection>>#
 [inline-toc]#<<Work List>>#
@@ -87,7 +88,9 @@ start the work on it.  Any errors are displayed in the dashboard's message area.
 
 *uri:* `/work/reverseStartActivity`
 
-This <<reference.adoc#dashboard-reverse-start-activity,Reverse Start>> activity is a
+This
+link:reference.html#dashboard-reverse-start-activity[Reverse Start^] icon:share-square-o[role="link-blue"]
+activity is a
 link:{eframe-path}/guide.html#dashboard-activity-non-gui[Non-GUI Activity^] icon:share-square[role="link-blue"].
 This means it normally does not display a GUI and just performs the reverse start action.
 This activity works with the
@@ -97,6 +100,28 @@ icon:share-square[role="link-blue"] `reverseStart()` method to perform the actio
 The reverse start activity uses the Order/LSN parameter from the <<Work Center Selection>>
 activity and attempts to reverse the start on it.  Any errors are displayed in the
 dashboard's message area.
+
+[[dashboard-reverse-complete-activity]]
+==== Reverse Complete Activity
+
+*uri:* `/work/reverseCompleteActivity`
+
+This
+link:reference.html#dashboard-reverse-complete-activity[Reverse Complete^] icon:share-square-o[role="link-blue"]
+activity is a
+link:{eframe-path}/guide.html#dashboard-activity-non-gui[Non-GUI Activity^] icon:share-square[role="link-blue"].
+This means it normally does not display a GUI and just performs the reverse complete action.
+This activity works with the
+link:groovydoc/org/simplemes/mes/demand/controller/WorkController.html[WorkController^]
+icon:share-square[role="link-blue"] `reverseComplete()` method to perform the action.
+
+The reverse complete activity uses the Order/LSN parameter from the <<Work Center Selection>>
+activity and attempts to reverse the complete on it.  Any errors are displayed in the
+dashboard's message area.
+
+This reverse action will mark the Order/LSN as not done and issue a negative <<ProductionLog>>
+record.  This action also places the Qty back in queue.  It does not perform a start on the
+qty.
 
 [[dashboard-work-center-selection]]
 ==== Work Center Selection

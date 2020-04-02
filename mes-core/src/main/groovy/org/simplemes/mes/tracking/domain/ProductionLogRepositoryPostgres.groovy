@@ -8,7 +8,7 @@ import io.micronaut.data.jdbc.annotation.JdbcRepository
 import io.micronaut.data.model.query.builder.sql.Dialect
 
 /**
- * The sample repository base interface.  Provides the methods for the repo,
+ * The repository base interface.  Provides the methods for the repo,
  * for production or dev (POSTGRES)
  */
 @JdbcRepository(dialect = Dialect.POSTGRES)

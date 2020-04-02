@@ -6,6 +6,8 @@ include::completeActivity.adoc[]
 
 include::startActivity.adoc[]
 
+include::reverseCompleteActivity.adoc[]
+
 include::reverseStartActivity.adoc[]
 
 include::workCenterSelection.adoc[]

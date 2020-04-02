@@ -434,6 +434,48 @@ class WorkServiceSpec extends BaseSpecification {
     ex.code == 3008
   }
 
+  @Rollback
+  def "verify that order reverseComplete works with order, dates and no routing"() {
+    given: 'a released order'
+    def order = MESUnitTestUtils.releaseOrder(qty: 100, qtyDone: 1.2)
+
+    and: 'the times the order was started and reversed - 10 seconds elapsed'
+    def reverseCompleteTime = new Date()
+
+    when: 'the reverse start request is made'
+    def reverseCompleteResponses = service.reverseComplete(new CompleteRequest(order: order, qty: 1.2, dateTime: reverseCompleteTime))
+
+    then: 'the response is correct'
+    reverseCompleteResponses[0].order.order == order.order
+    reverseCompleteResponses[0].order.qtyInWork == 0.0
+    reverseCompleteResponses[0].order.qtyInQueue == 100.0
+
+    and: 'the order is no longer in work'
+    def order2 = Order.findByOrder(order.order)
+    order2 == order
+    order2.qtyInWork == 0.0
+    order2.qtyInQueue == 100.0
+
+    and: 'the action is logged'
+    def al = ActionLog.list().find { it.action == WorkService.ACTION_REVERSE_START }
+    al.order == order
+    al.qty == 10.2
+    al.dateTime == reverseCompleteTime
+
+    and: 'the production log is written correctly'
+    def pl = ProductionLog.list().find { it.action == WorkService.ACTION_REVERSE_START }
+    pl.order == order.order
+    pl.qty == 10.2
+    pl.qtyStarted == 10.2
+    pl.qtyCompleted == 0.0
+    UnitTestUtils.dateIsCloseToNow(pl.dateTime)
+    UnitTestUtils.compareDates(pl.startDateTime, startTime)
+    pl.elapsedTime == 10000
+
+    and: 'the response has no undo actions'
+    reverseCompleteResponses[0].undoActions.size() == 0
+  }
+
   // testStartLSN
   // testStartLSNRouting
   // testCompleteLSN

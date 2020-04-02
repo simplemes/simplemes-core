@@ -1,5 +1,6 @@
 package org.simplemes.mes.demand
 
+
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
@@ -308,4 +309,105 @@ class WorkStateTraitSpec extends BaseSpecification {
     and: 'the dateQtyStarted is cleared'
     lsnOperState.dateQtyStarted == null
   }
+
+  @Rollback
+  def "verify that reverseComplete works - full qtyDone is reversed"() {
+    given: 'a work state object'
+    def lsnOperState = buildLSNOperState(qtyDone: 1.2)
+
+    def dateTime = new Date(UnitTestUtils.SAMPLE_TIME_MS)
+
+    when: 'the complete is reversed'
+    def res = lsnOperState.reverseCompleteQty(1.2, dateTime)
+
+    then: 'right qty is in queue'
+    lsnOperState.qtyInQueue == 1.2
+
+    and: 'right qty is in work'
+    lsnOperState.qtyInWork == 0.0
+
+    and: 'the returned qty is correct'
+    res == 1.2
+
+    and: 'the date/time queued is correct'
+    UnitTestUtils.compareDates(lsnOperState.dateQtyQueued, dateTime)
+  }
+
+  @Rollback
+  def "verify that reverseComplete works - partial qtyDone is reversed with qty in work"() {
+    given: 'a work state object'
+    def dateTime = new Date(UnitTestUtils.SAMPLE_TIME_MS)
+    def lsnOperState = buildLSNOperState(qtyDone: 1.2, qtyInWork: 1.0, dateQtyQueued: null)
+
+    when: 'the complete is reversed'
+    def res = lsnOperState.reverseCompleteQty(0.2, dateTime)
+
+    then: 'right qty is in queue'
+    lsnOperState.qtyInQueue == 0.2
+
+    and: 'right qty is in work'
+    lsnOperState.qtyInWork == 1.0
+
+    and: 'right qty is left as done'
+    lsnOperState.qtyDone == 1.0
+
+    and: 'the returned qty is correct'
+    res == 0.2
+
+    and: 'the date/time queued is correct'
+    UnitTestUtils.compareDates(lsnOperState.dateQtyQueued, dateTime)
+  }
+
+  @Rollback
+  def "verify that reverseComplete works - partial qtyDone with some other qty in queue already"() {
+    given: 'a work state object'
+    def dateTime = new Date(UnitTestUtils.SAMPLE_TIME_MS)
+    def lsnOperState = buildLSNOperState(qtyDone: 1.2, qtyInQueue: 1.0, dateQtyQueued: dateTime)
+
+    when: 'the complete is reversed'
+    def res = lsnOperState.reverseCompleteQty(0.2, new Date(UnitTestUtils.SAMPLE_TIME_MS - 1000))
+
+    then: 'right qty is in queue'
+    lsnOperState.qtyInQueue == 1.2
+
+    and: 'right qty is left as done'
+    lsnOperState.qtyDone == 1.0
+
+    and: 'the returned qty is correct'
+    res == 0.2
+
+    and: 'the date/time queued is correct'
+    UnitTestUtils.compareDates(lsnOperState.dateQtyQueued, dateTime)
+  }
+
+  @Rollback
+  def "verify that reverseComplete gracefully detects qty less than 0"() {
+    given: 'a work state object'
+    def lsnOperState = buildLSNOperState(qtyDone: 1.2)
+
+    when: 'the complete is reversed'
+    lsnOperState.reverseCompleteQty(-0.2)
+
+    then: 'the right exception is thrown'
+    // error.3007.message=Quantity to process ({0}) must be greater than 0
+    def ex = thrown(BusinessException)
+    UnitTestUtils.assertExceptionIsValid(ex, ['-0.2'])
+    ex.code == 3007
+  }
+
+  @Rollback
+  def "verify that reverseComplete gracefully detects qty less than qtyDone"() {
+    given: 'a work state object'
+    def lsnOperState = buildLSNOperState(qtyDone: 1.2)
+
+    when: 'the complete is reversed'
+    lsnOperState.reverseCompleteQty(2.2)
+
+    then: 'the right exception is thrown'
+    //error.3016.message=Quantity to process ({0}) must be less than or equal to the quantity done ({1}) for {2}
+    def ex = thrown(BusinessException)
+    UnitTestUtils.assertExceptionIsValid(ex, ['2.2', '1.2', lsnOperState.lsn.lsn])
+    ex.code == 3016
+  }
+
 }

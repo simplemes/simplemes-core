@@ -9,7 +9,7 @@ import io.micronaut.data.repository.CrudRepository
 import org.simplemes.eframe.domain.BaseRepository
 
 /**
- * The sample Order repository base interface.  Provides the methods for the repo,
+ * The Order repository base interface.  Provides the methods for the repo,
  * but sub-classes need to implement the dialect needed.  The sub-classes will be the concrete
  * beans generated for the runtime.
  */

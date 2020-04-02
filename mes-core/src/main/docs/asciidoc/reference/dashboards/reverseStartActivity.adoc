@@ -11,11 +11,13 @@ This activity works with the
 link:groovydoc/org/simplemes/mes/demand/controller/WorkController.html[WorkController^] icon:share-square[role="link-blue"]
 `reverseStart()` method to perform the action.
 
-The reverse start activity uses the Order/LSN parameter from the <<Work Center Selection>>
+The reverse start activity can use the Order/LSN parameter from the <<Work Center Selection>>
 activity and attempts to reverse a previous start on it.  The Order/LSN is passed to the
 `reverseStart()` method in the `barcode` field in the
 link:groovydoc/org/simplemes/mes/demand/StartRequest.html[StartRequest^] icon:share-square[role="link-blue"].
 Any errors are displayed in the dashboard's message area.
+
+This activity is also used to as an Undo action for the <<Start Activity>>.
 
 
 ===== GUI Events
