@@ -3,6 +3,7 @@ package org.simplemes.mes.system.service
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.NumberUtils
+import org.simplemes.mes.demand.CompleteRequest
 import org.simplemes.mes.demand.ResolveIDRequest
 import org.simplemes.mes.demand.StartRequest
 import org.simplemes.mes.demand.WorkableInterface
@@ -159,6 +160,7 @@ class ScanService {
     WorkableInterface workable = workables[0]
     BigDecimal qtyInQueue = workable.qtyInQueue
     BigDecimal qtyInWork = workable.qtyInWork
+    BigDecimal qtyDone = workable.qtyDone
     if (workable.qtyInQueue) {
       // Attempt a start
       def startRequest = new StartRequest(barcode: scanResponse.barcode, order: scanResponse.order,
@@ -180,11 +182,32 @@ class ScanService {
         scanResponse.undoActions.addAll(undoAction.undoActions)
       }
       //} else if (workable.qtyInWork) {
+    } else if (workable.qtyInWork) {
+      // Attempt a complete
+      def completeRequest = new CompleteRequest(barcode: scanResponse.barcode, order: scanResponse.order,
+                                                operationSequence: scanResponse.operationSequence)
+      def completeResponses = workService.complete(completeRequest)
+      def completeResponse = completeResponses[0]  // Scan can only work with single items for now.
+
+      // Add the message to the response
+      def msg = GlobalUtils.lookup('completed.message', completeResponse.order.order, NumberUtils.formatNumber(completeResponse.qty))
+      scanResponse.messageHolder.addInfo(text: msg)
+
+      // Let the client know it should refresh the order status.
+      scanResponse.scanActions << new RefreshOrderStatusAction(order: order.order, source: EVENT_SOURCE)
+      qtyInWork -= completeResponse.qty
+      qtyDone += completeResponse.qty
+
+      // Copy any undo actions from the start
+      for (undoAction in completeResponse) {
+        scanResponse.undoActions.addAll(undoAction.undoActions)
+      }
+      //} else if (workable.qtyInWork) {
     }
 
     // Let the client know the order might have changed.
     scanResponse.scanActions << new OrderLSNChangeAction(order: order.order, source: EVENT_SOURCE,
-                                                         qtyInQueue: qtyInQueue, qtyInWork: qtyInWork)
+                                                         qtyInQueue: qtyInQueue, qtyInWork: qtyInWork, qtyDone: qtyDone)
 
   }
 

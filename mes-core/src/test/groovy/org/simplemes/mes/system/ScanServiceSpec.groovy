@@ -6,6 +6,7 @@ import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.mes.demand.CompleteUndoAction
 import org.simplemes.mes.demand.StartUndoAction
 import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.system.service.ScanService
@@ -61,7 +62,7 @@ class ScanServiceSpec extends BaseSpecification {
     scanResponse.scanActions[0].button == 'START'
   }
 
-  def "test scan with order scanned"() {
+  def "test scan with order scanned - starts inQueue"() {
     given: 'a released order'
     def order = MESUnitTestUtils.releaseOrder(qty: 1.2)
     GlobalUtils.defaultLocale = locale
@@ -103,6 +104,59 @@ class ScanServiceSpec extends BaseSpecification {
     scanResponse.undoActions.size() == 1
     def undoAction = scanResponse.undoActions[0]
     undoAction instanceof StartUndoAction
+    UnitTestUtils.assertContainsAllIgnoreCase(undoAction.JSON, [order.order, '1'])
+    UnitTestUtils.assertContainsAllIgnoreCase(undoAction.infoMsg, [order.order, '1'])
+
+    where:
+    locale         | _
+    Locale.US      | _
+    Locale.GERMANY | _
+  }
+
+  def "test scan with order scanned - completes inWork"() {
+    given: 'a released order'
+    def order = MESUnitTestUtils.releaseOrder(qty: 1.2, qtyInWork: 1.2)
+    GlobalUtils.defaultLocale = locale
+
+    and: 'a scan request'
+    def scanRequest = new ScanRequest(barcode: order.order)
+
+    when: 'the scan is processed'
+    def scanResponse = service.scan(scanRequest)
+
+    and: 'the order is re-read from the DB'
+    order = Order.findByUuid(order.uuid)
+
+    then: 'the scan is returned with the order'
+    scanResponse.resolved
+    scanResponse.order == order
+
+    and: 'scan action tells the client to refresh the Order status with a type REFRESH_ORDER_STATUS'
+    def refreshAction = scanResponse.scanActions.find {
+      it.type == RefreshOrderStatusAction.TYPE_REFRESH_ORDER_STATUS
+    }
+    refreshAction.order == order.order
+
+    and: 'scan action tells the client that the order changed'
+    def orderChangedAction = scanResponse.scanActions.find { it.type == OrderLSNChangeAction.TYPE_ORDER_LSN_CHANGE }
+    orderChangedAction.order == order.order
+    orderChangedAction.qtyInQueue == order.qtyInQueue
+    orderChangedAction.qtyInWork == order.qtyInWork
+    orderChangedAction.qtyDone == order.qtyDone
+
+    and: 'order was started'
+    order.qtyInQueue == 0.0
+    order.qtyInWork == 0.0
+    order.qtyDone == 1.2
+
+    and: 'scan messages indicate the order was started'
+    scanResponse.messageHolder.level == MessageHolder.LEVEL_INFO
+    scanResponse.messageHolder.text == GlobalUtils.lookup('completed.message', order.order, NumberUtils.formatNumber(order.qtyDone, locale))
+
+    and: 'the response has the right undo action'
+    scanResponse.undoActions.size() == 1
+    def undoAction = scanResponse.undoActions[0]
+    undoAction instanceof CompleteUndoAction
     UnitTestUtils.assertContainsAllIgnoreCase(undoAction.JSON, [order.order, '1'])
     UnitTestUtils.assertContainsAllIgnoreCase(undoAction.infoMsg, [order.order, '1'])
 

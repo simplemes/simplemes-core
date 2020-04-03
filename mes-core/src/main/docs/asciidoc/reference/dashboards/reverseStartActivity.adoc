@@ -17,7 +17,7 @@ activity and attempts to reverse a previous start on it.  The Order/LSN is passe
 link:groovydoc/org/simplemes/mes/demand/StartRequest.html[StartRequest^] icon:share-square[role="link-blue"].
 Any errors are displayed in the dashboard's message area.
 
-This activity is also used to as an Undo action for the <<Start Activity>>.
+This activity is also used as an Undo action for the <<Start Activity>>.
 
 
 ===== GUI Events

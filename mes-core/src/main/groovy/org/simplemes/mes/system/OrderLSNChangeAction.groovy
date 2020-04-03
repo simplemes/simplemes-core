@@ -43,4 +43,9 @@ class OrderLSNChangeAction extends ScanAction {
    */
   BigDecimal qtyInWork
 
+  /**
+   * The qty done (completed) after processing.
+   */
+  BigDecimal qtyDone
+
 }

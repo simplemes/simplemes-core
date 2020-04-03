@@ -2,6 +2,7 @@ package org.simplemes.mes.demand
 
 import groovy.transform.ToString
 import org.simplemes.eframe.json.JSONByKey
+import org.simplemes.eframe.web.undo.UndoActionInterface
 import org.simplemes.mes.demand.domain.LSN
 import org.simplemes.mes.demand.domain.Order
 
@@ -45,4 +46,21 @@ class CompleteResponse {
    * Set to true if the order/LSN is done.
    */
   boolean done = false
+
+  /**
+   * If false, then no undo actions will be provided.
+   */
+  boolean allowUndo = true
+
+  /**
+   * The undo action(s) needed to undo this complete.
+   */
+  List<UndoActionInterface> getUndoActions() {
+    if (allowUndo) {
+      return [new CompleteUndoAction(this)]
+    }
+    return []
+  }
+
+
 }

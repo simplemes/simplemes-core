@@ -21,7 +21,7 @@ This reverse action will mark the Order/LSN as not done and issue a negative <<P
 record. This action also places the Qty back in queue.  It does not perform a start on the
 qty.
 
-This activity is also used to as an Undo action for the <<Start Activity>>.
+This activity is also used as an Undo action for the <<Start Activity>>.
 
 ===== GUI Events
 

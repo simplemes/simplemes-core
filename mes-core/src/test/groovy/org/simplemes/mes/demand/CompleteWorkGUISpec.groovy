@@ -10,7 +10,6 @@ import org.simplemes.mes.demand.page.WorkCenterSelectionDashboardPage
 import org.simplemes.mes.test.MESUnitTestUtils
 import org.simplemes.mes.tracking.domain.ActionLog
 import org.simplemes.mes.tracking.domain.ProductionLog
-import spock.lang.Ignore
 import spock.lang.IgnoreIf
 
 /*
@@ -114,7 +113,6 @@ class CompleteWorkGUISpec extends BaseDashboardSpecification {
     list[0].order == order.order
   }
 
-  @Ignore("Implement when ReverseComplete is implemented")
   def "verify that complete activity creates the correct undo action and the undo works"() {
     given: 'a dashboard with the activity'
     buildDashboard(defaults: ['/selection/workCenterSelection'], buttons: ['/work/completeActivity'])
@@ -141,8 +139,8 @@ class CompleteWorkGUISpec extends BaseDashboardSpecification {
     order2.qtyInWork == 0.0
 
     and: 'the info message displays the start message'
-    //reversedStart.message=Reversed Start of quantity {1} for {0}.
-    messages.text() == lookup('reversedStart.message', null, order.order, NumberUtils.formatNumber(order2.qtyInQueue))
+    //reversedComplete.message=Reversed Complete of quantity {1} for {0}.
+    messages.text() == lookup('reversedComplete.message', null, order.order, NumberUtils.formatNumber(order2.qtyInQueue))
   }
 
   def "verify that complete activity gracefully handles missing order"() {

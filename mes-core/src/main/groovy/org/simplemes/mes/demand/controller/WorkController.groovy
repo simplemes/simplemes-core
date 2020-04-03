@@ -46,6 +46,7 @@ class WorkController extends BaseController {
    * <b>Response</b>: JSON list {@link org.simplemes.mes.demand.StartResponse}
    */
   @Post('/start')
+  @SuppressWarnings("unused")
   HttpResponse start(@Body String body, @Nullable Principal principal) {
     def res = null
     Order.withTransaction {
@@ -75,6 +76,7 @@ class WorkController extends BaseController {
    * {@link org.simplemes.mes.demand.CompleteRequest}.
    */
   @Post('/complete')
+  @SuppressWarnings("unused")
   HttpResponse complete(@Body String body, @Nullable Principal principal) {
     def res = null
     Order.withTransaction {
@@ -85,12 +87,6 @@ class WorkController extends BaseController {
       res = mapper.writeValueAsString(completeResponse)
     }
     return HttpResponse.ok(res)
-  }
-
-  /**
-   * The complete activity for the dashboard.
-   */
-  def completeActivity() {
   }
 
   /**
@@ -110,6 +106,7 @@ class WorkController extends BaseController {
    * {@link org.simplemes.mes.demand.StartRequest}.
    */
   @Post('/reverseStart')
+  @SuppressWarnings("unused")
   HttpResponse reverseStart(@Body String body, @Nullable Principal principal) {
     def res = null
     Order.withTransaction {
@@ -132,6 +129,36 @@ class WorkController extends BaseController {
   @Produces(MediaType.TEXT_HTML)
   StandardModelAndView reverseStartActivity(@Nullable Principal principal) {
     return new StandardModelAndView("demand/work/reverseStart", principal, this)
+  }
+
+  /**
+   * Handle reverse complete WorkService requests.  The parameters/content matches the fields of the request object
+   * {@link org.simplemes.mes.demand.CompleteRequest}.
+   */
+  @Post('/reverseComplete')
+  @SuppressWarnings("unused")
+  HttpResponse reverseComplete(@Body String body, @Nullable Principal principal) {
+    def res = null
+    Order.withTransaction {
+      def mapper = Holders.objectMapper
+      CompleteRequest completeRequest = mapper.readValue(body, CompleteRequest)
+      log.debug('reverseComplete: {}', completeRequest)
+      def completeResponses = workService.reverseComplete(completeRequest)
+      res = mapper.writeValueAsString(completeResponses)
+    }
+    return HttpResponse.ok(res)
+  }
+
+  /**
+   * Displays the core reverse complete activity page.
+   * @param request The request.
+   * @param principal The user logged in.
+   * @return The model/view to display.
+   */
+  @Get("/reverseCompleteActivity")
+  @Produces(MediaType.TEXT_HTML)
+  StandardModelAndView reverseCompleteActivity(@Nullable Principal principal) {
+    return new StandardModelAndView("demand/work/reverseComplete", principal, this)
   }
 
 

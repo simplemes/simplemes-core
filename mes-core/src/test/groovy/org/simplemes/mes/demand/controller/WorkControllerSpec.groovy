@@ -302,4 +302,74 @@ class WorkControllerSpec extends BaseAPISpecification {
     }
   }
 
+  @Rollback
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that reverseComplete handles basic scenario"() {
+    given: 'a released order is in done state'
+    setCurrentUser()
+    def order = MESUnitTestUtils.releaseOrder(qty: 100.0, qtyDone: 100.0)
+
+    and: 'a controller with a mocked service'
+    def controller = new WorkController()
+    def mockService = Mock(WorkService)
+    def expectCompleteRequest = new CompleteRequest(order: order, qty: 30.2)
+    def expectedCompleteResponse = new CompleteResponse(order: order, qty: 30.2)
+    1 * mockService.reverseComplete(expectCompleteRequest) >> [expectedCompleteResponse]
+    0 * mockService._
+    controller.workService = mockService
+
+    and: 'a request in JSON format'
+    def s = """ {
+      "order": "${order.order}",
+      "qty": 30.2
+    }
+    """
+
+    when: 'the request is sent to the controller'
+    def res = controller.reverseComplete(s, new MockPrincipal('jane', 'OPERATOR'))
+
+    then: 'the response is correct'
+    //println "s = ${res.body.get()}"
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body.get())}"
+    res.status == HttpStatus.OK
+    def json = new JsonSlurper().parseText((String) res.body.get())
+    def completeResponse = json[0]
+
+    completeResponse.order == order.order
+    completeResponse.qty == 30.20
+  }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that reverseComplete works - via HTTP API"() {
+    given: 'a released order is in done state'
+    setCurrentUser()
+    def order = MESUnitTestUtils.releaseOrder(qty: 1.0, qtyDone: 1.0)
+
+    and: 'the JSON request'
+    def request = """
+      {
+        "order": "$order.order"
+      }
+    """
+
+    when: 'the reverse is called'
+    login()
+    def res = sendRequest(uri: '/work/reverseComplete', method: 'post', content: request)
+
+    then: 'the response is valid'
+    def json = new JsonSlurper().parseText(res)
+    def completeResponse = json[0]
+    completeResponse.order == order.order
+    completeResponse.qty == 1.0
+
+    and: 'the order is completed'
+    Order.withTransaction {
+      def order2 = Order.findByOrder(order.order)
+      order2 == order
+      order2.qtyInWork == 0.0
+      order2.qtyInQueue == 1.0
+      true
+    }
+  }
+
 }
