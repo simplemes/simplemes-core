@@ -19,7 +19,7 @@ class UserControllerSpec extends BaseSpecification {
     expect: 'the controller passes'
     ControllerTester.test {
       controller UserController
-      taskMenu name: 'user', uri: '/user', clientRootActivity: true
+      taskMenu name: 'user', uri: '/user', clientRootActivity: true, folder: 'admin:7000', displayOrder: 7050
     }
   }
 

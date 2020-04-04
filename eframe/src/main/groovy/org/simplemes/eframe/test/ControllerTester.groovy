@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import groovy.transform.ToString
@@ -6,12 +10,6 @@ import io.micronaut.security.annotation.Secured
 import org.simplemes.eframe.misc.ArgumentUtils
 
 import java.lang.reflect.Method
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Helps tests common features of controller classes, such as security and the TaskMenu support.
@@ -69,15 +67,22 @@ class ControllerTester {
    */
   List<Map<String, Object>> _taskMenus = []
 
+
+  /**
+   * Valid Options for the taskMenu DSL entry.
+   */
+  private static List<String> validTaskMenuOptions = ['name', 'uri', 'clientRootActivity', 'folder', 'displayOrder']
+
   /**
    * Defines a single expected task menus needed in the controller.
    *
-   * @param taskMenuOptions The task menu values to check.  Supports: 'name', 'uri', 'clientRootActivity'.
+   * @param taskMenuOptions The task menu values to check.  Supports: 'name', 'uri', 'clientRootActivity',
+   *        'folder', 'displayOrder'.
    */
   void taskMenu(final Map<String, Object> taskMenuOptions) {
     taskMenuOptions.each { k, v ->
-      if (k != 'name' && k != 'uri' && k != 'clientRootActivity') {
-        throw new IllegalArgumentException("Invalid option for taskMenu: '$k'")
+      if (!validTaskMenuOptions.contains(k)) {
+        throw new IllegalArgumentException("Invalid option for taskMenu: '$k'.  Allowed = $validTaskMenuOptions")
       }
     }
     _taskMenus << taskMenuOptions
@@ -166,6 +171,14 @@ class ControllerTester {
         if (tmi.clientRootActivity != null) {
           def msg = "Task Menu ${tmi.name} has wrong clientRootActivity.  Found '${controllerTaskMenuItem.clientRootActivity}', expected '${tmi.clientRootActivity}'"
           assert controllerTaskMenuItem.clientRootActivity == tmi.clientRootActivity, msg
+        }
+        if (tmi.folder != null) {
+          def msg = "Task Menu ${tmi.name} has wrong folder.  Found '${controllerTaskMenuItem.folder}', expected '${tmi.folder}'"
+          assert controllerTaskMenuItem.folder == tmi.folder, msg
+        }
+        if (tmi.displayOrder != null) {
+          def msg = "Task Menu ${tmi.name} has wrong displayOrder.  Found '${controllerTaskMenuItem.displayOrder}', expected '${tmi.displayOrder}'"
+          assert controllerTaskMenuItem.displayOrder == tmi.displayOrder, msg
         }
       }
     } else {

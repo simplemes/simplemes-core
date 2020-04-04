@@ -1,13 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.custom.controller
 
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.ControllerTester
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -18,7 +16,7 @@ class FlexTypeControllerSpec extends BaseSpecification {
     expect: 'the controller passes'
     ControllerTester.test {
       controller FlexTypeController
-      taskMenu name: 'flexType', uri: '/flexType', clientRootActivity: true
+      taskMenu name: 'flexType', uri: '/flexType', clientRootActivity: true, folder: 'custom:100', displayOrder: 110
     }
   }
 

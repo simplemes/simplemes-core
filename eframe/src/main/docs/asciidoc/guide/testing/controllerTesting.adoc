@@ -47,8 +47,9 @@ def "verify that controller has secured methods and meets standard requirements"
 ----
 <.> The role required for all methods.  Defaults to any annotation (even anonymous or not logged in).
 <.> The release method must require the ADMIN role using the Micronaut _@Secured()_ annotation.
-<.> The task menu expected in the controller.  The task menu 'user' must be defined with a URI of '/user'.
-    The URI must also not be flagged as the root URI for the logger for the controller (default true).
+<.> The task menu expected in the controller.  The task menu 'user' must be defined with a
+    URI of '/user'. The URI must also not be flagged as the root URI for the logger for
+    the controller (default true). Other supported options include `folder` and `displayOrder`.
 
 By default, all public methods must be secured.  If the controller is secured at the class level,
 then all methods are assumed to be secured.

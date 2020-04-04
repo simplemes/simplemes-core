@@ -1,13 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import ch.qos.logback.classic.Level
 import io.micronaut.security.rules.SecurityRule
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests the tester.
@@ -589,6 +587,62 @@ class ControllerTesterSpec extends BaseSpecification {
     then: 'the right exception is thrown'
     def ex = thrown(Throwable)
     UnitTestUtils.assertExceptionIsValid(ex, ['true', 'false', 'clientRootActivity'])
+  }
+
+  def "verify that test with wrong task menu folder setting in controller detects failure"() {
+    given: 'a mock appender for Warn level only'
+    MockAppender.mock(ControllerTester, Level.WARN)
+
+    and: 'a controller'
+    def src = """
+    package sample
+    import org.simplemes.eframe.web.task.TaskMenuItem
+        
+    class _ATestController {
+      def taskMenuItems = [new TaskMenuItem(folder: 'admin:7000', name: 'user', uri: '/good', 
+                                            displayOrder: 7050, clientRootActivity: false)]
+    }
+    """
+    def clazz = CompilerTestUtils.compileSource(src)
+
+    when: 'the tester is run'
+    ControllerTester.test {
+      controller clazz
+      securityCheck false
+      taskMenu name: 'user', folder: 'gibberish'
+    }
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Throwable)
+    UnitTestUtils.assertExceptionIsValid(ex, ['gibberish', 'admin:7000', 'folder'])
+  }
+
+  def "verify that test with wrong task menu displayOrder setting in controller detects failure"() {
+    given: 'a mock appender for Warn level only'
+    MockAppender.mock(ControllerTester, Level.WARN)
+
+    and: 'a controller'
+    def src = """
+    package sample
+    import org.simplemes.eframe.web.task.TaskMenuItem
+        
+    class _ATestController {
+      def taskMenuItems = [new TaskMenuItem(folder: 'admin:7000', name: 'user', uri: '/good', 
+                                            displayOrder: 7050, clientRootActivity: false)]
+    }
+    """
+    def clazz = CompilerTestUtils.compileSource(src)
+
+    when: 'the tester is run'
+    ControllerTester.test {
+      controller clazz
+      securityCheck false
+      taskMenu name: 'user', displayOrder: 9999
+    }
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Throwable)
+    UnitTestUtils.assertExceptionIsValid(ex, ['9999', '7050', 'displayOrder'])
   }
 
   def "verify that test with option for the task menu checks detects failure"() {
