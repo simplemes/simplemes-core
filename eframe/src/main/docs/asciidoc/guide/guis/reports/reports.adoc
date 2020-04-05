@@ -11,6 +11,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Add-on Reports>>#
 [inline-toc]#<<Image Locations>>#
 [inline-toc]#<<Drill-Down Hyperlinks>>#
+[inline-toc]#<<Hyperlink Triggers URL URISyntaxException>>#
 [inline-toc]#<<Report Parameters>>#
 [inline-toc]#<<Report Localization>>#
 [inline-toc]#<<Report Row Limits>>#

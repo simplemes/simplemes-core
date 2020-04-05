@@ -184,6 +184,35 @@ chart's Data set element.
 
 See <<Report Parameter BaseDir>> for details on the `BaseDir` parameter.
 
+====== Hyperlink Triggers URL URISyntaxException
+
+You will probably create semi-static hyperlinks in your reports.  If these hyperlinks have
+un-escaped SQL wild-cards (%), then you will get an exception when you click it:
+
+  java.net.URISyntaxException: Malformed escape pair at index 59:
+
+This happens when you create a hyperlink like this:
+
+  /report?loc=reports/detail/ProductionTabular.jrxml&product=%&startDateTime=2020-01-01T05:00:00.000Z
+
+The problem is with the _product=%_ in the URL.  This is an un-escaped percent character.
+
+You will have to change the link generation in the designer studio.  In the 'Hyperlink' properties settings
+for the link _TextField_, you will need to encode the '%' in the _'Hyperlink Reference Expression'_
+property like this:
+
+[source,java]
+.Example - Hyperlink URL Encoded
+----
+  "loc="+$P{BaseDir}+"/detail/ProductionTabular.jrxml&product="+
+       java.net.URLEncoder.encode($P{product},"UTF-8")+   // <.>
+       "&startDateTime="+ org.simplemes.eframe.date.ISODate.format($P{startDateTime})+
+       "&endDateTime="+org.simplemes.eframe.date.ISODate.format($P{endDateTime})+
+       "&reportRimeInterval="+$P{reportTimeInterval}
+
+----
+<.> This encoding is needed to avoid the error, if the _$P{product}_ can contain '%'.
+
 
 
 ===== Report Filter Panel
@@ -335,7 +364,8 @@ easy to do.
 . Select _Properties_.
 . In the Properties dialog, select the _Java Build Path_ property.
 . Add a JAR file for the eframe module or add the class directories for the build area
-  on your system.
+  on your system. (.JAR files seems to work more reliably).
+. Restart the Studio.
   
 image::guis/ReportStudioClassPath.png[title="ReportStudioClassPath",align="center", width=75%]
 
