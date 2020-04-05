@@ -76,3 +76,13 @@ mainClassName = "org.simplemes.mes.application.Application"
 
 
 
+// Local Tasks
+// Remove some sample/test files from the published jar.
+jar {
+  exclude "/reports/sample/**"
+}
+
+test {
+  // Force STDOUT to echo in github server.
+  testLogging.showStandardStreams = true
+}

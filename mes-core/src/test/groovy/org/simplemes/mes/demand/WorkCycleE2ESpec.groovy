@@ -31,9 +31,12 @@ class WorkCycleE2ESpec extends BaseSpecification {
   @SuppressWarnings("JavaIoPackageAccess")
   def "test release with no LSNs"() {
     given: 'a test'
+    def logData = new File('tmp').isDirectory()
     def file = new File('tmp/perfTests.txt')
-    if (!file.exists()) {
-      file << "date,release,start,complete\n"
+    if (logData) {
+      if (!file.exists()) {
+        file << "date,release,start,complete\n"
+      }
     }
 
     when: 'the order is released and worked'
@@ -68,18 +71,22 @@ class WorkCycleE2ESpec extends BaseSpecification {
       total3 += elapsed3
 
       //println "times  $elapsed1, $elapsed2, $elapsed3"
-      file << "${ISODate.format(new DateOnly())},$elapsed1, $elapsed2, $elapsed3\n"
+      if (logData) {
+        file << "${ISODate.format(new DateOnly())},$elapsed1, $elapsed2, $elapsed3\n"
+      }
 
     }
     def rel = total1 / nTestsTotal
     def start = total2 / nTestsTotal
     def comp = total3 / nTestsTotal
     //System.out.println("average release/start/complete = ${rel},${start},${comp} ms")
-    def file2 = new File('tmp/perfTestAvg.csv')
-    if (!file2.exists()) {
-      file2 << "date,release,start,complete\n"
+    if (logData) {
+      def file2 = new File('tmp/perfTestAvg.csv')
+      if (!file2.exists()) {
+        file2 << "date,release,start,complete\n"
+      }
+      file2 << "${ISODate.format(new DateOnly())},$rel, $start, $comp\n"
     }
-    file2 << "${ISODate.format(new DateOnly())},$rel, $start, $comp\n"
 
     then: ''
   }
