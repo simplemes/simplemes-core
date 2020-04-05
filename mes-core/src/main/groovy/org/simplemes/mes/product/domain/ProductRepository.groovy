@@ -17,6 +17,8 @@ interface ProductRepository extends BaseRepository, CrudRepository<Product, UUID
 
   Optional<Product> findByUuid(UUID uuid)
 
+  Optional<Product> findByProduct(String product)
+
   List<Product> list(Pageable pageable)
 
   List<Product> list()

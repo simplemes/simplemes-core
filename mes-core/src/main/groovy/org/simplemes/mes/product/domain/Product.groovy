@@ -88,8 +88,8 @@ class Product implements RoutingTrait {
   /**
    * The operations used only by this product.  No other products will use this list of operations.
    */
-  @OneToMany(mappedBy = "product", targetEntity = ProductOperation)
-  List<OperationTrait> operations
+  @OneToMany(mappedBy = "product")
+  List<ProductOperation> operations
 
   /**
    * The custom field holder.  Max size: {@link FieldSizes#MAX_CUSTOM_FIELDS_LENGTH}
@@ -132,5 +132,16 @@ class Product implements RoutingTrait {
       return this
     }
     return masterRouting
+  }
+
+  /**
+   * Sets the operations.
+   * @param operations The operations.
+   */
+  @Override
+  void setOperations(List<OperationTrait> operations) {
+    // This method is added due to Groovy issues with use of the trait on the list.
+    //noinspection GroovyAssignabilityCheck
+    this.operations = operations
   }
 }

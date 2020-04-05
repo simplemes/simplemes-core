@@ -51,19 +51,8 @@ void setup() {
     ControllerTester.test {
       controller OrderController
       role 'SUPERVISOR'
-      taskMenu name: 'order', uri: '/order'
+      taskMenu name: 'order', uri: '/order', folder: 'demand:500', displayOrder: 510
     }
-  }
-
-  def "verify that taskMenuItems are defined"() {
-    when: 'the task menu items are checked'
-    def taskMenuItems = controller.taskMenuItems
-
-    then: 'the correct item is in the menu'
-    def item = taskMenuItems.find { it.name == 'order' }
-    item.folder == 'demand:500'
-    item.uri == '/order'
-    item.displayOrder == 510
   }
 
   @Rollback
