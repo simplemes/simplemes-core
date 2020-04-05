@@ -35,7 +35,6 @@ import org.simplemes.eframe.security.SecurityUtils
 import spock.lang.Shared
 
 import javax.sql.DataSource
-import javax.transaction.Transactional
 import java.sql.Connection
 import java.sql.PreparedStatement
 import java.sql.SQLException
@@ -259,7 +258,6 @@ class BaseSpecification extends GebSpec {
    * Checks for any left-over records that may have been created by this test.
    * Checks all domains.
    */
-  @Transactional
   void checkForLeftoverRecords() {
     if (!embeddedServer) {
       // No db, so nothing to check
