@@ -78,12 +78,6 @@ dependencyCheck {
   format='ALL' // the default is HTML only
 }
 
-// GEB Testing settings
-webdriverBinaries {
-  chromedriver '2.40'
-  geckodriver '0.21.0'
-}
-
 tasks.withType(Test) {
   systemProperty "geb.env", System.getProperty('geb.env')
   systemProperty "webdriver.chrome.driver", System.getProperty('webdriver.chrome.driver')
