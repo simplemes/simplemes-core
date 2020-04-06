@@ -8,7 +8,6 @@ buildscript {
     classpath 'org.asciidoctor:asciidoctor-gradle-plugin:1.5.3'
     classpath 'com.github.jruby-gradle:jruby-gradle-plugin:0.1.17'
     classpath 'org.asciidoctor:asciidoctorj-pdf:1.5.0-alpha.11'
-    classpath "gradle.plugin.com.energizedwork.webdriver-binaries:webdriver-binaries-gradle-plugin:1.4"
   }
 
 }
@@ -45,7 +44,6 @@ apply plugin: "java"
 apply plugin: "groovy"
 apply plugin: 'com.github.jruby-gradle.base'
 apply plugin: 'org.asciidoctor.convert'
-apply plugin: "com.energizedwork.webdriver-binaries"
 
 // Common tasks from the overall common.gradle file provides: version, bintrayUpload, maven artifact creation.
 apply from: "../gradle/common.gradle"
