@@ -58,11 +58,7 @@ dependencyManagement {
 }
 
 dependencies {
-  compile ("org.simplemes:eframe:0.5")
-  //compileOnly("org.codehaus.groovy:groovy:${groovyDateUtilsVersions}")
-  //compileOnly "io.micronaut:micronaut-inject-groovy"
-  //compile "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
-
+  compile ("org.simplemes:mes-core:0.5")
 
   // gems dependency configuration is added by jruby-gradle-plugin. Here we define
   // the gems we need in our build.
@@ -72,20 +68,7 @@ dependencies {
 
 }
 
-mainClassName = "org.simplemes.mes.application.Application"
+mainClassName = "org.simplemes.mes.assy.application.Application"
 
 
 
-// Local Tasks
-// Remove some sample/test files from the published jar.
-jar {
-  exclude "logback.xml"
-  exclude "application-test.yml"
-  exclude "/org/simplemes/mes/application/Application.class"
-  exclude "/reports/sample/**"
-}
-
-test {
-  // Force STDOUT to echo in github server.
-  testLogging.showStandardStreams = true
-}

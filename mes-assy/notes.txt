@@ -1,0 +1,108 @@
+Bugs
+=====
+Create Product with components.  Parent record is not created when product_component is saved.
+
+Grails 3.3.2 Upgrade
+--------------------
+
+update ordr set lsn_tracking_option='ORDER_ONLY' where lsn_tracking_option='O';
+update ordr set lsn_tracking_option='LSN_ALLOWED' where lsn_tracking_option='B';
+update product set lsn_tracking_option='ORDER_ONLY' where lsn_tracking_option='O';
+update product set lsn_tracking_option='LSN_ALLOWED' where lsn_tracking_option='B';
+update order_assembled_component set state='ASSEMBLED' where state='A';
+update order_assembled_component set state='REMOVED' where state='R';
+
+alter table order_oper_state add column date_created timestamp;
+alter table order_oper_state add column last_updated timestamp;
+alter table lsn_oper_state add column date_created timestamp;
+alter table lsn_oper_state add column last_updated timestamp;
+
+
+Big Rocks
+=========
+Work Center Setup
+  Bin ID scan replenishment.
+  Name:
+    feeder/bin
+    loadSpace
+    loadSpot
+    loadSlot
+    loadArea
+    loadPoint***
+    loadSource
+    source
+    storagePoint
+    storePoint
+    stockPoint
+    stockArea
+    stock
+Auto Assy support
+Order Assembled Components
+  Reports/Search?
+  Simple component barcode scan - Dialog for Assy Data?
+Bugs
+  Figure out why Ctrl-V doesn't paste into scan dashboard.
+  Uberschloss not shown correctly in table.
+  Fix output from all unit tests (method extension warnings)
+
+Scan Dashboard for Assembly
+  GUI Test for LSN-assy?
+Dashboard activity for displaying assy state.
+  Checkbox to show assembled  - Percent Assembled Thermometer
+
+Reverse Complete?   On A Reverse Group button?
+
+Search
+------
+http://localhost:9200/order/_search?q=order.assembledComponents.assemblyDataValues.LOT:87929459
+input in assembly report: assy.LOT:8686866 ->
+Module adds extenders to handle abbreviations in search.
+  lot:1234 -> order.assembledComponents.assemblyDataValues.LOT:1234
+Assembly Report lists specific LSN that used the value.
+Component/Assembly Report
+   Component/Assembly: _________  Search
+
+   Order 1234 - LSN SN1003   --> Assembly Report
+   Order 1234 - LSN SN1005
+
+Global Search: assy.lot:8686866
+Component/Assembly Search: lot:8686866
+
+
+
+Assy Data Questions
+-------------------
+Does category have to be 'ASSEMBLY'?  Enforced at Product level how? Added as Addition, how to specify the category?
+
+
+Work Center Setup
+-----------------
+WC Comp Controller
+WC Delete handler
+
+Auto Assy
+---------
+Assy Log Domain
+Archive Assy Log
+
+Some Barcodes
+-------------
+  ^PRD^WHEEL-27^LOT^87929459
+  ^BTN^COMPLETE
+
+Setup
+=========
+GITHUB server
+  create repository mphouston/simplemes-core
+MN Create
+   cd documents\git\simplemes-core
+   mn create-app mes-core -l groovy -f spock
+IDEA
+  New Project from Existing Sources (default for all)
+  Import Gradle (Use Auto Import).
+  Remove top-level mes-assy module in IDEA (the one with no dependencies from gradle).
+  Edit build.gradle (import sources).
+  Move Application.groovy to correct package (org.simplemes.mes.assy.application).
+GIT Setup
+  cd documents\git\simplemes-core
+  git clone https://github.com/simplemes/simplemes-core.git

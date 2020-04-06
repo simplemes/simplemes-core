@@ -1,0 +1,35 @@
+<configuration>
+
+  <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+    <!-- encoders are assigned the type
+         ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+    </encoder>
+  </appender>
+
+  <root level="warn">
+    <appender-ref ref="STDOUT"/>
+  </root>
+  <logger name="StackTrace" level="error"/>
+  <!--<logger name="io.micronaut" level="trace"/>-->
+  <logger name="io.micronaut.http" level="warn"/> <!--trace for routing issues -->
+  <logger name="io.micronaut.context" level="warn"/> <!--trace for issues creating beans-->
+  <logger name="io.micronaut.data" level="warn"/>  <!--debug for SQL, trace for values-->
+  <logger name="io.micronaut.runtime.Micronaut" level="info"/>
+  <logger name="io.micronaut" level="warn"/>
+  <!--<logger name="asset.pipeline" level="trace"/>-->
+  <logger name="io.netty.handler.logging" level="WARN"/>
+
+  <logger name="sample" level="warn"/>
+  <!--<logger name="org.simplemes.eframe.web.ui" level="trace"/>-->
+  <logger name="org.simplemes.eframe.application" level="error"/>  <!--warn:workAround, debug: allBeans -->
+  <logger name="org.simplemes.eframe.domain" level="warn"/>
+  <logger name="org.simplemes.eframe.test" level="warn"/>
+  <logger name="org.simplemes.eframe.preference" level="warn"/>
+  <logger name="org.simplemes.eframe" level="warn"/>
+
+  <logger name="org.simplemes.mes.demand" level="warn"/>
+  <logger name="org.simplemes.mes.system.InitialData" level="error"/>
+  <logger name="org.simplemes.mes" level="warn"/>
+</configuration>

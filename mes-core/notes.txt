@@ -97,8 +97,8 @@ Setup
 GITHUB server
   create repository mphouston/simplemes
 MN Create
-   cd documents\git\simplemes
-   mn create-app mes-core -l groovy -f spock,hibernate-gorm,management
+   cd documents\git\simplemes-core
+   mn create-app mes-core -l groovy -f spock
 IDEA
   New Project from Existing Sources (default for all)
   Import Gradle (Use Auto Import).
