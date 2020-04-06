@@ -9,6 +9,8 @@
 SimpleMES (Manufacturing Execution System) Core Modules.  The supported modules include:
 
 * [Enterprise Framework Module](eframe)
+* [MES Core Module](mes-core)
+* [MES Assembly Module](mes-assy)
 * [Webix Assets](webix)
 
 # Build Instructions
