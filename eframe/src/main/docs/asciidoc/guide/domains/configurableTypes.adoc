@@ -60,7 +60,7 @@ class RMA {
   BigDecimal qty
   Date returnDate
 
-  @ManyToOne(targetEntity=Product) <.>
+  @ManyToOne(targetEntity=FlexType) <.>
   FlexType rmaType
 
   @ExtensibleFieldHolder <.>

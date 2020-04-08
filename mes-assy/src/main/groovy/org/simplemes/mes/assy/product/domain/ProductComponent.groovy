@@ -15,7 +15,7 @@ import javax.persistence.ManyToOne
  * <p>
  * This element informally belongs to the MES Core Product domain.  Since the Product is in another module,
  * the normal child relationship is not used.
- * Instead, the {@link org.simplemes.mes.assy.AssemblyAddition} adds this as a custom child to the core Product domain.
+ * Instead, the {@link org.simplemes.mes.assy.application.AssemblyAddition} adds this as a custom child to the core Product domain.
  * <p>
  * <b>Note:</b> On Test cleanup, you should delete these ProductComponent records before deleting the Product records.
  *

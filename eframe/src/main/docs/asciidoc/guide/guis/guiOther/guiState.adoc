@@ -1,5 +1,5 @@
 
-==== GUI State Persistence
+=== GUI State Persistence
 
 The standard GUI elements generally are configurable and remember the user's state between executions.  This means
 important settings like column ordering and column size are persisted between visits to the page.  Once a user
@@ -12,7 +12,7 @@ The elements that remember state are:
 * <<efCreate>>
 * <<efEdit>>
 * <<efDefinitionList>>
-* <<Reports And Charts>>
+* <<Reports>>
 * <<Dashboards>>
 
 As the user changes the settings in the GUI, these changes are stored in the

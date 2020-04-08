@@ -38,6 +38,12 @@ task testAll {
   }
 }
 
+task asciidoctorAll {
+  includedBuilds.tokenize(',').each { buildName ->
+    dependsOn gradle.includedBuild(buildName).task(':asciidoctor')
+  }
+}
+
 task assembleAll {
   includedBuilds.tokenize(',').each { buildName ->
     dependsOn gradle.includedBuild(buildName).task(':assemble')

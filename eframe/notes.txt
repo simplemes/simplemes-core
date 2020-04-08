@@ -22,7 +22,6 @@ Support cache in specific use cases:
 Add SQL DDL logic and Liquid-base/FlyWay support.
   Find way to auto-generate core stuff?.
 Look at using an environment for DB type: h2, postgres.  Change command line to use it.
-Move Asset Pipeline to groovy to avoid missing bean when used by a module.  Can a .java file compiled under groovy work Ok?
 Figure out why sample reports are in the built .jar.  Why ArchiveLog report does not work.
 <@efField> supports foreign reference.  Value="" causes failure.  Maybe use UUID or key in value?
 Fix mess with efForm.dashboard.  Support type='dashboard', 'buttonHolder' and 'dialog'.
@@ -36,6 +35,7 @@ Dashboard splitter component?
 Tasks
 =====
 Tasks left out
+  Support for MPE?
   Check Search in CrudGUITester.
   CrudGUITester - combobox - Enum, Domain Ref, Option objects.
   Look into Jackson skipping foreign references.  Only need key and ID fields to import.
