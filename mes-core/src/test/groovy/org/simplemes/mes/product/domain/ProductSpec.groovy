@@ -97,4 +97,14 @@ class ProductSpec extends BaseSpecification {
     expect: 'the right routing is found'
     product.determineEffectiveRouting() == routing
   }
+
+  def "verify that toLocalizedString works"() {
+    given: 'a product'
+    def product = new Product(product: 'ABC', title: 'xyz')
+
+    expect: 'the method works'
+    product.toStringLocalized().contains('ABC')
+    product.toStringLocalized().contains('xyz')
+  }
+
 }

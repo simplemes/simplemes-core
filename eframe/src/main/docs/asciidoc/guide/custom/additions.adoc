@@ -163,11 +163,10 @@ class SimpleAddition extends BaseAddition implements AdditionInterface {
     initialDataLoader InitialDataLoadRoles
     field { domain Order; name 'warehouse'}  // <.>
     field {
-      domain Product
+      domain Product         // <.>
       name 'productCode'
       format LongFieldFormat
-      valueClass ProductComponent
-      fieldOrder { name 'group:components' }
+      fieldOrder { name 'group:components' }  // <.>
       fieldOrder { name 'components'; after 'group:components' }
       guiHints """label="Legacy Code" """   // <.>
     }
@@ -176,6 +175,12 @@ class SimpleAddition extends BaseAddition implements AdditionInterface {
 ----
 <.> Exposes this addition as standard bean.
 <.> Single-line format for a field definition.
+<.> The custom field is added to the Product domain.
+<.> Adds a new panel in the Product GUI for the components.
+    This panel is added at the end of the field order.
+    The custom field itself will also be added at the end, so it will appear on the components
+    panel. Assumes the label
+    _'components.panel.label'_ exists in the _messages.properties_ file.
 <.> Provides a GUI display hint for the display <<Markers>>.
 
 
@@ -215,10 +220,9 @@ to GUIs in core domains and also import/export the values.
 class SimpleAddition extends BaseAddition implements AdditionInterface {
   AdditionConfiguration addition = Addition.configure {
     field {  // <.>
-      domain SampleParent
+      domain Order
       name 'priority'
       format LongFieldFormat
-      valueClass Order
       fieldOrder { name 'priority'; after 'notes' }
       guiHints """label="Order Priority" """
     }

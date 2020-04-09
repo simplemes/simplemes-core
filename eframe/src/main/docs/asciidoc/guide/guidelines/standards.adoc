@@ -3,6 +3,10 @@
 
 ifeval::["{backend}" != "pdf"]
 
+[inline-toc]#<<Groovydoc>>#
+[inline-toc]#<<Source Code Format>>#
+[inline-toc]#<<ENUMs>>#
+[inline-toc]#<<ENUMs>>#
 [inline-toc]#<<Class/Method Design (Fluid API)>>#
 [inline-toc]#<<ENUMs>>#
 [inline-toc]#<<Current User>>#
@@ -17,6 +21,28 @@ endif::[]
 There are a number of programming and design standards that the framework follows to give you a consistent
 API to work with. These conventions help the framework work with your application with minimal
 coding on your part. These standards are described here.
+
+==== Groovydoc
+
+. All packages must have package Javadoc (GroovyDoc) comments.  *Mandatory*
+. All non-test methods and fields must have Javadoc (GroovyDoc) comments.  All parameters must be described. *Mandatory*
+. All non-error handling code must have automated tests.  Code Coverage must be 90+% for all groovy code.  *Mandatory*
+. All GUI Text displayed must be looked up in the messages.properties bundle.
+  This must be tested in unit tests where possible. *Mandatory*
+
+==== Source Code Format
+
+Since the source code is usually re-formatted on check-in (Intellij IDEA option), the source format is important.
+Using a consistent format helps identify the 'real' changes between versions.  The standards we follow are:
+
+* All TAB characters must be converted to spaces. *Mandatory*
+* TAB widths must be set to 2 spaces or kept consistent within a single source file. *Mandatory*
+* Always use brackets for if/else statements. *Mandatory*
+* All _messages.properties_ files must be encoded in UTF-8.  *Mandatory*
+* Follow K&R bracket usage (Open bracket on _if/for_ line). Suggested.
+* Use brackets for one line if statements.  Suggested.
+
+
 
 [[class-method-design,Class/Method Design (Fluid API)]]
 ==== Class/Method Design (Fluid API)

@@ -38,6 +38,8 @@ ifndef::sourcedir[:sourcedir: ../java]
 
 include::guide/introduction.adoc[]
 
+include::guide/security/security.adoc[]
+
 include::guide/guis/guis.adoc[]
 
 include::guide/controllers/controllers.adoc[]
@@ -45,8 +47,6 @@ include::guide/controllers/controllers.adoc[]
 include::guide/dataModel/domains.adoc[]
 
 include::guide/services/services.adoc[]
-
-include::guide/security/security.adoc[]
 
 ////
 include::guide/guis/guis.adoc[]

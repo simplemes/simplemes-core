@@ -36,6 +36,7 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc-header]#Others#
 [inline-toc]#<<Field Definitions>>#
+[inline-toc]#<<toShortString()>>#
 [inline-toc]#<<toStringLocalized()>>#
 [inline-toc]#<<Dynamic SQL - PreparedStatement>>#
 
@@ -1036,6 +1037,38 @@ sent to a client using JSON, the ISO date is sent with the timezone offset.  The
 the Javascript time is created by discarding the timezone offset.  This means the time will be
 displayed by the toolkit with no adjustments.
 
+
+==== toShortString()
+
+Many GUI-related parts of the framework need a short, human-readable format of your domain objects.
+For example, you want to display the Order ID in drop-down, but the `toString()` method
+returns all of the order's fields.  The framework supports a standardized `toShortString()`
+method on most domains for this display.  This is normally a short string for the given object
+(e.g. its primary key).
+
+By default, this short string is usually just the first key field (as a string).
+The link:groovydoc/org/simplemes/eframe/misc/TypeUtils.html[TypeUtils^]
+icon:share-square-o[role="link-blue"] utility class provides an easy way to get this short string.
+
+If the first key field is not suitable, then you can implement a `toShortString()` method.  This
+is useful when the first key is another domain object.
+
+[source,groovy]
+.Example - toShortString()
+----
+class Order {
+  String toShortString() {
+    return order
+  }
+}
+----
+
+This mechanism allows you to use the normal `toString()` methods to display detailed information
+for use in log messages.  The `TypeUtils.toShortString(object)` utility will use your
+`toShortString()` method, if defined.
+
+NOTE: If you are using a domain as a reference in a grid, then you should also implement
+      <<toStringLocalized()>>.  This `toStringLocalized()` methoud could just call `toShortString()`.
 
 ==== toStringLocalized()
 

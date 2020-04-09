@@ -11,6 +11,7 @@ import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
 import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.domain.annotation.DomainEntity
+import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.mes.demand.LSNTrackingOption
 import org.simplemes.mes.demand.domain.LSNSequence
 import org.simplemes.mes.misc.FieldSizes
@@ -144,4 +145,15 @@ class Product implements RoutingTrait {
     //noinspection GroovyAssignabilityCheck
     this.operations = operations
   }
+
+  /**
+   * Build a human-readable version of this object, localized.
+   * Simply uses toShortString().
+   * @param locale The locale to display the enum display text.
+   * @return The human-readable string.
+   */
+  String toStringLocalized(Locale locale = null) {
+    return TypeUtils.toShortString(this, true)
+  }
+
 }

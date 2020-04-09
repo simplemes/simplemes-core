@@ -34,6 +34,40 @@ GUI tests end with '_GUISpec_'.  These typically trigger an embedded server star
 Some tests will test domains, which will start the data store for testing the full
 domain stack.
 
+=== What Type of Test
+
+The automated tests for SimpleMES come in two flavors: unit/API and GUI tests.
+Since they are faster, unit tests are used whenever possible. GUI tests are run within a
+simple application server and will exercise the database and internal workings of the full
+application.
+
+Here is a summary of when and where to use the types of testing:
+
+[cols="1,2,2",width=75%]
+|===
+| Objects  | Unit/API Testing                                  | GUI Testing
+
+| Domain     | Constraints, Validations, Basic Persistence | Rarely
+| Controller | Param Mapping, JSON Conversion, Results     | Rarely - API Access Testing
+| Services   | Business Logic, Error Conditions
+               Tests for all (most) supported scenarios.   | End-To-End Scenarios
+| GUIs       | Rarely                                      | Most GUI Testing
+|===
+
+
+In general, any test is designed to cover just the code in one class (code under test).
+Some API and GUI tests cover many objects and their orchestration of complex business logic.
+These are usually noted as end-to-end (E2E) or GUI tests.  These typically
+cover code that has already been tested in unit tests, but ensures that the end-to-end
+scenarios work as expected.
+
+Most controller tests will test the logic using full API calls via an HTTPClient (e.g using
+link:groovydoc/org/simplemes/eframe/test/BaseAPISpecification.html[BaseAPISpecification^]
+icon:share-square-o[role="link-blue"]).  Since most controllers have little business
+logic, then only limited testing is needed (e.g. type conversions, error handling,
+response codes).
+
+
 include::testingOverview.adoc[]
 
 include::controllerTesting.adoc[]

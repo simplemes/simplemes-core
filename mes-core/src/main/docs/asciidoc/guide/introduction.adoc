@@ -6,6 +6,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Stable API>>#
 [inline-toc]#<<Dependencies>>#
 [inline-toc]#<<Enterprise Framework>>#
+[inline-toc]#<<Programming Standards>>#
 
 endif::[]
 
@@ -72,4 +73,10 @@ plugin is a special dependency.  This plugin was developed
 in conjunction with this MES application.  The framework provides much of the 'enterprise' level
 functionality such as customization, standard GUIs and API support.
 
+
+==== Programming Standards
+
+This module conforms to the
+link:{eframe-path}/guide.html#programming-standards[Enterprise Framework^] icon:share-square[role="link-blue"]
+coding standards.
 
