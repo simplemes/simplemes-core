@@ -5,6 +5,9 @@ import org.simplemes.eframe.custom.Addition
 import org.simplemes.eframe.custom.AdditionConfiguration
 import org.simplemes.eframe.custom.AdditionInterface
 import org.simplemes.eframe.custom.BaseAddition
+import org.simplemes.eframe.data.format.CustomChildListFieldFormat
+import org.simplemes.mes.assy.product.domain.ProductComponent
+import org.simplemes.mes.product.domain.Product
 
 import javax.inject.Singleton
 
@@ -28,6 +31,18 @@ class AssemblyAddition extends BaseAddition implements AdditionInterface {
    * Defines the elements needed/provided by this addition.
    */
   AdditionConfiguration addition = Addition.configure {
+    field {
+      domain Product
+      name 'components'
+      label 'components.label'
+      format CustomChildListFieldFormat
+      valueClass ProductComponent
+      fieldOrder { name 'group:components' }
+      fieldOrder { name 'components'; after 'group:components' }
+      guiHints 'sequence@default="tk.findMaxGridValue(gridName, \'sequence\')+10"'
+    }
+
+
 /*
     initialDataLoader InitialData
     encodedType LSNStatus

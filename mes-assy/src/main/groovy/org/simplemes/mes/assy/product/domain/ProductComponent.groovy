@@ -6,6 +6,7 @@ import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import org.simplemes.eframe.domain.annotation.DomainEntity
+import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.mes.product.domain.Product
 
 import javax.persistence.ManyToOne
@@ -22,6 +23,7 @@ import javax.persistence.ManyToOne
  */
 @DomainEntity
 @MappedEntity
+@SuppressWarnings("unused")
 @ToString(includeNames = true, includePackage = false, excludes = ['product'])
 @EqualsAndHashCode(includes = ['uuid'])
 class ProductComponent {
@@ -41,6 +43,7 @@ class ProductComponent {
   /**
    * This is the product required for the main assembly. <b>(Required)</b>
    */
+  @ManyToOne(targetEntity = Product)
   Product component
 
   /**
@@ -60,5 +63,23 @@ class ProductComponent {
    * Internal definitions.
    */
   static fieldOrder = ['sequence', 'component', 'qty']
+
+  /**
+   * Returns the short-format of this object.
+   * @return The short format of this object.
+   */
+  String toShortString() {
+    return "$sequence: ${TypeUtils.toShortString(component, true)}"
+  }
+
+  /**
+   * Build a human-readable version of this object, localized.
+   * Simply uses toShortString().
+   * @param locale The locale to display the enum display text.
+   * @return The human-readable string.
+   */
+  String toStringLocalized(Locale locale = null) {
+    return toShortString()
+  }
 
 }

@@ -32,7 +32,7 @@ import javax.persistence.ManyToOne
  * record.
  * <p>
  * This element informally belongs to the MES Core Order domain.  Since the Order is in another module,
- * the normal Grails 'belongs to' notation can't be used.
+ * the normal child relationship can't be used.
  * Instead, the {@link org.simplemes.mes.assy.application.AssemblyAddition} adds this as a custom child to the core domain.
  *
  */

@@ -33,5 +33,27 @@ class ProductComponentSpec extends BaseSpecification {
     }
   }
 
+  @Rollback
+  def "verify that toShortString works"() {
+    given: 'a product'
+    def product = new Product(product: 'ABC', title: 'xyz').save() as Product
+
+    expect: 'the method works'
+    def productComponent = new ProductComponent(component: product, sequence: 237)
+    productComponent.toShortString().contains('ABC')
+    productComponent.toShortString().contains('xyz')
+    productComponent.toShortString().contains('237')
+  }
+
+  @Rollback
+  def "verify that toLocalizedString works"() {
+    given: 'a product'
+    def product = new Product(product: 'ABC', title: 'xyz').save() as Product
+
+    expect: 'the method works'
+    def productComponent = new ProductComponent(component: product, sequence: 237)
+    productComponent.toStringLocalized() == productComponent.toShortString()
+  }
+
 
 }
