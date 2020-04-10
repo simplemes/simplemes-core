@@ -503,6 +503,23 @@ public class DomainEntityHelper {
         }
       }
     }
+
+    // Try all custom child lists.
+    @SuppressWarnings("unchecked")
+    List<Map<String, Object>> customLists = (List<Map<String, Object>>) invokeGroovyMethod(
+        "org.simplemes.eframe.custom.ExtensibleFieldHelper",
+        "getCustomChildLists", object);
+    if (customLists != null) {
+      for (Map<String, Object> map : customLists) {
+        List list = (List) map.get("list");
+        for (Object child : list) {
+          if (child instanceof DomainEntityInterface) {
+            ((DomainEntityInterface) child).delete();
+          }
+        }
+      }
+    }
+
   }
 
   /**

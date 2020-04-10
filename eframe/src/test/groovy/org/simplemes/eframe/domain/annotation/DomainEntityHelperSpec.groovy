@@ -987,6 +987,24 @@ class DomainEntityHelperSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that delete on parent will remove custom child list records"() {
+    when: 'a domain record with the custom child records is created'
+    def order = new Order(order: 'ABC')
+    def comp1 = new CustomOrderComponent(order: order, sequence: 123)
+    def comp2 = new CustomOrderComponent(order: order, sequence: 456)
+    def comp3 = new CustomOrderComponent(order: order, sequence: 789)
+    def comps = [comp1, comp2, comp3]
+    order.setFieldValue('customComponents', comps)
+    order.save()
+
+    and: 'the parent is deleted'
+    order.delete()
+
+    then: 'the child records are deleted'
+    CustomOrderComponent.list().size() == 0
+  }
+
+  @Rollback
   def "verify that delete calls the beforeDelete method on the domain"() {
     when: 'the domain is saved'
     def order = new Order(order: 'ABC')

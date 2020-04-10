@@ -452,7 +452,9 @@ For example:
     given: "An order to start"
     Order order = null
     Order.withTransaction {        // <.>
-      order = new Order(order: 'M001', product: product).save()
+      order = new Order(order: 'M001', product: product)
+      setFieldValue('components',[new OrderComponent(product: aProdct, qty: 1.0)])  // <.>
+      order.save()
       new OrderService().release(new OrderReleaseRequest(order))
     }
 
@@ -461,4 +463,5 @@ For example:
 
 ----
 <.> All database access in the test must be within a transaction.
+<.> The custom child list is set using the normal `setFieldValue()` method.
 
