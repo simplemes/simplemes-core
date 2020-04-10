@@ -5,7 +5,9 @@ import org.simplemes.eframe.custom.Addition
 import org.simplemes.eframe.custom.AdditionConfiguration
 import org.simplemes.eframe.custom.AdditionInterface
 import org.simplemes.eframe.custom.BaseAddition
+import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.data.format.CustomChildListFieldFormat
+import org.simplemes.eframe.data.format.DomainReferenceFieldFormat
 import org.simplemes.mes.assy.product.domain.ProductComponent
 import org.simplemes.mes.product.domain.Product
 
@@ -41,22 +43,16 @@ class AssemblyAddition extends BaseAddition implements AdditionInterface {
       fieldOrder { name 'components'; after 'group:components' }
       guiHints 'sequence@default="tk.findMaxGridValue(gridName, \'sequence\')+10"'
     }
-
-
-/*
-    initialDataLoader InitialData
-    encodedType LSNStatus
-    encodedType OrderStatus
-    encodedType WorkCenterStatus
-    asset {
-      page "dashboard/index"
-      script "/assets/mes_dashboard.js"
+    field {
+      domain Product
+      name 'assemblyDataType'
+      label 'assemblyDataType.label'
+      format DomainReferenceFieldFormat
+      valueClass FlexType
+      fieldOrder { name 'group:components' }
+      fieldOrder { name 'assemblyDataType'; after 'lotSize' }
     }
-    asset {
-      page "dashboard/index"
-      css "/assets/mes_dashboard.css"
-    }
-*/
+
   }
 
 }
