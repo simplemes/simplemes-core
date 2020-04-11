@@ -1,6 +1,40 @@
 Scratch
 =======
-Create ListWidget -> DefinitionListWidget
+@ExtensionPoint(MarkerClass, "Comment")
+ Response method(argument1)
+   preMethod(argument)
+   postMethod(argument,response)
+
+
+@Singleton
+OrderServiceExtension implements MarkerClass
+  Response postMethod(argument,response) {
+    return response
+  }
+}
+
+interface MarkerClass {
+  default preMethod(argument)
+  default postMethod(argument,response)
+}
+
+ExtensionPointHelper.instance.invokePre(Class marker,arguments) {
+  getBeans(marker)
+  call preMethod() on all
+  call postMethod() on all
+}
+ExtensionPointHelper.instance.invokePost(Class bean,response,arguments)
+
+Old School: release(target: OrderService, extension: this.&orderReleasePostProcessor)
+def orderReleasePostProcessor(OrderReleaseRequest orderReleaseRequest) {
+  orderAssyService.orderReleasePostProcessor(orderReleaseRequest)
+}
+
+Generated extension.adoc:
+
+* Order.release() - The sample release method.
+* link:groovydoc/sample/service/OrderService.html#save(sample.domain.Order)[OrderService.save()^] icon:share-square-o[role="link-blue"] - The order Save method,
+
 
 
 

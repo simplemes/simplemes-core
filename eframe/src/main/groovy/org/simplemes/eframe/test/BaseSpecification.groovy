@@ -22,6 +22,7 @@ import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.application.InitialDataLoader
 import org.simplemes.eframe.application.StartupHandler
 import org.simplemes.eframe.controller.ControllerUtils
+import org.simplemes.eframe.custom.annotation.ExtensionPointHelper
 import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.custom.domain.FieldGUIExtension
 import org.simplemes.eframe.domain.DomainUtils
@@ -284,7 +285,7 @@ class BaseSpecification extends GebSpec {
    * The common utility classes to check for a mocked instance.  Will reset them to their default (non-mocked) instance.
    * This typically includes {@link DomainUtils} and {@link ControllerUtils}.
    */
-  def utilityClassesToCheck = [DomainUtils, ControllerUtils, DomainEntityHelper]
+  def utilityClassesToCheck = [DomainUtils, ControllerUtils, DomainEntityHelper, ExtensionPointHelper]
 
   /**
    * Cleans up any mocked .instance values in the common utility classes.

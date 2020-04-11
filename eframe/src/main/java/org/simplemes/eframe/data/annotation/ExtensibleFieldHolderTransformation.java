@@ -150,7 +150,7 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
         new Parameter(new ClassNode(String.class), "fieldName")
     };
     if (prefix != null) {
-      getterName = "get" + upperCaseFirstLetter(prefix) + "Value";
+      getterName = "get" + ASTUtils.upperCaseFirstLetter(prefix) + "Value";
     }
 
     // Make sure the method doesn't exist already
@@ -210,7 +210,7 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
         new Parameter(new ClassNode(Object.class), "value")
     };
     if (prefix != null) {
-      setterName = "set" + upperCaseFirstLetter(prefix) + "Value";
+      setterName = "set" + ASTUtils.upperCaseFirstLetter(prefix) + "Value";
     }
 
     // Make sure the method doesn't exist already
@@ -268,21 +268,6 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
         fieldNode.addAnnotation(new AnnotationNode(new ClassNode(io.micronaut.data.annotation.Transient.class)));
       }
     }
-  }
-
-  /**
-   * Shifts the first letter of the string to uppercase.
-   *
-   * @param s The string to adjust.
-   * @return The adjusted string.
-   */
-  String upperCaseFirstLetter(String s) {
-    if (s == null || s.length() == 0) {
-      return null;
-    }
-    String first = s.substring(0, 1).toUpperCase();
-
-    return first + s.substring(1);
   }
 
 }

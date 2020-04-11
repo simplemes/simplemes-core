@@ -8,13 +8,12 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<field-extension-gui>>#
 [inline-toc]#<<Configurable Types>>#
 [inline-toc]#<<Flex Types>>#
+[inline-toc]#<<Extension Points>>#
 
 [inline-toc-header]#Module Additions#
 [inline-toc]#<<Module Additions>>#
 
 endif::[]
-
-TBD
 
 
 include::fieldTypes.adoc[]
@@ -25,6 +24,7 @@ include::fieldExtensionGUI.adoc[]
 
 include::flexTypes.adoc[]
 
+include::extensionPoints.adoc[]
+
 include::additions.adoc[]
 
-// TODO: composition, pluginExamples (with TOC above)

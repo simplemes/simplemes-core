@@ -209,11 +209,9 @@ public class DomainEntityHelper {
       try {
         //Class[] args = {};
         Method method = ((Class<?>) clazz).getMethod("getRepository");
-        if (method != null) {
-          Object res = method.invoke(null);
-          if (res instanceof GenericRepository) {
-            return (GenericRepository<DomainEntityInterface, UUID>) res;
-          }
+        Object res = method.invoke(null);
+        if (res instanceof GenericRepository) {
+          return (GenericRepository<DomainEntityInterface, UUID>) res;
         }
       } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
         // Intentionally ignored.
@@ -626,7 +624,7 @@ public class DomainEntityHelper {
   }
 
   /**
-   * Returns the table name for the given domain entityt
+   * Returns the table name for the given domain entity.
    *
    * @param domainClass The domain class (a @MappedEntity).
    * @return The table name.
@@ -1017,9 +1015,7 @@ public class DomainEntityHelper {
           Class c = getClass().getClassLoader().loadClass("org.simplemes.eframe.exception.SimplifiedSQLException");
           simplifiedSQLExceptionConstructor = c.getConstructor(Exception.class);
         }
-        if (simplifiedSQLExceptionConstructor != null) {
-          e = (Throwable) simplifiedSQLExceptionConstructor.newInstance(e);
-        }
+        e = (Throwable) simplifiedSQLExceptionConstructor.newInstance(e);
       } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException ignored) {
         //System.out.println("ignored:" + ignored);
       }
@@ -1195,7 +1191,7 @@ public class DomainEntityHelper {
    * A list of classes to handles specially in the invokeGroovyMethod().  Any sub-classes of these
    * will be treated as the parent class when finding the groovy method.
    */
-  private static List<Class> parentClassesForInvoke = Arrays.asList(new Class[]{DomainEntityInterface.class, ResultSet.class});
+  private static final List<Class> parentClassesForInvoke = Arrays.asList(new Class[]{DomainEntityInterface.class, ResultSet.class});
 
   /**
    * Invokes the given groovy class/method with arguments.  This is done to access

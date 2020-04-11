@@ -119,6 +119,7 @@ The basic steps are:
 * <<Design and Name Your Module>>
 * Create a Micronaut Module.  See the <<{mes-core-path}/guide.adoc#,SimpleMES>> application for an example.
 * Create an <<Addition>>.
+* Add any beans to execute addition code at <<Extension Points>>.
 
 ===== Design and Name Your Module
 
@@ -144,7 +145,7 @@ The Addition describes elements including:
 * Encoded Types
 * Initial Data Loaders
 
-Additions are defined as a class with a simple DLS (Domain Specific Language) to define
+Additions are classes with a simple DLS (Domain Specific Language) to define
 these elements.  Not all are required.
 
 ===== Example Addition
@@ -175,9 +176,9 @@ class SimpleAddition extends BaseAddition implements AdditionInterface {
 ----
 <.> Exposes this addition as standard bean.
 <.> Single-line format for a field definition.
-<.> The custom field is added to the Product domain.
+<.> The custom field added to the Product domain.
 <.> Adds a new panel in the Product GUI for the components.
-    This panel is added at the end of the field order.
+    This panel added at the end of the field order.
     The custom field itself will also be added at the end, so it will appear on the components
     panel. Assumes the label
     _'components.panel.label'_ exists in the _messages.properties_ file.
@@ -200,7 +201,7 @@ The Addition supports these top-level options:
 |name | The name of the addition (*Default*: The addition class's simple name).
 |field | Defines a single field added to a domain.  See <<Addition Field Extensions>> (*Optional*).
 |encodedType | One of the <<Encoded Types Provided By Additions>> (*Optional*).
-|initialDataLoader | A class that is the initial data loader.  See <<Initial Data Loaders and Additions>> (*Optional*).
+|initialDataLoader | An initial data loader class.  See <<Initial Data Loaders and Additions>> (*Optional*).
 |asset | An asset needed for a specific page.  See <<Assets Provided by Additions>> (*Optional*).
 |===
 
@@ -208,9 +209,9 @@ The Addition supports these top-level options:
 ===== Addition Field Extensions
 
 One of more important reasons to use additions is to add custom fields to core
-domain classes in other modules.  This definition is used to create normal
+domain classes in other modules.  This definition creates normal
 <<Field Extensions>> for the defined fields.  This means your module can add fields
-to GUIs in core domains and also import/export the values.
+to GUIs in core domains and import/export the values.
 
 
 [source,groovy]
@@ -317,7 +318,7 @@ class SetupRoles {
 
 ----
 <.> Registers this addition within the application context for discovery at runtime.
-<.> Specifies the class that performs the initial data loading.
+<.> Specifies the initial data loading class.
 <.> Performs the actual initial data loading.
 
 ===== Assets Provided by Additions

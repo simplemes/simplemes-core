@@ -271,4 +271,18 @@ public class ASTUtils {
   }
 
 
+  /**
+   * Shifts the first letter of the string to uppercase.
+   *
+   * @param s The string to adjust.
+   * @return The adjusted string.
+   */
+  public static String upperCaseFirstLetter(String s) {
+    if (s == null || s.length() == 0) {
+      return null;
+    }
+    String first = s.substring(0, 1).toUpperCase();
+
+    return first + s.substring(1);
+  }
 }
