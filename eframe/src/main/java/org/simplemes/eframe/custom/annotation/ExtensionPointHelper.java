@@ -45,10 +45,15 @@ public class ExtensionPointHelper {
     return null;
   }
 
-
-  /*
-ExtensionPointHelper.instance.invokePost(Class bean,response,arguments)
-
+  /**
+   * Updates the .adoc file for the list of extension points compiled for the ExtensionPoint annotation.
+   *
+   * @param method        The class/method (used for sorting).
+   * @param methodLink    The groovydoc link to the method in adoc format.
+   * @param interfaceLink The groovydoc link to the interface class in adoc format.
+   * @param comment       The optional comment.
    */
+  void updateDocumentFile(String method, String methodLink, String interfaceLink, String comment) {
+  }
 
 }

@@ -18,10 +18,17 @@ import org.codehaus.groovy.syntax.SyntaxException;
 import org.codehaus.groovy.syntax.Token;
 import org.codehaus.groovy.syntax.Types;
 import org.simplemes.eframe.domain.annotation.DomainEntityHelper;
+import org.simplemes.eframe.domain.annotation.DomainEntityInterface;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.spockframework.runtime.model.FeatureMetadata;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+import java.sql.ResultSet;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -30,6 +37,18 @@ import java.util.List;
  */
 @SuppressWarnings({"WeakerAccess", "UnusedReturnValue", "SameParameterValue"})
 public class ASTUtils {
+
+  /**
+   * The logger.
+   */
+  private static final Logger log = LoggerFactory.getLogger(ASTUtils.class);
+
+  /**
+   * A list of classes to handles specially in the invokeGroovyMethod().  Any sub-classes of these
+   * will be treated as the parent class when finding the groovy method.
+   */
+  private static final List<Class> parentClassesForInvoke = Arrays.asList(new Class[]{DomainEntityInterface.class, ResultSet.class});
+
   /**
    * Adds the given field to class.  Compile will fail if it already exists.
    *
@@ -284,5 +303,49 @@ public class ASTUtils {
     String first = s.substring(0, 1).toUpperCase();
 
     return first + s.substring(1);
+  }
+
+  /**
+   * Invokes the given groovy class/method with arguments.  This is done to access
+   * the groovy world from the Java code.  This is needed since the Java source tree is compiled before
+   * the groovy code is compiled.
+   * <p>We do this to avoid moving the Java source to a separate module.
+   * <p><b>Note</b> This will return null if the method is not found or other invocation errors.  The error will be logged
+   * as a warning.
+   *
+   * @param className  The fully qualified class name.
+   * @param methodName The method name.
+   * @param args       The arguments.
+   * @return The results of the method call.  Null if the class/method is not found.
+   */
+  @SuppressWarnings("unchecked")
+  public static Object invokeGroovyMethod(String className, String methodName, Object... args) {
+    try {
+      Class[] paramTypes = new Class[args.length];
+      for (int i = 0; i < args.length; i++) {
+        if (args[i] != null) {
+          paramTypes[i] = args[i].getClass();
+          // Use the parent class for some common cases in order to find the right method.
+          for (Class clazz : parentClassesForInvoke) {
+            if (clazz.isAssignableFrom(args[i].getClass())) {
+              paramTypes[i] = clazz;
+            }
+          }
+        } else {
+          // Unknown type, so try Object
+          paramTypes[i] = Object.class;
+        }
+      }
+      Class holdersClass = Class.forName(className);
+      Method method = ((Class<?>) holdersClass).getMethod(methodName, paramTypes);
+      return method.invoke(null, args);
+    } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException e) {
+      log.warn("Error invoking method " + className + "." + methodName + "(). ", e);
+      return null;
+    } catch (InvocationTargetException e) {
+      // We need to wrap the original exception in a runtime exception to avoid adding InvocationTargetException
+      // to every method in this class.
+      throw new RuntimeException(e.getCause());
+    }
   }
 }

@@ -82,6 +82,8 @@ public class ExtensionPointTransformation implements ASTTransformation {
       SimpleMessage message = new SimpleMessage("No 'return' statements found in @ExtensionPoint method " + methodNode.getName(), sourceUnit);
       sourceUnit.getErrorCollector().addError(message);
     }
+
+    updateDocumentFile(methodNode, annotation);
   }
 
   /**
@@ -93,14 +95,14 @@ public class ExtensionPointTransformation implements ASTTransformation {
    * @return False if the validation failed.  Messages are written by the compiler.
    */
   private boolean validate(MethodNode methodNode, AnnotationNode annotation, SourceUnit sourceUnit) {
-    Expression targetEntityExpression = annotation.getMember("value");
-    if (targetEntityExpression == null) {
+    Expression valueExpression = annotation.getMember("value");
+    if (valueExpression == null) {
       SimpleMessage message = new SimpleMessage("No Interface in @ExtensionPoint annotation for method " + methodNode.getName(), sourceUnit);
       sourceUnit.getErrorCollector().addError(message);
       return false;
     }
 
-    ClassNode interfaceType = targetEntityExpression.getType();
+    ClassNode interfaceType = valueExpression.getType();
     String preMethodName = "pre" + ASTUtils.upperCaseFirstLetter(methodNode.getName());
     String postMethodName = "post" + ASTUtils.upperCaseFirstLetter(methodNode.getName());
     MethodNode preMethodNode = null;
@@ -187,7 +189,6 @@ public class ExtensionPointTransformation implements ASTTransformation {
       String className2 = parameters2.get(i).getType().getName();
       if (!className1.equals(className2)) {
         String names = parameters2.get(i).getName() + "/" + parameters1.get(i).getName();
-        ;
         SimpleMessage message = new SimpleMessage("Interface '" + interfaceType.getName() + "' method '" + methodName1 +
             "' has different parameters than the @ExtensionPoint method " + methodName2 +
             ".  Parameter class mismatch on " + names + ": " + className1 + "" + " vs. " + className2 + "",
@@ -320,6 +321,71 @@ public class ExtensionPointTransformation implements ASTTransformation {
       }
     }
     return count;
+  }
+
+  /**
+   * Updates the .adoc file for the list of extension points compiled for the ExtensionPoint annotation.
+   *
+   * @param methodNode The method to transform.
+   * @param annotation The annotation node on the method.
+   */
+  private void updateDocumentFile(MethodNode methodNode, AnnotationNode annotation) {
+    String classAndMethod = methodNode.getDeclaringClass().getName() + "." + methodNode.getName();
+
+    String comment = "(no comment)";
+
+    Expression valueExpression = annotation.getMember("value");
+    ClassNode interfaceType = valueExpression.getType();
+
+    Expression commentExpression = annotation.getMember("comment");
+    if (commentExpression != null) {
+      comment = commentExpression.getText();
+    }
+
+    String path = buildPathForGroovyDocLink(methodNode.getDeclaringClass().getName());
+    String methodAndParams = buildMethodAndParameters(methodNode);
+    String methodName = methodNode.getDeclaringClass().getNameWithoutPackage() + "." + methodNode.getName();
+    String methodLink = String.format("link:groovydoc%s.html#%s[%s()^] icon:share-square-o[role=\"link-blue\"]",
+        path, methodAndParams, methodName);
+    //System.out.println("methodLink:" + methodLink);
+
+    String interfacePath = buildPathForGroovyDocLink(interfaceType.getName());
+    String interfaceName = interfaceType.getNameWithoutPackage();
+    String interfaceLink = String.format("link:groovydoc%s.html[%s^] icon:share-square-o[role=\"link-blue\"]",
+        interfacePath, interfaceName);
+    //System.out.println("interfaceLink:" + interfaceLink);
+    //link:groovydoc/sample/service/OrderService.html#release(sample.domain.Order)[OrderService.release()^] icon:share-square-o[role="link-blue"]
+
+    ExtensionPointHelper.instance.updateDocumentFile(classAndMethod, methodLink, interfaceLink, comment);
+  }
+
+  /**
+   * Builds the groovyDoc style path to the given class (/sample/Class).
+   *
+   * @param className The class/path name.
+   * @return The path.
+   */
+  private String buildPathForGroovyDocLink(String className) {
+    return "/" + className.replace('.', '/');
+  }
+
+  /**
+   * Builds the groovyDoc style method/parameters string.
+   *
+   * @param methodNode The method.
+   * @return The groovydoc format of the method/params.
+   */
+  private String buildMethodAndParameters(MethodNode methodNode) {
+    // Build the parameters (if any)
+    StringBuilder sb = new StringBuilder();
+    for (Parameter parameter : methodNode.getParameters()) {
+      if (sb.length() > 0) {
+        sb.append(",%20");
+      }
+      sb.append(parameter.getType().getName());
+    }
+
+    return methodNode.getName() + "(" + sb.toString() + ")";
   }
 
 }

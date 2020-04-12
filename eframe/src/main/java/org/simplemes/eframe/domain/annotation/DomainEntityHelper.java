@@ -17,6 +17,7 @@ import io.micronaut.transaction.SynchronousTransactionManager;
 import io.micronaut.transaction.TransactionCallback;
 import io.micronaut.transaction.TransactionStatus;
 import io.micronaut.transaction.jdbc.DataSourceUtils;
+import org.simplemes.eframe.ast.ASTUtils;
 import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder;
 import org.simplemes.eframe.domain.PersistentProperty;
 import org.simplemes.eframe.domain.validate.ValidationError;
@@ -310,7 +311,7 @@ public class DomainEntityHelper {
    */
   public ApplicationContext getApplicationContext() {
     if (applicationContext == null) {
-      applicationContext = (ApplicationContext) invokeGroovyMethod("org.simplemes.eframe.application.Holders", "getApplicationContext");
+      applicationContext = (ApplicationContext) ASTUtils.invokeGroovyMethod("org.simplemes.eframe.application.Holders", "getApplicationContext");
     }
     return applicationContext;
   }
@@ -377,7 +378,7 @@ public class DomainEntityHelper {
     }
 
     // Try all custom fields.
-    List<Map<String, Object>> customLists = (List<Map<String, Object>>) invokeGroovyMethod(
+    List<Map<String, Object>> customLists = (List<Map<String, Object>>) ASTUtils.invokeGroovyMethod(
         "org.simplemes.eframe.custom.ExtensibleFieldHelper",
         "getCustomChildLists", object);
     if (customLists != null) {
@@ -504,7 +505,7 @@ public class DomainEntityHelper {
 
     // Try all custom child lists.
     @SuppressWarnings("unchecked")
-    List<Map<String, Object>> customLists = (List<Map<String, Object>>) invokeGroovyMethod(
+    List<Map<String, Object>> customLists = (List<Map<String, Object>>) ASTUtils.invokeGroovyMethod(
         "org.simplemes.eframe.custom.ExtensibleFieldHelper",
         "getCustomChildLists", object);
     if (customLists != null) {
@@ -789,7 +790,7 @@ public class DomainEntityHelper {
           ps.execute();
           try (ResultSet rs = ps.getResultSet()) {
             while (rs.next()) {
-              DomainEntityInterface o = (DomainEntityInterface) invokeGroovyMethod("org.simplemes.eframe.domain.DomainBinder",
+              DomainEntityInterface o = (DomainEntityInterface) ASTUtils.invokeGroovyMethod("org.simplemes.eframe.domain.DomainBinder",
                   "bindResultSet", rs, childDomainClazz);
               listInner.add(o);
             }
@@ -1153,7 +1154,7 @@ public class DomainEntityHelper {
    */
   public static boolean isEnvironmentTest() {
     if (isEnvironmentTest == null) {
-      isEnvironmentTest = (Boolean) invokeGroovyMethod("org.simplemes.eframe.application.Holders", "isEnvironmentTest");
+      isEnvironmentTest = (Boolean) ASTUtils.invokeGroovyMethod("org.simplemes.eframe.application.Holders", "isEnvironmentTest");
     }
     //noinspection ConstantConditions
     return isEnvironmentTest;
@@ -1172,7 +1173,7 @@ public class DomainEntityHelper {
   @SuppressWarnings("unused")
   public static boolean isEnvironmentDev() {
     if (isEnvironmentDev == null) {
-      isEnvironmentDev = (Boolean) invokeGroovyMethod("org.simplemes.eframe.application.Holders", "isEnvironmentDev");
+      isEnvironmentDev = (Boolean) ASTUtils.invokeGroovyMethod("org.simplemes.eframe.application.Holders", "isEnvironmentDev");
     }
     //noinspection ConstantConditions
     return isEnvironmentDev;
@@ -1188,61 +1189,11 @@ public class DomainEntityHelper {
   }
 
   /**
-   * A list of classes to handles specially in the invokeGroovyMethod().  Any sub-classes of these
-   * will be treated as the parent class when finding the groovy method.
-   */
-  private static final List<Class> parentClassesForInvoke = Arrays.asList(new Class[]{DomainEntityInterface.class, ResultSet.class});
-
-  /**
-   * Invokes the given groovy class/method with arguments.  This is done to access
-   * the groovy world from the Java code.  This is needed since the Java source tree is compiled before
-   * the groovy code is compiled.
-   * <p>We do this to avoid moving the Java source to a separate module.
-   * <p><b>Note</b> This will return null if the method is not found or other invocation errors.  The error will be logged
-   * as a warning.
-   *
-   * @param className  The fully qualified class name.
-   * @param methodName The method name.
-   * @param args       The arguments.
-   * @return The results of the method call.  Null if the class/method is not found.
-   */
-  @SuppressWarnings("unchecked")
-  protected static Object invokeGroovyMethod(String className, String methodName, Object... args) {
-    try {
-      Class[] paramTypes = new Class[args.length];
-      for (int i = 0; i < args.length; i++) {
-        if (args[i] != null) {
-          paramTypes[i] = args[i].getClass();
-          // Use the parent class for some common cases in order to find the right method.
-          for (Class clazz : parentClassesForInvoke) {
-            if (clazz.isAssignableFrom(args[i].getClass())) {
-              paramTypes[i] = clazz;
-            }
-          }
-        } else {
-          // Unknown type, so try Object
-          paramTypes[i] = Object.class;
-        }
-      }
-      Class holdersClass = Class.forName(className);
-      Method method = ((Class<?>) holdersClass).getMethod(methodName, paramTypes);
-      return method.invoke(null, args);
-    } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException e) {
-      log.warn("Error invoking method " + className + "." + methodName + "(). ", e);
-      return null;
-    } catch (InvocationTargetException e) {
-      // We need to wrap the original exception in a runtime exception to avoid adding InvocationTargetException
-      // to every method in this class.
-      throw new RuntimeException(e.getCause());
-    }
-  }
-
-  /**
    * Makes sure there is an active transaction for this thread.
    * This is used to make sure there is no connection leak since a
    */
   public void checkForTransaction() {
-    invokeGroovyMethod("org.simplemes.eframe.domain.EFrameJdbcRepositoryOperations", "checkForTransactionStatic");
+    ASTUtils.invokeGroovyMethod("org.simplemes.eframe.domain.EFrameJdbcRepositoryOperations", "checkForTransactionStatic");
   }
 
   /**

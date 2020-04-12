@@ -32,8 +32,8 @@ def orderReleasePostProcessor(OrderReleaseRequest orderReleaseRequest) {
 
 Generated extension.adoc:
 
-* Order.release() - The sample release method.
-* link:groovydoc/sample/service/OrderService.html#save(sample.domain.Order)[OrderService.save()^] icon:share-square-o[role="link-blue"] - The order Save method,
+* OrderService.release() - The sample release method. (OrderReleasePointInterface)
+* link:groovydoc/sample/service/OrderService.html#release(sample.domain.Order)[OrderService.release()^] icon:share-square-o[role="link-blue"] - The order Save method,
 
 
 

@@ -81,7 +81,7 @@ A simple service class might look like this:
 @Singleton
 class OrderService {
 
-  @ExtensionPoint(ReleasePoint, comment = "The Order releae() method.") // <.>
+  @ExtensionPoint(value=ReleasePoint, comment = "The Order releae() method.") // <.>
   ReleaseResponse release(ReleaseRequest request) {  // <.>
     . . .
 
@@ -139,13 +139,13 @@ written to handle specific structures in the core methods.  These cases are test
 [source,groovy]
 .Example - Extension Point - Supported Scenarios
 ----
-@ExtensionPoint(ReleasePoint)
+@ExtensionPoint(value=ReleasePoint)
 ReleaseResponse release1(ReleaseRequest request) {
   . . .
   return new ReleaseResponse(...)   // <.>
 }
 
-@ExtensionPoint(ReleasePoint)
+@ExtensionPoint(value=ReleasePoint)
 ReleaseResponse release2(ReleaseRequest request) {
   . . .
   if () {  // <.>
@@ -155,7 +155,7 @@ ReleaseResponse release2(ReleaseRequest request) {
   }
 }
 
-@ExtensionPoint(ReleasePoint)
+@ExtensionPoint(value=ReleasePoint)
 ReleaseResponse release2(ReleaseRequest request) {
   . . .
   if (...) {  // <.>

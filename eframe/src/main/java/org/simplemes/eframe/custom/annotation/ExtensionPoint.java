@@ -41,7 +41,7 @@ public @interface ExtensionPoint {
    * An optional comment that is used in the generation of ASCII Doctor file that contains all
    * of the current module's extension points.
    *
-   * @return the field name.
+   * @return The comment.
    */
   String comment() default "";
 
