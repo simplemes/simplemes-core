@@ -312,6 +312,9 @@ class BaseSpecification extends GebSpec {
 
     // Clear the user override for later tests.
     SecurityUtils.currentUserOverride = null
+
+    // Make sure nothing is cached in the helper
+    ExtensionPointHelper.clearCaches()
   }
 
   /**

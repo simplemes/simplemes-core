@@ -57,70 +57,6 @@ class ExtensionPointTransformationSpec extends BaseSpecification {
     res.name == "Return from post"
   }
 
-  def "verify that the annotation calls the updateDocumentFile helper method correctly"() {
-    given:
-    def src = """
-      package sample.package;
-      import org.simplemes.eframe.custom.annotation.ExtensionPoint
-      import sample.SampleNoArgumentExtensionInterface
-      
-      class TestClass {
-        @ExtensionPoint(value = SampleNoArgumentExtensionInterface, comment="The comment")
-        Map coreMethod() {
-          return
-        }
-      }
-    """
-
-    and: 'a mocked helper'
-    def mock = Mock(ExtensionPointHelper)
-    ExtensionPointHelper.instance = mock
-
-    and: 'the expected strings for the method call'
-    def methodLink = 'link:groovydoc/sample/package/TestClass.html#coreMethod()[TestClass.coreMethod()^] icon:share-square-o[role="link-blue"]'
-    def interfaceLink = 'link:groovydoc/sample/SampleNoArgumentExtensionInterface.html[SampleNoArgumentExtensionInterface^] icon:share-square-o[role="link-blue"]'
-    //println "methodLink=$methodLink"
-    //println "interfaceLink=$interfaceLink"
-
-    when: 'the class is compiled'
-    CompilerTestUtils.compileSource(src)
-
-    then: 'the helper update method is called'
-    1 * mock.updateDocumentFile("sample.package.TestClass.coreMethod", methodLink, interfaceLink, "The comment")
-  }
-
-  def "verify that the annotation calls the updateDocumentFile helper method correctly - with method arguments"() {
-    given:
-    def src = """
-      import org.simplemes.eframe.custom.annotation.ExtensionPoint
-      import sample.SampleExtensionInterface
-      
-      class TestClass {
-        @ExtensionPoint(SampleExtensionInterface)
-        Map coreMethod(String argument1, Integer argument2) {
-          def x = 'XYZ'
-          return [argument1: argument1,argument2: argument2,x: x]
-        }
-      }
-    """
-
-    and: 'a mocked helper'
-    def mock = Mock(ExtensionPointHelper)
-    ExtensionPointHelper.instance = mock
-
-    and: 'the expected strings for the method call'
-    def methodLink = 'link:groovydoc/TestClass.html#coreMethod(java.lang.String,%20java.lang.Integer)[TestClass.coreMethod()^] icon:share-square-o[role="link-blue"]'
-    def interfaceLink = 'link:groovydoc/sample/SampleExtensionInterface.html[SampleExtensionInterface^] icon:share-square-o[role="link-blue"]'
-    //println "methodLink=$methodLink"
-    //println "interfaceLink=$interfaceLink"
-
-    when: 'the class is compiled'
-    CompilerTestUtils.compileSource(src)
-
-    then: 'the helper update method is called'
-    1 * mock.updateDocumentFile("TestClass.coreMethod", methodLink, interfaceLink, "(no comment)")
-  }
-
 
   def "verify that the annotation calls the invokePre and invokePost helper methods - simple arguments"() {
     given:
@@ -509,17 +445,6 @@ class ExtensionPointTransformationSpec extends BaseSpecification {
     CompilerTestUtils.printCompileFailureSource = true
   }
 
-
-  // TODO: Some move to ExtensionPointHelperSpec???????????????????????????
-
-  // test zero arguments, two arguments
-  // test post
-  // test null return on post
-  // test void return on post
-  // test .adoc file with comment
-  // test .adoc file without comment
-  // test .adoc file - updated entry
-  // test .adoc file - entries are sorted
 
 
 }

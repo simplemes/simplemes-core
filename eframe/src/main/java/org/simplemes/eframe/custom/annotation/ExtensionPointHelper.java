@@ -4,18 +4,17 @@
 
 package org.simplemes.eframe.custom.annotation;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import io.micronaut.context.ApplicationContext;
+import org.simplemes.eframe.ast.ASTUtils;
+
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Collection;
 
 /**
  * Provides helper methods for the ExtensionPoint annotation.
  */
 public class ExtensionPointHelper {
-
-  /**
-   * The logger.
-   */
-  private static final Logger log = LoggerFactory.getLogger(ExtensionPointHelper.class);
 
   /**
    * A singleton, used for simplified unit testing with a mocked class.
@@ -28,32 +27,84 @@ public class ExtensionPointHelper {
    * @param interfaceClass The interface class.  All beans executed will implement this interface.
    * @param arguments      The runtime arguments from the original method call.
    */
-  void invokePre(Class interfaceClass, String methodName, Object... arguments) {
-    //getBeans(marker)
-    //call preMethod() on all
+  void invokePre(Class interfaceClass, String methodName, Object... arguments) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    @SuppressWarnings("unchecked")
+    Collection beans = getApplicationContext().getBeansOfType(interfaceClass);
+    String preMethodName = "pre" + ASTUtils.upperCaseFirstLetter(methodName);
+    for (Object bean : beans) {
+      Class<?> clazz = bean.getClass();
+      Class[] parameterTypes = new Class[arguments.length];
+      for (int i = 0; i < arguments.length; i++) {
+        parameterTypes[i] = arguments[i].getClass();
+      }
+      //System.out.println("methods:" + Arrays.toString(clazz.getDeclaredMethods()));
+      Method method = clazz.getDeclaredMethod(preMethodName, parameterTypes);
+      method.invoke(bean, arguments);
+    }
   }
 
   /**
-   * Invokes all pre method extensions for the given class.
+   * Invokes all post method extensions for the given class.
    *
    * @param interfaceClass The interface class.  All beans executed will implement this interface.
+   * @param methodName     The name of the core method ('post' will be added for the call to the extension).
+   * @param response       The response from the core method.  If null, then void is assumed.
    * @param arguments      The runtime arguments from the original method call.
+   * @return The possibly altered response from the extension(s).
    */
-  Object invokePost(Class interfaceClass, String methodName, Object response, Object... arguments) {
-    //getBeans(marker)
-    //call preMethod() on all
-    return null;
+  Object invokePost(Class interfaceClass, String methodName, Object response, Object... arguments) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+    @SuppressWarnings("unchecked")
+    Collection beans = getApplicationContext().getBeansOfType(interfaceClass);
+    String postMethodName = "post" + ASTUtils.upperCaseFirstLetter(methodName);
+    for (Object bean : beans) {
+      Class<?> clazz = bean.getClass();
+      int adjustParamCount = 0;
+      if (response != null) {
+        adjustParamCount = 1;
+      }
+      Object[] argumentsPlusResponse = new Object[arguments.length + adjustParamCount];
+      Class[] parameterTypes = new Class[arguments.length + adjustParamCount];
+      if (response != null) {
+        parameterTypes[0] = response.getClass();
+        argumentsPlusResponse[0] = response;
+      }
+      for (int i = 0; i < arguments.length; i++) {
+        parameterTypes[i + adjustParamCount] = arguments[i].getClass();
+        argumentsPlusResponse[i + adjustParamCount] = arguments[i];
+      }
+      Method method = ASTUtils.findMethod(clazz, postMethodName, parameterTypes);
+      Object methodResponse = method.invoke(bean, argumentsPlusResponse);
+      if (methodResponse != null) {
+        // Extension wanted to alter the response, so us it for the next execution.
+        response = methodResponse;
+      }
+    }
+    return response;
   }
 
   /**
-   * Updates the .adoc file for the list of extension points compiled for the ExtensionPoint annotation.
-   *
-   * @param method        The class/method (used for sorting).
-   * @param methodLink    The groovydoc link to the method in adoc format.
-   * @param interfaceLink The groovydoc link to the interface class in adoc format.
-   * @param comment       The optional comment.
+   * A cached context.
    */
-  void updateDocumentFile(String method, String methodLink, String interfaceLink, String comment) {
+  ApplicationContext applicationContext;
+
+  /**
+   * Clear any cached objects.  Mainly used for testing.
+   */
+  public static void clearCaches() {
+    instance.applicationContext = null;
   }
+
+  /**
+   * Get the application context from the holders.
+   *
+   * @return The context.
+   */
+  public ApplicationContext getApplicationContext() {
+    if (applicationContext == null) {
+      applicationContext = (ApplicationContext) ASTUtils.invokeGroovyMethod("org.simplemes.eframe.application.Holders", "getApplicationContext");
+    }
+    return applicationContext;
+  }
+
 
 }

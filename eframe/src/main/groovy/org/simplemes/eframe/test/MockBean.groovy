@@ -69,7 +69,8 @@ class MockBean implements AutoCleanupMockInterface, IDefaultResponse {
    *
    * @param baseSpec The test specification that needs the mock (usually this).
    * @param clazz The class to create a bean for.
-   * @param impl The implementation returned by the mocked application context.  The response to the getBean() call.
+   * @param impl The implementation returned by the mocked application context.  The response to the getBean()
+   *             and getBeans() call.  Supports List for the getBeansOfType() call.
    */
   MockBean(BaseSpecification baseSpec, Class clazz, Object impl) {
     def mockFactory = new DetachedMockFactory()
@@ -130,6 +131,13 @@ class MockBean implements AutoCleanupMockInterface, IDefaultResponse {
       }
     } else if (invocation.method.name == 'findOrInstantiateBean') {
       return Optional.of(getBeanImpl())
+    } else if (invocation.method.name == 'getBeansOfType') {
+      def bean = getBeanImpl()
+      if (bean instanceof Collection) {
+        return bean
+      } else {
+        return []
+      }
     }
     return ZeroOrNullResponse.INSTANCE.respond(invocation)
   }

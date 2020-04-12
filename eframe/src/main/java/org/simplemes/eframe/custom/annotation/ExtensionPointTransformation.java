@@ -356,7 +356,7 @@ public class ExtensionPointTransformation implements ASTTransformation {
     //System.out.println("interfaceLink:" + interfaceLink);
     //link:groovydoc/sample/service/OrderService.html#release(sample.domain.Order)[OrderService.release()^] icon:share-square-o[role="link-blue"]
 
-    ExtensionPointHelper.instance.updateDocumentFile(classAndMethod, methodLink, interfaceLink, comment);
+    // TODO: Replace with What?ExtensionPointHelper.instance.updateDocumentFile(classAndMethod, methodLink, interfaceLink, comment);
   }
 
   /**

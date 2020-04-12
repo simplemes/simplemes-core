@@ -313,7 +313,8 @@ public class ASTUtils {
    * <p><b>Note</b> This will return null if the method is not found or other invocation errors.  The error will be logged
    * as a warning.
    *
-   * @param className  The fully qualified class name.
+   * @param className  The fully qualified class name.  If the method ends in .instance, then the getIstance() method
+   *                   will be called to find the actual object to invoke the method on.
    * @param methodName The method name.
    * @param args       The arguments.
    * @return The results of the method call.  Null if the class/method is not found.
@@ -321,6 +322,11 @@ public class ASTUtils {
   @SuppressWarnings("unchecked")
   public static Object invokeGroovyMethod(String className, String methodName, Object... args) {
     try {
+      boolean callGetInstance = false;
+      if (className.endsWith(".instance")) {
+        className = className.replace(".instance", "");
+        callGetInstance = true;
+      }
       Class[] paramTypes = new Class[args.length];
       for (int i = 0; i < args.length; i++) {
         if (args[i] != null) {
@@ -337,8 +343,15 @@ public class ASTUtils {
         }
       }
       Class holdersClass = Class.forName(className);
+
+      Object instance = null;
+      if (callGetInstance) {
+        Method getterMethod = ((Class<?>) holdersClass).getMethod("getInstance");
+        instance = getterMethod.invoke(null);
+      }
+
       Method method = ((Class<?>) holdersClass).getMethod(methodName, paramTypes);
-      return method.invoke(null, args);
+      return method.invoke(instance, args);
     } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException e) {
       log.warn("Error invoking method " + className + "." + methodName + "(). ", e);
       return null;
@@ -347,5 +360,47 @@ public class ASTUtils {
       // to every method in this class.
       throw new RuntimeException(e.getCause());
     }
+  }
+
+  /**
+   * Finds the method from the given class, with the given arguments.  Checks for sub-class/implementers of
+   * the method's parameters.
+   *
+   * @param clazz          The class to search for the method.
+   * @param methodName     The method name.
+   * @param parameterTypes The parameter classes for the method.  Null not allowed.
+   * @return The method or an exception is thrown.
+   */
+  public static Method findMethod(Class clazz, String methodName, Class[] parameterTypes) throws NoSuchMethodException {
+    Method[] methods = clazz.getMethods();
+    for (Method method : methods) {
+      if (!methodName.equals(method.getName())) {
+        continue;
+      }
+      Class<?>[] methodParameterTypes = method.getParameterTypes();
+      if (methodParameterTypes.length != parameterTypes.length) {
+        continue;
+      }
+
+      boolean matches = true;
+      for (int i = 0; i < parameterTypes.length; ++i) {
+        if (!methodParameterTypes[i].isAssignableFrom(parameterTypes[i])) {
+          matches = false;
+        }
+      }
+      if (matches) {
+        return method;
+      }
+    }
+    //com.sun.proxy.$Proxy19.postCoreMethod(java.util.LinkedHashMap, java.lang.String, java.lang.Integer)
+    StringBuilder sb = new StringBuilder();
+    for (Class parameterType : parameterTypes) {
+      if (sb.length() > 0) {
+        sb.append(", ");
+      }
+      sb.append(parameterType.getName());
+    }
+
+    throw new NoSuchMethodException(clazz.getName() + "." + methodName + "(" + sb + ")");
   }
 }
