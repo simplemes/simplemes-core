@@ -104,6 +104,12 @@ if (hasProperty('backendProp') && backendProp == 'pdf') {
   imagesBuildDir = "../../../../../staging/docs/${moduleName}/html5/images"
 }
 
+task generateExtensionDoc(type:JavaExec) {
+  main = "org.simplemes.eframe.application.ExtensionPointDocumentExtractor"
+  classpath = sourceSets.main.runtimeClasspath
+  description 'Generates the extensions.adoc from all ExtensionPoints'
+}
+
 asciidoctor {
   //sourceDir "${projectDir}/src/docs/asciidoc"
   //println "${projectDir}/src/docs/asciidoc"

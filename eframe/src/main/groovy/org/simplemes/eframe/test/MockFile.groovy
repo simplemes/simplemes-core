@@ -1,10 +1,8 @@
-package org.simplemes.eframe.test
-
 /*
- * Copyright Michael Houston 2017. All rights reserved.
- * Original Author: mph
- *
-*/
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
+package org.simplemes.eframe.test
 
 /**
  * A mock File that can be used to write text to string for later use.
@@ -58,6 +56,14 @@ class MockFile extends File {
   }
 
   /**
+   * Standard Map constructor.
+   */
+  MockFile(Map options) {
+    super('')
+    options?.each { k, v -> this[k as String] = v }
+  }
+
+  /**
    * Creates a new <code>File</code> instance by converting the given
    * pathname string into an abstract pathname.  If the given string is
    * the empty string, then the result is the empty abstract pathname.
@@ -88,8 +94,14 @@ class MockFile extends File {
   @Override
   boolean exists() {
     // Allow the first n calls to return true.
-    factory.existCountTrue--
-    return factory.existCountTrue >= 0 || fileExists
+    if (factory) {
+      factory.existCountTrue--
+      return factory?.existCountTrue >= 0 || fileExists
+    }
+    if (files) {
+      return true
+    }
+    return fileExists
   }
 
   /**
@@ -155,6 +167,27 @@ class MockFile extends File {
   }
 
   /**
+   * Mock method to simulate a real file, when needed.
+   */
+  @Override
+  boolean isFile() {
+    return !isDirectory()
+  }
+
+  /**
+   * Returns the absolute pathname string of this abstract pathname.
+   *
+   *
+   * @return The absolute pathname string denoting the same file or
+   *          directory as this abstract pathname
+   *
+   */
+  @Override
+  String getAbsolutePath() {
+    return path
+  }
+
+  /**
    * Mock method to simulate a directory (when needed).
    */
   @Override
@@ -165,8 +198,23 @@ class MockFile extends File {
       if (!file.startsWith(path)) {
         s = "$path/$file"
       }
-      res << factory.newFile(s)
+      def f = factory?.newFile(s) ?: new MockFile(path: s)
+      res << f
     }
     return res
   }
+
+  /**
+   * Returns the base file name.
+   *
+   */
+  @Override
+  String getName() {
+    def loc = path.lastIndexOf('/')
+    if (loc > 0) {
+      return path[(loc + 1)..-1]
+    }
+    return path
+  }
+
 }
