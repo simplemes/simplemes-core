@@ -25,7 +25,7 @@ class ExtensionPointHelperSpec extends BaseSpecification {
     new MockBean(this, SampleExtensionPOGOInterface, [mock]).install()
 
     when: 'the extension is triggered'
-    ExtensionPointHelper.instance.invokePre(SampleExtensionPOGOInterface, 'coreMethod', argument1)
+    ExtensionPointHelper.instance.invokePre(SampleExtensionPOGOInterface, 'preCoreMethod', argument1)
 
     then: 'the extension method is called'
     1 * mock.preCoreMethod(argument1)
@@ -39,7 +39,7 @@ class ExtensionPointHelperSpec extends BaseSpecification {
     new MockBean(this, SampleExtensionInterface, [mock]).install()
 
     when: 'the extension is triggered'
-    ExtensionPointHelper.instance.invokePre(SampleExtensionInterface, 'coreMethod', argument1, argument2)
+    ExtensionPointHelper.instance.invokePre(SampleExtensionInterface, 'preCoreMethod', argument1, argument2)
 
     then: 'the extension method is called'
     1 * mock.preCoreMethod(argument1, argument2)
@@ -51,7 +51,7 @@ class ExtensionPointHelperSpec extends BaseSpecification {
     new MockBean(this, SampleNoArgumentExtensionInterface, [mock]).install()
 
     when: 'the extension is triggered'
-    ExtensionPointHelper.instance.invokePre(SampleNoArgumentExtensionInterface, 'coreMethod')
+    ExtensionPointHelper.instance.invokePre(SampleNoArgumentExtensionInterface, 'preCoreMethod')
 
     then: 'the extension method is called'
     1 * mock.preCoreMethod()
@@ -65,7 +65,7 @@ class ExtensionPointHelperSpec extends BaseSpecification {
     new MockBean(this, SampleExtensionPOGOInterface, [mock]).install()
 
     when: 'the extension is triggered'
-    ExtensionPointHelper.instance.invokePost(SampleExtensionPOGOInterface, 'coreMethod', response, argument1)
+    ExtensionPointHelper.instance.invokePost(SampleExtensionPOGOInterface, 'postCoreMethod', response, argument1)
 
     then: 'the extension method is called'
     1 * mock.postCoreMethod(response, argument1)
@@ -80,7 +80,7 @@ class ExtensionPointHelperSpec extends BaseSpecification {
     new MockBean(this, SampleExtensionInterface, [mock]).install()
 
     when: 'the extension is triggered'
-    ExtensionPointHelper.instance.invokePost(SampleExtensionInterface, 'coreMethod', response, argument1, argument2)
+    ExtensionPointHelper.instance.invokePost(SampleExtensionInterface, 'postCoreMethod', response, argument1, argument2)
 
     then: 'the extension method is called'
     1 * mock.postCoreMethod(response, argument1, argument2)
@@ -93,7 +93,7 @@ class ExtensionPointHelperSpec extends BaseSpecification {
     new MockBean(this, SampleNoArgumentExtensionInterface, [mock]).install()
 
     when: 'the extension is triggered'
-    ExtensionPointHelper.instance.invokePost(SampleNoArgumentExtensionInterface, 'coreMethod', response)
+    ExtensionPointHelper.instance.invokePost(SampleNoArgumentExtensionInterface, 'postCoreMethod', response)
 
     then: 'the extension method is called'
     1 * mock.postCoreMethod(response)
@@ -106,7 +106,7 @@ class ExtensionPointHelperSpec extends BaseSpecification {
     new MockBean(this, SampleNoArgumentExtensionInterface, [mock]).install()
 
     when: 'the extension is triggered'
-    def res = ExtensionPointHelper.instance.invokePost(SampleNoArgumentExtensionInterface, 'coreMethod', response)
+    def res = ExtensionPointHelper.instance.invokePost(SampleNoArgumentExtensionInterface, 'postCoreMethod', response)
 
     then: 'the extension method is called'
     1 * mock.postCoreMethod(response) >> [code: 437]
@@ -122,7 +122,7 @@ class ExtensionPointHelperSpec extends BaseSpecification {
     new MockBean(this, SampleNoArgumentExtensionInterface, [mock]).install()
 
     when: 'the extension is triggered'
-    def res = ExtensionPointHelper.instance.invokePost(SampleNoArgumentExtensionInterface, 'coreMethod', response)
+    def res = ExtensionPointHelper.instance.invokePost(SampleNoArgumentExtensionInterface, 'postCoreMethod', response)
 
     then: 'the extension method is called'
     1 * mock.postCoreMethod(response) >> null
@@ -138,7 +138,7 @@ class ExtensionPointHelperSpec extends BaseSpecification {
     new MockBean(this, SampleMisMatchedMethodExtensionInterface, [mock]).install()
 
     when: 'the extension is triggered'
-    def res = ExtensionPointHelper.instance.invokePost(SampleMisMatchedMethodExtensionInterface, 'coreMethod2', null, argument1)
+    def res = ExtensionPointHelper.instance.invokePost(SampleMisMatchedMethodExtensionInterface, 'postCoreMethod2', null, argument1)
 
     then: 'the extension method is called'
     1 * mock.postCoreMethod2(argument1) >> null
@@ -157,7 +157,7 @@ class ExtensionPointHelperSpec extends BaseSpecification {
     new MockBean(this, SampleNoArgumentExtensionInterface, [mock1, mock2]).install()
 
     when: 'the extension is triggered'
-    def res = ExtensionPointHelper.instance.invokePost(SampleNoArgumentExtensionInterface, 'coreMethod', response)
+    def res = ExtensionPointHelper.instance.invokePost(SampleNoArgumentExtensionInterface, 'postCoreMethod', response)
 
     then: 'the extension method is called'
     1 * mock1.postCoreMethod(response) >> response1
@@ -177,7 +177,7 @@ class ExtensionPointHelperSpec extends BaseSpecification {
     new MockBean(this, SampleNoArgumentExtensionInterface, [mock1, mock2, mock3]).install()
 
     when: 'the extension is triggered'
-    def res = ExtensionPointHelper.instance.invokePost(SampleNoArgumentExtensionInterface, 'coreMethod', coreResponse)
+    def res = ExtensionPointHelper.instance.invokePost(SampleNoArgumentExtensionInterface, 'postCoreMethod', coreResponse)
 
     then: 'the extension method is called'
     1 * mock1.postCoreMethod(coreResponse) >> null

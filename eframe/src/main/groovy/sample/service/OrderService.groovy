@@ -21,7 +21,7 @@ interface OrderServiceInterface {
  * A test interface for order release extension point..
  */
 interface OrderReleaseInterface {
-  String preRelease(String order)
+  void preRelease(String order)
 
   String postRelease(String response, String order)
 }
@@ -37,5 +37,21 @@ class OrderService implements OrderServiceInterface {
   @ExtensionPoint(value = OrderReleaseInterface, comment = "Sample Order Release Extension Point")
   String release(String order) {
     return 'released'
+  }
+}
+
+@Singleton
+class OrderServiceExtension implements OrderReleaseInterface {
+
+  static preOrderValue
+
+  @Override
+  void preRelease(String order) {
+    preOrderValue = order
+  }
+
+  @Override
+  String postRelease(String response, String order) {
+    return response + " OrderServiceExtension called for " + order
   }
 }

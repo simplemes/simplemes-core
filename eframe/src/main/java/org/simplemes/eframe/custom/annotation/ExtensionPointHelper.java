@@ -25,12 +25,12 @@ public class ExtensionPointHelper {
    * Invokes all pre method extensions for the given class.
    *
    * @param interfaceClass The interface class.  All beans executed will implement this interface.
+   * @param methodName     The name of the core method (assumes 'pre' is already be added to the core method name).
    * @param arguments      The runtime arguments from the original method call.
    */
   void invokePre(Class interfaceClass, String methodName, Object... arguments) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
     @SuppressWarnings("unchecked")
     Collection beans = getApplicationContext().getBeansOfType(interfaceClass);
-    String preMethodName = "pre" + ASTUtils.upperCaseFirstLetter(methodName);
     for (Object bean : beans) {
       Class<?> clazz = bean.getClass();
       Class[] parameterTypes = new Class[arguments.length];
@@ -38,7 +38,7 @@ public class ExtensionPointHelper {
         parameterTypes[i] = arguments[i].getClass();
       }
       //System.out.println("methods:" + Arrays.toString(clazz.getDeclaredMethods()));
-      Method method = clazz.getDeclaredMethod(preMethodName, parameterTypes);
+      Method method = clazz.getDeclaredMethod(methodName, parameterTypes);
       method.invoke(bean, arguments);
     }
   }
@@ -47,7 +47,7 @@ public class ExtensionPointHelper {
    * Invokes all post method extensions for the given class.
    *
    * @param interfaceClass The interface class.  All beans executed will implement this interface.
-   * @param methodName     The name of the core method ('post' will be added for the call to the extension).
+   * @param methodName     The name of the core method (assumes 'post' is already be added to the core method name).
    * @param response       The response from the core method.  If null, then void is assumed.
    * @param arguments      The runtime arguments from the original method call.
    * @return The possibly altered response from the extension(s).
@@ -55,7 +55,6 @@ public class ExtensionPointHelper {
   Object invokePost(Class interfaceClass, String methodName, Object response, Object... arguments) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
     @SuppressWarnings("unchecked")
     Collection beans = getApplicationContext().getBeansOfType(interfaceClass);
-    String postMethodName = "post" + ASTUtils.upperCaseFirstLetter(methodName);
     for (Object bean : beans) {
       Class<?> clazz = bean.getClass();
       int adjustParamCount = 0;
@@ -72,7 +71,7 @@ public class ExtensionPointHelper {
         parameterTypes[i + adjustParamCount] = arguments[i].getClass();
         argumentsPlusResponse[i + adjustParamCount] = arguments[i];
       }
-      Method method = ASTUtils.findMethod(clazz, postMethodName, parameterTypes);
+      Method method = ASTUtils.findMethod(clazz, methodName, parameterTypes);
       Object methodResponse = method.invoke(bean, argumentsPlusResponse);
       if (methodResponse != null) {
         // Extension wanted to alter the response, so us it for the next execution.
