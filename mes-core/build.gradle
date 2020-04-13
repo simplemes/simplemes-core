@@ -79,6 +79,7 @@ mainClassName = "org.simplemes.mes.application.Application"
 jar {
   exclude "logback.xml"
   exclude "application-test.yml"
+  exclude "/sample/**"
   exclude "/org/simplemes/mes/application/Application.class"
   exclude "/reports/sample/**"
 }

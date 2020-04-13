@@ -1,6 +1,7 @@
 package org.simplemes.mes.demand.service
 
 import ch.qos.logback.classic.Level
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.archive.ArchiverFactoryInterface
 import org.simplemes.eframe.archive.FileArchiver
 import org.simplemes.eframe.exception.BusinessException
@@ -21,6 +22,7 @@ import org.simplemes.mes.demand.domain.OrderOperState
 import org.simplemes.mes.product.domain.Product
 import org.simplemes.mes.test.MESUnitTestUtils
 import org.simplemes.mes.tracking.domain.ActionLog
+import sample.SampleOrderExtension
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.
@@ -36,8 +38,11 @@ class OrderServiceSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static dirtyDomains = [ActionLog, Order, Product, LSNSequence]
 
+  OrderService service
+
   def setup() {
     setCurrentUser()
+    service = Holders.getBean(OrderService)
   }
 
   @Rollback
@@ -46,7 +51,7 @@ class OrderServiceSpec extends BaseSpecification {
     def order1 = new Order(order: 'M001', qtyToBuild: 10).save()
 
     when: 'the order is released'
-    new OrderService().release(new OrderReleaseRequest(order1))
+    service.release(new OrderReleaseRequest(order1))
 
     then: 'the order was released with the right quantities/state'
     def order = Order.findByOrder('M001')
@@ -72,7 +77,7 @@ class OrderServiceSpec extends BaseSpecification {
     def order1 = new Order(order: 'M001', qtyToBuild: 5.0, product: product).save()
 
     when: 'the order is released'
-    new OrderService().release(new OrderReleaseRequest(order1))
+    service.release(new OrderReleaseRequest(order1))
 
     then: 'the order was released with the right qty/state'
     def order = Order.findByOrder('M001')
@@ -117,7 +122,7 @@ class OrderServiceSpec extends BaseSpecification {
     def dateTime = new Date(UnitTestUtils.SAMPLE_TIME_MS)
 
     when: 'the order is released'
-    new OrderService().release(new OrderReleaseRequest(order: order1, dateTime: dateTime))
+    service.release(new OrderReleaseRequest(order: order1, dateTime: dateTime))
 
     then: 'the order was released with the right qty/state'
     def order = Order.findByOrder('M001')
@@ -167,7 +172,7 @@ class OrderServiceSpec extends BaseSpecification {
     order1.save()
 
     when: 'the order is released'
-    new OrderService().release(new OrderReleaseRequest(order1))
+    service.release(new OrderReleaseRequest(order1))
 
     then: 'the order was released with the LSNs in the right qty/state'
     def order = Order.findByOrder('1234')
@@ -186,7 +191,7 @@ class OrderServiceSpec extends BaseSpecification {
     def order1 = new Order(order: 'M001', qtyToBuild: 5, product: product).save()
 
     when: 'the order is released'
-    new OrderService().release(new OrderReleaseRequest(order1))
+    service.release(new OrderReleaseRequest(order1))
 
     then: 'the order has a copy of the routing'
     def order = Order.findByOrder('M001')
@@ -215,7 +220,7 @@ class OrderServiceSpec extends BaseSpecification {
                            product: MESUnitTestUtils.buildSimpleProductWithRouting()).save()
 
     when: 'the order is released'
-    new OrderService().release(new OrderReleaseRequest(order1))
+    service.release(new OrderReleaseRequest(order1))
 
     then: 'the order has a copy of the routing'
     def order = Order.findByOrder('M001')
@@ -243,7 +248,7 @@ class OrderServiceSpec extends BaseSpecification {
   @Rollback
   def "test release with null order"() {
     when: 'a null order is released'
-    new OrderService().release(new OrderReleaseRequest(null as Order))
+    service.release(new OrderReleaseRequest(null as Order))
 
     then: 'should fail with proper message'
     def e = thrown(IllegalArgumentException)
@@ -257,7 +262,7 @@ class OrderServiceSpec extends BaseSpecification {
     def order = new Order(order: 'M001', qtyToBuild: 10).save()
 
     when: 'a negative qty is released'
-    new OrderService().release(new OrderReleaseRequest(order: order, qty: -1.2))
+    service.release(new OrderReleaseRequest(order: order, qty: -1.2))
 
     then: 'should fail with proper message'
     def e = thrown(BusinessException)
@@ -272,7 +277,7 @@ class OrderServiceSpec extends BaseSpecification {
     def order = new Order(order: 'M001', qtyToBuild: 10).save()
 
     when: 'a bad qty is released'
-    new OrderService().release(new OrderReleaseRequest(order: order, qty: 11.1))
+    service.release(new OrderReleaseRequest(order: order, qty: 11.1))
 
     then: 'should fail with proper message'
     def e = thrown(BusinessException)
@@ -287,7 +292,7 @@ class OrderServiceSpec extends BaseSpecification {
     def order = new Order(order: 'M001', qtyToBuild: 10, qtyReleased: 10).save()
 
     when: 'a bad release is requested'
-    new OrderService().release(new OrderReleaseRequest(order))
+    service.release(new OrderReleaseRequest(order))
 
     then: 'should fail with proper message'
     def e = thrown(BusinessException)
@@ -302,7 +307,7 @@ class OrderServiceSpec extends BaseSpecification {
     def order = new Order(order: 'M001', qtyToBuild: 10, overallStatus: OrderHoldStatus.instance).save()
 
     when: 'a bad release is requested'
-    new OrderService().release(new OrderReleaseRequest(order))
+    service.release(new OrderReleaseRequest(order))
 
     then: 'should fail with proper message'
     def e = thrown(BusinessException)
@@ -335,7 +340,7 @@ class OrderServiceSpec extends BaseSpecification {
     when: 'the archive is attempted with small txn size'
     def refs = null
     Order.withTransaction {
-      refs = new OrderService().archiveOld(0.0, 2, 2)
+      refs = service.archiveOld(0.0, 2, 2)
     }
 
     then: '4 orders are archived'
@@ -368,7 +373,7 @@ class OrderServiceSpec extends BaseSpecification {
     new Order(order: 'NEW', qtyToBuild: 1).save()
 
     when: 'the archive is attempted'
-    def refs = new OrderService().archiveOld()
+    def refs = service.archiveOld()
 
     then: 'the right order is archived'
     refs[0].startsWith('unit/REALLY_OLD')
@@ -405,7 +410,7 @@ class OrderServiceSpec extends BaseSpecification {
     new Order(order: 'REALLY_OLD2', qtyToBuild: 1, dateCompleted: d).save()
 
     when: 'the archive is attempted on the 2 oldest orders'
-    def refs = new OrderService().archiveOld(1000.0)
+    def refs = service.archiveOld(1000.0)
 
     then: 'the 2 orders are archived'
     refs.size() == 2
@@ -447,7 +452,7 @@ class OrderServiceSpec extends BaseSpecification {
     new Order(order: '3', qtyToBuild: 1).save()
 
     and: 'the stable mode archive is setup with 3 orders total in the DB'
-    def refs1 = new OrderService().archiveOld(-1.0, -1, -1)
+    def refs1 = service.archiveOld(-1.0, -1, -1)
     assert Order.count() == 3
     assert refs1.size() == 0
 
@@ -456,7 +461,7 @@ class OrderServiceSpec extends BaseSpecification {
     new Order(order: '5', dateCompleted: d).save()
 
     when: 'an archive in stable mode is attempted'
-    def refs = new OrderService().archiveOld(-1.0, -1, -1)
+    def refs = service.archiveOld(-1.0, -1, -1)
 
     then: 'the 2 orders are archived'
     refs.size() == 2
@@ -480,7 +485,7 @@ class OrderServiceSpec extends BaseSpecification {
   @Rollback
   def "test archiveOld with invalid ageDays"() {
     when: 'invalid value'
-    new OrderService().archiveOld(-2.0)
+    service.archiveOld(-2.0)
 
     then: 'an exception is triggered'
     def e = thrown(IllegalArgumentException)
@@ -496,7 +501,7 @@ class OrderServiceSpec extends BaseSpecification {
 
     when: 'the order is deleted'
     Order.withTransaction {
-      new OrderService().delete(order)
+      service.delete(order)
     }
 
     then: 'the record is deleted'
@@ -518,7 +523,7 @@ class OrderServiceSpec extends BaseSpecification {
     def order = MESUnitTestUtils.releaseOrder()
 
     when: 'the qty state is determined'
-    def workables = new OrderService().determineQtyStates(order)
+    def workables = service.determineQtyStates(order)
 
     then: 'the right workable is found'
     workables.size() == 1
@@ -539,7 +544,7 @@ class OrderServiceSpec extends BaseSpecification {
     order.save()
 
     when: 'the qty state is determined'
-    List<WorkableInterface> workables = new OrderService().determineQtyStates(order)
+    List<WorkableInterface> workables = service.determineQtyStates(order)
 
     then: 'the right workable is found'
     workables.size() == 1
@@ -559,7 +564,7 @@ class OrderServiceSpec extends BaseSpecification {
     order.save()
 
     when: 'the qty state is determined'
-    def workables = new OrderService().determineQtyStates(order)
+    def workables = service.determineQtyStates(order)
 
     then: 'the right workable is found'
     workables.size() == 2
@@ -583,7 +588,7 @@ class OrderServiceSpec extends BaseSpecification {
     order.save()
 
     when: 'the qty state is determined'
-    def workables = new OrderService().determineQtyStates(order)
+    def workables = service.determineQtyStates(order)
 
     then: 'no workable is found'
     workables.size() == 0
@@ -599,7 +604,7 @@ class OrderServiceSpec extends BaseSpecification {
     order.save()
 
     when: 'the qty state is determined'
-    def workables = new OrderService().determineQtyStates(order)
+    def workables = service.determineQtyStates(order)
 
     then: 'no workable is found'
     workables.size() == 0
@@ -611,7 +616,7 @@ class OrderServiceSpec extends BaseSpecification {
     def order = MESUnitTestUtils.releaseOrder(lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
 
     when: 'the qty state is determined'
-    def workables = new OrderService().determineQtyStates(order.lsns[0])
+    def workables = service.determineQtyStates(order.lsns[0])
 
     then: 'the right workable is found'
     workables.size() == 1
@@ -632,7 +637,7 @@ class OrderServiceSpec extends BaseSpecification {
     order.lsns[0].save()
 
     when: 'the qty state is determined'
-    List<WorkableInterface> workables = new OrderService().determineQtyStates(order.lsns[0])
+    List<WorkableInterface> workables = service.determineQtyStates(order.lsns[0])
 
     then: 'the right workable is found'
     workables.size() == 1
@@ -652,7 +657,7 @@ class OrderServiceSpec extends BaseSpecification {
     order.lsns[0].save()
 
     when: 'the qty state is determined'
-    def workables = new OrderService().determineQtyStates(order.lsns[0])
+    def workables = service.determineQtyStates(order.lsns[0])
 
     then: 'no workable is found'
     workables.size() == 0
@@ -668,7 +673,7 @@ class OrderServiceSpec extends BaseSpecification {
     order.lsns[0].save()
 
     when: 'the qty state is determined'
-    def workables = new OrderService().determineQtyStates(order.lsns[0])
+    def workables = service.determineQtyStates(order.lsns[0])
 
     then: 'the right workable is found'
     workables.size() == 2
@@ -692,10 +697,31 @@ class OrderServiceSpec extends BaseSpecification {
     order.lsns[0].save()
 
     when: 'the qty state is determined'
-    def workables = new OrderService().determineQtyStates(order.lsns[0])
+    def workables = service.determineQtyStates(order.lsns[0])
 
     then: 'no workable is found'
     workables.size() == 0
+  }
+
+  @Rollback
+  def "verify that the extension point logic works in a running app server"() {
+    given: 'the extension bean'
+    def extensionBean = Holders.getBean(SampleOrderExtension)
+    extensionBean.preOrderRequest = null
+
+    and: 'an order'
+    def order = new Order(order: 'EXT_TEST_1001').save()
+
+    when: 'the core service method is called'
+    def request = new OrderReleaseRequest(order: order)
+    def response = service.release(request)
+
+    then: 'the extension was called'
+    response.order == order
+    response.qtyReleased == 237.2
+
+    and: 'the pre method was called'
+    extensionBean.preOrderRequest == request
   }
 
   // test archive LSNs

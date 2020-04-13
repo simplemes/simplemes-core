@@ -4,6 +4,7 @@
 ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<services-introduction>>#
+[inline-toc]#<<Service Extension Points>>#
 
 [inline-toc-header]#Demand Services#
 [inline-toc]#<<OrderService>>#

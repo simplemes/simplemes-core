@@ -1,6 +1,16 @@
 
 === OrderService
 
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<release>>#
+[inline-toc]#<<OrderReleaseRequest>>#
+[inline-toc]#<<OrderReleaseResponse>>#
+[inline-toc]#<<Order Service Extension Points>>#
+
+endif::[]
+
+
 The link:groovydoc/org/simplemes/mes/demand/service/OrderService.html[OrderService^]
 icon:share-square[role="link-blue"] is used
 to perform key actions on the entire <<Order>>. This includes releasing the order and other
@@ -59,3 +69,14 @@ icon:share-square[role="link-blue"] include:
 |*qty*   | The quantity released.
 |===
 
+==== Order Service Extension Points
+
+Many other modules may need to extend core methods with module-specific logic.  We allow this
+using the framework's
+link:{eframe-path}/guide.html#extension-points[Extension Points^] icon:share-square-o[role="link-blue"]
+feature.  The extension points in this service include:
+
+* link:groovydoc/org/simplemes/mes/demand/service/OrderService.html#release(org.simplemes.mes.demand.OrderReleaseRequest)[OrderService.release()^] icon:share-square-o[role="link-blue"] - The Order release() method. link:groovydoc/org/simplemes/mes/demand/service/OrderReleasePoint.html[OrderReleasePoint^] icon:share-square-o[role="link-blue"]
+
+All of the extension points in this module are listed at
+link:guide.html#service-extension-points[Service Extension Points^] icon:share-square-o[role="link-blue"].

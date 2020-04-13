@@ -84,3 +84,13 @@ If the service fails, then it will throw an exception and the transaction will b
 Services follow the normal framework transaction logic.  See <<Enterprise Framework>> for details.
 
 
+=== Service Extension Points
+
+Many other modules may need to extend core methods with module-specific logic.  We allow this
+using the framework's
+link:{eframe-path}/guide.html#extension-points[Extension Points^] icon:share-square-o[role="link-blue"]
+feature.  The extension points this module supports include:
+
+include::../../../../../../build/generated/extensions.adoc[]
+
+

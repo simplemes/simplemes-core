@@ -6,6 +6,7 @@ import io.micronaut.data.model.Pageable
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.archive.ArchiverFactoryInterface
 import org.simplemes.eframe.archive.FileArchiver
+import org.simplemes.eframe.custom.annotation.ExtensionPoint
 import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.misc.ArgumentUtils
@@ -68,12 +69,13 @@ class OrderService {
    * Release the given order for production.  The order cannot be worked on the shop floor until it is released.
    * This method makes the quantity released available for production by queueing it the appropriate entry point (first
    * operation if there is a routing needed).<p>
+   * <p>
    * <b>Note</b>: This method is part of the Stable API.
    * @param orderReleaseRequest The details of the release request (order and qty).
-   * @param quantity The quantity to release.  If not given, then the entire un-released quantity will be released.
    */
-  @SuppressWarnings("GrUnnecessaryDefModifier")
   @Transactional
+  @ExtensionPoint(value = OrderReleasePoint, comment = "The Order release() method")
+  @SuppressWarnings("GrUnnecessaryDefModifier")
   OrderReleaseResponse release(OrderReleaseRequest orderReleaseRequest) {
     log.debug('release() params: {}', orderReleaseRequest)
     ArgumentUtils.checkMissing(orderReleaseRequest, 'orderReleaseRequest')
