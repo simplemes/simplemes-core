@@ -2,7 +2,6 @@ Scratch
 ===========
 
 
-
 Bugs
 =====
 Create Product with components.  Parent record is not created when product_component is saved.

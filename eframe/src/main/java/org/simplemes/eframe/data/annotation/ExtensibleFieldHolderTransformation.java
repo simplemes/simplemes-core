@@ -49,7 +49,7 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
       if (astNode instanceof FieldNode) {
         FieldNode fieldNode = (FieldNode) astNode;
         ClassNode classNode = fieldNode.getDeclaringClass();
-        validateUsage(classNode, sourceUnit);
+        //validateUsage(classNode, sourceUnit);
         addComplexFieldHolder(classNode, sourceUnit);
         addCustomFieldName(fieldNode.getName(), classNode, sourceUnit);
         addJsonProperty(fieldNode, sourceUnit);

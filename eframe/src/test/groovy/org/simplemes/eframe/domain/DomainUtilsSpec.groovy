@@ -139,10 +139,7 @@ class DomainUtilsSpec extends BaseSpecification {
     when: 'the fields are retrieved'
     def fieldDefs = DomainUtils.instance.getFieldDefinitions(SampleParent)
 
-    then: 'the custom data holder field is not in the list'
-    !fieldDefs[ExtensibleFieldHolder.DEFAULT_FIELD_NAME]
-
-    and: 'the complex custom data holder field is not in the list'
+    then: 'the complex custom data holder field is not in the list'
     !fieldDefs[ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME]
   }
 

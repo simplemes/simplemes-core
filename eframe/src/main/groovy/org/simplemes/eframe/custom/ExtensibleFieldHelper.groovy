@@ -368,7 +368,7 @@ class ExtensibleFieldHelper {
    * @return The map.  Never null.
    */
   Map getComplexHolder(Object object) {
-    return DomainEntityHelper.instance.getComplexHolder(object as DomainEntityInterface)
+    return DomainEntityHelper.instance.getComplexHolder(object)
   }
 
   /**

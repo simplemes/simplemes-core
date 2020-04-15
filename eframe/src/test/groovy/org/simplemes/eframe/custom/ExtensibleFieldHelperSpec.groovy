@@ -41,6 +41,7 @@ import sample.domain.Order
 import sample.domain.OrderLine
 import sample.domain.RMA
 import sample.domain.SampleParent
+import sample.pogo.SamplePOGO
 
 /**
  * Tests.
@@ -712,6 +713,19 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     rma.getRmaTypeValue('Field1') == new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS)
   }
 
+  @Rollback
+  def "verify that getFieldValue works on a POGO class"() {
+    given: 'a flex type with a field'
+    def flexType = DataGenerator.buildFlexType()
+
+    when: 'a POGO with the extensible field holder has a value set'
+    def pogo = new SamplePOGO(assemblyData: flexType)
+    pogo.setAssemblyDataValue('FIELD1', 'XYZZY')
+
+    then: 'the field value is retrieved'
+    pogo.getAssemblyDataValue('FIELD1') == 'XYZZY'
+  }
+
   def "verify that formatConfigurableTypeValues handles supported cases"() {
     given: 'a domain object with the given field values'
     def object = null
@@ -744,6 +758,17 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
 
     expect: 'the method works'
     ExtensibleFieldHelper.instance.formatConfigurableTypeValues('rmaType', object) == "${lookup('order.label')}: XYZ"
+  }
+
+  @Rollback
+  def "verify that formatConfigurableTypeValues supports POGOs"() {
+    given: 'a POGO object with the given field values'
+    def flexType = DataGenerator.buildFlexType(fieldLabel: 'order.label')
+    def object = new SamplePOGO(assemblyData: flexType)
+    object.setAssemblyDataValue("FIELD1", 'XYZ')
+
+    expect: 'the method works'
+    ExtensibleFieldHelper.instance.formatConfigurableTypeValues('assemblyData', object) == "${lookup('order.label')}: XYZ"
   }
 
   def "verify that getCustomHolderFieldName works for a class"() {

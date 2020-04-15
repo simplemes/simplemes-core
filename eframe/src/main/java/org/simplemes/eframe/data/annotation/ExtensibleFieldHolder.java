@@ -23,20 +23,9 @@ import java.lang.annotation.Target;
 public @interface ExtensibleFieldHolder {
 
   /**
-   * The default field name to store the custom values in.  Default is 'customFields'.
-   */
-  // TODO: Delete
-  String DEFAULT_FIELD_NAME = "_customFields";
-
-  /**
    * The field name that holds the custom field holder name.
    */
   String HOLDER_FIELD_NAME = "_customFieldName";
-
-  /*
-   * The static field to store the custom definitions in.  Value is '_customFieldDef'.
-   */
-  //String DEFINITION_FIELD_NAME = "_customFieldDef";
 
   /**
    * Defines the maximum size of the custom field value holder.  Default is 1024.
@@ -53,13 +42,6 @@ public @interface ExtensibleFieldHolder {
    * The name of the element in the COMPLEX_CUSTOM_FIELD_NAME Map that holds a reference to itself.
    */
   String COMPLEX_THIS_NAME = "_this";
-
-  /**
-   * Defines the field name to store the custom values in.  Default is 'customFields'.
-   *
-   * @return the field name.
-   */
-  String fieldName() default DEFAULT_FIELD_NAME;
 
   /**
    * Defines the maximum size of the custom field value holder.  This is the maximum size of all custom fields for one

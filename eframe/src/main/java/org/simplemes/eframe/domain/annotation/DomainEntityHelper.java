@@ -979,7 +979,7 @@ public class DomainEntityHelper {
    * @return The complex fields holder.
    */
   @SuppressWarnings({"unchecked"})
-  public Map<String, Object> getComplexHolder(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException {
+  public Map<String, Object> getComplexHolder(Object object) throws IllegalAccessException, NoSuchFieldException {
     Field field = object.getClass().getDeclaredField(ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME);
     Object o = field.get(object);
     return (Map<String, Object>) o;

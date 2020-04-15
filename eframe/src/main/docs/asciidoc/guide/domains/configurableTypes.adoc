@@ -7,6 +7,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<GUI Marker Support>>#
 [inline-toc]#<<Controller Support>>#
 [inline-toc]#<<Configurable Type API Access>>#
+[inline-toc]#<<Configurable Types and POGOs>>#
 
 endif::[]
 
@@ -71,7 +72,8 @@ class RMA {
 
 ----
 <.> The field `rmaType` will hold the reference to the appropriate flex type.  The actual
-    values will be stored as described in <<Configurable Type Persistent Storage>>.
+    values will be stored in the `customFields` field as described
+    in <<Configurable Type Persistent Storage>>.
     Note the _@ManyToOne_ usage is needed for this <<Simple Foreign Reference>>.
 <.> The FlexType requires a place to store the values for RMA records created.
     This is done in the normal location for <<Field Extensions>>.
@@ -161,4 +163,55 @@ An example of the JSON format for an RMA is shown below:
   "rmaType_returnCode": "DEFECTIVE"
 }
 ----
+
+==== Configurable Types and POGOs
+
+Configurable types such as <<Flex Types>> are normally used with domain classes, but they
+can also be used with POGO classes.  This limits the <<Configurable Type API Access>> to
+just these features:
+
+* `setFieldValue()`
+* `getFieldValue()`
+
+This is designed to work with transfer objects that copy values between POGOs and domain objects.
+
+For example, you might use this transfer POGO with the above RMA examples:
+
+[source,groovy]
+.Example - Flex Type With POGO
+----
+class RMAResponse {
+  String rma
+   . . .
+
+  FlexType rmaType  <.>
+
+  @ExtensibleFieldHolder <.>
+  String customFields
+}
+
+----
+<.> The field `rmaType` will hold the reference to the appropriate flex type.  The actual
+    values will be stored in the `customFields` field as described
+    in <<Configurable Type Persistent Storage>>.
+<.> The FlexType requires a place to store the values for this POGO.
+    This is done in the normal location for <<Field Extensions>>.
+
+
+When you need to copy the values between this POGO and the domain, you will need to copy
+both fields:
+
+[source,groovy]
+.Example - Copying Data - Flex Type With POGO
+----
+def rma = RMA.findByRma('RMA1')
+
+def response = new RMAResponse()
+
+response.qty = rma.qty
+response.rmaType = rma.rmaType  <.>
+response.customFields = rma.customFields
+
+----
+<.> You need to copy the flex type field and the values holder (customFields).
 
