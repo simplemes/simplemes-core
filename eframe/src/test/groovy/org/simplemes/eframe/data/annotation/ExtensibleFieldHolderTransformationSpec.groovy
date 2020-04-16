@@ -5,6 +5,7 @@
 package org.simplemes.eframe.data.annotation
 
 import com.fasterxml.jackson.annotation.JsonProperty
+import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
@@ -165,5 +166,81 @@ class ExtensibleFieldHolderTransformationSpec extends BaseSpecification {
     object.getRmaTypeValue('FIELD2') == 'VALUE2'
   }
 
+  def "verify that the annotation adds propertyMissing setter method that delegates to the helper"() {
+    given: "compile a class with the annotation"
+    def clazz = compileSimpleClass("@ExtensibleFieldHolder String customFields")
+
+    and: 'a mocked helper'
+    def mock = Mock(ExtensibleFieldHelper)
+    ExtensibleFieldHelper.instance = mock
+
+    when: "an instance is made and values are stored in the added field"
+    def instance = clazz.newInstance()
+    instance.uuid = UUID.randomUUID()
+
+    and: "setter is called"
+    instance.xyz = 'pdq'
+
+    then: 'the helper method is called correctly'
+    1 * mock.propertyMissingSetter({ it.uuid == instance.uuid }, 'xyz', 'pdq')
+
+    cleanup:
+    ExtensibleFieldHelper.instance = new ExtensibleFieldHelper()
+  }
+
+  def "verify that the annotation adds propertyMissing getter method that delegates to the helper"() {
+    given: "compile a class with the annotation"
+    def clazz = compileSimpleClass("@ExtensibleFieldHolder String customFields")
+
+    and: 'a mocked helper'
+    def mock = Mock(ExtensibleFieldHelper)
+    ExtensibleFieldHelper.instance = mock
+
+    when: "an instance is made and values are stored in the added field"
+    def instance = clazz.newInstance()
+    instance.uuid = UUID.randomUUID()
+
+    and: "setter is called"
+    def res = instance.xyz
+
+    then: 'the helper method is called correctly'
+    1 * mock.propertyMissingGetter({ it.uuid == instance.uuid }, 'xyz') >> 'pdq'
+    res == 'pdq'
+
+    cleanup:
+    ExtensibleFieldHelper.instance = new ExtensibleFieldHelper()
+  }
+
+  def "verify that the annotation detects existing propertyMissing getter method and handles it gracefully"() {
+    given: "compile a class with the annotation"
+    def src = """
+      @ExtensibleFieldHolder String customFields
+      def propertyMissing(String name) {
+      }
+    """
+
+    when: "the class is called"
+    compileSimpleClass(src)
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['propertyMissing(', 'TestClass'])
+  }
+
+  def "verify that the annotation detects existing propertyMissing setter method and handles it gracefully"() {
+    given: "compile a class with the annotation"
+    def src = """
+      @ExtensibleFieldHolder String customFields
+      def propertyMissing(String name, Object value) {
+      }
+    """
+
+    when: "the class is called"
+    compileSimpleClass(src)
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['propertyMissing(', 'TestClass'])
+  }
 
 }

@@ -9,6 +9,7 @@ import org.codehaus.groovy.ast.*;
 import org.codehaus.groovy.ast.expr.*;
 import org.codehaus.groovy.ast.stmt.BlockStatement;
 import org.codehaus.groovy.ast.stmt.ExpressionStatement;
+import org.codehaus.groovy.ast.stmt.ReturnStatement;
 import org.codehaus.groovy.ast.stmt.Statement;
 import org.codehaus.groovy.control.CompilePhase;
 import org.codehaus.groovy.control.SourceUnit;
@@ -56,6 +57,8 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
         addValueSetter(classNode, sourceUnit);
         addValueGetter(classNode, sourceUnit);
         addConfigurableTypeAccessors(classNode, sourceUnit);
+        addPropertyMissingSetter(classNode, sourceUnit);
+        addPropertyMissingGetter(classNode, sourceUnit);
       }
     }
   }
@@ -270,4 +273,82 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
     }
   }
 
+  /**
+   * Adds the a propertyMissingSetter to access the custom fields easily.  Delegates to the
+   * ExtensibleFieldHelper.
+   *
+   * @param classNode  The class to add the method to.
+   * @param sourceUnit The compiler source unit being processed (used to errors).
+   */
+  private void addPropertyMissingSetter(ClassNode classNode, SourceUnit sourceUnit) {
+    String methodName = "propertyMissing";
+    Parameter[] parameters = {
+        new Parameter(new ClassNode(String.class), "name"),
+        new Parameter(ClassHelper.OBJECT_TYPE, "value")
+    };
+
+    // Make sure the method doesn't exist already
+    if (ASTUtils.methodExists(classNode, methodName, parameters)) {
+      sourceUnit.getErrorCollector().addError(new SimpleMessage(methodName + "() already exists in " + classNode, sourceUnit));
+    }
+
+    ArgumentListExpression argumentListExpression = new ArgumentListExpression();
+    argumentListExpression.addExpression(new VariableExpression("this"));
+    argumentListExpression.addExpression(new VariableExpression("name"));
+    argumentListExpression.addExpression(new VariableExpression("value"));
+
+    PropertyExpression instanceExpression = new PropertyExpression(
+        new ClassExpression(new ClassNode("org.simplemes.eframe.custom.ExtensibleFieldHelper", Modifier.PUBLIC, null)),
+        "instance");
+
+    MethodCallExpression method = new MethodCallExpression(
+        instanceExpression,
+        "propertyMissingSetter", argumentListExpression);
+    BlockStatement methodBody = new BlockStatement(new Statement[]{new ExpressionStatement(method)}, new VariableScope());
+
+    classNode.addMethod(methodName,
+        Modifier.PUBLIC,
+        ClassHelper.DYNAMIC_TYPE,
+        parameters,
+        null, methodBody);
+  }
+
+  /**
+   * Adds the a propertyMissingGetter to access the custom fields easily.  Delegates to the
+   * ExtensibleFieldHelper.
+   *
+   * @param classNode  The class to add the method to.
+   * @param sourceUnit The compiler source unit being processed (used to errors).
+   */
+  private void addPropertyMissingGetter(ClassNode classNode, SourceUnit sourceUnit) {
+    String methodName = "propertyMissing";
+    Parameter[] parameters = {
+        new Parameter(new ClassNode(String.class), "name"),
+    };
+
+    // Make sure the method doesn't exist already
+    if (ASTUtils.methodExists(classNode, methodName, parameters)) {
+      sourceUnit.getErrorCollector().addError(new SimpleMessage(methodName + "() already exists in " + classNode, sourceUnit));
+    }
+
+    ArgumentListExpression argumentListExpression = new ArgumentListExpression();
+    argumentListExpression.addExpression(new VariableExpression("this"));
+    argumentListExpression.addExpression(new VariableExpression("name"));
+
+    PropertyExpression instanceExpression = new PropertyExpression(
+        new ClassExpression(new ClassNode("org.simplemes.eframe.custom.ExtensibleFieldHelper", Modifier.PUBLIC, null)),
+        "instance");
+
+    MethodCallExpression method = new MethodCallExpression(
+        instanceExpression,
+        "propertyMissingGetter", argumentListExpression);
+    //BlockStatement methodBody = new BlockStatement(new Statement[]{new ExpressionStatement(method)}, new VariableScope());
+    ReturnStatement returnStatement = new ReturnStatement(new ExpressionStatement(method));
+
+    classNode.addMethod(methodName,
+        Modifier.PUBLIC,
+        ClassHelper.DYNAMIC_TYPE,
+        parameters,
+        null, returnStatement);
+  }
 }

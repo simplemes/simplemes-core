@@ -537,4 +537,49 @@ class ExtensibleFieldHelper {
 
     return sb.toString()
   }
+
+  /**
+   * Handles the methodMissing calls for the given object.  Checks the custom fields for the given field name.
+   * @param object The object to check for custom fields.
+   * @param name The custom field name.
+   * @param args The arguments.
+   * @return The result.
+   */
+  Object handleMethodMissing(Object object, String name, Object... args) {
+    println "object = $object"
+    throw new MissingMethodException(name, object.getClass(), args)
+    //return null
+  }
+
+  /**
+   * Handles the propertyMissing calls for the given object.  Checks the custom fields for the given field name.
+   * @param object The object to check for custom fields.
+   * @param name The custom field name.
+   * @param value The value to set.
+   * @return The result.
+   */
+  Object propertyMissingSetter(Object object, String name, Object value) {
+    def fieldDefs = getEffectiveFieldDefinitions(object.getClass())
+    def fieldDef = fieldDefs[name]
+    if (fieldDef) {
+      return setFieldValue(object, name, value)
+    } else {
+      throw new MissingPropertyException(name, object.getClass())
+    }
+  }
+  /**
+   * Handles the propertyMissing (setter) calls for the given object.  Checks the custom fields for the given field name.
+   * @param object The object to check for custom fields.
+   * @param name The custom field name.
+   * @return The result.
+   */
+  Object propertyMissingGetter(Object object, String name) {
+    def fieldDefs = getEffectiveFieldDefinitions(object.getClass())
+    def fieldDef = fieldDefs[name]
+    if (fieldDef) {
+      return getFieldValue(object, name)
+    } else {
+      throw new MissingPropertyException(name, object.getClass())
+    }
+  }
 }

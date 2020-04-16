@@ -820,7 +820,44 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     ExtensibleFieldHelper.getCustomChildLists(new FlexType()) == null
   }
 
+  @Rollback
+  def "verify that propertyMissingSetter and getter works for custom fields"() {
+    given: 'a custom field on a domain'
+    new FieldExtension(fieldName: 'abc', domainClassName: SampleParent.name).save()
+    def sampleParent = new SampleParent()
 
-  // test     ExtensibleFieldHelper.instance.formatCustomValues(object, options)
+    when: 'the the value is set'
+    ExtensibleFieldHelper.instance.propertyMissingSetter(sampleParent, 'abc', 'xyz')
+
+    then: 'the custom field is correct'
+    ExtensibleFieldHelper.instance.propertyMissingGetter(sampleParent, 'abc') == 'xyz'
+
+    and: 'the underlying getFieldValue method still works'
+    sampleParent.getFieldValue('abc') == 'xyz'
+  }
+
+  def "verify that propertyMissingSetter gracefully handles missing property"() {
+    given: 'a domain'
+    def sampleParent = new SampleParent()
+
+    when: 'the the value is set'
+    ExtensibleFieldHelper.instance.propertyMissingSetter(sampleParent, 'abc', 'xyz')
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['abc', SampleParent.name])
+  }
+
+  def "verify that propertyMissingGetter gracefully handles missing property"() {
+    given: 'a domain'
+    def sampleParent = new SampleParent()
+
+    when: 'the the value is set'
+    ExtensibleFieldHelper.instance.propertyMissingGetter(sampleParent, 'abc')
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['abc', SampleParent.name])
+  }
 
 }

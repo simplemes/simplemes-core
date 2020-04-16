@@ -200,8 +200,25 @@ Now that your domain supports custom fields, how do you access them?
 The core framework supports setting/displaying the values via the <<Definition Pages>>
 and the <<Rest API>>.  The fields are configured using the <<Field Extension GUI>>.
 
-To access the fields in your code, you can use the `setFieldValue()` and `getFieldValue()`
-methods that are added to your domain classes:
+To access the fields in your code, you can use the convenience method for the custom field
+as if it was a property.  For example, if you have the custom field 'caseColor' on the
+domain, you can access it using this syntax:
+
+[source,groovy]
+.Example - Accessing Custom Fields as a Property
+----
+
+def order = new Order(order: 'M1002')
+
+order.caseColor = 'Red'   // <.>
+def color = order.caseColor = 'Red'   // <.>
+
+----
+<.> Set a custom field 'caseColor' to 'Red'.
+<.> Gets the custom field 'caseColor' from the order.
+
+Alternately, you can also use the `setFieldValue()` and `getFieldValue()`
+methods that are added to your domain classes.  This is used in framework code internally.
 
 [source,groovy]
 .Example - Accessing Custom Fields
