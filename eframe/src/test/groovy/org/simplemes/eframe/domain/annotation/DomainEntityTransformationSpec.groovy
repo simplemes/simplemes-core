@@ -99,6 +99,15 @@ class DomainEntityTransformationSpec extends BaseSpecification {
     list[0].qtyToBuild == 12.0
   }
 
+  def "verify that the added save and delete methods have correct return type"() {
+    expect: 'the methods have the right return type'
+    def method1 = Order.getDeclaredMethod('save')
+    method1.returnType == Order
+
+    def method2 = Order.getDeclaredMethod('delete')
+    method2.returnType == Order
+  }
+
   @Rollback
   def "verify that list works"() {
     when: ' a record is saved'

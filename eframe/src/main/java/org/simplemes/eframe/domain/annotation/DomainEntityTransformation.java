@@ -79,8 +79,9 @@ public class DomainEntityTransformation implements ASTTransformation {
     validateUsage(classNode, sourceUnit);
     classNode.addInterface(new ClassNode(DomainEntityInterface.class));
     addRepositoryField(classNode, sourceUnit);
-    addDelegatedMethod("save", "save", false, null, null, null, classNode, sourceUnit);
-    addDelegatedMethod("delete", "delete", false, null, null, null, classNode, sourceUnit);
+    ClassNode returnTypeNode = new ClassNode(classNode.getName(), classNode.getModifiers(), classNode.getSuperClass());
+    addDelegatedMethod("save", "save", false, null, null, returnTypeNode, classNode, sourceUnit);
+    addDelegatedMethod("delete", "delete", false, null, null, returnTypeNode, classNode, sourceUnit);
 
     Parameter[] withTransactionParameters = {new Parameter(new ClassNode(Closure.class), "closure")};
     List<Expression> withTxnArgs = new ArrayList<>();
