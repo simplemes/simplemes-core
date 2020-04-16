@@ -1,5 +1,6 @@
 package org.simplemes.mes.demand.domain
 
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.misc.TypeUtils
@@ -30,17 +31,27 @@ class OrderSpec extends BaseSpecification {
   @SuppressWarnings("unused")
   static specNeeds = SERVER
 
-def "test standard constraints"() {
-  expect: 'the constraints are enforced'
-  DomainTester.test {
-    domain Order
-    requiredValues order: 'M1003', qtyToBuild: 2.0
-    maxSize 'order', FieldSizes.MAX_CODE_LENGTH
-    notNullCheck 'qtyToBuild'
-    //fieldOrderCheck true
-    notInFieldOrder(['operations', 'operationStates', 'dateReleased', 'dateFirstQueued', 'dateFirstStarted', 'dateQtyQueued', 'dateQtyStarted'])
+  def "test standard constraints"() {
+    expect: 'the constraints are enforced'
+    DomainTester.test {
+      domain Order
+      requiredValues order: 'M1003', qtyToBuild: 2.0
+      maxSize 'order', FieldSizes.MAX_CODE_LENGTH
+      notNullCheck 'qtyToBuild'
+      //fieldOrderCheck true
+      notInFieldOrder(['operations', 'operationStates', 'dateReleased', 'dateFirstQueued', 'dateFirstStarted', 'dateQtyQueued', 'dateQtyStarted'])
+    }
   }
-}
+
+  def "verify that an Order can be serialized and de-serialized to JSON"() {
+    when: 'an order is serialized'
+    def order = new Order(order: 'M1001')
+    def s = Holders.objectMapper.writeValueAsString(order)
+
+    then: 'the JSON can be de-serialized'
+    def order2 = Holders.objectMapper.readValue(s, Order)
+    order2.order == order.order
+  }
 
   @Rollback
   def "verify that toShortString and toString works on the order with child LSNs"() {

@@ -61,15 +61,6 @@ enum LSNTrackingOption {
   }
 
   /**
-   * Provide a string format of this option, in the default Locale.
-   * @return The string value to display.
-   */
-  @Override
-  String toString() {
-    return toStringLocalized(Locale.default)
-  }
-
-  /**
    * Provide a string format of this option in the given Locale.
    * @locale The locale to return the string for.
    * @return The string value to display.
