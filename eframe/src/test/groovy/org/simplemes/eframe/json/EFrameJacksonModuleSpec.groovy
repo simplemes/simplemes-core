@@ -154,6 +154,27 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that a parent reference is not serialized"() {
+    given: 'a simple domain'
+    def p = new SampleParent(name: 'SAMPLE')
+    p.sampleChildren << new SampleChild(key: 'C1')
+    p.save()
+
+    when: 'the entity is de-serialized to JSON'
+    def objectMapper = Holders.objectMapper
+    def s = objectMapper.writeValueAsString(p)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+
+    then: 'the correct JSON is created'
+    def json = new JsonSlurper().parse(s.bytes)
+    json.name == 'SAMPLE'
+
+    and: 'the parent reference for the child is not in the JSON'
+    //noinspection GroovyAssignabilityCheck
+    json.sampleChildren[0].sampleParent == null
+  }
+
+  @Rollback
   def "verify that the round trip with domain object works"() {
     given: 'a simple domain'
     def p = new SampleParent(name: 'SAMPLE', title: 'Sample')

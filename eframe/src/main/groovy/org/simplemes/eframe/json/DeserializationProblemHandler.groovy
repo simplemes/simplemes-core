@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonParser
 import com.fasterxml.jackson.databind.DeserializationContext
 import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.JsonNode
+import com.fasterxml.jackson.databind.node.ObjectNode
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.data.format.ListFieldLoaderInterface
@@ -91,13 +92,31 @@ class DeserializationProblemHandler extends com.fasterxml.jackson.databind.deser
       def row = [:]
       for (Iterator paramIter = rowNode.fields(); paramIter.hasNext();) {
         Map.Entry entry = paramIter.next()
-        row[entry.key] = entry.value.asText()
+        row[entry.key] = convertNode(entry.key, entry.value)
+        //println "$entry.key = ${row[entry.key]}"
       }
       list << row
     }
     def params = [:]
     params[fieldDefinition.name] = list
     DomainBinder.build().bind(beanOrClass, params)
+  }
+
+  /**
+   * Converts the given node to text or a Map as needed.
+   * @param node The node.
+   * @return The text or map.
+   */
+  protected Object convertNode(Object key, Object node) {
+    if (node instanceof ObjectNode) {
+      def map = [:]
+      for (element in node.fields()) {
+        map[element.key] = element.value.asText()
+      }
+      return map
+    } else {
+      return node.asText()
+    }
   }
 
 }

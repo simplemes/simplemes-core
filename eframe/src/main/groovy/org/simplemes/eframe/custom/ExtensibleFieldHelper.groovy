@@ -546,7 +546,6 @@ class ExtensibleFieldHelper {
    * @return The result.
    */
   Object handleMethodMissing(Object object, String name, Object... args) {
-    println "object = $object"
     throw new MissingMethodException(name, object.getClass(), args)
     //return null
   }

@@ -4,7 +4,8 @@
 
 package org.simplemes.eframe.exception
 
-import org.simplemes.eframe.domain.validate.ValidationError
+
+import org.simplemes.eframe.domain.validate.ValidationErrorInterface
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.TypeUtils
 
@@ -13,7 +14,7 @@ import org.simplemes.eframe.misc.TypeUtils
  */
 class ValidationException extends BusinessException {
 
-  List<ValidationError> errors
+  List<ValidationErrorInterface> errors
 
   Object object
 
@@ -23,7 +24,7 @@ class ValidationException extends BusinessException {
    * @param errors The errors.
    * @param object The object the error is on.
    */
-  ValidationException(List<ValidationError> errors, Object object) {
+  ValidationException(List<ValidationErrorInterface> errors, Object object) {
     //error.3.message=Validation Failed: {0}
     setCode(3)
     setParams([errors])

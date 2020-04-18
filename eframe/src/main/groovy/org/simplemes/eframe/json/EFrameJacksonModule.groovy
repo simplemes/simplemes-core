@@ -178,10 +178,15 @@ class EFrameBeanSerializerModifier extends BeanSerializerModifier {
       def fieldDef = fieldDefinitions?.get(fieldName)
       //println "  fieldDef = $fieldName $fieldDef"
       if (fieldDef?.isReference()) {
-        if ((!fieldDef.isChild()) && (!Collection.isAssignableFrom(fieldDef.type))) {
-          def keys = DomainUtils.instance.getKeyFields(fieldDef.type)
-          w.assignSerializer(new ForeignReferenceSerializer(keys))
-          //w.assignDeserializer(new ForeignReferenceDeserializer())
+        if (fieldDef.parentReference) {
+          // Never serialize a parent reference
+          fieldsToRemove << fieldName
+        } else {
+          if ((!fieldDef.child) && (!Collection.isAssignableFrom(fieldDef.type))) {
+            def keys = DomainUtils.instance.getKeyFields(fieldDef.type)
+            w.assignSerializer(new ForeignReferenceSerializer(keys))
+            //w.assignDeserializer(new ForeignReferenceDeserializer())
+          }
         }
       } else if (fieldDef?.type?.isEnum()) {
         w.assignSerializer(new EnumSerializer(fieldName))

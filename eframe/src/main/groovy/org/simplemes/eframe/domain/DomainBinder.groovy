@@ -117,14 +117,9 @@ class DomainBinder {
     for (fieldDefinition in fieldDefs) {
       if (fieldDefinition.format == ConfigurableTypeDomainFormat.instance) {
         ctFieldsFound = true
-        def value = params[fieldDefinition.name]
-        if (value) {
-          if (ui) {
-            fieldDefinition.setFieldValue(object, fieldDefinition.format.parseForm(value, null, fieldDefinition))
-          } else {
-            fieldDefinition.setFieldValue(object, fieldDefinition.format.decode(value, fieldDefinition))
-          }
-        }
+        bindConfigurableTypeReference(object, fieldDefinition, params[fieldDefinition.name])
+        // And now remove the reference to the configurable type to avoid problems in the loop below.
+        params.remove(fieldDefinition.name)
       }
     }
     if (ctFieldsFound) {
@@ -480,5 +475,31 @@ class DomainBinder {
     if (fieldDef && fieldDef.format == DomainReferenceFieldFormat.instance) {
       fieldDef.setFieldValue(object, fieldDef.format.decode((String) value, fieldDef))
     }
+  }
+
+  /**
+   * Binds the given value to a configurable type reference.  Supports simple string and Map formats.
+   * @param object The object to bind to.
+   * @param fieldDefinition The field to bind it to.
+   * @param value The value (String or Map)
+   */
+  void bindConfigurableTypeReference(Object object, FieldDefinitionInterface fieldDefinition, Object value) {
+    if (value == null) {
+      return
+    }
+    if (value instanceof String) {
+      if (ui) {
+        fieldDefinition.setFieldValue(object, fieldDefinition.format.parseForm(value, null, fieldDefinition))
+      } else {
+        fieldDefinition.setFieldValue(object, fieldDefinition.format.decode(value, fieldDefinition))
+      }
+    } else if (value instanceof Map) {
+      if (value.uuid) {
+        fieldDefinition.setFieldValue(object, fieldDefinition.format.decode(value.uuid.toString(), fieldDefinition))
+      }
+    } else {
+      throw new IllegalArgumentException("Cannot bind $value (${value?.getClass()?.name} to ${object.getClass().name} as a configurable type.  Must be String or Map.")
+    }
+
   }
 }

@@ -564,7 +564,7 @@ class CRUDGUITester {
   protected checkListColumn(String columnName, String listHTMLID, Object value, int row) {
     // Faster approach to finding data.  Get the raw HTML from the DOM and search it.
     //    def inner = _tester.$("div#${listHTMLID}").@innerHTML
-    //    println "inner = $inner"
+    //    //println "inner = $inner"
     //log.trace('Checking list column {} for value {}', columnName, value)
     // Check the header first.
     def columnTitle = lookup("${columnName}.label")

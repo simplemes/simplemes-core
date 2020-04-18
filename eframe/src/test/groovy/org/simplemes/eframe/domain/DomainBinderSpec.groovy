@@ -731,6 +731,21 @@ class DomainBinderSpec extends BaseSpecification {
     rma.getRmaTypeValue('FIELD1') == 'custom value 1'
   }
 
+  @Rollback
+  def "verify that bind supports Configurable Type field - as a JSON-style Map"() {
+    //object =  {customComponents=[{sequence=237, qty=1.0, assyDataType={flexType=FLEX1, uuid=08717d2c-5061-48d0-b2c5-dcb4c7dbe5e1}, uuid=5b018a87-dd0c-4f91-938f-8910d5a19ecf}]}, ui = ui
+    given: 'a default flex type'
+    def flexType = DataGenerator.buildFlexType()
+
+    when: 'the object params are bound'
+    def params = [assyDataType: [flexType: flexType.flexType, uuid: flexType.uuid.toString()]]
+    def orderComponent = new CustomOrderComponent()
+    DomainBinder.build().bind(orderComponent, params)
+
+    then: 'the domain has the right values'
+    orderComponent.assyDataType == flexType
+  }
+
   @SuppressWarnings("GroovyUnusedAssignment")
   @Rollback
   def "verify that bind supports JDBC ResultSet"() {

@@ -62,6 +62,12 @@ public class ValidationError implements ValidationErrorInterface {
     return code;
   }
 
+  /**
+   * toString() with a locale.
+   *
+   * @param locale The locale.
+   * @return The localized toString().
+   */
   public String toString(Locale locale) {
     Object[] argsWithFieldName = new Object[args.length + 1];
     argsWithFieldName[0] = fieldName;

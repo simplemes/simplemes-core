@@ -4,6 +4,8 @@
 
 package org.simplemes.eframe.domain.validate;
 
+import java.util.Locale;
+
 /**
  * A single validation error on a field.
  */
@@ -28,6 +30,14 @@ public interface ValidationErrorInterface {
    * @return The args.
    */
   Object[] getArgs();
+
+  /**
+   * toString() with a locale.
+   *
+   * @param locale The locale.
+   * @return The localized toString().
+   */
+  String toString(Locale locale);
 
 
 }
