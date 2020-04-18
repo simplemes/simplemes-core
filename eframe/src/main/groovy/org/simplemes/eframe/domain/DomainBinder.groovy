@@ -126,6 +126,18 @@ class DomainBinder {
       fieldDefs = ExtensibleFieldHelper.instance.addConfigurableTypeFields(fieldDefs, object)
     }
 
+    // Fix any map-style foreign references (e.g. key field and uuid in JSON).
+    for (fieldDefinition in fieldDefs) {
+      if (fieldDefinition.format == DomainReferenceFieldFormat.instance) {
+        def value = params[fieldDefinition.name]
+        if (value instanceof Map) {
+          // Replace with just the UUID (if exists).
+          if (value.uuid) {
+            params[fieldDefinition.name] = value.uuid.toString()
+          }
+        }
+      }
+    }
 
     // See if this is the top-level object,
     if (!parentBinder) {

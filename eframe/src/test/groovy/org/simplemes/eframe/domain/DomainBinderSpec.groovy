@@ -746,6 +746,20 @@ class DomainBinderSpec extends BaseSpecification {
     orderComponent.assyDataType == flexType
   }
 
+  @Rollback
+  def "verify that bind supports foreign reference - as a JSON-style Map"() {
+    given: 'a default flex type'
+    def afd = new AllFieldsDomain(name: 'ABC').save()
+
+    when: 'the object params are bound'
+    def params = [foreignReference: [name: afd.name, uuid: afd.uuid.toString()]]
+    def orderComponent = new CustomOrderComponent()
+    DomainBinder.build().bind(orderComponent, params)
+
+    then: 'the domain has the right values'
+    orderComponent.foreignReference == afd
+  }
+
   @SuppressWarnings("GroovyUnusedAssignment")
   @Rollback
   def "verify that bind supports JDBC ResultSet"() {

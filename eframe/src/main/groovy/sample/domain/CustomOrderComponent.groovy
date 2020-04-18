@@ -38,6 +38,10 @@ class CustomOrderComponent {
   @Nullable String notes
 
   @Nullable
+  @ManyToOne(targetEntity = AllFieldsDomain)
+  AllFieldsDomain foreignReference
+
+  @Nullable
   @ManyToOne(targetEntity = FlexType)
   FlexType assyDataType
 
