@@ -8,7 +8,10 @@ import org.simplemes.eframe.custom.BaseAddition
 import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.data.format.CustomChildListFieldFormat
 import org.simplemes.eframe.data.format.DomainReferenceFieldFormat
+import org.simplemes.mes.assy.demand.domain.OrderAssembledComponent
+import org.simplemes.mes.assy.demand.domain.OrderBOMComponent
 import org.simplemes.mes.assy.product.domain.ProductComponent
+import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.product.domain.Product
 
 import javax.inject.Singleton
@@ -51,6 +54,23 @@ class AssemblyAddition extends BaseAddition implements AdditionInterface {
       valueClass FlexType
       fieldOrder { name 'group:components' }
       fieldOrder { name 'assemblyDataType'; after 'lotSize' }
+    }
+    field {
+      domain Order
+      name 'components'
+      label 'components.label'
+      format CustomChildListFieldFormat
+      valueClass OrderBOMComponent
+    }
+    field {
+      domain Order
+      name 'assembledComponents'
+      label 'assembledComponents.label'
+      format CustomChildListFieldFormat
+      valueClass OrderAssembledComponent
+      fieldOrder { name 'group:components' }
+      fieldOrder { name 'assembledComponents'; after 'group:components' }
+      guiHints 'assembledComponents@readOnly="true"'
     }
 
   }

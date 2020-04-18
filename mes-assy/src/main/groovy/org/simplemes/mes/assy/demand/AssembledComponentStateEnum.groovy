@@ -51,7 +51,7 @@ enum AssembledComponentStateEnum {
    * @return The human-readable string.
    */
   String toStringLocalized(Locale locale = null) {
-    return GlobalUtils.lookup("assembledComponentState.${name()}.label", null, locale)
+    return GlobalUtils.lookup("assembledComponentState.${name()}.label", locale)
   }
 
 }
