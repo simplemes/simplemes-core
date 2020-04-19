@@ -749,6 +749,18 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     2          | ['AAA', 'BBB']        | [maxLength: 10]   | 'FIELD1: AAA ...'
   }
 
+  def "verify that formatConfigurableTypeValues handles null ctFieldName - formats all"() {
+    given: 'a domain object with the given field values'
+    def object = new RMA()
+    object.customFields = '{"FIELD3": "ACME1","FIELD2": "ACME2","FIELD1": "ACME3"}'
+
+    when: 'the values are formatted'
+    def s = ExtensibleFieldHelper.instance.formatConfigurableTypeValues(object, [highlight: true])
+
+    then: 'the values are formatted'
+    s == '<b>FIELD1</b>: ACME3 <b>FIELD2</b>: ACME2 <b>FIELD3</b>: ACME1'
+  }
+
   @Rollback
   def "verify that formatConfigurableTypeValues handles localized labels"() {
     given: 'a domain object with the given field values'

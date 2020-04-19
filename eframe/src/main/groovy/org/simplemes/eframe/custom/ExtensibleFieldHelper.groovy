@@ -462,48 +462,11 @@ class ExtensibleFieldHelper {
     return null
   }
 
-  /**
-   * Interceptor that handles object saves.  This will force the parent ID to be set for custom children lists.
-   * @param entity The domain object being saved.
-   */
-  void onObjectSave(Object entity) {
-    def clazz = entity.getClass()
-    def fieldDefinitions = getEffectiveFieldDefinitions(clazz)
-    for (fieldDefinition in fieldDefinitions) {
-      if (fieldDefinition?.format instanceof ListFieldLoaderInterface) {
-        def map = getComplexHolder(entity)
-        def list = map[fieldDefinition.name]
-
-        // Get the list of record IDs from the last read.
-        def idListName = '_IDs' + fieldDefinition.name
-        def idList = map[idListName]?.clone()
-
-        // Now, try to save each record, with the proper parent ID.
-        def recordDomainClass = fieldDefinition.referenceType
-        String parentFieldName = NameUtils.lowercaseFirstLetter(clazz.simpleName) + 'Id'
-        for (record in list) {
-          if (record[parentFieldName] == null) {
-            record[parentFieldName] = entity.id
-          }
-          record.save()
-          log.trace("onObjectSave(): Saving child ({}) record (id={}) {}", recordDomainClass.simpleName, record.id, record)
-          idList?.remove(record.id)
-        }
-        // Now, delete any records that are not in the current list (when com
-        for (id in idList) {
-          def record = recordDomainClass.load(id)
-          record.delete()
-          log.trace("onObjectSave(): Deleting child ({}) record (id={}) {}", recordDomainClass.simpleName, record.id, record)
-        }
-      }
-    }
-
-  }
 
   /**
-   * Formats all of the Extensible Field name/value pairs for display.  Optionally highlights the field name
+   * Formats the Extensible Field name/value pairs for display.  Optionally highlights the field name
    * with HTML bold notation and limits the length to a given max length.
-   * The @ExtensibleField annotation must be used on the domain object.
+   * The @ExtensibleFieldHolder annotation must be used on the domain object.
    * The output will be generated in the flex field sequence order for predictable display order.
    * <p>
    * This is useful for a column in the standard definition page's list.
@@ -533,6 +496,44 @@ class ExtensibleFieldHelper {
         def valueString = fieldDefinition.format.format(value, null, fieldDefinition)
         TextUtils.addFieldForDisplay(sb, label, valueString, options)
       }
+    }
+
+    return sb.toString()
+  }
+
+  /**
+   * Formats all of the Extensible Field name/value pairs for display.  Optionally highlights the field name
+   * with HTML bold notation and limits the length to a given max length.
+   * The @ExtensibleFieldHolder annotation must be used on the domain object.
+   * The output will be generated in the flex field sequence order for predictable display order.
+   * <p>
+   * This is useful for a column in the standard definition page's list.
+   * <p>
+   * <b>Note:</b> The first field will always be in the output, even if it is too large.
+   *
+   * @param domainObject The domain object to retrieve the values from.
+   * @param options The options for building the display string
+   *                (see {@link TextUtils#addFieldForDisplay(java.lang.StringBuilder, java.lang.String, java.lang.String)}.
+   * @return The display value.
+   */
+  String formatConfigurableTypeValues(Object domainObject, Map options = null) {
+    def sb = new StringBuilder()
+
+    String holderName = getCustomHolderFieldName(domainObject)
+    def clazz = domainObject.getClass()
+    if (!holderName) {
+      //error.131.message=The domain class {0} does not support extensible fields. Add @ExtensibleFieldHolder.
+      throw new BusinessException(131, [clazz.name])
+    }
+    String text = domainObject[holderName]
+
+    def map = Holders.objectMapper.readValue(text, Map)
+
+    // Sort on sequence for predictable output order.
+    def keys = map.keySet()?.sort() { a, b -> a <=> b }
+    for (key in keys) {
+      def value = map[key]
+      TextUtils.addFieldForDisplay(sb, (String) key, value?.toString(), options)
     }
 
     return sb.toString()
