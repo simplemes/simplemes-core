@@ -81,6 +81,7 @@ Tasks left out
   Reports
     Test in MES app.
   Build check from jenkins with single Repo on GitHub.
+  For Assembled App, strip out test utils (e.g. MESUnitTestUtils, Assy, others).
 
   Look into Micronaut Data? (aka Predator).
     No First level cache, proxy or optimistic locking.

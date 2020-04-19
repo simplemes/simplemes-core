@@ -39,6 +39,8 @@ public class ExtensionPointHelper {
       }
       //System.out.println("methods:" + Arrays.toString(clazz.getDeclaredMethods()));
       Method method = clazz.getDeclaredMethod(methodName, parameterTypes);
+      // Force ability to access the method.  The micronaut generated class is protected, so we need to bypass the accessible checks.
+      method.setAccessible(true);
       method.invoke(bean, arguments);
     }
   }
@@ -72,6 +74,8 @@ public class ExtensionPointHelper {
         argumentsPlusResponse[i + adjustParamCount] = arguments[i];
       }
       Method method = ASTUtils.findMethod(clazz, methodName, parameterTypes);
+      // Force ability to access the method.  The micronaut generated class is protected, so we need to bypass the accessible checks.
+      method.setAccessible(true);
       Object methodResponse = method.invoke(bean, argumentsPlusResponse);
       if (methodResponse != null) {
         // Extension wanted to alter the response, so us it for the next execution.
