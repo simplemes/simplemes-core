@@ -2,11 +2,15 @@ package org.simplemes.mes.assy.demand.service
 
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
+import org.simplemes.eframe.custom.domain.FlexField
+import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.NumberUtils
+import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.mes.assy.demand.AddOrderAssembledComponentRequest
+import org.simplemes.mes.assy.demand.AssembledComponentStateEnum
 import org.simplemes.mes.assy.demand.ComponentRemoveUndoRequest
 import org.simplemes.mes.assy.demand.FindComponentAssemblyStateRequest
 import org.simplemes.mes.assy.demand.OrderComponentState
@@ -17,8 +21,10 @@ import org.simplemes.mes.assy.demand.domain.OrderBOMComponent
 import org.simplemes.mes.assy.product.domain.ProductComponent
 import org.simplemes.mes.demand.DemandObject
 import org.simplemes.mes.demand.OrderReleaseRequest
+import org.simplemes.mes.demand.OrderReleaseResponse
 import org.simplemes.mes.demand.domain.LSN
 import org.simplemes.mes.demand.domain.Order
+import org.simplemes.mes.demand.service.OrderReleasePoint
 
 import javax.transaction.Transactional
 
@@ -31,7 +37,7 @@ import javax.transaction.Transactional
  */
 @Slf4j
 @Transactional
-class OrderAssyService {
+class OrderAssyService implements OrderReleasePoint {
 
   /**
    * The maximum length of the assembly data string total. (Default: 300).  Each single assembly record
@@ -40,19 +46,36 @@ class OrderAssyService {
   static final Integer MAX_ASSY_DATA_STRING_LENGTH = 300
 
   /**
+   * Pre-release extension method for the order release process.
+   * <p>
+   * <b>Note</b>: This method is part of the Stable API.
+   * @param orderReleaseRequest The details of the release request (order and qty).
+   */
+
+  @Override
+  void preRelease(OrderReleaseRequest orderReleaseRequest) {
+
+  }
+
+  /**
    * After an order is released by the mes-core module, this addition method will copy any ProductComponent (BOM)
    * records to the order.
    * <p>
    * <b>Note:</b> Do not call this directly.  Call the mes-core OrderService.release() method instead.
+   * <p>
+   * @param coreResponse The response from the core method (or from other extensions that provide a response).
    * @param orderReleaseRequest The details of the release request (order and qty).
+   * @return Return a new response if your extension needs to return a different value. Return null to use core response.
+   *         You can also modify the coreResponse if it is aPOGO that allows modification.
    */
-  def orderReleasePostProcessor(OrderReleaseRequest orderReleaseRequest) {
+  @Override
+  OrderReleaseResponse postRelease(OrderReleaseResponse coreResponse, OrderReleaseRequest orderReleaseRequest) {
     def order = orderReleaseRequest?.order
     def count = 0
     def components = order?.product?.getFieldValue('components')
     if (components) {
-      for (ProductComponent component in (components)) {
-        def orderComponent = new OrderBOMComponent(component)
+      for (component in (components)) {
+        def orderComponent = new OrderBOMComponent(component as ProductComponent)
         order.getFieldValue('components') << orderComponent
         count++
       }
@@ -62,7 +85,10 @@ class OrderAssyService {
     if (count) {
       orderReleaseRequest.order.save()
     }
+    return null
   }
+
+
   /**
    * Adds a single component to the order/LSN.  Will auto-assign a unique sequence.
    * <p/>
@@ -77,12 +103,13 @@ class OrderAssyService {
     ArgumentUtils.checkMissing(request.component, 'request.component')
     if (request.orderBOMComponent) {
       // Make sure the order component, if provided, belongs to this order.
-      if (request.orderBOMComponent.orderId != request.order.id) {
-        def badOrder = Order.get(request.orderBOMComponent.orderId)
+      def order1 = request.orderBOMComponent.order.order
+      def order2 = request.order.order
+      if (order1 != order2) {
         //println "request.orderBOMComponent.orderId = $request.orderBOMComponent.orderId"
         //error.10000.message=Component {0} is defined for order {1}.  It must be defined for order {2}.
         throw new BusinessException(10000, [request.orderBOMComponent.component.product,
-                                            badOrder?.order, request.order.order])
+                                            order1, order2])
       }
     }
 
@@ -135,7 +162,7 @@ class OrderAssyService {
                                           DateUtils.formatDate(orderAssembledComponent.removedDate)])
     }
     orderAssembledComponent.state = AssembledComponentStateEnum.REMOVED
-    orderAssembledComponent.removedByUserName = UserUtils.currentUsername
+    orderAssembledComponent.removedByUserName = SecurityUtils.currentUserName
     orderAssembledComponent.removedDate = new Date()
 
     orderAssembledComponent.save()
@@ -224,13 +251,13 @@ class OrderAssyService {
     for (component in assembled) {
       //println "component = $component"
       def orderComponentState = new OrderComponentState(component: component.component.product,
-                                                        componentAndTitle: component.component.toString(),
+                                                        componentAndTitle: TypeUtils.toShortString(component.component, true),
                                                         sequence: component.sequence,
                                                         sequencesForRemoval: [component.sequence],
                                                         qtyRequired: component.qty,
                                                         qtyAssembled: component.qty)
       orderComponentState.assemblyData = component.assemblyData
-      orderComponentState.assemblyDataValues = component.assemblyDataValues
+      orderComponentState.customFields = component.customFields
       addAssemblyDataValues(orderComponentState, component)
       determineStateValues(orderComponentState)
       res << orderComponentState
@@ -276,7 +303,7 @@ class OrderAssyService {
       // Calculate the required qty for the requested element
       def qtyRequired = orderComponent.qty * (lsn?.qty ?: order?.qtyToBuild)
       def orderComponentState = new OrderComponentState(component: orderComponent.component.product,
-                                                        componentAndTitle: orderComponent.component.toString(),
+                                                        componentAndTitle: TypeUtils.toShortString(orderComponent.component, true),
                                                         sequence: orderComponent.sequence,
                                                         qtyRequired: qtyRequired,
                                                         qtyAssembled: 0.0)
@@ -300,7 +327,7 @@ class OrderAssyService {
       if (matches) {
         // Use only the first Assy data type (only one is valid).
         orderComponentState.assemblyData = matches[0].assemblyData
-        orderComponentState.assemblyDataValues = matches[0].assemblyDataValues
+        orderComponentState.customFields = matches[0].customFields
         // Now, add the unique assy data values to the output string.
         for (match in matches) {
           addAssemblyDataValues(orderComponentState, match)
@@ -341,7 +368,7 @@ class OrderAssyService {
       for (nonBOM in nonBOMs) {
         currentSequence += 10
         def orderComponentState = new OrderComponentState(component: nonBOM.component.product,
-                                                          componentAndTitle: nonBOM.component.toString(),
+                                                          componentAndTitle: TypeUtils.toShortString(nonBOM.component, true),
                                                           sequence: currentSequence,
                                                           sequencesForRemoval: [nonBOM.sequence],
                                                           qtyRequired: 0.0,
@@ -402,6 +429,10 @@ class OrderAssyService {
       original = ''
     }
     def s = ExtensibleFieldHelper.instance.formatConfigurableTypeValues('assemblyData', orderAssembledComponent)
+    if (!s) {
+      // No flex type fields defined.  See if there are any left-over values in the custom fields.
+      s = ExtensibleFieldHelper.instance.formatConfigurableTypeValues(orderAssembledComponent)
+    }
     // Now, if the new data is not already in the list, add it to it (up to 300 total chars).
     if (!original.contains(s)) {
       if ((original.length() + s.length()) < MAX_ASSY_DATA_STRING_LENGTH) {
@@ -449,6 +480,5 @@ class OrderAssyService {
 
     return results
   }
-
 
 }

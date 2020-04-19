@@ -1,5 +1,6 @@
 package org.simplemes.mes.test
 
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.mes.demand.LSNTrackingOption
@@ -25,8 +26,16 @@ import org.simplemes.mes.product.domain.ProductOperation
 /**
  * Convenience utilities for MES unit tests.  Used to create common data structures.
  * Can also be used for GUI/Integration tests with proper transaction settings.
+ * Currently, you should use the static methods.  The internal instance methods are used
+ * to allow sub-classing.
  */
 class MESUnitTestUtils {
+
+  /**
+   * A singleton, used to allow sub-classes to provide additional features.
+   */
+  static MESUnitTestUtils instance = new MESUnitTestUtils()
+
 
   /**
    * Build a product with a simple 3 operation routing for use in an product.
@@ -86,7 +95,22 @@ class MESUnitTestUtils {
   }
 
   /**
-   * Create and release orders, optionally on a routing with or without LSNs.  
+   * Create and release a single order, optionally on a routing with or without LSNs.
+   * This is a convenience function that calls {@link #releaseOrders(java.util.Map)}.
+   * <p>
+   * <b>This method creates a <b>transaction</b> (if needed).</b>.
+   *
+   * @param options See for the {@link #releaseOrders(java.util.Map)} for details.  (<b>Optional</b>)
+   * @return The order(s) created and released.
+   */
+  static Order releaseOrder(Map options = [:]) {
+    options.nOrders = 1
+    def list = releaseOrders(options)
+    return list[0]
+  }
+
+  /**
+   * Create and release orders, optionally on a routing with or without LSNs.
    * <p>
    * <b>This method creates a <b>transaction</b> (if needed).</b>.
    *
@@ -97,6 +121,7 @@ class MESUnitTestUtils {
    *   <li><b>nOrders</b> - The number of orders to create (<b>Default</b>: 1) </li>
    *   <li><b>operations</b> - A List of operation sequences (Integers).  This list is sorted in reverse order before save().  (<b>Default</b>: No routing)</li>
    *   <li><b>masterRouting</b> - The name of the master routing to create for this order.  Will use the unique ID in the key.  (<b>Default</b>: No routing)</li>
+   *   <li><b>productName</b> - The name of the product for the order. (<b>Default</b>: No product unless Operations or LSN tracking is set)</li>
    *   <li><b>qty</b> - The number of pieces to build for each order (<b>Default</b>: 1.0) </li>
    *   <li><b>qtyInWork</b> - The number of pieces to move to in work (<b>Default</b>: 0.0).  Allows easy testing of inWork orders. </li>
    *   <li><b>qtyDone</b> - The number of pieces to move to qtyDone (<b>Default</b>: 0.0).  Allows easy testing of completed orders. </li>
@@ -105,6 +130,7 @@ class MESUnitTestUtils {
    *   <li><b>lsnSequence</b> - The LSN Sequence to use to generate the LSN names (<b>Default</b>: default LSN Sequence) </li>
    *   <li><b>lsns</b> - A list of LSN names (Strings) to use for the order. LSNs are created using this and the ID and the order # (if needed).  (<b>Default</b>: default LSN Sequence) </li>
    *   <li><b>spreadQueuedDates</b> - If true, then the dateFirstQueued for all created objects will be spread from a date 14 days ago (+1 second for each).  (<b>Default</b>: false) </li>
+   *   <li><b>orderSequenceStart</b> - The sequence number for the first order created (<b>Default</b>: 1000) </li>
    * </ul>
    * <b>Note:</b> If the lsnTrackingOption is LSNTrackingOption.LSN_ONLY, then an LSNSequence is used for the product.
    * <p>
@@ -117,6 +143,19 @@ class MESUnitTestUtils {
    * @return The order(s) created and released.
    */
   static List<Order> releaseOrders(Map options = [:]) {
+    return instance.releaseOrdersInternal(options)
+  }
+
+  /**
+   * Internal create and release orders.  This is used as a non-static method to allow sub-classes to alter the
+   * objects created.
+   * <p>
+   * <b>This method creates a <b>transaction</b> (if needed).</b>.
+   *
+   * @param options See for the {@link #releaseOrders(java.util.Map)} for details.  (<b>Optional</b>)
+   * @return The order(s) created and released.
+   */
+  protected List<Order> releaseOrdersInternal(Map options = [:]) {
     List<Order> list = []
     Order.withTransaction {
       loadOrderInitialDataNeeded(options)
@@ -129,6 +168,7 @@ class MESUnitTestUtils {
         def qty = (BigDecimal) options.qty ?: 1.0
         def lsnTrackingOption = (LSNTrackingOption) options.lsnTrackingOption ?: LSNTrackingOption.ORDER_ONLY
         def lsnSequence = (LSNSequence) options.lsnSequence
+        def productName = options?.productName
 
         // Create the product we need
         List<Integer> operationSequences = (List<Integer>) options.operations ?: []
@@ -141,6 +181,7 @@ class MESUnitTestUtils {
             mpr = new MasterRouting(routing: "${options.masterRouting}$id")
             for (sequence in operationSequences) {
               def operation = new MasterOperation(sequence: sequence, title: "Oper $sequence $id")
+              adjustOperation(operation,options)
               mpr.operations << operation
             }
             mpr.save()
@@ -148,25 +189,31 @@ class MESUnitTestUtils {
         }
         Product product = null
 
-        if (operationSequences || lsnTrackingOption != LSNTrackingOption.ORDER_ONLY) {
+        if (operationSequences || lsnTrackingOption != LSNTrackingOption.ORDER_ONLY|| productName) {
           // Only need a product for a routing and non-default LSN Tracking Options.
-          product = new Product(product: "PC$id", lotSize: lotSize,
+          productName = productName ?:  "PC$id"
+          product = new Product(product: productName, lotSize: lotSize,
                                 lsnTrackingOption: lsnTrackingOption,
                                 lsnSequence: lsnSequence)
           if (operationSequences) {
             // A product-specific routing is needed.
             for (sequence in operationSequences) {
-              product.operations << new ProductOperation(sequence: sequence, title: "Oper $sequence $id")
+              def operation = new ProductOperation(sequence: sequence, title: "Oper $sequence $id")
+              adjustOperation(operation,options)
+              product.operations << operation
             }
 
           }
           product.masterRouting = mpr
+          adjustProduct(product,options)
           product.save()
         }
-        def orderService = new OrderService()
-        def seq = 1000
+        def orderService = Holders.getBean(OrderService)
+        def seq = options.orderSequenceStart ?: 1000
         (1..nOrders).each {
-          def order = new Order(order: "M$seq$id", product: product, qtyToBuild: qty).save()
+          def order = new Order(order: "M$seq$id", product: product, qtyToBuild: qty)
+          adjustOrder(order,options)
+          order.save()
           for (lsnBase in options?.lsns) {
             def lsnSuffix = nOrders > 1 ? "$nOrders" : ''
             order.lsns << new LSN(lsn: "$lsnBase$id$lsnSuffix")
@@ -193,7 +240,7 @@ class MESUnitTestUtils {
    * @param order The order.
    * @param qtyInWork The qty to take from inQueue and move to in work.  Only moved if the qtyInQueue is large enough.
    */
-  static protected void forceQtyInWork(Order order, BigDecimal qtyInWork) {
+  protected void forceQtyInWork(Order order, BigDecimal qtyInWork) {
     if (!qtyInWork) {
       return
     }
@@ -216,7 +263,7 @@ class MESUnitTestUtils {
    * @param order The order.
    * @param qtyDone The qty to take from inQueue and move to done.  Only moved if the qtyInQueue is large enough.
    */
-  static protected void forceQtyDone(Order order, BigDecimal qtyDone) {
+  protected void forceQtyDone(Order order, BigDecimal qtyDone) {
     if (!qtyDone) {
       return
     }
@@ -235,27 +282,12 @@ class MESUnitTestUtils {
   }
 
   /**
-   * Create and release a single order, optionally on a routing with or without LSNs.
-   * This is a convenience function that calls {@link #releaseOrders(java.util.Map)}.
-   * <p>
-   * <b>This method creates a <b>transaction</b> (if needed).</b>.
-   *
-   * @param options See for the {@link #releaseOrders(java.util.Map)} for details.  (<b>Optional</b>)
-   * @return The order(s) created and released.
-   */
-  static Order releaseOrder(Map options = [:]) {
-    options.nOrders = 1
-    def list = releaseOrders(options)
-    return list[0]
-  }
-
-  /**
    * Utility method to set the dates queued/started to a known value for a list of orders/LSNs.
    * Processes all LSNs in the orders for all possible routing steps.
    * @param orders The orders to set the dates on.
    */
   @SuppressWarnings("GroovyAssignabilityCheck")
-  static protected void spreadDates(List<Order> orders) {
+  protected void spreadDates(List<Order> orders) {
     def timeStamp = System.currentTimeMillis() - DateUtils.MILLIS_PER_DAY * 14
     for (order in orders) {
       timeStamp = setDates(order, timeStamp)
@@ -273,12 +305,48 @@ class MESUnitTestUtils {
   }
 
   /**
+   * Allows sub-classes to adjust the Product before it is saved.
+   * @param product The un-saved product.
+   * @param options the options for the order release.
+   */
+  @SuppressWarnings("unused")
+  protected void adjustProduct(Product product,Map options) {
+  }
+
+  /**
+   * Allows sub-classes to adjust the ProductOperation before it is saved.
+   * @param operation The un-saved operation.
+   * @param options the options for the order release.
+   */
+  @SuppressWarnings("unused")
+  protected void adjustOperation(ProductOperation operation,Map options) {
+  }
+
+  /**
+   * Allows sub-classes to adjust the MasterOperation before it is saved.
+   * @param operation The un-saved operation.
+   * @param options the options for the order release.
+   */
+  @SuppressWarnings("unused")
+  protected void adjustOperation(MasterOperation operation,Map options) {
+  }
+
+  /**
+   * Allows sub-classes to adjust the Order before it is saved.
+   * @param product The un-saved order.
+   * @param options the options for the order release.
+   */
+  @SuppressWarnings("unused")
+  protected void adjustOrder(Order order,Map options) {
+  }
+
+  /**
    * Sets the date queued/started (if already set) to the given timestamp and then increments the timestamp.
    * @param workState The state object to update.
    * @param timeStamp The time to set the dates to.
    * @return The updated timestamp.
    */
-  static protected long setDates(WorkStateTrait workState, long timeStamp) {
+  protected long setDates(WorkStateTrait workState, long timeStamp) {
     if (workState.dateFirstQueued) {
       workState.dateFirstQueued = new Date(timeStamp)
       timeStamp += 1001

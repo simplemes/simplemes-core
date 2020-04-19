@@ -527,13 +527,14 @@ class ExtensibleFieldHelper {
     }
     String text = domainObject[holderName]
 
-    def map = Holders.objectMapper.readValue(text, Map)
-
-    // Sort on sequence for predictable output order.
-    def keys = map.keySet()?.sort() { a, b -> a <=> b }
-    for (key in keys) {
-      def value = map[key]
-      TextUtils.addFieldForDisplay(sb, (String) key, value?.toString(), options)
+    if (text) {
+      def map = Holders.objectMapper.readValue(text, Map)
+      // Sort on sequence for predictable output order.
+      def keys = map.keySet()?.sort() { a, b -> a <=> b }
+      for (key in keys) {
+        def value = map[key]
+        TextUtils.addFieldForDisplay(sb, (String) key, value?.toString(), options)
+      }
     }
 
     return sb.toString()
