@@ -93,6 +93,42 @@ class JSONByKeySpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that serializer/deserializer work on round-trip when the field name is not a domain name"() {
+    given: 'a POGO with the annotation on a field'
+    def src = """
+    package sample
+    import org.simplemes.eframe.json.JSONByKey
+    import sample.domain.Order
+    
+    class SampleClass {
+      String barcode
+      @JSONByKey
+      Order theOrder
+    }
+    """
+    def clazz = CompilerTestUtils.compileSource(src)
+
+    and: 'a domain object'
+    def order = new Order(order: 'ABC').save()
+
+    and: 'a POGO to serialize'
+    def o = clazz.newInstance()
+    o.theOrder = order
+    o.barcode = 'XYZ'
+
+    when: 'the JSON is created'
+    def s = Holders.objectMapper.writeValueAsString(o)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+
+    and: 'the object is re-created'
+    def o2 = Holders.objectMapper.readValue(s, clazz)
+
+    then: 'the deserialized object is correct'
+    o2.theOrder == order
+    o2.barcode == o.barcode
+  }
+
+  @Rollback
   def "verify that record not found is handled gracefully"() {
     given: 'a POGO with the annotation on a field'
     def src = """
@@ -183,7 +219,7 @@ class JSONByKeySpec extends BaseSpecification {
 
     then: 'the right exception is thrown'
     def ex = thrown(Exception)
-    UnitTestUtils.assertExceptionIsValid(ex, ['String', 'type', 'mismatch', 'order', Order.name, 'sample.SampleClass'])
+    UnitTestUtils.assertExceptionIsValid(ex, ['String', 'order', 'sample.SampleClass'])
   }
 
   @Rollback

@@ -124,10 +124,11 @@ class EFrameBeanDeserializerModifier extends BeanDeserializerModifier {
     def clazz = beanDesc.type.rawClass
     List<String> fieldsToRemove = []
     for (BeanPropertyDefinition propDef : propDefs) {
+      //println "propDef(${propDef.name}) = $propDef.properties"
       if (EFrameJacksonModule.isCustomFieldHolder(clazz, propDef.name)) {
-        fieldsToRemove = propDefs.name
+        fieldsToRemove << propDef.name
       } else if (EFrameJacksonModule.isComplexCustomFieldHolder(propDef.name)) {
-        fieldsToRemove = propDefs.name
+        fieldsToRemove << propDef.name
       }
     }
 

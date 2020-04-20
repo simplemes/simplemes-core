@@ -53,9 +53,6 @@ serialization/deserialization process.  This makes things like the dashboard <<U
 more smaller/simpler for the client.
 The Undo feature use a JSON serialized POGO to define what needs to be done to undo an action.
 
-NOTE: The field name annotated by this _@JSONByKey_ must be named the same as the domain class,
-      with the first letter lower-cased. See `order` and `workCenter` below.
-
 NOTE: This feature currently only works with the first primary key that is a string value.
 
 [source,groovy]
@@ -115,9 +112,6 @@ This is similar to <<json-by-key,@JSONByKey>>, but you need to use a record UUID
 field. To make this JSON smaller, we provide an annotation that will use the UUID only for the
 serialization/deserialization process.  This makes things like the JSON processing
 for other systems simpler.
-
-NOTE: The field name annotated by this _@JSONByID_ must be named the same as the domain class,
-      with the first letter lower-cased. See `order` and `workCenter` below.
 
 [source,groovy]
 .Example - @JSONByID

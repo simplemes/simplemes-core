@@ -11,10 +11,12 @@ import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.date.ISODate
 import org.simplemes.eframe.system.DisabledStatus
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
+import sample.domain.Order
 import sample.domain.SampleChild
 import sample.domain.SampleParent
 
@@ -303,6 +305,46 @@ class EFrameJacksonModuleSpec extends BaseSpecification {
 
     then: 'the de-serialized value is correct'
     afd2.dueDate == dateOnly
+  }
+
+  @Rollback
+  def "verify that a POGO with ExtensibleFieldHolder does not skip other fields for JSON serialize and deserialize"() {
+    given: 'a POGO with the annotation on a field'
+    def src = """
+    package sample
+    import org.simplemes.eframe.json.JSONByKey
+    import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
+    import sample.domain.Order
+    
+    class SampleClass {
+      String barcode
+      @JSONByKey
+      Order order
+      @ExtensibleFieldHolder
+      String customFields
+    }
+    """
+    def clazz = CompilerTestUtils.compileSource(src)
+
+    and: 'a domain object'
+    def order = new Order(order: 'ABC').save()
+
+    and: 'an instance'
+    def o = clazz.newInstance()
+    o.order = order
+    o.barcode = 'XYZ'
+
+    when: 'the entity is serialized to JSON'
+    def s = Holders.objectMapper.writeValueAsString(o)
+    //println "s = $s"
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+
+    and: 'the object is re-created from the JSON'
+    def o2 = Holders.objectMapper.readValue(s, clazz)
+
+    then: 'the values are set in the new object'
+    o2.order == order
+    o2.barcode == 'XYZ'
   }
 
   // test POJO is left un-changed
