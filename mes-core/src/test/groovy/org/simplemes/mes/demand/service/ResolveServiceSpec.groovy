@@ -5,6 +5,7 @@ import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
+import org.simplemes.mes.demand.CompleteRequest
 import org.simplemes.mes.demand.LSNTrackingOption
 import org.simplemes.mes.demand.OrderReleaseRequest
 import org.simplemes.mes.demand.ResolveIDRequest
@@ -240,6 +241,54 @@ class ResolveServiceSpec extends BaseSpecification {
     def ex = thrown(BusinessException)
     //error.3011.message=More than one LSN matches "{0}".  {1} LSNs exist with the same ID.
     UnitTestUtils.assertExceptionIsValid(ex, ['LSN', order1.lsns[0].lsn, '2 LSNs'], 3011)
+  }
+
+  @Rollback
+  def "test fixLSN handles simple duplicate case"() {
+    given: 'released orders with the same LSN'
+    def order1 = MESUnitTestUtils.releaseOrder(orderSequenceStart: 1001, lsnTrackingOption: LSNTrackingOption.LSN_ONLY,
+                                               lsns: ['SN1001'])
+    def order2 = MESUnitTestUtils.releaseOrder(orderSequenceStart: 1002, lsnTrackingOption: LSNTrackingOption.LSN_ONLY,
+                                               lsns: ['SN1001'])
+
+    when: 'the lsn/order is fixed'
+    def req = new CompleteRequest(order: order1, lsn: order2.lsns[0])
+    resolveService.fixLSN(req)
+
+    then: 'the POGO is correct - LSN is changed to match order'
+    req.order == order1
+    req.lsn.uuid == order1.lsns[0].uuid
+  }
+
+  @Rollback
+  def "test fixLSN handles no order case"() {
+    given: 'released order'
+    def order1 = MESUnitTestUtils.releaseOrder(lsnTrackingOption: LSNTrackingOption.LSN_ONLY, lsns: ['SN1001'])
+
+    when: 'the lsn/order is fixed'
+    def req = new CompleteRequest(lsn: order1.lsns[0])
+    resolveService.fixLSN(req)
+
+    then: 'the POGO is correct - Order is set to the LSNs order'
+    req.order == order1
+    req.lsn.uuid == order1.lsns[0].uuid
+  }
+
+  @Rollback
+  def "test fixLSN handles LSN not found for order case"() {
+    given: 'released orders with different LSNs'
+    def order1 = MESUnitTestUtils.releaseOrder(orderSequenceStart: 1001, lsnTrackingOption: LSNTrackingOption.LSN_ONLY,
+                                               lsns: ['SN1001'])
+    def order2 = MESUnitTestUtils.releaseOrder(orderSequenceStart: 1002, lsnTrackingOption: LSNTrackingOption.LSN_ONLY,
+                                               lsns: ['SN1002'])
+
+    when: 'the lsn/order is fixed'
+    def req = new CompleteRequest(order: order1, lsn: order2.lsns[0])
+    resolveService.fixLSN(req)
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['SN1002', order1.order], 3009)
   }
 
 

@@ -9,11 +9,13 @@ import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.CompleteRequest
 import org.simplemes.mes.demand.CompleteResponse
+import org.simplemes.mes.demand.LSNTrackingOption
 import org.simplemes.mes.demand.StartRequest
 import org.simplemes.mes.demand.StartResponse
 import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.demand.service.ResolveService
 import org.simplemes.mes.demand.service.WorkService
+import org.simplemes.mes.product.domain.Product
 import org.simplemes.mes.test.MESUnitTestUtils
 import org.simplemes.mes.tracking.domain.ActionLog
 import org.simplemes.mes.tracking.domain.ProductionLog
@@ -31,7 +33,7 @@ import org.simplemes.mes.tracking.domain.ProductionLog
 class WorkControllerSpec extends BaseAPISpecification {
 
   @SuppressWarnings("unused")
-  static dirtyDomains = [ActionLog, ProductionLog, Order]
+  static dirtyDomains = [ActionLog, ProductionLog, Order, Product]
 
   /**
    * Convenience method to start an order.
@@ -199,6 +201,41 @@ class WorkControllerSpec extends BaseAPISpecification {
       order2 == order
       order2.qtyInWork == 1.0
       order2.qtyInQueue == 0.0
+      true
+    }
+  }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that start works with LSN - via HTTP API"() {
+    given: 'a released order'
+    setCurrentUser()
+    def order = MESUnitTestUtils.releaseOrder(lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
+    def lsn = order.lsns[0]
+
+    and: 'the JSON request'
+    def request = """
+      {
+        "order": "$order.order",
+        "lsn": "$lsn.lsn"
+      }
+    """
+
+    when: 'the starts is called'
+    login()
+    def res = sendRequest(uri: '/work/start', method: 'post', content: request)
+
+    then: 'the response is valid'
+    def json = new JsonSlurper().parseText(res)
+    def startResponse = json[0]
+    startResponse.order == order.order
+    startResponse.lsn == lsn.lsn
+
+    and: 'the order is started'
+    Order.withTransaction {
+      def order2 = Order.findByOrder(order.order)
+      order2.lsns[0] == lsn
+      order2.lsns[0].qtyInWork == 1.0
+      order2.lsns[0].qtyInQueue == 0.0
       true
     }
   }

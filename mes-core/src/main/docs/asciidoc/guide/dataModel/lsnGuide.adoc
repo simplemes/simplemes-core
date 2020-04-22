@@ -2,6 +2,18 @@
 [[lsn,LSN (Lot/Serial Number)]]
 === LSN
 
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Orders and LSNs>>#
+[inline-toc]#<<Non-Unique LSNs>>#
+[inline-toc]#<<LSN Tracking Option>>#
+[inline-toc]#<<LSNs Routings and Quantity Tracking>>#
+[inline-toc]#<<LSN Creation Options>>#
+
+endif::[]
+
+
+
 An link:reference.html#lsn[LSN^] icon:share-square-o[role="link-blue"]
 is a portion of an Order.  This is the finest level of tracking possible in SimpleMES. An LSN has
 a quantity that is based on the lot size for the product.  If the LSN
@@ -38,11 +50,27 @@ The relationship between Orders and LSNs is shown below.
 LSNs are children of Orders.  They are optional and do not need to be created in all cases.  See <<LSN Tracking Option>> and
 <<LSN Creation Options>> for details.
 
-NOTE: Because this LSN has a combination primary key of `order` + `lsn`, the API calls using JSON need
-      to be a little more complex.  For example:
+==== Non-Unique LSNs
+
+Because this LSN has a combination primary key of `order` + `lsn`, the API calls using JSON need
+to be a little more complex.  For example:
+
+[source,groovy]
+.Example - Request POGO with Order and LSN
+----
+class CompleteRequest {
+  @JSONByKey
+  Order order
+
+  @JSONByKey
+  LSN lsn
+}
+----
+
+Then you can reference an LSN in a JSON request as:
 
 [source,json]
-.LSN JSON Request
+.Example - LSN JSON Request
 ----
 {
   "order": "M1001",
@@ -60,7 +88,10 @@ when you have no control over the serial numbers you need to use (e.g. your cust
 provides the serial numbers).
 
 LSNs may be globally unique or can be unique within a given product or order.  SimpleMES will
-attempt to find the appropriate LSN.  
+attempt to find the appropriate LSN.  This done by the <<fixLSN()>> method.
+
+TIP: Find any POGO's that use @JSONByKey on LSN and make sure that all the consumers of those
+     POGO's use the  <<fixLSN()>> method.
 
 
 ==== LSN Tracking Option
@@ -97,7 +128,7 @@ See <<OrderService>> for details.  This only happens when the Order's effective
 <<LSN Tracking Option>> is set to _LSN_ONLY_.
 
 
-==== LSNs, Routings and Quantity Tracking
+==== LSNs Routings and Quantity Tracking
 
 Depending on the <<Product,Product's>> <<LSN Tracking Option>>, individual pieces can be tracked by a unique LSN or
 as part of a larger lot. These flexible options mean that the quantity to be worked can be tracked at the order level

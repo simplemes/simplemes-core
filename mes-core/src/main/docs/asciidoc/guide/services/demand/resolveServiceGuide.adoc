@@ -1,6 +1,16 @@
 
 === ResolveService
 
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<basic-scenarios-resolve-service>>#
+[inline-toc]#<<resolveProductionRequest()>>#
+[inline-toc]#<<resolveWorkable()>>#
+
+endif::[]
+
+
+
 The link:groovydoc/org/simplemes/mes/demand/service/ResolveService.html[ResolveService^]
 icon:share-square-o[role="link-blue"] is used to find the right
 objects/records to process on the shop floor.
@@ -13,7 +23,7 @@ NOTE: Most SimpleMES production service methods will call the `ResolveService.re
       the start of the action. This will fill in the missing fields in the request.  You normally won't need to call
       this method yourself.
 
-
+[[basic-scenarios-resolve-service]]
 ==== Basic Scenarios
 
 Many common scenarios involve trying to start work on orders with limited information.  This happens frequently with
@@ -151,3 +161,54 @@ POGO that have the following fields:
 
 All of these fields are individually optional, but you must provide enough information to find the workable unit
 (LSN or order).
+
+==== fixLSN()
+
+This `fixLSN()` method is used to make sure the given object's order and LSN are consistent.
+A common use is when receiving a request POGO with the LSN and optional order.  This looks
+something like this:
+
+[source,groovy]
+.Example - Request POGO with Order and LSN
+----
+class CompleteRequest {
+  @JSONByKey
+  Order order
+
+  @JSONByKey
+  LSN lsn
+}
+----
+
+You will then de-serialize the given JSON:
+
+[source,json]
+.Example - LSN JSON Request
+----
+{
+  "order": "M1001",
+  "lsn": "SN2001"
+}
+----
+
+The normal JSON de-serialization (using the framework _@JSONByKey_) will find the first LSN that
+matches _'SN2001'_.  This works great until you have duplicate serial number for another order.
+The de-serialization might find the wrong LSN.
+
+To handle this, we have the `fixLSN()` method:
+
+[source,groovy]
+.Example - fixLSN()
+----
+
+def completeRequest = new CompleteRequest(...)
+resolveService.fixLSN(completeRequest)  // <.>
+
+----
+<.> Verifies that LSN/Order are consistent.  Will also populate Order if null.
+
+This method takes anu object with `order` and `lsn` fields that are domain object references.
+This method will throw an exception if the order/lsn combination is nor correct and the right
+LSN can't be found.
+
+

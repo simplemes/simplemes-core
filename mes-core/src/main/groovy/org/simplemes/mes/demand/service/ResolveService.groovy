@@ -1,5 +1,6 @@
 package org.simplemes.mes.demand.service
 
+import groovy.util.logging.Slf4j
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.mes.demand.ResolveIDRequest
@@ -26,9 +27,8 @@ import javax.inject.Singleton
  * <p/>
  * See the User Guide for details on this service.
  *
- * Original Author: mph
- *
  */
+@Slf4j
 @Singleton
 class ResolveService {
   /**
@@ -295,5 +295,47 @@ class ResolveService {
     return response
   }
 
+  /**
+   * Fixes the LSN/Order combination for the given object.  This method is designed to fix mis-matches
+   * caused by the the framework @JSONByKey finding the wrong LSN.
+   * The normal JSON de-serialization (using the framework @JSONByKey) will find the first LSN that
+   * matches the string.  This works great until you have duplicate serial number for another order.
+   * This fix method will adjust the LSN/Order to resolve the mis-match, if the order/LSN are not consistent.
+   * <p>
+   * <h3>Precedence</h3>
+   * The order of precedence is:
+   * <ul>
+   *   <li><b>order</b> - If provided, then the order is assumed to be the desired order to process. If null, then the LSN's order
+   *                      will be used with no adjustments.</li>
+   *   <li><b>lsn</b> - If the LSN is incorrect for the given order, then the correct one will be found in the order (if possible).</li>
+   * </ul>
+   *
+   *
+   * @param request The request containing the LSN and Order to check and resolve.
+   * @return A response object with the first object that matches.
+   */
+  void fixLSN(Object request) {
+    // Make sure the input request has the expected fields.
+    ArgumentUtils.checkForProperties(request, ['lsn', 'order'])
+    LSN lsn = request.lsn
+    Order order = request.order
+
+    if (order) {
+      if (lsn && order != lsn.order) {
+        // Wrong order for the LSN, so find the right one.
+        def foundLsn = order.lsns.find { it.lsn == lsn.lsn }
+        if (foundLsn) {
+          request.lsn = foundLsn
+        } else {
+          //error.3009.message=LSN {0} is not part of Order {1}
+          throw new BusinessException(3009, [lsn.lsn, order.order])
+        }
+      }
+    } else {
+      // Just populate the order from the LSN
+      request.order = lsn?.order
+    }
+
+  }
 
 }

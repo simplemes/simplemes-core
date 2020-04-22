@@ -78,6 +78,23 @@ class WorkServiceSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that start calls fixLSN to handle duplicate LSNs"() {
+    given: 'a released order and a request'
+    def order = MESUnitTestUtils.releaseOrder(qty: 100)
+    def request = new StartRequest(order: order, qty: 10.2)
+
+    and: 'a mocked resolve service'
+    def mockResolveService = Mock(ResolveService)
+    service.resolveService = mockResolveService
+
+    when: 'start is called'
+    service.start(request)
+
+    then: 'the fixLSN method is called'
+    1 * mockResolveService.fixLSN(request)
+  }
+
+  @Rollback
   def "verify that order start fails with order in non-workable status"() {
     given: 'an un-released order'
     Order order = new Order(order: 'M002', qtyInQueue: 1.0, overallStatus: OrderCreatedStatus.instance).save()
@@ -187,6 +204,23 @@ class WorkServiceSpec extends BaseSpecification {
     pl.elapsedTime == 10000
     UnitTestUtils.compareDates(pl.dateTime, completeTime)
     UnitTestUtils.compareDates(pl.startDateTime, startTime)
+  }
+
+  @Rollback
+  def "verify that complete calls fixLSN to handle duplicate LSNs"() {
+    given: 'a released order and a request'
+    def order = MESUnitTestUtils.releaseOrder(qty: 100)
+    def request = new CompleteRequest(order: order, qty: 10.2)
+
+    and: 'a mocked resolve service'
+    def mockResolveService = Mock(ResolveService)
+    service.resolveService = mockResolveService
+
+    when: 'complete is called'
+    service.complete(request)
+
+    then: 'the fixLSN method is called'
+    1 * mockResolveService.fixLSN(request)
   }
 
   @Rollback
@@ -353,6 +387,23 @@ class WorkServiceSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that reverseStart calls fixLSN to handle duplicate LSNs"() {
+    given: 'a released order and a request'
+    def order = MESUnitTestUtils.releaseOrder(qty: 100)
+    def request = new StartRequest(order: order, qty: 10.2)
+
+    and: 'a mocked resolve service'
+    def mockResolveService = Mock(ResolveService)
+    service.resolveService = mockResolveService
+
+    when: 'reverseStart is called'
+    service.reverseStart(request)
+
+    then: 'the fixLSN method is called'
+    1 * mockResolveService.fixLSN(request)
+  }
+
+  @Rollback
   def "verify that reverseStart works with product, LSN and work center"() {
     given: 'a released order'
     def order = MESUnitTestUtils.releaseOrder(qty: 1, lsnTrackingOption: LSNTrackingOption.LSN_ONLY)
@@ -477,6 +528,23 @@ class WorkServiceSpec extends BaseSpecification {
 
     and: 'the response has no undo actions'
     reverseCompleteResponses[0].undoActions.size() == 0
+  }
+
+  @Rollback
+  def "verify that reverseComplete calls fixLSN to handle duplicate LSNs"() {
+    given: 'a released order and a request'
+    def order = MESUnitTestUtils.releaseOrder(qty: 100)
+    def request = new CompleteRequest(order: order, qty: 10.2)
+
+    and: 'a mocked resolve service'
+    def mockResolveService = Mock(ResolveService)
+    service.resolveService = mockResolveService
+
+    when: 'complete is called'
+    service.reverseComplete(request)
+
+    then: 'the fixLSN method is called'
+    1 * mockResolveService.fixLSN(request)
   }
 
   @Rollback

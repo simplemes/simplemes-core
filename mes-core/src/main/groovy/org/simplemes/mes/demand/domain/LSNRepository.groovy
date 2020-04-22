@@ -20,7 +20,16 @@ interface LSNRepository extends BaseRepository, CrudRepository<LSN, UUID> {
 
   List<LSN> list(Pageable pageable)
 
-  // Note: Since LSN is not unique by itself, the only finder by LSN may return multiples.
+  /**
+   * Finds by LSN.
+   * <b>Note: </b>Since LSN is not unique by itself, this finder may return the wrong LSN.  You need to verify it is correct.
+   * Use the {@link org.simplemes.mes.demand.service.ResolveService#fixLSN(java.lang.Object)} resolve the cases when
+   * the LSN might not be unique.
+   * @param lsn The LSN to look for.
+   * @return The LSN.
+   */
+  Optional<LSN> findByLsn(String lsn)
+
   List<LSN> findAllByLsn(String lsn)
 
   List<LSN> findAllByOrder(Order order)

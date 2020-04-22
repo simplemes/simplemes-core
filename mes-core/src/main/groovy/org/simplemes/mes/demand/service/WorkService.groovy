@@ -71,6 +71,7 @@ class WorkService {
    */
   List<StartResponse> start(StartRequest request) {
     def res = []
+    resolveService.fixLSN(request)
     resolveService.resolveProductionRequest(request, ResolveQuantityPreference.QUEUE)
     def resolveRequest = new ResolveWorkableRequest(order: request?.order,
                                                     lsn: request?.lsn,
@@ -120,6 +121,7 @@ class WorkService {
   List<StartResponse> reverseStart(StartRequest request) {
     def res = []
     def now = new Date()
+    resolveService.fixLSN(request)
     resolveService.resolveProductionRequest(request, ResolveQuantityPreference.WORK)
     def resolveRequest = new ResolveWorkableRequest(order: request?.order,
                                                     lsn: request?.lsn,
@@ -184,6 +186,7 @@ class WorkService {
   List<CompleteResponse> complete(CompleteRequest request) {
     def res = []
     def now = new Date()
+    resolveService.fixLSN(request)
     resolveService.resolveProductionRequest(request, ResolveQuantityPreference.WORK)
     def resolveRequest = new ResolveWorkableRequest(order: request?.order,
                                                     lsn: request?.lsn,
@@ -254,6 +257,7 @@ class WorkService {
   List<CompleteResponse> reverseComplete(CompleteRequest request) {
     def res = []
     def now = new Date()
+    resolveService.fixLSN(request)
     resolveService.resolveProductionRequest(request, ResolveQuantityPreference.DONE)
     def resolveRequest = new ResolveWorkableRequest(order: request?.order,
                                                     lsn: request?.lsn,
