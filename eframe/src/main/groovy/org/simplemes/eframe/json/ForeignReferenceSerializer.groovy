@@ -8,6 +8,7 @@ import com.fasterxml.jackson.core.JsonGenerator
 import com.fasterxml.jackson.core.JsonProcessingException
 import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.SerializerProvider
+import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 
 /**
  * A serializer for writing foreign domain references with a simple format: just the key field(s) and an ID.
@@ -38,12 +39,18 @@ class ForeignReferenceSerializer extends JsonSerializer<Object> {
     gen.writeStartObject()
 
     for (key in keys) {
-      def s = value[key]?.toString() ?: ''
-      gen.writeStringField(key, s)
+      def object = value[key]
+      if (object != null) {
+        if (object instanceof DomainEntityInterface) {
+          // Don't try to keep the nested object references (a reference in a reference).  Just use the UUID.
+          gen.writeStringField(key, object.uuid.toString())
+        } else {
+          gen.writeStringField(key, object.toString())
+        }
+      }
     }
     gen.writeStringField('uuid', value.uuid.toString())
     gen.writeEndObject()
-
   }
 
 
