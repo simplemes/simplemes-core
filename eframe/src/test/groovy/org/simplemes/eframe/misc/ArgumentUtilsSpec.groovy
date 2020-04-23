@@ -1,14 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.misc
 
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
 import sample.pogo.SamplePOGO
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -82,15 +80,24 @@ class ArgumentUtilsSpec extends BaseSpecification {
     14    | 14
   }
 
-  def "verify that getInteger works for supported cases"() {
+  def "verify that convertToBoolean works for supported cases"() {
     expect: 'the value is converted correctly'
-
-    ArgumentUtils.getInteger([v: value], 'v') == result
+    ArgumentUtils.convertToBoolean(value) == result
 
     where:
-    value | result
-    14    | 14
-    '14'  | 14
-    14L   | 14
+    value   | result
+    null    | false
+    ''      | false
+    '  '    | false
+    'f'     | false
+    'F'     | false
+    'false' | false
+    'FALSE' | false
+    't'     | true
+    'T'     | true
+    'True'  | true
+    'true'  | true
+    'TRUE'  | true
   }
+
 }

@@ -147,7 +147,7 @@ class BaseAPISpecification extends BaseSpecification {
    * <ul>
    *   <li><b>uri</b> - The URI to send the request to (<b>Required</b>). </li>
    *   <li><b>content</b> - The request's entire content (typically JSON or a Map for form submission)(<b>Required for post/put</b>). </li>
-   *   <li><b>method</b> - The request's method (<b>Default:</b> 'post'). Allowed values ('post', 'put', 'delete').</li>
+   *   <li><b>method</b> - The request's method (<b>Default:</b> 'get'). Allowed values ('get', 'post', 'put', 'delete').</li>
    *   <li><b>status</b> - The expected status code from the request (<b>Default:</b> HttpStatus.OK (200) ). </li>
    *   <li><b>locale</b> - The language locale for the request. </li>
    * </ul>

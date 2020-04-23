@@ -224,7 +224,7 @@ class ReportEngine {
    */
   @SuppressWarnings("GroovyAssignabilityCheck")
   void exportReportToHTML(Report report, Writer out) {
-    def page = ArgumentUtils.getInteger(report.params, 'page') ?: 1
+    def page = ArgumentUtils.convertToInteger(report.params.page) ?: 1
     report.setContentType("text/html")
 
     HtmlExporter exporter = new HtmlExporter()

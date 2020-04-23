@@ -88,19 +88,31 @@ class ArgumentUtils {
       return new Integer(value.toString())
     }
   }
+
   /**
-   * Gets and converts the given value to an integer.
-   * @param params The params to get the value from.
-   * @param paramName The name of the parameter to get the value from.
+   * Safely convert to Boolean if needed and return the value.
+   * @param value The value (String or Boolean supported).
+   * @return The converted value.  False if null.
    */
-  static def getInteger(LinkedHashMap<Object, Object> params, String paramName) {
-    def v = params?.get(paramName)
-    if (v instanceof Integer) {
-      return v
+  static Boolean convertToBoolean(Object value) {
+    if (value instanceof String) {
+      // Handle blank string '  '
+      value = value.trim()
     }
-    if (v != null) {
-      return Integer.valueOf(v.toString())
+    if (!value) {
+      return false
     }
-    return null
+    if (value instanceof Boolean) {
+      return value
+    } else if (value instanceof String) {
+      if (value[0].toLowerCase() == 't') {
+        return true
+      }
+      return Boolean.valueOf(value)
+    } else {
+      // Any other object, convert to a string then try to use it as a boolean.
+      return Boolean.valueOf(value.toString())
+    }
   }
+
 }
