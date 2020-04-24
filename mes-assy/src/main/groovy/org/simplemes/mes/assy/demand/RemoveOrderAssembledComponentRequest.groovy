@@ -1,6 +1,7 @@
 package org.simplemes.mes.assy.demand
 
 import groovy.transform.ToString
+import org.simplemes.eframe.json.JSONByKey
 import org.simplemes.mes.assy.demand.domain.OrderAssembledComponent
 import org.simplemes.mes.demand.domain.Order
 
@@ -21,6 +22,7 @@ class RemoveOrderAssembledComponentRequest {
   /**
    * The Sequence of the OrderAssembledComponent to mark as removed.
    */
+  @JSONByKey
   Order order
 
   /**

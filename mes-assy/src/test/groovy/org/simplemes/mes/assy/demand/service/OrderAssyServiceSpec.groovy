@@ -179,7 +179,7 @@ class OrderAssyServiceSpec extends BaseSpecification {
 
   @Rollback
   @SuppressWarnings("GroovyAssignabilityCheck")
-  def "verify that addComponent can assembled a component - component from order BOM"() {
+  def "verify that addComponent can assembled a component - bomSequence from order BOM"() {
     given: 'a released order with components'
     def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'])
     OrderBOMComponent orderComponent = order.components[1] as OrderBOMComponent
@@ -187,7 +187,7 @@ class OrderAssyServiceSpec extends BaseSpecification {
     when: 'the component is added'
     setCurrentUser()
     def res = service.addComponent(new AddOrderAssembledComponentRequest(order: order, component: orderComponent.component,
-                                                                         orderBOMComponent: orderComponent))
+                                                                         bomSequence: orderComponent.sequence))
 
     then: 'the record is saved in the DB'
     def orderAssembledComponent = OrderAssembledComponent.findByUuid(res.uuid)
@@ -202,21 +202,104 @@ class OrderAssyServiceSpec extends BaseSpecification {
 
   @Rollback
   @SuppressWarnings("GroovyAssignabilityCheck")
-  def "verify that addComponent fails with BOM component from another order"() {
+  def "verify that addComponent can assembled a component - component from order BOM with sequence as input"() {
     given: 'a released order with components'
-    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'], orderSequenceStart: 1000)
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'])
+    OrderBOMComponent orderComponent = order.components[1] as OrderBOMComponent
 
-    and: 'another order with components'
-    def otherOrder = AssyUnitTestUtils.releaseOrder(id: "BAD", components: ['DISK', 'DISPLAY'], orderSequenceStart: 1001)
-    OrderBOMComponent orderComponent = otherOrder.components[0] as OrderBOMComponent
+    when: 'the component is added'
+    setCurrentUser()
+    def res = service.addComponent(new AddOrderAssembledComponentRequest(order: order, component: orderComponent.component,
+                                                                         bomSequence: orderComponent.sequence))
 
-    when: 'the bad order component is added'
-    service.addComponent(new AddOrderAssembledComponentRequest(order: order, component: orderComponent.component,
-                                                               orderBOMComponent: orderComponent))
+    then: 'the record is saved in the DB'
+    def orderAssembledComponent = OrderAssembledComponent.findByUuid(res.uuid)
+    orderAssembledComponent.bomSequence == orderComponent.sequence
+    orderAssembledComponent.qty == orderComponent.qty
 
-    then: 'an exception is thrown with the right data'
-    def e = thrown(BusinessException)
-    UnitTestUtils.assertExceptionIsValid(e, ['order', order.order, otherOrder.order, 'DISK'], 10000)
+    and: 'the method response is valid'
+    res.order == order
+    res.component == orderComponent.component
+    res.bomSequence == orderComponent.sequence
+  }
+
+  @Rollback
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that addComponent can assembled a component - component as input"() {
+    given: 'a released order with components'
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'])
+    OrderBOMComponent orderComponent = order.components[1] as OrderBOMComponent
+
+    when: 'the component is added'
+    setCurrentUser()
+    def res = service.addComponent(new AddOrderAssembledComponentRequest(order: order, component: orderComponent.component))
+
+    then: 'the record is saved in the DB'
+    def orderAssembledComponent = OrderAssembledComponent.findByUuid(res.uuid)
+    orderAssembledComponent.bomSequence == orderComponent.sequence
+    orderAssembledComponent.qty == orderComponent.qty
+
+    and: 'the method response is valid'
+    res.order == order
+    res.component == orderComponent.component
+    res.bomSequence == orderComponent.sequence
+  }
+
+  @Rollback
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that addComponent can assembled a component - bomSequence takes precedence over bomSequence"() {
+    given: 'a released order with components'
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'])
+    OrderBOMComponent orderComponent1 = order.components[0] as OrderBOMComponent
+    OrderBOMComponent orderComponent2 = order.components[1] as OrderBOMComponent
+
+    when: 'the component is added'
+    setCurrentUser()
+
+    def res = service.addComponent(new AddOrderAssembledComponentRequest(order: order, component: orderComponent1.component,
+                                                                         bomSequence: orderComponent2.sequence))
+
+    then: 'the record is saved in the DB'
+    def orderAssembledComponent = OrderAssembledComponent.findByUuid(res.uuid)
+    orderAssembledComponent.bomSequence == orderComponent2.sequence
+    orderAssembledComponent.qty == orderComponent2.qty
+
+    and: 'the method response is valid'
+    res.order == order
+    res.component == orderComponent2.component
+    res.bomSequence == orderComponent2.sequence
+  }
+
+  @Rollback
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that addComponent detects invalid BOM sequence as input"() {
+    given: 'a released order with components'
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'])
+
+    when: 'the component is added'
+    setCurrentUser()
+    service.addComponent(new AddOrderAssembledComponentRequest(order: order,
+                                                               component: order.components[1].component,
+                                                               bomSequence: 237))
+
+    then: 'the right exception is thrown'
+    def ex = thrown(BusinessException)
+    UnitTestUtils.assertExceptionIsValid(ex, [order.order, '237'], 10001)
+  }
+
+  @Rollback
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that addComponent detects missing component and BOM sequence"() {
+    given: 'a released order with components'
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'])
+
+    when: 'the component is added'
+    setCurrentUser()
+    service.addComponent(new AddOrderAssembledComponentRequest(order: order))
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['component'])
   }
 
   @Rollback

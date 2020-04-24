@@ -3,8 +3,8 @@ package org.simplemes.mes.assy.demand
 import groovy.transform.ToString
 import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
+import org.simplemes.eframe.json.JSONByKey
 import org.simplemes.eframe.misc.NameUtils
-import org.simplemes.mes.assy.demand.domain.OrderBOMComponent
 import org.simplemes.mes.demand.domain.LSN
 import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.floor.domain.WorkCenter
@@ -25,26 +25,31 @@ class AddOrderAssembledComponentRequest {
   /**
    * The order the component was assembled on (<b>Required</b>).
    */
+  @JSONByKey
   Order order
 
   /**
    * The lsn the component was assembled on (<b>Optional</b>).
    */
+  @JSONByKey
   LSN lsn
 
   /**
-   * The BOM Component from the order's list of components (<b>Optional</b>).
+   * The Sequence for the BOM component being assembled (<b>Optional</b>).
    */
-  OrderBOMComponent orderBOMComponent
+  Integer bomSequence
 
   /**
    * The work center the component was assembled in (<b>Optional</b>).
    */
+  @JSONByKey
   WorkCenter workCenter
 
   /**
-   * The component Product to be added to the order (<b>Required</b>).
+   * The component Product to be added to the order (<b>Required or a bomSequence required</b>).
+   * Ignored if the bomSequence is >0.
    */
+  @JSONByKey
   Product component
 
   /**
@@ -60,6 +65,7 @@ class AddOrderAssembledComponentRequest {
   /**
    * The FlexType used to define the assembly data for this component (<b>Optional</b>).
    */
+  @JSONByKey
   FlexType assemblyData
 
   /**

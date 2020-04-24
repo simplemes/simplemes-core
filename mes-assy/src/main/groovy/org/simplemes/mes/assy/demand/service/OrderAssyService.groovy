@@ -25,6 +25,7 @@ import org.simplemes.mes.demand.OrderReleaseResponse
 import org.simplemes.mes.demand.domain.LSN
 import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.demand.service.OrderReleasePoint
+import org.simplemes.mes.product.domain.Product
 
 import javax.transaction.Transactional
 
@@ -100,26 +101,16 @@ class OrderAssyService implements OrderReleasePoint {
     ArgumentUtils.checkMissing(request, 'request')
     def order = request.order
     ArgumentUtils.checkMissing(order, 'request.order')
-    ArgumentUtils.checkMissing(request.component, 'request.component')
-    if (request.orderBOMComponent) {
-      // Make sure the order component, if provided, belongs to this order.
-      def order1 = request.orderBOMComponent.order.order
-      def order2 = request.order.order
-      if (order1 != order2) {
-        //println "request.orderBOMComponent.orderId = $request.orderBOMComponent.orderId"
-        //error.10000.message=Component {0} is defined for order {1}.  It must be defined for order {2}.
-        throw new BusinessException(10000, [request.orderBOMComponent.component.product,
-                                            order1, order2])
-      }
-    }
+
+    resolveComponentForRequest(request)
 
     def orderAssembledComponent = new OrderAssembledComponent()
     orderAssembledComponent.component = request.component
     orderAssembledComponent.userName = SecurityUtils.currentUserName
-    orderAssembledComponent.qty = request.qty ?: (request.orderBOMComponent?.qty ?: 1.0)
+    orderAssembledComponent.qty = request.qty ?: 1.0
     orderAssembledComponent.assemblyData = request.assemblyData
     orderAssembledComponent.customFields = request.customFields
-    orderAssembledComponent.bomSequence = request.orderBOMComponent?.sequence ?: 0
+    orderAssembledComponent.bomSequence = request.bomSequence ?: 0
     orderAssembledComponent.lsn = request.lsn
     orderAssembledComponent.workCenter = request.workCenter
     orderAssembledComponent.location = request.location
@@ -131,6 +122,41 @@ class OrderAssyService implements OrderReleasePoint {
     order.dateUpdated = new Date()
     order.save()
     return orderAssembledComponent
+  }
+
+  /**
+   * Resolves the component for the given request.
+   * Updates the request's component, bomSequence and qty, if possible.
+   * <p>
+   * Uses these values (in order of precedence):
+   * <p> bomSequence
+   * <p> component
+   *
+   *
+   * @param request The request.  Modified.
+   */
+  protected void resolveComponentForRequest(AddOrderAssembledComponentRequest request) {
+    def order = request.order
+    if (request.bomSequence) {
+      // See if a bomSequence can be used to find the component requirements
+      def bomSequence = request.bomSequence
+      def orderBOMComponent = order.components?.find() { it.sequence == bomSequence }
+      if (!orderBOMComponent) {
+        //error.10001.message=Could not find component to remove in order {0} sequence {1}.
+        throw new BusinessException(10001, [order.order, bomSequence])
+      }
+      request.component = (Product) orderBOMComponent.component
+      request.qty = request.qty ?: orderBOMComponent.qty
+    } else {
+      // Use the component to find the right BOM record (if possible)
+      ArgumentUtils.checkMissing(request.component, 'request.component')
+      def component = request.component
+      def orderBOMComponent = order.components?.find() { it.component == component }
+      if (orderBOMComponent) {
+        request.bomSequence = orderBOMComponent.sequence
+        request.qty = request.qty ?: orderBOMComponent.qty
+      }
+    }
   }
 
   /**

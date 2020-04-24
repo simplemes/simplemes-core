@@ -1,6 +1,14 @@
 Scratch
 ===========
 
+findAssembledComponents
+  removeComponentDialog.gsp  Convert to findComponentAssemblyState
+
+findComponentAssemblyState
+  assemblyReport
+  assemblyScanActivity
+
+
 
 Bugs
 =====
