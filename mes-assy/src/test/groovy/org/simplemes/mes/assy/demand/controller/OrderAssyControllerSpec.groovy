@@ -8,6 +8,7 @@ import org.simplemes.eframe.test.BaseAPISpecification
 import org.simplemes.eframe.test.ControllerTester
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.mes.assy.demand.AssembledComponentStateEnum
 import org.simplemes.mes.assy.demand.domain.OrderAssembledComponent
 import org.simplemes.mes.assy.test.AssyUnitTestUtils
 import org.simplemes.mes.demand.LSNTrackingOption
@@ -115,7 +116,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
 
     and: 'the record is in the database'
     OrderAssembledComponent.withTransaction {
-      def comp2 = OrderAssembledComponent.findByUuid(UUID.fromString(json.uuid))
+      def comp2 = OrderAssembledComponent.findByUuid(UUID.fromString((String) json.uuid))
       comp2.lsn == lsn
       comp2.workCenter == workCenter
       comp2.location == "BIN-27"
@@ -263,4 +264,142 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     json.totalAvailable == 0
     !json.fullyAssembled
   }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that removeComponent works with JSON input"() {
+    given: 'a released order with an assembled component'
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU'])
+    AssyUnitTestUtils.assembleComponent(order, [sequence: 10])
+    def component = order.assembledComponents[0] as OrderAssembledComponent
+
+    and: 'a request in JSON format'
+    def request = """{
+      "order": "${order.order}",
+      "sequence": $component.sequence
+    }
+    """
+
+    when: 'the request is sent to the controller'
+    login()
+    def res = sendRequest(uri: '/orderAssy/removeComponent', method: 'post', content: request)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
+
+    then: 'the response is correct'
+    def json = new JsonSlurper().parseText(res)
+
+    json.orderAssembledComponent.sequence == component.sequence
+    json.orderAssembledComponent.state == AssembledComponentStateEnum.REMOVED.toString()
+    // reversedAssemble.message=Removed component {0} from {1}.
+    json.infoMsg == lookup('reversedAssemble.message', null, component.component.product, order.order)
+
+    and: 'the records are saved in the DB and match the returned values'
+    def orderAssembledComponent = OrderAssembledComponent.findByUuid(UUID.fromString(json.orderAssembledComponent.uuid))
+    orderAssembledComponent.sequence == component.sequence
+    orderAssembledComponent.state == AssembledComponentStateEnum.REMOVED
+
+    and: 'the undo actions are populated'
+    def undoAction = json.undoActions[0]
+    undoAction.uri.contains('/orderAssy/undoComponentRemove')
+    def undo = new JsonSlurper().parseText(undoAction.json)
+    undo.order == order.order
+    undo.sequence == orderAssembledComponent.sequence
+  }
+
+  def "verify that removeComponent gracefully fails with bad order"() {
+    given: 'a request in JSON format'
+    def request = """{
+      "order": "gibberish",
+      "sequence": 10
+    }
+    """
+
+    and: 'the logging is disabled'
+    disableStackTraceLogging()
+
+    when: 'the request is sent to the controller'
+    login()
+    def res = sendRequest(uri: '/orderAssy/removeComponent', method: 'post', content: request, status: HttpStatus.BAD_REQUEST)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
+
+    then: 'the response is correct'
+    def json = new JsonSlurper().parseText(res)
+    UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['order', 'gibberish'])
+  }
+
+  def "verify that removeComponent gracefully fails with bad sequence"() {
+    given: 'a released order with an assembled component'
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU'])
+
+    and: 'a request in JSON format'
+    def request = """{
+      "order": "${order.order}",
+      "sequence": Z
+    }
+    """
+
+    and: 'the logging is disabled'
+    disableStackTraceLogging()
+
+    when: 'the request is sent to the controller'
+    login()
+    def res = sendRequest(uri: '/orderAssy/removeComponent', method: 'post', content: request, status: HttpStatus.BAD_REQUEST)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
+
+    then: 'the response is correct'
+    def json = new JsonSlurper().parseText(res)
+    UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['Z'])
+  }
+
+  def "verify that undoComponentRemove works with JSON input"() {
+    given: 'a released order with an assembled component'
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU'])
+    AssyUnitTestUtils.assembleComponent(order, [sequence: 10, removed: true])
+    //noinspection GroovyAssignabilityCheck
+    def component = order.assembledComponents[0] as OrderAssembledComponent
+
+    and: 'a request in JSON format'
+    def request = """{
+      "order": "${order.order}",
+      "sequence": $component.sequence
+    }
+    """
+
+    when: 'the request is sent to the controller'
+    login()
+    def res = sendRequest(uri: '/orderAssy/undoRemoveComponent', method: 'post', content: request)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
+
+    then: 'the response is correct'
+    def json = new JsonSlurper().parseText(res)
+
+    json.sequence == component.sequence
+    json.state == AssembledComponentStateEnum.ASSEMBLED.toString()
+
+    and: 'the records are saved in the DB and match the returned values'
+    def orderAssembledComponent = OrderAssembledComponent.findByUuid(UUID.fromString((String) json.uuid))
+    orderAssembledComponent.sequence == component.sequence
+    orderAssembledComponent.state == AssembledComponentStateEnum.ASSEMBLED
+  }
+
+  def "verify that undoComponentRemove gracefully fails with bad order"() {
+    given: 'a request in JSON format'
+    def request = """{
+      "order": "gibberish",
+      "sequence": 10
+    }
+    """
+
+    and: 'the logging is disabled'
+    disableStackTraceLogging()
+
+    when: 'the request is sent to the controller'
+    login()
+    def res = sendRequest(uri: '/orderAssy/undoRemoveComponent', method: 'post', content: request, status: HttpStatus.BAD_REQUEST)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
+
+    then: 'the response is correct'
+    def json = new JsonSlurper().parseText(res)
+    UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['order', 'gibberish'])
+  }
+
 }

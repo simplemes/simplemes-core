@@ -1171,7 +1171,20 @@ class OrderAssyServiceSpec extends BaseSpecification {
     missingName | request
     'request'   | null
     'order'     | new RemoveOrderAssembledComponentRequest()
-    'sequence'  | new RemoveOrderAssembledComponentRequest(order: new Order(order: 'M'))
+  }
+
+  @Rollback
+  def "verify that removeComponent fails with missing sequence"() {
+    given: 'an order'
+    def order = new Order(order: 'M1001').save()
+
+    when: 'the method is called'
+    //noinspection GroovyAssignabilityCheck
+    service.removeComponent(new RemoveOrderAssembledComponentRequest(order: order.order))
+
+    then: 'a valid exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['sequence'])
   }
 
   @Rollback
@@ -1180,7 +1193,8 @@ class OrderAssyServiceSpec extends BaseSpecification {
     def order = AssyUnitTestUtils.releaseOrder(components: ['CPU'])
 
     when: 'the method call is attempted with the wrong sequence'
-    def request = new RemoveOrderAssembledComponentRequest(order: order, sequence: 247)
+    //noinspection GroovyAssignabilityCheck
+    def request = new RemoveOrderAssembledComponentRequest(order: order.order, sequence: 247)
     service.removeComponent(request)
 
     then: 'a valid exception is thrown'
@@ -1251,7 +1265,20 @@ class OrderAssyServiceSpec extends BaseSpecification {
     missingName | request
     'request'   | null
     'order'     | new ComponentRemoveUndoRequest()
-    'sequence'  | new ComponentRemoveUndoRequest(order: new Order(order: 'M'))
+  }
+
+  @Rollback
+  def "verify that undoComponentRemove fails with missing sequence"() {
+    given: 'an order'
+    def order = new Order(order: 'M1001').save()
+
+    when: 'the method is called'
+    //noinspection GroovyAssignabilityCheck
+    service.removeComponent(new ComponentRemoveUndoRequest(order: order.order))
+
+    then: 'a valid exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['sequence'])
   }
 
   @Rollback
@@ -1260,7 +1287,8 @@ class OrderAssyServiceSpec extends BaseSpecification {
     def order = AssyUnitTestUtils.releaseOrder(components: ['CPU'])
 
     when: 'the method call is attempted with the wrong sequence'
-    def request = new ComponentRemoveUndoRequest(order: order, sequence: 247)
+    //noinspection GroovyAssignabilityCheck
+    def request = new ComponentRemoveUndoRequest(order: order.order, sequence: 247)
     service.undoComponentRemove(request)
 
     then: 'a valid exception is thrown'

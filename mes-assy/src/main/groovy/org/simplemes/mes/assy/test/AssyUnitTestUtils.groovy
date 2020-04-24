@@ -3,6 +3,7 @@ package org.simplemes.mes.assy.test
 import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.security.SecurityUtils
+import org.simplemes.mes.assy.demand.AssembledComponentStateEnum
 import org.simplemes.mes.assy.demand.domain.OrderAssembledComponent
 import org.simplemes.mes.assy.demand.domain.OrderBOMComponent
 import org.simplemes.mes.assy.product.domain.ProductComponent
@@ -137,6 +138,8 @@ class AssyUnitTestUtils extends MESUnitTestUtils {
    *   <li><b>component</b> - The component to assemble.  Required for non-BOM components. </li>
    *   <li><b>assemblyDataType</b> - The assembly data flex type to use (<b>Optional</b>).</li>
    *   <li><b>assemblyDataValues</b> - The assembly data values to use for the component. A Map of name/value pairs (<b>Optional</b>).</li>
+   *   <li><b>removed</b> - If true, then the component will be marked as removed.</li>
+   *
    * </ul>
    *
    * @param order The order to assemble a component for.
@@ -166,6 +169,11 @@ class AssyUnitTestUtils extends MESUnitTestUtils {
         orderAssembledComponent.lsn = options.lsn as LSN
         orderAssembledComponent.assemblyData = options.assemblyDataType as FlexType
         orderAssembledComponent.sequence = (int) sequence
+        if (options.removed) {
+          orderAssembledComponent.removedByUserName = SecurityUtils.currentUserName
+          orderAssembledComponent.removedDate = new Date()
+          orderAssembledComponent.state = AssembledComponentStateEnum.REMOVED
+        }
         def assemblyDataValues = options.assemblyDataValues
         assemblyDataValues?.each() { key, value ->
           orderAssembledComponent.setAssemblyDataValue(key, value)

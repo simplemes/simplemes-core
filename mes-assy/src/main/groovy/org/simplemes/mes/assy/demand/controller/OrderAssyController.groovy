@@ -12,7 +12,6 @@ import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.controller.BaseController
 import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.custom.domain.FlexType
-import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.web.task.TaskMenuItem
 import org.simplemes.mes.assy.demand.AddOrderAssembledComponentRequest
@@ -78,7 +77,7 @@ class OrderAssyController extends BaseController {
   HttpResponse addComponent(@Body String body, @Nullable Principal principal) {
     def mapper = Holders.objectMapper
     AddOrderAssembledComponentRequest request = mapper.readValue(body, AddOrderAssembledComponentRequest)
-    log.debug('request() {}', request)
+    log.debug('addComponent() {}', request)
     def response = orderAssyService.addComponent(request)
     def res = mapper.writeValueAsString(response)
     return HttpResponse.ok(res)
@@ -105,6 +104,7 @@ class OrderAssyController extends BaseController {
    * </ul>
    */
   def assembleComponentDialog() {
+    // TODO: Fix when GUI is migrated.
     log.debug('assembleComponentDialog: params = {}', params)
     ArgumentUtils.checkMissing(params.assemblyData, 'params.assemblyData')
     ArgumentUtils.checkMissing(params.component, 'params.component')
@@ -140,92 +140,59 @@ class OrderAssyController extends BaseController {
   }
 
   /**
-   * This method removes a single component from the order.  This marks the component as removed in the database.
+   * This method removes a component to the order/LSN.
    * This exposes the OrderAssyService method of the same name.
-   * The argument is parsed from the request input (XML or JSON).
-   *
-   * <h3>HTTP Parameters</h3>
-   * The supported parameters are:
+   * The argument is parsed from the request input body (JSON).
+   * <p>
+   * <b>Input</b>: {@link RemoveOrderAssembledComponentRequest} (JSON format).
+   * <p>
+   * <b>Response</b>:
+   * The response includes these two top-level elements in a map (JSON):
    * <ul>
-   *   <li><b>order</b> - The order to remove the components from (<b>required</b>). </li>
-   *   <li><b>sequence</b> - The sequence of the record to remove (<b>required</b>). </li>
-   * </ul>
-   *
-   * The response includes these two top-level elements in a map:
-   * <ul>
-   *   <li><b>orderAssembledComponent</b> - The OrderAssembledComponent that was removed for this request. </li>
+   *   <li><b>orderAssembledComponent</b> - The OrderAssembledComponent that was removed for this request.
+   * {@link org.simplemes.mes.assy.demand.domain.OrderAssembledComponent}.</li>
    *   <li><b>undoActions</b> - The list of undo actions needed to reverse this removal. </li>
    * </ul>
+   *
    */
-  @SuppressWarnings(['GroovyAssignabilityCheck', "GrReassignedInClosureLocalVar"])
-  def removeComponent() {
-    def removeComponentRequest = null
-    request.withFormat {
-      form {
-        def order = Order.findByOrder(params.order)
-        if (!order) {
-          //error.110.message=Could not find {0} {1}
-          throw new BusinessException(110, [GlobalUtils.lookup('order.label'), params.order])
-        }
-        def sequence = 0
-        if (params.sequence) {
-          sequence = Integer.valueOf(params.sequence)
-        }
-        removeComponentRequest = new RemoveOrderAssembledComponentRequest(order: order, sequence: sequence)
-      }
-    }
-    if (!removeComponentRequest) {
-      removeComponentRequest = ControllerUtils.parseContent(this, [removeOrderAssembledComponentRequest: RemoveOrderAssembledComponentRequest])
-    }
-
-    def orderAssembledComponent = orderAssyService.removeComponent(removeComponentRequest)
+  @Post('/removeComponent')
+  @SuppressWarnings("unused")
+  HttpResponse removeComponent(@Body String body, @Nullable Principal principal) {
+    def mapper = Holders.objectMapper
+    RemoveOrderAssembledComponentRequest request = mapper.readValue(body, RemoveOrderAssembledComponentRequest)
+    log.debug('removeComponent() {}', request)
+    def orderAssembledComponent = orderAssyService.removeComponent(request)
 
     // reversedAssemble.message=Removed component {0} from {1}.
-    def infoMsg = GlobalUtils.lookup('reversedAssemble.message', orderAssembledComponent.component, removeComponentRequest.order)
-
+    def infoMsg = GlobalUtils.lookup('reversedAssemble.message', orderAssembledComponent.component.product, request.order.order)
     def res = [orderAssembledComponent: orderAssembledComponent,
                infoMsg                : infoMsg,
-               undoActions            : [new ComponentRemoveUndoAction(orderAssembledComponent, removeComponentRequest.order)]]
+               undoActions            : [new ComponentRemoveUndoAction(orderAssembledComponent, request.order)]]
 
-    log.debug('removeComponentRequest: {}, {}', res, params)
-    //println "addComponentRequest = $addComponentRequest"
-    ControllerUtils.formatResponse(this, res)
+    return HttpResponse.ok(Holders.objectMapper.writeValueAsString(res))
   }
 
   /**
-   * This method restores a removed component record for the order.
+   * This method restores the removed component to the order.
    * This exposes the OrderAssyService method of the same name.
-   * The argument is parsed from the request input (XML or JSON).
+   * The argument is parsed from the request input body (JSON).
+   * <p>
+   * <b>Input</b>: {@link RemoveOrderAssembledComponentRequest} (JSON format).
+   * <p>
+   * <b>Response</b>: JSON formatted {@link org.simplemes.mes.assy.demand.domain.OrderAssembledComponent}.
    *
-   * The response is the OrderAssembledComponent that was removed for this request.
    */
-  @SuppressWarnings(['GroovyAssignabilityCheck', "GrReassignedInClosureLocalVar"])
-  def undoComponentRemove() {
-    def componentRemoveUndoRequest = null
-    request.withFormat {
-      form {
-        def order = Order.findByOrder(params.order)
-        if (!order) {
-          //error.110.message=Could not find {0} {1}
-          throw new BusinessException(110, [GlobalUtils.lookup('order.label'), params.order])
-        }
-        def sequence = 0
-        if (params.sequence) {
-          sequence = Integer.valueOf(params.sequence)
-        }
-        componentRemoveUndoRequest = new ComponentRemoveUndoRequest(order: order, sequence: sequence)
-      }
-    }
-    if (!componentRemoveUndoRequest) {
-      componentRemoveUndoRequest = ControllerUtils.parseContent(this, [componentRemoveUndoRequest: ComponentRemoveUndoRequest])
-    }
+  @Post('/undoRemoveComponent')
+  @SuppressWarnings("unused")
+  HttpResponse undoRemoveComponent(@Body String body, @Nullable Principal principal) {
+    def mapper = Holders.objectMapper
+    def request = mapper.readValue(body, ComponentRemoveUndoRequest)
+    log.debug('undoRemoveComponent() {}', request)
+    def orderAssembledComponent = orderAssyService.undoComponentRemove(request)
 
-    def orderAssembledComponent = orderAssyService.undoComponentRemove(componentRemoveUndoRequest)
-
-    log.debug('removeComponentRequest: {}, {}', orderAssembledComponent, params)
-    //println "addComponentRequest = $addComponentRequest"
-    ControllerUtils.formatResponse(this, orderAssembledComponent)
+    return HttpResponse.ok(Holders.objectMapper.writeValueAsString(orderAssembledComponent))
   }
+
 
   /**
    * Finds the currently assembled components for the given order/LSN.  The results correspond to a single

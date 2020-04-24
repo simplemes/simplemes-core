@@ -1,7 +1,10 @@
 package org.simplemes.mes.assy.demand
 
 import groovy.transform.ToString
+import org.simplemes.eframe.exception.BusinessException
+import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.json.JSONByKey
+import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.mes.assy.demand.domain.OrderAssembledComponent
 import org.simplemes.mes.demand.domain.Order
 
@@ -45,6 +48,24 @@ class RemoveOrderAssembledComponentRequest {
    * The no argument constructor.
    */
   RemoveOrderAssembledComponentRequest() {
+
+  }
+
+  /**
+   * Main constructor for use with a controller's HTTP parameters.  Validates the inputs, but does not fail if no order is
+   * given.
+   * @param params The HTTP parameters (order and sequence as string)
+   */
+  RemoveOrderAssembledComponentRequest(Map params) {
+    if (params.order) {
+      order = Order.findByOrder(params.order as String)
+      if (!order) {
+        //error.110.message=Could not find {0} {1}
+        throw new BusinessException(110, [GlobalUtils.lookup('order.label'), params.order])
+      }
+    }
+
+    sequence = ArgumentUtils.convertToInteger(params.sequence)
 
   }
 
