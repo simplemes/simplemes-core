@@ -4,7 +4,6 @@
   <#assign variable = "${params._variable}"/>
 
   ${variable}.onSelect = function(rowData) {
-    console.log(rowData);
     var list = [{order: rowData.order}];
     dashboard.sendEvent({type: 'WORK_LIST_SELECTED',source: "/workList/workListActivity",  list: list});
   }

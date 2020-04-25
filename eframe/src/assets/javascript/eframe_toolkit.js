@@ -108,9 +108,9 @@ _ef_tk.toolkit = function () {
       return res;
     },
     // Refreshes the list, using the current query data and preserving the current selection (if possible).
-    refreshList: function (listID) {
+    refreshList: function (listID, args) {
       let list = $$(listID);
-      var url = list.config.url;
+      var url = tk._adjustURLArguments(list.config.url, args);
       var pager = list.getPager();
       if (pager) {
         // Need to add page/sort attributes to the URL manually since the original URL does not have them.
@@ -161,6 +161,48 @@ _ef_tk.toolkit = function () {
         }
       }
       array.splice(loc, 0, object1);
+    },
+    // Adjust the given URL to use the given arguments instead of any present on the URL.  argsToAdd is an object (map).
+    _adjustURLArguments: function (url, argsToAdd) {
+      // First, find all arguments on the URL
+      var mainList = url.split('?');
+      var path = mainList[0];
+      var argString = undefined;
+      var args = {};
+      if (mainList.length > 1) {
+        argString = mainList[1];
+        var argList = argString.split('&');
+        for (var i = 0; i < argList.length; i++) {
+          var oneArgList = argList[i].split('=');
+          if (oneArgList.length === 2) {
+            args[oneArgList[0]] = oneArgList[1];
+          }
+        }
+      }
+
+      // Now, overwrite/add any arguments from the map passed in
+      for (var key in argsToAdd) {
+        // skip loop if the property is from prototype
+        if (!argsToAdd.hasOwnProperty(key)) {
+          continue
+        }
+        args[key] = argsToAdd[key];
+      }
+
+      // Now, rebuild the URL with the (maybe) new parameters.
+      var searchParams = "";
+      for (var k in args) {
+        if (searchParams.length > 0) {
+          searchParams += "&";
+        }
+        searchParams += k + "=" + args[k];
+      }
+      url = path + "?" + searchParams;
+
+      console.log(args);
+
+
+      return url;
     },
     _alert: function (msg) {
       webix.message(msg);

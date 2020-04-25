@@ -78,7 +78,7 @@ class InitialData {
    * Creates the default dashboards needed for this module.
    */
   static createDashboards() {
-    if (Holders.environmentDev) {
+    if (Holders.environmentDev && Holders.configuration.appName.contains('mes-core')) {
       // Delete existing dashboards for testing in development mode.
       for (record in DashboardConfig.list()) {
         //println "deleting record = $record"

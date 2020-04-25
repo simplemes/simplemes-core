@@ -188,7 +188,7 @@ md.mes_dashboard = function () {
     }
   }
 }();
-mes_dashboard = md.mes_dashboard;  // Simplified variable for access to dashboard API.
+var mes_dashboard = md.mes_dashboard;  // Simplified variable for access to dashboard API.
 // tests needed
 // test order change
 // test LSN change
