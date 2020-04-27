@@ -713,7 +713,7 @@ class BaseSpecification extends GebSpec {
       // Just Javascript (probably).
       return JavascriptTestUtils.checkScriptFragment(page)
     }
-    log.warn("Script check disabled probably due to presence of < on page. Try checkJavascript() or checkPageFragment().  Test = {}", this)
+    log.warn("Script check disabled probably due to presence of < on page. Try checkJavascript() or checkJavascriptFragment().  Test = {}", this)
     return true
   }
 

@@ -131,7 +131,7 @@ _ef_tk.toolkit = function () {
       if (url) {
         //console.log('url:'+url);
         var rowData = list.getSelectedItem();
-        //list.clearAll();
+        list.clearAll();
         list.load(url, function () {
           if (rowData) {
             var id = rowData.id;
@@ -589,6 +589,11 @@ _ef_tk.toolkit = function () {
       }
 
       return undefined;
+    },
+    // Handles click on an action button in a grid row.
+    _gridActionButtonHandler: function (event, listID, rowID, script) {
+      var rowData = $$(listID).getItem(rowID);
+      eval(script);
     },
     _gridAddRow: function (view, rowData) {
       var ed = view.getEditor();

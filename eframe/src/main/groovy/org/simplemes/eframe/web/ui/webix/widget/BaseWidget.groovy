@@ -131,11 +131,23 @@ class BaseWidget implements WidgetInterface {
   /**
    * Adds the given text in a holding area to be added to the generated UI text at the end.  This is processed
    * by the caller to add the postscript to the page after the top-level marker is finished.
-   * Usually, this is standalone javascript that can't be inside of element defintions.
+   * Usually, this is standalone javascript that can't be inside of element definitions.
    * @param s The closing text.
    */
   void addPostscriptText(String s) {
     widgetContext.markerCoordinator.addPostscript(s)
+  }
+
+
+  /**
+   * Adds the given text in a holding area to be added to the generated UI text at the end.  This is processed
+   * by the caller to add the postscript to the page after the top-level marker is finished.
+   * The global postscript is a section of javascript code at the global context level in the browser.
+   *
+   * @param s The closing text.
+   */
+  void addGlobalPostscriptText(String s) {
+    widgetContext.markerCoordinator.addGlobalPostscript(s)
   }
 
 

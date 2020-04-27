@@ -4,6 +4,7 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<ef-list-parameters>>#
 [inline-toc]#<<ef-list-requirements>>#
+[inline-toc]#<<List Action Buttons>>#
 [inline-toc]#<<List Examples>>#
 
 endif::[]
@@ -76,6 +77,18 @@ The main parameters/body supported are:
 | *dataFunction* | The name of a function that returns the row data.  Ignored
                    if *uri* is passed in.  See <<List Examples>> below.
                    No pager is used for this type of list.
+| *_name_@buttonLabel* | The label/key for a button in the button actions column.
+                         This can be a lookup label.  Also used for the button tooltip.
+                        See <<List Action Buttons>> below for details.
+| *_name_@buttonIcon* | The type of icon to use instead of a label.  Supported icons include
+                        the Font Awesome icons such as: '_fa-plus-square_' and '_fa-minus-square_'.
+| *_name_@buttonHandler* | The javascript to execute when the button is clicked.
+                        Available variables: (Object rowData, String listID).
+                        This value must be set for the button to displayed in the list.
+                        The script text can't contain single quotes or double quotes.
+| *_name_@buttonEnableColumn* | The name of the data field that will enable/disable this button.
+                        This is a boolean value column.  If *true*, then the button will be displayed.
+                        If *false*, then the button will be hidden.
 
 |===
 
@@ -103,6 +116,23 @@ If the controller has no domain defined for it, then the `modelName` must be spe
   defined for the top-level domain object.
 
 
+==== List Action Buttons
+
+You can configure the list to display buttons in a specific actions column.  These buttons
+can be enabled/disabled on a per row basis.  The button actions are configured with 3 different
+attributes:
+
+* _name_@buttonLabel - The label/key for a button in the button actions column.
+* _name_@buttonIcon - The type of icon to use instead of a label.
+* _name_@buttonHandler -  The javascript to execute when the button is clicked.
+* _name_@buttonEnableColumn - The name of the data field that will enable/disable this button.
+
+These options use a common _name_ prefix to identify the behavior of the button.  You can have
+as many unique buttons as needed in the actions column.
+
+See <<List Action Button Example>> for an example use of the buttons.
+
+
 ==== List Examples
 
 ifeval::["{backend}" != "pdf"]
@@ -110,6 +140,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Basic List Example>>#
 [inline-toc]#<<List dataFunction Example>>#
 [inline-toc]#<<List onSelect Example>>#
+[inline-toc]#<<List Action Button Example>>#
 
 endif::[]
 
@@ -156,7 +187,7 @@ a good way to mock up the list behavior.
 
 ===== List onSelect Example
 
-This example use javascript logic executed when the user selects a row.  
+This example uses javascript logic executed when the user selects a row.
 
 [source,html]
 .efList Example - Use of onSelect.
@@ -175,4 +206,37 @@ This example use javascript logic executed when the user selects a row.
 ----
 <.> The function that handles the selection event.
 <.> Specifies the javascript to execute when the selection happens.
+
+===== List Action Button Example
+
+This example defines a button in an 'Actions' column for the list.   This example
+implements a remove button.
+
+image::guis/listActionButtons.png[title="listActionButtons",align="center", width="550"]
+
+
+[source,html]
+.efList Example - Action Button
+----
+<script>
+  ${params._variable}.remove = function(rowData, listID) {  // <.>
+    console.log(rowData);
+    . . .
+  }
+
+  <@efForm id="componentListForm${params._panel}" dashboard="true">
+    <@efList id="componentList${params._panel}" columns="component,qty"
+             uri="/orderAssy/findComponents" model="sample.pogo.FindComponentsResponse"
+             remove@buttonIcon="fa-minus-square"   // <.>
+             remove@buttonLabel="remove.label"   // <.>
+             remove@buttonHandler="${params._variable}.remove(rowData, listID)"   // <.>
+             remove@buttonEnableColumn="canBeRemoved" />  // <.>
+  </@efForm>
+</script>
+----
+<.> The function that handles the button event.
+<.> The icon is a simple minus sign icon.
+<.> The label is used for tooltips when used with icon buttons.
+<.> Specifies the javascript to execute when the button is clicked.
+<.> A true/false value in the row data that controls when the button is displayed.
 

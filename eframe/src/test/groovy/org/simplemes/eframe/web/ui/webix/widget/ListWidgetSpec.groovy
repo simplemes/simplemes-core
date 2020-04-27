@@ -10,6 +10,7 @@ import org.simplemes.eframe.test.BaseWidgetSpecification
 import org.simplemes.eframe.test.JavascriptTestUtils
 import org.simplemes.eframe.test.MockDomainUtils
 import org.simplemes.eframe.test.MockPreferenceHolder
+import org.simplemes.eframe.test.UnitTestUtils
 import sample.controller.SampleParentController
 import sample.domain.SampleParent
 import sample.pogo.FindWorkResponse
@@ -203,6 +204,114 @@ class ListWidgetSpec extends BaseWidgetSpecification {
     //def eventBlock = JavascriptTestUtils.extractBlock(postscript, '$$("dummyID").attachEvent("onAfterSelect"')
     eventBlock.contains('{ABC.selectedRow})(rowData,"sampleParentList")')
   }
+
+  def "verify that the action buttons options are supported"() {
+    when: 'the UI element is built'
+    def params = [id: 'dummyID']
+    params['remove@buttonLabel'] = 'remove.label'
+    params['remove@buttonHandler'] = 'handleRemove(rowData,listID)'
+    def widgetContext = buildWidgetContext(parameters: params, controllerClass: SampleParentController)
+    def page = new ListWidget(widgetContext).build().toString()
+    def globalPostscript = widgetContext.markerCoordinator.globalPostscript
+    //println "page = $page $globalPostscript"
+
+    then: 'the page is valid'
+    checkJavascriptFragment(page)
+    checkJavascript(globalPostscript)
+
+    and: 'the table is created with the right column definition'
+    def columnsBlock = JavascriptTestUtils.extractBlock(page, 'columns: [')
+    def actionsColumn = TextUtils.findLine(columnsBlock, 'id: "_actionButtons"')
+    JavascriptTestUtils.extractProperty(actionsColumn, 'template') == "dummyIDActionsRenderer"
+    JavascriptTestUtils.extractProperty(actionsColumn, 'header').contains('text: "Actions"')
+
+    and: 'the renderer has the handler'
+    def renderer = JavascriptTestUtils.extractBlock(globalPostscript, 'function dummyIDActionsRenderer(')
+    //println "renderer = $renderer"
+    renderer.contains('handleRemove(rowData,listID)')
+    renderer.contains('tk._gridActionButtonHandler')
+
+    and: 'the button label is correct'
+    def label = lookup('remove.label')
+    def tooltip = lookup('remove.tooltip')
+    renderer.contains("<span>$label</span>")
+    renderer.contains("title='$tooltip'")
+  }
+
+  def "verify that the action buttons options are supported - icon"() {
+    when: 'the UI element is built'
+    def params = [id: 'dummyID']
+    params['remove@buttonIcon'] = 'fa-minus-oval'
+    params['remove@buttonLabel'] = 'remove.label'
+    params['remove@buttonHandler'] = 'handleRemove(rowData,listID)'
+    def widgetContext = buildWidgetContext(parameters: params, controllerClass: SampleParentController)
+    def page = new ListWidget(widgetContext).build().toString()
+    def globalPostscript = widgetContext.markerCoordinator.globalPostscript
+    //println "page = $page $globalPostscript"
+
+    then: 'the page is valid'
+    checkJavascriptFragment(page)
+    checkJavascript(globalPostscript)
+
+    and: 'the button icon is correct'
+    def renderer = JavascriptTestUtils.extractBlock(globalPostscript, 'function dummyIDActionsRenderer(')
+    //println "renderer = $renderer"
+    renderer.contains("<span class='webix_icon_btn fas fa-minus-oval'")
+
+    and: 'the tooltip is correct'
+    def tooltip = lookup('remove.tooltip')
+    renderer.contains("title='$tooltip'")
+  }
+
+  def "verify that the action buttons options are supported - enabled flag on two buttons"() {
+    when: 'the UI element is built'
+    def params = [id: 'dummyID']
+    params['add@buttonEnableColumn'] = 'canBeAdded'
+    params['add@buttonLabel'] = 'add.label'
+    params['add@buttonHandler'] = 'handleAdd(rowData,listID)'
+    params['remove@buttonEnableColumn'] = 'canBeRemoved'
+    params['remove@buttonIcon'] = 'remove.label'
+    params['remove@buttonHandler'] = 'handleRemove(rowData,listID)'
+    def widgetContext = buildWidgetContext(parameters: params, controllerClass: SampleParentController)
+    def page = new ListWidget(widgetContext).build().toString()
+    def globalPostscript = widgetContext.markerCoordinator.globalPostscript
+    //println "page = $page $globalPostscript"
+
+    then: 'the page is valid'
+    checkJavascriptFragment(page)
+    checkJavascript(globalPostscript)
+
+    and: 'the first if block is correct'
+    def renderer = JavascriptTestUtils.extractBlock(globalPostscript, 'function dummyIDActionsRenderer(')
+    //println "renderer = $renderer"
+    def addIfBlock = JavascriptTestUtils.extractBlock(renderer, 'if (obj.canBeAdded) {')
+    addIfBlock.contains('handleAdd(')
+
+    and: 'the second if block is correct'
+    def removeIfBlock = JavascriptTestUtils.extractBlock(renderer, 'if (obj.canBeRemoved) {')
+    removeIfBlock.contains('handleRemove(')
+  }
+
+  def "verify that the action buttons options gracefully detects illegal characters in the script - quotes"() {
+    when: 'the UI element is built'
+    def params = [id: 'dummyID']
+    params['add@buttonEnableColumn'] = 'canBeAdded'
+    params['add@buttonLabel'] = 'add.label'
+    params['add@buttonHandler'] = "xyz$badCharacter".toString()
+    def widgetContext = buildWidgetContext(parameters: params, controllerClass: SampleParentController)
+    new ListWidget(widgetContext).build().toString()
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['add@buttonHandler', 'quote', 'xyz'])
+
+    where:
+    badCharacter | _
+    "'"          | _
+    '"'          | _
+  }
+
+  // test GUI page
 
 
 }

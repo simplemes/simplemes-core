@@ -142,4 +142,41 @@ class ListWidgetGUISpec extends BaseDashboardSpecification {
     messages.text().contains('ABC1')
   }
 
+  def "verify that the list widget supports action icons"() {
+    given: 'a dashboard with a simple non-gui activity'
+    def guiActivity = '''
+    <script>
+      <@efForm id="componentListForm${params._panel}" dashboard="true">
+        <@efList id="componentList${params._panel}" columns="sequence,component,qtyAssembled,qtyRequired"
+                 paddingX="5%" uri="/order/findComponents" copyParameters=true
+                 model="sample.pogo.FindComponentResponseDetail" 
+                 add@buttonIcon="fa-plus-square"
+                 add@buttonLabel="addComponent.label"
+                 add@buttonHandler="${params._variable}.add(rowData, listID)"
+                 add@buttonEnableColumn="canBeAssembled"
+                 />
+      </@efForm>
+    
+      ${params._variable}.add = function(rowData) {
+        ef.displayMessage("adding: "+rowData.component);
+      }
+    </script>
+    '''
+    buildDashboard(defaults: [guiActivity])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+    def componentList = $("body").module(new GridModule(field: 'componentListA'))
+
+    and: 'second add button is clicked'
+    componentList.cell(1, 4).find('button').click()
+
+    then: 'the handler is triggered'
+    waitFor() {
+      messages.text()
+    }
+    messages.text().contains('adding')
+    messages.text().contains('WHEEL')
+  }
+
 }

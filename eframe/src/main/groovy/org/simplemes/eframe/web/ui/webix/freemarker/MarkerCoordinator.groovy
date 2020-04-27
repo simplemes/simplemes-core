@@ -26,9 +26,15 @@ class MarkerCoordinator {
   StringBuilder prescript = new StringBuilder()
 
   /**
-   * The javascript included after the UI is built.  This is used to alter the formData and other variables before the UI is buillt.
+   * The javascript included after the UI is built.  This is used to alter the formData and other variables before the UI is built.
    */
   StringBuilder postscript = new StringBuilder()
+
+  /**
+   * The global javascript included after the UI is built.  This is used to alter the formData and other variables before the UI is built.
+   * The global postscript is a section of javascript code at the global context level in the browser.
+   */
+  StringBuilder globalPostscript = new StringBuilder()
 
   /**
    * The form's ID.  Used for many variables within the marker structure when elements are nested inside of a form.
@@ -59,6 +65,7 @@ class MarkerCoordinator {
 
   /**
    * Adds the given post script text to the end of the current postscript.
+   * The postscript is a section of javascript code executed after the main UI element creation code.
    * @param post The postscript to add.
    */
   void addPostscript(String post) {
@@ -67,10 +74,31 @@ class MarkerCoordinator {
 
   /**
    * Returns the current postscript (as a string).
+   * The postscript is a section of javascript code executed after the main UI element creation code.
    * @return The current postscript.
    */
   String getPostscript() {
     postscript.toString()
+  }
+
+  /**
+   * Adds the given global post script text to the end of the current global postscript.
+   * The global postscript is a section of javascript code at the global context level in the browser.
+   * This is typically only used inside of a Form.
+   * @param post The postscript to add.
+   */
+  void addGlobalPostscript(String post) {
+    globalPostscript << post
+  }
+
+  /**
+   * Returns the current global postscript (as a string).
+   * The global postscript is a section of javascript code at the global context level in the browser.
+   * This is typically only used inside of a Form.
+   * @return The current global postscript.
+   */
+  String getGlobalPostscript() {
+    globalPostscript.toString()
   }
 
   /**

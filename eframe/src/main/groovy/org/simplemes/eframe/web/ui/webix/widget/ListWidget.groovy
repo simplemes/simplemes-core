@@ -4,9 +4,10 @@
 
 package org.simplemes.eframe.web.ui.webix.widget
 
-
 import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.domain.DomainUtils
+import org.simplemes.eframe.i18n.GlobalUtils
+import org.simplemes.eframe.misc.LogUtils
 import org.simplemes.eframe.preference.ColumnPreference
 import org.simplemes.eframe.preference.PreferenceHolder
 import org.simplemes.eframe.security.SecurityUtils
@@ -39,6 +40,11 @@ class ListWidget extends BaseWidget {
   PreferenceHolder preference
 
   /**
+   * The list of button names needed for each row in the list.
+   */
+  List<String> actionButtons
+
+  /**
    * Basic constructor.
    * @param widgetContext The widget context this widget is operating in.  Includes URI, parameters, marker etc.
    */
@@ -63,6 +69,8 @@ class ListWidget extends BaseWidget {
     if (controllerClass) {
       controllerRoot = ControllerUtils.instance.getRootPath(controllerClass)
     }
+
+    actionButtons = findActionButtons()
   }
 
   /**
@@ -138,7 +146,7 @@ class ListWidget extends BaseWidget {
        ${buildDataSource(controllerRoot)},
        ${DomainToolkitUtils.instance.buildTableDataParser(domainClass, columns, (Map) widgetContext.parameters)}
        columns: [ ${DomainToolkitUtils.instance.buildTableColumns(domainClass, columns, buildColumnOptions(columns))}
-       ]
+       ${buildActionButtonColumn()}]
       }
       $after 
     """
@@ -290,6 +298,106 @@ class ListWidget extends BaseWidget {
     }
 
     return """url: "${url}" """
+  }
+
+
+  /**
+   * Looks through the parameters for action buttons (e.g. name@buttonHandler).
+   * @return The list of names for buttons found.
+   */
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  List<String> findActionButtons() {
+    def list = []
+    def params = widgetContext?.parameters
+
+    if (params) {
+      params.each { String k, v ->
+        if (k.endsWith('@buttonHandler')) {
+          def s = k[0..(k.indexOf('@') - 1)]
+          list << s
+        }
+      }
+    }
+    return list
+  }
+
+  /**
+   * Builds the action button column (if needed).
+   * @return
+   */
+  String buildActionButtonColumn() {
+    if (actionButtons) {
+      def params = widgetContext?.parameters
+      def sb = new StringBuilder()
+      for (buttonName in actionButtons) {
+        def enableColumn = params["$buttonName@buttonEnableColumn"]
+        def script = (String) params["$buttonName@buttonHandler"]
+        if (script.contains('"') || script.contains("'")) {
+          def s = "The ${buttonName}@buttonHandler (${LogUtils.limitedLengthString(script)}) contains a single quote or double quote.  These are not allowed in the script."
+          throw new IllegalArgumentException(s)
+        }
+        def icon = params["$buttonName@buttonIcon"]
+        def labelKey = params["$buttonName@buttonLabel"]
+        def label = ""
+        def tooltip = ""
+        if (labelKey) {
+          (label, tooltip) = GlobalUtils.lookupLabelAndTooltip((String) labelKey, null)
+          tooltip = tooltip ?: ''
+        }
+        if (enableColumn) {
+          sb << """if (obj.$enableColumn) { \n"""
+        }
+        if (icon) {
+          sb << """
+            s += "<button class='webix_img_btn' style='line-height:32px;max-width:32px;' title='$tooltip' "+
+            "onclick='tk._gridActionButtonHandler(event,\\"$id\\",\\""+rowID+"\\",\\"$script\\")'>" + 
+            "<span class='webix_icon_btn fas $icon' style='max-width:32px;'></span>"+
+            "</button>";
+          """
+        } else {
+          sb << """
+            s += "<button class='webix_img_btn_abs webixtype_base' style='line-height:28px;' title='$tooltip' "+
+            "onclick='tk._gridActionButtonHandler(event,\\"$id\\",\\""+rowID+"\\",\\"$script\\")'>" + 
+            "<span>$label</span>"+
+            "</button>";
+          """
+        }
+        if (enableColumn) {
+          sb << """}\n"""
+        }
+      }
+
+      addGlobalPostscriptText("""function ${id}ActionsRenderer(obj) {
+        var s = "";
+        var rowID = obj.id;
+        $sb
+        return s;
+      }
+      """)
+/*
+      addGlobalPostscriptText("""function ${id}ActionsRenderer(obj) {
+        var s = "";
+        var rowID = obj.id;
+        if (obj.canBeAssembled) {
+          s += "<button class='webix_img_btn' style='line-height:32px;max-width:32px;' title='Add' "+
+          "onclick='tk._gridActionButtonHandler(event,\\"$id\\",\\""+rowID+"\\",\\"$script\\")'>" +
+          "<span class='webix_icon_btn fas fa-plus-square' style='max-width:32px;'></span>"+
+          "</button>";
+        }
+        if (obj.canBeRemoved) {
+          s += "</button>" + " <button class='webix_img_btn' style='line-height:32px;max-width:32px;'>" +
+          "<span class='webix_icon_btn fas fa-minus-square' style='max-width:32px;'></span>"+
+          "</button>";
+        }
+        return s;
+      }
+      """)
+*/
+      def header = lookup('actions.label')
+      return """,{id: "_actionButtons", header: {text: "${header}"}, template: ${id}ActionsRenderer}"""
+    } else {
+      return ''
+    }
   }
 
 }

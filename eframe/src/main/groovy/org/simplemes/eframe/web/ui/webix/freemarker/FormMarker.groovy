@@ -59,6 +59,7 @@ class FormMarker extends BaseMarker {
     }
 
 
+    def globalPostScript = markerContext?.markerCoordinator?.getGlobalPostscript() ?: ''
     def postScript = markerContext?.markerCoordinator?.getPostscript() ?: ''
     def preScript = markerContext?.markerCoordinator?.getPrescript() ?: ''
     if (dashboard && postScript) {
@@ -96,7 +97,7 @@ class FormMarker extends BaseMarker {
           ]
         };
         $postScript
-
+        $globalPostScript
       """
       write(res)
     } else {
