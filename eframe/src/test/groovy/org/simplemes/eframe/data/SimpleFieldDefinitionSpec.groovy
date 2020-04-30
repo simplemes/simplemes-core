@@ -196,5 +196,13 @@ class SimpleFieldDefinitionSpec extends BaseSpecification {
     SampleParent                | 'allFieldsDomain' | AllFieldsDomain
   }
 
+  def "verify that the Field constructor fills in the label"() {
+    given: 'the Field'
+    def field = FindComponentResponseDetail.getDeclaredField('assemblyData')
+
+    expect: 'the isReference method works'
+    new SimpleFieldDefinition(field).label == 'assemblyData.label'
+  }
+
 
 }

@@ -123,6 +123,7 @@ class MessageSource {
    * @return The looked up message with the arguments replaced.
    */
   protected MessageFormat getMessageFormat(String key, Locale locale) {
+    ArgumentUtils.checkMissing(key, 'key')
     MessageFormat res = null
     Map<Locale, MessageFormat> map = cachedMessageFormats.get(key)
     if (map != null) {

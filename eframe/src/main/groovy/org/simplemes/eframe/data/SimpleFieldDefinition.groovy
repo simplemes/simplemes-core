@@ -136,6 +136,7 @@ class SimpleFieldDefinition implements FieldDefinitionInterface {
       referenceType = field.type
       reference = (type != null)
     }
+    setDefaultValues()
   }
 
   /**

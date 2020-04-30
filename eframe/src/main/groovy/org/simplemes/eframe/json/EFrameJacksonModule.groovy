@@ -176,6 +176,9 @@ class EFrameBeanSerializerModifier extends BeanSerializerModifier {
       BeanPropertyWriter w = beanProperties.get(i)
       //println "beanPropertyWriter = ${w?.dump()}"
       def fieldName = w.getName()
+      if (alreadyHasSerializer(clazz, fieldName)) {
+        continue
+      }
       def fieldDef = fieldDefinitions?.get(fieldName)
       //println "  fieldDef = $fieldName $fieldDef"
       if (fieldDef?.isReference()) {
@@ -216,6 +219,22 @@ class EFrameBeanSerializerModifier extends BeanSerializerModifier {
     }
 
     return super.changeProperties(config, beanDesc, beanProperties)
+  }
+
+  /**
+   * Determines if the field already has a framework annotation (e.g. @JSONByID or similar) serializer.
+   * @param clazz The clazz.
+   * @param fieldName The field name to check.
+   * @return True if already covered by a framework serializer annotation.
+   */
+  boolean alreadyHasSerializer(Class clazz, String fieldName) {
+    try {
+      def field = clazz.getDeclaredField(fieldName)
+      return field.getAnnotation(JSONByID) != null || field.getAnnotation(JSONByKey) != null
+    } catch (NoSuchFieldException ignored) {
+      // If not in the clazz, we can assume it does not have the annotation.
+    }
+    return false
   }
 
 }
