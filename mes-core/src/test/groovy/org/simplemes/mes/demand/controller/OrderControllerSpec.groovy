@@ -108,7 +108,7 @@ void setup() {
     then: 'the response is valid'
     def json = new JsonSlurper().parseText(res)
     json.order.order == order.order
-    json.order.qtyReleased == 1.2
+    json.qtyReleased == 1.2
 
     and: 'the database is updated correctly.'
     def order1 = Order.findByOrder('ABC')
