@@ -1,9 +1,9 @@
 #
-# application-dev.yml for dev mode.  Needs the MICRONAUT_CONFIG_FILES=dev.yml environment variable.
+# application-dev.yml for dev mode.  
 #
 micronaut:
   application:
-    name: seframe
+    name: mes-core-dev
 
 ---
 datasources:

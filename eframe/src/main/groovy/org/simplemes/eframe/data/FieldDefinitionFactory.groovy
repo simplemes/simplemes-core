@@ -29,7 +29,7 @@ class FieldDefinitionFactory {
    */
   static FieldDefinitionInterface buildFieldDefinition(Field field) {
     ArgumentUtils.checkMissing(field, 'field')
-    return new SimpleFieldDefinition(name: field.name, type: field.type)
+    return new SimpleFieldDefinition(field)
   }
 
 

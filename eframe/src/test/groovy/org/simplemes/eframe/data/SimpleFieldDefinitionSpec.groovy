@@ -4,6 +4,7 @@
 
 package org.simplemes.eframe.data
 
+import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.data.format.ChildListFieldFormat
 import org.simplemes.eframe.data.format.StringFieldFormat
@@ -14,6 +15,7 @@ import sample.domain.Order
 import sample.domain.SampleChild
 import sample.domain.SampleParent
 import sample.domain.SampleSubClass
+import sample.pogo.FindComponentResponseDetail
 
 /**
  * Tests.
@@ -179,5 +181,20 @@ class SimpleFieldDefinitionSpec extends BaseSpecification {
     then: 'the value was set'
     obj.title == 'abc'
   }
+
+  def "verify that the Field constructor detects references correctly"() {
+    given: 'the Field'
+    def field = clazz.getDeclaredField(name)
+
+    expect: 'the isReference method works'
+    new SimpleFieldDefinition(field).referenceType == results
+
+    where:
+    clazz                       | name              | results
+    FindComponentResponseDetail | 'assemblyData'    | FlexType
+    SampleParent                | 'title'           | null
+    SampleParent                | 'allFieldsDomain' | AllFieldsDomain
+  }
+
 
 }

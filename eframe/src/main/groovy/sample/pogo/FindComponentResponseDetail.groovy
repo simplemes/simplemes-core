@@ -5,6 +5,9 @@
 package sample.pogo
 
 import groovy.transform.ToString
+import org.simplemes.eframe.custom.domain.FlexType
+
+import javax.persistence.ManyToOne
 
 /**
  * The sample response from the OrderController.findComponents() method.
@@ -48,5 +51,9 @@ class FindComponentResponseDetail {
    * True if row can be assembled.
    */
   boolean canBeAssembled = true
+
+  @ManyToOne(targetEntity = FlexType)
+  FlexType assemblyData
+
 
 }
