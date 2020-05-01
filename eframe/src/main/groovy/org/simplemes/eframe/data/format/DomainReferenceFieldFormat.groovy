@@ -11,6 +11,7 @@ import org.simplemes.eframe.data.SimpleChoiceListItem
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.TypeUtils
+import org.simplemes.eframe.misc.UUIDUtils
 
 /**
  * Defines the format for a field that is a domain reference to a single object.
@@ -89,6 +90,9 @@ class DomainReferenceFieldFormat extends BasicFieldFormat {
     //throw new UnsupportedOperationException('Simple parsing for domain references is not supported.')
     def res = null
     if (value != null) {
+      if (value instanceof String && UUIDUtils.isUUID(value)) {
+        return value
+      }
       FieldExtension.withTransaction {
         res = value?.uuid?.toString()
       }

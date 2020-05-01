@@ -1,5 +1,7 @@
 Scratch
 =======
+
+
 @ExtensionPoint(MarkerClass, "Comment")
  Response method(argument1)
    preMethod(argument)

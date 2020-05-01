@@ -7,7 +7,9 @@
 This Javascript function returns a list of maps containing the provided parameters from all
 current activities.
 
-WARNING: Only use this for Non-GUI activities that have the `cache` option set to *true*.
+WARNING: This not needed for most activities.  Only use this for Non-GUI activities that have
+         the `cache` option set to *true* or for static activities that need the current
+         settings from another activity.
          Most other activities should rely on the request parameters when the activity
          content is rendered.
 

@@ -44,7 +44,13 @@ The main parameters/body supported are:
 | *type*  | The input field type (e.g. _'password'_ or _'password-no-auto'_).
             _'password-no-auto'_ will prevent the browser from auto-completing the password.
             This is useful when the admin user is creating User records.
-| *value* | The initial value for the field.
+| *value* | The initial value for the field.  Ignored if *valueName* is given.
+| *valueName* | The name of the element in the display model that holds the value object.
+                This is typically used with
+                link:guide.html#configurable-types[Configurable Types^] icon:share-square-o[role="link-blue"]
+                such as
+                link:guide.html#flex-types[Flex Types^] icon:share-square-o[role="link-blue"].
+                See the example <<FlexType Field with efField>>.
 | *width* | The display width of the field.  This overrides the normal display width, which is
             based on the max field length.  Width can be a number (characters), em units ('20em')
             or percent ('15%'). (*Default:* Field's maxLength).
@@ -108,6 +114,16 @@ NOTE: This marker supports the <<Inline Grid>>.
 
 ==== Field Examples
 
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Change Password Example>>#
+[inline-toc]#<<Add Field to Definition Page>>#
+[inline-toc]#<<FlexType Field with efField>>#
+
+endif::[]
+
+
+
 ===== Change Password Example
 
 This example provides a simple change password form with a 'change' button.
@@ -138,6 +154,48 @@ user password with confirmation.
   <@efField field="User.password" id="password2" type="password" afterField="password1"/>
 <@/efForm>
 ----
+
+
+===== FlexType Field with efField
+
+This example shows how to use a
+link:guide.html#flex-types[Flex Type^] icon:share-square-o[role="link-blue"] field in a GUI.
+This is one of the framework's
+link:guide.html#configurable-types[Configurable Types^] icon:share-square-o[role="link-blue"].
+
+When the user changes the selected flex type, the input fields change and allows the user to
+enter different data. The data is stored in the custom field holder for the object.
+
+[source,html]
+.Example - FlexType Field with efField with Configurable Types - GUI
+----
+<@efForm id="logRMA">
+  <@efField field="RMA.rmaType" id="rmaType" valueName="rmaDataModel"/>  // <.>
+<@/efForm>
+----
+<.> This expects the object to hold the values in the (`rmaDataModel`) in the model.  This
+    is normally set by the controller (see below).
+
+The controller can set the value in the model using this logic:
+
+[source,groovy]
+.Example - FlexType Field with efField with Configurable Types - Controller
+----
+StandardModelAndView logRMADialog(HttpRequest request, @Nullable Principal principal) {
+  def view = "rma/logRMADialog"
+  def modelAndView = new StandardModelAndView(view, principal, this)
+
+     . . .
+
+  modelAndView['rmaDataModel'] = new RMA(rmaType: flexType)  // <.>
+
+  return modelAndView
+}
+----
+<.> The `rmaDataModel` is set using the given object, with a default value (`flexType`).
+    The custom field values can also be set in the custom field holder (as marked by the
+    _@ExtensibleFieldHolder_ annotation).
+
 
 
 

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.misc
 
 import ch.qos.logback.classic.Level
@@ -5,11 +9,6 @@ import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.system.controller.LoggingController
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-
-/*
- * Copyright Michael Houston. All rights reserved.
- *
-*/
 
 /**
  * Utility methods for logging.  Provides static methods to handle common logging tasks.  Includes converting possibly long
@@ -99,7 +98,7 @@ class LogUtils {
     } else {
       // Not logged (yet), so check for the StackTrace logger.
       def stLogger = getLogger('StackTrace')
-      stLogger.debug("Exception for ${source ?: ''}", e)
+      stLogger.debug("Exception for ${source ?: ''} - $e", e)
     }
   }
 

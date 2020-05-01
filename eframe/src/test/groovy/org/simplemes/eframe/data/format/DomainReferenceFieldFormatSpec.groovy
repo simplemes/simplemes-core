@@ -79,6 +79,7 @@ class DomainReferenceFieldFormatSpec extends BaseSpecification {
     value                                                                                        | result
     null                                                                                         | null
     new SampleParent(name: 'ABC', uuid: UUID.fromString('f927503f-2c87-45ae-b816-d2802b7649f9')) | 'f927503f-2c87-45ae-b816-d2802b7649f9'
+    'f927503f-2c87-45ae-b816-d2802b7649f9' | 'f927503f-2c87-45ae-b816-d2802b7649f9'
   }
 
   def "verify that the decode methods finds the correct domain record"() {
