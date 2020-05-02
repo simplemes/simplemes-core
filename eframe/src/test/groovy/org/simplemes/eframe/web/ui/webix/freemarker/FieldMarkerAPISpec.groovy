@@ -28,7 +28,7 @@ class FieldMarkerAPISpec extends BaseMarkerSpecification {
     when: 'the marker is built'
     def src = """
       <@efForm id="edit">
-        <@efField field="RMA.rmaType" valueName="assemblyData"/>
+        <@efField field="RMA.rmaType" modelName="assemblyData"/>
       </@efForm>
     """
     def page = execute(source: src, controllerClass: SampleParentController, dataModel: [assemblyData: valueObject])

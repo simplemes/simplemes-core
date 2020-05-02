@@ -1,6 +1,6 @@
 Scratch
 =======
-
+Support readonly on efField.
 
 @ExtensionPoint(MarkerClass, "Comment")
  Response method(argument1)

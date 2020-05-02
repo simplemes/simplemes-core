@@ -54,10 +54,10 @@ class FieldMarker extends BaseMarker {
     def id = parameters.id ?: fieldName ?: 'unknown'
 
     // See if the domain/value object is in the current model.
-    def valueName = parameters.valueName
-    if (valueName) {
+    def modelName = parameters.modelName
+    if (modelName) {
       // Use the domain value instead of the one derived from the controller.
-      domainObject = unwrap(environment.dataModel?.get(valueName))
+      domainObject = unwrap(environment.dataModel?.get(modelName))
     }
 
     // delegates most of the work to the TextFieldWidget

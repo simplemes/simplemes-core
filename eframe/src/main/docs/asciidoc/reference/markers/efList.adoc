@@ -68,7 +68,7 @@ The main parameters/body supported are:
                (*Default:* The `list()` method in the controller that rendered this page.
 | *onSelect* | The javascript to execute when a row is selected in the list.
                Available variables: (Object rowData, String listID).
-| *modelName*  | A fully-qualified class name that specifies the contents of the rows displayed.
+| *model*  | A fully-qualified class name that specifies the contents of the rows displayed.
                  This can be a domain or a POGO. (*Default:* the controller's domain)
 |*height*    | The height of the list (*Default:* '74%').
 |*paddingX*  | The width of extra horizontal padding (*e.g.:* '74%' or '20em').
@@ -99,7 +99,7 @@ link:groovydoc/org/simplemes/eframe/web/ui/webix/widget/ListWidget.html[ListWidg
 icon:share-square-o[role="link-blue"] options to control the list display,
 This includes default widths, specific links needed, etc.
 
-If the controller has no domain defined for it, then the `modelName` must be specified.
+If the controller has no domain defined for it, then the `modelClassName` must be specified.
 
 
 [[ef-list-requirements]]

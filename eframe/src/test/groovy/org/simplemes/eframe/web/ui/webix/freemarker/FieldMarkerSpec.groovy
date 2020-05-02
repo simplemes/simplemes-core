@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 
@@ -10,14 +14,10 @@ import org.simplemes.eframe.test.JavascriptTestUtils
 import org.simplemes.eframe.test.MockDomainUtils
 import org.simplemes.eframe.test.MockFieldDefinitions
 import org.simplemes.eframe.web.ui.webix.widget.TextFieldWidget
+import sample.controller.AllFieldsDomainController
 import sample.controller.SampleParentController
+import sample.domain.AllFieldsDomain
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -327,7 +327,30 @@ class FieldMarkerSpec extends BaseMarkerSpecification {
     and: 'the valid values are in the correct order'
     def optionsBlock = JavascriptTestUtils.extractBlock(page, 'options: [')
     optionsBlock.contains('id: "S"')
+  }
 
+  def "verify that the marker uses the value from a model if modelName is given"() {
+    given: 'a mocked domain'
+    new MockDomainUtils(this, [AllFieldsDomain], new MockFieldDefinitions(['qty'])).install()
+
+    and: 'an object to use as the model'
+    def afd = new AllFieldsDomain(qty: 1.2)
+
+    when: 'the marker is built'
+    def src = """
+      <@efForm id="edit">
+        <@efField field="AllFieldsDomain.qty" modelName="theModel"/>
+      </@efForm>
+    """
+
+    def page = execute(source: src, controllerClass: AllFieldsDomainController, dataModel: [theModel: afd])
+
+    then: 'the javascript is legal'
+    checkPage(page)
+
+    and: 'the field is defined correctly'
+    def qtyFieldLine = TextUtils.findLine(page, 'id: "qty"')
+    JavascriptTestUtils.extractProperty(qtyFieldLine, 'value') == "1.2"
   }
 
   // test with efEdit but no after option

@@ -44,8 +44,8 @@ The main parameters/body supported are:
 | *type*  | The input field type (e.g. _'password'_ or _'password-no-auto'_).
             _'password-no-auto'_ will prevent the browser from auto-completing the password.
             This is useful when the admin user is creating User records.
-| *value* | The initial value for the field.  Ignored if *valueName* is given.
-| *valueName* | The name of the element in the display model that holds the value object.
+| *value* | The initial value for the field.  Ignored if *modelName* is given.
+| *modelName* | The name of the element in the display model that holds the value object.
                 This is typically used with
                 link:guide.html#configurable-types[Configurable Types^] icon:share-square-o[role="link-blue"]
                 such as
@@ -170,7 +170,7 @@ enter different data. The data is stored in the custom field holder for the obje
 .Example - FlexType Field with efField with Configurable Types - GUI
 ----
 <@efForm id="logRMA">
-  <@efField field="RMA.rmaType" id="rmaType" valueName="rmaDataModel"/>  // <.>
+  <@efField field="RMA.rmaType" id="rmaType" modelName="rmaDataModel"/>  // <.>
 <@/efForm>
 ----
 <.> This expects the object to hold the values in the (`rmaDataModel`) in the model.  This
