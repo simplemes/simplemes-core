@@ -199,9 +199,6 @@ _ef_tk.toolkit = function () {
       }
       url = path + "?" + searchParams;
 
-      console.log(args);
-
-
       return url;
     },
     _alert: function (msg) {
