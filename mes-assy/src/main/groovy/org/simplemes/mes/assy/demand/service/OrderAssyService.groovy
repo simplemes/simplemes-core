@@ -135,7 +135,7 @@ class OrderAssyService implements OrderReleasePoint {
    *
    * @param request The request.  Modified.
    */
-  protected void resolveComponentForRequest(AddOrderAssembledComponentRequest request) {
+  void resolveComponentForRequest(AddOrderAssembledComponentRequest request) {
     def order = request.order
     if (request.bomSequence) {
       // See if a bomSequence can be used to find the component requirements
@@ -306,6 +306,7 @@ class OrderAssyService implements OrderReleasePoint {
    */
   @SuppressWarnings("AbcMetric")
   List<OrderComponentState> findComponentAssemblyState(FindComponentAssemblyStateRequest request) {
+    // TODO: Add support for paging and use large page size in GUI (100)
     List<OrderComponentState> res = []
     if (!request || !request.demand) {
       return res
@@ -401,6 +402,8 @@ class OrderAssyService implements OrderReleasePoint {
                                                           qtyAssembled: nonBOM.qty)
         orderComponentState.assemblyData = nonBOM.assemblyData
         orderComponentState.customFields = nonBOM.customFields
+        orderComponentState.canBeRemoved = true
+        orderComponentState.canBeAssembled = false
         addAssemblyDataValues(orderComponentState, nonBOM)
         determineStateValues(orderComponentState)
         res << orderComponentState
@@ -421,12 +424,20 @@ class OrderAssyService implements OrderReleasePoint {
   static void determineStateValues(OrderComponentState orderComponentState) {
     if (orderComponentState.qtyAssembled == 0.0) {
       orderComponentState.overallState = OrderComponentStateEnum.EMPTY
+      orderComponentState.canBeAssembled = true
+      orderComponentState.canBeRemoved = false
     } else if (orderComponentState.qtyAssembled == orderComponentState.qtyRequired) {
       orderComponentState.overallState = OrderComponentStateEnum.FULL
+      orderComponentState.canBeAssembled = false
+      orderComponentState.canBeRemoved = true
     } else if (orderComponentState.qtyAssembled > orderComponentState.qtyRequired) {
       orderComponentState.overallState = OrderComponentStateEnum.OVER
+      orderComponentState.canBeAssembled = false
+      orderComponentState.canBeRemoved = true
     } else {
       orderComponentState.overallState = OrderComponentStateEnum.PARTIAL
+      orderComponentState.canBeAssembled = true
+      orderComponentState.canBeRemoved = true
     }
     orderComponentState.overallStateString = orderComponentState.overallState.toStringLocalized()
 

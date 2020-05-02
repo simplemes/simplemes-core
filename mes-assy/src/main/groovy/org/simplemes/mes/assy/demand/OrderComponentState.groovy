@@ -5,6 +5,8 @@ import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.misc.NameUtils
 
+import javax.persistence.ManyToOne
+
 /*
  * Copyright Michael Houston 2016. All rights reserved.
  * Original Author: mph
@@ -54,6 +56,7 @@ class OrderComponentState {
   /**
    * The FlexType used to define the assembly data for this component (<b>Optional</b>).
    */
+  @ManyToOne(targetEntity = FlexType)
   FlexType assemblyData
 
   /**
@@ -88,5 +91,15 @@ class OrderComponentState {
    * The qtys and overall state of this component as a string.  For example: '0/1 Empty'
    */
   String qtyAndStateString
+
+  /**
+   * If set to true, then the component can be removed.
+   */
+  boolean canBeRemoved = true
+
+  /**
+   * If set to true, then the component can be assembled (is not fully assembled).
+   */
+  boolean canBeAssembled = true
 
 }

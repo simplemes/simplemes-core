@@ -684,6 +684,8 @@ class OrderAssyServiceSpec extends BaseSpecification {
     orderComponentState[0].overallStateString == stateString
     orderComponentState[0].overallState == OrderComponentStateEnum.PARTIAL
     orderComponentState[0].percentAssembled == 40
+    orderComponentState[1].canBeAssembled
+    orderComponentState[1].canBeRemoved
     UnitTestUtils.assertContainsAllIgnoreCase(orderComponentState[0].qtyAndStateString, ['0.4/1', stateString])
 
     orderComponentState[1].sequence == 20
@@ -692,6 +694,8 @@ class OrderAssyServiceSpec extends BaseSpecification {
     orderComponentState[1].overallStateString == stateString
     orderComponentState[1].overallState == OrderComponentStateEnum.PARTIAL
     orderComponentState[1].percentAssembled == 50
+    orderComponentState[1].canBeAssembled
+    orderComponentState[1].canBeRemoved
     UnitTestUtils.assertContainsAllIgnoreCase(orderComponentState[1].qtyAndStateString, ['1/2', stateString])
   }
 
@@ -714,10 +718,14 @@ class OrderAssyServiceSpec extends BaseSpecification {
     orderComponentState[0].component == 'CPU'
     orderComponentState[0].qtyRequired == 1.0
     orderComponentState[0].qtyAssembled == 0.0
+    orderComponentState[0].canBeAssembled
+    !orderComponentState[0].canBeRemoved
 
     orderComponentState[1].sequence == 20
     orderComponentState[1].component == 'BOARD'
     orderComponentState[1].qtyAssembled == 1.0
+    orderComponentState[1].canBeAssembled
+    orderComponentState[1].canBeRemoved
   }
 
   @Rollback
@@ -812,6 +820,8 @@ class OrderAssyServiceSpec extends BaseSpecification {
     orderComponentState[0].percentAssembled == 0
     orderComponentState[0].sequencesForRemoval.size() == 1
     orderComponentState[0].sequencesForRemoval[0] == orderAssembledComponent.sequence
+    !orderComponentState[0].canBeAssembled
+    orderComponentState[0].canBeRemoved
   }
 
   @Rollback

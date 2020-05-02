@@ -3,16 +3,20 @@ package org.simplemes.mes.assy.demand.controller
 import groovy.util.logging.Slf4j
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
+import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.http.annotation.Post
+import io.micronaut.http.annotation.Produces
 import io.micronaut.security.annotation.Secured
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.controller.BaseController
 import org.simplemes.eframe.controller.ControllerUtils
-import org.simplemes.eframe.custom.domain.FlexType
+import org.simplemes.eframe.controller.StandardModelAndView
+import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.i18n.GlobalUtils
+import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.web.task.TaskMenuItem
 import org.simplemes.mes.assy.demand.AddOrderAssembledComponentRequest
 import org.simplemes.mes.assy.demand.ComponentRemoveUndoAction
@@ -21,10 +25,10 @@ import org.simplemes.mes.assy.demand.ComponentReportDetail
 import org.simplemes.mes.assy.demand.FindComponentAssemblyStateRequest
 import org.simplemes.mes.assy.demand.OrderComponentStateEnum
 import org.simplemes.mes.assy.demand.RemoveOrderAssembledComponentRequest
+import org.simplemes.mes.assy.demand.domain.OrderAssembledComponent
 import org.simplemes.mes.assy.demand.service.OrderAssyService
 import org.simplemes.mes.demand.DemandObject
 import org.simplemes.mes.demand.domain.Order
-import org.simplemes.mes.product.domain.Product
 
 import javax.annotation.Nullable
 import javax.inject.Inject
@@ -85,14 +89,25 @@ class OrderAssyController extends BaseController {
 
 
   /**
-   * Gives the assembly state of a given order/LSN.
+   * Displays the core assembly activity page.
+   * @param request The request.
+   * @param principal The user logged in.
+   * @return The model/view to display.
    */
-  def assemblyScanActivity() {
-    log.debug('assemblyScanActivity: params = {}', params)
+  @SuppressWarnings("unused")
+  @Produces(MediaType.TEXT_HTML)
+  @Get("/assemblyActivity")
+  StandardModelAndView assemblyActivity(HttpRequest request, @Nullable Principal principal) {
+    def view = "assy/demand/assembly"
+    def modelAndView = new StandardModelAndView(view, principal, this)
+    //def params = ControllerUtils.instance.convertToMap(request.parameters)
+
+    // No model is used here.
+    return modelAndView
   }
 
   /**
-   * Provides the assemble component dialog for a single component with Flex Type.
+   * Displays the assemble component dialog for a single component with Flex Type.
    *
    * <h3>HTTP Parameters</h3>
    * The supported parameters are:
@@ -100,27 +115,64 @@ class OrderAssyController extends BaseController {
    *   <li><b>order</b> - The order to add the components for (<b>order or lsn is required</b>). </li>
    *   <li><b>lsn</b> - The lsn to add the components for (<b>order or lsn is required</b>). </li>
    *   <li><b>component</b> - The component to assembled (<b>required</b>). </li>
-   *   <li><b>flexType</b> - The FlexType used to define the data fields to collect (<b>Optional</b>). </li>
+   *   <li><b>bomSequence</b> - The BOM Sequence for the component to assemble (<b>Optional</b>). </li>
+   *   <li><b>assemblyData</b> - The FlexType used to define the data fields to collect (<b>Optional</b>). </li>
    * </ul>
+   * @param request The request.
+   * @param principal The user logged in.
+   * @return The model/view to display.
    */
-  def assembleComponentDialog() {
-    // TODO: Fix when GUI is migrated.
-    log.debug('assembleComponentDialog: params = {}', params)
-    ArgumentUtils.checkMissing(params.assemblyData, 'params.assemblyData')
-    ArgumentUtils.checkMissing(params.component, 'params.component')
-    ArgumentUtils.checkMissing(params.order, 'params.order')
+  @SuppressWarnings("unused")
+  @Produces(MediaType.TEXT_HTML)
+  @Get("/assembleComponentDialog")
+  StandardModelAndView assembleComponentDialog(HttpRequest request, @Nullable Principal principal) {
+    def view = "assy/demand/assembleComponentDialog"
+    def modelAndView = new StandardModelAndView(view, principal, this)
+    def params = ControllerUtils.instance.convertToMap(request.parameters)
 
-    def flexType = FlexType.findByFlexType(params.assemblyData as String)
-    def component = Product.findByProduct(params.component as String)
-    def order = Order.findByOrder(params.order as String)
-    def orderBOMComponent = determineOrderBOMComponent(params, order)
-    def addComponentRequest = new AddOrderAssembledComponentRequest(order: order,
-                                                                    component: component,
-                                                                    assemblyData: flexType,
-                                                                    orderBOMComponent: orderBOMComponent)
-    respond addComponentRequest
-    return addComponentRequest  // Return for easy Unit Testing
+    modelAndView['componentModel'] = resolveComponent(params)
+
+    return modelAndView
   }
+
+  /**
+   * Resolves the assembleComponentDialog() HTTP parameters into a prototype OrderAssembledComponent object
+   * that is used for the dialog field's model.
+   * @param params The HTTP params.
+   * @return The OrderAssembledComponent prototype for the planned component.
+   */
+  OrderAssembledComponent resolveComponent(Map params) {
+    def res = new OrderAssembledComponent()
+    ArgumentUtils.checkMissing(params.order, 'order')
+    def order = Order.findByOrder(params.order as String)
+
+    // Build an add request so the service can fill in some details.
+    def bomSequence = ArgumentUtils.convertToInteger(params.bomSequence)
+    def component = null
+    if (!bomSequence && params.component) {
+      def bomComponent = order.components.find { it.component.product == params.component }
+      component = bomComponent?.component
+    }
+    def addRequest = new AddOrderAssembledComponentRequest(order: order, bomSequence: bomSequence,
+                                                           component: component)
+    if (addRequest.order && (addRequest.bomSequence || addRequest.component)) {
+      orderAssyService.resolveComponentForRequest(addRequest)
+    }
+
+    component = addRequest.component
+    if (component) {
+      res.component = component
+      res.qty = addRequest.qty
+      res.assemblyData = component.assemblyDataType
+    } else {
+      def s = params.bomSequence ? "(sequence $params.bomSequence)" : params.component
+      //error.10000.message=Could not find component {1} for order {0}.
+      throw new BusinessException(10000, [params.order, s])
+    }
+
+    return res
+  }
+
 
   /**
    * Provides the removal single component dialog for a removing a single component.
@@ -266,14 +318,14 @@ class OrderAssyController extends BaseController {
       list = list[(offset..end)]
     }
 
-    def map = [totalAvailable: listSize, fullyAssembled: fullyAssembled, list: list]
+    def map = [total_count: listSize, fullyAssembled: fullyAssembled, list: list]
 
     ControllerUtils.formatResponse(this, map)
   }
 
   /**
    * Returns the assembly state of a given order/LSN.
-   * Returns a standard JSON list of OrderComponentState POGOs.  This includes the normal totalAvailable value.
+   * Returns a standard JSON list of OrderComponentState POGOs.  This includes the normal total_count value.
    * Also included is a boolean 'fullyAssembled' that is true if the order/lsn is fully assembled.
    *
    * <h3>HTTP Parameters</h3>
@@ -285,9 +337,14 @@ class OrderAssyController extends BaseController {
    * </ul>
    *
    *
-   * <p>
-   * <b>Response</b>: List<OrderComponentState> {@link org.simplemes.mes.assy.demand.OrderComponentState} (JSON format)
-   *
+   * <h3>Response</h3>
+   * A JSON formatted map with these elements:
+   * <ul>
+   *   <li><b>data</b> - List<OrderComponentState> {@link org.simplemes.mes.assy.demand.OrderComponentState} (JSON format) </li>
+   *   <li><b>total_count</b> - The number of component records in the list. </li>
+   *   <li><b>fullyAssembled</b> - 'true' if the order is fully assembled. </li>
+   * </ul>
+
    */
   @Get('/findComponentAssemblyState')
   @SuppressWarnings("unused")
@@ -305,7 +362,7 @@ class OrderAssyController extends BaseController {
       // Missing order/lsn and no components found make sure the fullyAssembled is false.
       fullyAssembled = false
     }
-    def s = Holders.objectMapper.writeValueAsString(totalAvailable: listSize, fullyAssembled: fullyAssembled, list: list)
+    def s = Holders.objectMapper.writeValueAsString(total_count: listSize, fullyAssembled: fullyAssembled, data: list)
 
     return HttpResponse.ok(s)
 
@@ -352,10 +409,10 @@ class OrderAssyController extends BaseController {
    */
   def componentReportList() {
     log.debug('componentReportList: params = {}', params)
-    def res = [totalAvailable: 0, list: []]
+    def res = [total_count: 0, list: []]
     if (params.query) {
       def searchResults = searchService.globalSearch(params.query, params)
-      res.totalAvailable = searchResults.totalHits
+      res.total_count = searchResults.totalHits
       for (hit in searchResults.hits) {
         def dtl = new ComponentReportDetail(searchHit: hit.displayValue)
         if (hit.object instanceof Order) {

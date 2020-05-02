@@ -4,9 +4,11 @@ import groovy.json.JsonSlurper
 import io.micronaut.http.HttpStatus
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.custom.domain.FlexType
+import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.test.BaseAPISpecification
 import org.simplemes.eframe.test.ControllerTester
 import org.simplemes.eframe.test.DataGenerator
+import org.simplemes.eframe.test.JavascriptTestUtils
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.mes.assy.demand.AssembledComponentStateEnum
 import org.simplemes.mes.assy.demand.domain.OrderAssembledComponent
@@ -76,9 +78,9 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     and: 'the record is in the database'
     OrderAssembledComponent.withTransaction {
       def comp2 = OrderAssembledComponent.findByUuid(orderAssembledComponent.uuid)
-      comp2.order == order
-      comp2.getAssemblyDataValue('FIELD1') == 'ACME-101'
-      comp2.getAssemblyDataValue('FIELD2') == 'ACME-102'
+      assert comp2.order == order
+      assert comp2.getAssemblyDataValue('FIELD1') == 'ACME-101'
+      assert comp2.getAssemblyDataValue('FIELD2') == 'ACME-102'
       true
     }
   }
@@ -117,9 +119,9 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     and: 'the record is in the database'
     OrderAssembledComponent.withTransaction {
       def comp2 = OrderAssembledComponent.findByUuid(UUID.fromString((String) json.uuid))
-      comp2.lsn == lsn
-      comp2.workCenter == workCenter
-      comp2.location == "BIN-27"
+      assert comp2.lsn == lsn
+      assert comp2.workCenter == workCenter
+      assert comp2.location == "BIN-27"
       true
     }
   }
@@ -157,9 +159,9 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     def json = new JsonSlurper().parseText(res)
 
     and: 'result content is correct'
-    json.totalAvailable == 2
+    json.total_count == 2
     json.fullyAssembled == false
-    def orderComponentStates = json.list as List
+    def orderComponentStates = json.data as List
     orderComponentStates.size() == 2
 
     orderComponentStates[0].component == 'CPU'
@@ -194,8 +196,8 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     def json = new JsonSlurper().parseText(res)
 
     and: 'result content is correct'
-    json.totalAvailable == 2
-    def orderComponentStates = json.list as List
+    json.total_count == 2
+    def orderComponentStates = json.data as List
     orderComponentStates.size() == 2
 
     orderComponentStates[0].component == 'CPU'
@@ -225,8 +227,8 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     def json = new JsonSlurper().parseText(res)
 
     and: 'result content is correct'
-    json.totalAvailable == 1
-    def orderComponentStates = json.list as List
+    json.total_count == 1
+    def orderComponentStates = json.data as List
     orderComponentStates.size() == 1
 
     orderComponentStates[0].component == 'MOTHERBOARD'
@@ -244,7 +246,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     def json = new JsonSlurper().parseText(res)
 
     and: 'result content is correct'
-    json.totalAvailable == 0
+    json.total_count == 0
     !json.fullyAssembled
   }
 
@@ -261,7 +263,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     def json = new JsonSlurper().parseText(res)
 
     and: 'result content is correct'
-    json.totalAvailable == 0
+    json.total_count == 0
     !json.fullyAssembled
   }
 
@@ -400,6 +402,101 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     then: 'the response is correct'
     def json = new JsonSlurper().parseText(res)
     UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['order', 'gibberish'])
+  }
+
+  def "verify that assembleComponentDialog handles the simple case - order and bomSequence"() {
+    given: 'a released order with components'
+    def flexType = DataGenerator.buildFlexType(fieldCount: 2)
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'], assemblyDataType: flexType)
+
+    when: 'the request is sent to the controller'
+    def others = "&_panel=A&_variable=_A"
+    login()
+    def page = sendRequest(uri: "/orderAssy/assembleComponentDialog?order=$order.order&bomSequence=20$others")
+
+    then: 'the response is valid'
+    def qtyFieldLine = TextUtils.findLine(page, 'id: "qty"')
+    JavascriptTestUtils.extractProperty(qtyFieldLine, 'value') == "2"
+
+    // {view: "combo", id: "assemblyData", name: "assemblyData", value: "e02217a0-e495-4b5c-85be-73131d59f2d1" , editable: true  ,inputWidth: tk.pw("15em") ,options: [
+    def assyDataFieldLine = TextUtils.findLine(page, 'id: "assemblyData"')
+    JavascriptTestUtils.extractProperty(assyDataFieldLine, 'value') == "${flexType.uuid}"
+  }
+
+  def "verify that resolveComponent handles the case - order and bomSequence"() {
+    given: 'a released order with components'
+    def flexType = DataGenerator.buildFlexType(fieldCount: 2)
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'], assemblyDataType: flexType)
+
+    when: 'the request is sent to the controller'
+    def orderComp = controller.resolveComponent([order: order.order, bomSequence: '20'])
+
+    then: 'the resolved response is valid'
+    orderComp.component.product == 'MOTHERBOARD'
+    orderComp.qty == 2.0
+    orderComp.assemblyData == flexType
+  }
+
+  def "verify that resolveComponent handles the case - order and component"() {
+    given: 'a released order with components'
+    def flexType = DataGenerator.buildFlexType(fieldCount: 2)
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'], assemblyDataType: flexType)
+
+    when: 'the request is sent to the controller'
+    def orderComp = controller.resolveComponent([order: order.order, component: 'MOTHERBOARD'])
+
+    then: 'the resolved response is valid'
+    orderComp.component.product == 'MOTHERBOARD'
+    orderComp.qty == 2.0
+    orderComp.assemblyData == flexType
+  }
+
+  def "verify that resolveComponent handles the case - order and no sequence/component"() {
+    given: 'a released order with components'
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'])
+
+    when: 'the request is sent to the controller'
+    controller.resolveComponent([order: order.order])
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['component', order.order])
+  }
+
+  def "verify that resolveComponent handles the case - no order"() {
+    given: 'a released order with components'
+    AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'])
+
+    when: 'the request is sent to the controller'
+    controller.resolveComponent([:])
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['order'])
+  }
+
+  def "verify that resolveComponent handles the case - order and wrong sequence"() {
+    given: 'a released order with components'
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'])
+
+    when: 'the request is sent to the controller'
+    controller.resolveComponent([order: order.order, bomSequence: 237])
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['component', order.order, '237'])
+  }
+
+  def "verify that resolveComponent handles the case - order and wrong component"() {
+    given: 'a released order with components'
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'])
+
+    when: 'the request is sent to the controller'
+    controller.resolveComponent([order: order.order, component: 'gibberish'])
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['component', order.order, 'gibberish'])
   }
 
 }

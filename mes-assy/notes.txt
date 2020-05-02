@@ -1,6 +1,18 @@
 Scratch
 ===========
 
+Assy Activity
+  Assemble component
+  Remove component
+  Scan support.
+  Support read-only (in efField for config types).
+  GUI tests for assembly dialog.
+
+.adoc
+GUI Test backlog
+  Order - BOM and Assembled components.  Editable in edit mode?
+  Product - Delete rows of BOM records.
+
 findAssembledComponents
   removeComponentDialog.gsp  Convert to findComponentAssemblyState
 
@@ -48,7 +60,7 @@ Work Center Setup
     stockPoint
     stockArea
     stock
-Auto Assy support
+Auto Assy support - Operation mode (Auto-assy on start/complete).
 Order Assembled Components
   Reports/Search?
   Simple component barcode scan - Dialog for Assy Data?
