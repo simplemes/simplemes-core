@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.JsonSerializer
 import com.fasterxml.jackson.databind.SerializerProvider
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
+import org.simplemes.eframe.data.format.ConfigurableTypeDomainFormat
 
 /**
  * A serializer for writing custom fields to a JSON output.
@@ -50,8 +51,16 @@ class CustomFieldSerializer extends JsonSerializer<Object> {
         def map = Holders.objectMapper.readValue((String) value, Map)
         def s = map[field.name]
         gen.writeObjectField(field.name, s)
+      } else if (field.format == ConfigurableTypeDomainFormat.instance) {
+        def map = Holders.objectMapper.readValue((String) value, Map)
+        for (String key in map.keySet()) {
+          if (key.startsWith("${field.name}_")) {
+            gen.writeObjectField(key, map[key])
+          }
+        }
       }
     }
+
   }
 
 }

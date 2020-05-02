@@ -151,6 +151,7 @@ class DataGenerator {
    *   <li><b>defaultFlexType</b> - The default flex type is set (<b>Default</b>: false). </li>
    * </ul>
    *
+   * <b>Note:</b> This method will create its own transaction, if needed.
    * @param options The options. See above.  Optional.
    * @return
    */

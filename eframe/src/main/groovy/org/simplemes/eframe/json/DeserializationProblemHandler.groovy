@@ -10,7 +10,9 @@ import com.fasterxml.jackson.databind.JsonDeserializer
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
+import org.simplemes.eframe.data.ConfigurableTypeInterface
 import org.simplemes.eframe.data.FieldDefinitionInterface
+import org.simplemes.eframe.data.format.ConfigurableTypeDomainFormat
 import org.simplemes.eframe.data.format.ListFieldLoaderInterface
 import org.simplemes.eframe.domain.DomainBinder
 import org.simplemes.eframe.misc.NameUtils
@@ -71,8 +73,27 @@ class DeserializationProblemHandler extends com.fasterxml.jackson.databind.deser
         fieldDefinition.setFieldValue(beanOrClass, value)
         return true
       }
+    } else {
+      for (field in fieldDefinitions) {
+        if (propertyName.startsWith("${field.name}_") && field.format == ConfigurableTypeDomainFormat.instance) {
+          // This is probably a configurable type field value, so we can save it in the new object.
+          // Need to convert it to the right type
+          def configType = beanOrClass[field.name]
+          if (configType instanceof ConfigurableTypeInterface) {
+            // Use the field type in the Configurable type to convert from string to the right type.
+            def configFields = configType.determineInputFields(field.name)
+            def jsonValue = p.getText()
+            FieldDefinitionInterface configField = configFields.find { it.name == propertyName } as FieldDefinitionInterface
+            if (configField) {
+              jsonValue = configField.format.convertFromJsonFormat(p.getText(), configField)
+            }
+            //println "no field found. propertyName = $propertyName for $jsonValue ${jsonValue.getClass()}"
+            ExtensibleFieldHelper.instance.setFieldValue(beanOrClass, propertyName, jsonValue)
+            break
+          }
+        }
+      }
     }
-
 
     return false
   }

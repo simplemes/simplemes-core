@@ -25,6 +25,7 @@ import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
+import sample.domain.RMA
 import sample.domain.SampleParent
 
 /**
@@ -113,6 +114,22 @@ class CustomFieldSerializerSpec extends BaseSpecification {
     EnumFieldFormat            | ReportTimeIntervalEnum | ReportTimeIntervalEnum.YESTERDAY
     EncodedTypeFieldFormat     | BasicStatus            | DisabledStatus.instance
     DomainReferenceFieldFormat | AllFieldsDomain        | _
+  }
+
+  @Rollback
+  def "verify that serialize handles configurable types - flexType case"() {
+    given: 'a domain object with a flexType'
+    def flexType = DataGenerator.buildFlexType(fieldCount: 2)
+    def rma = new RMA(rmaType: flexType)
+    rma.setRmaTypeValue('FIELD1', 'ACME')
+
+    when: 'the JSON is created'
+    def s = Holders.objectMapper.writeValueAsString(rma)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+
+    then: 'the JSON is correct'
+    def json = new JsonSlurper().parseText(s)
+    json.rmaType_FIELD1 == 'ACME'
   }
 
 }
