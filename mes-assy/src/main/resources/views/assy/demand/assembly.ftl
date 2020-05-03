@@ -84,6 +84,7 @@
             // Force a refresh of the list
             var event = {
               type: 'ORDER_COMPONENT_STATUS_CHANGED',
+              source: '/orderAssy/assemblyActivity',
               order: p.order,
               component: rowData.component,
               bomSequence: response.bomSequence

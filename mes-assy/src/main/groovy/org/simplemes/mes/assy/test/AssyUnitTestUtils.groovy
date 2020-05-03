@@ -36,6 +36,22 @@ class AssyUnitTestUtils extends MESUnitTestUtils {
    * <p>
    * <b>This method creates a <b>transaction</b> (if needed).</b>.
    *
+   * @param options See for the {@link #releaseOrder(java.util.Map)} for details.  (<b>Optional</b>)
+   * @return The order(s) created and released.
+   */
+  static List<Order> releaseOrders(Map options = [:]) {
+    if (options.components) {
+      // Force a product for the base-class creation.
+      options.productName = options.product ?: "PC"
+    }
+    return instance.releaseOrdersInternal(options)
+  }
+
+  /**
+   * Create and release a single order, optionally on a routing with or without LSNs.
+   * This is a convenience function that calls {@link #releaseOrders(java.util.Map)}.
+   * <p>
+   * <b>This method creates a <b>transaction</b> (if needed).</b>.
    * <h3>Options</h3>
    * See {@link MESUnitTestUtils#releaseOrders(java.util.Map)} for other options.
    * The options can be:
@@ -52,24 +68,8 @@ class AssyUnitTestUtils extends MESUnitTestUtils {
    *   static dirtyDomains = [ActionLog, Order, Product, MasterRouting]
    * </pre>
    *
-   * @param options See options above. (<b>Optional</b>)
-   * @return The order(s) created and released.
-   */
-  static List<Order> releaseOrders(Map options = [:]) {
-    if (options.components) {
-      // Force a product for the base-class creation.
-      options.productName = options.product ?: "PC"
-    }
-    return instance.releaseOrdersInternal(options)
-  }
-
-  /**
-   * Create and release a single order, optionally on a routing with or without LSNs.
-   * This is a convenience function that calls {@link #releaseOrders(java.util.Map)}.
-   * <p>
-   * <b>This method creates a <b>transaction</b> (if needed).</b>.
    *
-   * @param options See for the {@link #releaseOrders(java.util.Map)} for details.  (<b>Optional</b>)
+   * @param options See options above. (<b>Optional</b>)
    * @return The order(s) created and released.
    */
   static Order releaseOrder(Map options = [:]) {

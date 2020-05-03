@@ -7,6 +7,7 @@ Assy Activity
   Scan support.
   Support read-only (in efField for config types).
   GUI tests for assembly dialog.
+  mes-core - Deleting Order should delete ActionLog records.
 
 .adoc
 GUI Test backlog
@@ -18,7 +19,7 @@ findAssembledComponents
 
 findComponentAssemblyState
   assemblyReport
-  assemblyScanActivity
+  assemblyActivity
 
 
 
@@ -26,20 +27,6 @@ Bugs
 =====
 Create Product with components.  Parent record is not created when product_component is saved.
 
-Grails 3.3.2 Upgrade
---------------------
-
-update ordr set lsn_tracking_option='ORDER_ONLY' where lsn_tracking_option='O';
-update ordr set lsn_tracking_option='LSN_ALLOWED' where lsn_tracking_option='B';
-update product set lsn_tracking_option='ORDER_ONLY' where lsn_tracking_option='O';
-update product set lsn_tracking_option='LSN_ALLOWED' where lsn_tracking_option='B';
-update order_assembled_component set state='ASSEMBLED' where state='A';
-update order_assembled_component set state='REMOVED' where state='R';
-
-alter table order_oper_state add column date_created timestamp;
-alter table order_oper_state add column last_updated timestamp;
-alter table lsn_oper_state add column date_created timestamp;
-alter table lsn_oper_state add column last_updated timestamp;
 
 
 Big Rocks
