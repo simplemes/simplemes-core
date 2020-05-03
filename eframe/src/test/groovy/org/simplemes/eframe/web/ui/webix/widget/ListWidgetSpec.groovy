@@ -236,6 +236,9 @@ class ListWidgetSpec extends BaseWidgetSpecification {
     def tooltip = lookup('remove.tooltip')
     renderer.contains("<span>$label</span>")
     renderer.contains("title='$tooltip'")
+
+    def buttonLine = TextUtils.findLine(renderer, '<button')
+    buttonLine.contains("id='remove'")
   }
 
   def "verify that the action buttons options are supported - icon"() {

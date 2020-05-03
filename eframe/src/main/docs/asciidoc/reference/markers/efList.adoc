@@ -128,7 +128,8 @@ attributes:
 * _name_@buttonEnableColumn - The name of the data field that will enable/disable this button.
 
 These options use a common _name_ prefix to identify the behavior of the button.  You can have
-as many unique buttons as needed in the actions column.
+as many unique buttons as needed in the actions column.  The _name_ prefix is also used as the HTML ID
+of the `button` created.
 
 See <<List Action Button Example>> for an example use of the buttons.
 

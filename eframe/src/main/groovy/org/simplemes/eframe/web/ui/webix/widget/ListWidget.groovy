@@ -349,14 +349,14 @@ class ListWidget extends BaseWidget {
         }
         if (icon) {
           sb << """
-            s += "<button class='webix_img_btn' style='line-height:32px;max-width:32px;' title='$tooltip' "+
+            s += "<button class='webix_img_btn' id='$buttonName' style='line-height:32px;max-width:32px;' title='$tooltip' "+
             "onclick='tk._gridActionButtonHandler(event,\\"$id\\",\\""+rowID+"\\",\\"$script\\")'>" + 
             "<span class='webix_icon_btn fas $icon' style='max-width:32px;'></span>"+
             "</button>";
           """
         } else {
           sb << """
-            s += "<button class='webix_img_btn_abs webixtype_base' style='line-height:28px;' title='$tooltip' "+
+            s += "<button class='webix_img_btn_abs webixtype_base' id='$buttonName' style='line-height:28px;' title='$tooltip' "+
             "onclick='tk._gridActionButtonHandler(event,\\"$id\\",\\""+rowID+"\\",\\"$script\\")'>" + 
             "<span>$label</span>"+
             "</button>";
