@@ -81,7 +81,7 @@ class OrderAssyController extends BaseController {
   HttpResponse addComponent(@Body String body, @Nullable Principal principal) {
     def mapper = Holders.objectMapper
     AddOrderAssembledComponentRequest request = mapper.readValue(body, AddOrderAssembledComponentRequest)
-    log.debug('addComponent() {}', request)
+    log.debug('addComponent() body={}, addRequest={} ', body, request)
     def response = orderAssyService.addComponent(request)
     def res = mapper.writeValueAsString(response)
     return HttpResponse.ok(res)
@@ -292,16 +292,16 @@ class OrderAssyController extends BaseController {
     }
     // If we think it might be fully assembled, make sure it really is (order given and it has components).
     if (fullyAssembled) {
-      if (!demand) {
-        // If no order/LSN is used, the don't flag as fully assembled.
-        fullyAssembled = false
-      } else {
+      if (demand) {
         // Make sure there are components for the order
         order = order ?: demand?.order
         if (!order.components) {
           // No BOM components, so don't flag as fully assembled.
           fullyAssembled = false
         }
+      } else {
+        // If no order/LSN is used, the don't flag as fully assembled.
+        fullyAssembled = false
       }
     }
 

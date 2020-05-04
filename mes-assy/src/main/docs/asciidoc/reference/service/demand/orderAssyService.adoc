@@ -54,7 +54,7 @@ This is a simple POGO that you must populate before you call the method.
                 component is to be assembled on (*Required*).
 | `lsn`       | The link:{mes-core-path}/guide.html#lsn[LSN^] icon:share-square-o[role="link-blue"] the component
                 is to be assembled on (*optional*).
-| `orderBOMComponent`| The link:groovydoc/org/simplemes/mes/assy/demand/OrderBOMComponent.html[OrderBOMComponent^]
+| `bomSequence`| The link:groovydoc/org/simplemes/mes/assy/demand/OrderBOMComponent.html[OrderBOMComponent^]
                     icon:share-square-o[role="link-blue"] from the order's list of components (*Optional*).
 | `component` | The component link:{mes-core-path}/guide.html#product[Product^] icon:share-square-o[role="link-blue"]
                 to be added to the order (*Required*).
@@ -71,6 +71,11 @@ This is a simple POGO that you must populate before you call the method.
 This method returns the
 The link:groovydoc/org/simplemes/mes/assy/demand/OrderAssembledComponent.html[OrderAssembledComponent^]
 icon:share-square-o[role="link-blue"] created for this request.
+
+NOTE: To handle assembly data values from the flex type, you must provide the assemblyData element
+      in the JSON input (via the controller) first.
+      This can be the flexType key field or its UUID.  If not given first, then the 'assemblyData_'
+      values will be ignored.
 
 [[order-assy-add-component-example]]
 ===== JSON Example

@@ -74,10 +74,14 @@
       width: '55%', height: '60%',
       buttons: ['assemble', 'cancel'],
       assemble: function () {
-        var values = $$('assembleComponent').getValues();
+        var values = {};
+        if (rowData.assemblyData) {  // Make sure the assemblyData reference is first to allow proper parsing of the values later.
+          values.assemblyData = rowData.assemblyData.uuid;
+        }
         values.order = p.order;
         values.lsn = p.lsn;
         values.bomSequence = rowData.sequence;
+        values = Object.assign(values, $$('assembleComponent').getValues());
         ef.postAjaxForm(values,'/orderAssy/addComponent',null,
           function(response) {
             var json = JSON.parse(response);

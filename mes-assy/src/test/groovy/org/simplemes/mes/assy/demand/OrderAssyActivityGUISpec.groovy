@@ -46,6 +46,10 @@ class OrderAssyActivityGUISpec extends BaseDashboardSpecification {
     when: 'the dashboard is displayed'
     displayDashboard(page: AssemblyActivityWCDashboardPage)
 
+    // No errors and the list is empty
+    assert messages.text() == ''
+    assert componentList.cell(0, 0).text() == ''
+
     and: 'the order is filled in'
     orderLSNField.input.value(order.order)
     sendKey(Keys.TAB)
@@ -97,6 +101,8 @@ class OrderAssyActivityGUISpec extends BaseDashboardSpecification {
     and: 'the values are filled in'
     addQtyField.input.value(NumberUtils.formatNumber(1.2))
     addField1.input.value('XYZZY')
+    sleep(1000)
+    sendKey(Keys.TAB)
 
     then: 'the dialog title is correct'
     def title = dialog0.title

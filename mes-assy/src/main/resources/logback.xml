@@ -32,4 +32,5 @@
   <logger name="org.simplemes.mes.demand" level="warn"/>
   <logger name="org.simplemes.mes.system.InitialData" level="error"/>
   <logger name="org.simplemes.mes" level="warn"/>
+  <logger name="org.simplemes.mes.assy" level="warn"/>
 </configuration>

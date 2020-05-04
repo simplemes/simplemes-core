@@ -64,6 +64,12 @@ class AddOrderAssembledComponentRequest {
 
   /**
    * The FlexType used to define the assembly data for this component (<b>Optional</b>).
+   * <p>
+   * <b>Note:</b> This is required if there are custom fields to be processed.  Otherwise, the custom fields
+   * will be ignored.
+   * See the mes-assy module reference for the OrderAssyService.addComponent() method in
+   * <a href="http://docs.simplemes.org/latest/guide.html">docs.simplemes.org</a> for details.
+   *
    */
   @JSONByKey
   FlexType assemblyData

@@ -418,9 +418,9 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     def qtyFieldLine = TextUtils.findLine(page, 'id: "qty"')
     JavascriptTestUtils.extractProperty(qtyFieldLine, 'value') == "2"
 
-    // {view: "combo", id: "assemblyData", name: "assemblyData", value: "e02217a0-e495-4b5c-85be-73131d59f2d1" , editable: true  ,inputWidth: tk.pw("15em") ,options: [
+    and: 'the combo box is readOnly'
     def assyDataFieldLine = TextUtils.findLine(page, 'id: "assemblyData"')
-    JavascriptTestUtils.extractProperty(assyDataFieldLine, 'value') == "${flexType.uuid}"
+    JavascriptTestUtils.extractProperty(assyDataFieldLine, 'label') == "${flexType.flexType}"
   }
 
   def "verify that resolveComponent handles the case - order and bomSequence"() {
