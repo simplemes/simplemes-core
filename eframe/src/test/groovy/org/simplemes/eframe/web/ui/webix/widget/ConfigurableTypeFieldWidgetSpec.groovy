@@ -167,6 +167,36 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
   }
 
   @Rollback
+  def "verify that the widget handles the readOnly mode for the combo-box only"() {
+    given: 'a flex type with multiple fields'
+    def flexType1 = DataGenerator.buildFlexType(fieldFormat: DateOnlyFieldFormat.instance)
+
+    and: 'a domain object for the value'
+    def rma = new RMA(rmaType: flexType1)
+
+    when: 'the UI element is built with a simulated marker attribute _combo@readOnly=true'
+    def markerParams = [:]
+    markerParams['_combo@readOnly'] = 'true'
+    def widgetContext = buildWidgetContext(domainObject: rma, name: 'rmaType',
+                                           format: ConfigurableTypeDomainFormat.instance,
+                                           type: FlexType, referenceType: FlexType,
+                                           parameters: markerParams)
+    def page = new ConfigurableTypeFieldWidget(widgetContext).build().toString()
+    //println "page = $page"
+
+    then: 'the page fragment is valid'
+    JavascriptTestUtils.checkScriptFragment("[$page]")
+
+    and: 'the main choice field is readOnly'
+    def mainFieldLine = TextUtils.findLine(page, 'id: "rmaType"')
+    JavascriptTestUtils.extractProperty(mainFieldLine, 'view') == 'label'
+
+    and: 'the configurable field is NOT readOnly'
+    def fieldLine = TextUtils.findLine(page, 'id: "rmaType_FIELD1"')
+    JavascriptTestUtils.extractProperty(fieldLine, 'view') == 'datepicker'
+  }
+
+  @Rollback
   def "verify that the widget handles quotes in the custom field value"() {
     given: 'a flex type with multiple fields'
     def flexType1 = DataGenerator.buildFlexType()

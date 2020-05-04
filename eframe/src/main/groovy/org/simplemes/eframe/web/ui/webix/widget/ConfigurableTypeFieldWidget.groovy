@@ -1,18 +1,17 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 import org.simplemes.eframe.data.ConfigurableTypeInterface
 import org.simplemes.eframe.data.FieldDefinitionFactory
 import org.simplemes.eframe.data.format.ConfigurableTypeDomainFormat
 import org.simplemes.eframe.data.format.DomainReferenceFieldFormat
+import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.web.ui.UIDefaults
 import org.simplemes.eframe.web.ui.WidgetFactory
 import org.simplemes.eframe.web.ui.WidgetInterface
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * This is a multi-field widget that supports an optional selection combobox that determines the dynamic fileds
@@ -20,6 +19,13 @@ import org.simplemes.eframe.web.ui.WidgetInterface
  *
  */
 class ConfigurableTypeFieldWidget extends BaseWidget {
+
+  /**
+   * The name of the marker attribute/param that indicates that the combobox for this widget will be read only.
+   * The other fields will be left as-is (probably editable).
+   */
+  public static final String COMBO_READ_ONLY_PARAMETER = '_combo@readOnly'
+
 
   /**
    * The (optional) drop-down that will let the user choose the specific type.  This choice
@@ -46,6 +52,10 @@ class ConfigurableTypeFieldWidget extends BaseWidget {
     def w = new WidgetContext(widgetContext, (Map) widgetContext.parameters.clone())
     w.fieldDefinition = FieldDefinitionFactory.copy(w.fieldDefinition, [format: DomainReferenceFieldFormat.instance])
     w.parameters.id = id
+    def comboReadOnly = ArgumentUtils.convertToBoolean(w.parameters[COMBO_READ_ONLY_PARAMETER])
+    if (comboReadOnly) {
+      w.readOnly = true
+    }
     comboboxWidget = new ComboboxWidget(w)
   }
 

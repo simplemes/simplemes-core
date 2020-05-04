@@ -51,6 +51,12 @@ The main parameters/body supported are:
                 such as
                 link:guide.html#flex-types[Flex Types^] icon:share-square-o[role="link-blue"].
                 See the example <<FlexType Field with efField>>.
+| *_combo@readOnly* | Special case setting for
+                      link:guide.html#configurable-types[Configurable Types^] icon:share-square-o[role="link-blue"]
+                      combo-box.  This prevents
+                      changes to the setting, but allows the user to enter values for the
+                      configurable fields themselves (e.g. 'returnDate' for the RMA example
+                      <<FlexType Field with efField>>).
 | *width* | The display width of the field.  This overrides the normal display width, which is
             based on the max field length.  Width can be a number (characters), em units ('20em')
             or percent ('15%'). (*Default:* Field's maxLength).
@@ -61,6 +67,7 @@ The main parameters/body supported are:
 | *after* | The field name to display this after.  Use only inside of edit/create/show fields.
 | *onChange* | Javascript to execute when the field changes (on field exit).
                This javascript has two variables available (`newValue`, `oldValue`).
+
 
 |===
 
@@ -187,11 +194,16 @@ StandardModelAndView logRMADialog(HttpRequest request, @Nullable Principal princ
 
      . . .
 
-  modelAndView['rmaDataModel'] = new RMA(rmaType: flexType)  // <.>
+  def defaultRMA = new RMA(rmaType: flexType) // <.>
+  defaultRMA.setRmaTypeValue('returnDate', new Date())
+  
+  modelAndView['rmaDataModel'] = defaultRMA   // <.>
 
   return modelAndView
 }
 ----
+<.> An RMA object is used as the default values for the displayed field.
+    The field values can be set too.
 <.> The `rmaDataModel` is set using the given object, with a default value (`flexType`).
     The custom field values can also be set in the custom field holder (as marked by the
     _@ExtensibleFieldHolder_ annotation).
