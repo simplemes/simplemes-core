@@ -172,7 +172,7 @@ class TextUtils {
    *
    * <h3>Options</h3>
    * <ul>
-   *   <li><b>highlightFieldNames</b> - If true, then highlight the field names with HTML bold.  (<b>default:</b> false) </li>
+   *   <li><b>highlight</b> - If true, then highlight the field names with HTML bold.  (<b>default:</b> false) </li>
    *   <li><b>maxLength</b> - The max length of the string.  If adding a field will expand beyond this length,
    *                          then the field will not be added, but a '...' will be added. (<b>default:</b> 100) </li>
    *   <li><b>newLine</b> - If true, then an HTML &lt;br&gt; is added between each name/value pair  (<b>default:</b> false).  </li>

@@ -518,6 +518,13 @@ _ef_tk.toolkit = function () {
       };
       tk._displayDialog(options);
     },
+    // Replacement for the webix.template.escape function that allows bold tags.
+    _escapeExceptForSafeTags: function (text) {
+      var s = webix.template.escape(text);
+      s = s.replace(/&lt;b&gt;/g, '<b>');
+      s = s.replace(/&lt;\/b&gt;/g, '</b>');
+      return s;
+    },
     // Finds the index in the given formData array that has the given field defined.  -1 if not found.
     _findFormRow: function (array, fieldName) {
       for (var i = 0; i < array.length; i++) {

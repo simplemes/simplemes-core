@@ -17,6 +17,7 @@ import org.simplemes.eframe.test.JavascriptTestUtils
 import org.simplemes.eframe.test.MockPreferenceHolder
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
+import org.simplemes.eframe.web.ui.webix.DomainToolkitUtils
 import sample.domain.SampleChild
 
 /**
@@ -40,7 +41,7 @@ class GridWidgetSpec extends BaseWidgetSpecification {
     def keyText = TextUtils.findLine(page, 'id: "key"')
     JavascriptTestUtils.extractProperty(keyText, 'editor') == 'text'
     JavascriptTestUtils.extractProperty(keyText, 'sort') == 'text'
-    JavascriptTestUtils.extractProperty(keyText, 'format') == 'webix.template.escape'
+    JavascriptTestUtils.extractProperty(keyText, 'format') == DomainToolkitUtils.FORMAT_ESCAPE_HTML_WITH_SAFE_TAGS
     JavascriptTestUtils.extractProperty(keyText, 'width') =~ /tk\.pw\("[\d\.]*%"\)/  // example: tk.pw("30.0%")
 
     and: 'the other column is defined'
@@ -221,7 +222,7 @@ class GridWidgetSpec extends BaseWidgetSpecification {
 
     and: 'the values are HTML escaped correctly on the client'
     def keyText = TextUtils.findLine(page, 'id: "key"')
-    JavascriptTestUtils.extractProperty(keyText, 'format') == 'webix.template.escape'
+    JavascriptTestUtils.extractProperty(keyText, 'format') == DomainToolkitUtils.FORMAT_ESCAPE_HTML_WITH_SAFE_TAGS
   }
 
   def "verify that widget builds basic structure correctly - client sort is based on the field type"() {

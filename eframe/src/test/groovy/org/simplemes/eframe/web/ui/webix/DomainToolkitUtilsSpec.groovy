@@ -47,14 +47,14 @@ class DomainToolkitUtilsSpec extends BaseSpecification {
     def name = TextUtils.findLine(page, 'id: "name"')
     name.contains("""header: {text: "${lookup('name.label')}"}""")
     name.contains("""adjust: false""")
-    name.contains("""format: webix.template.escape""")
+    name.contains("""format: ${DomainToolkitUtils.FORMAT_ESCAPE_HTML_WITH_SAFE_TAGS}""")
     name.contains("""template: "<a href='/allFieldsDomain/show/#uuid#'>#name#</a>\"""")
 
     and: 'the non-key string column is generated correctly'
     def title = TextUtils.findLine(page, 'id: "title"')
     title.contains("""header: {text: "${lookup('title.label')}"}""")
     title.contains("""adjust: false""")
-    title.contains("""format: webix.template.escape""")
+    title.contains("""format: ${DomainToolkitUtils.FORMAT_ESCAPE_HTML_WITH_SAFE_TAGS}""")
     !title.contains("""href""")
 
     and: 'the BigDecimal type is correct'
@@ -81,7 +81,7 @@ class DomainToolkitUtilsSpec extends BaseSpecification {
     then: 'the missing field is treated as a string'
     def unknownField = TextUtils.findLine(page, 'id: "unknownField"')
     unknownField.contains("""adjust: false""")
-    unknownField.contains("""format: webix.template.escape""")
+    unknownField.contains("""format: ${DomainToolkitUtils.FORMAT_ESCAPE_HTML_WITH_SAFE_TAGS}""")
     !unknownField.contains("""href""")
   }
 

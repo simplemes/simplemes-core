@@ -34,6 +34,11 @@ class DomainToolkitUtils {
   static DomainToolkitUtils instance = new DomainToolkitUtils()
 
   /**
+   * The javascript template formatter for HTML tags, but allows the safe tags (e.g. bold).
+   */
+  public static final String FORMAT_ESCAPE_HTML_WITH_SAFE_TAGS = 'tk._escapeExceptForSafeTags'
+
+  /**
    * Builds the column definitions needed for a GUI toolkit-based grid/table.
    *
    * <h3>options</h3>
@@ -106,7 +111,7 @@ class DomainToolkitUtils {
 
       // Add type-specific options
       if (type == String) {
-        sb << """, format: webix.template.escape"""
+        sb << """, format: $FORMAT_ESCAPE_HTML_WITH_SAFE_TAGS"""
       } else if (type == DateOnly) {
         sb << """, format: webix.i18n.dateFormatStr"""
       } else if (Date.isAssignableFrom(type)) {

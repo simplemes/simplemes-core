@@ -164,7 +164,7 @@ class OrderController extends BaseCrudRestController {
     def rng = new Random(1)
     def sequence = 10
     if (!componentList) {
-      def components = ['SEAT', 'WHEEL-27', 'HANDLE BARS', 'BRAKE ASSEMBLY']
+      def components = ['SEAT', 'WHEEL-27', 'HANDLE BARS', '<b>BRAKE</b> <i>ASSEMBLY</i>']
       def qtyRequires = [1.0, 2.0, 1.0, 2.0]
       componentList = []
       for (int i = 0; i < components.size(); i++) {
