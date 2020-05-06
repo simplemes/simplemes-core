@@ -2,7 +2,7 @@
 <script>
   <#assign panel = "${params._panel}"/>
   <#assign variable = "${params._variable}"/>
-  <@efPreloadMessages codes="addComponent.title"/>
+  <@efPreloadMessages codes="addComponent.title,removeComponent.title"/>
 
   <@efForm id="componentListForm${panel}" dashboard="true">
   <@efList id="componentList${panel}" columns="sequence,componentAndTitle,assemblyDataAsString,qtyAndStateString"
@@ -101,36 +101,69 @@
   }
 
   ${variable}.remove = function(rowData) {
-    // Find the highest numeric value in the given grid for the given column.
-    // If not a numeric column, then returns 0.
-    var sequences = rowData.sequencesForRemoval;
-    if (sequences != undefined) {
-      if (sequences.length == 1) {
-        removeSingleComponentBySequence($('#order').text(), sequences[0]);
-      } else if (sequences.length > 1) {
-        // Display a dialog to decide which to remove.
-        displayRemoveSingleComponentDialog($('#order').text(), sequences);
-      }
-    }
-  }
-  // Displays the remove component confirmation dialog.
-  //   order - The order to display the removal for, sequences - The list of component sequences to display in the dialog.
-  function displayRemoveSingleComponentDialog(order, sequences) {
     var uri = '/orderAssy/removeComponentDialog';
-    uri = eframe.addArgToURI(uri, 'order', order);
-
-    var sequenceString = '';
-    for (var i = 0; i < sequences.length; i++) {
-      if (i > 0) {
-        sequenceString += ',';
+    var titleArgs = [];
+    var pList = dashboard.getCurrentProvidedParameters();
+    for (var i=0; i< pList.length; i++ ) {
+      var p = pList[i];
+      if (p.order) {
+        uri = eframe.addArgToURI(uri, 'order', p.order);
+        titleArgs [0] = p.order;
       }
-      sequenceString += sequences[i];
     }
-    uri = eframe.addArgToURI(uri, 'sequenceString', sequenceString);
+    if(rowData.sequencesForRemoval) {
+      var s = "";
+      for (i=0; i<rowData.sequencesForRemoval.length; i++) {
+        if (s.length>0) {
+          s += ",";
+        }
+        s += rowData.sequencesForRemoval[i];
+      }
+      uri = eframe.addArgToURI(uri, 'sequences', s);
+    }
+    // Build the title
+    var title = ef.lookup('removeComponent.title',titleArgs);
 
-    eframe.displayDialog({
-      contentsURL: uri,
-      width: '70%', height: '60%', sourceFormID: 'badForm'
+    //console.log(uri);
+    ef.displayDialog({
+      bodyURL: uri, title: title,
+      width: '55%', height: '60%',
+      buttons: ['remove', 'cancel'],
+      remove: function () {
+        // Find all selected components from the dialog.
+        var sequencesToRemove = '';
+        for (i=0; i<rowData.sequencesForRemoval.length; i++) {
+          var j = i+1;
+          var element = document.getElementById('removeComp'+j);
+          if (element.checked) {
+            if (sequencesToRemove.length>0) {
+              sequencesToRemove += ",";
+            }
+            sequencesToRemove += rowData.sequencesForRemoval[i];
+          }
+        }
+
+        var values = {};
+        values.order = p.order;
+        values.sequences = sequencesToRemove;
+        console.log(values);
+
+        ef.postAjaxForm(values,'/orderAssy/removeComponents',null,
+          function(response) {
+            var json = JSON.parse(response);
+            // Force a refresh of the list
+            var event = {
+              type: 'ORDER_COMPONENT_STATUS_CHANGED',
+              source: '/orderAssy/assemblyActivity',
+              order: p.order,
+              component: rowData.component,
+              bomSequence: response.bomSequence
+            };
+            dashboard.sendEvent(event);
+            dashboard.checkForUndoActions(json);
+          });
+      }
     });
   }
+
 </script>

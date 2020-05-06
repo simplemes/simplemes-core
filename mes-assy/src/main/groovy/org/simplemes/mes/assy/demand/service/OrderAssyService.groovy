@@ -5,6 +5,7 @@ import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.custom.domain.FlexField
 import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.exception.BusinessException
+import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.misc.TypeUtils
@@ -359,6 +360,7 @@ class OrderAssyService implements OrderReleasePoint {
         for (match in matches) {
           addAssemblyDataValues(orderComponentState, match)
           orderComponentState.sequencesForRemoval << match.sequence
+          orderComponentState.removalLabels << formatForRemoval(match)
         }
         // If a single assembled component was found, then make sure the sequenceForRemoval is set.
         // Only a single entry can be removed with quick removal.
@@ -465,10 +467,11 @@ class OrderAssyService implements OrderReleasePoint {
     if (original == null) {
       original = ''
     }
-    def s = ExtensibleFieldHelper.instance.formatConfigurableTypeValues('assemblyData', orderAssembledComponent)
+    def s = ExtensibleFieldHelper.instance.formatConfigurableTypeValues('assemblyData',
+                                                                        orderAssembledComponent, [highlight: true])
     if (!s) {
       // No flex type fields defined.  See if there are any left-over values in the custom fields.
-      s = ExtensibleFieldHelper.instance.formatConfigurableTypeValues(orderAssembledComponent)
+      s = ExtensibleFieldHelper.instance.formatConfigurableTypeValues(orderAssembledComponent, [highlight: true])
     }
     // Now, if the new data is not already in the list, add it to it (up to 300 total chars).
     if (!original.contains(s)) {
@@ -518,4 +521,16 @@ class OrderAssyService implements OrderReleasePoint {
     return results
   }
 
+  /**
+   * Formats the given assembled component, suitable for a removal confirmation.
+   * @param orderAssembledComponent The component.
+   * @return The
+   */
+  String formatForRemoval(OrderAssembledComponent orderAssembledComponent) {
+    def orderComponentState = new OrderComponentState()
+    addAssemblyDataValues(orderComponentState, orderAssembledComponent)
+    def s = orderComponentState.assemblyDataAsString
+    //removalLabel.label=Component :{0} Qty: {1} - {2}
+    return GlobalUtils.lookup('removalLabel.label', orderAssembledComponent.component.product, orderAssembledComponent.qty, s)
+  }
 }

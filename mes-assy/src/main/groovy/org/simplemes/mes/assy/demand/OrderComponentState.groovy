@@ -29,6 +29,12 @@ class OrderComponentState {
   List<Integer> sequencesForRemoval = []
 
   /**
+   * The list of labels for each removal sequence.  Suitable for use in a coonfirmation GUI.
+   * Includes the component, sequence, and assy data.
+   */
+  List<String> removalLabels = []
+
+  /**
    * The component Product required or assembled.
    */
   String component

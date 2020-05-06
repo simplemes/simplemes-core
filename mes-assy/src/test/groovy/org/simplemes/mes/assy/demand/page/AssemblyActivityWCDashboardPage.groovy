@@ -30,6 +30,12 @@ class AssemblyActivityWCDashboardPage extends WorkCenterSelectionDashboardPage {
     addCancelButton { $('div', view_id: 'dialog0-cancel') }
     addAssembleButton { $('div', view_id: 'dialog0-assemble') }
 
+    // Elements on the remove component dialog (dialog0)
+    removeCheckBox { index -> $("input#removeComp${index}") }  // Index starts at 1.
+    removeCheckBoxText { index -> $("li#removeCompText${index}").text() }   // Index starts at 1.
+    removeCancelButton { $('div', view_id: 'dialog0-cancel') }
+    removeRemoveButton { $('div', view_id: 'dialog0-remove') }
+
   }
 
 }

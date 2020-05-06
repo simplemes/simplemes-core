@@ -21,13 +21,11 @@ import org.simplemes.eframe.web.task.TaskMenuItem
 import org.simplemes.mes.assy.demand.AddOrderAssembledComponentRequest
 import org.simplemes.mes.assy.demand.ComponentRemoveUndoAction
 import org.simplemes.mes.assy.demand.ComponentRemoveUndoRequest
-import org.simplemes.mes.assy.demand.ComponentReportDetail
 import org.simplemes.mes.assy.demand.FindComponentAssemblyStateRequest
 import org.simplemes.mes.assy.demand.OrderComponentStateEnum
 import org.simplemes.mes.assy.demand.RemoveOrderAssembledComponentRequest
 import org.simplemes.mes.assy.demand.domain.OrderAssembledComponent
 import org.simplemes.mes.assy.demand.service.OrderAssyService
-import org.simplemes.mes.demand.DemandObject
 import org.simplemes.mes.demand.domain.Order
 
 import javax.annotation.Nullable
@@ -175,20 +173,42 @@ class OrderAssyController extends BaseController {
 
 
   /**
-   * Provides the removal single component dialog for a removing a single component.
+   * Displays the remove component dialog for a single component with Flex Type.
    *
    * <h3>HTTP Parameters</h3>
    * The supported parameters are:
    * <ul>
-   *   <li><b>order</b> - The order to add the components for (<b>order or lsn is required</b>). </li>
-   *   <li><b>lsn</b> - The lsn to add the components for (<b>order or lsn is required</b>). </li>
-   *   <li><b>sequences</b> - The list of OrderAssembledComponent sequence value(s) to display for possible removal (<b>required</b>). </li>
+   *   <li><b>order</b> - The order to add the components for (<b>Required</b>). </li>
+   *   <li><b>sequences</b> - The {@link OrderAssembledComponent} sequence(s) that can be removed (<b>Required</b>). A comma
+   *                          delimited list of sequences.</li>
    * </ul>
+   * @param request The request.
+   * @param principal The user logged in.
+   * @return The model/view to display.
    */
-  def removeComponentDialog() {
-    log.debug('assembleComponentDialog: params = {}', params)
-    //println "params = $params"
-    ArgumentUtils.checkMissing(params.order, 'params.order')
+  @SuppressWarnings(["unused"])
+  @Produces(MediaType.TEXT_HTML)
+  @Get("/removeComponentDialog")
+  StandardModelAndView removeComponentDialog(HttpRequest request, @Nullable Principal principal) {
+    def view = "assy/demand/removeComponentDialog"
+    def modelAndView = new StandardModelAndView(view, principal, this)
+    def params = ControllerUtils.instance.convertToMap(request.parameters)
+    String sequenceString = params.sequences
+    def sequences = sequenceString.tokenize(',').findResults { Integer.valueOf(it) }
+
+    def list = []
+    ArgumentUtils.checkMissing(params.order, 'order')
+    def order = Order.findByOrder(params.order as String)
+    List<OrderAssembledComponent> components = order.assembledComponents.findAll { sequences.contains(it.sequence) }
+
+    // Format the component display in a GUI for selection (e.g. as a checkbox).
+    for (component in components) {
+      list << orderAssyService.formatForRemoval(component)
+    }
+    modelAndView['sequences'] = sequences
+    modelAndView['components'] = list
+
+    return modelAndView
   }
 
   /**
@@ -225,6 +245,70 @@ class OrderAssyController extends BaseController {
   }
 
   /**
+   * This method removes one or more components from an order.
+   * This uses the list of sequences to determine which record to mark as removed.
+   * <p>
+   * <h3>JSON Body elements</h3>
+   * The supported parameters are:
+   * <ul>
+   *   <li><b>order</b> - The order to add the components for (<b>Required</b>). </li>
+   *   <li><b>sequences</b> - The {@link OrderAssembledComponent} sequence(s) that can be removed (<b>Required</b>). A comma
+   *                          delimited list of sequences.</li>
+   * </ul>
+   * <p>
+   * <b>Response</b>:
+   * The response includes these two top-level elements in a map (JSON):
+   * <ul>
+   *   <li><b>orderAssembledComponents</b> - The List of OrderAssembledComponent that were removed for this request.
+   * {@link org.simplemes.mes.assy.demand.domain.OrderAssembledComponent}.</li>
+   *   <li><b>undoActions</b> - The list of undo actions needed to reverse this removal. </li>
+   * </ul>
+   * <p>
+   * <b>Note: </b>This method creates a single transaction for the removal of multiple components.
+   */
+  @Post('/removeComponents')
+  @SuppressWarnings("unused")
+  HttpResponse removeComponents(@Body String body, @Nullable Principal principal) {
+    def mapper = Holders.objectMapper
+    def map = mapper.readValue(body, Map)
+    log.debug('removeComponents() {}', map)
+    // Loop on the sequence list, in one transaction.
+    ArgumentUtils.checkMissing(map.sequences, 'sequences')
+    ArgumentUtils.checkMissing(map.order, 'order')
+    def order = Order.findByOrder(map.order as String)
+    if (!order) {
+      //error.110.message=Could not find {0} {1}
+      throw new BusinessException(110, [GlobalUtils.lookup('order.label'), map.order])
+    }
+
+    String sequenceString = map.sequences
+    def sequences = sequenceString.tokenize(',').findResults { Integer.valueOf(it) }
+    def componentsRemoved = []
+    def undoActions = []
+    def lastProduct = ''
+    for (sequence in sequences) {
+      def orderAssembledComponent = order.assembledComponents.find { it.sequence == sequence } as OrderAssembledComponent
+      if (!orderAssembledComponent) {
+        //error.10001.message=Could not find component sequence {1} for order {0}.
+        throw new BusinessException(10001, [sequence, order.order])
+      }
+      def request = new RemoveOrderAssembledComponentRequest(orderAssembledComponent, order)
+      orderAssembledComponent = orderAssyService.removeComponent(request)
+      lastProduct = orderAssembledComponent.component.product
+      componentsRemoved << orderAssembledComponent
+      undoActions << new ComponentRemoveUndoAction(orderAssembledComponent, order)
+    }
+
+    // reversedAssemble.message=Removed component {0} from {1}.
+    def infoMsg = GlobalUtils.lookup('reversedAssemble.message', lastProduct, order.order)
+    def res = [orderAssembledComponents: componentsRemoved,
+               infoMsg                 : infoMsg,
+               undoActions             : undoActions]
+
+    return HttpResponse.ok(Holders.objectMapper.writeValueAsString(res))
+  }
+
+  /**
    * This method restores the removed component to the order.
    * This exposes the OrderAssyService method of the same name.
    * The argument is parsed from the request input body (JSON).
@@ -243,84 +327,6 @@ class OrderAssyController extends BaseController {
     def orderAssembledComponent = orderAssyService.undoComponentRemove(request)
 
     return HttpResponse.ok(Holders.objectMapper.writeValueAsString(orderAssembledComponent))
-  }
-
-
-  /**
-   * Finds the currently assembled components for the given order/LSN.  The results correspond to a single
-   * OrderAssembledComponent record, so some of the fields are not useful.
-   * <p>
-   *
-   * <b>Note:</b> The qtyRequired, overallStateString,overallState,percentAssembled,qtyAndStateString should be ignored for these results.
-   * These values are not set correctly for this detail information.
-   *
-   * <h3>HTTP Parameters</h3>
-   * The supported parameters are:
-   * <ul>
-   *   <li><b>order</b> - The order to find the components for (<b>order or lsn is required</b>). </li>
-   *   <li><b>lsn</b> - The lsn to find the components for (<b>order or lsn is required</b>). </li>
-   *   <li><b>sequence</b> - The sequence of the OrderAssembledComponent to return. (<b>Optional, List supported</b>). </li>
-   * </ul>
-   */
-  def findAssembledComponents() {
-    log.debug('findComponentAssemblyState: params = {}', params)
-    DemandObject demand = null
-    def order = null
-    if (params.order) {
-      order = Order.findByOrder(params.order as String)
-      demand = order
-    }
-    if (params.lsn) {
-      // If both given, then use order to find the LSN in case of duplicates.
-      demand = order ? LSN.findByLsnAndOrder(params.lsn as String, order) : LSN.findByLsn(params.lsn as String)
-    }
-
-    def sequenceList = []
-    def sequenceString = params.sequenceString
-    if (sequenceString) {
-      def l = sequenceString.tokenize(' ,')
-      for (s in l) {
-        sequenceList << Integer.valueOf(s as String)
-      }
-    }
-
-    def list = orderAssyService.findAssembledComponents(demand, sequenceList)
-    def listSize = list.size()
-
-    def fullyAssembled = !list.find() { comp ->
-      comp.overallState == OrderComponentStateEnum.EMPTY || comp.overallState == OrderComponentStateEnum.PARTIAL
-    }
-    // If we think it might be fully assembled, make sure it really is (order given and it has components).
-    if (fullyAssembled) {
-      if (demand) {
-        // Make sure there are components for the order
-        order = order ?: demand?.order
-        if (!order.components) {
-          // No BOM components, so don't flag as fully assembled.
-          fullyAssembled = false
-        }
-      } else {
-        // If no order/LSN is used, the don't flag as fully assembled.
-        fullyAssembled = false
-      }
-    }
-
-    // Now, we have the full list, so apply the sorting and then paging options.
-    list = reSortList(params, list)
-
-    //println "list = ${list*.component} ${list*.sequence}"
-
-    // Now, apply offset/max from the params.
-    def (offset, max) = ControllerUtils.calculateOffsetAndMaxForList(params)
-    if (offset && max < listSize) {
-      //noinspection GroovyAssignabilityCheck
-      def end = Math.min(offset + max - 1, listSize - 1)
-      list = list[(offset..end)]
-    }
-
-    def map = [total_count: listSize, fullyAssembled: fullyAssembled, list: list]
-
-    ControllerUtils.formatResponse(this, map)
   }
 
   /**
@@ -388,51 +394,5 @@ class OrderAssyController extends BaseController {
     return list
   }
 */
-
-  /**
-   * Displays the component report page.
-   */
-  def componentReport() {
-  }
-
-  /**
-   * Does a full-text search on assembly related objects.  Uses most of the global search capabilities, but limits
-   * the search to domains related to assembly (e.g. Order and Work Center setup).
-   * Returns a standard JSON list of suitable for display in an ef:list tag.
-   *
-   * <h3>HTTP Parameters</h3>
-   * The supported parameters are:
-   * <ul>
-   *   <li><b>query</b> - The query string (<b>Required</b>). </li>
-   *   <li><b>max, offset</b> - The standard paging values  (<b>Default:</b> first page). </li>
-   * </ul>
-   */
-  def componentReportList() {
-    log.debug('componentReportList: params = {}', params)
-    def res = [total_count: 0, list: []]
-    if (params.query) {
-      def searchResults = searchService.globalSearch(params.query, params)
-      res.total_count = searchResults.totalHits
-      for (hit in searchResults.hits) {
-        def dtl = new ComponentReportDetail(searchHit: hit.displayValue)
-        if (hit.object instanceof Order) {
-          dtl._searchHitLink = "/orderAssy/assemblyReport?order=${hit.object.order}"
-          dtl._searchHitText = hit.displayValue
-          dtl.dateTime = hit.object.lastUpdated
-        }
-        res.list << dtl
-      }
-    }
-
-    //render res as JSON
-  }
-
-  /**
-   * Displays the assembly report for an order.  This page uses the findComponentAssemblyState() action
-   * to display the state.
-   */
-  def assemblyReport() {
-
-  }
 
 }

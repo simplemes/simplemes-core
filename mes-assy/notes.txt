@@ -2,11 +2,11 @@ Scratch
 ===========
 
 Assy Activity
-  Assemble component
   Remove component
+    dialog() - Model with sequence/label - checkboxes.
+    Ok. submit to removeComponents(Sequence list)  Single Txn.
+
   Scan support.
-  Support read-only (in efField for config types).
-  GUI tests for assembly dialog.
   mes-core - Deleting Order should delete ActionLog records.
 
 .adoc

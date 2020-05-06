@@ -499,4 +499,198 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['component', order.order, 'gibberish'])
   }
 
+  def "verify that removeComponentDialog works for the main scenario"() {
+    given: 'a released order with assembled components'
+    def flexType = DataGenerator.buildFlexType(fieldCount: 2)
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD', 'DISK'], assemblyDataType: flexType)
+    def comp1 = AssyUnitTestUtils.assembleComponent(order, [sequence          : 10, assemblyDataType: flexType,
+                                                            assemblyDataValues: [FIELD1: 'ACME_DEPOT', FIELD2: '2017103']])
+    def comp2 = AssyUnitTestUtils.assembleComponent(order, [sequence          : 20, assemblyDataType: flexType,
+                                                            assemblyDataValues: [FIELD1: 'ACME_PRIME', FIELD2: '2016879']])
+    def sequences = [comp1.sequence, comp2.sequence].join(',')
+
+    when: 'the request is sent to the controller'
+    def others = "&_panel=A&_variable=_A"
+    login()
+    def page = sendRequest(uri: "/orderAssy/removeComponentDialog?order=$order.order&sequences=$sequences$others")
+
+    then: 'the response is valid'
+    def comp1Line = TextUtils.findLine(page, 'id=\\"removeComp1\\"')
+    comp1Line.contains('CPU')
+    comp1Line.contains('FIELD1')
+    comp1Line.contains('ACME_DEPOT')
+    comp1Line.contains('FIELD2')
+    comp1Line.contains('2017103')
+
+    def comp2Line = TextUtils.findLine(page, 'id=\\"removeComp2\\"')
+    comp2Line.contains('MOTHERBOARD')
+    comp2Line.contains('FIELD1')
+    comp2Line.contains('ACME_PRIME')
+    comp2Line.contains('FIELD2')
+    comp2Line.contains('2016879')
+  }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that removeComponents works with multiple sequences"() {
+    given: 'a released order with assembled components'
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'])
+    AssyUnitTestUtils.assembleComponent(order, [sequence: 10])
+    AssyUnitTestUtils.assembleComponent(order, [sequence: 20])
+    def comp1 = order.assembledComponents[0] as OrderAssembledComponent
+    def comp2 = order.assembledComponents[1] as OrderAssembledComponent
+
+    and: 'a request in JSON format'
+    def request = """{
+      "order": "${order.order}",
+      "sequences": "${comp1.sequence},${comp2.sequence}"
+    }
+    """
+
+    when: 'the request is sent to the controller'
+    login()
+    def res = sendRequest(uri: '/orderAssy/removeComponents', method: 'post', content: request)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
+
+    then: 'the response is correct'
+    def json = new JsonSlurper().parseText(res)
+    List components = json.orderAssembledComponents
+
+    components[0].sequence == comp1.sequence
+    components[0].state == AssembledComponentStateEnum.REMOVED.toString()
+    // reversedAssemble.message=Removed component {0} from {1}.
+    json.infoMsg == lookup('reversedAssemble.message', null, comp2.component.product, order.order)
+
+    and: 'the records are saved in the DB and match the returned values'
+    def orderAssembledComponent1 = OrderAssembledComponent.findByUuid(comp1.uuid)
+    orderAssembledComponent1.sequence == comp1.sequence
+    orderAssembledComponent1.state == AssembledComponentStateEnum.REMOVED
+
+    def orderAssembledComponent2 = OrderAssembledComponent.findByUuid(comp2.uuid)
+    orderAssembledComponent2.sequence == comp2.sequence
+    orderAssembledComponent2.state == AssembledComponentStateEnum.REMOVED
+
+    and: 'the undo actions are populated'
+    json.undoActions.size() == 2
+    def undoAction1 = json.undoActions[0]
+    undoAction1.uri.contains('/orderAssy/undoComponentRemove')
+    def undo = new JsonSlurper().parseText(undoAction1.json)
+    undo.order == order.order
+    undo.sequence == orderAssembledComponent1.sequence
+  }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that removeComponents gracefully detects missing sequences"() {
+    given: 'a request in JSON format'
+    def request = """{
+      "order": "gibberish"
+    }
+    """
+
+    and: 'the logging is disabled'
+    disableStackTraceLogging()
+
+    when: 'the request is sent to the controller'
+    login()
+    def res = sendRequest(uri: '/orderAssy/removeComponents', method: 'post', content: request, status: HttpStatus.BAD_REQUEST)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
+
+    then: 'the response is correct'
+    def json = new JsonSlurper().parseText(res)
+    UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['sequences', 'null'])
+  }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that removeComponents gracefully detects bad sequence format"() {
+    given: 'a released order'
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'])
+
+    and: 'a request in JSON format'
+    def request = """{
+      "order": "${order.order}",
+      "sequences": "gibberish"
+    }
+    """
+
+    and: 'the logging is disabled'
+    disableStackTraceLogging()
+
+    when: 'the request is sent to the controller'
+    login()
+    def res = sendRequest(uri: '/orderAssy/removeComponents', method: 'post', content: request, status: HttpStatus.BAD_REQUEST)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
+
+    then: 'the response is correct'
+    def json = new JsonSlurper().parseText(res)
+    UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['format', 'gibberish'])
+  }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that removeComponents gracefully detects wrong sequence"() {
+    given: 'a released order'
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'])
+
+    and: 'a request in JSON format'
+    def request = """{
+      "order": "${order.order}",
+      "sequences": "137"
+    }
+    """
+
+    and: 'the logging is disabled'
+    disableStackTraceLogging()
+
+    when: 'the request is sent to the controller'
+    login()
+    def res = sendRequest(uri: '/orderAssy/removeComponents', method: 'post', content: request, status: HttpStatus.BAD_REQUEST)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
+
+    then: 'the response is correct'
+    //error.10001.message=Could not find component sequence {1} for order {0}.
+    def json = new JsonSlurper().parseText(res)
+    UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['find', '137', order.order])
+  }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that removeComponents gracefully detects missing order"() {
+    given: 'a request in JSON format'
+    def request = """{
+      "sequences": "137"
+    }
+    """
+
+    and: 'the logging is disabled'
+    disableStackTraceLogging()
+
+    when: 'the request is sent to the controller'
+    login()
+    def res = sendRequest(uri: '/orderAssy/removeComponents', method: 'post', content: request, status: HttpStatus.BAD_REQUEST)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
+
+    then: 'the response is correct'
+    def json = new JsonSlurper().parseText(res)
+    UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['order', 'null'])
+  }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that removeComponents gracefully detects invalid order"() {
+    given: 'a request in JSON format'
+    def request = """{
+      "order": "gibberish",
+      "sequences": "137"
+    }
+    """
+
+    and: 'the logging is disabled'
+    disableStackTraceLogging()
+
+    when: 'the request is sent to the controller'
+    login()
+    def res = sendRequest(uri: '/orderAssy/removeComponents', method: 'post', content: request, status: HttpStatus.BAD_REQUEST)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
+
+    then: 'the response is correct'
+    def json = new JsonSlurper().parseText(res)
+    UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['order', 'gibberish'])
+  }
+
 }

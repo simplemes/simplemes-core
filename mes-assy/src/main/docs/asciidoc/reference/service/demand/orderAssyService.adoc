@@ -13,7 +13,7 @@ endif::[]
 
 
 
-The link:groovydoc/org/simplemes/mes/assy/demand/OrderAssyService.html[OrderAssyService^]
+The link:groovydoc/org/simplemes/mes/assy/demand/service/OrderAssyService.html[OrderAssyService^]
 icon:share-square-o[role="link-blue"]
 provides methods to process assembly information on an order or LSN.
 This service provides the ability to assemble components and adds assembly

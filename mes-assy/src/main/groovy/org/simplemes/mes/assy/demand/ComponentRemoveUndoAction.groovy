@@ -46,7 +46,7 @@ class ComponentRemoveUndoAction implements UndoActionInterface {
    */
   ComponentRemoveUndoAction(OrderAssembledComponent orderAssembledComponent, Order order) {
     //reversedRemoval.message=Re-assembled component {0} to {1}.
-    infoMsg = GlobalUtils.lookup('reversedRemoval.message', orderAssembledComponent.component, order?.order)
+    infoMsg = GlobalUtils.lookup('reversedRemoval.message', orderAssembledComponent.component.product, order?.order)
 
     def request = new ComponentRemoveUndoRequest(orderAssembledComponent, order)
     json = Holders.objectMapper.writeValueAsString(request)

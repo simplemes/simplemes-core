@@ -957,8 +957,13 @@ class OrderAssyServiceSpec extends BaseSpecification {
     orderComponentState.size() == 1
     orderComponentState[0].sequence == 10
     orderComponentState[0].sequencesForRemoval.size() == 2
-    orderComponentState[0].sequencesForRemoval.contains(comp1.sequence)
-    orderComponentState[0].sequencesForRemoval.contains(comp2.sequence)
+    orderComponentState[0].sequencesForRemoval[0] == comp1.sequence
+    orderComponentState[0].sequencesForRemoval[1] == comp2.sequence
+
+    and: 'the labels for the sequences are correct'
+    !orderComponentState[0].removalLabels[0].contains('.label')
+    orderComponentState[0].removalLabels[0] == service.formatForRemoval(comp1)
+    orderComponentState[0].removalLabels[1] == service.formatForRemoval(comp2)
   }
 
   @Rollback
