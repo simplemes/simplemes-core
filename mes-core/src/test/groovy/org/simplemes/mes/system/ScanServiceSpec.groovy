@@ -6,6 +6,7 @@ import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.mes.demand.CompleteUndoAction
 import org.simplemes.mes.demand.StartUndoAction
 import org.simplemes.mes.demand.domain.Order
@@ -13,6 +14,7 @@ import org.simplemes.mes.system.service.ScanService
 import org.simplemes.mes.test.MESUnitTestUtils
 import org.simplemes.mes.tracking.domain.ActionLog
 import org.simplemes.mes.tracking.domain.ProductionLog
+import sample.SampleScanExtension
 
 /*
  * Copyright Michael Houston 2017. All rights reserved.
@@ -236,6 +238,39 @@ class ScanServiceSpec extends BaseSpecification {
 
     then: 'parsed map is stored in the response'
     scanResponse.parsedBarcode == [BUTTON: 'START']
+  }
+
+  @Rollback
+  def "verify that the scan extension point logic works in a running app server"() {
+    given: 'the extension bean'
+    def extensionBean = Holders.getBean(SampleScanExtension)
+    extensionBean.preScanRequest = null
+
+    when: 'the core service method is called'
+    def scanRequest = new ScanRequest(barcode: '^BTN^START')
+    def response = service.scan(scanRequest)
+
+    then: 'the pre method was called'
+    extensionBean.preScanRequest == scanRequest
+
+    and: 'the post method was called'
+    response.operationSequence == 237
+  }
+
+  @Rollback
+  def "verify that the getBarcodePrefixMapping extension point logic works in a running app server"() {
+    given: 'the extension bean'
+    def extensionBean = Holders.getBean(SampleScanExtension)
+    extensionBean.preBarcodeCalled = false
+
+    when: 'the core service method is called'
+    def response = service.getBarcodePrefixMapping()
+
+    then: 'the pre method was called'
+    extensionBean.preBarcodeCalled
+
+    and: 'the post method was called'
+    response.extension == 'XYZZY'
   }
 
   // test scan order with no qty in queue/work

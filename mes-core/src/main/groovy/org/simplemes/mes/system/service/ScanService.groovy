@@ -1,5 +1,6 @@
 package org.simplemes.mes.system.service
 
+import org.simplemes.eframe.custom.annotation.ExtensionPoint
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.NumberUtils
@@ -79,6 +80,7 @@ class ScanService {
    *         performed by this service.
    */
   @Transactional
+  @ExtensionPoint(value = ScanPoint, comment = "The Scan dashboard scan() method")
   ScanResponseInterface scan(ScanRequestInterface scanRequest) {
     ArgumentUtils.checkMissing(scanRequest, 'scanRequest')
     ArgumentUtils.checkMissing(scanRequest.barcode, 'scanRequest.barcode')
@@ -221,6 +223,7 @@ class ScanService {
    *
    * @return The map.  The key of the map is the literal barcode prefix and the value is the standard name.
    */
+  @ExtensionPoint(value = GetBarcodePrefixPoint, comment = "The Scan dashboard getBarcodePrefixMapping() method")
   Map<String, String> getBarcodePrefixMapping() {
     return defaultBarcodePrefixMapping
   }

@@ -704,7 +704,7 @@ class OrderServiceSpec extends BaseSpecification {
   }
 
   @Rollback
-  def "verify that the extension point logic works in a running app server"() {
+  def "verify that the release extension point logic works in a running app server"() {
     given: 'the extension bean'
     def extensionBean = Holders.getBean(SampleOrderExtension)
     extensionBean.preOrderRequest = null

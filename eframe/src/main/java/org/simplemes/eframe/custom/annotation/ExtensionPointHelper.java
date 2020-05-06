@@ -38,7 +38,7 @@ public class ExtensionPointHelper {
         parameterTypes[i] = arguments[i].getClass();
       }
       //System.out.println("methods:" + Arrays.toString(clazz.getDeclaredMethods()));
-      Method method = clazz.getDeclaredMethod(methodName, parameterTypes);
+      Method method = ASTUtils.findMethod(clazz, methodName, parameterTypes);
       // Force ability to access the method.  The micronaut generated class is protected, so we need to bypass the accessible checks.
       method.setAccessible(true);
       method.invoke(bean, arguments);
