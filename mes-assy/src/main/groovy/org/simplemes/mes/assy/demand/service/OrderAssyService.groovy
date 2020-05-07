@@ -28,6 +28,7 @@ import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.demand.service.OrderReleasePoint
 import org.simplemes.mes.product.domain.Product
 
+import javax.inject.Singleton
 import javax.transaction.Transactional
 
 /**
@@ -38,6 +39,7 @@ import javax.transaction.Transactional
  * This includes adding and removing the component information.
  */
 @Slf4j
+@Singleton
 @Transactional
 class OrderAssyService implements OrderReleasePoint {
 

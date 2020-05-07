@@ -17,7 +17,7 @@ and the related controller.
 
 The easiest component barcode for the operator to work with is the formatted barcode that contains
 the component and the lot/serial number to assemble.  This is typically used to assemble purchased products
-with muli-part barcodes labels.
+with multi-part barcodes labels.
 
 Using the simplest internal format, an example barcode looks like this:
 

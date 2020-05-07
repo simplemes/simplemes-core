@@ -7,9 +7,12 @@ import org.simplemes.mes.assy.demand.AssembledComponentStateEnum
 import org.simplemes.mes.assy.demand.domain.OrderAssembledComponent
 import org.simplemes.mes.assy.demand.domain.OrderBOMComponent
 import org.simplemes.mes.assy.product.domain.ProductComponent
+import org.simplemes.mes.assy.system.service.ScanAssyService
 import org.simplemes.mes.demand.domain.LSN
 import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.product.domain.Product
+import org.simplemes.mes.system.ScanRequest
+import org.simplemes.mes.system.ScanResponse
 import org.simplemes.mes.test.MESUnitTestUtils
 
 /*
@@ -194,7 +197,6 @@ class AssyUnitTestUtils extends MESUnitTestUtils {
    * @param options Contains elements for the response: order/lsn, component and optional lot, vendor.
    * @return A scan request and scan response.
    */
-/*
   static Tuple2<ScanRequest, ScanResponse> buildRequestAndResponse(Map<String, Object> options) {
     def order = options.order as Order
     def lsn = options.lsn as LSN
@@ -226,7 +228,5 @@ class AssyUnitTestUtils extends MESUnitTestUtils {
     scanResponse.parsedBarcode = parsedBarcode
     return new Tuple2(scanRequest, scanResponse)
   }
-
-*/
 
 }
