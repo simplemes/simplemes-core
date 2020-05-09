@@ -11,6 +11,9 @@ ${variable}.provideParameters = function() {
     order: order
   }
 }
+${variable}.provideScanParameters = function() {
+  return ${variable}.provideParameters();
+}
 ${variable}.handleEvent = function(event) {
   JL().trace(event);
   //console.log(event);

@@ -18,6 +18,7 @@ import org.simplemes.mes.test.MESUnitTestUtils
  */
 class StartRequestSpec extends BaseSpecification {
 
+  @SuppressWarnings("unused")
   static specNeeds = [SERVER, JSON]
 
   @Rollback

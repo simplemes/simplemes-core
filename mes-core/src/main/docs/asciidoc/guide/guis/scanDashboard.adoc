@@ -4,6 +4,7 @@
 ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<Manual Actions - Scan Dashboard>>#
+[inline-toc]#<<Scan Dashboard - provideScanParameters>>#
 
 endif::[]
 
@@ -58,3 +59,14 @@ Also, if the keyboard focus is in an input field, then the scanned value is ente
 processed for that field only.  This allows for some scenarios that require minor user input in the GUI.
 For example, selecting the component when a component barcode is not available (Assembly module only).
 
+
+=== Scan Dashboard - provideScanParameters
+
+Most scan dashboard configurations will implement the concept of a current order or LSN.
+The user will scan the order/LSN and that will initiate some action (e.g. Start).  This will also
+make it the current order/LSN.
+
+Later scans will need this order/LSN for proper processing (e.g. for component assembly).
+To make this work, the scan dashboard Javascript library will call the
+`provideScanParameters()` method in all current activities.  This lets the scan activity
+provide the current order/LSN for the scan request.

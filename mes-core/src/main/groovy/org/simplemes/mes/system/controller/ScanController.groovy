@@ -56,7 +56,8 @@ class ScanController extends BaseController {
    */
   @Post("/scan")
   HttpResponse scan(@Body String body, @Nullable Principal principal) {
-    ScanRequestInterface scanRequest = Holders.objectMapper.readValue(body, ScanRequest) as ScanRequestInterface
+    Map params = Holders.objectMapper.readValue(body, Map)
+    ScanRequestInterface scanRequest = new ScanRequest(params)
     def res = scanService.scan(scanRequest)
     return HttpResponse.ok(Holders.objectMapper.writeValueAsString(res))
   }

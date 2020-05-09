@@ -53,18 +53,16 @@ md.mes_dashboard = function () {
     },
     // Builds the ScanRequest object, based on the current state and the scanned
     _buildScanRequest: function (idToResolve) {
-      // TODO: Was getExtraParamsFromActivities()  Still Needed?
-      // Add any extra scan parameters.  Includes current order.
-      /*
-            var extraParams = dashboard.getCurrentProvidedParameters();
-            for (var i = 0; i < extraParams.length; i++) {
-              var map = extraParams[i];
-              //console.log(map);
-              Object.assign(requestContent, map);
-            }
-            //console.log(requestContent);
-      */
-      return {barcode: idToResolve};
+      var requestContent = {barcode: idToResolve};
+      // Add any scan parameters.  Typically includes current order.
+      var extraParams = this._getProvidedScanParamsFromActivities();
+      for (var i = 0; i < extraParams.length; i++) {
+        var map = extraParams[i];
+        //console.log(map);
+        Object.assign(requestContent, map);
+      }
+      //console.log(requestContent);
+      return requestContent;
     },
     // Checks for messages and displays them.
     _displayScanMessages: function (messageHolder) {
@@ -79,6 +77,25 @@ md.mes_dashboard = function () {
           eframe.displayMessage(messages);
         }
       }
+    },
+    // Gets an array of maps from each loaded activity (panel) that provides a scan parameter.
+    // This is used to find provideScanParameters from the activities.
+    _getProvidedScanParamsFromActivities: function () {
+      var extraParams = [];
+      var variables = dashboard._getActivePanelVariables();
+      for (var i = 0; i < variables.length; i++) {
+        // See if the activity has a provideScanParameters() method.
+        var fn = variables[i].provideScanParameters;
+        if (typeof fn === 'function') {
+          // Call the method dynamically.
+          var params = fn();
+          if (params != undefined) {
+            extraParams[extraParams.length] = params;
+          }
+          JL().trace('scan params panel=' + i + ', values=' + params);
+        }
+      }
+      return extraParams;
     },
     //
     // Handles the key press event for the entire document to support the scanner.

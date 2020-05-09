@@ -1,6 +1,7 @@
 package org.simplemes.mes.system
 
 import groovy.transform.ToString
+import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.mes.demand.domain.LSN
 import org.simplemes.mes.demand.domain.Order
 
@@ -40,5 +41,43 @@ class ScanRequest implements ScanRequestInterface {
    */
   int operationSequence
 
-
+  /**
+   * Constructor for use with JSON body request.  This is a lenient form of the normal constructor.  It ignores
+   * values from the options that are not part of this POGO.  This makes the controller more reliable when
+   * the client sends in incorrect values.
+   * @param options The options from the JSON Body.
+   */
+  ScanRequest(Map options) {
+    options.each { k, v ->
+      String key = k
+      if (v) {
+        if (key == 'order') {
+          if (v instanceof String) {
+            order = Order.findByOrder(v)
+            if (!order) {
+              //error.110.message=Could not find {0} {1}
+              throw new BusinessException(110, ['order', v])
+            }
+          } else {
+            order = v as Order
+          }
+        } else if (key == 'lsn') {
+          if (v instanceof String) {
+            lsn = LSN.findByLsn(v)
+            if (!lsn) {
+              //error.110.message=Could not find {0} {1}
+              throw new BusinessException(110, ['lsn', v])
+            }
+          } else {
+            lsn = v as LSN
+          }
+          if (!order) {
+            order = lsn?.order
+          }
+        } else if (this.hasProperty(key)) {
+          this[key] = v
+        }
+      }
+    }
+  }
 }

@@ -207,5 +207,30 @@ class ScanDashboardGUISpec extends BaseDashboardSpecification {
     !undoButtonEnabled
   }
 
+  def "verify that the scan dashboard activity passes the order with later scans"() {
+    given: 'a dashboard with the display page from the scan dashboard'
+    buildDashboard(defaults: ['/scan/scanActivity'])
+
+    and: 'a released order'
+    def order = MESUnitTestUtils.releaseOrder(qty: 1.2)
+
+    and: 'the dashboard is displayed'
+    displayDashboard(page: ScanDashboardPage)
+
+    when: 'the order ID is typed as if scanned by the user'
+    sendScan(order.order)
+    waitFor {
+      orderDiv.text() == order.order
+    }
+
+    and: 'the debug scan is sent to the extension'
+    sendScan('^XYZZY^ORDER_TEST')
+
+    then: 'the order is in the message'
+    messages.text.contains('XYZZY')
+    messages.text.contains(order.order)
+  }
+
+
 }
 // TODO: Test Complete scan with undo.

@@ -89,6 +89,7 @@ class ScanService {
   ScanResponseInterface scan(ScanRequestInterface scanRequest) {
     ArgumentUtils.checkMissing(scanRequest, 'scanRequest')
     ArgumentUtils.checkMissing(scanRequest.barcode, 'scanRequest.barcode')
+    log.trace('scan() request: {}', scanRequest)
     def response = new ScanResponse(scanRequest)
 
     def parsedScan = parseScan(scanRequest)
@@ -96,6 +97,7 @@ class ScanService {
     if (parsedScan[BARCODE_BUTTON]) {
       response.scanActions << new ButtonPressAction(button: parsedScan[BARCODE_BUTTON])
       response.resolved = true
+      log.trace('scan() response1: {}', response)
       return response
     }
 
@@ -117,7 +119,7 @@ class ScanService {
       }
     }
 
-
+    log.trace('scan() response: {}', response)
     return response
   }
 
