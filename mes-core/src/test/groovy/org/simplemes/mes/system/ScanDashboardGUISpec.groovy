@@ -100,15 +100,15 @@ class ScanDashboardGUISpec extends BaseDashboardSpecification {
     when: 'the order ID is typed as if scanned by the user'
     sendScan(order.order)
     waitFor {
-      $('#events').text().contains('ORDER_LSN_CHANGE')
+      $('#events').text().contains('ORDER_LSN_CHANGED')
     }
 
     then: 'the change event is triggered and contains the correct values'
     def s = $('#events').text()
-    def json = new JsonSlurper().parseText(TextUtils.findLine(s, 'ORDER_LSN_CHANGE'))
-    json.type == 'ORDER_LSN_CHANGE'
+    def json = new JsonSlurper().parseText(TextUtils.findLine(s, 'ORDER_LSN_CHANGED'))
+    json.type == 'ORDER_LSN_CHANGED'
     json.source == ScanService.EVENT_SOURCE
-    json.order == order.order
+    json.list[0].order == order.order
 
     then: 'the refresh event is triggered and contains the correct values'
     def json2 = new JsonSlurper().parseText(TextUtils.findLine(s, 'REFRESH_ORDER_STATUS'))

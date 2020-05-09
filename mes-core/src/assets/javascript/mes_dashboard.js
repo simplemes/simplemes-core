@@ -128,7 +128,7 @@ md.mes_dashboard = function () {
     },
     // Handles the scan response.
     _handleScanResponse: function (response) {
-      console.log(response);
+      //console.log(response);
       if (ef._isPlainObject(response)) {
         //console.log(response);
         var scanResponse = response.scanResponse;

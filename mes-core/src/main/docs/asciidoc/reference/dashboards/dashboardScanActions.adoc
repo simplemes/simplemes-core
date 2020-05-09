@@ -61,7 +61,7 @@ This is used when an order/LSN is scanned should be the 'current' order to be pr
 
 The main properties of the scan action are:
 
-* `type` - _ORDER_LSN_CHANGE_
+* `type` - _ORDER_LSN_CHANGED_
 * `order` - The new order.
 * `lsn` - The new LSN (optional).
 * `qtyInQueue` - The qty in queue after processing.

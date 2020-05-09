@@ -89,10 +89,11 @@ class ScanServiceSpec extends BaseSpecification {
     refreshAction.order == order.order
 
     and: 'scan action tells the client that the order changed'
-    def orderChangedAction = scanResponse.scanActions.find { it.type == OrderLSNChangeAction.TYPE_ORDER_LSN_CHANGE }
-    orderChangedAction.order == order.order
-    orderChangedAction.qtyInQueue == order.qtyInQueue
-    orderChangedAction.qtyInWork == order.qtyInWork
+    def orderChangedAction = scanResponse.scanActions.find { it.type == OrderLSNChangeAction.TYPE_ORDER_LSN_CHANGED }
+    List list = orderChangedAction.list
+    list[0].order == order.order
+    list[0].qtyInQueue == order.qtyInQueue
+    list[0].qtyInWork == order.qtyInWork
 
     and: 'order was started'
     order.qtyInQueue == 0.0
@@ -140,11 +141,12 @@ class ScanServiceSpec extends BaseSpecification {
     refreshAction.order == order.order
 
     and: 'scan action tells the client that the order changed'
-    def orderChangedAction = scanResponse.scanActions.find { it.type == OrderLSNChangeAction.TYPE_ORDER_LSN_CHANGE }
-    orderChangedAction.order == order.order
-    orderChangedAction.qtyInQueue == order.qtyInQueue
-    orderChangedAction.qtyInWork == order.qtyInWork
-    orderChangedAction.qtyDone == order.qtyDone
+    def orderChangedAction = scanResponse.scanActions.find { it.type == OrderLSNChangeAction.TYPE_ORDER_LSN_CHANGED }
+    List list = orderChangedAction.list
+    list[0].order == order.order
+    list[0].qtyInQueue == order.qtyInQueue
+    list[0].qtyInWork == order.qtyInWork
+    list[0].qtyDone == order.qtyDone
 
     and: 'order was started'
     order.qtyInQueue == 0.0
@@ -201,33 +203,6 @@ class ScanServiceSpec extends BaseSpecification {
     then: 'the right values are returned'
     parsedResponse['BTA'] == 'COMPLETE'
   }
-
-  // TODO: Support barcode format when additions do
-/*
-  def "verify that the internal barcode format can be extended by an addition"() {
-    given: "the getBarcodePrefixMapping method is extended to provide additional barcode prefixes"
-    def script = """static customMethodX(Map results) {
-                      results.PRD = 'PRODUCT'
-                      //return "extended"
-                    }"""
-    AdditionTstUtils.buildArtefact([methods    : 'getBarcodePrefixMapping(target: ScanService, extension: this.&customMethodX, passResult: true)',
-                                    otherSource: script, target: ScanService, imports: 'import org.simplemes.mes.system.*'])
-    MethodExtensionHelper.setupMethodExtensions()
-
-    when: "the core method is called"
-    def map = service.getBarcodePrefixMapping()
-
-    then: "the custom result is given"
-    map['PRD'] == 'PRODUCT'
-
-    and: "the core values are still in place"
-    map['BTN'] == ScanService.BARCODE_BUTTON
-
-    cleanup: 'cleanup the test addition artefact'
-    AdditionTstUtils.cleanupAdditionArtefacts()
-
-  }
-*/
 
   def "verify that the parse scan map is stored in the result"() {
     given: 'a scan request'

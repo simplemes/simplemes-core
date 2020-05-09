@@ -14,9 +14,9 @@ ${variable}.provideParameters = function() {
 ${variable}.handleEvent = function(event) {
   JL().trace(event);
   //console.log(event);
-  if (event.type == 'ORDER_LSN_CHANGE') {
-    ef._setInnerHTML("order",event.order);
-    ef._setInnerHTML("orderStatus",${variable}.determineStatusToDisplayForOrder(event));
+  if (event.type == 'ORDER_LSN_CHANGED') {
+    ef._setInnerHTML("order",event.list[0].order);
+    ef._setInnerHTML("orderStatus",${variable}.determineStatusToDisplayForOrder(event.list[0]));
   } else if (event.type == 'ORDER_LSN_STATUS_CHANGED') {
     ${variable}.updateOrderStatus(event.list);
   }

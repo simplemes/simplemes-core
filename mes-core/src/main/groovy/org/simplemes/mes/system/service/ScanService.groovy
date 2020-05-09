@@ -1,5 +1,6 @@
 package org.simplemes.mes.system.service
 
+import groovy.util.logging.Slf4j
 import org.simplemes.eframe.custom.annotation.ExtensionPoint
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.ArgumentUtils
@@ -13,12 +14,14 @@ import org.simplemes.mes.demand.service.ResolveService
 import org.simplemes.mes.demand.service.WorkService
 import org.simplemes.mes.system.ButtonPressAction
 import org.simplemes.mes.system.OrderLSNChangeAction
+import org.simplemes.mes.system.OrderLSNChangeDetail
 import org.simplemes.mes.system.RefreshOrderStatusAction
 import org.simplemes.mes.system.ScanRequestInterface
 import org.simplemes.mes.system.ScanResponse
 import org.simplemes.mes.system.ScanResponseInterface
 
 import javax.inject.Inject
+import javax.inject.Singleton
 import javax.transaction.Transactional
 
 /*
@@ -34,6 +37,8 @@ import javax.transaction.Transactional
  *
  *
  */
+@Slf4j
+@Singleton
 class ScanService {
 
   /**
@@ -208,8 +213,8 @@ class ScanService {
     }
 
     // Let the client know the order might have changed.
-    scanResponse.scanActions << new OrderLSNChangeAction(order: order.order, source: EVENT_SOURCE,
-                                                         qtyInQueue: qtyInQueue, qtyInWork: qtyInWork, qtyDone: qtyDone)
+    def list = [new OrderLSNChangeDetail(order: order.order, qtyInQueue: qtyInQueue, qtyInWork: qtyInWork, qtyDone: qtyDone)]
+    scanResponse.scanActions << new OrderLSNChangeAction(list: list, source: EVENT_SOURCE)
 
   }
 
