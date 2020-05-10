@@ -5,6 +5,7 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<Interactive Dashboard Flow>>#
 [inline-toc]#<<Custom Dashboard Page>>#
+[inline-toc]#<<Debugging Dashboard Activities>>#
 [inline-toc]#<<Dashboard Activities>>#
 [inline-toc]#<<Dashboard Configuration>>#
 [inline-toc]#<<Dashboard API>>#
@@ -87,6 +88,19 @@ The standard dashboard page (e.g. _views/dashboard/index.ftl_) uses the javascri
 The <<Dashboard API>> is provided for your dashboard activities by the core dashboard pages.
 You can define your own dashboard page if needed.  See <<Dashboard Usage>> for details.
 
+==== Debugging Dashboard Activities
+
+Dashboards are complex.  They have a lot of pieces that need to work together.  Some of the
+<<Logging>> settings are shown below.
+
+[cols="2,1,4",width=95%]
+|===
+|Object|Setting | Description
+
+|client.dashboard| *debug*| Logging of events send by dashboard.
+|client.dashboard| *trace*| Verbose logging of definitions used by the client dashboard libraries.
+|
+|===
 
 
 

@@ -243,7 +243,7 @@ ef.dashboard = function () {
     },
     // Sends an event to all panel activities.  Event has only one require field 'type'.
     sendEvent: function (event) {
-      JL().trace("sendEvent(): " + JSON.stringify(event));
+      JL().debug("sendEvent(): " + JSON.stringify(event));
       var variables = dashboard._getActivePanelVariables();
       for (var i = 0; i < variables.length; i++) {
         // See if the activity has a handleEvent() function.

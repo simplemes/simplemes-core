@@ -25,6 +25,7 @@ logging settings include:
 |org.simplemes.eframe.controller| *trace*| Logs all suppressed exceptions (e.g. BusinessException) caught by BaseController sub-classes.
 |org.simplemes.eframe.preference| *trace*| Logs a stack trace to help identify all uses of PreferenceHolder with null `element`.
 |client.to-server| *any*| Sets the level for echoing all client-side logging messages to the server log.
+|client.dashboard| *debug*| Logging of events send by dashboard.
 |client.dashboard| *trace*| Verbose logging of definitions used by the client dashboard libraries.
 |
 |===

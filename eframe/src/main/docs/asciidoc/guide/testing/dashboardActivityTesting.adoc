@@ -32,13 +32,10 @@ This helper displays any events triggered by the dashboard activities.
     then: 'the order is changed'               // <.>
     textField('order').input.value('ORDER1')
     sendKey(Keys.TAB)
-    waitFor {
-      $('#events').text().contains('ORDER_LSN_CHANGED')
-    }
+    waitForDashboardEvent('ORDER_LSN_CHANGED')
 
     and: 'the event is triggered'   // <.>
-    def s = $('#events').text()
-    def json = new JsonSlurper().parseText(s)
+    def json = getDashboardEvent('ORDER_LSN_CHANGED')
     json.type == 'ORDER_LSN_CHANGED'
     json.source == '/selection/workCenterSelection'
     json.list.size() == 1
@@ -48,8 +45,8 @@ This helper displays any events triggered by the dashboard activities.
 <.> The activity under test.
 <.> Uses the _DISPLAY_EVENT_ACTIVITY_ in the second panel of the dashboard.
 <.> Some user action triggers an event.
-<.> The event text is retrieved from the page, parsed and validated.
-
+<.> The event text is retrieved from the page, parsed and validated.  The `getDashboardEvent()1
+    method parses the event display line with the given event type.
 
 
 This _DISPLAY_EVENT_ACTIVITY_ will display the dashboard events in a `<div>` in the page

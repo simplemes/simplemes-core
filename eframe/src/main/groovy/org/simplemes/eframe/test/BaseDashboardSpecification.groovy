@@ -4,11 +4,13 @@
 
 package org.simplemes.eframe.test
 
+import groovy.json.JsonSlurper
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.dashboard.controller.DashboardTestController
 import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.JavascriptUtils
+import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.test.page.DashboardPage
 
 /**
@@ -271,4 +273,39 @@ class BaseDashboardSpecification extends BaseGUISpecification {
   void clickDashboardButton(Integer id) {
     clickButton("B$id")
   }
+
+  /**
+   * Clears the event display area in the standard test activity
+   * DashboardTestController.DISPLAY_EVENT_ACTIVITY.
+   */
+  void clearDashboardEvents() {
+    js.exec('document.getElementById("events").innerHTML=""')
+  }
+
+  /**
+   * Waits for the given event to be displayed in the standard test activity
+   * DashboardTestController.DISPLAY_EVENT_ACTIVITY.
+   * @param event The event.
+   */
+  void waitForDashboardEvent(String event) {
+    waitFor {
+      $('#events').text().contains(event)
+    }
+  }
+
+  /**
+   * Gets the given event's contents from the standard test activity
+   * DashboardTestController.DISPLAY_EVENT_ACTIVITY.
+   * @param event The event.  If not given, then the whole event display string is used.  Will fail for multiple events.
+   */
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  Map getDashboardEvent(String event = null) {
+    def s = $('#events').text()
+    if (event) {
+      s = TextUtils.findLine(s, event)
+    }
+    return new JsonSlurper().parseText(s)
+  }
+
+
 }
