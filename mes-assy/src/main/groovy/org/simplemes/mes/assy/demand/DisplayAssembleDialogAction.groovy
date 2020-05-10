@@ -45,6 +45,16 @@ class DisplayAssembleDialogAction extends ScanAction {
   String assemblyData
 
   /**
+   * The UUID of the flex type to display the data entry fields for.
+   */
+  String assemblyDataUuid
+
+  /**
+   * The name of the first assembly data field.  Used for the display focus logic.
+   */
+  String firstAssemblyDataField
+
+  /**
    * The recommended client action.
    */
   @Override

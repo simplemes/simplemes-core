@@ -45,6 +45,12 @@ class SampleScanExtension implements ScanPoint, GetBarcodePrefixPoint {
   @Override
   ScanResponseInterface postScan(ScanResponseInterface coreResponse, ScanRequestInterface scanRequest) {
     coreResponse.operationSequence = 237
+
+    if (scanRequest.barcode=='^XYZZY^ORDER_TEST') {
+      coreResponse.messageHolder.addInfo([text:"Passed order ${scanRequest.order} for XYZZY input barcode prefix"])
+      coreResponse.resolved = true
+    }
+
     return null
   }
 

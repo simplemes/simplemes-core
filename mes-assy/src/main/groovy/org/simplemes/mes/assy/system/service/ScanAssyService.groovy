@@ -174,14 +174,8 @@ class ScanAssyService implements ScanPoint, GetBarcodePrefixPoint {
 
       // If there are no fields from a structured barcode, then force an assemble component dialog on the client.
       if (!fieldMatchCount) {
-        def action = new DisplayAssembleDialogAction(order: scanRequest.order.order,
-                                                     lsn: scanRequest.lsn?.lsn,
-                                                     component: component.product,
-                                                     bomSequence: orderComponent?.sequence,
-                                                     assemblyData: component.assemblyDataType?.flexType)
-        result.scanActions << action
+        result.scanActions << buildAssembleDialogAction(component, scanRequest, orderComponent)
         result.resolved = true
-        log.trace('scanPost: action = {}', action)
         return
       }
 
@@ -205,6 +199,31 @@ class ScanAssyService implements ScanPoint, GetBarcodePrefixPoint {
 
     // And now adjust the result to indicate we processed the scan.
     result.resolved = true
+  }
+
+  /**
+   * Builds the client action that will display the assemble component dialog.
+   * @param component The component being assembled.
+   * @param scanRequest The original scan request.
+   * @param orderComponent The BOM component from the order being assembled (<b>optional</b>).
+   * @return The display dialog action.
+   */
+  private DisplayAssembleDialogAction buildAssembleDialogAction(Product component, ScanRequestInterface scanRequest, OrderBOMComponent orderComponent) {
+    def firstField = ''
+    if (component.assemblyDataType?.fields?.size()) {
+      //noinspection GroovyAssignabilityCheck
+      firstField = component.assemblyDataType.fields[0].fieldName
+    }
+
+    def action = new DisplayAssembleDialogAction(order: scanRequest.order.order,
+                                                 lsn: scanRequest.lsn?.lsn,
+                                                 component: component.product,
+                                                 bomSequence: orderComponent?.sequence,
+                                                 assemblyData: component.assemblyDataType?.flexType,
+                                                 assemblyDataUuid: component.assemblyDataType?.uuid?.toString(),
+                                                 firstAssemblyDataField: firstField)
+    log.trace('scanPost: action = {}', action)
+    return action
   }
 
   /**

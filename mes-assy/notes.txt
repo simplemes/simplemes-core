@@ -14,9 +14,6 @@ GUI Test backlog
   Order - BOM and Assembled components.  Editable in edit mode?
   Product - Delete rows of BOM records.
 
-findAssembledComponents
-  removeComponentDialog.gsp  Convert to findComponentAssemblyState
-
 findComponentAssemblyState
   assemblyReport
   assemblyActivity

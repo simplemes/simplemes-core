@@ -21,9 +21,10 @@
 
   ${variable}.handleEvent = function(event) {
     if (event.type === 'ORDER_LSN_STATUS_CHANGED') {
-      tk.refreshList('componentList${panel}');
+      tk.refreshList('componentList${panel}',${variable}.newArgs);
     }
     if (event.type === 'ORDER_LSN_CHANGED') {
+      console.log(event);
       // Pass the new value and refresh the list
       var newArgs = {};
       if (event.list.length>0) {
@@ -40,7 +41,10 @@
       // Just refresh the list.
       tk.refreshList('componentList${panel}',${variable}.newArgs);
     } else if (event.type === 'DISPLAY_ASSEMBLE_DIALOG') {
-      displayAssembleDialog(event);
+      var data = {component: event.component, sequence: event.bomSequence,
+        assemblyData: {flexType: event.assemblyData, uuid: event.assemblyDataUuid},
+        firstAssemblyDataField: event.firstAssemblyDataField};
+      ${variable}.add(data);
     }
   }
 
@@ -67,12 +71,17 @@
     }
     // Build the title
     var title = ef.lookup('addComponent.title',titleArgs);
+    var focusField = '';
+    if (rowData.firstAssemblyDataField) {
+      focusField = 'assemblyData_'+rowData.firstAssemblyDataField;
+    }
 
     //console.log(uri);
     ef.displayDialog({
       bodyURL: uri, title: title,
       width: '55%', height: '60%',
       buttons: ['assemble', 'cancel'],
+      focus:focusField,
       assemble: function () {
         var values = {};
         if (rowData.assemblyData) {  // Make sure the assemblyData reference is first to allow proper parsing of the values later.

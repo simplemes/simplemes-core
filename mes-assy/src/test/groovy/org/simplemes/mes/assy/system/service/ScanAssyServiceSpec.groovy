@@ -732,6 +732,8 @@ class ScanAssyServiceSpec extends BaseSpecification {
     displayAssembleDialogAction.order == order.order
     displayAssembleDialogAction.component == 'WHEEL'
     displayAssembleDialogAction.assemblyData == 'ASSEMBLY'
+    displayAssembleDialogAction.assemblyDataUuid == flexType.uuid.toString()
+    displayAssembleDialogAction.firstAssemblyDataField == 'LOT'
     displayAssembleDialogAction.bomSequence == 10
     displayAssembleDialogAction.type == DisplayAssembleDialogAction.TYPE_DISPLAY_ASSEMBLE_DIALOG
 

@@ -71,6 +71,10 @@ class OrderComponentState {
   @ExtensibleFieldHolder
   String customFields
 
+  /**
+   * The name of the first assembly data field.  Used for the display focus logic.
+   */
+  String firstAssemblyDataField
 
   /**
    * A String form of the assembly data values, with HTML formatting. If multiple different assembly records are found, then the

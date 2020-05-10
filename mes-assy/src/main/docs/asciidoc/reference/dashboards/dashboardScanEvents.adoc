@@ -53,4 +53,8 @@ The main properties of this scan event are:
 * `component` - The component that should be assembled.
 * `bomSequence` - The component's bom sequence (optional).
 * `assemblyData` - The Flex Type used to collect the data.  This is the flex type's primary key.
+* `assemblyDataUuid` - The Flex Type's UUID used to collect the data.
+* `firstAssemblyDataField` -   The name of the first assembly data field.
+
+
 

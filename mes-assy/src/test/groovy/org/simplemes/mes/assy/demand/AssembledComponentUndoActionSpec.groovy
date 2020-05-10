@@ -35,7 +35,7 @@ class AssembledComponentUndoActionSpec extends BaseSpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(action.JSON)}"
 
     then: 'the undo action has the right data'
-    action.infoMsg == GlobalUtils.lookup('reversedAssemble.message', comp.component, order?.order)
+    action.infoMsg == GlobalUtils.lookup('reversedAssemble.message', comp.component.product, order?.order)
     action.uri.contains('/orderAssy/removeComponent')
     def undoRequest = Holders.objectMapper.readValue(action.json, RemoveOrderAssembledComponentRequest)
     undoRequest.sequence == comp.sequence

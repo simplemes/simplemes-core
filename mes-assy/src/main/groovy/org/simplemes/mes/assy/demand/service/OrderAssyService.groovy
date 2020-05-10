@@ -20,7 +20,6 @@ import org.simplemes.mes.assy.demand.RemoveOrderAssembledComponentRequest
 import org.simplemes.mes.assy.demand.domain.OrderAssembledComponent
 import org.simplemes.mes.assy.demand.domain.OrderBOMComponent
 import org.simplemes.mes.assy.product.domain.ProductComponent
-import org.simplemes.mes.demand.DemandObject
 import org.simplemes.mes.demand.OrderReleaseRequest
 import org.simplemes.mes.demand.OrderReleaseResponse
 import org.simplemes.mes.demand.domain.LSN
@@ -237,65 +236,6 @@ class OrderAssyService implements OrderReleasePoint {
   }
 
   /**
-   * Finds the currently assembled components for the given order/LSN.  The results correspond to a single
-   * OrderAssembledComponent record, so some of the fields are not useful.
-   * <p>
-   * This method does no pagination or filtering, but it does sort by sequence.  
-   * <p>
-   * <b>Note:</b> The qtyRequired, overallStateString,overallState,percentAssembled,qtyAndStateString should be ignored for these results.
-   * These values are not set correctly for this detail information.
-   *
-   * @param demand The order/LSN to find the data for.
-   * @param sequences The list of OrderAssembledComponent.sequence to filter by.
-   * @return The component states.
-   */
-  List<OrderComponentState> findAssembledComponents(DemandObject demand, List<Integer> sequences = null) {
-    def res = []
-    if (!demand) {
-      return res
-    }
-
-    Order order
-    LSN lsn = null
-    if (demand instanceof Order) {
-      order = demand as Order
-    } else {
-      lsn = demand as LSN
-      order = lsn.order
-    }
-
-    // Find all of the currently assembled components for the order (and maybe LSN).
-    List<OrderAssembledComponent> assembled = order.assembledComponents.findAll() { OrderAssembledComponent comp ->
-      comp.state == AssembledComponentStateEnum.ASSEMBLED &&
-        (comp.lsn == null || comp.lsn == lsn)
-    }
-
-    // Filter out any that are not in the sequence list passed in.
-    if (sequences) {
-      assembled = assembled.findAll() { OrderAssembledComponent comp ->
-        sequences.contains(comp.sequence)
-      }
-    }
-
-    for (component in assembled) {
-      //println "component = $component"
-      def orderComponentState = new OrderComponentState(component: component.component.product,
-                                                        componentAndTitle: TypeUtils.toShortString(component.component, true),
-                                                        sequence: component.sequence,
-                                                        sequencesForRemoval: [component.sequence],
-                                                        qtyRequired: component.qty,
-                                                        qtyAssembled: component.qty)
-      orderComponentState.assemblyData = component.assemblyData
-      orderComponentState.customFields = component.customFields
-      addAssemblyDataValues(orderComponentState, component)
-      determineStateValues(orderComponentState)
-      res << orderComponentState
-    }
-
-    return res
-  }
-
-  /**
    * Finds the state of all the components needed for the given order/LSN.
    * If LSN is given, then the logic will attempt to reconcile order-based components
    * with this single LSN.  This will cause problems when mixing order-based and LSN-based
@@ -338,6 +278,9 @@ class OrderAssyService implements OrderReleasePoint {
                                                         qtyRequired: qtyRequired,
                                                         qtyAssembled: 0.0)
       orderComponentState.assemblyData = orderComponent.component.assemblyDataType
+      if (orderComponentState.assemblyData?.fields?.size()) {
+        orderComponentState.firstAssemblyDataField = orderComponentState.assemblyData.fields[0].fieldName
+      }
       res << orderComponentState
     }
 

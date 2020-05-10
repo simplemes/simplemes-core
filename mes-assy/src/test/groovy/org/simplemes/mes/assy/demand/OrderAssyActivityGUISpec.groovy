@@ -109,10 +109,13 @@ class OrderAssyActivityGUISpec extends BaseDashboardSpecification {
     addQtyField.input.value() == '2'
     addField1.label == 'FIELD1'
 
+    and: 'the focus is in the first data entry field'
+    sendKey('XYZZY')
+    sendKey(Keys.TAB)
+    addField1.input.value() == 'XYZZY'
+
     when: 'the values are filled in'
     addQtyField.input.value(NumberUtils.formatNumber(1.2))
-    addField1.input.value('XYZZY')
-    sendKey(Keys.TAB)
 
     and: 'the component is saved'
     addAssembleButton.click()
