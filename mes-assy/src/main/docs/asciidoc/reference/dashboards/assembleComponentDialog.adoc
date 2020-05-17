@@ -23,7 +23,7 @@ The supported values include:
 * `bomSequence` - The OrderBOMComponent record's sequence for the component to assemble.
                   If missing or 0, then a non-BOM component is assembled
                   (`component` or `bomSequence` is *Required*).
-* `assemblyDataType` - The link:guide.html#flex-type[Flex Type^] icon:share-square-o[role="link-blue"] that
-                   defines the data fields to collect from the user
+* `assemblyDataType` - The link:{eframe-path}/guide.html#flex-types[Flex Type^] icon:share-square-o[role="link-blue"]
+                   that defines the data fields to collect from the user
                    (*Default:* Assembly Data Type from the BOM component).
                    This is the FlexType's UUID.

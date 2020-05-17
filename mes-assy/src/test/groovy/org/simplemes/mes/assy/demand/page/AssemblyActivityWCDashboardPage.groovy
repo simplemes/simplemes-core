@@ -19,6 +19,7 @@ import org.simplemes.mes.demand.page.WorkCenterSelectionDashboardPage
 class AssemblyActivityWCDashboardPage extends WorkCenterSelectionDashboardPage {
 
   static content = {
+    fullyAssembledImage { $('img#fullyAssembled') }
     componentList { module(new GridModule(field: 'componentListB')) }
     addButton { index -> $('button#add', (Integer) index) }
     removeButton { index -> $('button#remove', (Integer) index) }

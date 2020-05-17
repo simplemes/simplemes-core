@@ -36,8 +36,7 @@ class ComponentRemoveUndoRequest {
   /**
    * A copy constructor to undo the removal of a single component on an order/LSN.
    * @param orderAssembledComponent The assembled component removed from the order to be undone.
-   * @param order the Order this component was assembled into.  This is required here since the orderAssembledComponent.orderId is not
-   *        populated until the transaction commit.
+   * @param order the Order this component was assembled into.
    */
   ComponentRemoveUndoRequest(OrderAssembledComponent orderAssembledComponent, Order order) {
     sequence = orderAssembledComponent.sequence

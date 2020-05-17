@@ -69,7 +69,7 @@ class OrderAssyServiceSpec extends BaseSpecification {
     and: "an order to process"
     Order order = new Order(order: 'M002', product: product).save()
 
-    when: "the method orderReleasePostProcessor is called"
+    when: "the method postRelease is called"
     service.postRelease(new OrderReleaseResponse(), new OrderReleaseRequest(order: order))
 
     then: "the BOM components are copied to the order"
@@ -92,7 +92,7 @@ class OrderAssyServiceSpec extends BaseSpecification {
     and: "an order to process"
     Order order = new Order(order: 'M002', product: product).save()
 
-    when: "the method orderReleasePostProcessor is called"
+    when: "the method postRelease is called"
     service.postRelease(new OrderReleaseResponse(), new OrderReleaseRequest(order: order))
 
     then: "no BOM components are copied to the order"

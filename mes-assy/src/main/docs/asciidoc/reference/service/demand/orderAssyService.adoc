@@ -26,7 +26,7 @@ The service methods are exposed using the
 link:groovydoc/org/simplemes/mes/assy/demand/OrderAssyController.html[OrderAssyController^].
 icon:share-square-o[role="link-blue"]
 These controller methods generally match the inputs and outputs of the services.
-The only difference is the values are passed as XML/JSON strings.
+The only difference is the values are passed as JSON strings.
 
 The controller does not expose the normal CRUD (Create, Read, Update and Delete) methods that are common
 with domain objects.  The methods provide a way to maintain all component records, but preserves
@@ -37,8 +37,8 @@ the long-term history of the component setup records.
 ==== addComponent()
 
 This method adds a component to the given order/LSN.  It supports
-<<{eframe-path}/guide.adoc#flexible-fields,Flexible Fields>> to define customer-specific input fields
-for the assembled components.
+link:{eframe-path}/guide.html#flex-types[Flex Types^] icon:share-square-o[role="link-blue"]
+to define customer-specific input fields for the assembled components.
 The component can be added for the entire order or just for a single LSN.
 
 This method is considered part of the link:{mes-core-path}/guide.html#stable-api[Stable API^] icon:balance-scale[role="green"].
@@ -58,14 +58,14 @@ This is a simple POGO that you must populate before you call the method.
                     icon:share-square-o[role="link-blue"] from the order's list of components (*Optional*).
 | `component` | The component link:{mes-core-path}/guide.html#product[Product^] icon:share-square-o[role="link-blue"]
                 to be added to the order (*Required*).
-| `workCenter`| The link:{mes-core-path}/guide.html#work-center[Work Center^] icon:share-square-o[role="link-blue"]
+| `workCenter`| The link:{mes-core-path}/guide.html#workcenter[Work Center^] icon:share-square-o[role="link-blue"]
                 the component is to be assembled in (*Optional*).
 | `location`  | The location that the component is to be assembled from.  This could be a bin location in the work center
                 (*default: '@'*).
 | `qty`       | The number of pieces to assemble.  Will use the `component.qty` if provided in the input. (*Default: 1.0*).
 | `assemblyData`  | The FlexType used to define the assembly data for this component.  See
-                link:{eframe-path}/guide.html#flexible-fields[Flexible Fields^]
-                icon:share-square-o[role="link-blue"] for details (*Optional*).
+                link:{eframe-path}/guide.html#flex-types[Flex Types^] icon:share-square-o[role="link-blue"]
+                for details (*Optional*).
 |===
 
 This method returns the
@@ -80,7 +80,7 @@ NOTE: To handle assembly data values from the flex type, you must provide the as
 [[order-assy-add-component-example]]
 ===== JSON Example
 
-To add a component using XML/JSON via the controller, use this request _POST_ request:
+To add a component using JSON via the controller, use this request _POST_ request:
 
 *uri:* `/orderAssy/addComponent`
 
@@ -95,23 +95,19 @@ The JSON content passed to the controller contain the component to add:
     "lsn": {
       "lsn": "SN2037"
     },
-    "component": "CPU",                         // <1>
+    "component": "CPU",                         // <.>
     "location": "BIN 47",
     "workCenter": "CELL_17",
     "qty": 47.2,
-    "assemblyData": {                               // <2>
-      "flexType": "$flexType.flexType",
-      "category": "$flexType.category"
-    },
-    "assemblyDataValues": {                         // <3>
-      "ASSEMBLY0": "ACME4"
-    }
+    "assemblyData": "VENDOR",                   // <.>
+    "assemblyData_LOT": "ACME-101"              // <.>
   }
 }
 ----
-<1> The component is a reference to a product domain record.
-<2> `assemblyData` is a Flex Type.  This must come before the field values.
-<3> The LOT assembly flex type allows input of `vendor` and `lot` values.
+<.> The component is a reference to a product domain record.
+<.> `assemblyData` is a Flex Type.  This must come before the field values.
+<.> The LOT assembly flex type supports a single data field 'LOT'.  The JSON field name
+    needs to be formatted like this.
 
 
 [[order-assy-find-component-assembly-state,OrderAssyService.findComponentAssemblyState()]]
@@ -124,9 +120,8 @@ assembly for a given component. Typically, this will report a fully assembled co
 when it is uncertain.
 
 This method does no pagination or filtering, but it does sort by sequence.
-This method supports
-<<{eframe-path}/guide.adoc#flexible-fields,Flexible Fields>> to define customer-specific input fields
-for the assembled components.
+This method supports link:{eframe-path}/guide.html#flex-types[Flex Types^] icon:share-square-o[role="link-blue"]
+to define customer-specific input fields for the assembled components.
 
 The request is a
 link:groovydoc/org/simplemes/mes/assy/demand/FindComponentAssemblyStateRequest.html[FindComponentAssemblyStateRequest^]
@@ -157,52 +152,58 @@ The response is a map with the total number of rows available and a list of the 
 [source,json]
 .JSON findComponentAssemblyState() Response Example
 ----
-{ "totalAvailable": 2,
-  "fullyAssembled": true,
-  "list": [ {
-      "class": "org.simplemes.mes.assy.demand.OrderComponentState",
-      "assemblyDataAsString": "<b>ASSEMBLY1</b>: 2017103 <b>ASSEMBLY0</b>: ACME_DEPOT",
-      "qtyRequired": 1.00,
-      "component": "CPU",
-      "assemblyData": {
-        "class": "org.simplemes.eframe.custom.FlexType",
-        "id": 1,
-        "flexType": "ASSEMBLY",
-        "category": "BASIC"
-      },
-      "qtyAndStateString": "1/1 Full",
+{
+  "total_count": 2,
+  "fullyAssembled": false,
+  "data": [
+    {
       "sequence": 10,
-      "percentAssembled": 100,
-      "overallState": "FULL",
-      "overallStateString": "Full",
-      "location": "&#64;",
-      "assemblyDataValues": {
-        "ASSEMBLY0": "ACME_DEPOT",
-        "ASSEMBLY1": "2017103"
-      },
-      "qtyAssembled": 1.00
-    }, {
-      "class": "org.simplemes.mes.assy.demand.OrderComponentState",
-      "assemblyDataAsString": "<b>ASSEMBLY1</b>: 2016879 <b>ASSEMBLY0</b>: ACME_PRIME",
-      "qtyRequired": 2.00,
-      "component": "MOTHERBOARD",
+      "component": "SEAT",
+      "componentAndTitle": "SEAT (Seat)",
+      "location": "@",
+      "qtyAssembled": 0.0,
+      "qtyRequired": 1,
       "assemblyData": {
-        "class": "org.simplemes.eframe.custom.FlexType",
-        "id": 1,
-        "flexType": "ASSEMBLY",
-        "category": "BASIC"
+        "flexType": "Vendor",
+        "uuid": "5984873b-4a03-4262-abf5-4817a876edb1"
       },
-      "qtyAndStateString": "2/2 Full",
+      "overallStateString": "Empty",
+      "overallState": "EMPTY",
+      "_overallStateDisplay_": "Empty",
+      "percentAssembled": 0,
+      "qtyAndStateString": "0/1 Empty",
+      "canBeRemoved": false,
+      "canBeAssembled": true,
+      "_complexCustomFields": null
+    },
+    {
       "sequence": 20,
-      "percentAssembled": 100,
-      "overallState": "FULL",
-      "overallStateString": "Full",
-      "location": "&#64;",
-      "assemblyDataValues": {
-        "ASSEMBLY0": "ACME_PRIME",
-        "ASSEMBLY1": "2016879"
+      "sequencesForRemoval": [
+        1
+      ],
+      "removalLabels": [
+        "Component :WHEEL-27 Qty: 2 - <b>Vendor</b>: ACME"
+      ],
+      "component": "WHEEL-27",
+      "componentAndTitle": "WHEEL-27 (27\" Wheel)",
+      "location": "@",
+      "qtyAssembled": 2,
+      "qtyRequired": 2,
+      "assemblyData": {
+        "flexType": "Vendor",
+        "uuid": "5984873b-4a03-4262-abf5-4817a876edb1"
       },
-      "qtyAssembled": 2.00
+      "assemblyDataAsString": "<b>Vendor</b>: ACME",
+      "overallStateString": "Full",
+      "overallState": "FULL",
+      "_overallStateDisplay_": "Full",
+      "percentAssembled": 100,
+      "qtyAndStateString": "2/2 Full",
+      "canBeRemoved": true,
+      "canBeAssembled": false,
+      "_complexCustomFields": null,
+      "_customFields": null,
+      "assemblyData_VENDOR": "RRRR"
     }
   ]
 }

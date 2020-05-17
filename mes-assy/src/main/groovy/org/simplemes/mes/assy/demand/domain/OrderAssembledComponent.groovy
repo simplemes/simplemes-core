@@ -38,6 +38,7 @@ import javax.persistence.ManyToOne
  */
 @DomainEntity
 @MappedEntity
+@SuppressWarnings("unused")
 @ToString(includeNames = true, includePackage = false, excludes = ['order', 'lsn'])
 @EqualsAndHashCode(includes = ['uuid'])
 class OrderAssembledComponent {
@@ -80,7 +81,7 @@ class OrderAssembledComponent {
 
   /**
    * The flexible data type used to define the assembly data for this component.
-   * The actual data is stored in a field 'assemblyDataValues' in XML format.
+   * The actual data is stored in a field 'assemblyDataValues' in JSON format.
    */
   @Nullable
   @ManyToOne(targetEntity = FlexType)
@@ -140,7 +141,7 @@ class OrderAssembledComponent {
   /**
    * The primary key(s) for this child element.
    */
-  static keys = ['orderId', 'sequence']
+  static keys = ['order', 'sequence']
 
   /**
    * Internal definitions.

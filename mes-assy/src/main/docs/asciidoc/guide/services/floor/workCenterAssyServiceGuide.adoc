@@ -11,7 +11,7 @@ for details on the core service.
 The service methods are exposed using the
 link:groovydoc/org/simplemes/mes/assy/floor/WorkCenterAssyController.html[WorkCenterAssyController^].
 These controller methods generally match the inputs and outputs of the services.  The only
-difference is they values are passed as XML/JSON strings.
+difference is they values are passed as JSON strings.
 
 The important service methods are:
 
@@ -21,16 +21,16 @@ The important service methods are:
 
 
 [[work-center-assy-add-component-example]]
-==== XML Example - addComponent()
+==== JSON Example - addComponent()
 
-To add a component using XML via the controller, use this request _POST_ request:
+To add a component using JSON via the controller, use this request _POST_ request:
 
 *uri:* `/workCenterAssy/addComponent`
 
-The XML content passed to the controller contain the component to add:
+The JSON content passed to the controller contain the component to add:
 
-[source,xml]
-.XML Add Component
+[source,JSON]
+.JSON Add Component
 ----
 <addComponentRequest>
   <workCenter>ASSEMBLY STATION 3</workCenter>

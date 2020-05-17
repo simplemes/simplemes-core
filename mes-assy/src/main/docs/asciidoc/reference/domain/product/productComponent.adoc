@@ -14,10 +14,10 @@ The important fields defined for this object include:
 |=== 
 |Field | Description
 
-| `productId` | This is the product ID this component is needed for (*required*).
-| `sequence`  | The sequence this component should be displayed in.  Duplicates allowed.
-| `component` | This is the <<guide.adoc#product,Product>> for the component. (*Required*)
-| `qty`       | The number of pieces required (*Default: 1.0*).
+| *product* | This is the product this component is needed for (*required*).
+| *sequence*  | The sequence this component should be displayed in.  Duplicates allowed.
+| *component* | This is the <<guide.adoc#product,Product>> for the component. (*Required*)
+| *qty*       | The number of pieces required (*Default: 1.0*).
 |
 |=== 
 

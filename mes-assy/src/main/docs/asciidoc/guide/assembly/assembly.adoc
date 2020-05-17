@@ -75,7 +75,7 @@ The link:{mes-core-path}/guide.html#scan-dashboard[core Scan Dashboard^] icon:sh
 provides a way to quickly process work on the shop floor using a simple barcode scanner.  It provides
 ways to start and complete and order/LSN in a scan-oriented dashboard:
 
-image::guis/dashboardAssy.png[title="Scan Assembly Dashboard",align="center", width=75%]
+image::guis/dashboardAssy.png[title="Scan Assembly Dashboard",align="center", width=750]
 
 This Assembly module adds support for scanning components for assembly.
 This includes these types of barcodes:

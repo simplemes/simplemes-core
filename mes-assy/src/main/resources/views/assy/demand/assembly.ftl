@@ -5,26 +5,29 @@
   <@efPreloadMessages codes="addComponent.title,removeComponent.title"/>
 
   <@efForm id="componentListForm${panel}" dashboard="true">
-  <@efList id="componentList${panel}" columns="sequence,componentAndTitle,assemblyDataAsString,qtyAndStateString"
-           uri="/orderAssy/findComponentAssemblyState" model="org.simplemes.mes.assy.demand.OrderComponentState"
-           paddingX="15%" copyParameters=true
-           add@buttonIcon="fa-plus-square"
-           add@buttonLabel="addComponent.label"
-           add@buttonHandler="${variable}.add(rowData, listID)"
-           add@buttonEnableColumn="canBeAssembled"
-           remove@buttonIcon="fa-minus-square"
-           remove@buttonLabel="removeComponent.label"
-           remove@buttonHandler="${variable}.remove(rowData, listID)"
-           remove@buttonEnableColumn="canBeRemoved"
-         />
+    <@efHTML id="XYZZY" width="90%" height="32">
+      <img id="fullyAssembled" src="<@efAsset uri="/assets/assembled.png"/>" width="32" height="32" style="display: none;margin: auto; "/>
+    </@efHTML>
+
+    <@efList id="componentList${panel}" columns="sequence,componentAndTitle,assemblyDataAsString,qtyAndStateString"
+             uri="/orderAssy/findComponentAssemblyState" model="org.simplemes.mes.assy.demand.OrderComponentState"
+             pageSize="30" paddingX="5%" copyParameters=true
+             add@buttonIcon="fa-plus-square"
+             add@buttonLabel="addComponent.label"
+             add@buttonHandler="${variable}.add(rowData, listID)"
+             add@buttonEnableColumn="canBeAssembled"
+             remove@buttonIcon="fa-minus-square"
+             remove@buttonLabel="removeComponent.label"
+             remove@buttonHandler="${variable}.remove(rowData, listID)"
+             remove@buttonEnableColumn="canBeRemoved"
+           />
   </@efForm>
 
   ${variable}.handleEvent = function(event) {
     if (event.type === 'ORDER_LSN_STATUS_CHANGED') {
-      tk.refreshList('componentList${panel}',${variable}.newArgs);
+      tk.refreshList('componentList${panel}',${variable}.newArgs,${variable}.loadFinished);
     }
     if (event.type === 'ORDER_LSN_CHANGED') {
-      console.log(event);
       // Pass the new value and refresh the list
       var newArgs = {};
       if (event.list.length>0) {
@@ -36,15 +39,30 @@
         }
       }
       ${variable}.newArgs = newArgs;
-      tk.refreshList('componentList${panel}',newArgs);
+      tk.refreshList('componentList${panel}',newArgs,${variable}.loadFinished);
     } else if (event.type === 'ORDER_COMPONENT_STATUS_CHANGED') {
       // Just refresh the list.
-      tk.refreshList('componentList${panel}',${variable}.newArgs);
+      tk.refreshList('componentList${panel}',${variable}.newArgs,${variable}.loadFinished);
     } else if (event.type === 'DISPLAY_ASSEMBLE_DIALOG') {
       var data = {component: event.component, sequence: event.bomSequence,
         assemblyData: {flexType: event.assemblyData, uuid: event.assemblyDataUuid},
         firstAssemblyDataField: event.firstAssemblyDataField};
       ${variable}.add(data);
+    }
+  }
+  ${variable}.loadFinished = function(listID, data, http_request) {
+    if(data) {
+      var json = data.json();
+      ${variable}.updateFullyAssembled(json.fullyAssembled);
+    }
+  }
+
+  ${variable}.updateFullyAssembled = function(fullyAssembled) {
+    var element = document.getElementById('fullyAssembled');
+    if (fullyAssembled) {
+      element.style.display = 'block';
+    } else {
+      element.style.display = 'none';
     }
   }
 

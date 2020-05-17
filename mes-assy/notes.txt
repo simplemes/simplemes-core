@@ -1,23 +1,10 @@
 Scratch
 ===========
 
-Assy Activity
-  Remove component
-    dialog() - Model with sequence/label - checkboxes.
-    Ok. submit to removeComponents(Sequence list)  Single Txn.
-
-  Scan support.
-  mes-core - Deleting Order should delete ActionLog records.
-
-.adoc
 GUI Test backlog
   Order - BOM and Assembled components.  Editable in edit mode?
   Product - Delete rows of BOM records.
-
-findComponentAssemblyState
-  assemblyReport
-  assemblyActivity
-
+Search support
 
 
 Bugs
@@ -58,7 +45,6 @@ Scan Dashboard for Assembly
 Dashboard activity for displaying assy state.
   Checkbox to show assembled  - Percent Assembled Thermometer
 
-Reverse Complete?   On A Reverse Group button?
 
 Search
 ------

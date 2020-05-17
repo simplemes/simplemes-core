@@ -15,12 +15,13 @@ icon:share-square-o[role="link-blue"].
 
 Some core methods of the ScanService are extended to support the new features.  These include:
 
-* `scan()` - Basic scan logic.  Handles component scans.
-* `parseScan()` - Multi-part barcode encoding support.
-* `getBarcodePrefixMapping()` - Defines the <<Barcode Prefixes>> supported.  Adds Product, Vendor, Lot and Serial.
+* `postScan()` - Basic scan logic.  Handles component scans.
+* `postGetBarcodePrefixMapping()` - Defines the <<Barcode Prefixes>> supported.  Adds Product, Vendor, Lot and Serial.
 
 For more details on general barcode formats, see
 link:{mes-core-path}/guide.html#barcode-formats[Barcode Formats^] icon:share-square-o[role="link-blue"].
+
+NOTE: Do not call these extension methods directly.
 
 
 ==== Barcode Prefixes

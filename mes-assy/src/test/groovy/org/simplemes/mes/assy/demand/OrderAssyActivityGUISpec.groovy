@@ -69,6 +69,39 @@ class OrderAssyActivityGUISpec extends BaseDashboardSpecification {
     orderComponentStates[0].componentAndTitle == componentList.cell(0, 1).text()
     orderComponentStates[0].assemblyDataAsString == componentList.cell(0, 2).text()
     orderComponentStates[0].qtyAndStateString == componentList.cell(0, 3).text()
+
+    and: 'the fully assembled image is not displayed'
+    fullyAssembledImage.css("display") == 'none'
+  }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that the activity displays the fully assembled flag"() {
+    given: 'a dashboard with the activity'
+    buildDashboard(defaults: ['/selection/workCenterSelection', '/orderAssy/assemblyActivity'])
+
+    and: 'an order with components and its expected state'
+    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'])
+    AssyUnitTestUtils.assembleComponent(order, [sequence: 10])
+    AssyUnitTestUtils.assembleComponent(order, [sequence: 20])
+
+    when: 'the dashboard is displayed'
+    displayDashboard(page: AssemblyActivityWCDashboardPage)
+
+    // No errors and the list is empty
+    assert messages.text() == ''
+    assert componentList.cell(0, 0).text() == ''
+
+    and: 'the order is filled in'
+    orderLSNField.input.value(order.order)
+    sendKey(Keys.TAB)
+
+    then: 'the component list is updated'
+    waitFor {
+      componentList.rows(0).size() > 0
+    }
+
+    and: 'the fully assembled image is not displayed'
+    fullyAssembledImage.css("display") != 'none'
   }
 
   @SuppressWarnings(["GroovyAssignabilityCheck", "AbcMetric"])

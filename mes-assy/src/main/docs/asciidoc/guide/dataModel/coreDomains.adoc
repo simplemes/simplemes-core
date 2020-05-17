@@ -52,7 +52,7 @@ A Work Center is a machine or location where a manufacturing operation is perfor
 It can also refer to the people at a location where the operation is performed.
 
 This assembly module provides additions to the core
-link:{mes-core-path}/guide.html#work-center[Work Center^] icon:share-square-o[role="link-blue"] domain and services.
+link:{mes-core-path}/guide.html#workcenter[Work Center^] icon:share-square-o[role="link-blue"] domain and services.
 
 This assembly module provides:
 
@@ -63,7 +63,7 @@ This assembly module provides:
 === Flex Type
 
 Provides user-defined data types. The framework supports these user-defined fields directly using
-link:{eframe-path}/guide.html#flexible-fields[Flexible Fields^] icon:share-square-o[role="link-blue"].
+link:{eframe-path}/guide.html#flex-types[Flex Types^] icon:share-square-o[role="link-blue"].
 
-The user-defined field values are stored in a large string column in the database as XML.
+The user-defined field values are stored in a large string column in the database as JSON.
 

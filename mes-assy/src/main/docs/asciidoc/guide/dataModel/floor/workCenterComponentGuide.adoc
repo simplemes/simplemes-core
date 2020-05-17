@@ -13,8 +13,9 @@ parent.  Since the Work Center is in another module, the normal child relationsh
 Instead, this addition provides a delete check before allowing the work center to be deleted.
 
 The assembly data (e.g. the supplier, lot code, date code, etc) are stored in a
-<<{eframe-path}/guide.adoc#flexible-fields,Flexible Field>> based on the `assemblyData` Flex Type.
-This means the actual assembly data is stored in XML in the field `assemblyDataValues`.
+link:{eframe-path}/guide.html#flex-types[Flex Type^] icon:share-square-o[role="link-blue"]
+based on the `assemblyData` Flex Type.
+This means the actual assembly data is stored in JSON in the field `assemblyDataValues`.
 This allows the GUIs to collect configurable data from your operators without forcing any database
 or other customizations.
 

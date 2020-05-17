@@ -5,7 +5,7 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<order-assy-add-component,addComponent()>>#
 [inline-toc]#<<order-assy-find-component-assembly-state,findComponentAssemblyState()>>#
-[inline-toc]#<<order-assy-order-release-post-processor,orderReleasePostProcessor()>>#
+[inline-toc]#<<order-assy-order-post-release,postRelease()>>#
 [inline-toc]#<<order-assy-remove-component,removeComponent()>>#
 [inline-toc]#<<order-assy-undo-component-remove,undoComponentRemove()>>#
 
@@ -23,7 +23,7 @@ The service methods are exposed using the
 link:groovydoc/org/simplemes/mes/assy/demand/OrderAssyController.html[OrderAssyController^]
 icon:share-square-o[role="link-blue"].
 These controller methods generally match the inputs and outputs of the services.  The only
-difference is the values are passed as XML/JSON strings.
+difference is the values are passed as JSON strings.
 
 
 [[order-assy-add-component,OrderAssyService.addComponent()]]
@@ -31,40 +31,41 @@ difference is the values are passed as XML/JSON strings.
 
 The link:reference.html#order-assy-add-component[addComponent()^] icon:share-square-o[role="link-blue"]
 method adds a component to the given order/LSN.  It supports
-<<{eframe-path}/guide.adoc#flexible-fields,Flexible Fields>> to define customer-specific input fields
-for the assembled components.
+link:{eframe-path}/guide.html#flex-types[Flex Types^] icon:share-square-o[role="link-blue"]
+to define customer-specific input fields for the assembled components.
 The component can be added for the entire order or just for a single LSN.
 
 [[order-assy-add-component-example]]
-==== XML Example - addComponent()
+==== JSON Example - addComponent()
 
-To add a component using XML via the controller, use this request _POST_ request:
+To add a component using JSON via the controller, use this request _POST_ request:
 
 *uri:* `/orderAssy/addComponent`
 
-The XML content passed to the controller contain the component to add:
+The JSON content passed to the controller contain the component to add:
 
-[source,xml]
-.XML Add Component
+[source,json]
+.JSON Add Component
 ----
-<?xml version="1.0" encoding="UTF-8"?>
-<addOrderAssembledComponentRequest>
-  <order>M1001</order>
-  <component>CPU</component>          // <1>
-  <qty>3.2</qty>
-  <assemblyData>                          // <2>
-    <flexType>LOT</flexType>
-    <category>ASSEMBLY</category>
-  </assemblyData>
-  <assemblyDataValues>                    // <3>
-    <vendor>ACME</vendor>
-    <lot>2017-03-14</lot>
-  </assemblyDataValues>
-</addOrderAssembledComponentRequest>
+{
+  "addOrderAssembledComponentRequest": {
+    "order": "M1001",
+    "lsn": {
+      "lsn": "SN2037"
+    },
+    "component": "CPU",                         // <.>
+    "location": "BIN 47",
+    "workCenter": "CELL_17",
+    "qty": 47.2,
+    "assemblyData": "VENDOR",                   // <.>
+    "assemblyData_LOT": "ACME-101"              // <.>
+  }
+}
 ----
-<1> The component is a reference to a product domain record.
-<2> `assemblyData` is a Flex Type.  This must come before the field values.
-<3> The LOT assembly flex type allows input of `vendor` and `lot` values.
+<.> The component is a reference to a product domain record.
+<.> `assemblyData` is a Flex Type.  This must come before the field values.
+<.> The LOT assembly flex type supports a single data field 'LOT'.  The JSON field name
+    needs to be formatted like this.
 
 
 [[order-assy-find-component-assembly-state,OrderAssyService.findComponentAssemblyState()]]
@@ -78,8 +79,8 @@ with this single LSN.  This will cause problems when mixing order-based and LSN-
 assembly for a given component. Typically, this will report a fully assembled component for LSN
 when it is uncertain.
 
-[[order-assy-order-release-post-processor,orderReleasePostProcessor()]]
-==== orderReleasePostProcessor()
+[[order-assy-order-post-release,postRelease()]]
+==== postRelease()
 
 This method is called after an order is released by the mes-core module.
 This addition method will copy any ProductComponent (BOM) records to the order.

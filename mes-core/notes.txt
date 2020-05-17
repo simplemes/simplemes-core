@@ -13,6 +13,8 @@ DDL creation -
 
 Tasks
 =====
+Delete of Order should delete action log.
+  Need to allow delete() implementation?
 Migrate Start/Complete/UndoStart
 Migrate dashboard activities (Scan, wcSel, workList)
 Missing GUIs
