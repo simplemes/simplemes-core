@@ -1,13 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 
 import org.simplemes.eframe.misc.JavascriptUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Provides the implementation of the &lt;@efHTML&gt; marker.
@@ -48,8 +46,9 @@ class HTMLMarker extends BaseMarker {
     }
 
     def width = parameters.width ?: '10%'
+    def height = parameters.height ? """height: tk.ph("$parameters.height"), """ : ''
 
-    sb << """,{type: "clean", width: tk.pw("$width"), template: $html} """
+    sb << """,{type: "clean", width: tk.pw("$width"),$height template: $html} """
 
     if (spacer == 'after') {
       sb << spaceText

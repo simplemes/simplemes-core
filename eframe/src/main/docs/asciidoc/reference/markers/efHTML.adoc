@@ -46,6 +46,7 @@ The main parameters/body supported are:
 
 |*(body)*       | The HTML to insert into the display (*Required*).
 |*width*        | The width of the element to display (*Default*: 10%).
+|*height*       | The height of the element to display (*Optional*).
 |*spacer*       | If present, then a spacer will be insert before the HTML element.
                   If *'after'*, then the spacer be inserted after the HTML.
 |===

@@ -1,16 +1,15 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 
+import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.test.BaseMarkerSpecification
 import org.simplemes.eframe.test.JavascriptTestUtils
 import org.simplemes.eframe.test.UnitTestUtils
 import sample.controller.SampleParentController
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -137,6 +136,21 @@ XYZ
 
     and: 'the width is used'
     JavascriptTestUtils.extractProperty(page, 'width') == 'tk.pw("5.2%")'
+  }
+
+  def "verify that marker supports height option"() {
+    when: 'the text is generated'
+    def page = execute(source: '<@efForm dashboard=true><@efHTML height="3.2%">ABC</@efHTML></@efForm>',
+                       dataModel: [params: [_variable: 'A']],
+                       controllerClass: SampleParentController)
+
+    then: 'the javascript is legal'
+    checkPage(page)
+
+    and: 'the height is used'
+    def displayText = JavascriptTestUtils.extractBlock(page, 'A.display = {')
+    def templateText = TextUtils.findLine(displayText, 'template:')
+    JavascriptTestUtils.extractProperty(templateText, 'height') == 'tk.ph("3.2%")'
   }
 
 }
