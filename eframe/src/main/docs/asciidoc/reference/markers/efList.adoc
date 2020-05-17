@@ -70,6 +70,7 @@ The main parameters/body supported are:
                Available variables: (Object rowData, String listID).
 | *model*  | A fully-qualified class name that specifies the contents of the rows displayed.
                  This can be a domain or a POGO. (*Default:* the controller's domain)
+|*pageSize*  | The number of rows to show in a single page (*Default:* 10).
 |*height*    | The height of the list (*Default:* '74%').
 |*paddingX*  | The width of extra horizontal padding (*e.g.:* '74%' or '20em').
 |*copyParameters*  | If *true*, then copy any HTTP request parameters to the data URI for

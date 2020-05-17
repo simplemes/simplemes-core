@@ -127,6 +127,19 @@ class ListWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(tableText, 'url') == "/order/findWork"
   }
 
+  def "verify that the pageSize option is supported"() {
+    when: 'the UI element is built'
+    def widgetContext = buildWidgetContext(parameters: [pageSize: '23'], controllerClass: SampleParentController)
+    def page = new ListWidget(widgetContext).build().toString()
+
+    then: 'the page is valid'
+    checkJavascriptFragment(page)
+
+    and: 'the table is created with the right settings'
+    def tableText = JavascriptTestUtils.extractBlock(page, '{view: "datatable"')
+    JavascriptTestUtils.extractProperty(tableText, 'datafetch') == "23"
+  }
+
   def "verify that a non-domain model is supported - model option"() {
     when: 'the UI element is built'
     def widgetContext = buildWidgetContext(parameters: [columns: 'order,inWork', model: "$FindWorkResponse.name"], controllerClass: SampleParentController)

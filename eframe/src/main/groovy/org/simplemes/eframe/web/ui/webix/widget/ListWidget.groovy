@@ -7,6 +7,7 @@ package org.simplemes.eframe.web.ui.webix.widget
 import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.i18n.GlobalUtils
+import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.LogUtils
 import org.simplemes.eframe.preference.ColumnPreference
 import org.simplemes.eframe.preference.PreferenceHolder
@@ -91,6 +92,9 @@ class ListWidget extends BaseWidget {
    * @return
    */
   Integer getPageSize() {
+    if (widgetContext.parameters?.pageSize) {
+      return ArgumentUtils.convertToInteger(widgetContext.parameters.pageSize)
+    }
     return UIDefaults.PAGE_SIZE
   }
 

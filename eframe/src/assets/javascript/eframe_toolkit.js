@@ -108,7 +108,7 @@ _ef_tk.toolkit = function () {
       return res;
     },
     // Refreshes the list, using the current query data and preserving the current selection (if possible).
-    refreshList: function (listID, args) {
+    refreshList: function (listID, args, finished) {
       let list = $$(listID);
       var url = tk._adjustURLArguments(list.config.url, args);
       var pager = list.getPager();
@@ -132,7 +132,7 @@ _ef_tk.toolkit = function () {
         //console.log('url:'+url);
         var rowData = list.getSelectedItem();
         list.clearAll();
-        list.load(url, function () {
+        list.load(url, function (text, data, http_request) {
           if (rowData) {
             var id = rowData.id;
             if (id) {
@@ -142,6 +142,9 @@ _ef_tk.toolkit = function () {
                 $$(listID).select(id);
               }
             }
+          }
+          if (finished) {
+            finished(listID, data, http_request);
           }
         });
       } else {

@@ -52,6 +52,7 @@ The main parameters/body supported are:
               (*Default:* The list from the domain's <<fieldOrder>>).
 |*height*    | The height of the definition list (*Default:* '74%').
 |*paddingX*  | The width of extra horizontal padding (*e.g.:* '74%' or '20em').
+|*pageSize*  | The number of rows to show in a single page (*Default:* 10).
 
 |===
 
