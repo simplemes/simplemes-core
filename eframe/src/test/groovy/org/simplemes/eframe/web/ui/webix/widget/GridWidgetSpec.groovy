@@ -200,6 +200,29 @@ class GridWidgetSpec extends BaseWidgetSpecification {
     !page.contains("tableTheTable.select(")
   }
 
+  def "verify that widget supports a readOnly parameter"() {
+    given: 'a value'
+    def list = []
+    list << new SampleChild(key: 'k1-abc', title: 'abc', uuid: UUID.randomUUID())
+    list << new SampleChild(key: 'k2-xyz', title: 'xyz', uuid: UUID.randomUUID())
+
+    when: 'the UI element is built'
+    def widgetContext = buildWidgetContext(value: list, parameters: [id: 'TheTable', readOnly: 'true'],
+                                           format: ChildListFieldFormat.instance, referenceType: SampleChild)
+    def page = new GridWidget(widgetContext).build().toString() + widgetContext.markerCoordinator.postscript
+    //println "page = $page"
+
+    then: 'the page is valid'
+    checkPage(page)
+
+    and: 'the table itself is flagged as not editable'
+    def tableText = JavascriptTestUtils.extractBlock(page, '{ view: "datatable"')
+    JavascriptTestUtils.extractProperty(tableText, 'editable') == 'false'
+
+    and: 'the inline grid is not registered for form submission'
+    !page.contains('efd._registerInlineGridName("TheTable");')
+  }
+
   def "verify that widget builds basic structure correctly - data is escaped correctly"() {
     given: 'a value'
     def list = []

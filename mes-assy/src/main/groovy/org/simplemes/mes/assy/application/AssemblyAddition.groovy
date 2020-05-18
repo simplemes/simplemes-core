@@ -70,7 +70,7 @@ class AssemblyAddition extends BaseAddition implements AdditionInterface {
       valueClass OrderAssembledComponent
       fieldOrder { name 'group:components' }
       fieldOrder { name 'assembledComponents'; after 'group:components' }
-      guiHints 'assembledComponents@readOnly="true"'
+      guiHints 'readOnly="true"'
     }
 
   }

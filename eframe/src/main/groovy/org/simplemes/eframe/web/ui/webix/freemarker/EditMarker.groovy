@@ -4,7 +4,6 @@
 
 package org.simplemes.eframe.web.ui.webix.freemarker
 
-
 import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.web.ui.webix.widget.ToolbarWidget
 
@@ -13,6 +12,7 @@ import org.simplemes.eframe.web.ui.webix.widget.ToolbarWidget
  * This creates the HTML/JS needed to edit a single top-level domain object with controls to allow
  * saving and related actions.
  */
+@SuppressWarnings("unused")
 class EditMarker extends BaseDefinitionPageMarker {
 
   /**

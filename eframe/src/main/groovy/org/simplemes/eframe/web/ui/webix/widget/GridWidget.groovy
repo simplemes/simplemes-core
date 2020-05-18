@@ -8,6 +8,7 @@ import groovy.util.logging.Slf4j
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.i18n.GlobalUtils
+import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.JavascriptUtils
 import org.simplemes.eframe.preference.ColumnPreference
 import org.simplemes.eframe.preference.PreferenceHolder
@@ -65,6 +66,10 @@ class GridWidget extends BaseLabeledFieldWidget {
    */
   GridWidget(WidgetContext widgetContext) {
     super(widgetContext)
+    if (widgetContext?.parameters?.readOnly) {
+      // Make sure the marker parameter readOnly is used for the widget.
+      widgetContext.readOnly = ArgumentUtils.convertToBoolean(widgetContext?.parameters?.readOnly)
+    }
   }
 
   /**
@@ -395,7 +400,10 @@ class GridWidget extends BaseLabeledFieldWidget {
    * @return The script.
    */
   String buildRegisterForSubmission() {
-    return """ efd._registerInlineGridName("${id}");
-    """
+    if (widgetContext.readOnly) {
+      return ""
+    } else {
+      return """ efd._registerInlineGridName("${id}");"""
+    }
   }
 }
