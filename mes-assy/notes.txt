@@ -3,7 +3,6 @@ Scratch
 
 GUI Test backlog
   Order - BOM and Assembled components.  Editable in edit mode?
-  Product - Delete rows of BOM records.
 Search support
 
 
