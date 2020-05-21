@@ -44,9 +44,9 @@ class EditMarkerGUISpec extends BaseGUISpecification {
     mainPanel.click() // Make sure the main panel is displayed
 
     then: 'the fields are correct'
-    name.label == lookupRequired('name.label')
+    name.label == lookupRequired('name.label', currentLocale)
     name.input.value() == 'ABC-001'
-    titleField.label == lookup('title.label')
+    titleField.label == lookup('title.label', currentLocale)
     titleField.input.value() == 'abc-001'
 
     when: 'the data field is changed and the record saved in the db'

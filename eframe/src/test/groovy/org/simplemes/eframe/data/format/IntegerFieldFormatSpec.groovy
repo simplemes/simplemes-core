@@ -1,13 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data.format
 
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -87,6 +85,18 @@ class IntegerFieldFormatSpec extends BaseSpecification {
     value | _
     'abc' | _
     127L  | _
+  }
+
+  def "verify that parsing works with decimal separators in supported locales"() {
+    expect: 'the value is parsed'
+    IntegerFieldFormat.instance.parse(value, locale, null) == result
+
+    where:
+    locale        | value    | result
+    Locale.GERMAN | '10.000' | 10000
+    Locale.GERMAN | '10'     | 10
+    Locale.US     | '10,000' | 10000
+    Locale.US     | '10'     | 10
   }
 
 }

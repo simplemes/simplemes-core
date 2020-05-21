@@ -1,8 +1,6 @@
 Scratch
 ===========
 
-GUI Test backlog
-  Order - BOM and Assembled components.  Editable in edit mode?
 Search support
 
 

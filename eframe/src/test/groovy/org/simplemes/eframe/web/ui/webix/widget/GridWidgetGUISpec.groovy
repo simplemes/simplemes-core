@@ -11,6 +11,7 @@ import org.simplemes.eframe.data.format.EncodedTypeFieldFormat
 import org.simplemes.eframe.data.format.EnumFieldFormat
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.date.DateUtils
+import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.test.BaseGUISpecification
 import org.simplemes.eframe.test.DataGenerator
@@ -64,9 +65,9 @@ class GridWidgetGUISpec extends BaseGUISpecification {
     sampleChildren.cell(0, getColumnIndex(SampleChild, 'key')).text() == 'C1'
     sampleChildren.cell(0, getColumnIndex(SampleChild, 'sequence')).text() == '300'
     sampleChildren.cell(0, getColumnIndex(SampleChild, 'title')).text() == 'title1'
-    sampleChildren.cell(0, getColumnIndex(SampleChild, 'qty')).text().startsWith('12.2')
-    sampleChildren.cell(0, getColumnIndex(SampleChild, 'dueDate')).text() == DateUtils.formatDate(dueDate)
-    sampleChildren.cell(0, getColumnIndex(SampleChild, 'dateTime')).text() == DateUtils.formatDate(dateTime)
+    sampleChildren.cell(0, getColumnIndex(SampleChild, 'qty')).text().startsWith(NumberUtils.formatNumber(12.2, currentLocale))
+    sampleChildren.cell(0, getColumnIndex(SampleChild, 'dueDate')).text() == DateUtils.formatDate(dueDate, currentLocale)
+    sampleChildren.cell(0, getColumnIndex(SampleChild, 'dateTime')).text() == DateUtils.formatDate(dateTime, currentLocale)
     sampleChildren.cell(0, getColumnIndex(SampleChild, 'format')).text() == DomainReferenceFieldFormat.instance.toStringLocalized()
     sampleChildren.cell(0, getColumnIndex(SampleChild, 'reportTimeInterval')).text() == ReportTimeIntervalEnum.LAST_YEAR.toStringLocalized()
     sampleChildren.cell(0, getColumnIndex(SampleChild, 'order')).text() == order.order
@@ -103,16 +104,16 @@ class GridWidgetGUISpec extends BaseGUISpecification {
     sendKey('TitleC1')   // Title field
     sendKey(Keys.TAB)
 
-    sendKey('12.2')   // Quantity field
+    sendKey(NumberUtils.formatNumber(12.2, currentLocale))   // Quantity field
     sendKey(Keys.TAB)
 
     sendKey(Keys.SPACE)   // Enabled boolean field
     sendKey(Keys.TAB)
 
-    sendKey(DateUtils.formatDate(dueDate))   // Due Date field
+    sendKey(DateUtils.formatDate(dueDate, currentLocale))   // Due Date field
     sendKey(Keys.TAB)
 
-    sendKey(DateUtils.formatDate(dateTime))   // DateTime field
+    sendKey(DateUtils.formatDate(dateTime, currentLocale))   // DateTime field
     sendKey(Keys.TAB)
 
     sendKey(EnumFieldFormat.instance.toStringLocalized())   // Format field
@@ -210,6 +211,7 @@ class GridWidgetGUISpec extends BaseGUISpecification {
       keyDown Keys.ALT
       sendKeys('a')
       keyUp Keys.ALT
+      //sendKeys(Keys.chord(Keys.ALT,'a'))
     }
 
     and: 'the second row required fields are entered'
@@ -229,7 +231,13 @@ class GridWidgetGUISpec extends BaseGUISpecification {
       assert record.sampleChildren.size() == 2
       assert record.sampleChildren[0].key == 'C1'
       assert record.sampleChildren[0].sequence == 10
-      assert record.sampleChildren[1].key == 'C2'
+      // The sendKeys() call for Alt-A key above causes the 'a' to bleed into the key field.
+      // So, we have different checks for firefox and chrome.
+      if (fireFox) {
+        assert record.sampleChildren[1].key == 'C2'
+      } else {
+        assert record.sampleChildren[1].key.contains('C2')
+      }
       assert record.sampleChildren[1].sequence == 20
       true
     }
@@ -257,6 +265,7 @@ class GridWidgetGUISpec extends BaseGUISpecification {
 
     and: 'the format field is clicked to open the combobox list popup - the list is correct'
     assert sampleChildren.headers[getColumnIndex(SampleChild, 'format')].text() == lookup('format.label')
+    standardGUISleep()  // We can't seem to find a waitFor{} condition that works in Chrome reliably.  For now, we will use a 100ms wait.
     sampleChildren.cell(0, getColumnIndex(SampleChild, 'format')).click()
     def format = EncodedTypeFieldFormat.instance
     waitFor {
@@ -264,24 +273,33 @@ class GridWidgetGUISpec extends BaseGUISpecification {
     }
     // Make sure the list is wide enough and the display values are used
     assert $('div.webix_popup').has('div.webix_list_item', webix_l_id: format.id).width > 200
-    assert getComboListItem(format.id).text() == format.toStringLocalized()
+    assert getComboListItem(format.id).text() == format.toStringLocalized(currentLocale)
     getComboListItem(format.id).click()
     sendKey(Keys.TAB)
-
+    waitFor {
+      // Make sure the combobox is closed and the row is updated in the grid.
+      sampleChildren.cell(0, getColumnIndex(SampleChild, 'format')).text() == format.toStringLocalized(currentLocale)
+    }
 
     and: 'the report enum field is clicked to open the combobox list popup - the list is correct'
     assert sampleChildren.headers[getColumnIndex(SampleChild, 'reportTimeInterval')].text() == lookup('reportTimeInterval.label')
+    standardGUISleep()  // We can't seem to find a waitFor{} condition that works in Chrome reliably.  For now, we will use a 100ms wait.
     sampleChildren.cell(0, getColumnIndex(SampleChild, 'reportTimeInterval')).click()
     def intervalEnum = ReportTimeIntervalEnum.LAST_7_DAYS
     waitFor {
       getComboListItem(intervalEnum.toString()).displayed
     }
-    assert getComboListItem(intervalEnum.toString()).text() == intervalEnum.toStringLocalized()
+    assert getComboListItem(intervalEnum.toString()).text() == intervalEnum.toStringLocalized(currentLocale)
     getComboListItem(intervalEnum.toString()).click()
     sendKey(Keys.TAB)
+    waitFor {
+      // Make sure the combobox is closed and the row is updated in the grid.
+      sampleChildren.cell(0, getColumnIndex(SampleChild, 'reportTimeInterval')).text() == intervalEnum.toStringLocalized(currentLocale)
+    }
 
     and: 'the dome ref - order - field is clicked to open the combobox list popup - the list is correct'
     assert sampleChildren.headers[getColumnIndex(SampleChild, 'order')].text() == lookup('order.label')
+    standardGUISleep()  // We can't seem to find a waitFor{} condition that works in Chrome reliably.  For now, we will use a 100ms wait.
     sampleChildren.cell(0, getColumnIndex(SampleChild, 'order')).click()
     waitFor {
       getComboListItem(order.uuid.toString()).displayed
@@ -289,6 +307,10 @@ class GridWidgetGUISpec extends BaseGUISpecification {
     assert getComboListItem(order.uuid.toString()).text() == order.order
     getComboListItem(order.uuid.toString()).click()
     sendKey(Keys.TAB)
+    waitFor {
+      // Make sure the combobox is closed and the row is updated in the grid.
+      sampleChildren.cell(0, getColumnIndex(SampleChild, 'order')).text() == order.order
+    }
 
     and: 'the record is saved'
     createButton.click()
@@ -308,6 +330,8 @@ class GridWidgetGUISpec extends BaseGUISpecification {
     }
   }
 
+  // The moveToElement() and drag does not work with Chrome.
+  @IgnoreIf({ System.getProperty("geb.env").contains("chrome") })
   def "verify that the resized column width is used on the next display - create page"() {
     when: 'the page is displayed'
     login()

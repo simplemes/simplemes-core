@@ -321,14 +321,14 @@ the localization.
 This is done by re-running the GUI tests with the -Dgeb.lang option.  For example, when
 run from the gradle command line:
 
-  ./gradlew -Dgeb.lang=de-DE  test
+  ./gradlew -Dgeb.lang=de-DE -Dgeb.env=firefox test
 
 This language is used to create the browser instance.  It is also used in the test helpers
 <<GUI Test Helpers>> and the base GUI specification class
 link:groovydoc/org/simplemes/eframe/test/BaseGUISpecification.html[BaseGUISpecification^]
 icon:share-square-o[role="link-blue"].
 
-Your test class can access this locale with the _currentLocale_ property:
+Your test class can access this locale with the `currentLocale` property:
 
 [source,groovy]
 .Example GUI Test
@@ -345,6 +345,8 @@ class ProductGUITests extends BaseGUISpecification {
 ----
 <1> The current locale for the test from the _-Dgeb.lang_ argument. Defaults to en-US.
 
+NOTE: You can also change the JVM default locale using the -D option _'-Duser.language=de'_
+      instead of the `currentLocale` variable above.
 
 ==== GEB Page Modules
 

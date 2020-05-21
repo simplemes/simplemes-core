@@ -18,6 +18,7 @@ import org.simplemes.eframe.data.format.LongFieldFormat
 import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.date.DateUtils
+import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.system.DisabledStatus
 import org.simplemes.eframe.test.DataGenerator
@@ -59,11 +60,11 @@ class FieldExtensionE2ESpec extends BaseDefinitionEditorSpecification {
         break
       case Date:
         def customField = $("body").module(new DateFieldModule(field: fieldName))
-        customField.input.value(DateUtils.formatDate(value as Date))
+        customField.input.value(DateUtils.formatDate(value as Date, currentLocale))
         break
       case DateOnly:
         def customField = $("body").module(new DateFieldModule(field: fieldName))
-        customField.input.value(DateUtils.formatDate(value as DateOnly))
+        customField.input.value(DateUtils.formatDate(value as DateOnly, currentLocale))
         break
       case ReportTimeIntervalEnum:
         def customField = $("body").module(new ComboboxModule(field: fieldName))
@@ -76,6 +77,10 @@ class FieldExtensionE2ESpec extends BaseDefinitionEditorSpecification {
       case AllFieldsDomain:
         def customField = $("body").module(new ComboboxModule(field: fieldName))
         setCombobox(customField, value.uuid.toString())
+        break
+      case BigDecimal:
+        def customField = $("body").module(new TextFieldModule(field: fieldName))
+        customField.input.value(NumberUtils.formatNumber(value as Number, currentLocale))
         break
       default:
         def customField = $("body").module(new TextFieldModule(field: fieldName))
@@ -154,7 +159,6 @@ class FieldExtensionE2ESpec extends BaseDefinitionEditorSpecification {
       true
     }
   }
-
 
   @SuppressWarnings("GroovyAssignabilityCheck")
   def "verify that the create page can set a custom field using all supported field types"() {

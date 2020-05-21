@@ -76,6 +76,8 @@ class ListWidgetGUISpec extends BaseDashboardSpecification {
     workList.cell(0, 0).text() == "M1${sprintf('%03d', OrderController.WORK_RECORD_COUNT)}"
   }
 
+  // The moveToElement() and drag does not work with Chrome.
+  @IgnoreIf({ System.getProperty("geb.env").contains("chrome") })
   def "verify that a basic list widget works - column resize is used on next display"() {
     given: 'a dashboard with the sample work list activity'
     buildDashboard(defaults: ['/order/orderWorkList'])

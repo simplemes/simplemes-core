@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 import org.simplemes.eframe.date.DateUtils
@@ -8,17 +12,12 @@ import sample.domain.AllFieldsDomain
 import sample.page.AllFieldsDomainEditPage
 import spock.lang.IgnoreIf
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * Tests.
  */
 @IgnoreIf({ !sys['geb.env'] })
 class DateFieldWidgetGUISpec extends BaseGUISpecification {
+  @SuppressWarnings("unused")
   static dirtyDomains = [AllFieldsDomain]
 
   def "verify that the date field can be populated and saved"() {
@@ -36,10 +35,10 @@ class DateFieldWidgetGUISpec extends BaseGUISpecification {
     mainPanel.click() // Make sure the main panel is displayed
 
     then: 'the display value is correct'
-    dateTime.input.value() == DateUtils.formatDate(originalDateTime)
+    dateTime.input.value() == DateUtils.formatDate(originalDateTime, currentLocale)
 
     when: 'the data field is changed and the record saved in the db'
-    dateTime.input.value(DateUtils.formatDate(dateTimeValue))
+    dateTime.input.value(DateUtils.formatDate(dateTimeValue, currentLocale))
     updateButton.click()
     waitForRecordChange(afd)
 
@@ -64,10 +63,10 @@ class DateFieldWidgetGUISpec extends BaseGUISpecification {
     to AllFieldsDomainEditPage, afd
     mainPanel.click() // Make sure the main panel is displayed
 
-    and: 'the calendar is opened and the date is changed'
+    and: 'the calendar is opened and the date is changed to jun 21'
     $('div.webix_el_datepicker', view_id: "dateTime").find('span').click()
     standardGUISleep()
-    $('div.webix_calendar').find('div', 'aria-label': '21 June 2010').click()
+    $('div.webix_calendar').find('div.webix_cal_row', 3).find('div', day: '1').click()
 
     and: 'the record is saved'
     updateButton.click()

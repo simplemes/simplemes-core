@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.reports
 
 
@@ -14,10 +18,6 @@ import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.page.DeniedPage
 import sample.domain.AllFieldsDomain
 import spock.lang.IgnoreIf
-
-/*
- * Copyright (c) 2018 Simple MES, LLC.  All rights reserved.  See license.txt for license terms.
- */
 
 /**
  * Tests the report engine/controller in a GUI for full testing.
@@ -133,6 +133,8 @@ class ReportEngineGUISpec extends BaseGUISpecification {
     filterValues.text().contains("${lookup('name.label', currentLocale)}: record_7")
   }
 
+  // The title on PDF pages in Chrome is not testable.
+  @IgnoreIf({ System.getProperty("geb.env").contains("chrome") })
   def "verify that the basic Sample report works in PDF"() {
     given: 'some test data'
     buildRecords()
@@ -179,6 +181,8 @@ class ReportEngineGUISpec extends BaseGUISpecification {
     name.input.value() == 'record_6'
   }
 
+  // The title on PDF pages in Chrome is not testable.
+  @IgnoreIf({ System.getProperty("geb.env").contains("chrome") })
   def "verify that the PDF link works"() {
     given: 'some test data'
     buildRecords()

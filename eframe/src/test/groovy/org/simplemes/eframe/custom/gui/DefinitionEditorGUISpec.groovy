@@ -315,6 +315,8 @@ class DefinitionEditorGUISpec extends BaseDefinitionEditorSpecification {
     $('div.webix_item_tab', button_id: "custom2Body").displayed
   }
 
+  // The doubleClick() does not work with Chrome.
+  @IgnoreIf({ System.getProperty("geb.env").contains("chrome") })
   def "verify that editPanel dialog can be opened with double-clicking in configured list"() {
     given: 'a custom panel configured for the domain'
     buildCustomPanel(domainClass: SampleParent, panel: 'group:custom1', afterFieldName: 'title')
@@ -331,6 +333,8 @@ class DefinitionEditorGUISpec extends BaseDefinitionEditorSpecification {
     panelField.input.value() == 'custom1'
   }
 
+  // The doubleClick() does not work with Chrome.
+  @IgnoreIf({ System.getProperty("geb.env").contains("chrome") })
   def "verify that editPanel dialog can be opened with double-click on custom panel in the available list"() {
     when: 'the definition page is shown'
     openEditor(SampleParentCreatePage)
@@ -548,6 +552,8 @@ class DefinitionEditorGUISpec extends BaseDefinitionEditorSpecification {
     }
   }
 
+  // The doubleClick() does not work with Chrome.
+  @IgnoreIf({ System.getProperty("geb.env").contains("chrome") })
   def "verify that editField dialog can be opened with double-click"() {
     given: 'a custom field is defined'
     DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: SampleParent,

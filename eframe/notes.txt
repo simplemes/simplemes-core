@@ -1,50 +1,11 @@
 Scratch
 =======
-Support readonly on efField.
-
-@ExtensionPoint(MarkerClass, "Comment")
- Response method(argument1)
-   preMethod(argument)
-   postMethod(argument,response)
-
-
-@Singleton
-OrderServiceExtension implements MarkerClass
-  Response postMethod(argument,response) {
-    return response
-  }
-}
-
-interface MarkerClass {
-  default preMethod(argument)
-  default postMethod(argument,response)
-}
-
-ExtensionPointHelper.instance.invokePre(Class marker,arguments) {
-  getBeans(marker)
-  call preMethod() on all
-  call postMethod() on all
-}
-ExtensionPointHelper.instance.invokePost(Class bean,response,arguments)
-
-Old School: release(target: OrderService, extension: this.&orderReleasePostProcessor)
-def orderReleasePostProcessor(OrderReleaseRequest orderReleaseRequest) {
-  orderAssyService.orderReleasePostProcessor(orderReleaseRequest)
-}
-
-Generated extension.adoc:
-
-* OrderService.release() - The sample release method. (OrderReleasePointInterface)
-* link:groovydoc/sample/service/OrderService.html#release(sample.domain.Order)[OrderService.release()^] icon:share-square-o[role="link-blue"] - The order Save method,
-
 
 
 
 
 Micronaut Data Conversion Tasks
 ===============================
-Test with locale=DE.  Fails in CRUDGUITester.  Update 'GUI Language Testing' .adoc for any changes.
-  Issue with GlobalUtils.lookup() from the test thread (e.g. lookup() in spec).
 Undo workarounds that were fixed (323, 264).
   https://github.com/micronaut-projects/micronaut-data/issues/323
 Add workaround for update failure: 299.  Remove sop.
@@ -58,15 +19,8 @@ Support cache in specific use cases:
 Add SQL DDL logic and Liquid-base/FlyWay support.
   Find way to auto-generate core stuff?.
 Look at using an environment for DB type: h2, postgres.  Change command line to use it.
-Figure out why sample reports are in the built .jar.  Why ArchiveLog report does not work.
-<@efField> supports foreign reference.  Value="" causes failure.  Maybe use UUID or key in value?
 Fix mess with efForm.dashboard.  Support type='dashboard', 'buttonHolder' and 'dialog'.
 
-
-Vue Investigation
-=================
-Use tables, with full-time editable cells.
-Dashboard splitter component?
 
 Tasks
 =====
@@ -85,14 +39,12 @@ Tasks left out
   Build check from jenkins with single Repo on GitHub.
   For Assembled App, strip out test utils (e.g. MESUnitTestUtils, Assy, others).
 
-  Look into Micronaut Data? (aka Predator).
-    No First level cache, proxy or optimistic locking.
-
   Bugs:
     Definition List allows changing boolean checkbox and the checkbox is not centered.
     Definition List shows [Object object] for sub object cases.  User.  Fixable or add -userRoles as supported field list.
     Definition List key field allows HTML un-escaped in it.
     Show Page with name="<script>alert('bad')</script>" fails with Javascript syntax error in SampleParent.
+    Edit/Create? page save failures.  Fixing problem and re-saving value gives error (Invalid UUID string: null)
 
 MES Demo Release Requirements
 -----------------------------

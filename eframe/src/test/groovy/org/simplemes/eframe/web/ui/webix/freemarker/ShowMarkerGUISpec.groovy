@@ -315,7 +315,7 @@ class ShowMarkerGUISpec extends BaseGUISpecification {
 
     then: 'the show page has the custom field'
     getFieldLabel('custom1') == 'custom1'
-    getReadonlyFieldValue('custom1') == NumberUtils.formatNumber(1.2)
+    getReadonlyFieldValue('custom1') == NumberUtils.formatNumber(1.2, currentLocale)
   }
 
 

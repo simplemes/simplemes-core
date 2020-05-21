@@ -1,14 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data.format
 
 import groovy.transform.CompileStatic
 import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.misc.NumberUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Defines a basic Long field format.
@@ -54,7 +52,7 @@ class LongFieldFormat extends BasicFieldFormat {
     if (!value) {
       return null
     }
-    value = value.replaceAll(NumberUtils.determineGroupingSeparator(locale), '')
+    value = value.replace(NumberUtils.determineGroupingSeparator(locale), '')
     return Long.parseLong(value)
   }
 

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.reports
 
 import org.openqa.selenium.Keys
@@ -14,10 +18,6 @@ import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
 import spock.lang.IgnoreIf
-
-/*
- * Copyright (c) 2018 Simple MES, LLC.  All rights reserved.  See license.txt for license terms.
- */
 
 /**
  * Tests the report engine/controller filter page in a GUI for full testing.
@@ -67,12 +67,12 @@ class ReportFilterGUISpec extends BaseGUISpecification {
     reportTimeInterval.input.value() == ReportTimeIntervalEnum.CUSTOM_RANGE.toStringLocalized()
 
     and: 'the date is correct'
-    startDateTime.input.value() == DateUtils.formatDate(start)
+    startDateTime.input.value() == DateUtils.formatDate(start, currentLocale)
 
     when: 'new filter values are entered'
     name.input.value('record_5')
     def newStart = new Date(UnitTestUtils.SAMPLE_TIME_NO_FRACTION_MS) + 1
-    startDateTime.input.value(DateUtils.formatDate(newStart))
+    startDateTime.input.value(DateUtils.formatDate(newStart, currentLocale))
 
     and: 'the report is displayed'
     updateButton.click()
@@ -83,7 +83,7 @@ class ReportFilterGUISpec extends BaseGUISpecification {
     and: 'the filter parameters are used'
     reportTable.text().contains('record_5')
     !reportTable.text().contains('record_6')
-    def dateText = DateUtils.formatDate(newStart)
+    def dateText = DateUtils.formatDate(newStart, currentLocale)
     reportHeader.text().contains("${GlobalUtils.lookup('startDateTime.label')}: $dateText")
 
     and: 'the user preference values are saved'

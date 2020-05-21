@@ -349,5 +349,43 @@ class BaseGUISpecification extends BaseSpecification {
     }
   }
 
+  /**
+   * Returns true if the GUI test is running in firefox.
+   * <p>
+   *  <b>Note:</b> Use this sparingly.
+   * @return True if running in firefox.
+   */
+  boolean isFireFox() {
+    return System.getProperty('geb.env')?.contains('firefox')
+  }
+
+  /**
+   * Convenience method for general message.properties lookup.
+   * This sub-class uses the current locale from the GUI test browser if none is given.
+   * @param key The key to lookup.
+   * @param locale The locale to use for the message. (<b>Default</b>: Current Browser Locale)
+   * @param args The replaceable arguments used by the message (if any).
+   * @return The looked up message.
+   */
+  @Override
+  String lookup(String key, Locale locale = null, Object... args) {
+    locale = locale ?: currentLocale
+    return super.lookup(key, locale, args)
+  }
+
+  /**
+   * Convenience method for general message.properties lookup for fields marked as required.
+   * This sub-class uses the current locale from the GUI test browser if none is given.
+   * @param key The key to lookup.
+   * @param locale The locale to use for the message. (<b>Default</b>: Current browser Locale)
+   * @param args The replaceable arguments used by the message (if any).
+   * @return The looked up message.
+   */
+  @Override
+  String lookupRequired(String key, Locale locale = null, Object... args) {
+    locale = locale ?: currentLocale
+    return super.lookupRequired(key, locale, args)
+  }
+
 
 }

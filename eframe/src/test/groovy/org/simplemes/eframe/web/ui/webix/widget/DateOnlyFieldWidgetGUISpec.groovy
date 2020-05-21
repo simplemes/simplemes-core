@@ -38,10 +38,10 @@ class DateOnlyFieldWidgetGUISpec extends BaseGUISpecification {
     mainPanel.click() // Make sure the main panel is displayed
 
     then: 'the display value is correct'
-    dueDate.input.value() == DateUtils.formatDate(originalDate)
+    dueDate.input.value() == DateUtils.formatDate(originalDate, currentLocale)
 
     when: 'the data field is changed and the record saved in the db'
-    dueDate.input.value(DateUtils.formatDate(dateOnlyValue))
+    dueDate.input.value(DateUtils.formatDate(dateOnlyValue, currentLocale))
     updateButton.click()
     waitForRecordChange(afd)
 
@@ -69,7 +69,7 @@ class DateOnlyFieldWidgetGUISpec extends BaseGUISpecification {
     and: 'the calendar is opened and the date is changed'
     $('div.webix_el_datepicker', view_id: "dueDate").find('span').click()
     standardGUISleep()
-    $('div.webix_calendar').find('div', 'aria-label': '21 June 2010').click()
+    $('div.webix_calendar').find('div.webix_cal_row', 3).find('div', day: '1').click()
 
     and: 'the record is saved'
     updateButton.click()

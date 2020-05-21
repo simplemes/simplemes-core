@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 
@@ -11,12 +15,6 @@ import sample.domain.SampleParent
 import sample.page.AllFieldsDomainListPage
 import sample.page.SampleParentListPage
 import spock.lang.IgnoreIf
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -45,7 +43,7 @@ class DefinitionListWidgetGUISpec extends BaseGUISpecification {
     cell0.text() == records[0].name
 
     and: 'the default sort order is marked in the column header'
-    allFieldsDomainGrid.sortAsc.text() == lookup('name.label')
+    allFieldsDomainGrid.sortAsc.text() == lookup('name.label', currentLocale)
 
     and: 'make sure the dumpElement and reportFailure works'
     dumpElement(cell0)
@@ -73,7 +71,7 @@ class DefinitionListWidgetGUISpec extends BaseGUISpecification {
     cell0.text() == records[29].name
 
     and: 'the descending sort order is marked in the column header'
-    allFieldsDomainGrid.sortDesc.text() == lookup('name.label')
+    allFieldsDomainGrid.sortDesc.text() == lookup('name.label', currentLocale)
   }
 
 
@@ -127,12 +125,12 @@ class DefinitionListWidgetGUISpec extends BaseGUISpecification {
     cell0.text() == records[(UIDefaults.PAGE_SIZE * 2) - 1].name
   }
 
-  def "verify that HTML code is escaped correctly"() {
+  def "verify that dangerous HTML code is escaped correctly"() {
     given: 'some domain records'
     def records = DataGenerator.generate {
       domain AllFieldsDomain
       count 1
-      values name: 'ABC-$i', title: '<b>abc</b>-$r'
+      values name: 'ABC-$i', title: '<script>abc</script>-$r'
     } as List<AllFieldsDomain>
 
     when: 'the list page is displayed'
@@ -144,6 +142,8 @@ class DefinitionListWidgetGUISpec extends BaseGUISpecification {
     cell0.text() == records[0].title
   }
 
+  // The moveToElement() and drag does not work with Chrome.
+  @IgnoreIf({ System.getProperty("geb.env").contains("chrome") })
   def "verify that the resized column width is used on the next display"() {
     given: 'some domain records'
     DataGenerator.generate {

@@ -615,7 +615,7 @@ class CRUDGUITester {
       log.debug('  Checking list column "{}". Expected = {}, value = {}', columnName, expectedValueString, s)
       if (s && expectedValueString) {
         // Compare the BigDecimal form of the values
-        def bd = new BigDecimal(s)
+        def bd = NumberUtils.parseNumber(s, currentLocale)
         assert bd == expectedValue, "Value check for $columnName failed.  Was $s, expected $expectedValueString"
       } else {
         assert s == expectedValueString, "Value check for $columnName failed.  Was $s, expected $expectedValueString"
