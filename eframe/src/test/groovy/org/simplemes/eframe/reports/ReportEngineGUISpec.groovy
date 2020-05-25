@@ -134,7 +134,7 @@ class ReportEngineGUISpec extends BaseGUISpecification {
   }
 
   // The title on PDF pages in Chrome is not testable.
-  @IgnoreIf({ System.getProperty("geb.env").contains("chrome") })
+  @IgnoreIf({ System.getProperty("geb.env")?.contains("chrome") })
   def "verify that the basic Sample report works in PDF"() {
     given: 'some test data'
     buildRecords()
@@ -182,7 +182,7 @@ class ReportEngineGUISpec extends BaseGUISpecification {
   }
 
   // The title on PDF pages in Chrome is not testable.
-  @IgnoreIf({ System.getProperty("geb.env").contains("chrome") })
+  @IgnoreIf({ System.getProperty("geb.env")?.contains("chrome") })
   def "verify that the PDF link works"() {
     given: 'some test data'
     buildRecords()

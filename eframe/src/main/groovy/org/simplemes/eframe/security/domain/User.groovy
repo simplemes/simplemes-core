@@ -17,7 +17,6 @@ import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.annotation.Transient
 import io.micronaut.data.model.DataType
-import io.micronaut.security.authentication.providers.PasswordEncoder
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.FieldSizes
@@ -169,15 +168,15 @@ class User {
    * The password encoder to use.  Since injection is not desired on domains, we do it ourselves
    * and cache the encoder for later use.
    */
-  static PasswordEncoder passwordEncoder
+  static PasswordEncoderService passwordEncoder
 
   /**
    * Finds the right encoder to use.  Works in live server and tests.
    * @return The encoder.
    */
-  static PasswordEncoder getPasswordEncoder() {
+  static PasswordEncoderService getPasswordEncoder() {
     if (!passwordEncoder) {
-      passwordEncoder = Holders.applicationContext?.getBean(PasswordEncoder) ?: new PasswordEncoderService()
+      passwordEncoder = Holders.applicationContext?.getBean(PasswordEncoderService) ?: new PasswordEncoderService()
     }
     return passwordEncoder
   }

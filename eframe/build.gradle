@@ -57,7 +57,7 @@ dependencies {
   compile "io.micronaut:micronaut-validation"
   compile "io.micronaut:micronaut-inject-groovy"
   compile "io.micronaut:micronaut-management"
-  compile "io.micronaut:micronaut-views"
+  compile "io.micronaut:micronaut-views-freemarker"
   compile "org.freemarker:freemarker:$freemarkerVersion"
   compile( "org.spockframework:spock-core") {
     exclude group: "org.codehaus.groovy", module: "groovy-all"
@@ -79,6 +79,7 @@ dependencies {
   }
   compile ( "com.bertramlabs.plugins:asset-pipeline-core:$assetPipelineVersion")
   compile "org.springframework.security:spring-security-crypto:${springSecurityCryptoVersion}"
+  compile "commons-logging:commons-logging:1.2"
 
   compile "jakarta.persistence:jakarta.persistence-api:${jakartaJPAVersion}"
   compile "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
@@ -144,7 +145,9 @@ dependencies {
     // exclude module: 'jfreechart' //<-charts
     exclude module: 'itext' //exclude itext:2.1.7js5 which is not available in jcenter or maven central
   }
-  compile group: 'com.lowagie', name: 'itext', version: lowagieItextVersion
+  compile ("com.lowagie:itext:$lowagieItextVersion") {
+    exclude group: 'bouncycastle'
+  }
   compile("net.sf.jasperreports:jasperreports-fonts:$jasperreportsVersion")
   // https://mvnrepository.com/artifact/net.sourceforge.barbecue/barbecue
   compile group: 'net.sourceforge.barbecue', name: 'barbecue', version: barbecueVersion

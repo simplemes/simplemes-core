@@ -6,8 +6,9 @@ version "0.5"
 group "org.simplemes"
 
 ext {
+  // Need to specify this version here since it has non-numeric value.  The gradle.properties file can't seem to handle that.
   //noinspection GroovyAssignabilityCheck
-  springSecurityCryptoVersion='4.2.5.RELEASE'
+  springSecurityCryptoVersion='5.3.2.RELEASE'
 }
 
 

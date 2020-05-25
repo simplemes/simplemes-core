@@ -4,6 +4,7 @@
 
 package org.simplemes.eframe.web.asset
 
+import asset.pipeline.micronaut.AssetPipelineService
 import io.micronaut.context.annotation.Primary
 import io.micronaut.context.annotation.Replaces
 
@@ -18,7 +19,7 @@ import javax.inject.Singleton
  */
 @Primary
 @Singleton
-@Replaces(EFrameAssetPipelineService)
+@Replaces(AssetPipelineService)
 class EFrameAssetPipelineServiceGroovy extends EFrameAssetPipelineService {
 
 }

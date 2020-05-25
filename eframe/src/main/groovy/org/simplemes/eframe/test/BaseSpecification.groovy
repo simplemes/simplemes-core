@@ -211,25 +211,32 @@ class BaseSpecification extends GebSpec {
    * Checks all loaded modules (via classpath) for 'ddl/_testH2.sql' files.
    */
   void executeTestDDLStatements() {
-    def resources = getClass().classLoader.getResources('ddl/_testH2.sql')
-    for (url in resources) {
-      def inputStream = null
-      try {
-        log.debug("executeTestDDLStatements(): Executing statements from {} ", url)
-        inputStream = url.openStream()
-        inputStream.eachLine { line ->
-          if (line.contains(';')) {
-            line = line - ';'
+    FieldExtension.withTransaction {
+      def resources = getClass().classLoader.getResources('ddl/_testH2.sql')
+      for (url in resources) {
+        def inputStream = null
+        try {
+          log.debug("executeTestDDLStatements(): Executing statements from {} ", url)
+          inputStream = url.openStream()
+          List<String> lines = []
+          inputStream.eachLine { line ->
+            // Put the DDL lines in an array since the log.debug() method is not found inside of this closure for some reason.
+            if (line.contains(';')) {
+              line = line - ';'
+              lines << line
+            }
+          }
+          for (line in lines) {
             log.debug("executeTestDDLStatements(): Executing {} ", line)
-            DataSource dataSource = Holders.getApplicationContext().getBean(DataSource.class)
-            Connection connection = DataSourceUtils.getConnection(dataSource)
+            javax.sql.DataSource dataSource = org.simplemes.eframe.application.Holders.getApplicationContext().getBean(javax.sql.DataSource.class)
+            java.sql.Connection connection = io.micronaut.transaction.jdbc.DataSourceUtils.getConnection(dataSource)
             def ps = connection.prepareStatement(line)
             ps.execute()
           }
-          false
+
+        } finally {
+          inputStream?.close()
         }
-      } finally {
-        inputStream?.close()
       }
     }
 

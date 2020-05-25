@@ -7,7 +7,6 @@ package org.simplemes.eframe.web.asset;
 import asset.pipeline.AssetPipelineConfigHolder;
 import asset.pipeline.fs.FileSystemAssetResolver;
 import asset.pipeline.micronaut.AssetPipelineService;
-import io.micronaut.context.annotation.Replaces;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
@@ -17,7 +16,6 @@ import io.reactivex.Flowable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.inject.Singleton;
 import java.util.Collection;
 
 /**
@@ -26,8 +24,6 @@ import java.util.Collection;
  * This means no need to restart the server when an asset changes.
  */
 @SuppressWarnings("unused")
-@Singleton
-@Replaces(AssetPipelineService.class)
 public class EFrameAssetPipelineService extends AssetPipelineService {
   private static final Logger LOG = LoggerFactory.getLogger(EFrameAssetPipelineService.class);
 

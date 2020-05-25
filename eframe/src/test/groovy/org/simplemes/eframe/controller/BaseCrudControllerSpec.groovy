@@ -739,6 +739,7 @@ class BaseCrudControllerSpec extends BaseAPISpecification {
 
   def "verify that index works in a live server"() {
     when: 'the page is read'
+    waitForInitialDataLoad()
     login()
     def res = sendRequest(uri: "/sample", method: 'get')
 

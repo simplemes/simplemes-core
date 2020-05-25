@@ -143,7 +143,7 @@ class DefinitionListWidgetGUISpec extends BaseGUISpecification {
   }
 
   // The moveToElement() and drag does not work with Chrome.
-  @IgnoreIf({ System.getProperty("geb.env").contains("chrome") })
+  @IgnoreIf({ System.getProperty("geb.env")?.contains("chrome") })
   def "verify that the resized column width is used on the next display"() {
     given: 'some domain records'
     DataGenerator.generate {

@@ -77,7 +77,7 @@ class ListWidgetGUISpec extends BaseDashboardSpecification {
   }
 
   // The moveToElement() and drag does not work with Chrome.
-  @IgnoreIf({ System.getProperty("geb.env").contains("chrome") })
+  @IgnoreIf({ System.getProperty("geb.env")?.contains("chrome") })
   def "verify that a basic list widget works - column resize is used on next display"() {
     given: 'a dashboard with the sample work list activity'
     buildDashboard(defaults: ['/order/orderWorkList'])
