@@ -6,8 +6,6 @@ Scratch
 
 Micronaut Data Conversion Tasks
 ===============================
-Undo workarounds that were fixed (323, 264).
-  https://github.com/micronaut-projects/micronaut-data/issues/323
 Add workaround for update failure: 299.  Remove sop.
 Investigate timezone issues on findAllByDateTimeLessThan(Date) queries.  Seems to be off by 5 hours?  ProductionLog.archive()?
 Version and opt locking (custom JDBCOperations).

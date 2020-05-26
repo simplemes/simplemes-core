@@ -14,10 +14,10 @@ import org.simplemes.eframe.domain.BaseRepository
  * but sub-classes need to implement the dialect needed.  The sub-classes will be the concrete
  * beans generated for the runtime.
  */
+@SuppressWarnings("unused")
 interface UserRepository extends BaseRepository, CrudRepository<User, UUID> {
 
-  // TODO: Restore this when workAround192 is fixed.
-  //@Join(value = "userRoles", type = Join.Type.LEFT_FETCH)
+  @Join(value = "userRoles", type = Join.Type.LEFT_FETCH)
   Optional<User> findByUserName(String userName)
 
   Optional<User> findById(UUID uuid)

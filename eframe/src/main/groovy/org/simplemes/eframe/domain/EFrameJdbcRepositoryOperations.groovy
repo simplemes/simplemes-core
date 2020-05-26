@@ -13,29 +13,22 @@ import io.micronaut.context.BeanContext
 import io.micronaut.context.annotation.EachBean
 import io.micronaut.context.annotation.Parameter
 import io.micronaut.core.annotation.AnnotationMetadata
-import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.Query
 import io.micronaut.data.exceptions.DataAccessException
-import io.micronaut.data.intercept.annotation.DataMethod
-import io.micronaut.data.jdbc.mapper.JdbcQueryStatement
 import io.micronaut.data.jdbc.operations.DefaultJdbcRepositoryOperations
-import io.micronaut.data.model.naming.NamingStrategy
 import io.micronaut.data.model.runtime.InsertOperation
 import io.micronaut.data.model.runtime.PreparedQuery
 import io.micronaut.data.model.runtime.UpdateOperation
 import io.micronaut.data.runtime.date.DateTimeProvider
-import io.micronaut.data.runtime.mapper.QueryStatement
 import io.micronaut.http.codec.MediaTypeCodec
 import io.micronaut.transaction.TransactionOperations
 import io.micronaut.transaction.jdbc.DataSourceUtils
 import io.micronaut.transaction.jdbc.exceptions.CannotGetJdbcConnectionException
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.application.issues.WorkArounds
-import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 
 import javax.annotation.Nonnull
 import javax.inject.Named
-import javax.persistence.ManyToMany
 import javax.sql.DataSource
 import java.lang.annotation.Annotation
 import java.lang.reflect.Field
@@ -83,19 +76,6 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
     super(dataSourceName, dataSource, transactionOperations, executorService, beanContext, codecs, dateTimeProvider)
     localTransactionOperations = transactionOperations
     localTransactionOperationsStatic = transactionOperations
-    workAround264()
-  }
-
-  /**
-   * See {@link WorkArounds}.
-   */
-  private void workAround264() {
-    if (WorkArounds.workAround264) {
-      Field field = this.getClass().superclass.superclass.getDeclaredField('preparedStatementWriter')
-      field.setAccessible(true)
-      field.set(this, new WorkAround264PreparedStatement())
-      //preparedStatementWriter = new WorkAround269PreparedStatement()
-    }
   }
 
   /**
@@ -126,7 +106,7 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
   @Override
   <T> T update(@NonNull UpdateOperation<T> operation) {
     checkForTransaction(operation)
-    if (WorkArounds.workAround323 || WorkArounds.workAroundOptimistic) {
+    if (WorkArounds.workAroundOptimistic) {
       //AnnotationMetadata annotationMetadata = operation.getAnnotationMetadata()
       //String[] params = annotationMetadata.stringValues(DataMethod.class, DataMethod.META_MEMBER_PARAMETER_BINDING_PATHS)
       //String query = annotationMetadata.stringValue(Query.class).orElse(null)
@@ -179,57 +159,6 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
       def s = "No active transaction for SQL statement.  Use domain.withTransaction or @Transactional for Beans. (This avoids a connection leak)."
       throw new IllegalStateException(s, e)
     }
-  }
-
-  @Override
-  <T, R> R findOne(@NonNull PreparedQuery<T, R> preparedQuery) {
-    // This is overridden only for workAround192.
-    //println "Query = ${preparedQuery.query}"
-    def res = super.findOne(preparedQuery)
-    if (WorkArounds.workAround192 && preparedQuery.query.contains("JOIN") && res != null) {
-      res = fixJoinQueryResultsWorkAround192(preparedQuery, res)
-    }
-    return res
-  }
-
-  /**
-   * Fix the data for the failed JOIN.  This is only used for JOINs triggered by ManyToMany elements.
-   * @param preparedQuery
-   * @param object
-   * @return The object.
-   */
-  @SuppressWarnings("unused")
-  @CompileDynamic
-  <R> R fixJoinQueryResultsWorkAround192(PreparedQuery preparedQuery, R object) {
-    Class<? extends NamingStrategy> namingStrategyClass = object.getClass().getAnnotation(MappedEntity.class).namingStrategy()
-    def namingStrategy = namingStrategyClass.newInstance()
-    for (Field field : object.getClass().getDeclaredFields()) {
-      // Performance: Consider moving the reflection logic to the Transformation to avoid run-time cost.
-      ManyToMany ann = field.getAnnotation(ManyToMany.class)
-      if (ann != null && Collection.class.isAssignableFrom(field.getType())) {
-        field.setAccessible(true)  // Need to bypass the getter, since that would trigger a read in some cases.
-        List<Object> newRecordList = new ArrayList()
-        field.set(object, newRecordList)
-
-        String tableName = namingStrategy.mappedName(ann.mappedBy())
-        Class<DomainEntityInterface> childClass = (Class<DomainEntityInterface>) getGenericType192(field)
-        String fromIDName = namingStrategy.mappedName(object.getClass().getSimpleName()) + "_id"
-        String toIDName = namingStrategy.mappedName(childClass.getSimpleName()) + "_id"
-
-        // Find all the JOIN records that were missed due to the bug.
-        String sql = "SELECT " + toIDName + " FROM " + tableName + " WHERE " + fromIDName + "=?"
-        PreparedStatement ps = getPreparedStatement192(sql)
-        ps.setString(1, ((DomainEntityInterface) object).getUuid().toString())
-        ps.execute()
-        def resultSet = ps.getResultSet()
-        while (resultSet.next()) {
-          def uuid = UUID.fromString(resultSet.getString(1))
-          def child = childClass.findById(uuid)
-          newRecordList << child
-        }
-      }
-    }
-    return object
   }
 
 
@@ -369,19 +298,6 @@ class AlterableAnnotationMetadata implements AnnotationMetadata {
   String[] stringValues(@Nonnull Class<? extends Annotation> annotation, @Nonnull String member) {
     def values = originalAnnotationMetadata.stringValues(annotation, member)
 
-    if (WorkArounds.workAround323) {
-      if (annotation == DataMethod && member == DataMethod.META_MEMBER_PARAMETER_BINDING_PATHS) {
-        if (values.contains('id')) {
-          // Convert 'id' 'uuid'.
-          for (int i = 0; i < values.length; i++) {
-            if (values[i] == 'id') {
-              values[i] = 'uuid'
-            }
-          }
-        }
-      }
-    }
-
     return values
   }
 
@@ -393,17 +309,3 @@ class AlterableAnnotationMetadata implements AnnotationMetadata {
 
 }
 
-/**
- * See {@link WorkArounds}.
- */
-class WorkAround264PreparedStatement extends JdbcQueryStatement {
-
-  @Override
-  QueryStatement<PreparedStatement, Integer> setValue(PreparedStatement statement, Integer index, Object value) throws DataAccessException {
-    if (value && value instanceof DomainEntityInterface) {
-      // For issue 264, we need to use the uuid value.
-      return super.setValue(statement, index, value.uuid)
-    }
-    return super.setValue(statement, index, value)
-  }
-}

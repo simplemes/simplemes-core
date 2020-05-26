@@ -97,6 +97,7 @@ class UserSpec extends BaseSpecification {
   @Rollback
   def "verify that the load initial data  works"() {
     given: 'all user records are deleted'
+    waitForInitialDataLoad()
     deleteAllRecords(User, false)
 
     and: 'the roles are loaded'
