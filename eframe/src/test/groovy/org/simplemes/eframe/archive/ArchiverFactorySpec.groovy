@@ -110,6 +110,15 @@ class ArchiverFactorySpec extends BaseSpecification {
     String makeArchiveRefBase(Object domainObject) {
       return null
     }
+
+    /**
+     * Gets a list of archive file references that exist in the active archive area (folder).
+     * @return The list of file references.
+     */
+    @Override
+    List<String> findAllArchives() {
+      return []
+    }
   }
 
 }

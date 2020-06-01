@@ -66,6 +66,10 @@ class RMA {
 
   static fieldOrder = ['rma', 'status', 'product', 'qty', 'returnDate', 'rmaType']
 
+  /**
+   * Non-Searchable domain for Search tests (SearchHelperSpec+).
+   */
+  static searchable = false
 
   /**
    * Load initial records - test data.

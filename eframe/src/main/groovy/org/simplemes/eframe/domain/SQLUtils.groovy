@@ -30,7 +30,12 @@ class SQLUtils {
 
   /**
    * Executes the given SQL as a prepared statement with the given arguments.
-   * The row offset/limit defaults to offset 0, 100 rows max.
+   * The row offset/limit defaults to offset 0, 100 rows max for non-COUNT SELECT statements.
+   * <p>
+   * <p>
+   *   <b>Note:</b> This method can detect the SQL 'IN(?)' scenario when an array is passed in.  This will
+   *   expand the 'IN(?)' to 'IN(?,?,?...)' for the given array size.  This can make the SQL much longer
+   *   than the original.
    * @param sql The SQL.
    * @param domainClass The domain class to bind the result set to or Map.  If Map, then the results will be a list of Maps.
    *        The Map element names are the lower-case form of the column names from the DB.
@@ -47,20 +52,24 @@ class SQLUtils {
     if (args && args[0] instanceof Pageable) {
       pageable = args[0] as Pageable
     }
-    if (!pageable) {
+    if (!pageable && !sql.contains("COUNT(*)")) {
       // Default row limits if not given.
       pageable = Pageable.from(0, 100)
     }
 
-    def pageSize = pageable.size
-    def rowStart = pageable.offset
+    def pageSize = pageable?.size
+    def rowStart = pageable?.offset
 
     def sqlLowerCase = sql.toLowerCase()
-    if (!sqlLowerCase.contains(' limit ') || !sqlLowerCase.contains(' offset ')) {
-      sql = sql + " LIMIT ? OFFSET ?"
-      addedArgs << pageSize
-      addedArgs << rowStart
+    if (pageSize) {
+      if (!sqlLowerCase.contains(' limit ') || !sqlLowerCase.contains(' offset ')) {
+        sql = sql + " LIMIT ? OFFSET ?"
+        addedArgs << pageSize
+        addedArgs << rowStart
+      }
     }
+
+    (sql, args) = fixInClauseArray(sql, args)
 
     PreparedStatement ps = null
     ResultSet rs = null
@@ -153,4 +162,50 @@ class SQLUtils {
 
   }
 
+  /**
+   * Fixes the IN(?) clause for an SQL statement.  Expands the array in the arguments into individual
+   * elements in the args list.  Also expands the IN(?) to IN(?,?,?)...
+   * @param sql The SQL to alter.
+   * @param args The arguments.
+   * @return The tuple with the new SQL and new args list.
+   */
+  Tuple2 fixInClauseArray(String sql, Object[] args) {
+    def loc = sql.indexOf('IN(?)')
+    if (loc > 0) {
+      def arraySize = -1
+      for (arg in args) {
+        if (arg instanceof Collection) {
+          arraySize = arg.size()
+        }
+      }
+      if (arraySize > 0) {
+        StringBuilder sb = new StringBuilder()
+        for (int i = 0; i < arraySize; i++) {
+          if (sb) {
+            sb << ','
+          }
+          sb << "?"
+        }
+        sql = sql[0..(loc + 2)] + sb.toString() + sql[(loc + 4)..-1]
+        // Now, expand the args to included each element from the list.
+        def args2 = new Object[args.size() - 1 + arraySize]
+        def argIndex = 0
+        for (arg in args) {
+          if (arg instanceof Collection) {
+            for (int i = 0; i < arg.size(); i++) {
+              args2[argIndex] = arg[i]
+              argIndex++
+            }
+          } else {
+            args2[argIndex] = arg
+            argIndex++
+          }
+        }
+        args = args2
+      }
+    }
+
+
+    return [sql, args]
+  }
 }

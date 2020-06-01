@@ -25,6 +25,7 @@ import org.simplemes.eframe.domain.validate.ValidationErrorInterface;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.persistence.Column;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.sql.DataSource;
@@ -642,6 +643,29 @@ public class DomainEntityHelper {
     NamingStrategy namingStrategy = namingStrategyClass.newInstance();
 
     return namingStrategy.mappedName(domainClass.getSimpleName());
+  }
+
+
+  /**
+   * Returns the column name for the given field in the domain entity.
+   *
+   * @param domainClass The domain class (a @MappedEntity).
+   * @param fieldName   The field.
+   * @return The column name.
+   */
+  public String getColumnName(Class domainClass, String fieldName) throws IllegalAccessException, InstantiationException, NoSuchFieldException {
+    // Check for specific name in the annotation.
+    Field field = domainClass.getDeclaredField(fieldName);
+    Column annotation = field.getAnnotation(Column.class);
+    if (annotation != null && annotation.name().length() > 0) {
+      return annotation.name();
+    }
+
+    // No specific name, so use the naming strategy.
+    Class<? extends NamingStrategy> namingStrategyClass = ((MappedEntity) domainClass.getAnnotation(MappedEntity.class)).namingStrategy();
+    NamingStrategy namingStrategy = namingStrategyClass.newInstance();
+
+    return namingStrategy.mappedName(fieldName);
   }
 
 

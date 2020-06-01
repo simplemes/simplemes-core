@@ -1,13 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.application
 
 import groovy.transform.ToString
 import io.micronaut.context.annotation.ConfigurationProperties
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Defines the main, global framework configuration values.  This is normally accessed from the Holders utility
@@ -75,6 +73,11 @@ class EFrameConfiguration {
    */
   Report report = new Report()
 
+  /**
+   * Search-related configurations.
+   */
+  Search search = new Search()
+
   @ToString(includeNames = true, includePackage = false)
   @ConfigurationProperties('archive')
   static class Archive {
@@ -131,6 +134,36 @@ class EFrameConfiguration {
      */
     // Unused since the row limit is not exposed to HTTP access/
     //Integer maxRowLimit = REPORT_MAX_ROW_COUNT
+
+  }
+
+  /**
+   * The config properties used for the external search engine interface.
+   */
+  @ToString(includeNames = true, includePackage = false)
+  @ConfigurationProperties('search')
+  static class Search {
+
+    /**
+     * The default request thread pool size (<b>Default:</b> 4).
+     */
+    Integer threadInitSize = 4
+
+    /**
+     * The max limit on the request thread pool size (<b>Default:</b> 10).
+     */
+    Integer threadMaxSize = 10
+
+    /**
+     * The number of index requests to pack into a single request to the search engine(<b>Default:</b> 50).
+     * This is used only for the bulk indexing.
+     */
+    Integer bulkBatchSize = 50
+
+    /**
+     * The search engine server (host) that will provide the search functions.
+     */
+    List hosts = []
 
   }
 

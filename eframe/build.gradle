@@ -73,7 +73,6 @@ dependencies {
 
   compile "org.codehaus.groovy:groovy-dateutil:$groovyDateUtilsVersions"
   compile "io.micronaut:micronaut-security-jwt"
-  // TODO: Update asset pipeline to 3.0.10 ?
   compile ( "com.bertramlabs.plugins:asset-pipeline-micronaut:$assetPipelineVersion") {
     exclude group: "io.micronaut", module: "http-server-netty"
   }
@@ -134,8 +133,11 @@ dependencies {
   // For Java code
   //compile "io.micronaut:micronaut-inject-java"
   //testCompile "io.micronaut:micronaut-inject-java"
-  annotationProcessor "io.micronaut:micronaut-inject-java"
-  testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+  //annotationProcessor "io.micronaut:micronaut-inject-java"
+  //testAnnotationProcessor "io.micronaut:micronaut-inject-java"
+
+  compile "org.elasticsearch.client:elasticsearch-rest-client:$elasticSearchClient"
+
 
   // The Jasper reports library with PDF support (lowagie) and DejaVu fonts
   compile("net.sf.jasperreports:jasperreports:$jasperreportsVersion"){

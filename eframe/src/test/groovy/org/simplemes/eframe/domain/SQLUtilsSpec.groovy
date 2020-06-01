@@ -44,6 +44,28 @@ class SQLUtilsSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that executeQuery works - array of UUIDs using and IN clause"() {
+    given: 'a domain record to find'
+    def order = new Order(order: 'M1001')
+    order.orderLines << new OrderLine(sequence: 3)
+    order.orderLines << new OrderLine(sequence: 1)
+    order.orderLines << new OrderLine(sequence: 2)
+    order.save()
+
+    when: 'the query is executed'
+    def uuidList = order.orderLines*.uuid*.toString()
+    def list = SQLUtils.instance.executeQuery("SELECT * FROM ORDER_LINE where uuid IN(?) order by uuid limit ? offset ? ",
+                                              OrderLine, uuidList, 10, 0)
+
+    then: 'the list is correct'
+    list.size() == 3
+    def uuidList2 = list*.uuid*.toString()
+    uuidList2.contains(uuidList[0])
+    uuidList2.contains(uuidList[1])
+    uuidList2.contains(uuidList[2])
+  }
+
+  @Rollback
   def "verify that executeQuery works - pageable"() {
     given: 'a domain record to find'
     def order = new Order(order: 'M1001')

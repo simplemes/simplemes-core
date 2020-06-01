@@ -98,6 +98,12 @@ class SampleParent implements SampleParentInterface {
   static allowInitialDataLoad = false
 
   /**
+   * Searchable domain.
+   */
+  static searchable = true
+
+
+  /**
    * Load initial records.  Dummy test records for test mode only.
    */
   static initialDataLoad() {

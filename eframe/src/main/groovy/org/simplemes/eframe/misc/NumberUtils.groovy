@@ -1,14 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.misc
 
 import org.simplemes.eframe.i18n.GlobalUtils
 
 import java.text.DecimalFormat
 import java.text.DecimalFormatSymbols
-
-/*
- * Copyright Michael Houston. All rights reserved.
- *
-*/
 
 /**
  * Some general-purpose number utilities.  Provides large number formatting and other utils.
@@ -127,6 +126,22 @@ class NumberUtils {
   static int divideRoundingUp(int top, int bottom) {
     //noinspection GroovyAssignabilityCheck
     int res = top / bottom
+    if (top % bottom) {
+      res++
+    }
+
+    return res
+  }
+
+  /**
+   * Divides the top by the bottom, round up for any fraction.
+   * @param top The top.
+   * @param bottom The bottom.
+   * @return The rounded up result.
+   */
+  static long divideRoundingUp(long top, int bottom) {
+    //noinspection GroovyAssignabilityCheck
+    long res = top / bottom
     if (top % bottom) {
       res++
     }

@@ -222,4 +222,31 @@ class NameUtils {
     return fieldName?.startsWith('_') && fieldName?.endsWith("Display_")
   }
 
+  /**
+   * Converts the given mixed-case name (e.g a Domain name) to a hyphenated URL-style name.
+   * Inserts a hyphen between upper-case letters.
+   * @param name The mixed case name.
+   * @return The hyphenated name.
+   */
+  static String convertToHyphenatedName(String name) {
+    if (!name) {
+      return name
+    }
+    StringBuilder sb = new StringBuilder()
+    char[] chars = name.toCharArray()
+    for (char c : chars) {
+      if (Character.isUpperCase(c)) {
+        c = c.toLowerCase()
+        if (sb) {
+          sb << '-'
+        }
+      }
+      sb << c
+
+    }
+
+    return sb.toString()
+
+  }
+
 }

@@ -1362,4 +1362,15 @@ class DomainEntityHelperSpec extends BaseSpecification {
     OrderLine   | 'order_line'
   }
 
+  def "verify that getColumnName works for supported cases"() {
+    expect: 'the column name is correct'
+    DomainEntityHelper.instance.getColumnName(domainClass, fieldName) == value
+
+    where:
+    domainClass | fieldName | value
+    Order       | 'order'   | 'ordr'
+    Order       | 'status'  | 'status'
+    Order       | 'dueDate' | 'due_date'
+  }
+
 }

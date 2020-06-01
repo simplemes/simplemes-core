@@ -43,6 +43,10 @@ Tasks left out
     Definition List key field allows HTML un-escaped in it.
     Show Page with name="<script>alert('bad')</script>" fails with Javascript syntax error in SampleParent.
     Edit/Create? page save failures.  Fixing problem and re-saving value gives error (Invalid UUID string: null)
+  Look at using https://github.com/apps/whitesource-bolt-for-github for CVE library scanning.
+    Others: https://dzone.com/articles/8-free-security-tools-every-developer-should-know
+  JWT Refresh Toekn support before 1.0?
+
 
 MES Demo Release Requirements
 -----------------------------

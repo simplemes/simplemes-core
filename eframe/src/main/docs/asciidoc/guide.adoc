@@ -50,6 +50,8 @@ include::guide/guis/guis.adoc[]
 
 include::guide/monitor/monitor.adoc[]
 
+include::guide/search/search.adoc[]
+
 include::guide/testing/testing.adoc[]
 
 include::guide/api/api.adoc[]

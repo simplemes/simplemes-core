@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.date
 
 
@@ -5,12 +9,6 @@ import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
 
 import java.time.temporal.ChronoUnit
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -155,4 +153,78 @@ class DateUtilsSpec extends BaseSpecification {
     Date d2 = DateUtils.subtractDays(now, 1.2)
     assert now.time - d2.time == 103680000
   }
+
+  def "verify that formatElapsedTime handles supported cases"() {
+    expect: ''
+    DateUtils.formatElapsedTime(elapsed, locale, precision) == result
+
+    where:
+    elapsed                                          | locale         | precision                  | result
+    0 * 1000L                                        | Locale.US      | DateUtils.PRECISION_LOW    | '0 seconds'
+    0 * 1000L                                        | Locale.GERMAN  | DateUtils.PRECISION_LOW    | '0 sekunden'
+    1 * 1000L                                        | null           | DateUtils.PRECISION_LOW    | '1 second'
+    20 * 1000L                                       | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '20 seconds'
+    20123                                            | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '20 seconds'
+    50 * 1000L + 20                                  | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '50 seconds'
+    60 * 1000L                                       | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '1 minute'
+    91 * 1000L                                       | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '1 minute'
+    120 * 1000L                                      | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '2 minutes'
+    59 * 60 * 1000L + 20                             | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '59 minutes'
+
+    60 * 60 * 1000L                                  | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '1 hour'
+    119 * 60 * 1000L                                 | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '1 hour'
+    120 * 60 * 1000L                                 | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '2 hours'
+    23 * 60 * 60 * 1000L + 20                        | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '23 hours'
+
+    24 * 60 * 60 * 1000L                             | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '1 day'
+    47 * 60 * 60 * 1000L                             | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '1 day'
+    48 * 60 * 60 * 1000L                             | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '2 days'
+    120 * 60 * 60 * 1000L + 20                       | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '5 days'
+
+    364 * 24 * 60 * 60 * 1000L                       | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '364 days'
+    365 * 24 * 60 * 60 * 1000L                       | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '1 year, 0 days'
+
+    366 * 24 * 60 * 60 * 1000L + 20                  | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '1 year, 1 day'
+    367 * 24 * 60 * 60 * 1000L + 20                  | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '1 year, 2 days'
+    (365 * 2) * 24 * 60 * 60 * 1000L + 20            | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '2 years, 0 days'
+    (365 * 2 + 1) * 24 * 60 * 60 * 1000L + 20        | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '2 years, 1 day'
+    (365 * 2 + 3) * 24 * 60 * 60 * 1000L + 20        | Locale.ENGLISH | DateUtils.PRECISION_LOW    | '2 years, 3 days'
+
+    0 * 1000L                                        | Locale.GERMANY | DateUtils.PRECISION_MEDIUM | '0 sekunden'
+    0 * 1000L                                        | Locale.ENGLISH | DateUtils.PRECISION_MEDIUM | '0 seconds'
+    50 * 1000L + 20                                  | Locale.ENGLISH | DateUtils.PRECISION_MEDIUM | '50 seconds'
+
+    120 * 1000L                                      | Locale.ENGLISH | DateUtils.PRECISION_MEDIUM | '2 minutes, 0 seconds'
+    121 * 1000L                                      | Locale.ENGLISH | DateUtils.PRECISION_MEDIUM | '2 minutes, 1 second'
+    154 * 1000L                                      | Locale.ENGLISH | DateUtils.PRECISION_MEDIUM | '2 minutes, 34 seconds'
+
+    23 * 60 * 60 * 1000L + 20                        | Locale.ENGLISH | DateUtils.PRECISION_MEDIUM | '23 hours, 0 minutes'
+    (23 * 60 + 1) * 60 * 1000L + 20                  | Locale.ENGLISH | DateUtils.PRECISION_MEDIUM | '23 hours, 1 minute'
+    (23 * 60 + 34) * 60 * 1000L + 20                 | Locale.ENGLISH | DateUtils.PRECISION_MEDIUM | '23 hours, 34 minutes'
+
+    120 * 60 * 60 * 1000L + 20                       | Locale.ENGLISH | DateUtils.PRECISION_MEDIUM | '5 days, 0 hours'
+    121 * 60 * 60 * 1000L + 20                       | Locale.ENGLISH | DateUtils.PRECISION_MEDIUM | '5 days, 1 hour'
+    126 * 60 * 60 * 1000L + 20                       | Locale.ENGLISH | DateUtils.PRECISION_MEDIUM | '5 days, 6 hours'
+
+    364 * 24 * 60 * 60 * 1000L                       | Locale.ENGLISH | DateUtils.PRECISION_MEDIUM | '364 days, 0 hours'
+    365 * 24 * 60 * 60 * 1000L                       | Locale.ENGLISH | DateUtils.PRECISION_MEDIUM | '1 year, 0 days'
+    366 * 24 * 60 * 60 * 1000L + 20                  | Locale.ENGLISH | DateUtils.PRECISION_MEDIUM | '1 year, 1 day'
+    376 * 24 * 60 * 60 * 1000L + 20                  | Locale.ENGLISH | DateUtils.PRECISION_MEDIUM | '1 year, 11 days'
+
+    366 * 24 * 60 * 60 * 1000L + 60 * 60 * 1000L     | Locale.ENGLISH | DateUtils.PRECISION_MEDIUM | '1 year, 1 day'
+    367 * 24 * 60 * 60 * 1000L + 2 * 60 * 60 * 1000L | Locale.ENGLISH | DateUtils.PRECISION_MEDIUM | '1 year, 2 days'
+  }
+
+  def "verify that formatRelativeTime handles supported cases"() {
+    expect: ''
+    DateUtils.formatRelativeTime(System.currentTimeMillis() + relative, locale, precision) == result
+
+    where:
+    relative    | locale    | precision               | result
+    0 * 1000L   | Locale.US | DateUtils.PRECISION_LOW | '0 seconds ago'
+    30 * 1000L  | Locale.US | DateUtils.PRECISION_LOW | '30 seconds from now'
+    -50 * 1000L | Locale.US | DateUtils.PRECISION_LOW | '50 seconds ago'
+
+  }
+
 }

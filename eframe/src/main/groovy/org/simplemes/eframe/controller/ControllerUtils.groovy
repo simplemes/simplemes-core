@@ -255,8 +255,8 @@ class ControllerUtils {
     String field
     String direction
 
-    def keys = params.keySet()
-    def key = keys.find() { it.startsWith('sort[') }
+    def keys = params?.keySet()
+    def key = keys?.find() { it.startsWith('sort[') }
 
     if (key) {
       // GUI Toolkit style:  sort[field]:direction
@@ -264,9 +264,9 @@ class ControllerUtils {
       direction = params.get(key) ?: 'asc'
     } else {
       // Simple style as a fallback.
-      field = params.sort
+      field = params?.sort
       if (field) {
-        direction = params.order ?: 'asc'
+        direction = params?.order ?: 'asc'
       } else {
         direction = null
       }

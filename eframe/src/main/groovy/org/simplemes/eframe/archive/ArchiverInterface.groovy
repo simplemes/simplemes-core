@@ -1,10 +1,8 @@
-package org.simplemes.eframe.archive
-
 /*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
+package org.simplemes.eframe.archive
 
 /**
  * Defines the interface for an archiver.  Provides ways to remove/restore old records from the
@@ -50,5 +48,10 @@ interface ArchiverInterface {
    */
   String makeArchiveRefBase(Object domainObject)
 
+  /**
+   * Gets a list of archive file references that exist in the active archive area (folder).
+   * @return The list of file references.
+   */
+  List<String> findAllArchives()
 
 }

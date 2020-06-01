@@ -355,4 +355,10 @@ class DomainUtilsSpec extends BaseSpecification {
     def list = field.get(sampleParent1)
     list.size() == 2
   }
+
+  def "verify getURIRoot works with a normal domain class"() {
+    expect: 'the method works'
+    DomainUtils.instance.getURIRoot(SampleParent) == 'sampleParent'
+  }
+
 }

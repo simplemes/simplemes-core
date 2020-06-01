@@ -1,11 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.misc
 
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.test.BaseSpecification
 
-/*
- * Copyright (c) 2018 Simple MES| LLC.  All rights reserved.  See license.txt for license terms.
- */
 /**
  * Tests.
  */
@@ -154,6 +155,7 @@ class NumberUtilsSpec extends BaseSpecification {
     19  | 10     | 2
     20  | 10     | 2
     21  | 10     | 3
+    21L | 10 | 3L
   }
 
   def "verify that isNumber works with supported cases"() {

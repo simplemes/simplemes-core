@@ -234,6 +234,15 @@ class DomainUtils {
     return allDomains.find { it.simpleName.toLowerCase() == domainName }
   }
 
+  /**
+   * Determines the root URI for the controller associated with the given domain.
+   * This just converts the name.  It does not guarantee that the controller exists.
+   * @param domainClass The domain class to determine the root for the controller.
+   * @return The URI root.  Does not include the leading '/'.
+   */
+  String getURIRoot(Class domainClass) {
+    return NameUtils.lowercaseFirstLetter(domainClass.simpleName)
+  }
 
   /**
    * Forces the load of child records that might have a lazy loader.  This is recursive.

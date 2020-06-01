@@ -31,6 +31,16 @@ class DateUtils {
   public static final long MILLIS_PER_DAY = 86400000
 
   /**
+   * The date/elapsed time precision only needs to display a low precision (e.g. '3 hours').
+   */
+  public static final String PRECISION_LOW = 'low'
+
+  /**
+   * The date/elapsed time precision needs to display a medium precision (e.g. '3 hours 23 minutes').
+   */
+  public static final String PRECISION_MEDIUM = 'med'
+
+  /**
    * Parses the given string into a Date using the optional Locale.  Uses the standard Java date format for the locale (SHORT/MEDIUM).
    * @param s The date string.  Can be null.
    * @param locale The locale to use for parsing the date (default is the request Locale). (<b>Optional</b>)
@@ -265,4 +275,87 @@ class DateUtils {
     return new Date(millis)
   }
 
+/**
+ * Build a human-readable elapsed time string from the given elapsed time (ms), but only shows one number
+ * to make it readable.  Use this in scenarios when super-precise display is not needed.
+ * Supports seconds, minutes, days and years.  This method does <b>not</b> round to nearest whole number when precision is
+ * set to LOW (default).<p/>
+ * This method ignores leap years. All years are assumed to be 365 days.
+ * @param elapsedTimeMS The elapsed time (ms).
+ * @param locale The locale to use for the elapsed time string (<b>Default:</b> Request Locale, or Locale.default).
+ * @param precision The precision to display. (<b>Default:</b> PRECISION_LOW).
+ * @return The string. (e.g. for 70 seconds, returns "1 minute").
+ */
+  static String formatElapsedTime(long elapsedTimeMS, Locale locale, String precision = PRECISION_LOW) {
+    // Calculate the actual values with decimals for the units we support.
+    BigDecimal seconds = elapsedTimeMS / 1000.0
+    BigDecimal minutes = seconds / 60.0
+    BigDecimal hours = seconds / 3600.0
+    BigDecimal days = seconds / (24 * 3600.0)
+    BigDecimal years = seconds / (365 * 24 * 3600.0)
+    //println "seconds = $seconds"
+
+    // Figure out which is the lowest unit that is greater than 1.0
+    String units = 'seconds'
+    def values = [seconds as int, null]
+    if (years >= 1.0) {
+      // Need two values (years and days) for the year case.
+      units = 'years'
+      values[0] = years as int
+      values[1] = (years.remainder(1.0) * 365) as int  // Number of days in the fraction of the year
+    } else if (days >= 1.0) {
+      units = 'days'
+      values[0] = days as int
+      values[1] = (days.remainder(1.0) * 24) as int  // Number of hours in the fraction of the days
+    } else if (hours >= 1.0) {
+      units = 'hours'
+      values[0] = hours as int
+      values[1] = (hours.remainder(1.0) * 60) as int  // Number of minutes in the fraction of the hours
+    } else if (minutes >= 1.0) {
+      units = 'minutes'
+      values[0] = minutes as int
+      values[1] = (minutes.remainder(1.0) * 60) as int  // Number of seconds in the fraction of the minutes
+    }
+
+    def key = "time.elapsed.${units}.${precision}"
+    //time.elapsed.seconds.low={0,number} {0,choice,0#seconds|1#second|1<seconds}
+    //time.elapsed.minutes.low={0} {0,choice,0#minutes|1#minute|1<minutes}
+    //time.elapsed.hours.low={0} {0,choice,0#hours|1#hour|1<hours}
+    //time.elapsed.days.low={0} {0,choice,0#days|1#day|1<days}
+    //time.elapsed.years.low={0} {0,choice,0#years|1#year|1<years}, {1} {1,choice,0#days|1#day|1<days}
+
+    //time.elapsed.seconds.med={0,number} {0,choice,0#seconds|1#second|1<seconds}
+    //time.elapsed.minutes.med={0} {0,choice,0#minutes|1#minute|1<minutes}, {1,number} {1,choice,0#seconds|1#second|1<seconds}
+    //time.elapsed.hours.med={0} {0,choice,0#hours|1#hour|1<hours}, {1} {1,choice,0#minutes|1#minute|1<minutes}
+    //time.elapsed.days.med={0} {0,choice,0#days|1#day|1<days}, {1} {1,choice,0#hours|1#hour|1<hours}
+    //time.elapsed.years.med={0} {0,choice,0#years|1#year|1<years}, {1} {1,choice,0#days|1#day|1<days}
+
+    String formatPattern = GlobalUtils.lookup(key, locale, values as Object[])
+    //println "formatPattern = $formatPattern for $locale"
+    return formatPattern
+
+  }
+
+  /**
+   * Build a human-readable relative time from a given absolute time. Only shows one number
+   * to make it readable.  Handles past times and future times ('2 minutes ago' and '2 minutes from now').
+   * Use this in scenarios when super-precise display is not needed.
+   * Supports seconds, minutes, days and years.  This method does <b>not</b> round to nearest whole number when precision is
+   * set to LOW (default).<p/>
+   * This method ignores leap years. All years are assumed to be 365 days.
+   * @param timeMS The elapsed time (ms).
+   * @param locale The locale to use for the elapsed time string (<b>Default:</b> Request Locale, or Locale.default).
+   * @param precision The precision to display. (<b>Default:</b> PRECISION_LOW).
+   * @return The string. (e.g. for 70 seconds, returns "1 minute ago").
+   */
+  static String formatRelativeTime(long timeMS, Locale locale = null, String precision = PRECISION_LOW) {
+    def elapsed = System.currentTimeMillis() - timeMS
+    def messageKey = 'time.ago.label'
+    if (elapsed < 0) {
+      messageKey = 'time.fromNow.label'
+      elapsed = -elapsed
+    }
+    def s = formatElapsedTime(elapsed, locale, precision)
+    return GlobalUtils.lookup(messageKey, locale, s)
+  }
 }

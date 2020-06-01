@@ -20,7 +20,7 @@ import javax.persistence.ManyToOne
 /**
  * A sample domain class that simulates an custom order component record.
  * Used only in custom field tests (via SampleAddition).
- * Fields include: order, sequence, qty, product, notes
+ * Fields include: order, sequence, qty, product(string), notes
  */
 @DomainEntity
 @MappedEntity()

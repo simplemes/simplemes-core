@@ -174,5 +174,19 @@ class NameUtilsSpec extends BaseSpecification {
     null  | null
   }
 
+  def "test convertToHyphenatedName with supported inputs"() {
+    expect: 'the right value is returned'
+    NameUtils.convertToHyphenatedName(value) == result
+
+    where:
+    value            | result
+    ''               | ''
+    null             | null
+    'a'              | 'a'
+    'A'              | 'a'
+    'TheOrderDomain' | 'the-order-domain'
+    'III'            | 'i-i-i'
+    '-I'             | '--i'
+  }
 
 }
