@@ -45,7 +45,7 @@ class SearchEngineRequestBulkArchiveIndex implements SearchEngineRequestInterfac
    * Constructor to request an index action on a list of archive object references.
    * @param archiveRefs The archive references for the objects to index.
    */
-  SearchEngineRequestBulkArchiveIndex(List archiveRefs) {
+  SearchEngineRequestBulkArchiveIndex(List<String> archiveRefs) {
     ArgumentUtils.checkMissing(archiveRefs, 'archiveRefs')
     this.archiveRefs = archiveRefs
   }

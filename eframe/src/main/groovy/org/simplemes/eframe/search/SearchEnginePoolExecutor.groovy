@@ -59,7 +59,7 @@ class SearchEnginePoolExecutor extends ThreadPoolExecutor implements RejectedExe
     }
     if (t) {
       SearchHelper.instance.requestFailed()
-      LogUtils.logStackTrace(t, r)
+      LogUtils.logStackTrace(log, t, r)
       log.error('Exception in background task: {}', t.toString())
     }
   }
@@ -107,7 +107,7 @@ class SearchEnginePoolExecutor extends ThreadPoolExecutor implements RejectedExe
    */
   static void startPool() {
     pool?.shutdown()  // Make sure any old queue is shutdown
-    pool = new SearchEnginePoolExecutor(determineCoreSize(), determineMaxSize(),
+    pool = new SearchEnginePoolExecutor(determineThreadInitSize(), determineThreadMaxSize(),
                                         10, TimeUnit.SECONDS, new SearchEngineRequestQueue())
   }
 
@@ -137,7 +137,7 @@ class SearchEnginePoolExecutor extends ThreadPoolExecutor implements RejectedExe
    * Uses the configuration entry <code>org.simplemes.eframe.search.threadPool.coreSize</code>.
    * @return The core size.  Default: 4
    */
-  static Integer determineCoreSize() {
+  static Integer determineThreadInitSize() {
     Integer coreSize = 4
     def configValue = Holders.configuration.search.threadInitSize
     if (configValue instanceof Integer) {
@@ -151,7 +151,7 @@ class SearchEnginePoolExecutor extends ThreadPoolExecutor implements RejectedExe
    * Uses the configuration entry <code>org.simplemes.eframe.search.threadPool.coreSize</code>.
    * @return The core size.  Default: 10
    */
-  static Integer determineMaxSize() {
+  static Integer determineThreadMaxSize() {
     Integer coreSize = 10
     def configValue = Holders.configuration.search.threadMaxSize
     if (configValue instanceof Integer) {

@@ -15,7 +15,6 @@ import sample.domain.CustomOrderComponent
 import sample.domain.Order
 import sample.domain.RMA
 import sample.domain.SampleParent
-import spock.lang.Ignore
 
 /**
  * Tests for the client.  This does not test the real interaction with the external search engine.
@@ -234,7 +233,7 @@ class SearchEngineClientSpec extends BaseSpecification {
     def searchEngineClient = new SearchEngineClient(restClient: mockRestClient)
 
     when: 'the search is performed'
-    def res = searchEngineClient.globalSearch('abc*', [max: 2, offset: 3])
+    def res = searchEngineClient.globalSearch('abc*', [size: 2, from: 3])
 
     then: 'the result are offset and limited'
     res.totalHits == 200
@@ -667,32 +666,6 @@ class SearchEngineClientSpec extends BaseSpecification {
     then: 'a valid exception is thrown'
     def ex = thrown(Exception)
     UnitTestUtils.assertExceptionIsValid(ex, ['RMA', 'not', 'searchable'])
-  }
-
-  @Ignore
-  // TODO: Re-enable when SearchHelper is done.
-  @Rollback
-  def "verify that domainSearch supports max/offset parameters"() {
-    given: 'some domain records'
-    def list = []
-    for (i in 1..5) {
-      list << new SampleParent(name: 'ABC').save()
-    }
-
-    and: 'a mock search rest client and response'
-    def mockRestClient = new MockRestClient(method: 'GET', uri: '/sample-parent/_search?q=abc*&size=2&from=1',
-                                            response: [took     : '13', className: SampleParent.name,
-                                                       totalHits: 5,
-                                                       hits     : [[code: 'abc4', id: list[1].uuid], [code: 'abc5', id: list[2].uuid]]])
-    def searchEngineClient = new SearchEngineClient(restClient: mockRestClient)
-
-    when: 'the search is performed'
-    def res = searchEngineClient.domainSearch(SampleParent, 'abc*', [from: 1, size: 2])
-
-    then: 'the result is correct'
-    res.totalHits == 5
-    res.hits[0].uuid == list[1].uuid
-    res.hits[1].uuid == list[2].uuid
   }
 
   @Rollback

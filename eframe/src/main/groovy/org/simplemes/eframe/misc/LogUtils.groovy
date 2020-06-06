@@ -92,14 +92,16 @@ class LogUtils {
    * @param source The source (optional).  Logged with the message.
    */
   static void logStackTrace(Logger logger, Throwable e, Object source) {
-    // Log to stack trace log to be safe.
-    if (!(e instanceof BusinessException) && !disableStackTraceLogging) {
-      logger.error("Exception for ${source ?: ''}", e)
-    } else {
-      // Not logged (yet), so check for the StackTrace logger.
-      def stLogger = getLogger('StackTrace')
-      stLogger.debug("Exception for ${source ?: ''} - $e", e)
+    if (disableStackTraceLogging) {
+      return
     }
+    // Log to stack trace log to be safe.
+    if (!(e instanceof BusinessException)) {
+      logger.error("Exception for ${source ?: ''}", e)
+    }
+    // Not logged (yet), so check for the StackTrace logger.
+    def stLogger = getLogger('StackTrace')
+    stLogger.debug("Exception for ${source ?: ''} - $e", e)
   }
 
   /**

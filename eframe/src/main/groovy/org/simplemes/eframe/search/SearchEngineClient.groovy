@@ -222,7 +222,7 @@ class SearchEngineClient implements SearchEngineClientInterface {
    * Performs an internal search (global or domain) for the given query string and the given URI.
    * @param uri The URI to search on.
    * @param query The query string.  If it starts with &#123; then the string is used as the body for the GET request.
-   * @param params Optional query parameters.  Supported elements: offset and max
+   * @param params Optional query parameters.  Supported elements: from and size.
    * @param The search results.
    */
   protected SearchResult search(String uri, String query, Map params = null) {
@@ -239,13 +239,13 @@ class SearchEngineClient implements SearchEngineClientInterface {
     def offset = 0
     def max = 10
 
-    if (params?.max) {
-      max = ArgumentUtils.convertToInteger(params.max)
+    if (params?.size) {
+      max = ArgumentUtils.convertToInteger(params.size)
     }
-    if (params?.offset) {
-      offset = ArgumentUtils.convertToInteger(params.offset)
+    if (params?.from) {
+      offset = ArgumentUtils.convertToInteger(params.from)
     }
-    uri = URLUtils.addParametersToURI(uri, [size: params?.max?.toString(), from: params?.offset?.toString()])
+    uri = URLUtils.addParametersToURI(uri, [size: params?.size?.toString(), from: params?.from?.toString()])
 
     log.debug('search: GET {}, content = {}', uri, query)
     def response = getRestClient()?.performRequest("GET", uri, Collections.emptyMap(), entity, new Header[0])

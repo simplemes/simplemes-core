@@ -1,12 +1,10 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import org.simplemes.eframe.misc.FileFactory
-
-/*
- * Copyright Michael Houston 2017. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * A mock FileFactory that can be used to write text to string for later use.
@@ -94,8 +92,9 @@ class MockFileFactory extends FileFactory {
 
     // See if the given file has a specific simulated contents
     if (simulatedContents) {
-      def simulatedContent = simulatedContents[lastFileCreated.name]
-      //println "simulatedContent ${lastFileCreated.name} = $simulatedContent"
+      def key = lastFileCreated.name.replace(File.separatorChar, "/" as char)
+      def simulatedContent = simulatedContents[key]
+      //println "simulatedContent ${key} = $simulatedContent ${simulatedContents?.keySet()}"
       lastFileCreated.contents = simulatedContent
     }
 

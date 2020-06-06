@@ -91,10 +91,10 @@ class SearchEngineRequestBulkIndex implements SearchEngineRequestInterface {
     if (list.size() != domainIDs.size()) {
       // Figure out which one(s) were removed.
       def missing = []
-      for (id in domainIDs) {
-        if (!list.any { it.id == id }) {
+      for (uuid in domainIDs) {
+        if (!list.any { it.uuid == uuid }) {
           // Not found.
-          missing << id
+          missing << uuid
         }
       }
       log.warn('getDomains: [{}] Missing domains ignored = {}', bulkID, missing)
@@ -143,11 +143,9 @@ class SearchEngineRequestBulkIndex implements SearchEngineRequestInterface {
       }
     } catch (Throwable t) {
       if (log.traceEnabled) {
-        domainClass.withNewSession {
-          // Log the content if desired
-          def s = SearchEngineClient.buildBulkIndexContent(findRecords())
-          log.trace('run: [{}] Exception {}.  Content = {}', bulkID, t.toString(), LogUtils.limitedLengthString(s, 20000))
-        }
+        // Log the content if desired
+        def s = SearchEngineClient.buildBulkIndexContent(findRecords())
+        log.trace('run: [{}] Exception {}.  Content = {}', bulkID, t.toString(), LogUtils.limitedLengthString(s, 20000))
       }
       // Notify the SearchHelper that we finished with an exception.
       SearchHelper.instance.finishedBulkRequest(1)

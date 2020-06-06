@@ -93,6 +93,41 @@ If you need to unit test your application code, then refer to the existing searc
 _SearchHelperSpec_.  These tests use the _MockSearchEngineClient_ to simulate most search engine
 actions.
 
+==== Search Paging
+
+The paging mechanism for searches is slightly different from the normal Toolkit and database
+paging mechanisms. This makes for confusing overlaps with the other paging values.
+The paging names and meanings are shown below:
+
+[cols="1,1,4",width=75%]
+|===
+|Feature |Field | Description
+
+.2+|Search
+|*from*
+| The index of the first result to show.
+
+|*size*
+| The number of results to show.
+
+.2+|GUI Toolkit
+|*start*
+| The index of the first result to show.
+
+|*count*
+| The number of results to show.
+
+.2+|Micronaut Data (DB)
+|*from*
+| The _page_ number of the first result to show.
+
+|*size*
+| The number of results to show.
+
+|
+|===
+
+
 === Search ID
 
 Elastic search uses a unique ID for all objects indexed.  The enterprise framework uses the
