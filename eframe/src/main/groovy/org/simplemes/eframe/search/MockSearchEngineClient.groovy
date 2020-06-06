@@ -191,6 +191,9 @@ class MockSearchEngineClient implements SearchEngineClientInterface {
    */
   void verify(Map expectedAction) {
     if (expectedAction) {
+      if (!actions.contains(expectedAction)) {
+        log.error("Mock Client action $expectedAction was not called during test.  Actions called: $actions")
+      }
       assert actions.contains(expectedAction), "Mock Client action $expectedAction was not called during test.  Actions called: $actions"
     } else {
       // No action should be called.
