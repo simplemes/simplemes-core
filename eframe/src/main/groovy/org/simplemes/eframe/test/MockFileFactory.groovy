@@ -92,9 +92,10 @@ class MockFileFactory extends FileFactory {
 
     // See if the given file has a specific simulated contents
     if (simulatedContents) {
-      def key = lastFileCreated.name.replace(File.separatorChar, "/" as char)
+      def key = lastFileCreated.name
+      key = key.replace(File.separatorChar, "/" as char)
       def simulatedContent = simulatedContents[key]
-      //println "simulatedContent ${key} = $simulatedContent ${simulatedContents?.keySet()}"
+      println "simulatedContent ${key} (${lastFileCreated.name}) (${File.pathSeparatorChar} ${File.separatorChar}) = $simulatedContent ${simulatedContents?.keySet()}"
       lastFileCreated.contents = simulatedContent
     }
 
