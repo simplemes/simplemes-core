@@ -54,13 +54,14 @@ class SearchEngineRequestBulkArchiveIndexSpec extends BaseSpecification {
       def archiver = new FileArchiver()
       archiver.archive(parent)
       archiver.close()
-      contentsMap["../archives/ref${i}.arc"] = stringWriter.toString()
+      contentsMap["ref${i}.arc"] = stringWriter.toString()
       refList << "ref${i}.arc"
       objectList << parent
     }
     // Go ahead and delete the records created since the archive does not flush it and the indexing will be triggered for them.
     SampleParent.list().each { it.delete() }
     ArchiveLog.list().each { it.delete() }
+    println "refList = $refList"
 
     mockFileFactory.simulatedFiles = ['../archives'     : ['../archives/2018'],
                                       '../archives/2018': refList]

@@ -58,6 +58,7 @@ class SearchEngineRequestBulkArchiveIndex implements SearchEngineRequestInterfac
     def list = []
     for (ref in archiveRefs) {
       def archiver = ArchiverFactory.instance.archiver
+      println "ref = $ref"
       def objects = archiver.unarchive(ref, false)
       for (object in objects) {
         if (SearchHelper.instance.isSearchable(object.getClass())) {
