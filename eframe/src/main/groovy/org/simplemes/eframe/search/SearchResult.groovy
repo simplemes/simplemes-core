@@ -35,12 +35,12 @@ class SearchResult {
   /**
    * The start of the result list.
    */
-  int offset = 0
+  int from = 0
 
   /**
    * The max number of hits requested.
    */
-  int max = 10
+  int size = 10
 
 /**
  * Empty constructor.

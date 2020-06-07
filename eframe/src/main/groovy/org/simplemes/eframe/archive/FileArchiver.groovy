@@ -308,7 +308,6 @@ class FileArchiver implements ArchiverInterface {
    */
   static String makePathFromReference(String ref) {
     String s = determineArchiveDirectory() + File.separator + ref
-    println "s = $s ${determineArchiveDirectory()}"
     return s.replace('/', File.separator)
   }
 
@@ -324,7 +323,6 @@ class FileArchiver implements ArchiverInterface {
     def prefix = determineArchiveDirectory() + File.separator
     prefix = prefix.replace(File.separator, '/')
     path = path.replace(File.separator, '/')
-    println "new Ref = ${path - prefix}"
     return path - prefix
   }
 

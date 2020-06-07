@@ -192,7 +192,6 @@ class MockSearchEngineClient implements SearchEngineClientInterface {
   void verify(Map expectedAction) {
     if (expectedAction) {
       if (!actions.contains(expectedAction)) {
-        println("Mock Clientp action $expectedAction was not called during test.  Actions called: $actions")
         log.warn("Mock Client  action $expectedAction was not called during test.  Actions called: $actions")
       }
       assert actions.contains(expectedAction), "Mock Client action $expectedAction was not called during test.  Actions called: $actions"
@@ -205,7 +204,7 @@ class MockSearchEngineClient implements SearchEngineClientInterface {
   /**
    * Performs a mock global search using the given query string.
    * @param query The query string.  If it starts with &#123; then the string is used as the body for the GET request.
-   * @param params Optional query parameters.  Supported elements: offset and max.
+   * @param params Optional query parameters.  Supported elements: from and size.
    * @param The search results.   Can return the globalSearchResult if provided.
    */
   @Override
@@ -236,7 +235,7 @@ class MockSearchEngineClient implements SearchEngineClientInterface {
    * some cases.
    * @param domainClass The domain class to search.
    * @param query The query string.
-   * @param params Optional query parameters.  Supported elements: offset and max
+   * @param params Optional query parameters.  Supported elements: from and size
    * @return The search result, containing the list of values found.
    */
   SearchResult domainSearch(Class domainClass, String query, Map params = null) {

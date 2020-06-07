@@ -11,7 +11,6 @@ import io.micronaut.data.model.Pageable
 import org.apache.http.HttpHost
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.archive.ArchiverFactory
-import org.simplemes.eframe.archive.ArchiverInterface
 import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.domain.SQLUtils
@@ -33,7 +32,7 @@ import java.util.concurrent.atomic.AtomicInteger
  *
  * <p> <p>
  * <b>Note:</b> This is an internal helper class.  Application and module code should use the
- * {@link SearchService} instead.  This class is subject to change.
+ * {@link org.simplemes.eframe.search.service.SearchService} instead.  This class is subject to change.
  *
  *  <h3>Logging</h3>
  * The logging for this class that can be enabled:
@@ -57,11 +56,6 @@ class SearchHelper {
    * The shared client used to communicate with the search engine.
    */
   SearchEngineClientInterface searchEngineClient
-
-  /**
-   * The archiver used to find the archive files in long-term storage.
-   */
-  ArchiverInterface archiver = ArchiverFactory.instance.archiver
 
   /**
    * Keeps track of when the search feature is disabled (not configured).
@@ -168,9 +162,9 @@ class SearchHelper {
       if (hostName) {
         def port = cfg.port ?: 9200
         def protocol = cfg.protocol ?: 'http'
-        hosts << new HttpHost(hostName, port, protocol)
+        hosts << new HttpHost((String) hostName, port, protocol)
       } else {
-        log.warn('determineHosts: host not found in application configuration {}', cfg)
+        log.warn('determineHosts: host not found in application configuration {}', (Object) cfg)
       }
     }
 
@@ -199,10 +193,10 @@ class SearchHelper {
    * Performs a standard global search with the query string.
    * <p>
    * <b>Note:</b> This is an internal API method.  Application and module code should use the
-   * {@link SearchService} instead.
+   * {@link org.simplemes.eframe.search.service.SearchService} instead.
    *
    * @param query The query string.
-   * @param params Optional query parameters.  Supported elements: offset and max
+   * @param params Optional query parameters.  Supported elements: from and size
    * @return The search result, containing the list of values found.
    */
   SearchResult globalSearch(String query, Map params = null) {
@@ -213,11 +207,11 @@ class SearchHelper {
    * Performs a standard domain search with the query string using the external search engine.
    * <p>
    * <b>Note:</b> This is an internal API method.  Application and module code should use the
-   * {@link SearchService} instead.
+   * {@link org.simplemes.eframe.search.service.SearchService} instead.
    *
    * @param domainClass The domain class to search.
    * @param query The query string.
-   * @param params Optional query parameters.  Supported elements: offset and max
+   * @param params Optional query parameters.  Supported elements: from and size
    * @return The search result, containing the list of values found.
    */
   SearchResult domainSearch(Class domainClass, String query, Map params = null) {
@@ -429,7 +423,7 @@ class SearchHelper {
         continue
       }
       def total = clazz.count()
-      def batchCount = NumberUtils.divideRoundingUp(total, batchSize)
+      def batchCount = NumberUtils.divideRoundingUp((long) total, (int) batchSize)
 
       def offset = 0
       for (int i = 0; i < batchCount; i++) {

@@ -20,7 +20,7 @@
   <!--<logger name="io.micronaut" level="trace"/>-->
   <!--<logger name="io.micronaut.context" level="trace" />-->
   <logger name="io.micronaut.runtime.Micronaut" level="info"/>
-  <logger name="io.micronaut.http.client" level="warn"/>
+  <logger name="io.micronaut.http" level="warn"/>  <!--trace for issues with routing beans-->
   <logger name="io.micronaut.views" level="warn"/>
   <logger name="io.micronaut.context" level="warn"/> <!--trace for issues creating beans-->
   <logger name="io.micronaut.context.condition" level="warn"/> <!--trace for issues creating beans-->

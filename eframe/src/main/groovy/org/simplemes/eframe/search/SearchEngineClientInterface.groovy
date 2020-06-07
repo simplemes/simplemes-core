@@ -66,7 +66,7 @@ interface SearchEngineClientInterface {
   /**
    * Performs a global search using the given query string.
    * @param query The query string.  If it starts with &#123; then the string is used as the body for the GET request.
-   * @param params Optional query parameters.  Supported elements: offset and max.
+   * @param params Optional query parameters.  Supported elements: from and size.
    * @param The search results.
    */
   SearchResult globalSearch(String query, Map params)
@@ -75,7 +75,7 @@ interface SearchEngineClientInterface {
    * Performs a standard domain search with the query string.  
    * @param domainClass The domain class to search.
    * @param query The query string.
-   * @param params Optional query parameters.  Supported elements: offset and max
+   * @param params Optional query parameters.  Supported elements: from and size
    * @return The search result, containing the list of values found.
    */
   SearchResult domainSearch(Class domainClass, String query, Map params)

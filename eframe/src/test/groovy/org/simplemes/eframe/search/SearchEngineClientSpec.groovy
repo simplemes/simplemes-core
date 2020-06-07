@@ -237,8 +237,8 @@ class SearchEngineClientSpec extends BaseSpecification {
 
     then: 'the result are offset and limited'
     res.totalHits == 200
-    res.offset == 3
-    res.max == 2
+    res.from == 3
+    res.size == 2
     res.hits[0].uuid == uuid1
     res.hits[1].uuid == uuid2
   }

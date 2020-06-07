@@ -96,10 +96,8 @@ class MockFileFactory extends FileFactory {
       name = name.replace(File.separatorChar, "/" as char)
       // Look for the base file name, ignore the folder to avoid file-system differences (windows vs. linux)
       for (String key in simulatedContents.keySet()) {
-        println "key = $key, $name"
         if (name.contains(key)) {
           lastFileCreated.contents = simulatedContents[key]
-          println "simulatedContent ${name} (${lastFileCreated.name}) (${File.pathSeparatorChar} ${File.separatorChar}) = ${lastFileCreated.contents} ${simulatedContents?.keySet()}"
         }
       }
     }
