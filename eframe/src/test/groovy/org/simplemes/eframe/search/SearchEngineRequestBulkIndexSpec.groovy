@@ -211,7 +211,7 @@ class SearchEngineRequestBulkIndexSpec extends BaseSpecification {
     _ * searchHelper.getSearchDomainSettings(objects[0].class) >> new SearchDomainSettings()
 
     and: 'the exception is logged'
-    mockAppender.assertMessageIsValid(['bad exception', 'parent', 'abc 1', '"_index"'])
+    mockAppender.assertMessageIsValid(['bad exception', 'abc 1', '"_index"'])
   }
 
 }

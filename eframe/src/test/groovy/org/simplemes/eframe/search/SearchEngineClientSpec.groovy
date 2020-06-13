@@ -78,7 +78,7 @@ class SearchEngineClientSpec extends BaseSpecification {
     def parent = new SampleParent(name: 'ABC').save()
 
     expect: 'the URI to be correct'
-    SearchEngineClient.buildURIForIndexRequest(parent) == "/sample-parent/doc/${parent.uuid}"
+    SearchEngineClient.buildURIForIndexRequest(parent) == "/sample-parent/_doc/${parent.uuid}"
   }
 
   @Rollback
@@ -87,7 +87,7 @@ class SearchEngineClientSpec extends BaseSpecification {
     def sampleParent = new SampleParent(name: 'ABC').save()
 
     expect: 'the URI to be correct'
-    SearchEngineClient.buildURIForIndexRequest(sampleParent) == "/sample-parent/doc/${sampleParent.uuid}"
+    SearchEngineClient.buildURIForIndexRequest(sampleParent) == "/sample-parent/_doc/${sampleParent.uuid}"
   }
 
   def "verify that buildURIForIndexRequest fails with unsaved domain object"() {
@@ -206,7 +206,7 @@ class SearchEngineClientSpec extends BaseSpecification {
     def uuid1 = UUID.randomUUID()
     def uuid2 = UUID.randomUUID()
     def mockRestClient = new MockRestClient(method: 'GET', uri: '/_search?q=abc*',
-                                            response: [took: '13', className: SampleParent.name,
+                                            response: [took: '13', _index: 'sample-parent',
                                                        hits: [[code: 'abc1', uuid: uuid1], [code: 'abc2', uuid: uuid2]]])
     def searchEngineClient = new SearchEngineClient(restClient: mockRestClient)
 
@@ -643,7 +643,7 @@ class SearchEngineClientSpec extends BaseSpecification {
     def uuid1 = UUID.randomUUID()
     def uuid2 = UUID.randomUUID()
     def mockRestClient = new MockRestClient(method: 'GET', uri: '/sample-parent/_search?q=abc*',
-                                            response: [took: '13', className: SampleParent.name,
+                                            response: [took: '13', _index: 'sample-parent',
                                                        hits: [[code: 'abc1', uuid: uuid1], [code: 'abc2', uuid: uuid2]]])
     def searchEngineClient = new SearchEngineClient(restClient: mockRestClient)
 

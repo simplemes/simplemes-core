@@ -44,6 +44,11 @@ class SearchHit {
   boolean badClass = false
 
   /**
+   * The name of the index for the search hit.
+   */
+  String indexName
+
+  /**
    * Empty constructor.
    */
   SearchHit() {
@@ -56,10 +61,11 @@ class SearchHit {
   @SuppressWarnings("GroovyAssignabilityCheck")
   SearchHit(Map jsonMap) {
     uuid = UUID.fromString((String) jsonMap._id)
-    def object = jsonMap._source
-    def key = object.keySet()[0]
-    def domainObject = object[key]
-    className = domainObject['class']
+    indexName = jsonMap._index
+    domainClass = SearchHelper.instance.getDomainClassForIndex(indexName)
+    className = domainClass?.name
+    // If the class name can't be reverse-engineered from the index name, the we may need to use the _meta
+    // setting on the index itself.  See https://www.elastic.co/guide/en/elasticsearch/reference/current/mapping-meta-field.html
   }
 
   /**
@@ -69,6 +75,7 @@ class SearchHit {
   SearchHit(Object domainObject) {
     object = domainObject
     uuid = domainObject.uuid
+    domainClass = domainObject.getClass()
     className = domainObject.getClass().name
   }
 
@@ -77,12 +84,11 @@ class SearchHit {
    * @return The object.
    */
   Class<DomainEntityInterface> getDomainClass() {
-    try {
-      domainClass = domainClass ?: TypeUtils.loadClass(className)
-    } catch (ClassNotFoundException ignored) {
-      log.warn('Search result for class "{}" is not a valid class.', className)
-      badClass = true
+    if (domainClass) {
+      return domainClass
     }
+    log.warn('Search result for index "{}" is not a valid domain class index.', indexName)
+    badClass = true
     return domainClass
   }
 
@@ -100,9 +106,8 @@ class SearchHit {
    * @return The link.  Can be null for missing records.
    */
   String getLink() {
-    def o = getObject()
-    if (o) {
-      def root = DomainUtils.instance.getURIRoot(o.getClass())
+    if (domainClass && getObject()) {
+      def root = DomainUtils.instance.getURIRoot(domainClass)
       return "/${root}/show/${uuid}"
     } else {
       return null

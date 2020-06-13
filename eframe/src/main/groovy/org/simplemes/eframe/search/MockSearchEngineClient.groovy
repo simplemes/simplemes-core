@@ -6,7 +6,6 @@ package org.simplemes.eframe.search
 
 import groovy.util.logging.Slf4j
 import org.apache.http.HttpHost
-import org.simplemes.eframe.misc.NameUtils
 
 /**
  * This mock client simulates the search interface to the external search engine (Elastic Search in this case).
@@ -161,7 +160,7 @@ class MockSearchEngineClient implements SearchEngineClientInterface {
     def items = []
     def i = 0
     for (object in objects) {
-      def indexName = NameUtils.convertToHyphenatedName(object.getClass().simpleName)
+      def indexName = SearchHelper.instance.getIndexNameForDomain(object.getClass())
       // Use the provide result list to determine the result.  Otherwise, defaults to 'created'.
       def result = bulkIndexResult.size() > i ? bulkIndexResult[i] ?: 'created' : 'created'
       items << [index: [_index: indexName, _type: 'doc', _id: object.uuid, result: result]]

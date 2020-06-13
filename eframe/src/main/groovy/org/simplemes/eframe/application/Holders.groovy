@@ -95,10 +95,18 @@ class Holders {
   }
 
   /**
-   * Returns true if the current environment is test.
+   * A simple flag to simulate a production environment.
+   */
+  static boolean simulateProductionEnvironment = false
+
+  /**
+   * Returns true if the current environment is test.  Uses the simulateProductionEnvironment option for tests.
    * @return True if test.
    */
   static boolean isEnvironmentTest() {
+    if (simulateProductionEnvironment) {
+      return false
+    }
     return getEnvironment()?.activeNames?.contains('test')
   }
 

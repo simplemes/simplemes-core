@@ -15,7 +15,9 @@ import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.domain.SQLUtils
 import org.simplemes.eframe.domain.annotation.DomainEntityHelper
+import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.misc.ArgumentUtils
+import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.misc.TypeUtils
 
@@ -119,6 +121,11 @@ class SearchHelper {
    */
   boolean fallback = false
 
+  /**
+   * The suffix to add to all indices created for archived elements.
+   */
+  public static final String ARCHIVE_INDEX_SUFFIX = '-arc'
+
   @SuppressWarnings("CouldBeElvis")
   SearchEngineClientInterface getSearchEngineClient() {
     if (!searchEngineClient) {
@@ -129,7 +136,9 @@ class SearchHelper {
       } else {
         fallback = true
         searchEngineClient = new MockSearchEngineClient()
-        log.warn('getSearchEngineClient: Using Mock Engine - No org.simplemes.eframe.search.client.hosts entry in application.yml')
+        if (!Holders.environmentTest) {
+          log.warn('getSearchEngineClient: Using Mock Engine - No eframe.search.hosts entry in application.yml')
+        }
       }
     }
     return searchEngineClient
@@ -185,6 +194,7 @@ class SearchHelper {
     def searchStatus = getSearchEngineClient().status
     //println "searchStatus1 = $searchStatus"
     addBulkIndexStatus(searchStatus)
+    searchStatus.configured = !searchDisabled
     //println "searchStatus2 = $searchStatus"
     return searchStatus
   }
@@ -620,7 +630,7 @@ class SearchHelper {
    * @param object The domain object.
    */
   @CompileDynamic
-  static void handlePersistenceChange(Object object) {
+  void handlePersistenceChange(DomainEntityInterface object) {
     requestBackgroundIndexObject(object)
   }
 
@@ -629,8 +639,41 @@ class SearchHelper {
    * @param object The domain object.
    */
   @CompileDynamic
-  static void handlePersistenceDelete(Object object) {
+  void handlePersistenceDelete(DomainEntityInterface object) {
     requestBackgroundObjectRemoval(object)
+  }
+
+  /**
+   * Get the domain class associated with the given index name.
+   * Uses a naming scheme to find the domain class.
+   * @param indexName The index name.
+   * @return The domain class for the index.
+   */
+  Class getDomainClassForIndex(String indexName) {
+    if (!indexName) {
+      return null
+    }
+    if (indexName.endsWith(SearchHelper.ARCHIVE_INDEX_SUFFIX)) {
+      indexName = indexName[0..(indexName.length() - 4)]
+    }
+    def domainSimpleName = NameUtils.convertFromHyphenatedName(indexName)
+
+    return DomainUtils.instance.getAllDomains().find { it.simpleName == domainSimpleName }
+
+  }
+
+  /**
+   * Get the index name for the given domain class.
+   * Uses a naming scheme to build the index name.
+   * @param indexName The index name.
+   * @return The domain class for the index.
+   */
+  String getIndexNameForDomain(Class domainClass) {
+    if (!domainClass) {
+      return null
+    }
+
+    return NameUtils.convertToHyphenatedName(domainClass.simpleName)
   }
 
   /**

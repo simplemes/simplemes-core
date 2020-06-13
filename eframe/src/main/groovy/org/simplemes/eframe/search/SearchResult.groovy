@@ -53,7 +53,7 @@ class SearchResult {
    * @param jsonMap The parsed JSON (as map) from the search engine.
    */
   SearchResult(Map jsonMap) {
-    totalHits = jsonMap.hits.total
+    totalHits = jsonMap.hits.total.value
     elapsedTime = jsonMap.took as long
     for (hit in jsonMap.hits.hits) {
       hits << buildHit(hit)

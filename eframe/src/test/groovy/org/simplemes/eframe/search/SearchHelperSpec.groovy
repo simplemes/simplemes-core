@@ -10,6 +10,7 @@ import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.archive.FileArchiver
 import org.simplemes.eframe.archive.domain.ArchiveLog
 import org.simplemes.eframe.date.DateOnly
+import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.misc.FileFactory
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
@@ -285,6 +286,20 @@ class SearchHelperSpec extends BaseSpecification {
     searchStatus.bulkIndexEnd == searchHelper.bulkIndexEnd
   }
 
+  def "verify that getStatus sets the configured flag when no hosts are defined"() {
+    given: 'no hosts are defined in the configuration'
+    Holders.configuration.search.hosts = []
+
+    and: 'a mock appender for WARN logging to reduce console output during tests'
+    MockAppender.mock(SearchHelper, Level.WARN)
+
+    when: 'the status is returned'
+    def searchStatus = new SearchHelper().status
+
+    then: 'the configured flag is set to not configured'
+    !searchStatus.configured
+  }
+
   @Rollback
   def "verify that indexObject is delegated to the SearchEngineClient"() {
     given: 'a saved domain object'
@@ -445,7 +460,7 @@ class SearchHelperSpec extends BaseSpecification {
     }
 
     and: 'the handler is called directly to simulate the normal persistence handler logic'
-    SearchHelper.handlePersistenceChange(object)
+    SearchHelper.instance.handlePersistenceChange((DomainEntityInterface) object)
     SearchEnginePoolExecutor.waitForIdle()
 
     then: 'the correct action was performed'
@@ -475,7 +490,7 @@ class SearchHelperSpec extends BaseSpecification {
       // Save the element here in a txn so we can use the where clause.
       object.save()
     }
-    SearchHelper.handlePersistenceDelete(object)
+    SearchHelper.instance.handlePersistenceDelete((DomainEntityInterface) object)
     SearchEnginePoolExecutor.waitForIdle()
 
     then: 'the correct action was performed'
@@ -962,6 +977,9 @@ class SearchHelperSpec extends BaseSpecification {
     given: 'some domain objects'
     buildSampleParentRecords(1)
 
+    and: 'simulate a production environment for the holders check.'
+    Holders.simulateProductionEnvironment = true
+
     and: 'a mock appender for WARN logging'
     def mockAppender = MockAppender.mock(SearchHelper, Level.WARN)
 
@@ -972,7 +990,7 @@ class SearchHelperSpec extends BaseSpecification {
     res.hits.size() == 1
 
     and: 'a warning is logged'
-    mockAppender.assertMessageIsValid(['client.hosts', 'application.yml'])
+    mockAppender.assertMessageIsValid(['eframe.search.hosts', 'application.yml'])
   }
 
   def "verify that isSimpleQueryString detects the supported cases"() {
@@ -990,6 +1008,27 @@ class SearchHelperSpec extends BaseSpecification {
     'abc OR xyz'  | false
     'abc and xyz' | false
     'abc AND xyz' | false
+  }
+
+  def "verify that getDomainClassForIndex handles the supported cases"() {
+    expect: 'the method works'
+    SearchHelper.instance.getDomainClassForIndex(query) == result
+
+    where:
+    query               | result
+    'gibberish'         | null
+    'sample-parent'     | SampleParent
+    'sample-parent-arc' | SampleParent
+  }
+
+  def "verify that getIndexNameForDomain handles the supported cases"() {
+    expect: 'the method works'
+    SearchHelper.instance.getIndexNameForDomain(domainClass) == result
+
+    where:
+    domainClass  | result
+    null         | null
+    SampleParent | 'sample-parent'
   }
 
 }

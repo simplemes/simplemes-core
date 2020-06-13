@@ -49,7 +49,6 @@ class SearchEngineRequestIndexObject implements SearchEngineRequestInterface {
     domainObject = domainClass.findByUuid(uuid)
 
     def res = SearchHelper.instance.indexObject(domainObject)
-    //println "res = $res"
     if (!(res?.result == 'created' || res?.result == 'updated')) {
       // Some sort of error, so log it
       log.error('Index not created or updated.  Response = {}', res)

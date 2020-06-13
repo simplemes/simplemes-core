@@ -314,8 +314,9 @@ class BaseSpecification extends GebSpec {
     // Reset the default locale
     GlobalUtils.defaultLocale = Locale.default
 
-    // Reset the current UI timezone
+    // Reset the current UI timezone and the simulated environment flag
     Holders.globals.timeZone = TimeZone.getTimeZone("America/New_York")
+    Holders.simulateProductionEnvironment = false
 
     // Clear the user override for later tests.
     SecurityUtils.currentUserOverride = null
@@ -431,7 +432,7 @@ class BaseSpecification extends GebSpec {
 
     def accept = params?.accept
     if (accept) {
-      request.getHeaders() >> new SimpleHttpHeaders([Accept: accept], null)
+      request.getHeaders() >> new SimpleHttpHeaders((Map) [Accept: accept], null)
     }
 
     Holders.mockRequest = request

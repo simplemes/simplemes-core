@@ -4,10 +4,11 @@
 
 package org.simplemes.eframe.search
 
-import org.apache.http.Header
+
 import org.apache.http.HttpEntity
 import org.apache.http.entity.StringEntity
 import org.apache.http.util.EntityUtils
+import org.elasticsearch.client.Request
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.UUIDUtils
@@ -41,7 +42,7 @@ import org.simplemes.eframe.misc.UUIDUtils
  * <h3>Example - globalSearch()</h3>
  * <pre>
  * <b>given:</b> 'a search engine client with a mock rest client'
- * def mockRestClient = new MockRestClient(method: 'GET', uri: '/_search?q=abc*',
+ * def mockRestClient = new MockRestClient(method: 'GET', uri: '/_search?q=abc*',_index:'sample-parent',
  *                                         response: [hits: [[code: 'abc1'], [code: 'abc2']]])
  * def searchEngineClient = new SearchEngineClient(restClient: mockRestClient)
  * </pre>
@@ -75,43 +76,28 @@ class MockRestClient {
 
   /**
    * The simulated request method.
-   * @param method The method.
-   * @param endpoint The URI.
-   * @return The simulated response.
-   */
-  @SuppressWarnings("GroovyUnusedDeclaration")
-  def performRequest(String method, String endpoint) {
-    return performRequest(method, endpoint, null, null)
-  }
-
-  /**
-   * The simulated request method.
-   * @param method The method.
-   * @param endpoint The URI.
-   * @param params Ignored.
-   * @param entity The input content.
-   * @param headers The headers.
    * @return The simulated response.
    */
   @SuppressWarnings(["GroovyUnusedDeclaration"])
-  Object performRequest(String method, String endpoint, Map<String, String> params, HttpEntity entity, Header[] headers) {
+  Object performRequest(Request request) {
+    // String method, String endpoint, Map<String, String> params, HttpEntity entity, Header[] headers) {
     def expectedMethod = this.method
-    assert method == expectedMethod
+    assert request.method == expectedMethod
 
     if (this.uri) {
       def expectedURI = this.uri
-      assert endpoint == expectedURI
+      assert request.endpoint == expectedURI
     }
 
-    switch (method) {
+    switch (request.method) {
       case 'PUT':
-        return simulatePut(endpoint, entity)
+        return simulatePut(request.endpoint, request.entity)
       case 'POST':
-        return simulatePost(endpoint, entity)
+        return simulatePost(request.endpoint, request.entity)
       case 'DELETE':
-        return simulateDelete(endpoint)
+        return simulateDelete(request.endpoint)
       case 'GET':
-        return simulateGet(endpoint, entity)
+        return simulateGet(request.endpoint, request.entity)
     }
 
     return null
@@ -181,8 +167,9 @@ class MockRestClient {
       def count = 1
       def hits = []
       def className = response?.className ?: 'sample.SamplePanelDomain'
+      def indexName = response?._index
       for (responseHit in response?.hits) {
-        def hit = [_id: responseHit.uuid ?: UUID.randomUUID()]
+        def hit = [_id: responseHit.uuid ?: UUID.randomUUID(), _index: indexName]
         hit._source = [samplePanelDomain: responseHit]
         responseHit.class = className
         hits << hit
@@ -190,7 +177,8 @@ class MockRestClient {
       }
 
       def totalHits = response?.totalHits ?: response?.hits?.size() ?: 0
-      res = Holders.objectMapper.writeValueAsString([took: response?.took ?: 247, hits: [total: totalHits, hits: hits]])
+      res = Holders.objectMapper.writeValueAsString([took: response?.took ?: 247, _index: indexName,
+                                                     hits: [total: totalHits, hits: hits]])
     }
 
     return new MockResponse(res)

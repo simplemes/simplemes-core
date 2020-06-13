@@ -187,8 +187,9 @@ class BaseAPISpecification extends BaseSpecification {
       request.header(HttpHeaders.ACCEPT_LANGUAGE, (String) options.locale.toLanguageTag())
     }
     if (options.content instanceof Map) {
-      request.header(HttpHeaders.CONTENT_TYPE, (String) MediaType.APPLICATION_FORM_URLENCODED)
+      request.header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED)
     }
+    //request.header(HttpHeaders.ACCEPT_CHARSET,'utf-8, iso-8859-1;q=0.5')
     //println "uri = $uri"
     log.debug('sendRequest() {}', request)
     //String resp = client.toBlocking().retrieve(request)

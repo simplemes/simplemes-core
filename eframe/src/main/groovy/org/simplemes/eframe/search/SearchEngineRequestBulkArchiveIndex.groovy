@@ -26,11 +26,6 @@ import org.simplemes.eframe.misc.LogUtils
 class SearchEngineRequestBulkArchiveIndex implements SearchEngineRequestInterface {
 
   /**
-   * The suffix to add to all indices created for archived elements.
-   */
-  public static final String INDEX_SUFFIX = '-arc'
-
-  /**
    * The archive file references to index.  These are stored instead of the domains to reduce the memory used while waiting
    * to be executed.
    */

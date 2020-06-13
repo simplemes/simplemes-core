@@ -11,6 +11,7 @@ import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.exception.MessageBasedException
 import org.simplemes.eframe.exception.SimplifiedSQLException
+import org.simplemes.eframe.search.SearchHelper
 import org.simplemes.eframe.security.domain.Role
 import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.BaseSpecification
@@ -916,6 +917,41 @@ class DomainEntityHelperSpec extends BaseSpecification {
 
     then: 'the product field is altered by the beforeSave method'
     order.product == "XYZZYAlteredByBeforeSave"
+  }
+
+  @Rollback
+  def "verify that save calls the handlePersistenceChange method for the search helper"() {
+    given: 'a mock helper'
+    waitForInitialDataLoad()
+    def searchHelper = Mock(SearchHelper)
+    SearchHelper.instance = searchHelper
+
+    when: 'the domain is saved'
+    new Order(order: 'ABC').save()
+
+    then: 'the handle method is called'
+    1 * searchHelper.handlePersistenceChange({ it.order == 'ABC' })
+
+    cleanup:
+    SearchHelper.instance = new SearchHelper()
+  }
+
+  @Rollback
+  def "verify that delete calls the handlePersistenceDelete method for the search helper"() {
+    given: 'a mock helper'
+    waitForInitialDataLoad()
+    def searchHelper = Mock(SearchHelper)
+    SearchHelper.instance = searchHelper
+
+    when: 'the domain is saved'
+    def order = new Order(order: 'ABC').save()
+    order.delete()
+
+    then: 'the handle method is called'
+    1 * searchHelper.handlePersistenceDelete({ it.order == 'ABC' })
+
+    cleanup:
+    SearchHelper.instance = new SearchHelper()
   }
 
   @Rollback

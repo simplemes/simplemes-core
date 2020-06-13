@@ -99,7 +99,7 @@ class SearchEnginePoolExecutor extends ThreadPoolExecutor implements RejectedExe
    */
   static Future<?> addRequest(SearchEngineRequestInterface request) {
     log.trace('addRequest: adding {}', request)
-    pool.submit(request)
+    pool?.submit(request)
   }
 
   /**

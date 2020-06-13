@@ -23,14 +23,14 @@ class SearchHitSpec extends BaseSpecification {
   def "verify that constructor handles a search hit from the JSON map"() {
     given: 'a response as a map'
     def uuid = UUID.randomUUID()
-    def response = [_id: uuid, _source: [sampleParent: [class: 'sample.SampleParent']]]
+    def response = [_id: uuid, _index: 'sample-parent', _source: [name: 'ABC']]
 
     when: 'the result is built'
     def searchHit = new SearchHit(response)
 
     then: 'the values are copied correctly'
     searchHit.uuid == uuid
-    searchHit.className == 'sample.SampleParent'
+    searchHit.className == 'sample.domain.SampleParent'
   }
 
   @Rollback
@@ -39,7 +39,7 @@ class SearchHitSpec extends BaseSpecification {
     def sampleParent = new SampleParent(name: 'ABC').save()
 
     and: 'a response as a map'
-    def response = [_id: "${sampleParent.uuid}", _source: [sampleParent: [class: SampleParent.name]]]
+    def response = [_id: "${sampleParent.uuid}", _index: 'sample-parent', _source: [name: 'ABC']]
 
     when: 'the result is built and the object is read'
     def object = new SearchHit(response).object
@@ -54,7 +54,7 @@ class SearchHitSpec extends BaseSpecification {
     def sampleParent = new SampleParent(name: 'ABC').save()
 
     and: 'a response as a map'
-    def response = [_id: "${sampleParent.uuid}", _source: [sampleParent: [class: SampleParent.name]]]
+    def response = [_id: "${sampleParent.uuid}", _index: 'sample-parent', _source: [name: 'ABC']]
 
     when: 'the result is built'
     def hit = new SearchHit(response)
@@ -73,7 +73,7 @@ class SearchHitSpec extends BaseSpecification {
     def badID = UUID.randomUUID()
 
     and: 'a response as a map'
-    def response = [_id: "${badID}", _source: [sampleParent: [class: SampleParent.name]]]
+    def response = [_id: "${badID}", _index: 'sample-parent', _source: [name: 'ABC']]
 
     when: 'the result is built'
     def hit = new SearchHit(response)
@@ -88,7 +88,7 @@ class SearchHitSpec extends BaseSpecification {
 
   def "verify that getObject fails gracefully with unknown class - logs warning"() {
     given: 'a response with invalid class name'
-    def response = [_id: UUID.randomUUID(), _source: [SampleParent: [class: 'gibberish']]]
+    def response = [_id: UUID.randomUUID(), _index: 'gibberish', _source: [name: 'ABC']]
 
     and: 'a mock appender for WARN logging'
     def mockAppender = MockAppender.mock(SearchHit, Level.WARN)

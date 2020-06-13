@@ -21,6 +21,7 @@ import org.simplemes.eframe.search.service.SearchService
 import org.simplemes.eframe.web.task.TaskMenuItem
 
 import javax.annotation.Nullable
+import javax.inject.Inject
 import java.security.Principal
 
 /**
@@ -32,6 +33,7 @@ import java.security.Principal
 @Controller("/search")
 class SearchController extends BaseController {
 
+  @Inject
   SearchService searchService
 
   /**
@@ -52,11 +54,13 @@ class SearchController extends BaseController {
     def modelAndView = new StandardModelAndView("search/index", principal, this)
     def params = ControllerUtils.instance.convertToMap(request.parameters)
 
-    def res = [:]
+    def res = [totalHits: 237]
     if (params.query) {
       res = searchService.globalSearch((String) params.query, params)
+      //println "res = $res"
     }
     modelAndView.model.get().searchResult = res
+    modelAndView.model.get().searchStatus = searchService.status
 
     log.trace('index(): {}', modelAndView)
     return modelAndView
@@ -84,6 +88,7 @@ class SearchController extends BaseController {
    */
   @Secured(["ADMIN"])
   @Get("/status")
+  @SuppressWarnings('unused')
   SearchStatus status(@Nullable Principal principal) {
     return searchService.status
   }
@@ -96,6 +101,7 @@ class SearchController extends BaseController {
    */
   @Secured(["ADMIN"])
   @Get("/startBulkIndexRequest")
+  @SuppressWarnings('unused')
   def startBulkIndexRequest(HttpRequest request, @Nullable Principal principal) {
     def params = ControllerUtils.instance.convertToMap(request.parameters)
     def deleteFlag = ArgumentUtils.convertToBoolean(params.deleteAllIndices)
@@ -108,6 +114,7 @@ class SearchController extends BaseController {
    */
   @Secured(["ADMIN"])
   @Get("/clearStatistics")
+  @SuppressWarnings('unused')
   def clearStatistics(@Nullable Principal principal) {
     searchService.clearStatistics()
     return [status: 'ok']

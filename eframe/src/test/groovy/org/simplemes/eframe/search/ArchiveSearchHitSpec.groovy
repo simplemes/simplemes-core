@@ -18,8 +18,7 @@ class ArchiveSearchHitSpec extends BaseSpecification {
   def "verify that constructor handles a search hit from the JSON map"() {
     given: 'a response as a map'
     def uuid1 = UUID.randomUUID()
-    def response = [_id    : uuid1,
-                    _source: [sampleParent: [class: 'sample.domain.SampleParent', _archiveReference: 'unit/ref1.arc']]]
+    def response = [_id: uuid1, _index: 'sample-parent', _source: [_archiveReference: 'unit/ref1.arc']]
 
     when: 'the result is built'
     def searchHit = new ArchiveSearchHit(response)
@@ -34,8 +33,7 @@ class ArchiveSearchHitSpec extends BaseSpecification {
 
   def "verify that search hit provides the correct link HREF and display value for an archived domain object"() {
     given: 'a response as a map'
-    def response = [_id    : UUID.randomUUID(),
-                    _source: [sampleParent: [class: 'sample.domain.SampleParent', _archiveReference: 'unit/ref1.arc']]]
+    def response = [_id: UUID.randomUUID(), _index: 'sample-parent', _source: [_archiveReference: 'unit/ref1.arc']]
 
     when: 'the result is built'
     def hit = new ArchiveSearchHit(response)
@@ -53,8 +51,8 @@ class ArchiveSearchHitSpec extends BaseSpecification {
     ArchiveSearchHit.isArchiveHit(hit) == result
 
     where:
-    hit                                                             | result
-    [_source: [sampleParent: [class: 'abc']]]                       | false
-    [_source: [sampleParent: [_archiveReference: 'unit/ref1.arc']]] | true
+    hit                                             | result
+    [_source: [:]]                                  | false
+    [_source: [_archiveReference: 'unit/ref1.arc']] | true
   }
 }

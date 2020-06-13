@@ -233,8 +233,8 @@ class NameUtils {
       return name
     }
     StringBuilder sb = new StringBuilder()
-    char[] chars = name.toCharArray()
-    for (char c : chars) {
+    for (int i = 0; i < name.length(); i++) {
+      char c = name.charAt(i)
       if (Character.isUpperCase(c)) {
         c = c.toLowerCase()
         if (sb) {
@@ -243,6 +243,36 @@ class NameUtils {
       }
       sb << c
 
+    }
+
+    return sb.toString()
+
+  }
+
+  /**
+   * Converts the given hyphenated name to a mixed-case (e.g. Domain) style name.
+   * Would convert 'sample-parent' to 'SampleParent'.
+   * @param name The hyphenated name.
+   * @return The mixed case name.
+   */
+  static String convertFromHyphenatedName(String name) {
+    char hyphen = '-'
+    if (!name) {
+      return name
+    }
+    StringBuilder sb = new StringBuilder()
+    boolean shiftNextToUpper = true
+    for (int i = 0; i < name.length(); i++) {
+      char c = name.charAt(i)
+      if (c == hyphen) {
+        shiftNextToUpper = true
+      } else {
+        if (shiftNextToUpper) {
+          c = c.toUpperCase()
+        }
+        sb << c
+        shiftNextToUpper = false
+      }
     }
 
     return sb.toString()

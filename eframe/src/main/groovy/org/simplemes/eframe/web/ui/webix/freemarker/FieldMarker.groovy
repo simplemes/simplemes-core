@@ -87,7 +87,13 @@ class FieldMarker extends BaseMarker {
       """
       markerContext.markerCoordinator.addPrescript(pre)
     } else {
-      widgetScript << ","
+      def snippetMode = markerContext?.markerCoordinator?.others[FormMarker.COORDINATOR_SNIPPET_MODE]
+      def firstField = markerContext?.markerCoordinator?.others[FormMarker.COORDINATOR_FIRST_FIELD]
+      if (!firstField || snippetMode) {
+        // We don't need a row delimiter for the first field in the form.
+        widgetScript << ","
+      }
+      markerContext?.markerCoordinator?.others[FormMarker.COORDINATOR_FIRST_FIELD] = false
       widgetScript << widget.build()
       //widgetScript << ","
     }

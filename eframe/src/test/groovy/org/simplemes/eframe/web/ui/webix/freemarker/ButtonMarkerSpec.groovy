@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import org.simplemes.eframe.misc.JavascriptUtils
@@ -5,12 +9,6 @@ import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.test.BaseMarkerSpecification
 import org.simplemes.eframe.test.JavascriptTestUtils
 import org.simplemes.eframe.test.UnitTestUtils
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -50,6 +48,44 @@ class ButtonMarkerSpec extends BaseMarkerSpecification {
 
     and: 'the tooltip is used'
     JavascriptTestUtils.extractProperty(buttonText, 'tooltip') == lookup('list.menu.tooltip')
+  }
+
+  def "verify that the marker works in a button group with fields and multiple buttons"() {
+    when: 'the marker is built'
+    def src = """
+      <@efForm id="edit">
+        <@efField field="query" maxLength=255 width="40em" label="searchQuery.label"/>
+        <@efField field="query2" maxLength=255 width="40em" label="searchQuery.label"/>
+        <@efButtonGroup>
+            <@efButton id='searchButton' label="searchButton.label" click="submitSearch()" />
+            <@efButton id='searchButton2' label="searchButton.label" click="submitSearch2()" />
+        </@efButtonGroup>
+      </@efForm>
+    """
+
+    def page = execute(source: src)
+
+    then: 'the javascript is legal'
+    checkPage(page)
+  }
+
+  def "verify that the marker works in a button group with fields and multiple buttons - dashboard case"() {
+    when: 'the marker is built'
+    def src = """
+      <@efForm id="filter" dashboard=true>
+        <@efField field="query" maxLength=255 width="40em" label="searchQuery.label"/>
+        <@efField field="query2" maxLength=255 width="40em" label="searchQuery.label"/>
+        <@efButtonGroup>
+            <@efButton id='searchButton' label="searchButton.label" click="submitSearch()" />
+            <@efButton id='searchButton2' label="searchButton.label" click="submitSearch2()" />
+        </@efButtonGroup>
+      </@efForm>
+    """
+
+    def page = execute(source: src, dataModel: [params: [_variable: 'A']])
+
+    then: 'the javascript is legal'
+    checkPage(page)
   }
 
   def "verify that the marker supports the size attribute"() {
@@ -181,7 +217,7 @@ class ButtonMarkerSpec extends BaseMarkerSpecification {
     def page = execute(source: src, dataModel: [params: [_variable: 'A']])
 
     then: 'the javascript is legal'
-    checkPage(page)
+    JavascriptTestUtils.checkScriptsOnPage(page)
 
     and: 'the right HTML element is generated'
     def viewText = JavascriptTestUtils.extractBlock(page, '{view: "template"')
@@ -216,7 +252,7 @@ class ButtonMarkerSpec extends BaseMarkerSpecification {
     def page = execute(source: src, dataModel: [params: [_variable: 'A']])
 
     then: 'the javascript is legal'
-    checkPage(page)
+    JavascriptTestUtils.checkScriptsOnPage(page)
 
     and: 'the spacer is used after the button'
     def viewLine = TextUtils.findLine(page, '{view: "template"')

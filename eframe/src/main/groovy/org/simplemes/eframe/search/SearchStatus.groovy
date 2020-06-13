@@ -21,6 +21,11 @@ class SearchStatus {
   String status = 'unknown'
 
   /**
+   * If true, then the search engine is configured (has 'hosts' defined).
+   */
+  boolean configured = true
+
+  /**
    * The number of engine requests of all types that are waiting in the search queue.
    */
   int pendingRequests = 0

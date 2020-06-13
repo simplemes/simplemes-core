@@ -13,6 +13,7 @@ import io.micronaut.scheduling.annotation.Async
 import org.simplemes.eframe.application.issues.WorkArounds
 import org.simplemes.eframe.date.EFrameDateFormat
 import org.simplemes.eframe.misc.TypeUtils
+import org.simplemes.eframe.search.SearchEnginePoolExecutor
 
 import javax.inject.Singleton
 
@@ -60,6 +61,8 @@ class StartupHandler {
     } else {
       log.debug("Disabled Initial Data Load for mock applicationContext")
     }
+
+    SearchEnginePoolExecutor.startPool()
 
 
   }

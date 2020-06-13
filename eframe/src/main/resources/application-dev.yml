@@ -19,3 +19,6 @@ datasources:
 ---
 eframe:
   cacheStableResources: 120
+  search:
+    hosts:
+      - {host: localhost, port: 9200, protocol: http}

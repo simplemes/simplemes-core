@@ -33,6 +33,13 @@ class FormMarker extends BaseMarker {
   public static final String COORDINATOR_SNIPPET_MODE = '_snippetMode'
 
   /**
+   * The name of the element in the markerContext.markerCoordinator.others that holds a Boolean flag indicating
+   * this set of nested markers in the form have not generated the first field yet.
+   * This is used mainly to get the comma-separators correct.
+   */
+  public static final String COORDINATOR_FIRST_FIELD = '_firstField'
+
+  /**
    * Executes the directive, with the values passed by the setValues() method.
    */
   @Override
@@ -46,6 +53,7 @@ class FormMarker extends BaseMarker {
     if (dashboard) {
       markerContext?.markerCoordinator?.others[COORDINATOR_SNIPPET_MODE] = true
     }
+    markerContext?.markerCoordinator?.others[COORDINATOR_FIRST_FIELD] = true
 
     def content = renderContent()
 

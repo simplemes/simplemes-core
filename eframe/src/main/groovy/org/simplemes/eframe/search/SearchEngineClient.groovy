@@ -5,17 +5,16 @@
 package org.simplemes.eframe.search
 
 import groovy.util.logging.Slf4j
-import org.apache.http.Header
 import org.apache.http.HttpEntity
 import org.apache.http.HttpHost
 import org.apache.http.entity.ContentType
 import org.apache.http.nio.entity.NStringEntity
 import org.apache.http.util.EntityUtils
+import org.elasticsearch.client.Request
 import org.elasticsearch.client.RestClient
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.LogUtils
-import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.URLUtils
 
 /**
@@ -88,8 +87,8 @@ class SearchEngineClient implements SearchEngineClientInterface {
   SearchStatus getStatus() {
     def start = System.currentTimeMillis()
     log.debug('getStatus: GET {}', "/_cluster/health?pretty=true")
-    def response = getRestClient()?.performRequest("GET", "/_cluster/health")
-    def content = EntityUtils.toString(response.entity)
+    def response = getRestClient()?.performRequest(new Request("GET", "/_cluster/health"))
+    def content = EntityUtils.toString((HttpEntity) response.entity)
     //println "content = $content"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
     def json = Holders.objectMapper.readValue(content, Map)
@@ -120,13 +119,13 @@ class SearchEngineClient implements SearchEngineClientInterface {
   Map indexObject(Object object) {
     def start = System.currentTimeMillis()
     def uri = buildURIForIndexRequest(object)
-    Map<String, String> params = Collections.emptyMap()
     def jsonString = formatForIndex(object)
     log.debug('indexObject: PUT {}, content = {}', uri, jsonString)
-    HttpEntity entity = new NStringEntity(jsonString, ContentType.APPLICATION_JSON)
-    def response = getRestClient()?.performRequest("PUT", uri, params, entity)
+    def request = new Request("PUT", uri)
+    request.entity = new NStringEntity(jsonString, ContentType.APPLICATION_JSON)
+    def response = getRestClient()?.performRequest(request)
 
-    def content = EntityUtils.toString(response.entity)
+    def content = EntityUtils.toString((HttpEntity) response.entity)
     //println "content = $content"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
     def json = Holders.objectMapper.readValue(content, Map)
@@ -148,9 +147,9 @@ class SearchEngineClient implements SearchEngineClientInterface {
     def start = System.currentTimeMillis()
     def uri = buildURIForIndexRequest(object)
     log.debug('removeObjectFromIndex: DELETE {}', uri)
-    def response = getRestClient()?.performRequest("DELETE", uri)
+    def response = getRestClient()?.performRequest(new Request("DELETE", uri))
 
-    def content = EntityUtils.toString(response.entity)
+    def content = EntityUtils.toString((HttpEntity) response.entity)
     //println "content = $content"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
     def json = Holders.objectMapper.readValue(content, Map)
@@ -176,13 +175,14 @@ class SearchEngineClient implements SearchEngineClientInterface {
   Map bulkIndex(List objects, List<String> archiveReferenceList = null) {
     def start = System.currentTimeMillis()
     def uri = '/_bulk'
-    Map<String, String> params = Collections.emptyMap()
+    //Map<String, String> params = Collections.emptyMap()
     def jsonString = buildBulkIndexContent(objects, archiveReferenceList)
     log.debug('bulkIndex: POST {}, content = {}', uri, LogUtils.limitedLengthString(jsonString, 2000))
-    HttpEntity entity = new NStringEntity(jsonString, ContentType.APPLICATION_JSON)
-    def response = getRestClient()?.performRequest("POST", uri, params, entity)
+    def request = new Request("POST", uri)
+    request.entity = new NStringEntity(jsonString, ContentType.APPLICATION_JSON)
+    def response = getRestClient()?.performRequest(request)
 
-    def content = EntityUtils.toString(response.entity)
+    def content = EntityUtils.toString((HttpEntity) response.entity)
     //println "response = $content"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(content)}"
     def json = Holders.objectMapper.readValue(content, Map)
@@ -248,9 +248,11 @@ class SearchEngineClient implements SearchEngineClientInterface {
     uri = URLUtils.addParametersToURI(uri, [size: params?.size?.toString(), from: params?.from?.toString()])
 
     log.debug('search: GET {}, content = {}', uri, query)
-    def response = getRestClient()?.performRequest("GET", uri, Collections.emptyMap(), entity, new Header[0])
+    def request = new Request("GET", uri)
+    request.entity = entity
+    def response = getRestClient()?.performRequest(request)
 
-    def content = EntityUtils.toString(response.entity)
+    def content = EntityUtils.toString((HttpEntity) response.entity)
     //println "content = $content"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(content)}"
     def json = Holders.objectMapper.readValue(content, Map)
@@ -279,9 +281,9 @@ class SearchEngineClient implements SearchEngineClientInterface {
     def start = System.currentTimeMillis()
     def uri = '/_all'
     log.debug('deleteAllIndices: DELETE {}', uri)
-    def response = getRestClient()?.performRequest("DELETE", uri)
+    def response = getRestClient()?.performRequest(new Request("DELETE", uri))
 
-    def content = EntityUtils.toString(response.entity)
+    def content = EntityUtils.toString((HttpEntity) response.entity)
     //println "response = $content"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(content)}"
     def json = Holders.objectMapper.readValue(content, Map)
@@ -310,14 +312,14 @@ class SearchEngineClient implements SearchEngineClientInterface {
     def indexSuffix = ''
     if (archiveReferenceList) {
       assert archiveReferenceList.size() == list.size()
-      indexSuffix = '-arc'
+      indexSuffix = SearchHelper.ARCHIVE_INDEX_SUFFIX
     }
     def sb = new StringBuilder()
 
     def i = 0
     for (object in list) {
       def clazz = object.getClass()
-      def indexName = NameUtils.convertToHyphenatedName(clazz.simpleName)
+      def indexName = SearchHelper.instance.getIndexNameForDomain(clazz)
       sb.append("""{"index":{"_index":"$indexName$indexSuffix","_type":"doc","_id":"${object.uuid}"}}""")
       sb.append(BULK_REQUEST_DELIMITER)
       sb.append(formatForIndex(object)).append(BULK_REQUEST_DELIMITER)
@@ -351,8 +353,8 @@ class SearchEngineClient implements SearchEngineClientInterface {
     ArgumentUtils.checkMissing(object, 'object')
     ArgumentUtils.checkMissing(object.uuid, 'object.uuid')
     def clazz = object.getClass()
-    def indexName = NameUtils.convertToHyphenatedName(clazz.simpleName)
-    return "/$indexName/doc/$object.uuid"
+    def indexName = SearchHelper.instance.getIndexNameForDomain(clazz)
+    return "/$indexName/_doc/$object.uuid"
   }
 
   /**
@@ -362,7 +364,7 @@ class SearchEngineClient implements SearchEngineClientInterface {
    */
   static String buildURIForSearchRequest(Class domainClass) {
     ArgumentUtils.checkMissing(domainClass, 'domainClass')
-    def indexName = NameUtils.convertToHyphenatedName(domainClass.simpleName)
+    def indexName = SearchHelper.instance.getIndexNameForDomain(domainClass)
     return "/$indexName/_search"
   }
 

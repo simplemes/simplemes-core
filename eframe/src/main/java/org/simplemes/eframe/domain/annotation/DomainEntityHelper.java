@@ -129,6 +129,8 @@ public class DomainEntityHelper {
       }
       saveManyToMany(object);
       saveChildren(object);
+      //SearchHelper.getInstance().handlePersistenceChange(object);
+      ASTUtils.invokeGroovyMethod("org.simplemes.eframe.search.SearchHelper.instance", "handlePersistenceChange", object);
 
       return object;
     } catch (Exception e) {
@@ -195,6 +197,8 @@ public class DomainEntityHelper {
     }
     deleteAllManyToMany(object);
     deleteChildren(object);
+    ASTUtils.invokeGroovyMethod("org.simplemes.eframe.search.SearchHelper.instance", "handlePersistenceDelete", object);
+    //SearchHelper.getInstance().handlePersistenceDelete(object);
 
     return object;
   }

@@ -33,9 +33,7 @@ class ArchiveSearchHit extends SearchHit {
   ArchiveSearchHit(Map jsonMap) {
     super(jsonMap)
     def jsonObject = jsonMap._source
-    def key = jsonObject.keySet()[0]
-    def domainObject = jsonObject[key]
-    archiveReference = domainObject['_archiveReference']
+    archiveReference = jsonObject['_archiveReference']
   }
 
   /**
@@ -71,9 +69,7 @@ class ArchiveSearchHit extends SearchHit {
   @SuppressWarnings("GroovyAssignabilityCheck")
   static isArchiveHit(Map jsonMap) {
     def jsonObject = jsonMap._source
-    def key = jsonObject.keySet()[0]
-    def domainObject = jsonObject[key]
-    return domainObject['_archiveReference'] != null
+    return jsonObject['_archiveReference'] != null
   }
 
 }

@@ -142,7 +142,7 @@ class UserSpec extends BaseSpecification {
     user.save()
 
     and: 'a password is set in clear text in the domain due to a bug elsewhere in the logic'
-    user.password = 'bad'
+    user.password = 'badPW'
 
     when: 'the JSON is generated'
     def s = Holders.objectMapper.writeValueAsString(user)
@@ -153,7 +153,7 @@ class UserSpec extends BaseSpecification {
     json.encodedPassword == null
     !s.contains('encodedPassword')
     !s.toLowerCase().contains('password"')
-    !s.contains('bad')
+    !s.contains('badPW')
   }
 
   @Rollback

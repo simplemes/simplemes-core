@@ -140,7 +140,7 @@ class SearchControllerSpec extends BaseAPISpecification {
     def status = new SearchStatus()
     status.pendingRequests = 237
     status.bulkIndexStatus = 'unknown'
-    status.status = 'green'
+    status.status = 'yellow'
     def searchService = Mock(SearchService)
     controller = Holders.getBean(SearchController)
     def originalService = controller.searchService
@@ -155,7 +155,7 @@ class SearchControllerSpec extends BaseAPISpecification {
 
     then: 'the response contains the localized status values'
     json.localizedBulkIndexStatus == GlobalUtils.lookup('searchStatus.unknown.label', locale)
-    json.localizedStatus == GlobalUtils.lookup('searchStatus.green.label', locale)
+    json.localizedStatus == GlobalUtils.lookup('searchStatus.yellow.label', locale)
 
     cleanup:
     controller.searchService = originalService

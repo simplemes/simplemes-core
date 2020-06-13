@@ -36,6 +36,7 @@ class SearchEnginePoolExecutorSpec extends BaseSpecification {
     def sampleParent = new SampleParent(name: 'ABC').save()
 
     and: 'the search helper counts are reset'
+    SearchEnginePoolExecutor.waitForIdle()
     SearchHelper.instance.resetCounts()
 
     when: 'a request is added'

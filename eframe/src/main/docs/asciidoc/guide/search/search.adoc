@@ -4,8 +4,13 @@
 
 ifeval::["{backend}" != "pdf"]
 
+[inline-toc-header]#Floor#
 [inline-toc]#<<Search Overview>>#
+[inline-toc]#<<Search Layers>>#
+[inline-toc]#<<Search Paging>>#
 [inline-toc]#<<Search ID>>#
+
+[inline-toc-header]#Details#
 [inline-toc]#<<Search Configuration>>#
 [inline-toc]#<<Searchable Domains>>#
 [inline-toc]#<<Query String Adjustments>>#
@@ -48,7 +53,7 @@ The basic index updates are made by background threads to reduce the affect on t
 application code. This background mechanism uses queues to allow multiple threads to request
 index updates as needed.
 
-==== Layers
+==== Search Layers
 
 The search logic is broken into layers.  Generally, most application code should start at
 the service/helper layers and let the lower layers handle the details.  The layers and important
@@ -92,6 +97,20 @@ icon:share-square-o[role="link-blue"] provide the important search method:
 If you need to unit test your application code, then refer to the existing search tests such as
 _SearchHelperSpec_.  These tests use the _MockSearchEngineClient_ to simulate most search engine
 actions.
+
+==== Search Indexing
+
+This framework's use of Elasticsearch is designed around a single index for each domain class and an
+archive index for each archived domain class.  This provides a structured way to search for data
+and still allows for a global search capability.
+
+The search index name is the domain's class name (minus package), in lower-case with a hyphen
+for a delimiter between words.  For example, the index for _FlexType_ is _'flex-type'_.
+
+The archive index has _'-arc'_ added to it.  Also, archived domains have a special field added:
+_'_archiveReference'_ that stores the archive file reference.
+
+
 
 ==== Search Paging
 
