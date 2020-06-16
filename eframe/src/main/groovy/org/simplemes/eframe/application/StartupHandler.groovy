@@ -6,6 +6,9 @@ package org.simplemes.eframe.application
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
+import com.fasterxml.jackson.databind.ser.FilterProvider
+import com.fasterxml.jackson.databind.ser.PropertyFilter
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider
 import groovy.util.logging.Slf4j
 import io.micronaut.discovery.event.ServiceStartedEvent
 import io.micronaut.runtime.event.annotation.EventListener
@@ -13,6 +16,7 @@ import io.micronaut.scheduling.annotation.Async
 import org.simplemes.eframe.application.issues.WorkArounds
 import org.simplemes.eframe.date.EFrameDateFormat
 import org.simplemes.eframe.misc.TypeUtils
+import org.simplemes.eframe.search.PassAllJacksonFilter
 import org.simplemes.eframe.search.SearchEnginePoolExecutor
 
 import javax.inject.Singleton
@@ -86,6 +90,8 @@ class StartupHandler {
     def format = new EFrameDateFormat()
     format.setTimeZone(Holders.globals.timeZone)
     mapper.setDateFormat(format)
+    FilterProvider filters = new SimpleFilterProvider().addFilter("searchableFilter", (PropertyFilter) new PassAllJacksonFilter())
+    mapper.setFilterProvider(filters)
     // No need to register a module.  It is registered by the module scan option from the file:
     //   src/main/resources/META-INF/services/com.fasterxml.jackson.databind.Module
     //mapper.registerModule(new EFrameJacksonModule())

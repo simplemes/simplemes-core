@@ -4,6 +4,7 @@
 
 package org.simplemes.eframe.json
 
+import com.fasterxml.jackson.annotation.JsonFilter
 import com.fasterxml.jackson.core.Version
 import com.fasterxml.jackson.databind.BeanDescription
 import com.fasterxml.jackson.databind.DeserializationConfig
@@ -16,6 +17,7 @@ import com.fasterxml.jackson.databind.module.SimpleDeserializers
 import com.fasterxml.jackson.databind.module.SimpleModule
 import com.fasterxml.jackson.databind.module.SimpleSerializers
 import com.fasterxml.jackson.databind.ser.BeanPropertyWriter
+import com.fasterxml.jackson.databind.ser.BeanSerializerBuilder
 import com.fasterxml.jackson.databind.ser.BeanSerializerModifier
 import com.fasterxml.jackson.databind.type.MapType
 import groovy.util.logging.Slf4j
@@ -159,8 +161,24 @@ class EFrameBeanSerializerModifier extends BeanSerializerModifier {
   JsonSerializer<?> modifySerializer(SerializationConfig config, BeanDescription beanDesc, JsonSerializer<?> serializer) {
     //println "config = $config, serializer = ${serializer} ${serializer?.dump()}"
     return super.modifySerializer(config, beanDesc, serializer)
-
   }
+
+  /**
+   */
+  @Override
+  BeanSerializerBuilder updateBuilder(SerializationConfig config, BeanDescription beanDesc, BeanSerializerBuilder builder) {
+    def clazz = beanDesc.type.rawClass
+
+    // Need to work around an issue with the Micronaut BeanIntrospectionModule.  It adds a new builder that
+    // does not copy the _filterId (@JsonFilter) to the updated builder.
+    def annotation = clazz.getAnnotation(JsonFilter)
+    if (annotation?.value() == 'searchableFilter' && builder.filterId == null) {
+      //noinspection GroovyAccessibility
+      builder._filterId = 'searchableFilter'
+    }
+    return super.updateBuilder(config, beanDesc, builder)
+  }
+
 
   /**
    * Method called by BeanSerializerFactory with tentative set

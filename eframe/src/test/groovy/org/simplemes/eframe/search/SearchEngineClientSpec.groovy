@@ -11,6 +11,7 @@ import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.MockAppender
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
+import sample.domain.AllFieldsDomain
 import sample.domain.CustomOrderComponent
 import sample.domain.Order
 import sample.domain.RMA
@@ -671,16 +672,42 @@ class SearchEngineClientSpec extends BaseSpecification {
   @Rollback
   def "verify that formatForIndex supports list of excluded fields"() {
     given: 'a saved domain object'
-    def parent1 = new SampleParent(name: 'ABC1').save()
+    def afd = new AllFieldsDomain(name: 'ABC1', enabled: true).save()
 
     when: 'the object is formatted'
-    def s = new SearchEngineClient().formatForIndex(parent1)
+    def s = new SearchEngineClient().formatForIndex(afd)
     //println "s = s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
     def json = Holders.objectMapper.readValue(s, Map)
 
     then: 'the excluded fields are not in the output'
     json.enabled == null
+
+    and: 'the standard fields are excluded'
+    json.dateCreated == null
+    json.dateUpdated == null
+    json.uuid == null
+    json.version == null
+    json._complexCustomFields == null
+  }
+
+  @Rollback
+  def "verify that formatForIndex excludes standard fields when no exclude is used"() {
+    given: 'a saved domain object'
+    def parent = new SampleParent(name: 'ABC1').save()
+
+    when: 'the object is formatted'
+    def s = new SearchEngineClient().formatForIndex(parent)
+    //println "s = s"
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+    def json = Holders.objectMapper.readValue(s, Map)
+
+    then: 'the standard fields are excluded'
+    json.dateCreated == null
+    json.dateUpdated == null
+    json.uuid == null
+    json.version == null
+    json._complexCustomFields == null
   }
 
   @Rollback

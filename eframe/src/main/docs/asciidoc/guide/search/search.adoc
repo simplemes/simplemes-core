@@ -4,7 +4,7 @@
 
 ifeval::["{backend}" != "pdf"]
 
-[inline-toc-header]#Floor#
+[inline-toc-header]#Design#
 [inline-toc]#<<Search Overview>>#
 [inline-toc]#<<Search Layers>>#
 [inline-toc]#<<Search Paging>>#
@@ -150,7 +150,7 @@ The paging names and meanings are shown below:
 === Search ID
 
 Elastic search uses a unique ID for all objects indexed.  The enterprise framework uses the
-domain class's UUID as this ID.  It is still stored internally in some data elements as __id_.
+domain class's UUID as this ID.  It is stored internally in the search engined as __id_.
 
 
 
@@ -237,14 +237,45 @@ engine is only made when it is first used.
 
 === Searchable Domains
 
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Index Options>>#
+[inline-toc]#<<Excluded Fields>>#
+[inline-toc]#<<Indices Created>>#
+[inline-toc]#<<Default Mapping>>#
+
+endif::[]
+
+
+
 By default, domains are not searchable.  You will need to add a static field to the domain class
 to tell the framework that the domain is searchable.  The simplest approach is:
 
 [source,groovy]
 .Domain
 ----
-static searchable = true
+@MappedEntity
+@DomainEntity
+@JsonFilter("searchableFilter")  // <.>
+class Order {
+    . . .
+  static searchable = true       // <.>
+
+}
 ----
+<.> The _@JsonFilter_ defines the _'searchableFilter'_ for this domain when generating the
+    JSON document for the search engine.  This is needed if you use the `excludes`
+    <<Index Options>>.
+    This will also filter out some un-searchable elements to reduce the size of the search
+    engine documents.  This removes fields such as `dateCreated`, `uuid` and numerics.
+<.> The domain is marked as a top-level searchable domain.
+
+In general, you should make the important top-level objects searchable.  You should not mark
+child elements of these top-level domains.  They will be part of the nested JSON document
+sent to the search engine. This allows you to
+search for nested values more easily.  It does have the drawback of using larger documents
+in the index.  Of course, it means fewer documents in the index too.
+
 
 ==== Index Options
 
@@ -255,24 +286,63 @@ When the domain object is indexed, there are other options.
 ----
 static searchable = {
   exclude = ['title', 'releaseDate']
+  parent = Order
+  searchable = false
 }
 ----
 
 The following options are allowed in the searchable value:
 
-* *exclude* - The field(s) to exclude.  These fields are excluded at all levels of the index.
-              The value can be a single string or a list of strings. *(Optional)*
+* *exclude* - The field(s) to exclude.  These fields are excluded at this level of the index.
+              The value can be a single string or a list of strings.
+              This option requires the use of the _@JsonFilter("searchableFilter")_ on the
+              domain class, as mentioned above. *(Optional)*
 
+* *parent* -  The immediate parent domain object that is searchable.  This means that changes
+              to this domain will trigger a re-index on the parent (or grand-parent, etc).
+              The value is a Class. *(Optional)*
+
+* *searchable* - If *true*, then this is the top-level of the search document.
+              This is the same as '_static searchable=true_'.
+              If *false*, then it will not be sent to the search engine, unless it is a child of
+              another top-level document.  You may need to set this to *false* to exclude fields
+              from a child record (*Default*: true).
 
 See link:groovydoc/org/simplemes/eframe/search/SearchDomainSettings.html[SearchDomainSettings^]
 icon:share-square-o[role="link-blue"] for the specific settings that can be defined
 for a domain.
 
+==== Excluded Fields
+
+As shown in <<Index Options>>, you can excluded specific fields from indexing in the
+search engine.  This is done to speed up searches and to reduce the database size in
+the search server.
+
+Some additional fields are automatically removed from the index:
+
+
+[cols="1,4",width=75%]
+|===
+|Field | Reason
+
+| *uuid*| The UUID is already the unique ID used by the search engine.
+          There is no real need to search on this.
+| *version*| The version is a simple integer, so searches are not useful.
+| *dateCreated*| Dates are difficult to search on.  This is better done in SQL.
+| *dateUpdated*| Dates are difficult to search on.  This is better done in SQL.
+| *all fields that start with* _| Most of these fields do not contain user-defined values for search.
+|
+|===
+
+
+
+
 ==== Indices Created
 
 Elastic Search 6.x and above have deprecated the use of an index type.  This means each domain
 will be indexed into its own index with a type set to _doc_.  The name is the same as the domain
-class (with initial lower case letter).  The domain _Order_ will be indexed under the index _order_.
+class (hyphenated with initial lower case letter).  The domain _Order_ will be indexed under
+the index _order_.
 
 ==== Default Mapping
 
@@ -291,7 +361,7 @@ Another more complex issue is when the data is deeply nested. To find a custom `
 _'87929459'_ in an assembled order (the MES-Assembly module) the user needs to use the
 query string:
 
-  order.assembledComponents.assemblyDataValues.LOT:87929459
+  order.assembledComponents.assemblyData_LOT:87929459
 
 We want to use a simpler format:
 

@@ -19,6 +19,7 @@ import org.codehaus.groovy.syntax.Types;
 import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.simplemes.eframe.ast.ASTUtils;
+import org.simplemes.eframe.search.SearchValidation;
 
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
@@ -76,7 +77,7 @@ public class DomainEntityTransformation implements ASTTransformation {
    * @param sourceUnit The source the class came from.
    */
   private void transformClass(ClassNode classNode, SourceUnit sourceUnit) {
-    validateUsage(classNode, sourceUnit);
+    validate(classNode, sourceUnit);
     classNode.addInterface(new ClassNode(DomainEntityInterface.class));
     addRepositoryField(classNode, sourceUnit);
     ClassNode returnTypeNode = new ClassNode(classNode.getName(), classNode.getModifiers(), classNode.getSuperClass());
@@ -104,6 +105,17 @@ public class DomainEntityTransformation implements ASTTransformation {
     ASTUtils.addField(DomainEntityHelper.DOMAIN_SETTINGS_FIELD_NAME, Map.class, Modifier.PUBLIC | Modifier.TRANSIENT, false, init,
         classNode, sourceUnit);
 
+  }
+
+  /**
+   * Validates the annotation was used correctly.
+   *
+   * @param classNode  The class this annotation was used in.
+   * @param sourceUnit The source location.
+   */
+  private void validate(ClassNode classNode, SourceUnit sourceUnit) {
+    validateUsage(classNode, sourceUnit);
+    SearchValidation.validate(classNode, sourceUnit);
   }
 
   /**

@@ -1,6 +1,42 @@
 Scratch
 =======
+Searchable at Order or Order/LSN?
+Order
+  operations
+  operationStates
+  (Future: RMA data,split history)
+  _customFields
+    OrderBOMComponents
+    OrderAssembledComponents (LSN link)
+  lsns
+    operationStates
+    _customFields
 
+Deep Docs:
+  Problems
+    Order doc can be huge, but updates are in the background.
+    LSN Updates do not trigger order update.  Need logic to force parent re-indexing.  Auto-detect searchable parent?
+      Maybe add new static (static searchableParent=Order or searchable={parent=Order})
+Shallow Docs:
+  Problems
+    Many places for search find.
+    Need index names to limit search on sub-objects.
+
+
+    {
+      "rma": "R10102-23",
+      "qty": 12.2,
+      "rmaType_retailerID": "ACME-101",
+      "rmaType_returnCode": "DEFECTIVE"
+    }
+
+Search Tasks
+============
+Support custom fields.
+Support custom sub-objects (Order.customComponents).
+Exclude fields.
+Update low-level will trigger searchable top-level re-index.  Includes custom sub-objects.
+  Order.save() will trigger a re-index, but the low level LSN.save() should not trigger a second re-index.  Need to detect this case.
 
 
 
@@ -9,6 +45,8 @@ Micronaut Data Conversion Tasks
 Add workaround for update failure: 299.  Remove sop.
 Investigate timezone issues on findAllByDateTimeLessThan(Date) queries.  Seems to be off by 5 hours?  ProductionLog.archive()?
 Version and opt locking (custom JDBCOperations).
+Cascading updates.  Find some way to prevent? - isDirty or save() option?
+Is Repository findByUuid() and findAll() needed?  Use CrudRepository.findById()
 
 Support cache in specific use cases:
   UserPreferences - timed, any update for user flushed cache? done in PreferenceHolder?
@@ -18,6 +56,7 @@ Add SQL DDL logic and Liquid-base/FlyWay support.
   Find way to auto-generate core stuff?.
 Look at using an environment for DB type: h2, postgres.  Change command line to use it.
 Fix mess with efForm.dashboard.  Support type='dashboard', 'buttonHolder' and 'dialog'.
+
 
 
 Tasks

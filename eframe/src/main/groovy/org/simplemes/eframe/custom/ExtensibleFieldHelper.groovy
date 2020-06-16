@@ -297,7 +297,7 @@ class ExtensibleFieldHelper {
 
   /**
    * Gets the value in a custom field holder.  Uses JSON as the internal format.
-   * @param object The object to get tha custom value from.
+   * @param object The object to get the custom value from.
    * @param fieldName The name of the field.
    * @param prefix The field prefix to use for the getter call (e.g. prefix='rmaType' will use a prefix of 'rmaType_').
    * @return The value.
@@ -311,7 +311,7 @@ class ExtensibleFieldHelper {
 
   /**
    * Gets the value in a custom field holder.  Uses JSON as the internal format.
-   * @param object The object to get tha custom value from.
+   * @param object The object to get the custom value from.
    * @param fieldName The name of the field.
    * @return The value.
    */

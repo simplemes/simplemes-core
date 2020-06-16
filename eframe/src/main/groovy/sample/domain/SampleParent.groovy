@@ -4,6 +4,7 @@
 
 package sample.domain
 
+import com.fasterxml.jackson.annotation.JsonFilter
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
@@ -35,6 +36,7 @@ import javax.persistence.OneToMany
 @ToString(includePackage = false, includeNames = true, includes = ['name', 'title', 'notes', 'notDisplayed',
   'moreNotes', 'dateCreated', 'dateUpdated', 'allFieldsDomain', 'allFieldsDomains', 'sampleChildren', 'uuid'])
 @EqualsAndHashCode(includes = ['name'])
+@JsonFilter("searchableFilter")
 @SuppressWarnings("unused")
 class SampleParent implements SampleParentInterface {
 

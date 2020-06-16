@@ -399,7 +399,9 @@ class SearchHelperSpec extends BaseSpecification {
       package sample
 
       import org.simplemes.eframe.domain.annotation.*
+      import com.fasterxml.jackson.annotation.JsonFilter
       
+      @JsonFilter("searchableFilter")
       @DomainEntity
       class TestClass {
         $searchable
@@ -416,18 +418,19 @@ class SearchHelperSpec extends BaseSpecification {
     'static searchable=true'                                | true
     'static searchable=false'                               | false
     'static searchable={exclude = ["title","releaseDate"]}' | true
-    'static searchable="title"'                             | false
     ''                                                      | false
   }
 
   def "verify that getSearchSettings works on domain classes"() {
     given: 'a domain compiled with the given searchable property'
     def src = """
-      package sample
+      package sample.domain
 
       import org.simplemes.eframe.domain.annotation.*
+      import com.fasterxml.jackson.annotation.JsonFilter
       
       @DomainEntity
+      @JsonFilter("searchableFilter")
       class TestClass {
         $searchable
         UUID uuid
@@ -439,10 +442,11 @@ class SearchHelperSpec extends BaseSpecification {
     SearchHelper.instance.getSearchDomainSettings(domainClass) == settings
 
     where:
-    searchable                                              | settings
-    'static searchable={exclude = ["title","releaseDate"]}' | new SearchDomainSettings(exclude: ["title", "releaseDate"])
-    'static searchable=true'                                | new SearchDomainSettings(searchable: true)
-    'static searchable=false'                               | new SearchDomainSettings(searchable: false)
+    searchable                                                 | settings
+    'static searchable={exclude = ["title","releaseDate"]}'    | new SearchDomainSettings(exclude: ["title", "releaseDate"])
+    'static searchable={parent=SampleParent;searchable=false}' | new SearchDomainSettings(parent: SampleParent, searchable: false)
+    'static searchable=true'                                   | new SearchDomainSettings(searchable: true)
+    'static searchable=false'                                  | new SearchDomainSettings(searchable: false)
   }
 
   def "verify that handlePersistenceChange will queue an index request correctly"() {
@@ -801,8 +805,10 @@ class SearchHelperSpec extends BaseSpecification {
       package sample
 
       import org.simplemes.eframe.domain.annotation.*
+      import com.fasterxml.jackson.annotation.JsonFilter
       
       @DomainEntity
+      @JsonFilter("searchableFilter")
       class TestClass {
         $searchable
         UUID uuid
@@ -818,7 +824,6 @@ class SearchHelperSpec extends BaseSpecification {
     'static searchable=true'                                | true
     'static searchable=false'                               | false
     'static searchable={exclude = ["title","releaseDate"]}' | true
-    'static searchable="title"'                             | false
     ''                                                      | false
   }
 

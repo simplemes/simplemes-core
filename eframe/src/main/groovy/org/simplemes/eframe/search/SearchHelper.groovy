@@ -603,10 +603,7 @@ class SearchHelper {
     if (o instanceof Boolean) {
       settings = new SearchDomainSettings(searchable: (Boolean) o)
     } else if (o instanceof Closure) {
-      settings = new SearchDomainSettings()
-      o.setDelegate(settings)
-      o.setResolveStrategy(Closure.DELEGATE_FIRST)
-      o.call()
+      settings = new SearchDomainSettings(o)
     }
 
     // Default is not searchable.

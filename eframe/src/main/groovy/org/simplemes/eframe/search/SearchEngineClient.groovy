@@ -4,6 +4,10 @@
 
 package org.simplemes.eframe.search
 
+
+import com.fasterxml.jackson.databind.ser.FilterProvider
+import com.fasterxml.jackson.databind.ser.PropertyFilter
+import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider
 import groovy.util.logging.Slf4j
 import org.apache.http.HttpEntity
 import org.apache.http.HttpHost
@@ -341,7 +345,12 @@ class SearchEngineClient implements SearchEngineClientInterface {
    * @return The JSON.
    */
   static String formatForIndex(Object object) {
-    return Holders.objectMapper.writeValueAsString(object)
+    def settings = SearchHelper.instance.getSearchDomainSettings(object.getClass())
+    def filter = new SearchableJacksonFilter(settings?.exclude)
+
+    FilterProvider filters = new SimpleFilterProvider().addFilter("searchableFilter", (PropertyFilter) filter)
+    def writer = Holders.objectMapper.writer(filters)
+    return writer.writeValueAsString(object)
   }
 
   /**

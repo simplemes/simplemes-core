@@ -4,7 +4,7 @@
 
 package sample.domain
 
-
+import com.fasterxml.jackson.annotation.JsonFilter
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
@@ -47,6 +47,7 @@ import javax.persistence.ManyToOne
 @EqualsAndHashCode(includes = ['name'])
 //@CompileStatic
 @SuppressWarnings("unused")
+@JsonFilter('searchableFilter')
 @ToString(includePackage = false, includeNames = true, excludes = ['dateCreated', 'dateUpdated'])
 class AllFieldsDomain {
 
@@ -95,6 +96,14 @@ class AllFieldsDomain {
   static fieldOrder = ['name', 'title', 'qty', 'count', 'enabled', 'dueDate', 'dateTime',
                        'group:details', 'notes', 'transientField', 'reportTimeInterval', 'order', 'status',
                        'displayOnlyText']
+
+  /**
+   * A searchable top-level domain.
+   */
+  static searchable = {
+    exclude = ['enabled']
+    searchable = true
+  }
 
   def validate() {
     def res = []

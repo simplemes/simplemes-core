@@ -24,6 +24,39 @@ class SearchDomainSettings {
    */
   List<String> exclude
 
+  /**
+   * The parent searchable for this class.
+   */
+  Class parent
+
+  /**
+   * Empty constructor.
+   */
+  SearchDomainSettings() {
+  }
+
+  /**
+   * Constructor for a Map case.
+   * @param options The options.
+   */
+  SearchDomainSettings(Map options) {
+    options.each { k, v ->
+      //noinspection GroovyAssignabilityCheck
+      this[k] = v
+    }
+  }
+
+  /**
+   * Constructor for a closure case.
+   * @param delegate The closure.
+   */
+  SearchDomainSettings(Closure delegate) {
+    delegate.setDelegate(this)
+    delegate.setResolveStrategy(Closure.DELEGATE_FIRST)
+    delegate.call()
+  }
+
+
   void setExclude(@DelegatesTo(SearchDomainSettings) List<String> exclude) {
     this.exclude = exclude
   }
