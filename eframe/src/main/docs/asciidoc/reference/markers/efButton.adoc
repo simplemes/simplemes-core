@@ -40,7 +40,8 @@ The main parameters/body supported are:
 |*css* | The css class(es) to add to the button.  Multiple classes are supported, using space as
          a delimiter.
 |*type* | Special button types.  Includes 'undo' for a standard undo button (*Optional:*).
-|*spacer* | If 'after', then inserts a spacer element before/after the button (*Optional:*).
+|*spacer* | Defines a horizontal spacer before/after the button.
+            Supports *'before'*, *'after'*, and *'before after'* (*Optional:*).
 |===
 
 

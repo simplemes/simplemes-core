@@ -89,27 +89,33 @@ class SearchEngineClient implements SearchEngineClientInterface {
    * @return The status.
    */
   SearchStatus getStatus() {
-    def start = System.currentTimeMillis()
-    log.debug('getStatus: GET {}', "/_cluster/health?pretty=true")
-    def response = getRestClient()?.performRequest(new Request("GET", "/_cluster/health"))
-    def content = EntityUtils.toString((HttpEntity) response.entity)
-    //println "content = $content"
-    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
-    def json = Holders.objectMapper.readValue(content, Map)
-    //println "json = ${json}"
-    log.info('getStatus: Elapsed time {}ms', System.currentTimeMillis() - start)
-    log.debug('getStatus: result = {}', json)
+    try {
+      def start = System.currentTimeMillis()
+      log.debug('getStatus: GET {}', "/_cluster/health?pretty=true")
+      def response = getRestClient()?.performRequest(new Request("GET", "/_cluster/health"))
+      def content = EntityUtils.toString((HttpEntity) response.entity)
+      //println "content = $content"
+      //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+      def json = Holders.objectMapper.readValue(content, Map)
+      //println "json = ${json}"
+      log.info('getStatus: Elapsed time {}ms', System.currentTimeMillis() - start)
+      log.debug('getStatus: result = {}', json)
 
-    def searchStatus = new SearchStatus(json)
+      def searchStatus = new SearchStatus(json)
 
-    // Figure out what the search request pool is doing.
-    def pool = SearchEnginePoolExecutor.pool
+      // Figure out what the search request pool is doing.
+      def pool = SearchEnginePoolExecutor.pool
 
-    if (pool) {
-      searchStatus.pendingRequests = pool?.queue?.size()
+      if (pool) {
+        searchStatus.pendingRequests = pool?.queue?.size()
+      }
+
+      return searchStatus
+    } catch (ConnectException ignored) {
+      def searchStatus = new SearchStatus()
+      searchStatus.status = 'timeout'
+      return searchStatus
     }
-
-    return searchStatus
   }
 
   /**
@@ -230,48 +236,56 @@ class SearchEngineClient implements SearchEngineClientInterface {
    * @param The search results.
    */
   protected SearchResult search(String uri, String query, Map params = null) {
-    ArgumentUtils.checkMissing(query, 'query')
-    ArgumentUtils.checkMissing(uri, 'uri')
-    def start = System.currentTimeMillis()
-    HttpEntity entity = null
-    if (query.startsWith('{')) {
-      entity = new NStringEntity(query, ContentType.APPLICATION_JSON)
-    } else {
-      // simple query string
-      uri += "?q=$query"
-    }
     def from = 0
     def size = 10
+    try {
+      ArgumentUtils.checkMissing(query, 'query')
+      ArgumentUtils.checkMissing(uri, 'uri')
+      def start = System.currentTimeMillis()
+      HttpEntity entity = null
+      if (query.startsWith('{')) {
+        entity = new NStringEntity(query, ContentType.APPLICATION_JSON)
+      } else {
+        // simple query string
+        uri += "?q=$query"
+      }
 
-    if (params?.size) {
-      size = ArgumentUtils.convertToInteger(params.size)
+      if (params?.size) {
+        size = ArgumentUtils.convertToInteger(params.size)
+      }
+      if (params?.from) {
+        from = ArgumentUtils.convertToInteger(params.from)
+      }
+      uri = URLUtils.addParametersToURI(uri, [size: params?.size?.toString(), from: params?.from?.toString()])
+
+      log.debug('search: GET {}, content = {}', uri, query)
+      def request = new Request("GET", uri)
+      request.entity = entity
+      def response = getRestClient()?.performRequest(request)
+
+      def content = EntityUtils.toString((HttpEntity) response.entity)
+      //println "content = $content"
+      //println "JSON = ${groovy.json.JsonOutput.prettyPrint(content)}"
+      def json = Holders.objectMapper.readValue(content, Map)
+      //println "json = ${json}"
+
+      if (log.debugEnabled) {
+        log.debug('search: result = {}', LogUtils.limitedLengthString(json.toString(), 200))
+      }
+      log.info('search: Elapsed time {}ms', System.currentTimeMillis() - start)
+
+      def searchResult = new SearchResult(json)
+      searchResult.query = query
+      searchResult.from = from
+      searchResult.size = size
+      return searchResult
+    } catch (ConnectException ignored) {
+      def searchResult = new SearchResult()
+      searchResult.query = query
+      searchResult.from = from
+      searchResult.size = size
+      return searchResult
     }
-    if (params?.from) {
-      from = ArgumentUtils.convertToInteger(params.from)
-    }
-    uri = URLUtils.addParametersToURI(uri, [size: params?.size?.toString(), from: params?.from?.toString()])
-
-    log.debug('search: GET {}, content = {}', uri, query)
-    def request = new Request("GET", uri)
-    request.entity = entity
-    def response = getRestClient()?.performRequest(request)
-
-    def content = EntityUtils.toString((HttpEntity) response.entity)
-    //println "content = $content"
-    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(content)}"
-    def json = Holders.objectMapper.readValue(content, Map)
-    //println "json = ${json}"
-
-    if (log.debugEnabled) {
-      log.debug('search: result = {}', LogUtils.limitedLengthString(json.toString(), 200))
-    }
-    log.info('search: Elapsed time {}ms', System.currentTimeMillis() - start)
-
-    def searchResult = new SearchResult(json)
-    searchResult.query = query
-    searchResult.from = from
-    searchResult.size = size
-    return searchResult
   }
 
   /**

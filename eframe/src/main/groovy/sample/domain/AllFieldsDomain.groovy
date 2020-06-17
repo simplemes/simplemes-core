@@ -128,15 +128,18 @@ class AllFieldsDomain {
    */
 /*
   static initialDataLoad() {
-    def order = new Order(order: 'ABC').save()
-    def afd = new AllFieldsDomain(name:'XYZ', order:order).save()
-    new AllFieldsDomain(name:'XYZ2').save()
-    def afd2 = AllFieldsDomain.findByUuid(afd.uuid)
-    //println "afd2 = $afd2.order"
+    def rng = new Random()
+    for (i in (1..50)) {
+      def s = String.format("%03d", i)
+      def qty = 10.0 * rng.nextDouble() as BigDecimal
+      def name = "XYZZY-$s"
+      new AllFieldsDomain(name: name, title: "initialDataLoad()-$s", count: 51-i, qty:qty).save()
+    }
 
     return null
   }
 */
+
 /*
     def afd = findByName('B')
     afd.reportTimeInterval = ReportTimeIntervalEnum.LAST_6_MONTHS

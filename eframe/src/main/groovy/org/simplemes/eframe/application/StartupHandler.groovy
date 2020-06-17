@@ -54,6 +54,8 @@ class StartupHandler {
       log.warn('WorkArounds in use {}', WorkArounds.list())
     }
 
+    SearchEnginePoolExecutor.startPool()
+
     // Modify the Object mapper
     def mapper = Holders.applicationContext.getBean(ObjectMapper)
     configureJacksonObjectMapper(mapper)
@@ -65,8 +67,6 @@ class StartupHandler {
     } else {
       log.debug("Disabled Initial Data Load for mock applicationContext")
     }
-
-    SearchEnginePoolExecutor.startPool()
 
 
   }

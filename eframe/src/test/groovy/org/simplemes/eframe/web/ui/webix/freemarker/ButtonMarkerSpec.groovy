@@ -273,6 +273,51 @@ class ButtonMarkerSpec extends BaseMarkerSpecification {
     htmlText.contains('>XYZ<')
   }
 
+  def "verify that the marker supports spacer before option - undo case"() {
+    when: 'the marker is built'
+    def src = """
+      <@efForm id="logFailure" dashboard=true>
+        <@efField field="order" label="Order/LSN" value="M1008" width=20 labelWidth='35%'>
+          <@efButton type='undo' click='ABC();' spacer='before'/>
+        </@efField>
+      </@efForm>
+    """
+
+    def page = execute(source: src, dataModel: [params: [_variable: 'A']])
+
+    then: 'the javascript is legal'
+    JavascriptTestUtils.checkScriptsOnPage(page)
+
+    and: 'the spacer is used after the button'
+    def viewLine = TextUtils.findLine(page, '{view: "template"')
+    viewLine.contains('{},{view')
+  }
+
+  def "verify that the marker generates standard button - with spacer options"() {
+    when: 'the marker is built'
+    def src = """
+      <@efForm id="edit">
+        <@efButton spacer="$spacer" click="ABC();"/>
+      </@efForm>
+    """
+
+    def page = execute(source: src)
+
+    then: 'the javascript is legal'
+    checkPage(page)
+
+    and: 'spacer is correct'
+    def viewLine = TextUtils.findLine(page, '{view: "button"')
+    viewLine.contains(contains)
+
+    where:
+    spacer         | contains
+    'before'       | ',{},{view'
+    'after'        | '},{}'
+    'before after' | '},{}'
+    'after before' | ',{},{view'
+  }
+
   def "verify that the marker detects incorrect type value"() {
     when: 'the marker is built'
     def src = """

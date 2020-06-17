@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import org.simplemes.eframe.data.FieldDefinitions
@@ -10,12 +14,6 @@ import org.simplemes.eframe.test.MockFieldDefinitions
 import org.simplemes.eframe.web.view.FreemarkerWrapper
 import sample.controller.SampleParentController
 import sample.domain.SampleParent
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -55,7 +53,7 @@ class FormMarkerSpec extends BaseMarkerSpecification {
   def "verify that the form marker handles the supported options"() {
     when: 'the marker is built'
     def src = """
-      <@efForm id="dummy" width="12.4%">
+      <@efForm id="dummy" width="12.4%" height="74.1%">
         // Some content
       </@efForm>
     """
@@ -80,6 +78,7 @@ class FormMarkerSpec extends BaseMarkerSpecification {
     JavascriptTestUtils.extractProperty(view, 'view') == 'form'
     JavascriptTestUtils.extractProperty(view, 'id') == 'dummy'
     JavascriptTestUtils.extractProperty(view, 'width') == "tk.pw('12.4%')"
+    JavascriptTestUtils.extractProperty(view, 'height') == "tk.ph('74.1%')"
   }
 
   def "verify that the form marker works with the edit marker"() {

@@ -16,6 +16,16 @@ import org.simplemes.eframe.web.ui.webix.widget.ButtonWidget
 class ButtonMarker extends BaseMarker {
 
   /**
+   * The possible spacer before text.
+   */
+  String before = ''
+
+  /**
+   * The possible spacer after text.
+   */
+  String after = ''
+
+  /**
    * Executes the directive, with the values passed by the setValues() method.
    */
   @Override
@@ -24,6 +34,14 @@ class ButtonMarker extends BaseMarker {
       throw new MarkerException("efButton must be enclosed in an efForm marker.", this)
     }
     def type = parameters.type
+    if (parameters.spacer) {
+      if (parameters.spacer.contains('after')) {
+        after = ",{}"
+      }
+      if (parameters.spacer.contains('before')) {
+        before = ",{}"
+      }
+    }
 
     if (type) {
       writeNonStandardButton(type)
@@ -48,7 +66,7 @@ class ButtonMarker extends BaseMarker {
     }
 
     def text = new ButtonWidget(widgetContext).build().toString()
-    write(",$text\n")
+    write("$before,$text$after\n")
   }
 
   /**
@@ -80,8 +98,7 @@ class ButtonMarker extends BaseMarker {
     def title = tooltip ? """title="$tooltip" """ : ""
     def template = """template: '<button type="button" id="$id" class="$css" onclick="$click" $title>$label</button>' """
     def size = """width: tk.pw("1.5em"), height: tk.ph("1.5em")"""
-    def after = parameters.spacer == 'after' ? ",{}" : ""
-    def src = """,{view: "template", type: "clean", $size,$template }$after"""
+    def src = """$before,{view: "template", type: "clean", $size,$template }$after"""
 
     write(src)
   }

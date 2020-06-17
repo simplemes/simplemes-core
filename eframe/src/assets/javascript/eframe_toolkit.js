@@ -766,6 +766,13 @@ _ef_tk.toolkit = function () {
         ef._extendObject(_dialogPreferences, data);
       });
     },
+    // Moves element to inside of a form and makes it visible.  Only works with first form on the page.
+    _moveElementToForm: function (contentID) {
+      var dest = document.querySelectorAll('[role="form"]');
+      var src = document.getElementById(contentID);
+      dest[0].appendChild(src);
+      src.style.display = "";
+    },
     // Tracks opened Ajax requests
     _openAjax: function () {
       openAjaxRequests++;

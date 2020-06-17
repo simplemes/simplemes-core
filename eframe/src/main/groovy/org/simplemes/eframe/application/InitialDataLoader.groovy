@@ -4,12 +4,10 @@
 
 package org.simplemes.eframe.application
 
-
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.custom.AdditionHelper
 import org.simplemes.eframe.domain.DomainUtils
-import org.simplemes.eframe.misc.LogUtils
 import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.InitialDataRecords
@@ -65,7 +63,8 @@ class InitialDataLoader {
         idl.load()
         classesLoaded << idl.domainClass
       } catch (Exception e) {
-        LogUtils.logStackTrace(log, e, "InitialDataLoad")
+        // Can't use LogUtils.logStackTrace(log...) since the save validation might be a BusinessException.
+        log.error("Error during InitialDataLoad", e)
       }
     }
 

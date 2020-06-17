@@ -67,5 +67,11 @@ class SampleChild {
   static fieldOrder = ['key', 'sequence', 'title', 'qty', 'enabled', 'dueDate', 'dateTime', 'format',
                        'reportTimeInterval', 'order']
 
+  /**
+   * Load initial records.  Does nothing.
+   */
+  static initialDataLoad() {
+    return null
+  }
 }
 

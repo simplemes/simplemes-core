@@ -109,6 +109,7 @@ class FormMarker extends BaseMarker {
       """
       write(res)
     } else {
+      def height = parameters.height ? "height: tk.ph('${parameters.height}')," : ''
       def res = """
         <div id="$divID"></div>
         <script>
@@ -122,7 +123,7 @@ class FormMarker extends BaseMarker {
               { align: "center", body: {
                   rows: [
                     ${toolbar}
-                    {view: "form", id: '${id}', scroll: false, width: tk.pw('${width}'), elements: ${id}FormData}
+                    {view: "form", id: '${id}', scroll: false, width: tk.pw('${width}'), $height elements: ${id}FormData}
                   ]
                 }
               }

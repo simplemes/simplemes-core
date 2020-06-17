@@ -6,6 +6,7 @@ package org.simplemes.eframe.search
 
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.misc.ArgumentUtils
 
 /**
@@ -46,7 +47,25 @@ class SearchEngineRequestIndexObject implements SearchEngineRequestInterface {
    */
   @Override
   void run() {
-    domainObject = domainClass.findByUuid(uuid)
+    int count = 0
+    while (domainObject == null) {
+      // Attempt to read.  Allows retry to wait for record to commit.
+      domainObject = domainClass.findByUuid(uuid)
+      count++
+      if (!domainObject) {
+        if (Holders.environmentTest) {
+          // We don't want to keeep re-trying since that causes problems in some tests (that waitForIdle on the thread pool).
+          log.debug("Index could not find record ${domainClass?.simpleName} $uuid.  Ignoring.")
+          return
+        }
+        // Still no record, so wait a little while
+        sleep(100)
+        if (count > 10) {
+          log.error("Index could not find record ${domainClass?.simpleName} $uuid after 10 tries.  Ignoring.")
+          return
+        }
+      }
+    }
 
     def res = SearchHelper.instance.indexObject(domainObject)
     if (!(res?.result == 'created' || res?.result == 'updated')) {

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 * {
   /* Reset these to avoid extra padding that comes from 'user agent stylesheet' as browser defaults.  */
   margin: 0;
@@ -202,4 +206,22 @@ div.warning-message {
   padding-right: 10px;
   float: right;
   text-decoration: underline;
+}
+
+/*
+  Styles for search displays.
+ */
+.search-results {
+  padding-left: 40px;
+  padding-right: 40px;
+}
+
+.search-result-header {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.search-result-single {
+  padding-left: 60px;
+  padding-right: 60px;
 }

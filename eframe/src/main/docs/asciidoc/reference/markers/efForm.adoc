@@ -56,6 +56,8 @@ The main parameters/body supported are:
                           link:groovydoc/org/simplemes/eframe/data/FieldDefinitions.html[FieldDefinitions^]
                           icon:share-square-o[role="link-blue"].
                           *Not allowed with dashboard or with a body.*
+| *height*    | The height of the form.  Supports Percent or em values (e.g. '74%').
+                          *Not allowed with dashboard.*
 
 |===
 

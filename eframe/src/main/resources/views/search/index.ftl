@@ -3,10 +3,11 @@
 
 <#include "../includes/header.ftl" />
 
-<@efForm id="search" >
+
+<@efForm id="search" height="85%">
     <@efField field="query" maxLength=255 width="40em" label="searchQuery.label" value='${params.query!""}'/>
     <@efButtonGroup>
-        <@efButton id='searchButton' label="searchButton.label" click="submitSearch()" />
+        <@efButton id='searchButton' label="searchButton.label" click="submitSearch()" spacer="before after"/>
     </@efButtonGroup>
 </@efForm>
 <script>
@@ -23,16 +24,33 @@
     }
   });
 </script>
-<#if !searchStatus.configured>
-  <div>
-    <@efLookup key="searchNotConfigured.label"/>
-    <a href="http://docs.simplemes.org/latest/eframe/guide.html#searching">Searching</a>
+  <div id="bottomContent" class="search-results" style="display:none">
+      <#if params.query??>
+      <#-- TODO: Layout, Localize the displayed text and paginate.-->
+        <div class="search-result-header">
+          ${searchResult.totalHits} results (${searchResult.elapsedTime}ms).
+        </div>
+          <#list searchResult.hits as hit>
+            <div class="search-result-single">
+              <a href="${hit.link!'/'}">${hit.displayValue}</a>
+            </div>
+          </#list>
+
+      </#if>
+    <div class="search-result-header">
+      <#if searchStatus.configured>
+        Server Status: ${searchStatus.localizedStatus}
+      <#else>
+        <@efLookup key="searchNotConfigured.label"/>
+        <a href="http://docs.simplemes.org/latest/eframe/guide.html#searching">Searching</a>
+      </#if>
+    </div>
   </div>
-</#if>
-${searchStatus.status}
-${searchStatus.localizedStatus}
-${searchResult.query!""}
-${params.query!""}
+
+<script>
+  tk._moveElementToForm("bottomContent");
+</script>
+
 
 <#include "../includes/footer.ftl" />
 
