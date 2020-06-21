@@ -59,7 +59,7 @@ class ArchiveSearchHit extends SearchHit {
    */
   String getDisplayValue() {
     // archivedObject.label=Archived {0} on file {1}
-    return GlobalUtils.lookup('archivedObject.label', domainClass.simpleName, archiveReference)
+    return GlobalUtils.lookup('archivedObject.label', domainClass?.simpleName, archiveReference)
   }
 
   /**

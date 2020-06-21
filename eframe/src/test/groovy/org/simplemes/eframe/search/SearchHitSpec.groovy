@@ -10,6 +10,7 @@ import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.MockAppender
 import org.simplemes.eframe.test.annotation.Rollback
+import sample.domain.RMA
 import sample.domain.SampleParent
 
 /**
@@ -69,6 +70,21 @@ class SearchHitSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that search hit provides the correct link HREF works for all uppercase domain"() {
+    given: 'a domain object'
+    def rma = new RMA(rma: 'ABC').save()
+
+    and: 'a response as a map'
+    def response = [_id: "${rma.uuid}", _index: 'rma', _source: [rma: 'ABC']]
+
+    when: 'the result is built'
+    def hit = new SearchHit(response)
+
+    then: 'the link HREF is correct'
+    hit.link == "/rma/show/${rma.uuid}"
+  }
+
+  @Rollback
   def "verify that the link HREF and display value make sense when the record is not found"() {
     given: 'a domain object and a record that ID that is not indexed'
     def badID = UUID.randomUUID()
@@ -102,7 +118,7 @@ class SearchHitSpec extends BaseSpecification {
 
     and: 'the display value is correct'
     //searchUnknownClass.message=Invalid class {0} for search result.
-    hit.displayValue.contains(GlobalUtils.lookup('searchUnknownClass.message', 'gibberish'))
+    hit.displayValue.contains(GlobalUtils.lookup('searchUnknownClass.message', null, 'gibberish'))
 
     and: 'a warning is logged'
     mockAppender.assertMessageIsValid(['class', 'not', 'valid', 'gibberish'])

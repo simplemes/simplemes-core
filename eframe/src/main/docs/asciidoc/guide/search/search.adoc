@@ -341,8 +341,11 @@ Some additional fields are automatically removed from the index:
 
 Elastic Search 6.x and above have deprecated the use of an index type.  This means each domain
 will be indexed into its own index with a type set to _doc_.  The name is the same as the domain
-class (hyphenated with initial lower case letter).  The domain _Order_ will be indexed under
+class (hyphenated with all lower case letters).  The domain _Order_ will be indexed under
 the index _order_.
+
+This means you need to never have domains that only differ in class case (e.g. two domains
+_'RMA'_ and _'Rma'_ is not allowed).
 
 ==== Default Mapping
 

@@ -70,31 +70,16 @@ class MockSearchEngineClient implements SearchEngineClientInterface {
   Map expectedParams
 
   /**
-   * If True, then this mock engine client will perform a test formatting on the object to
-   * help test handling of sessions issues (e.g. proxy issues in the background thread).
-   */
-  boolean testFormatting = false
-
-  /**
-   * If in testFormatting mode, then is set once the formatting is completed.
-   */
-  boolean testFormattingCompleted = false
-
-  /**
-   * If in testFormatting mode, then is set if the formatting is completed without error.
-   */
-  boolean testFormattingPassed = false
-
-  /**
    * Returns the status of the search engine's cluster.
    * <p/>
    * This mock method will store an action: [action: 'getStatus']
    * @return The status.  This mock returns a status of 'green'.
    */
   SearchStatus getStatus() {
-    log.trace('getStatus: Mock used')
     actions << [action: 'getStatus']
-    return searchStatus ?: new SearchStatus([status: "green"])
+    def res = searchStatus ?: new SearchStatus([status: "green"])
+    log.trace('getStatus: Mock used {}', res)
+    return res
   }
 
   /**
@@ -110,18 +95,6 @@ class MockSearchEngineClient implements SearchEngineClientInterface {
   @SuppressWarnings("PrintStackTrace")
   Map indexObject(Object object) {
     log.trace('indexObject: Mock used.  Object = {}', object)
-    if (testFormatting) {
-      log.warn('indexObject: Mock testing of proxy/session issues.  Object = {}', object)
-      try {
-        SearchEngineClient.formatForIndex(object)
-        testFormattingPassed = true
-      } catch (Exception ignored) {
-        // No need to do anything.  We just want to know that it failed.
-        ignored.printStackTrace()
-      } finally {
-        testFormattingCompleted = true
-      }
-    }
 
     actions << [action: 'indexObject', object: object]
     return indexObjectResults ?: [_index: "sample", _type: "parent", _id: "${object?.uuid}", result: "created"]

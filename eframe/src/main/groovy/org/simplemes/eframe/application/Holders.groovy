@@ -56,6 +56,7 @@ class Holders {
   void onStartup(StartupEvent event) {
     applicationContext = event.source as ApplicationContext
     environment = applicationContext.environment
+    applicationContext.environment
     configuration = applicationContext.getBean(EFrameConfiguration)
   }
 

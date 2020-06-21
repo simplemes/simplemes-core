@@ -87,12 +87,12 @@ class DefinitionListWidgetGUISpec extends BaseGUISpecification {
     login()
     to AllFieldsDomainListPage
 
-    then: 'the right number of pages are shown in the pager'
+    then: 'the right number of pages are shown in the pager - number of pages plus 2 for extra buttons on the end'
     def pagerButtons = allFieldsDomainGrid.pagerButtons
-    pagerButtons.size() == NumberUtils.divideRoundingUp(records.size(), UIDefaults.PAGE_SIZE)
+    pagerButtons.size() == 2 + NumberUtils.divideRoundingUp(records.size(), UIDefaults.PAGE_SIZE)
 
     when: 'the second pager button is clicked'
-    pagerButtons[1].click()
+    pagerButtons[2].click()
     waitForCompletion()
 
     then: 'the second page is displayed'
@@ -117,7 +117,7 @@ class DefinitionListWidgetGUISpec extends BaseGUISpecification {
     waitForCompletion()
 
     and: 'the second pager button is clicked'
-    allFieldsDomainGrid.pagerButtons[1].click()
+    allFieldsDomainGrid.pagerButtons[2].click()
     waitForCompletion()
 
     then: 'the second page is displayed'

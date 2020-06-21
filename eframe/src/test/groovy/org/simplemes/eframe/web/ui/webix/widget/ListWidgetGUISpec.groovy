@@ -52,7 +52,7 @@ class ListWidgetGUISpec extends BaseDashboardSpecification {
     def workList = $("body").module(new GridModule(field: 'theOrderListA'))
 
     and: 'the 3rd page is clicked'
-    workList.pagerButtons[2].click()
+    workList.pagerButtons[3].click()
 
     then: 'the next page of records is displayed'
     waitFor() {

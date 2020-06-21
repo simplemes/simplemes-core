@@ -270,7 +270,7 @@ class SearchEngineClient implements SearchEngineClientInterface {
       //println "json = ${json}"
 
       if (log.debugEnabled) {
-        log.debug('search: result = {}', LogUtils.limitedLengthString(json.toString(), 200))
+        log.debug('search: result = {}', LogUtils.limitedLengthString(json.toString(), 2000))
       }
       log.info('search: Elapsed time {}ms', System.currentTimeMillis() - start)
 

@@ -241,7 +241,7 @@ class DomainUtils {
    * @return The URI root.  Does not include the leading '/'.
    */
   String getURIRoot(Class domainClass) {
-    return NameUtils.lowercaseFirstLetter(domainClass.simpleName)
+    return NameUtils.lowercaseFirstWord(domainClass.simpleName)
   }
 
   /**

@@ -43,14 +43,17 @@
           <br>
           <@efPager uri="/search?query=${params.query}" total="${searchResult.totalHits}" size="10" from="${params.from!'0'}"/>
       </#if>
-    <div class="search-result-header">
+    <div class="search-result-footer">
       <#if searchStatus.configured>
         <#if searchStatus.status=="red">
           <@efLookup key="searchServerStatus.label" arg1="${searchStatus.localizedStatus}"/>
         </#if>
+        <#if searchStatus.status=="timeout">
+          <@efLookup key="searchServerStatus.label" arg1="${searchStatus.localizedStatus}"/>
+        </#if>
       <#else>
         <@efLookup key="searchNotConfigured.label"/>
-        <a href="http://docs.simplemes.org/latest/eframe/guide.html#searching">Searching</a>
+        <a href="http://docs.simplemes.org/latest/eframe/guide.html#searching">Doc (Searching)</a>
       </#if>
     </div>
   </div>

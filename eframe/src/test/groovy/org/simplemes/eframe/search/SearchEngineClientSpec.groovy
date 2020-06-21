@@ -305,8 +305,8 @@ class SearchEngineClientSpec extends BaseSpecification {
 
   def "verify that globalSearch logs output with a length limited"() {
     given: 'a mock search rest client and response'
-    def long1 = 'A' * 50
-    def long2 = 'B' * 100
+    def long1 = 'A' * 1950
+    def long2 = 'B' * 50
     def mockRestClient = new MockRestClient(method: 'GET', uri: '/_search?q=abc*',
                                             response: [hits: [[code: long1], [code: long2], [code: 'chopped']]])
     def searchEngineClient = new SearchEngineClient(restClient: mockRestClient)

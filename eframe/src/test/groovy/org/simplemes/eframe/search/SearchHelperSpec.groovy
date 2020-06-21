@@ -1022,6 +1022,8 @@ class SearchHelperSpec extends BaseSpecification {
     where:
     query               | result
     'gibberish'         | null
+    'rma'               | RMA
+    'rma-arc'           | RMA
     'sample-parent'     | SampleParent
     'sample-parent-arc' | SampleParent
   }

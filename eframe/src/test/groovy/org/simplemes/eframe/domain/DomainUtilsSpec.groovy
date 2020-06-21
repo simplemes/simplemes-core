@@ -356,9 +356,14 @@ class DomainUtilsSpec extends BaseSpecification {
     list.size() == 2
   }
 
-  def "verify getURIRoot works with a normal domain class"() {
+  def "verify getURIRoot works for supported name styles"() {
     expect: 'the method works'
-    DomainUtils.instance.getURIRoot(SampleParent) == 'sampleParent'
+    DomainUtils.instance.getURIRoot(domainClass) == result
+
+    where:
+    domainClass  | result
+    SampleParent | 'sampleParent'
+    RMA          | 'rma'
   }
 
 }

@@ -1,50 +1,9 @@
 Scratch
 =======
 
-GUI Tests
-  Basic search with pager results.
-    Pager works.
-  Size=20, pager is visible.
-  Red status?
-  Server down?
-
-
-
-Searchable at Order or Order/LSN?
-Order
-  operations
-  operationStates
-  (Future: RMA data,split history)
-  _customFields
-    OrderBOMComponents
-    OrderAssembledComponents (LSN link)
-  lsns
-    operationStates
-    _customFields
-
-Deep Docs:
-  Problems
-    Order doc can be huge, but updates are in the background.
-    LSN Updates do not trigger order update.  Need logic to force parent re-indexing.  Auto-detect searchable parent?
-      Maybe add new static (static searchableParent=Order or searchable={parent=Order})
-Shallow Docs:
-  Problems
-    Many places for search find.
-    Need index names to limit search on sub-objects.
-
-
-    {
-      "rma": "R10102-23",
-      "qty": 12.2,
-      "rmaType_retailerID": "ACME-101",
-      "rmaType_returnCode": "DEFECTIVE"
-    }
-
 Search Tasks
 ============
-Support custom fields.
 Support custom sub-objects (Order.customComponents).
-Exclude fields.
 Update low-level will trigger searchable top-level re-index.  Includes custom sub-objects.
   Order.save() will trigger a re-index, but the low level LSN.save() should not trigger a second re-index.  Need to detect this case.
 
@@ -75,7 +34,7 @@ Tasks
 =====
 Tasks left out
   Support for MPE?
-  Check Search in CrudGUITester.
+  Check Search in CrudGUITester and add to definition list logic/controller.
   CrudGUITester - combobox - Enum, Domain Ref, Option objects.
   Look into Jackson skipping foreign references.  Only need key and ID fields to import.
   Simplify Client.javascript to one per Controller by default -  Add GUI test of logging level in EFrameJSLoggingGUISpec.

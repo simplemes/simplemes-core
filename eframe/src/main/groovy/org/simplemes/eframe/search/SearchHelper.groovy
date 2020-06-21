@@ -153,18 +153,6 @@ class SearchHelper {
     def configuredHosts = Holders.configuration.search.hosts
     log.debug('determineHosts: configuredHosts = {}', configuredHosts)
 
-    if (configuredHosts instanceof Map) {
-      // Handle the single host configured in the file.
-      configuredHosts = [configuredHosts]
-    }
-
-    if (configuredHosts && !(configuredHosts instanceof List)) {
-      log.warn('determineHosts: search.client.hosts is wrong type in application configuration. Found: {}, value {}.  Expected a list of maps.',
-               configuredHosts?.getClass(), configuredHosts)
-      // Make sure the other messages are logged if needed for empty config.
-      configuredHosts = []
-    }
-
     def hosts = []
     for (cfg in configuredHosts) {
       def hostName = cfg.host
@@ -428,10 +416,6 @@ class SearchHelper {
     Set domainsProcessed = [] as Set
 
     for (Class clazz in searchableDomainClasses) {
-      if (domainsProcessed.contains(clazz)) {
-        // We have already processed this clazz as a sub-class elsewhere, so skip it.
-        continue
-      }
       def total = clazz.count()
       def batchCount = NumberUtils.divideRoundingUp((long) total, (int) batchSize)
 
@@ -655,7 +639,7 @@ class SearchHelper {
     }
     def domainSimpleName = NameUtils.convertFromHyphenatedName(indexName)
 
-    return DomainUtils.instance.getAllDomains().find { it.simpleName == domainSimpleName }
+    return DomainUtils.instance.getAllDomains().find { it.simpleName.toLowerCase() == domainSimpleName.toLowerCase() }
 
   }
 

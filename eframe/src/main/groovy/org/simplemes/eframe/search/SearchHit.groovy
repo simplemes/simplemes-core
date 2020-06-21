@@ -125,10 +125,10 @@ class SearchHit {
     } else {
       if (badClass) {
         //searchUnknownClass.message=Invalid class {0} for search result.
-        return GlobalUtils.lookup('searchUnknownClass.message', className)
+        return GlobalUtils.lookup('searchUnknownClass.message', null, className ?: indexName)
       } else {
         //searchMissingRecord.message=Search result ({1}:{0}) not found in database.
-        return GlobalUtils.lookup('searchMissingRecord.message', domainClass?.simpleName, uuid)
+        return GlobalUtils.lookup('searchMissingRecord.message', null, domainClass?.simpleName, uuid)
       }
     }
   }

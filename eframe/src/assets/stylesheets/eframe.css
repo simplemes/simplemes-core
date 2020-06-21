@@ -229,6 +229,11 @@ div.warning-message {
   margin-bottom: 10px;
 }
 
+.search-result-footer {
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
 .search-result-single {
   padding-left: 60px;
   padding-right: 60px;

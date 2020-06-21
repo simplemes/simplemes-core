@@ -61,10 +61,4 @@ class SearchDomainSettings {
     this.exclude = exclude
   }
 
-  void setExclude(String excludeOne) {
-    if (exclude == null) {
-      exclude = []
-    }
-    exclude << excludeOne
-  }
 }
