@@ -209,6 +209,14 @@ div.warning-message {
 }
 
 /*
+  Styles for the HTML pager.
+ */
+.pager-button {
+  text-decoration: none;
+}
+
+
+/*
   Styles for search displays.
  */
 .search-results {

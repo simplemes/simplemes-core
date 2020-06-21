@@ -20,6 +20,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<efMenu>>#
 [inline-toc]#<<efMenuItem>>#
 [inline-toc]#<<efMessages>>#
+[inline-toc]#<<efPager>>#
 [inline-toc]#<<efPreloadMessages>>#
 [inline-toc]#<<efShow>>#
 [inline-toc]#<<efTitle>>#
@@ -93,6 +94,8 @@ include::efMenu.adoc[]
 include::efMenuItem.adoc[]
 
 include::efMessages.adoc[]
+
+include::efPager.adoc[]
 
 include::efPreloadMessages.adoc[]
 

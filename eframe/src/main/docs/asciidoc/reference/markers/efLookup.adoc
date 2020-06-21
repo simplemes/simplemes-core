@@ -10,8 +10,14 @@ This example displays some HTML in dashboard form:
 [source,html]
 .Example - efLookup 
 ----
-<@efLookup key="addLogger.title"/>
+<@efLookup key="addLogger.title"/>           // <.>
+
+<@efLookup key="searchResultSummary.label"   // <.>
+           arg1="${searchResult.totalHits}"
+           arg2="${searchResult.elapsedTime}"/>
 ----
+<.> Simple, no argument message.
+<.> A message with two argument values.
 
 ==== Parameters/Body
 
@@ -23,5 +29,7 @@ The main parameters/body supported are:
 |Argument|Description
 
 |*key*       | The key for the lookup. (*Required*).
+|*(argN)*    | The arguments.  Only Strings are supported.
+               Sorted by 'N' for use in the message (*Optional*).
 |===
 

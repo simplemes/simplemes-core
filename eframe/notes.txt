@@ -1,5 +1,15 @@
 Scratch
 =======
+
+GUI Tests
+  Basic search with pager results.
+    Pager works.
+  Size=20, pager is visible.
+  Red status?
+  Server down?
+
+
+
 Searchable at Order or Order/LSN?
 Order
   operations
@@ -56,7 +66,9 @@ Add SQL DDL logic and Liquid-base/FlyWay support.
   Find way to auto-generate core stuff?.
 Look at using an environment for DB type: h2, postgres.  Change command line to use it.
 Fix mess with efForm.dashboard.  Support type='dashboard', 'buttonHolder' and 'dialog'.
-
+Updated to Micronaut 2. with Groovy 3.0 and JDK 14.
+  Need to change @Controller() to specify thread pool.  Use @ExecuteOn() to all methods that are blocking.
+    or set micronaut.server.thread-selection: AUTO
 
 
 Tasks

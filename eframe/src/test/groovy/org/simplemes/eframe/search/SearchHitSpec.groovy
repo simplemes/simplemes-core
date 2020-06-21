@@ -51,7 +51,7 @@ class SearchHitSpec extends BaseSpecification {
   @Rollback
   def "verify that search hit provides the correct link HREF and display value for a domain object"() {
     given: 'a domain object'
-    def sampleParent = new SampleParent(name: 'ABC').save()
+    def sampleParent = new SampleParent(name: 'ABC', title: 'xyzzy').save()
 
     and: 'a response as a map'
     def response = [_id: "${sampleParent.uuid}", _index: 'sample-parent', _source: [name: 'ABC']]
@@ -63,7 +63,8 @@ class SearchHitSpec extends BaseSpecification {
     hit.link == "/sampleParent/show/${sampleParent.uuid}"
 
     and: 'the display value is correct'
-    hit.displayValue.contains(TypeUtils.toShortString(sampleParent))
+    hit.displayValue.contains(TypeUtils.toShortString(sampleParent, true))
+    hit.displayValue.contains('xyzzy')
     hit.displayValue.contains(SampleParent.simpleName)
   }
 

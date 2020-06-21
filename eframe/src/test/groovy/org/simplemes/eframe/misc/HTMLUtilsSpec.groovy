@@ -1,11 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.misc
 
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.HTMLTestUtils
-
-/*
- * Copyright (c) 2018 Simple MES, LLC.  All rights reserved.  See license.txt for license terms.
- */
 
 /**
  * Tests.
@@ -45,24 +45,6 @@ class HTMLUtilsSpec extends BaseSpecification {
     and: 'the prev page and next page links are correct'
     page.contains("""<a href="${baseHref}page=1" class="prevLink">""")
     page.contains("""<a href="${baseHref}page=3" class="nextLink">""")
-  }
-
-  def "verify that determinePagerLinksNeeded works with various page counts and current page"() {
-    expect: 'the pager links are determined'
-    linksNeeded == HTMLUtils.determinePagerLinksNeeded(currentPage, nPages)
-
-    where:
-    currentPage | nPages | linksNeeded
-    1           | 1      | [-1]
-    1           | 7      | [-1, 2, 3, 4, 5, 6, 7, '+']
-    2           | 7      | ['-', 1, -2, 3, 4, 5, 6, 7, '+']
-    7           | 7      | ['-', 1, 2, 3, 4, 5, 6, -7]
-    1           | 20     | [-1, 2, 3, 4, 5, 6, 7, 8, 9, 10, '.', 20, '+']
-    3           | 20     | ['-', 1, 2, -3, 4, 5, 6, 7, 8, 9, 10, '.', 20, '+']
-    8           | 20     | ['-', 1, '.', 3, 4, 5, 6, 7, -8, 9, 10, 11, 12, '.', 20, '+']
-    12          | 20     | ['-', 1, '.', 7, 8, 9, 10, 11, -12, 13, 14, 15, 16, '.', 20, '+']
-    15          | 20     | ['-', 1, '.', 10, 11, 12, 13, 14, -15, 16, 17, 18, 19, 20, '+']
-    18          | 20     | ['-', 1, '.', 10, 11, 12, 13, 14, 15, 16, 17, -18, 19, 20, '+']
   }
 
   def "verify that buildPager does not build a pager if page count is 1"() {

@@ -121,7 +121,7 @@ class SearchHit {
   String getDisplayValue() {
     def o = getObject()
     if (o) {
-      return "${TypeUtils.toShortString(o)} - ${o.getClass().simpleName}"
+      return "${TypeUtils.toShortString(o, true)} - ${o.getClass().simpleName}"
     } else {
       if (badClass) {
         //searchUnknownClass.message=Invalid class {0} for search result.

@@ -204,7 +204,8 @@ class ListWidget extends BaseWidget {
    * Builds the pager view element.
    */
   void buildPager() {
-    builder << """, {view: "pager", id: "${id}Pager", size: $pageSize, group: 5}"""
+    def template = """,template: '{common.first()} {common.pages()} {common.last()}' """
+    builder << """, {view: "pager", id: "${id}Pager", size: $pageSize, group: 5 $template }"""
   }
 
   /**

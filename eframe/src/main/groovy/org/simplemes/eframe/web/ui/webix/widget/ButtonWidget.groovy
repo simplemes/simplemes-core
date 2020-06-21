@@ -9,7 +9,7 @@ import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.JavascriptUtils
 
 /**
- * The tool bar widget.  Produces the toolkit elements needed to build a generic button with optional sub-menu elements.
+ * The button widget.  Produces the toolkit elements needed to build a generic button with optional sub-menu elements.
  * This supports a link-style button or regular HTML button element.
  *
  * <h3>Parameters</h3>

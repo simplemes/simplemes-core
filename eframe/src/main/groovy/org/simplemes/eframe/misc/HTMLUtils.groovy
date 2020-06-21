@@ -1,12 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.misc
 
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.web.ui.webix.widget.PagerWidget
 
-
-/*
- * Copyright Michael Houston. All rights reserved.
- *
-*/
 
 /**
  * Some general-purpose HTML generation utilities.
@@ -41,7 +41,7 @@ class HTMLUtils {
     if (nPages > 1) {
       sb << '<div id="pagination">\n'
 
-      def pagesToDisplay = determinePagerLinksNeeded(currentPage, nPages)
+      def pagesToDisplay = PagerWidget.determinePagerLinksNeeded(currentPage, nPages)
       def baseHref = "$baseURI&amp;"
 
       for (page in pagesToDisplay) {
@@ -72,77 +72,6 @@ class HTMLUtils {
     return sb.toString()
   }
 
-  /**
-   * Determines which links are needed in a pager, given the current page and total number of pages.
-   * @param currentPage
-   * @param nPages
-   * @return The list of pages needed.  This is a number for the page, negative for the current page, '.' for '..',
-   *         '-' for previous,
-   *         and '+' for the next page links.
-   */
-  static List determinePagerLinksNeeded(int currentPage, int nPages) {
-    def res = []
-
-    // The key sections are:
-    //  prev first (..) center (..) last  next
-
-    if (currentPage > 1) {
-      res << '-'
-    }
-
-    // Figure out the size of the center section.
-    def start = 1
-    def end = nPages
-
-    if ((end - start) > MAX_PAGES_IN_PAGER_CENTER) {
-      // make the center section centered on the current page.
-      start = currentPage - (int) (MAX_PAGES_IN_PAGER_CENTER / 2)
-      if (start < 1) {
-        start = 1
-      }
-      end = start + MAX_PAGES_IN_PAGER_CENTER - 1
-      if (end > nPages) {
-        // Make sure we don't go past the end of the actual pages
-        start = nPages - MAX_PAGES_IN_PAGER_CENTER
-        end = nPages
-      }
-    }
-
-    // See if first element is needed
-    if (start > 1) {
-      res << 1
-    }
-
-    // See if .. is needed at start of list
-    if (start > 1) {
-      res << '.'
-    }
-
-    for (i in start..end) {
-      if (i == currentPage) {
-        res << (-1) * i
-      } else {
-        res << i
-      }
-    }
-
-    // See if .. is needed at end of list
-    if (end < (nPages - 1)) {
-      res << '.'
-    }
-
-    // See if last link is needed
-    if (end < nPages) {
-      res << nPages
-    }
-
-    // See if next link is needed
-    if (currentPage < nPages) {
-      res << '+'
-    }
-
-    return res
-  }
 
   /**
    * Formats an exception with stack trace for clear display on an HTML error page.
