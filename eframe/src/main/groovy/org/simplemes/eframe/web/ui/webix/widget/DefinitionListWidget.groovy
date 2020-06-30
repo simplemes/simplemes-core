@@ -42,7 +42,7 @@ class DefinitionListWidget extends ListWidget {
           {view: "label", template: "<span>&nbsp;</span>"},
           {view: "button", id: "${id}Create", autowidth: true,$cIcon $cClick label: "$label",tooltip: "$tooltip" }
         ]
-      }
+      },
     """
   }
 

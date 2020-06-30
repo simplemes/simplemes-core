@@ -115,7 +115,7 @@ class GridWidget extends BaseLabeledFieldWidget {
       ${DomainToolkitUtils.instance.buildTableDataParser(referenceClass, columns, (Map) widgetContext.parameters)}
       columns: [ ${DomainToolkitUtils.instance.buildTableColumns(referenceClass, columns, buildColumnOptions(columns))}] ,
       data: [ ${buildRowData(columns, (Collection) value)}]
-    }
+    },
     ${buildAddRemoveButtons()}
     """
 
@@ -345,10 +345,10 @@ class GridWidget extends BaseLabeledFieldWidget {
       def addTip = GlobalUtils.lookup('addRow.tooltip')
       def deleteTip = GlobalUtils.lookup('deleteRow.tooltip')
       return """
-      ,{ margin: 0, rows: [
+      { margin: 0, rows: [
         { id: "${id}Add", view: "button", click: '${id}AddRow()', tooltip: "$addTip", width: 40, height: 40, type: "icon", icon: "fas fa-plus-square", align: "top" },
         { id: "${id}Remove", view: "button", click: 'tk._gridRemoveRow(${$$}("$id"))', tooltip: "$deleteTip", width: 40, height: 40, type: "icon", icon: "fas fa-minus-square", align: "top" }]
-      }
+      },
       """
     }
   }

@@ -41,6 +41,11 @@ abstract class BaseMarker implements MarkerInterface {
   public static final String FIELD_SPECIFIC_PARAMETER_DELIMITER = '@'
 
   /**
+   * A debug flag to write the marker class on all output.  Set using -DdebugMarkers.
+   */
+  public static final Boolean debug = (System.getProperty('debugMarkers') != null)
+
+  /**
    * The marker body contents.
    */
   TemplateDirectiveBody body
@@ -237,6 +242,9 @@ abstract class BaseMarker implements MarkerInterface {
   void write(Object obj) {
     if (obj) {
       environment.out.write(obj.toString())
+    }
+    if (debug) {
+      environment.out.write("// ${this.getClass().simpleName}\n")
     }
   }
 

@@ -4,11 +4,9 @@
 
 package org.simplemes.eframe.web.ui.webix.freemarker
 
-
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.test.BaseMarkerSpecification
 import org.simplemes.eframe.test.JavascriptTestUtils
-import org.simplemes.eframe.test.UnitTestUtils
 import sample.controller.SampleParentController
 
 /**
@@ -67,16 +65,14 @@ XYZ
     JavascriptTestUtils.extractProperty(page, 'template') == '&lt;script&gt;ABC&lt;/script&gt;'
   }
 
-  def "verify that marker detects when not used in the correct form marker"() {
+  def "verify that marker works with a non-dashboard form"() {
     when: 'the text is generated'
-    execute(source: '<@efForm><@efHTML>ABC</@efHTML></@efForm>',
-            dataModel: [params: [_variable: 'A']],
-            controllerClass: SampleParentController)
+    def page = execute(source: '<@efForm><@efHTML>ABC</@efHTML></@efForm>',
+                       dataModel: [params: [_variable: 'A']],
+                       controllerClass: SampleParentController)
 
-
-    then: 'the right exception is thrown'
-    def ex = thrown(Exception)
-    UnitTestUtils.assertExceptionIsValid(ex, ['efHTML', 'efForm', 'dashboard'])
+    then: 'the javascript is legal'
+    checkPage(page)
   }
 
   def "verify that marker supports the spacer option - true"() {

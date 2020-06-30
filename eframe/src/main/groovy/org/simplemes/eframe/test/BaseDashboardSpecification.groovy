@@ -205,7 +205,7 @@ class BaseDashboardSpecification extends BaseGUISpecification {
     }
     def extraText = ""
     if (options.text) {
-      extraText = """,{view: "template", template: "$options.text"} """
+      extraText = """{view: "template", template: "$options.text"}, """
     }
     return """
       <#assign panel = "\${params._panel}"/>

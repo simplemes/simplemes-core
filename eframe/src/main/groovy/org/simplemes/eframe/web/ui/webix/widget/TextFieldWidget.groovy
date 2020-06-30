@@ -1,12 +1,10 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 import org.simplemes.eframe.i18n.GlobalUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * The text input field widget.  Produces the UI elements needed for a simple input field element.
@@ -71,7 +69,7 @@ class TextFieldWidget extends BaseLabeledFieldWidget {
       }
 
       def typeS = widgetContext.parameters.type ? """,type: "${type}" """ : ''
-      return """{view: "text", id: "$id", name: "$id", value: "$valueS" $cssS $iWidthS$attrs $typeS $req $change},{}"""
+      return """{view: "text", id: "$id", name: "$id", value: "$valueS" $cssS $iWidthS$attrs $typeS $req $change},{},"""
       // The spacer above is added to make sure the field won't limit dialog sizes.  The spacer will
       // expand as needed, so the dialog can be any size.
     }

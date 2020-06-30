@@ -51,7 +51,7 @@
           <@efMenuItem id="editPanel" key="definitionEditorMenu.editPanel" onClick="efd._editorPanelOpenEditDialog()"/>
         </@efMenu>
       </@efMenu>
-      ,{height: tk.ph("0.2em")},
+      {height: tk.ph("0.2em")},
       addRemove,
       {id: 'instructions', template: ef.lookup("definitionEditor.drag.label")},
       {
@@ -68,7 +68,7 @@
           {}
         ]
       },
-      {}
+      {},
   </@efForm>
 
   ${params._variable}.postScript = "efd._editorSetupConfigDialogHandlers()";

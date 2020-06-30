@@ -23,7 +23,7 @@ class HTMLMarker extends BaseMarker {
   void execute() {
     def snippetMode = markerContext?.markerCoordinator?.others[FormMarker.COORDINATOR_SNIPPET_MODE]
     if (!snippetMode) {
-      throw new MarkerException("efHTML must be used in an efForm with dashboard='true'", this)
+      //throw new MarkerException("efHTML must be used in an efForm with dashboard='true'", this)
     }
 
     def sb = new StringBuilder()
@@ -35,7 +35,7 @@ class HTMLMarker extends BaseMarker {
       }
     }
 
-    def spaceText = ',{margin: 8,view: "label", template: "&nbsp;"}'
+    def spaceText = '{margin: 8,view: "label", template: "&nbsp;"},'
     if (spacer == 'before') {
       sb << spaceText
     }
@@ -48,7 +48,7 @@ class HTMLMarker extends BaseMarker {
     def width = parameters.width ?: '10%'
     def height = parameters.height ? """height: tk.ph("$parameters.height"), """ : ''
 
-    sb << """,{type: "clean", width: tk.pw("$width"),$height template: $html} """
+    sb << """{type: "clean", width: tk.pw("$width"),$height template: $html}, """
 
     if (spacer == 'after') {
       sb << spaceText

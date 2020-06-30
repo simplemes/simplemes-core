@@ -1,11 +1,9 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Provides the efButtonGroup Freemarker marker implementation.
@@ -23,13 +21,13 @@ class ButtonGroupMarker extends BaseMarker {
     def content = renderContent()
 
     def res = """
-      ,{
+      {
         cols: [
-          {width: tk.pw("15%")}
+          {width: tk.pw("15%")},
           ${content}
-          , {}
+          {}
         ]
-      }
+      },
     """
     write(res)
   }

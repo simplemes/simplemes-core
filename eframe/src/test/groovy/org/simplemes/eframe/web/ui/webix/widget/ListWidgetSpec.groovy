@@ -111,7 +111,7 @@ class ListWidgetSpec extends BaseWidgetSpecification {
 
     and: 'the spacer is added to the horizontal'
     page.contains("cols: [ {width: tk.pw('137em')}")
-    page.contains(",{width: tk.pw('137em')}")
+    page.contains("{width: tk.pw('137em')}")
   }
 
   def "verify that the uri option is supported"() {

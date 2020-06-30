@@ -290,7 +290,7 @@ class ButtonMarkerSpec extends BaseMarkerSpecification {
 
     and: 'the spacer is used after the button'
     def viewLine = TextUtils.findLine(page, '{view: "template"')
-    viewLine.contains('{},{view')
+    viewLine.contains('{}, {view')
   }
 
   def "verify that the marker generates standard button - with spacer options"() {
@@ -312,10 +312,10 @@ class ButtonMarkerSpec extends BaseMarkerSpecification {
 
     where:
     spacer         | contains
-    'before'       | ',{},{view'
+    'before'       | '{},{view'
     'after'        | '},{}'
     'before after' | '},{}'
-    'after before' | ',{},{view'
+    'after before' | '{},{view'
   }
 
   def "verify that the marker detects incorrect type value"() {

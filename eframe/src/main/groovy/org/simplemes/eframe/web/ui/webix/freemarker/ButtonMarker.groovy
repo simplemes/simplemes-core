@@ -36,10 +36,10 @@ class ButtonMarker extends BaseMarker {
     def type = parameters.type
     if (parameters.spacer) {
       if (parameters.spacer.contains('after')) {
-        after = ",{}"
+        after = "{},"
       }
       if (parameters.spacer.contains('before')) {
-        before = ",{}"
+        before = "{},"
       }
     }
 
@@ -66,7 +66,7 @@ class ButtonMarker extends BaseMarker {
     }
 
     def text = new ButtonWidget(widgetContext).build().toString()
-    write("$before,$text$after\n")
+    write("$before$text,$after\n")
   }
 
   /**
@@ -98,7 +98,7 @@ class ButtonMarker extends BaseMarker {
     def title = tooltip ? """title="$tooltip" """ : ""
     def template = """template: '<button type="button" id="$id" class="$css" onclick="$click" $title>$label</button>' """
     def size = """width: tk.pw("1.5em"), height: tk.ph("1.5em")"""
-    def src = """$before,{view: "template", type: "clean", $size,$template }$after"""
+    def src = """$before {view: "template", type: "clean", $size,$template },$after"""
 
     write(src)
   }

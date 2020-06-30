@@ -76,7 +76,7 @@ class SearchController extends BaseController {
   @Get("/admin")
   StandardModelAndView admin(@Nullable Principal principal) {
     def modelAndView = new StandardModelAndView("search/admin", principal, this)
-    modelAndView.model.get().status = searchService.status
+    modelAndView.model.get().searchStatus = searchService.status
 
     log.trace('admin(): {}', modelAndView)
     return modelAndView

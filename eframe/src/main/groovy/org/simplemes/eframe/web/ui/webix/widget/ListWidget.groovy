@@ -133,12 +133,12 @@ class ListWidget extends BaseWidget {
     def after = ''
     def paddingX = getSizeAttribute('paddingX')
     if (paddingX) {
-      before = """,{ view: 'form', type: 'clean', margin: 0, padding: 10, cols: [ {width: tk.pw('$paddingX')}"""
-      after = """   ,{width: tk.pw('$paddingX')} ] }"""
+      before = """{ view: 'form', type: 'clean', margin: 0, padding: 10, cols: [ {width: tk.pw('$paddingX')},"""
+      after = """   {width: tk.pw('$paddingX')} ] },"""
     }
 
     builder << """$before
-      ,{view: "datatable", id: "$id",$heightS
+      {view: "datatable", id: "$id",$heightS
        resizeColumn: {size: 6, headerOnly: true},
        dragColumn: true,
        select: "row",
@@ -151,7 +151,7 @@ class ListWidget extends BaseWidget {
        ${DomainToolkitUtils.instance.buildTableDataParser(domainClass, columns, (Map) widgetContext.parameters)}
        columns: [ ${DomainToolkitUtils.instance.buildTableColumns(domainClass, columns, buildColumnOptions(columns))}
        ${buildActionButtonColumn()}]
-      }
+      },
       $after 
     """
   }
@@ -205,7 +205,7 @@ class ListWidget extends BaseWidget {
    */
   void buildPager() {
     def template = """,template: '{common.first()} {common.pages()} {common.last()}' """
-    builder << """, {view: "pager", id: "${id}Pager", size: $pageSize, group: 5 $template }"""
+    builder << """{view: "pager", id: "${id}Pager", size: $pageSize, group: 5 $template }"""
   }
 
   /**

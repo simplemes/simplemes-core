@@ -82,7 +82,7 @@ class MenuMarker extends BaseMarker {
     }
 
     def s = """
-      ,{ view: "menu", openAction: "click", autowidth: true,type:{ subsign: true }, 
+      { view: "menu", openAction: "click", autowidth: true,type:{ subsign: true }, 
         data:[
           $content
         ],
@@ -96,7 +96,7 @@ class MenuMarker extends BaseMarker {
             $sb
           }
         }
-      } 
+      }, 
       """
 
     write("$s\n")

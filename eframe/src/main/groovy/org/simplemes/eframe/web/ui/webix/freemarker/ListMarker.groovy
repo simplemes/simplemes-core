@@ -22,7 +22,7 @@ class ListMarker extends BaseMarker {
     if (!(markerContext?.markerCoordinator?.formID)) {
       throw new MarkerException("efList must be enclosed in an efForm marker.", this)
     }
-    write(new ListWidget(buildWidgetContext()).build())
+    write(new ListWidget(buildWidgetContext()).build() + ",")
   }
 
 }

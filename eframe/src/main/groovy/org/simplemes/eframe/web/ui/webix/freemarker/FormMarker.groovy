@@ -33,13 +33,6 @@ class FormMarker extends BaseMarker {
   public static final String COORDINATOR_SNIPPET_MODE = '_snippetMode'
 
   /**
-   * The name of the element in the markerContext.markerCoordinator.others that holds a Boolean flag indicating
-   * this set of nested markers in the form have not generated the first field yet.
-   * This is used mainly to get the comma-separators correct.
-   */
-  public static final String COORDINATOR_FIRST_FIELD = '_firstField'
-
-  /**
    * Executes the directive, with the values passed by the setValues() method.
    */
   @Override
@@ -53,7 +46,6 @@ class FormMarker extends BaseMarker {
     if (dashboard) {
       markerContext?.markerCoordinator?.others[COORDINATOR_SNIPPET_MODE] = true
     }
-    markerContext?.markerCoordinator?.others[COORDINATOR_FIRST_FIELD] = true
 
     def content = renderContent()
 
@@ -91,17 +83,17 @@ class FormMarker extends BaseMarker {
       if (dashboard == 'buttonHolder') {
         def elements = """ elements: [{view: "template", id: "ButtonsContent${panel}" """
         def opts = """type: "clean", borderless: true"""
-        buttonsHolder = """ ,{view: "form", id: "Buttons${panel}", $opts, $elements, template: "-"}]}"""
+        buttonsHolder = """ {view: "form", id: "Buttons${panel}", $opts, $elements, template: "-"}]},"""
       }
       def res = """
         $preScript
         ${variable}.display = {
           view: 'form', id: '${id}', type: 'clean', margin: 0,paddingX: 10,
           rows: [
-            {height: 10}
+            {height: 10},
             ${content}
             ${buttonsHolder}
-            ,{height: 10}
+            {height: 10}
           ]
         };
         $postScript
@@ -168,6 +160,9 @@ class FormMarker extends BaseMarker {
       }
       sb << widget.build()
       log.trace('buildFields() field={}, widgetContext={}, widget={}', name, widgetContext, widget)
+    }
+    if (sb) {
+      sb << ",\n"
     }
 
 

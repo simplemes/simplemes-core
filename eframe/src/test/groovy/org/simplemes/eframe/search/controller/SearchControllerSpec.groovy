@@ -88,8 +88,8 @@ class SearchControllerSpec extends BaseAPISpecification {
     def model = res.model.get()
 
     then: "the right view and model are used"
-    model.status.pendingRequests == 237
-    model.status.bulkIndexStatus == 'unknown'
+    model.searchStatus.pendingRequests == 237
+    model.searchStatus.bulkIndexStatus == 'unknown'
     res.view.get() == 'search/admin'
   }
 
