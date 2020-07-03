@@ -1,5 +1,6 @@
 package org.simplemes.mes.demand.domain
 
+import com.fasterxml.jackson.annotation.JsonFilter
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
@@ -43,6 +44,7 @@ import javax.persistence.OneToMany
  */
 @MappedEntity('ordr')
 @DomainEntity
+@JsonFilter("searchableFilter")
 @ToString(includeNames = true, includePackage = false, excludes = ['dateCreated', 'dateUpdated'])
 @EqualsAndHashCode(includes = ["order"])
 class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingTrait {

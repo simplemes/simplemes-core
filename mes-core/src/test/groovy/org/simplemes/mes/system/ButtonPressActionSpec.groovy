@@ -16,7 +16,7 @@ import org.simplemes.eframe.test.BaseSpecification
  */
 class ButtonPressActionSpec extends BaseSpecification {
 
-  static specNeeds = JSON
+  static specNeeds = SERVER
 
   def "verify that JSON formatting of action works"() {
     given: 'an action'

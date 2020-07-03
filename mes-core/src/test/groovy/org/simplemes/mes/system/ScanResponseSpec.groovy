@@ -20,7 +20,7 @@ import org.simplemes.mes.demand.domain.Order
  */
 class ScanResponseSpec extends BaseSpecification {
 
-  static specNeeds = [JSON, SERVER]
+  static specNeeds = [SERVER]
 
   def "tests the copy constructor for a ScanRequest"() {
     given: 'a scan request'

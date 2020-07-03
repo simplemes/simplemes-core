@@ -16,7 +16,7 @@ import org.simplemes.eframe.test.BaseSpecification
 class OrderLSNChangeActionSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = JSON
+  static specNeeds = SERVER
 
   def "verify that JSON formatting of action works"() {
     given: 'an action'

@@ -4,6 +4,7 @@ Scratch
 Search Tasks
 ============
 Support custom sub-objects (Order.customComponents).
+Definition List supports search engine.
 Update low-level will trigger searchable top-level re-index.  Includes custom sub-objects.
   Order.save() will trigger a re-index, but the low level LSN.save() should not trigger a second re-index.  Need to detect this case.
 

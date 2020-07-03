@@ -70,6 +70,7 @@
   }
 
   function updateStatus() {
+    eframe.clearMessages();
     ef.get("/search/status", {},
       function (responseText) {
         displayStatus(JSON.parse(responseText))

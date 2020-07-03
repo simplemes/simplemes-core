@@ -17,7 +17,7 @@ import org.simplemes.mes.demand.domain.Order
  */
 class StartUndoActionSpec extends BaseSpecification {
 
-  static specNeeds = [SERVER, JSON]
+  static specNeeds = [SERVER]
 
   @SuppressWarnings("GroovyAssignabilityCheck")
   @Rollback

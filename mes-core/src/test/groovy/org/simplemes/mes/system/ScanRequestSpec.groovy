@@ -19,7 +19,7 @@ import org.simplemes.mes.test.MESUnitTestUtils
 class ScanRequestSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [SERVER, JSON]
+  static specNeeds = [SERVER]
 
   @Rollback
   @SuppressWarnings("GroovyAssignabilityCheck")

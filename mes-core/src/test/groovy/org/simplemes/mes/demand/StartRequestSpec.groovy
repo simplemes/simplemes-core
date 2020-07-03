@@ -19,7 +19,7 @@ import org.simplemes.mes.test.MESUnitTestUtils
 class StartRequestSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [SERVER, JSON]
+  static specNeeds = [SERVER]
 
   @Rollback
   def "verify that the request can be serialized/deserialized as JSON"() {
