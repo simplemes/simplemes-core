@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.data.format
 
 
@@ -8,12 +12,6 @@ import org.simplemes.eframe.test.UnitTestUtils
 
 import java.text.ParseException
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * Tests.
  */
@@ -21,7 +19,8 @@ import java.text.ParseException
 class DateFieldFormatSpec extends BaseSpecification {
 
 
-  static specNeeds = [JSON]
+  @SuppressWarnings('unused')
+  static specNeeds = [SERVER]
 
   def "verify that id and toString work and the format is registered in the BasicFieldFormat class"() {
     expect:

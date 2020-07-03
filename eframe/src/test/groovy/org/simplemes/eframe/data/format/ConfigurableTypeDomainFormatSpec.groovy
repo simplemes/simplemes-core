@@ -17,7 +17,7 @@ import sample.domain.RMA
 class ConfigurableTypeDomainFormatSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, SERVER]
+  static specNeeds = [SERVER]
 
   def "verify that id and toString work and the format is registered in the BasicFieldFormat class"() {
     expect:

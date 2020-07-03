@@ -22,7 +22,7 @@ import org.simplemes.eframe.test.annotation.Rollback
 class DashboardMarkerSpec extends BaseMarkerSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, SERVER]
+  static specNeeds = [SERVER]
 
 
   @Rollback

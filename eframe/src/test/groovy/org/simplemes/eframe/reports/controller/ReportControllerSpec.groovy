@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.reports.controller
 
 import io.micronaut.http.HttpHeaders
@@ -21,17 +25,13 @@ import org.simplemes.eframe.test.MockRenderer
 import org.simplemes.eframe.test.UnitTestUtils
 import spock.lang.Shared
 
-/*
- * Copyright (c) 2018 Simple MES, LLC.  All rights reserved.  See license.txt for license terms.
- */
-
 /**
  * Tests.
  */
 class ReportControllerSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, SERVER]
+  static specNeeds = [SERVER]
 
   /**
    * The dummy sample report.

@@ -307,13 +307,8 @@ class SearchHelper {
     if (search) {
       // Build a count() query to find how many match.
       def countList
-      if (search) {
-        String countSql = "SELECT COUNT(*) as count FROM $tableName $where "
-        countList = SQLUtils.instance.executeQuery(countSql, Map, "%${search}%".toString())
-      } else {
-        String countSql = "SELECT COUNT(*) as count FROM $tableName"
-        countList = SQLUtils.instance.executeQuery(countSql, Map)
-      }
+      String countSql = "SELECT COUNT(*) as count FROM $tableName $where "
+      countList = SQLUtils.instance.executeQuery(countSql, Map, "%${search}%".toString())
       total = countList[0].count
     } else {
       total = domainClass.count()

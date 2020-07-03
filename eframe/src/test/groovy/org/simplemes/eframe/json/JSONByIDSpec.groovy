@@ -20,7 +20,7 @@ import sample.domain.Order
 class JSONByIDSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, SERVER]
+  static specNeeds = [SERVER]
 
   @Rollback
   def "verify that serializer works for simple case"() {

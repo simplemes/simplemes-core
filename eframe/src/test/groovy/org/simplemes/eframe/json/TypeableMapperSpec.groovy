@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.json
 
 
@@ -6,18 +10,13 @@ import org.simplemes.eframe.test.UnitTestUtils
 import sample.pogo.SampleAlternatePOGO
 import sample.pogo.SamplePOGO
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
  * Tests.
  */
 class TypeableMapperSpec extends BaseSpecification {
 
-  def specNeeds = [JSON]
+  @SuppressWarnings('unused')
+  def specNeeds = [SERVER]
 
   def "verify that round-trip with multiple elements works"() {
     given: 'some POGO objects to be serialized'

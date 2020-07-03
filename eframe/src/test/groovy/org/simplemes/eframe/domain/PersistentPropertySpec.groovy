@@ -7,6 +7,7 @@ package org.simplemes.eframe.domain
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import sample.domain.Order
+import sample.domain.SampleParent
 
 /**
  * Tests.
@@ -235,4 +236,32 @@ class PersistentPropertySpec extends BaseSpecification {
     then: 'the values are correct'
     prop.name == 'ABC'
   }
+
+  def "verify that the setters work"() {
+    when: 'the setters are used'
+    def prop = new PersistentProperty()
+    prop.setChild(true)
+    prop.setColumnName('ABC')
+    prop.setType(String)
+    prop.setNullable(true)
+    prop.setMaxLength(137)
+    prop.setField(SampleParent.getDeclaredField('title'))
+    prop.setReferenceType(SampleParent)
+    prop.setParentReference(true)
+
+    then: 'the values are correct'
+    prop.isChild()
+    prop.getColumnName() == 'ABC'
+    prop.getType() == String
+    prop.isNullable()
+    prop.getMaxLength() == 137
+    prop.getField() == SampleParent.getDeclaredField('title')
+    prop.getReferenceType() == SampleParent
+    prop.isParentReference()
+
+    and: 'toString works'
+    prop.toString()
+  }
+
+
 }

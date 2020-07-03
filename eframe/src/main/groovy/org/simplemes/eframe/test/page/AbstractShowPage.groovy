@@ -44,17 +44,11 @@ class AbstractShowPage extends AbstractPage {
    */
   boolean checkTitle(String domainLookupKey) {
     if (domainObject) {
-      // Check with an assertion for a clearer error message.
-      assert title == GlobalUtils.lookup('show.title', null,
-                                         TypeUtils.toShortString(domainObject),
-                                         lookup(domainLookupKey),
-                                         Holders.configuration.appName)
       return title == GlobalUtils.lookup('show.title', null,
                                          TypeUtils.toShortString(domainObject),
                                          lookup(domainLookupKey),
                                          Holders.configuration.appName)
     } else {
-      // Check with an assertion for a clearer error message.
       assert title.contains(lookup(domainLookupKey))
       return title.contains(lookup(domainLookupKey))
     }

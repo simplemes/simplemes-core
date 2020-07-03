@@ -120,4 +120,19 @@ class UserGUISpec extends BaseGUISpecification {
     user2.passwordMatches('ABC1')
   }
 
+  def "verify that the show page works"() {
+    given: 'a record to edit'
+    def user = null
+    User.withTransaction {
+      user = new User(userName: 'ABC', password: 'xyz').save()
+    }
+
+    when: 'the show page is displayed'
+    login()
+    to UserShowPage, user
+
+    then: 'fields are shown'
+    userName.value == user.userName
+  }
+
 }

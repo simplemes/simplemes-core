@@ -17,7 +17,7 @@ import org.simplemes.eframe.test.annotation.Rollback
 class FieldGUIExtensionSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = [JSON, SERVER]
+  static specNeeds = [SERVER]
 
   @SuppressWarnings("unused")
   static dirtyDomains = [FieldGUIExtension]

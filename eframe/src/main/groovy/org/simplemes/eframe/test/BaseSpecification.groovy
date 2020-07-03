@@ -88,13 +88,6 @@ class BaseSpecification extends GebSpec {
   static final String GUI = "GUI"
 
   /**
-   * Declares that the spec needs the Jackson object mapper in the application context.
-   * If not running in an embedded server, then this will mock the application context with a real ObjectMapper.
-   * Possible value for the <code>specNeeds</code> list.
-   */
-  static final String JSON = "JSON"
-
-  /**
    * Declares that the spec will need a mocked extension handler.
    * Possible value for the <code>specNeeds</code> list.
    * <p>
@@ -185,11 +178,6 @@ class BaseSpecification extends GebSpec {
       }
     }
 
-    // See if a mock Jackson ObjectMapper is needed and not already in an embedded server.
-    if ((!needsServer()) && needs(JSON) && embeddedServer == null) {
-      new MockObjectMapper(this).install()
-    }
-
   }
 
   /**
@@ -219,6 +207,7 @@ class BaseSpecification extends GebSpec {
           log.debug("executeTestDDLStatements(): Executing statements from {} ", url)
           inputStream = url.openStream()
           List<String> lines = []
+          //noinspection GroovyMissingReturnStatement
           inputStream.eachLine { line ->
             // Put the DDL lines in an array since the log.debug() method is not found inside of this closure for some reason.
             if (line.contains(';')) {

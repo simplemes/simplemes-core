@@ -56,7 +56,6 @@
       title: "search.rebuild.dialog.title", question: ef.lookup('search.rebuild.dialog.content'),
       buttons: ['ok','cancel'],
       ok: function (dialogID,button) {
-        console.log('Ok pressed');
         ef.post("/search/startBulkIndex", {deleteAllIndices:true},
           function (responseText) {
             // Switch to faster update times and re-start the refresh process.

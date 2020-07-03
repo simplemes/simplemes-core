@@ -21,7 +21,7 @@ import org.simplemes.eframe.test.MockPrincipal
 class TaskMenuControllerSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static specNeeds = JSON
+  static specNeeds = SERVER
 
   void cleanup() {
     // reset the configuration
