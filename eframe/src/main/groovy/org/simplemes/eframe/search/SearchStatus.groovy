@@ -76,6 +76,11 @@ class SearchStatus {
   String bulkIndexStatus = ''
 
   /**
+   * Used to flag test mode for display. T for test, D for dev modes.
+   */
+  String testMode = ''
+
+  /**
    * Empty constructor.
    */
   SearchStatus() {

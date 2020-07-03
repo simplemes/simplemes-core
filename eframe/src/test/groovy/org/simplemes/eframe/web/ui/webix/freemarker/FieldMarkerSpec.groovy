@@ -83,6 +83,50 @@ class FieldMarkerSpec extends BaseMarkerSpecification {
     JavascriptTestUtils.extractProperty(titleLabelLine, 'label') == lookup('email.label')
   }
 
+  def "verify that the marker generates the field - readOnly option"() {
+    given: 'a mocked domain'
+    new MockDomainUtils(this, [SampleParent]).install()
+
+    when: 'the marker is built'
+    def src = """
+      <@efForm id="edit">
+        <@efField field="SampleParent.title" readOnly="true" value="ABC"/>
+      </@efForm>
+    """
+
+    def page = execute(source: src, controllerClass: SampleParentController)
+
+    then: 'the javascript is legal'
+    checkPage(page)
+
+    and: 'the value is a label'
+    def fieldLine = TextUtils.findLine(page, 'id: "title"')
+    JavascriptTestUtils.extractProperty(fieldLine, 'view') == "label"
+    JavascriptTestUtils.extractProperty(fieldLine, 'id') == "title"
+    JavascriptTestUtils.extractProperty(fieldLine, 'label') == "ABC"
+  }
+
+  def "verify that the marker generates the field - css option"() {
+    given: 'a mocked domain'
+    new MockDomainUtils(this, [SampleParent]).install()
+
+    when: 'the marker is built'
+    def src = """
+      <@efForm id="edit">
+        <@efField field="SampleParent.title" css="aClass" readOnly=true />
+      </@efForm>
+    """
+
+    def page = execute(source: src, controllerClass: SampleParentController)
+
+    then: 'the javascript is legal'
+    checkPage(page)
+
+    and: 'the CSS is correct'
+    def fieldLine = TextUtils.findLine(page, 'id: "title"')
+    JavascriptTestUtils.extractProperty(fieldLine, 'css').contains("aClass")
+  }
+
   def "verify that the marker generates the field - blank label specified"() {
     given: 'a mocked domain'
     new MockDomainUtils(this, [SampleParent]).install()

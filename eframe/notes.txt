@@ -7,6 +7,19 @@ Support custom sub-objects (Order.customComponents).
 Update low-level will trigger searchable top-level re-index.  Includes custom sub-objects.
   Order.save() will trigger a re-index, but the low level LSN.save() should not trigger a second re-index.  Need to detect this case.
 
+Upgrade-marathon (MN, MN-D).
+Convert to using single dialect (POSTGRES) with environment.  Avoids testing on H2, runtime on Postgres.
+  H2 does not support UUID or Object in MN-D.
+  Support native UUID.  Needs:
+  Flyway support.
+  Drop work around.  Convert to uuid in domains:
+    @MappedProperty(type = DataType.OBJECT)  (All references and ID columns).
+
+  Use docker/postgres for local testing to verify speed on startup.
+    https://elanderson.net/2018/02/setup-postgresql-on-windows-with-docker/
+    Make sure it can work on Github actions.
+      https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-postgresql-service-containers
+
 
 
 Micronaut Data Conversion Tasks

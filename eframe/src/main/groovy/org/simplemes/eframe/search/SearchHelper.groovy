@@ -413,7 +413,7 @@ class SearchHelper {
     log.debug('buildAndSubmitBulkIndexRequests: building requests with max of {} documents for domains {}.', batchSize, searchableDomainClasses)
 
     // Keep track of the domains we found, to avoid processing sub-classes twice.
-    Set domainsProcessed = [] as Set
+    //Set domainsProcessed = [] as Set
 
     for (Class clazz in searchableDomainClasses) {
       def total = clazz.count()

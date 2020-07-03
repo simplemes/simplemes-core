@@ -22,6 +22,7 @@ import geb.navigator.Navigator
  * <pre>
  *   releaseButton.click()
  *   releaseButton.button.text() == 'Release'
+ *   releaseButton.title == 'Release the Order'
  * </pre>
  *
  * <h4>This contains these elements:</h4>
@@ -36,6 +37,7 @@ class ButtonModule extends Module {
 
   static content = {
     button { $('div.webix_el_button', view_id: id).find('button') }
+    title { $('div.webix_el_button', view_id: id).find('div').@title }
   }
 
   /**

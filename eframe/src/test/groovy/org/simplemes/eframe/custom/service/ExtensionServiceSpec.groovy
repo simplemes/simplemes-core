@@ -51,7 +51,7 @@ class ExtensionServiceSpec extends BaseSpecification {
     and: 'the available list is correct'
     available.size() > 0
     def f = available.find() { it.name == 'notDisplayed' }
-    f == [name: 'notDisplayed', type: 'textField', label: lookup('notDisplayed.label'), custom: false]
+    f == [name: 'notDisplayed', type: 'textField', label: 'notDisplayed.label', custom: false]
   }
 
   @Rollback

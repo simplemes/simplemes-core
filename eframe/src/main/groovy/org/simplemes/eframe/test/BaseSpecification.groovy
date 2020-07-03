@@ -541,6 +541,8 @@ class BaseSpecification extends GebSpec {
   /**
    * Convenience method for general message.properties lookup.
    * Delegates to {@link GlobalUtils#lookup(java.lang.String, java.lang.Object [ ])}.
+   * <p>
+   * <b>Note:</b> This lookup will flag missing .properties entries.
    * @param key The key to lookup.  If it starts with '*', then the return value will start with a '*'.
    *            The lookup will take place without the '*'.  This is used to support required field labels.
    * @param locale The locale to use for the message. (<b>Default</b>: Request Locale)
@@ -553,19 +555,37 @@ class BaseSpecification extends GebSpec {
       key = key - '*'
       prefix = '*'
     }
-    return prefix + GlobalUtils.lookup(key, locale, args)
+    return prefix + lookupFlagMissing(key, locale, args)
   }
 
   /**
    * Convenience method for general message.properties lookup for fields marked as required.
    * Delegates to {@link GlobalUtils#lookup(java.lang.String, java.lang.Object [ ])}.
+   * <p>
+   * <b>Note:</b> This lookup will flag missing .properties entries.
    * @param key The key to lookup.
    * @param locale The locale to use for the message. (<b>Default</b>: Request Locale)
    * @param args The replaceable arguments used by the message (if any).
    * @return The looked up message.
    */
   String lookupRequired(String key, Locale locale = null, Object... args) {
-    return '*' + GlobalUtils.lookup(key, locale, args)
+    return '*' + lookupFlagMissing(key, locale, args)
+  }
+
+  /**
+   * Lookup with a check for missing .properties entries.  Will alter the result with a '-missing.in.properties' to
+   * help find non-looked up text on GUIs and such.
+   * @param key The key to lookup.
+   * @param locale The locale to use for the message. (<b>Default</b>: Request Locale)
+   * @param args The replaceable arguments used by the message (if any).
+   * @return The looked up message.
+   */
+  private String lookupFlagMissing(String key, Locale locale = null, Object... args) {
+    def s = GlobalUtils.lookup(key, locale, args)
+    if (s == key) {
+      s = s + '-missing.in.properties'
+    }
+    return s
   }
 
   /**

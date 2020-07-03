@@ -22,21 +22,14 @@ import io.micronaut.data.model.runtime.UpdateOperation
 import io.micronaut.data.runtime.date.DateTimeProvider
 import io.micronaut.http.codec.MediaTypeCodec
 import io.micronaut.transaction.TransactionOperations
-import io.micronaut.transaction.jdbc.DataSourceUtils
 import io.micronaut.transaction.jdbc.exceptions.CannotGetJdbcConnectionException
-import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.application.issues.WorkArounds
 
 import javax.annotation.Nonnull
 import javax.inject.Named
 import javax.sql.DataSource
 import java.lang.annotation.Annotation
-import java.lang.reflect.Field
-import java.lang.reflect.ParameterizedType
-import java.lang.reflect.Type
 import java.sql.Connection
-import java.sql.PreparedStatement
-import java.sql.SQLException
 import java.util.concurrent.ExecutorService
 
 /**
@@ -160,34 +153,6 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
       throw new IllegalStateException(s, e)
     }
   }
-
-
-  /**
-   * Creates a prepared SQL statement.
-   * @param sql The SQL.
-   * @return The statement.
-   */
-  private PreparedStatement getPreparedStatement192(String sql) throws SQLException {
-    DataSource dataSource = Holders.getApplicationContext().getBean(DataSource.class)
-    Connection connection = DataSourceUtils.getConnection(dataSource)
-    return connection.prepareStatement(sql)
-  }
-
-  /**
-   * Gets the (first) generic type for the given field.  Works for fields like: List&lt;XYZ&gt;.
-   *
-   * @param field The field.
-   * @return The underlying type (from the generic definition).  Can be null.
-   */
-  Class<?> getGenericType192(Field field) {
-    Type childType = field.getGenericType()
-    if (!(childType instanceof ParameterizedType)) {
-      return null
-    }
-    ParameterizedType childParameterizedType = (ParameterizedType) childType
-    return (Class<?>) childParameterizedType.getActualTypeArguments()[0]
-  }
-
 
 }
 

@@ -361,15 +361,12 @@ class SearchEngineClientSpec extends BaseSpecification {
 
     and: 'each row pair is correct'
     jsonRows[0].index._index == 'sample-parent'
-    jsonRows[0].index._type == 'doc'
     jsonRows[0].index._id == parent2.uuid.toString()
     jsonRows[1].name == 'ABC2'
     jsonRows[2].index._index == 'sample-parent'
-    jsonRows[2].index._type == 'doc'
     jsonRows[2].index._id == sampleParent3.uuid.toString()
     jsonRows[3].name == 'XYZ3'
     jsonRows[4].index._index == 'sample-parent'
-    jsonRows[4].index._type == 'doc'
     jsonRows[4].index._id == parent1.uuid.toString()
     jsonRows[5].name == 'ABC1'
   }

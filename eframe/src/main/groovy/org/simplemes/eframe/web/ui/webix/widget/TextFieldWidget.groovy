@@ -37,8 +37,18 @@ class TextFieldWidget extends BaseLabeledFieldWidget {
    * @return The text for field element.
    */
   String buildWidget(String id, value) {
+    def css = new StringBuilder()
+    if (widgetContext.error) {
+      css << "webix_invalid"
+    }
+    if (widgetContext.parameters.css) {
+      css << " "
+      css << widgetContext.parameters.css
+    }
+
+    def cssS = css ? """,css: "$css" """ : ''
     if (widgetContext.readOnly) {
-      return """{view: "label", id: "$id", label: "${escapeForJavascript(formatForDisplay(value), true)}"}"""
+      return """{view: "label", id: "$id", label: "${escapeForJavascript(formatForDisplay(value), true)}" $cssS}"""
     } else {
       def iWidthS = ''
       def type = (String) widgetContext.parameters.type ?: ''
@@ -55,7 +65,6 @@ class TextFieldWidget extends BaseLabeledFieldWidget {
         }
         iWidthS = """,inputWidth: tk.pw("${width}"),width: tk.pw("${width}")"""
       }
-      def cssS = widgetContext.error ? ',css: "webix_invalid" ' : ''
       //def valueS = escape(formatForDisplay(value))
       def valueS = escapeForJavascript(formatForDisplay(value))
       if (type == 'password-no-auto') {

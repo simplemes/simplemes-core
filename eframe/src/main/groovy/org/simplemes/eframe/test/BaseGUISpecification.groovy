@@ -362,6 +362,8 @@ class BaseGUISpecification extends BaseSpecification {
   /**
    * Convenience method for general message.properties lookup.
    * This sub-class uses the current locale from the GUI test browser if none is given.
+   * <p>
+   * <b>Note:</b> This lookup will flag missing .properties entries.
    * @param key The key to lookup.
    * @param locale The locale to use for the message. (<b>Default</b>: Current Browser Locale)
    * @param args The replaceable arguments used by the message (if any).
@@ -376,6 +378,8 @@ class BaseGUISpecification extends BaseSpecification {
   /**
    * Convenience method for general message.properties lookup for fields marked as required.
    * This sub-class uses the current locale from the GUI test browser if none is given.
+   * <p>
+   * <b>Note:</b> This lookup will flag missing .properties entries.
    * @param key The key to lookup.
    * @param locale The locale to use for the message. (<b>Default</b>: Current browser Locale)
    * @param args The replaceable arguments used by the message (if any).

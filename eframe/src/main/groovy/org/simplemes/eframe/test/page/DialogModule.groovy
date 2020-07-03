@@ -33,7 +33,8 @@ import geb.Module
  *   <li><b>header</b> - The dialog's header bar.</li>
  *   <li><b>closeButton</b> - The dialog header's close window button.</li>
  *   <li><b>resizeHandle</b> - The dialog's resize handle.</li>
- *   <li><b>body</b> - The dialog body content.</li>
+ *   <li><b>body</b> - The dialog body content.  <b>Not valid</b> for question dialogs.</li>
+ *   <li><b>templateContent</b> - The dialog body template content. <b>Valid</b> for question dialogs.</li>
  * </ul>
  *
  */

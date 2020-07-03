@@ -818,6 +818,15 @@ _ef_tk.toolkit = function () {
       var checked = (value == config.checkValue) ? 'checked="true"' : '';
       return "<input disabled class='webix_table_checkbox' type='checkbox' " + checked + ">";
     },
+    // Sets a field.
+    _setFieldDisplayStyle: function (fieldName, display) {
+      var field = document.querySelectorAll('[view_id="' + fieldName + '"]')[0];
+      if (field == undefined) {
+        console.log('could not find ' + fieldName);
+      }
+      var parent = field.parentNode;
+      parent.style.display = display ? '' : 'none';
+    },
     // Sets the string form of the task menu.
     _setTaskMenuString: function (s) {
       _taskMenuString = s;
@@ -929,7 +938,14 @@ _ef_tk.toolkit = function () {
       JL().trace(postData);
       //console.log(postData);
       ef.post("/userPreference/guiStateChanged", postData);
+    },
+    // Updates the value for a field.
+    _updateFieldValue: function (fieldName, value) {
+      var parent = document.querySelectorAll('[view_id="' + fieldName + '"]')[0];
+      var div = parent.firstChild;
+      div.innerHTML = value + '';
     }
+
   }
 }();
 var tk = _ef_tk.toolkit;  // Shorthand

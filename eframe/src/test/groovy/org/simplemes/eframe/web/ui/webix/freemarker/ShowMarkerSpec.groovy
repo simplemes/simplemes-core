@@ -218,8 +218,8 @@ class ShowMarkerSpec extends BaseMarkerSpecification {
 
     def releaseButtonText = TextUtils.findLine(elementsText, 'id: "release"')
     JavascriptTestUtils.extractProperty(releaseButtonText, 'view') == 'button'
-    JavascriptTestUtils.extractProperty(releaseButtonText, 'label').contains(lookup('release'))
-    JavascriptTestUtils.extractProperty(releaseButtonText, 'tooltip') == lookup('release.tooltip')
+    JavascriptTestUtils.extractProperty(releaseButtonText, 'label') == 'release'
+    JavascriptTestUtils.extractProperty(releaseButtonText, 'tooltip') == 'release.tooltip'
     JavascriptTestUtils.extractProperty(releaseButtonText, 'click') == "release()"
 
     where:
@@ -252,8 +252,8 @@ class ShowMarkerSpec extends BaseMarkerSpecification {
     JavascriptTestUtils.extractProperty(moreButtonText, 'id') == 'showMore'
 
     def releaseMenuText = TextUtils.findLine(page, 'id: "release"')
-    JavascriptTestUtils.extractProperty(releaseMenuText, 'value') == lookup('release')
-    JavascriptTestUtils.extractProperty(releaseMenuText, 'tooltip') == lookup('release.tooltip')
+    JavascriptTestUtils.extractProperty(releaseMenuText, 'value') == 'release'
+    JavascriptTestUtils.extractProperty(releaseMenuText, 'tooltip') == 'release.tooltip'
   }
 
 }

@@ -52,7 +52,7 @@ class DefinitionEditorGUISpec extends BaseDefinitionEditorSpecification {
 
     and: 'the available list has the expected field'
     def anotherFieldItem = findListElement('anotherField')
-    anotherFieldItem.text() == lookup('anotherField.label')
+    anotherFieldItem.text() == 'anotherField.label'
     findParentListForElement('anotherField').@view_id == AVAILABLE_LIST
 
     and: 'the configured list has the expected field - title'

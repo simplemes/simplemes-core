@@ -107,7 +107,7 @@ class FormMarker extends BaseMarker {
         <script>
           var ${id}FormData = [
           ${content}
-          ]; // form
+          ]; 
           $preScript
           webix.ui({
             container: '$divID',

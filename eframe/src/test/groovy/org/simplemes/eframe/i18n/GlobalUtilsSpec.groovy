@@ -1,15 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.i18n
 
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.UnitTestUtils
-
-/*
- * Copyright Michael Houston 2016. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests the GlobalUtils.
@@ -112,8 +110,8 @@ class GlobalUtilsSpec extends BaseSpecification {
     labelKey            | tooltipKey          | result
     'delete.menu.label' | null                | [lookup('delete.menu.label'), lookup('delete.menu.tooltip')]
     'more.menu.label'   | 'edit.menu.tooltip' | [lookup('more.menu.label'), lookup('edit.menu.tooltip')]
-    'NotLookedUp'       | null                | [lookup('NotLookedUp'), null]
-    'more.bad.label'    | null                | [lookup('more.bad.label'), null]
+    'NotLookedUp'       | null                | ['NotLookedUp', null]
+    'more.bad.label'    | null                | ['more.bad.label', null]
   }
 
   def "verify that lookupLabelAndTooltip fails on missing label key"() {

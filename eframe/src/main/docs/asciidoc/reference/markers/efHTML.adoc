@@ -18,7 +18,7 @@ This example displays some text in the HTML page:
 [source,html]
 .Example - efHTML
 ----
-<@efForm id="logFailure" dashboard='buttonHolder'>
+<@efForm id="logFailure" dashboard='buttonHolder'> // <.>
   <@efField field="order" id="order" label="Order/LSN" value="M1008" width=20 labelWidth='35%'>
     <@efHTML spacer="before">  // <.>
       <a href = './'>link</a>
@@ -27,13 +27,11 @@ This example displays some text in the HTML page:
   </@efField>
 </@efForm>
 ----
+<.> This HTML marker may be used in a form that is a dashboard type or normal form.
 <.> Multiple lines are supported.
 <.> Supports replaceable parameters, single and double-quoted content.
 
 The HTML is inserted using the standard toolkit `template` view.
-
-NOTE: This marker may only be used inside of an <<efForm>> marker with the
-      `dashboard='true'` set.
 
 ==== Parameters/Body
 

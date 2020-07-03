@@ -338,7 +338,7 @@ class SearchEngineClient implements SearchEngineClientInterface {
     for (object in list) {
       def clazz = object.getClass()
       def indexName = SearchHelper.instance.getIndexNameForDomain(clazz)
-      sb.append("""{"index":{"_index":"$indexName$indexSuffix","_type":"doc","_id":"${object.uuid}"}}""")
+      sb.append("""{"index":{"_index":"$indexName$indexSuffix","_id":"${object.uuid}"}}""")
       sb.append(BULK_REQUEST_DELIMITER)
       sb.append(formatForIndex(object)).append(BULK_REQUEST_DELIMITER)
       if (archiveReferenceList) {

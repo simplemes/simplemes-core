@@ -8,6 +8,7 @@ import groovy.util.logging.Slf4j
 import org.simplemes.eframe.data.SimpleFieldDefinition
 import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.domain.DomainReference
+import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.web.ui.WidgetFactory
 
 /**
@@ -66,6 +67,9 @@ class FieldMarker extends BaseMarker {
     widgetContext.object = domainObject ?: [:]
     if (parameters.value) {
       widgetContext.object[fieldName] = parameters.value
+    }
+    if (parameters.readOnly) {
+      widgetContext.readOnly = ArgumentUtils.convertToBoolean(parameters.readOnly)
     }
     widgetContext.parameters.label = parameters.label
     addFieldSpecificParameters(widgetContext, fieldName, (Map) parameters)

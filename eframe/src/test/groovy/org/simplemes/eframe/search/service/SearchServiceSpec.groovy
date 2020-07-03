@@ -73,7 +73,7 @@ class SearchServiceSpec extends BaseSpecification {
     SearchHelper.instance = searchHelper
 
     when: 'the method is called'
-    service.startBulkIndexRequest(true)
+    service.startBulkIndex(true)
 
     then: 'the search helper was used'
     1 * searchHelper.startBulkIndexRequest(true)

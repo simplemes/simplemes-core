@@ -4,7 +4,9 @@
 
 package org.simplemes.eframe.domain
 
+import groovy.util.logging.Slf4j
 import io.micronaut.data.model.Pageable
+import org.simplemes.eframe.application.issues.WorkArounds
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.annotation.DomainEntityHelper
 
@@ -14,6 +16,7 @@ import java.sql.ResultSet
 /**
  * Common utility methods used to access SQL data directly. Use with caution.
  */
+@Slf4j
 class SQLUtils {
 
   /**
@@ -74,6 +77,7 @@ class SQLUtils {
     PreparedStatement ps = null
     ResultSet rs = null
     try {
+      log.trace("executeQuery(): sql = {}, args = {}", sql, args)
       ps = getPreparedStatement(sql)
       //ps.setString(1, order.getUuid().toString())
       def lastArgIndex = 1
@@ -194,6 +198,10 @@ class SQLUtils {
           if (arg instanceof Collection) {
             for (int i = 0; i < arg.size(); i++) {
               args2[argIndex] = arg[i]
+              if (WorkArounds.workAroundUuidString && args2[argIndex] instanceof UUID) {
+                // Force UUIDs to strings.
+                args2[argIndex] = args2[argIndex].toString()
+              }
               argIndex++
             }
           } else {

@@ -97,7 +97,7 @@ class MockSearchEngineClient implements SearchEngineClientInterface {
     log.trace('indexObject: Mock used.  Object = {}', object)
 
     actions << [action: 'indexObject', object: object]
-    return indexObjectResults ?: [_index: "sample", _type: "parent", _id: "${object?.uuid}", result: "created"]
+    return indexObjectResults ?: [_index: "sample", _id: "${object?.uuid}", result: "created"]
   }
 
   /**
@@ -111,7 +111,7 @@ class MockSearchEngineClient implements SearchEngineClientInterface {
   Map removeObjectFromIndex(Object object) {
     log.trace('indexObject: Mock used.  Object = {}', object)
     actions << [action: 'removeObjectFromIndex', object: object]
-    return indexObjectResults ?: [_index: "sample", _type: "doc", _id: "$object.uuid", result: "deleted"]
+    return indexObjectResults ?: [_index: "sample", _id: "$object.uuid", result: "deleted"]
   }
 
   /**
@@ -136,7 +136,7 @@ class MockSearchEngineClient implements SearchEngineClientInterface {
       def indexName = SearchHelper.instance.getIndexNameForDomain(object.getClass())
       // Use the provide result list to determine the result.  Otherwise, defaults to 'created'.
       def result = bulkIndexResult.size() > i ? bulkIndexResult[i] ?: 'created' : 'created'
-      items << [index: [_index: indexName, _type: 'doc', _id: object.uuid, result: result]]
+      items << [index: [_index: indexName, _id: object.uuid, result: result]]
       i++
     }
 

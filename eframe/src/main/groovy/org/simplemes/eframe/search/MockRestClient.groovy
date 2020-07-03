@@ -141,7 +141,7 @@ class MockRestClient {
         sb.append(',')
       }
       def indexName = NameUtils.convertToHyphenatedName(object.getClass().simpleName) + indexSuffix
-      sb.append("""{"index":{"_index":"$indexName","_type":"doc","_id":"${object.uuid}","result":"created"}}""")
+      sb.append("""{"index":{"_index":"$indexName","_id":"${object.uuid}","result":"created"}}""")
     }
 
     return new MockResponse("""{"took": 30,"errors": false,"items": [${sb.toString()}]}""")

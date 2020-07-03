@@ -5,11 +5,13 @@
 package org.simplemes.eframe.search.service
 
 import groovy.util.logging.Slf4j
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.search.SearchHelper
 import org.simplemes.eframe.search.SearchResult
 import org.simplemes.eframe.search.SearchStatus
 
 import javax.inject.Singleton
+import javax.transaction.Transactional
 
 /**
  * A service to handle search-related tasks.
@@ -24,7 +26,9 @@ class SearchService {
    * @return The result of the status request from the search engine.  Contains a field 'status' with values of red/yellow/green.
    */
   SearchStatus getStatus() {
-    return SearchHelper.instance.status
+    def status = SearchHelper.instance.status
+    status.testMode = Holders.environmentTest ? 'T' : Holders.environmentDev ? 'D' : ''
+    return status
   }
 
   /**
@@ -66,7 +70,8 @@ class SearchService {
    *
    * @param deleteAllIndices If true, then this triggers a delete of all indices before the request is started.
    */
-  void startBulkIndexRequest(Boolean deleteAllIndices = false) {
+  @Transactional
+  void startBulkIndex(Boolean deleteAllIndices = false) {
     SearchHelper.instance.startBulkIndexRequest(deleteAllIndices)
   }
 

@@ -28,7 +28,7 @@ class DashboardJSButtonGUISpec extends BaseDashboardSpecification {
 
     then: 'the buttons are displayed with the right text'
     button('PASS').text() == lookup('pass.label')
-    button('PASS').find('div.webix_el_box').@title == lookup('pass.title')
+    button('PASS').find('div.webix_el_box').@title == 'pass.title'
 
     and: 'the buttons has the right size and css properties'
     button('PASS').classes().contains('dummy-css')

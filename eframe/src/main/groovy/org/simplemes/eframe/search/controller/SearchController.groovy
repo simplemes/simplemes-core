@@ -6,9 +6,13 @@ package org.simplemes.eframe.search.controller
 
 import groovy.util.logging.Slf4j
 import io.micronaut.http.HttpRequest
+import io.micronaut.http.HttpResponse
+import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
+import io.micronaut.http.annotation.Body
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
+import io.micronaut.http.annotation.Post
 import io.micronaut.http.annotation.Produces
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
@@ -100,23 +104,22 @@ class SearchController extends BaseController {
    * @param deleteAllIndices If true, then this triggers a delete of all indices before the request is started.
    */
   @Secured(["ADMIN"])
-  @Get("/startBulkIndexRequest")
+  @Post("/startBulkIndex")
   @SuppressWarnings('unused')
-  def startBulkIndexRequest(HttpRequest request, @Nullable Principal principal) {
-    def params = ControllerUtils.instance.convertToMap(request.parameters)
-    def deleteFlag = ArgumentUtils.convertToBoolean(params.deleteAllIndices)
-    searchService.startBulkIndexRequest(deleteFlag)
-    return [status: 'ok']
+  HttpResponse startBulkIndex(@Body bodyParams, @Nullable Principal principal) {
+    def deleteFlag = ArgumentUtils.convertToBoolean(bodyParams.deleteAllIndices)
+    searchService.startBulkIndex(deleteFlag)
+    return HttpResponse.status(HttpStatus.OK)
   }
 
   /**
    * Clears the current statistics.
    */
   @Secured(["ADMIN"])
-  @Get("/clearStatistics")
+  @Post("/clearStatistics")
   @SuppressWarnings('unused')
-  def clearStatistics(@Nullable Principal principal) {
+  HttpResponse clearStatistics(@Nullable Principal principal) {
     searchService.clearStatistics()
-    return [status: 'ok']
+    return HttpResponse.status(HttpStatus.OK)
   }
 }

@@ -34,7 +34,7 @@ class SearchControllerSpec extends BaseAPISpecification {
       controller SearchController
       secured 'admin', 'ADMIN'
       secured 'status', 'ADMIN'
-      secured 'startBulkIndexRequest', 'ADMIN'
+      secured 'startBulkIndex', 'ADMIN'
       secured 'clearStatistics', 'ADMIN'
       taskMenu name: 'globalSearch', uri: '/search', clientRootActivity: true, folder: 'search:6000', displayOrder: 6010
       taskMenu name: 'searchAdmin', uri: '/search/admin', clientRootActivity: true, folder: 'admin:7000', displayOrder: 7030
@@ -195,49 +195,48 @@ class SearchControllerSpec extends BaseAPISpecification {
     controller.searchService = originalService
   }
 
-  def "verify that startBulkIndexRequest starts the rebuild - delete option true"() {
+  def "verify that startBulkIndex starts the rebuild - live server"() {
     given: "a mocked service with a fixed status"
     def searchService = Mock(SearchService)
+    controller = Holders.getBean(SearchController)
+    def originalService = controller.searchService
     controller.searchService = searchService
 
-    when: "the rebuild is started"
-    def res = controller.startBulkIndexRequest(mockRequest([deleteAllIndices: 'true']), new MockPrincipal())
+    and: 'the flag is set'
+    def json = """{"deleteAllIndices": $deleteAllIndices}"""
 
-    then: 'the correct model is used'
-    res.status == 'ok'
+    when: "the method is executed"
+    login()
+    sendRequest(uri: '/search/startBulkIndex', method: 'post', content: json)
 
-    and: "service was called correctly"
-    1 * searchService.startBulkIndexRequest(true)
+    then: "service was called correctly"
+    1 * searchService.startBulkIndex(deleteAllIndices)
+
+    cleanup:
+    controller.searchService = originalService
+
+    where:
+    deleteAllIndices | _
+    true             | _
+    false            | _
   }
 
-  def "verify that startBulkIndexRequest starts the rebuild - delete option false"() {
-    given: "a mocked service"
-    def searchService = Mock(SearchService)
-    controller.searchService = searchService
-
-    when: "the rebuild is started"
-    def res = controller.startBulkIndexRequest(mockRequest([deleteAllIndices: 'false']), new MockPrincipal())
-
-    then: 'the correct model is used'
-    res.status == 'ok'
-
-    and: "service was called correctly"
-    1 * searchService.startBulkIndexRequest(false)
-  }
-
-  def "verify that clearStatistics works"() {
+  def "verify that clearStatistics works - in a live server"() {
     given: "a mocked service with a fixed status"
     def searchService = Mock(SearchService)
+    controller = Holders.getBean(SearchController)
+    def originalService = controller.searchService
     controller.searchService = searchService
 
-    when: "the rebuild is started"
-    def res = controller.clearStatistics(new MockPrincipal())
+    when: "the method is executed"
+    login()
+    sendRequest(uri: '/search/clearStatistics', method: 'post', content: '')
 
-    then: 'the correct model is used'
-    res.status == 'ok'
-
-    and: "service was called correctly"
+    then: 'the stats are reset'
     1 * searchService.clearStatistics()
+
+    cleanup:
+    controller.searchService = originalService
   }
 
 }

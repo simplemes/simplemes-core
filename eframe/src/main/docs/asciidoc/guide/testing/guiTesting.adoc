@@ -6,6 +6,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Testing and Logging in>>#
 [inline-toc]#<<GUI Test Helpers>>#
 [inline-toc]#<<GUI Language Testing>>#
+[inline-toc]#<<Testing lookup()>>#
 [inline-toc]#<<GEB Page Modules>>#
 [inline-toc]#<<Deleting Records After Tests>>#
 [inline-toc]#<<Slowing Down GUI Tests>>#
@@ -347,6 +348,20 @@ class ProductGUITests extends BaseGUISpecification {
 
 NOTE: You can also change the JVM default locale using the -D option _'-Duser.language=de'_
       instead of the `currentLocale` variable above.
+
+==== Testing lookup()
+
+The base specifications (
+link:groovydoc/org/simplemes/eframe/test/BaseSpecification.html[BaseSpecification^]
+icon:share-square-o[role="link-blue"] and
+link:groovydoc/org/simplemes/eframe/test/BaseGUISpecification.html[BaseGUISpecification^]
+icon:share-square-o[role="link-blue"])
+are used in tests to compare values against the _messages.properties_ values.
+
+To make it clear when a looked up value is not in the .properties value, the base specifications
+`lookup()` method will append _'-missing.in.properties'_ to the result.  This means
+the test will fail until the entry is added to the .properties file.
+
 
 ==== GEB Page Modules
 

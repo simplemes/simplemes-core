@@ -4,6 +4,7 @@
 
 package org.simplemes.eframe.archive.domain
 
+import com.fasterxml.jackson.annotation.JsonFilter
 import groovy.transform.EqualsAndHashCode
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.Id
@@ -22,6 +23,7 @@ import javax.persistence.Column
  */
 @MappedEntity
 @DomainEntity
+@JsonFilter("searchableFilter")
 @EqualsAndHashCode(includes = ['uuid'])
 class ArchiveLog {
 
@@ -75,7 +77,7 @@ class ArchiveLog {
         for (i in 1901..2101) {
           def s = new SimpleDateFormat("yyyy-MM-dd").format(date)
           def fileName = "$s/M${i}.arc"
-          new ArchiveLog(recordID: random.nextLong(),
+          new ArchiveLog(recordUUID: UUID.randomUUID(),
                          className: 'org.simplemes.eframe.sample.Order',
                          dateArchived: date,
             keyValue: "M$i",
