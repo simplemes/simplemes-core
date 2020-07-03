@@ -12,6 +12,8 @@ import org.simplemes.eframe.test.MockAppender
 import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.SampleParent
 
+import java.util.concurrent.atomic.AtomicInteger
+
 /**
  * Tests.
  */
@@ -73,6 +75,9 @@ class SearchEnginePoolExecutorSpec extends BaseSpecification {
   def "verify that the pool counts the request processed"() {
     given: 'a mock client is created '
     SearchHelper.instance.searchEngineClient = new MockSearchEngineClient()
+
+    and: 'the count is reset'
+    SearchHelper.instance.finishedRequestCount = new AtomicInteger(0)
 
     and: 'the search helper counts are reset'
     SearchHelper.instance.resetCounts()
