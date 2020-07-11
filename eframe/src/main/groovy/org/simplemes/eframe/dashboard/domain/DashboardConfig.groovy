@@ -100,7 +100,9 @@ class DashboardConfig {
 
   Integer version = 0
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
 
   @SuppressWarnings("unused")

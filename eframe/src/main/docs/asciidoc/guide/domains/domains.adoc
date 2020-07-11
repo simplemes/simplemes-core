@@ -25,6 +25,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Transactions>>#
 [inline-toc]#<<Initial Data Load>>#
 [inline-toc]#<<Locking>>#
+[inline-toc]#<<SQL Database Definition>>#
 
 
 [inline-toc-header]#Relationships/Encoding#
@@ -153,7 +154,7 @@ used by the <<StandardModelAndView>>.
 
 There are a few requirements needed to implement domains in this framework:
 
-* A UUID identifier with the name _'uuid'_.
+* A UUID identifier with the name _'uuid'_.  DB column type is _uuid_.
 * A version field (integer) for optimistic <<Locking>>.
 * See <<Repository Requirements>> for more requirements on the domain's repository.
 
@@ -162,7 +163,7 @@ There are a few requirements needed to implement domains in this framework:
 Sometimes, you have common features that have the same fields in two or more related domains.
 Normally, you could use inheritance to define a common base class with the common fields.
 This would reduce the duplicate code to define the fields in multiple places.
-The enterprise framework needs this with the common fields used by the
+The enterprise framework could use this with the common fields used by the
 link:groovydoc/org/simplemes/eframe/custom/domain/FlexField.html[FlexField^] icon:share-square-o[role="link-blue"]
 and
 link:groovydoc/org/simplemes/eframe/custom/domain/FieldExtension.html[FieldExtension^] icon:share-square-o[role="link-blue"].
@@ -357,7 +358,6 @@ This includes:
 ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<Standard Repository Methods>>#
-[inline-toc]#<<Support for H2 and Production Database>>#
 
 endif::[]
 
@@ -407,50 +407,6 @@ interface OrderRepository extends BaseRepository, CrudRepository<Order, UUID> {
 Most top-level domains that have List <<Definition Pages>> should provide the `list(Pageable)` and
 `count()` methods.
 
-
-===== Support for H2 and Production Database
-
-Micronaut-Data requires that you define your database dialect in your repository (mostly).  The framework supports
-using H2 (in memory) for testing and Postgres for production use.  To make this work you will need to define 3 separate
-Micronaut-Data interfaces for access to these databases:
-
-* __XYZ__Repository - Defines the methods common to all.
-* __XYZ__RepositoryH2 - The test repository. Extends __XYZ__Repository.
-* __XYZ__RepositoryPostgres - The production repository. Extends __XYZ__Repository.
-
-The _XYZ_ domain will use the H2 repository for tests and the Postgres repository for production/dev.
-
-Most of the method definitions will go in the base class.
-
-[source,groovy]
-.Example - Repositories
-----
-interface OrderRepository extends BaseRepository, CrudRepository<Order, UUID> {
-  Optional<Order> findByOrder(String order)
-  Optional<Order> findByUuid(UUID uuid)  <.>
-  List<Order> list()  <.>
-}
-
-@JdbcRepository(dialect = Dialect.H2)
-@Requires(env = [Environment.TEST]) // <.>
-@Replaces(OrderRepository.class)    // <.>
-interface OrderRepositoryH2 extends OrderRepository {
-}
-
-@JdbcRepository(dialect = Dialect.POSTGRES)
-interface OrderRepositoryPostgres extends OrderRepository {  // <.>
-}
-
-----
-<.> Required.
-<.> Recommended for testing/diagnostics.  No row limits on results.
-<.> Used only for Test environment.
-<.> Replaces the Postgres version of the repository.
-<.> Uses Postgres for all non-test environments.
-
-NOTE: The H2 version of the repository is normally defined in the production src.  This allows
-      other modules to use these repositories in their test scenarios.  This bloats the
-      .jar files somewhat, but is unavoidable.
 
 ==== Event Methods
 
@@ -597,6 +553,55 @@ This will place the lock on the record when the query is executed.  It also mean
 record values are returned with the `find()` method.  This prevents all other users from
 changing this record until you commit/rollback the transaction.
 
+==== SQL Database Definition
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<DB Creation Scripts>>#
+[inline-toc]#<<Indexes and Constraints>>#
+
+
+endif::[]
+
+
+===== DB Creation Scripts
+
+The database for production/development/test is Postgres SQL.  This framework uses the
+https://flywaydb.org/[Flyway Database Migration^] for creation and migration of the SQL schema
+used in Postgres.  The DDL scripts are stored in these directories.
+
+* *src/main/resources/db/migration* - The production tables.
+* *src/main/resources/db/sampleMigration* - Scripts for creation of sample/test tables.
+
+Inside of these folders are files such as:
+
+* *V1_0_0__CreateTables.sql* - The base scripts to create the tables for the 1.0 release.
+* *V2_0_0__CreateTables.sql* - The base scripts to create the tables for the 2.0 release.
+
+Flyway will only run a given SQL file against the schema one time.  If you later change the file,
+then it will log an error.  To avoid this, we use the last digit as a counter to allow multiple
+files to be created over time within a single release.
+The last digit of the release (e.g. 0 in V1_2_0) is an incremental counter used to make sure the
+files are unique.  This allows developers to add new tables during development of the 1.2 release.
+
+NOTE: You can use the Flyway `repair` command to help with this issue.
+
+===== Indexes and Constraints
+
+SQL databases use indexes and constraints to help control relationships between tables.
+For the framework and application modules, we try to use these base rules:
+
+* *PRIMARY KEY* - This is the UUID for the record.  Every record has one (except for many-to-many
+                  join tables).
+* *FOREIGN KEY* - A UUID field that references a record in another table.  This key almost
+                  always has an index created for it.  This is usually implemented as a *REFERENCES*
+                  option in the .sql file. These generally have indexes created in the .sql
+                  for speed.
+* *UNIQUE*      - A unique constraint.  This is usually done on the natural key for the table.
+
+
+
+
 // Relationships/Encoding
 ==== Relationships
 
@@ -655,9 +660,8 @@ NOTE: This _targetEntity_ is used as a marker for a simple foreign reference.  D
 ===== Join and Nullable References
 
 A simple foreign reference is handled by Micronaut-Data in different ways depending on whether
-the reference is nullable.  Nullable references require the use of the SQL OUTER _@Join_ option,
-which is not supported by H2 (in memory) database.  Non-nullable references can use the LEFT join
-logic:
+the reference is nullable.  Nullable references require the use of the SQL OUTER _@Join_ option.
+Non-nullable references can use the LEFT join logic:
 
 [source,groovy]
 .Example - Non-nullable Foreign Reference
@@ -669,8 +673,8 @@ interface OrderRepository extends BaseRepository, CrudRepository<Order, UUID> {
 ----
 <.> This will read the Product record using an SQL join.  It can be accessed with _order.product..._.
 
-This works fine for non-nullable fields.  To make it work for nullable fields, we would need
-to use the OUTER join mechanism.  Unfortunately, H2 does not support this.  To access
+This works fine for non-nullable fields.  To make it work for nullable fields, we need
+to use the OUTER join mechanism.  To access
 the Product record in that case, you would need to add `findByUuid()` calls in your code.
 
 To avoid this extra code, the enterprise framework will add a simple lazy-loading

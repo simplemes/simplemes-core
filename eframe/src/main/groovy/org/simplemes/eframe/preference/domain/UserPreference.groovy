@@ -43,7 +43,6 @@ class UserPreference {
   /**
    * The user this preference is for.
    */
-  // TODO: DDL Add unique constraint on userName+page
   @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String userName
 
@@ -83,7 +82,9 @@ class UserPreference {
 
   Integer version = 0
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * Persist the transient preferences Map into the JSON for storage in the DB.

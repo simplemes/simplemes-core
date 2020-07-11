@@ -6,17 +6,24 @@ package org.simplemes.eframe.web.asset;
 
 import asset.pipeline.AssetPipelineConfigHolder;
 import asset.pipeline.fs.FileSystemAssetResolver;
+import asset.pipeline.micronaut.AssetAttributes;
 import asset.pipeline.micronaut.AssetPipelineService;
+import asset.pipeline.micronaut.ProductionAssetCache;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.MediaType;
 import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.filter.ServerFilterChain;
+import io.micronaut.http.server.types.files.StreamedFile;
 import io.reactivex.Flowable;
+import org.simplemes.eframe.application.issues.WorkArounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.Collection;
+import java.util.Properties;
 
 /**
  * Development mode asset pipeline service.  Works in dev mode for local (file system) assets, but
@@ -101,6 +108,102 @@ public class EFrameAssetPipelineService extends AssetPipelineService {
 
     }
 
-    return super.handleAsset(filename, contentType, encoding, request, chain);
+    if (WorkArounds.getWorkAround265()) {
+      return handleAssetWorkAround(filename, contentType, encoding, request, chain);
+    } else {
+      return super.handleAsset(filename, contentType, encoding, request, chain);
+    }
   }
+
+  // Begin WorkArounds.getWorkAround265()
+  // Remove when WorkArounds.getWorkAround265() is removed.
+  static final ProductionAssetCache fileCache = new ProductionAssetCache();
+
+  public Flowable<MutableHttpResponse<?>> handleAssetWorkAround(String filename, MediaType contentType, String encoding, HttpRequest<?> request, ServerFilterChain chain) {
+
+    if ("".equals(filename) || filename.endsWith("/")) {
+      filename += "index.html";
+    }
+
+    if (filename.startsWith("/")) {
+      filename = filename.substring(1);
+    }
+    final Boolean isDigestVersion = isDigestVersion(filename);
+    final String etagHeader = getCurrentETag(filename);
+    final String acceptEncoding = request.getHeaders().get("Accept-Encoding");
+    filename = AssetPipelineConfigHolder.manifest.getProperty(filename, filename);
+    final String fileUri = filename;
+    final AssetAttributes attributeCache = fileCache.get(filename);
+    Flowable<AssetAttributes> attributeFlowable;
+    if (attributeCache != null) {
+      attributeFlowable = Flowable.fromCallable(() -> attributeCache);
+    } else {
+      attributeFlowable = Flowable.fromCallable(() -> resolveAssetAttribute(fileUri));
+    }
+
+
+    return attributeFlowable.switchMap(assetAttribute -> {
+      if (assetAttribute.exists()) {
+        final Boolean gzipStream = acceptEncoding != null && acceptEncoding.contains("gzip") && assetAttribute.gzipExists();
+
+        String ifNoneMatch = request.getHeaders().get("If-None-Match");
+        if (ifNoneMatch != null && ifNoneMatch.equals(etagHeader)) {
+          LOG.debug("NOT MODIFIED!");
+          return Flowable.fromCallable(() -> HttpResponse.notModified());
+        } else {
+          LOG.debug("Generating Response");
+          return Flowable.fromCallable(() -> {
+            URLConnection urlCon = gzipStream ? assetAttribute.getGzipResource().openConnection() : assetAttribute.getResource().openConnection();
+            StreamedFile streamedFile = new StreamedFile(urlCon.getInputStream(), MediaType.of(contentType), urlCon.getLastModified(), urlCon.getContentLength());
+            MutableHttpResponse<StreamedFile> response = HttpResponse.ok(streamedFile);
+            if (gzipStream) {
+              response.header("Content-Encoding", "gzip");
+            }
+            if (encoding != null) {
+              response.characterEncoding(encoding);
+            }
+            response.contentType(contentType);
+            response.header("ETag", etagHeader);
+            response.header("Vary", "Accept-Encoding");
+            if (isDigestVersion && !fileUri.endsWith(".html")) {
+              response.header("Cache-Control", "public, max-age=31536000");
+            } else {
+              response.header("Cache-Control", "no-cache");
+            }
+            return response;
+          });
+        }
+
+      } else {
+        return chain.proceed(request);
+      }
+    });
+  }
+
+  private boolean isDigestVersion(String uri) {
+    String manifestPath = uri;
+    Properties manifest = AssetPipelineConfigHolder.manifest;
+    return manifest.getProperty(manifestPath, null) != null ? false : true;
+  }
+
+  private String getCurrentETag(String uri) {
+    String manifestPath = uri;
+    Properties manifest = AssetPipelineConfigHolder.manifest;
+    return "\"" + (manifest.getProperty(manifestPath, manifestPath)) + "\"";
+  }
+
+
+  private AssetAttributes resolveAssetAttribute(String filename) {
+    URL assetUrl = this.getClass().getClassLoader().getResource("assets/" + filename);
+    URL gzipAsset = this.getClass().getClassLoader().getResource("assets/" + filename + ".gz");
+    if (assetUrl == null) {
+      assetUrl = this.getClass().getClassLoader().getResource("assets/" + filename + "/index.html");
+      gzipAsset = this.getClass().getClassLoader().getResource("assets/" + filename + "/index.html.gz");
+    }
+    AssetAttributes attribute = new AssetAttributes(assetUrl != null, gzipAsset != null, false, 0L, 0L, null, assetUrl, gzipAsset);
+    fileCache.put(filename, attribute);
+    return attribute;
+  }
+  // End WorkArounds.getWorkAround265()
+
 }

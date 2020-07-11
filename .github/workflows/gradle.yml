@@ -1,6 +1,6 @@
 name: BuildAndTestAll
 
-on: [push]  # Should be push for build...  to Disable use pull_request
+on: [pull_request]  # Should be push for build...  to Disable use pull_request
 
 jobs:
   build:

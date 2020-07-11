@@ -3,19 +3,20 @@ Scratch
 
 Search Tasks
 ============
-Support custom sub-objects (Order.customComponents).
+Upgrade to 2.0
+  Find replacement for  -javaagent:C:\Users\mph\Tools\misc\springloaded-1.2.8.RELEASE.jar.
+
 Definition List supports search engine.
 Update low-level will trigger searchable top-level re-index.  Includes custom sub-objects.
   Order.save() will trigger a re-index, but the low level LSN.save() should not trigger a second re-index.  Need to detect this case.
 
-Upgrade-marathon (MN, MN-D).
-Convert to using single dialect (POSTGRES) with environment.  Avoids testing on H2, runtime on Postgres.
-  H2 does not support UUID or Object in MN-D.
-  Support native UUID.  Needs:
-  Flyway support.
-  Drop work around.  Convert to uuid in domains:
-    @MappedProperty(type = DataType.OBJECT)  (All references and ID columns).
 
+Upgrade-marathon (MN, MN-D).
+---------------------------
+Convert to using single dialect (POSTGRES) with environment.  Avoids testing on H2, runtime on Postgres.
+  Why? H2 does not support UUID or Object in MN-D.
+  Support native UUID in postgres
+  Drop H2 and sub-interface repository.
   Use docker/postgres for local testing to verify speed on startup.
     https://elanderson.net/2018/02/setup-postgresql-on-windows-with-docker/
     Make sure it can work on Github actions.
@@ -26,6 +27,8 @@ Convert to using single dialect (POSTGRES) with environment.  Avoids testing on 
 Micronaut Data Conversion Tasks
 ===============================
 Add workaround for update failure: 299.  Remove sop.
+  Check for MN-Data issue 404 fix.  Was in 2.0.  Update row count should be returned?
+  Check for MN issue 1103 - Using trait in with router/method defined.  Seemed to be fixed in Groovy 3.0.  Consider using Traits in mes-core?
 Investigate timezone issues on findAllByDateTimeLessThan(Date) queries.  Seems to be off by 5 hours?  ProductionLog.archive()?
 Version and opt locking (custom JDBCOperations).
 Cascading updates.  Find some way to prevent? - isDirty or save() option?

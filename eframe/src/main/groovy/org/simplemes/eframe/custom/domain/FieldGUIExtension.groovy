@@ -33,7 +33,6 @@ class FieldGUIExtension {
   /**
    * The domain these GUI extensions are defined for.
    */
-  // TODO: DDL Add unique constraint on domainName
   @Column(length = FieldSizes.MAX_CLASS_NAME_LENGTH, nullable = false)
   String domainName
 
@@ -68,7 +67,9 @@ class FieldGUIExtension {
 
   Integer version = 0
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
 
   /**

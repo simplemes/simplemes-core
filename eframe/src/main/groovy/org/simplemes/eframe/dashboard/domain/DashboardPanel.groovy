@@ -9,6 +9,8 @@ import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.FieldSizes
 
@@ -28,8 +30,8 @@ class DashboardPanel {
   /**
    * The parent dashboard this is a child of. <b>Required.</b>
    */
-  @ManyToOne
-  DashboardConfig dashboardConfig
+  @SuppressWarnings('unused')
+  @ManyToOne DashboardConfig dashboardConfig
 
   /**
    * The panel's index in the dashboard's list of panels. (Set automatically during validation).
@@ -57,10 +59,12 @@ class DashboardPanel {
    * this panel in Javascript calls.  Typically, this is assigned by the DashboardConfig, but can be manually
    * set if needed.
    */
-  @Column(length = FieldSizes.MAX_KEY_LENGTH, nullable = false)
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String panel
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * The primary keys for this object.

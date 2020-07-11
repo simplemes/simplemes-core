@@ -8,7 +8,7 @@ micronaut:
 ---
 datasources:
   default:
-    url: "jdbc:postgresql://s:5432/eframe"
+    url: "jdbc:postgresql://localhost:5432/eframe_dev"
     driverClassName: "org.postgresql.Driver"
     username: "mph"
     password: "mh1234"
@@ -16,6 +16,14 @@ datasources:
     #schema-generate: CREATE
     #autoCommit: true
 
+---
+
+flyway:
+  datasources:
+    default:
+      locations:
+        - classpath:db/migration
+        - classpath:db/sampleMigration
 ---
 eframe:
   cacheStableResources: 120

@@ -354,7 +354,7 @@ Remove this extra comma to solve the problem.
 If you use primitive method arguments (e.g. boolean instead of Boolean), you will probably get
 a NoSuchMethodException like this:
 
-  NoSuchMethodException: sample.DashboardConfigRepositoryH2$Intercepted.findByCategoryAndDefaultConfig(java.lang.String, java.lang.Boolean)
+  NoSuchMethodException: sample.DashboardConfigRepository$Intercepted.findByCategoryAndDefaultConfig(java.lang.String, java.lang.Boolean)
 
 This happens when you use a primitive type (boolean) as an argument in the repository interface.
 If you try to use the domain convenience method (`DashboardConfig.findByCategoryAndDefaultConfig()`),

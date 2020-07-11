@@ -11,6 +11,7 @@ The important dependencies are:
 * https://github.com/FasterXML/jackson-docs[Jackson^]
 * https://community.jaspersoft.com/[Jasper Reports^]
 * https://freemarker.apache.org/[Freemarker^]
+* https://flywaydb.org/[Flyway Database Migration^]
 
 You do not have to include these in your _build.gradle_ file.  This framework depends on these
 modules and the build system will include them in your application.

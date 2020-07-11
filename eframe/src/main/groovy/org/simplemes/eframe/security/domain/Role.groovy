@@ -9,6 +9,8 @@ import groovy.util.logging.Slf4j
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.FieldSizes
 
@@ -29,7 +31,7 @@ class Role {
   /**
    * The Role name (authority).  Example: 'ADMIN'.
    */
-  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)  // TODO: Add unique to DDL.
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String authority
 
   /**
@@ -41,7 +43,9 @@ class Role {
   /**
    * The internal unique ID for this record.
    */
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    *  Build a human-readable version of this object.

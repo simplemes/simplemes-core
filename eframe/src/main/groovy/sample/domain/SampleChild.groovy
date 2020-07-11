@@ -61,7 +61,9 @@ class SampleChild {
   @OneToMany(mappedBy = "sampleChild")
   List<SampleGrandChild> sampleGrandChildren
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   @SuppressWarnings("unused")
   static fieldOrder = ['key', 'sequence', 'title', 'qty', 'enabled', 'dueDate', 'dateTime', 'format',

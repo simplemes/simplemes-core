@@ -9,6 +9,8 @@ import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
 import org.simplemes.eframe.domain.annotation.DomainEntity
 
 import javax.annotation.Nullable
@@ -32,7 +34,9 @@ class SampleGrandChild {
   SampleChild sampleChild
   String grandKey
   @Nullable String title
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
 
   @SuppressWarnings("unused")

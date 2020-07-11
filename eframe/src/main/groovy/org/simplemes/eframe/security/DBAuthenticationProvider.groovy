@@ -1,5 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.security
 
+import edu.umd.cs.findbugs.annotations.Nullable
+import io.micronaut.http.HttpRequest
 import io.micronaut.security.authentication.AuthenticationFailed
 import io.micronaut.security.authentication.AuthenticationFailureReason
 import io.micronaut.security.authentication.AuthenticationProvider
@@ -12,23 +18,25 @@ import org.simplemes.eframe.security.domain.User
 
 import javax.inject.Singleton
 
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 /**
  * Defines the basic DB-based user authentication.
  */
 @Singleton
 class DBAuthenticationProvider implements AuthenticationProvider {
   /**
-   * Authenticates a specific user.
-   * @param authenticationRequest
-   * @return
+   * Authenticates a user with the given request. If a successful authentication is
+   * returned, the object must be an instance of {@link UserDetails}.
+   *
+   * Publishers <b>MUST emit cold observables</b>! This method will be called for
+   * all authenticators for each authentication request and it is assumed no work
+   * will be done until the publisher is subscribed to.
+   *
+   * @param httpRequest The http request
+   * @param authenticationRequest The credentials to authenticate
+   * @return A publisher that emits 0 or 1 responses
    */
   @Override
-  Publisher<AuthenticationResponse> authenticate(AuthenticationRequest authenticationRequest) {
+  Publisher<AuthenticationResponse> authenticate(@Nullable HttpRequest<?> httpRequest, AuthenticationRequest<?, ?> authenticationRequest) {
     def user = null
     def roles = null
     User.withTransaction {

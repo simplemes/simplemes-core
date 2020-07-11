@@ -367,7 +367,7 @@ public class DomainEntityHelper {
    * @param object The parent domain object.
    */
   @SuppressWarnings("unchecked")
-  void saveChildren(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException, InstantiationException {
+  void saveChildren(DomainEntityInterface object) throws IllegalAccessException, NoSuchFieldException, InstantiationException, NoSuchMethodException, InvocationTargetException {
     // Check all properties for (List) child properties.
     for (Field field : object.getClass().getDeclaredFields()) {
       // Performance: Consider moving the reflection logic to the Transformation to avoid run-time cost.
@@ -406,7 +406,7 @@ public class DomainEntityHelper {
   @SuppressWarnings("unchecked")
   public void saveChildList(DomainEntityInterface object, List list, String fieldName, Class childClass,
                             String parentFieldName)
-      throws NoSuchFieldException, IllegalAccessException, InstantiationException {
+      throws NoSuchFieldException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
     Map domainSettings = getDomainSettings(object);
 
     // We can't use the childClass directly in all cases, so we will just use the child objects' classes as
@@ -447,7 +447,7 @@ public class DomainEntityHelper {
           for (UUID uuid : previouslyLoadedList) {
             if (!newRecordList.contains(uuid)) {
               // The child record is no longer in the the list, so delete it.
-              DomainEntityInterface childObject = (DomainEntityInterface) lastChildClass.newInstance();
+              DomainEntityInterface childObject = (DomainEntityInterface) lastChildClass.getDeclaredConstructor().newInstance();
               childObject.setUuid(uuid);
               childObject.delete();
             }
@@ -532,7 +532,7 @@ public class DomainEntityHelper {
    * @param object The parent domain object.
    */
   @SuppressWarnings("unchecked")
-  void saveManyToMany(DomainEntityInterface object) throws IllegalAccessException, InstantiationException, SQLException {
+  void saveManyToMany(DomainEntityInterface object) throws IllegalAccessException, InstantiationException, SQLException, NoSuchMethodException, InvocationTargetException {
     for (Field field : object.getClass().getDeclaredFields()) {
       // Performance: Consider moving the reflection logic to the Transformation to avoid run-time cost.
       ManyToMany ann = field.getAnnotation(ManyToMany.class);
@@ -553,8 +553,8 @@ public class DomainEntityHelper {
               String sql = "INSERT INTO " + tableName + " (" + fromIDName + "," + toIDName + ") VALUES (?,?)";
 
               try (PreparedStatement ps = getPreparedStatement(sql)) {
-                ps.setString(1, object.getUuid().toString());
-                ps.setString(2, ((DomainEntityInterface) child).getUuid().toString());
+                ps.setObject(1, object.getUuid());
+                ps.setObject(2, ((DomainEntityInterface) child).getUuid());
                 ps.execute();
               }
 
@@ -571,7 +571,7 @@ public class DomainEntityHelper {
    *
    * @param object The domain object.
    */
-  private void deleteAllManyToMany(DomainEntityInterface object) throws SQLException, IllegalAccessException, InstantiationException {
+  private void deleteAllManyToMany(DomainEntityInterface object) throws SQLException, IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
     for (Field field : object.getClass().getDeclaredFields()) {
       // Performance: Consider moving the reflection logic to the Transformation to avoid run-time cost.
       ManyToMany ann = field.getAnnotation(ManyToMany.class);
@@ -595,7 +595,7 @@ public class DomainEntityHelper {
   private void deleteAllManyToMany(UUID uuid, String tableName, String fromIDName) throws SQLException {
     String sql = "DELETE FROM " + tableName + " WHERE " + fromIDName + "=?";
     try (PreparedStatement ps = getPreparedStatement(sql)) {
-      ps.setString(1, uuid.toString());
+      ps.setObject(1, uuid);
       ps.execute();
     }
 
@@ -624,9 +624,9 @@ public class DomainEntityHelper {
    * @param object The domain object (a @MappedEntity).
    * @return The strategy.
    */
-  NamingStrategy getNamingStrategy(DomainEntityInterface object) throws IllegalAccessException, InstantiationException {
+  NamingStrategy getNamingStrategy(DomainEntityInterface object) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
     Class<? extends NamingStrategy> namingStrategy = object.getClass().getAnnotation(MappedEntity.class).namingStrategy();
-    return namingStrategy.newInstance();
+    return namingStrategy.getDeclaredConstructor().newInstance();
   }
 
   /**
@@ -635,7 +635,7 @@ public class DomainEntityHelper {
    * @param domainClass The domain class (a @MappedEntity).
    * @return The table name.
    */
-  public String getTableName(Class domainClass) throws IllegalAccessException, InstantiationException {
+  public String getTableName(Class domainClass) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
     // Check for specific name in the annotation.
     MappedEntity annotation = (MappedEntity) domainClass.getAnnotation(MappedEntity.class);
     if (annotation != null && annotation.value().length() > 0) {
@@ -644,7 +644,7 @@ public class DomainEntityHelper {
 
     // No specific name, so use the naming strategy.
     Class<? extends NamingStrategy> namingStrategyClass = ((MappedEntity) domainClass.getAnnotation(MappedEntity.class)).namingStrategy();
-    NamingStrategy namingStrategy = namingStrategyClass.newInstance();
+    NamingStrategy namingStrategy = namingStrategyClass.getDeclaredConstructor().newInstance();
 
     return namingStrategy.mappedName(domainClass.getSimpleName());
   }
@@ -657,7 +657,7 @@ public class DomainEntityHelper {
    * @param fieldName   The field.
    * @return The column name.
    */
-  public String getColumnName(Class domainClass, String fieldName) throws IllegalAccessException, InstantiationException, NoSuchFieldException {
+  public String getColumnName(Class domainClass, String fieldName) throws IllegalAccessException, InstantiationException, NoSuchFieldException, NoSuchMethodException, InvocationTargetException {
     // Check for specific name in the annotation.
     Field field = domainClass.getDeclaredField(fieldName);
     Column annotation = field.getAnnotation(Column.class);
@@ -667,7 +667,7 @@ public class DomainEntityHelper {
 
     // No specific name, so use the naming strategy.
     Class<? extends NamingStrategy> namingStrategyClass = ((MappedEntity) domainClass.getAnnotation(MappedEntity.class)).namingStrategy();
-    NamingStrategy namingStrategy = namingStrategyClass.newInstance();
+    NamingStrategy namingStrategy = namingStrategyClass.getDeclaredConstructor().newInstance();
 
     return namingStrategy.mappedName(fieldName);
   }
@@ -814,7 +814,7 @@ public class DomainEntityHelper {
       list = getTransactionManager().executeRead(status -> {
         final List listInner = new ArrayList();
         try (PreparedStatement ps = getPreparedStatement(sql)) {
-          ps.setString(1, object.getUuid().toString());
+          ps.setObject(1, object.getUuid());
           ps.execute();
           try (ResultSet rs = ps.getResultSet()) {
             while (rs.next()) {

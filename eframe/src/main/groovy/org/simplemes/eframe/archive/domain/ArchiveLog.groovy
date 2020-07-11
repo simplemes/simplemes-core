@@ -30,12 +30,14 @@ class ArchiveLog {
   /**
    * The date/time this record was archived.
    */
+  @SuppressWarnings('unused')
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateArchived = new Date()
 
   /**
    * The record UUID for the archived record.
    */
+  @MappedProperty(type = DataType.UUID)
   UUID recordUUID
 
   /**
@@ -57,11 +59,14 @@ class ArchiveLog {
   @Column(length = FieldSizes.MAX_PATH_LENGTH, nullable = false)
   String archiveReference
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * This is searchable.
    */
+  @SuppressWarnings('unused')
   static searchable = true
 
   /**

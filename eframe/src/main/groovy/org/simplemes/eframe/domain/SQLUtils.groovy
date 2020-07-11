@@ -6,7 +6,6 @@ package org.simplemes.eframe.domain
 
 import groovy.util.logging.Slf4j
 import io.micronaut.data.model.Pageable
-import org.simplemes.eframe.application.issues.WorkArounds
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.annotation.DomainEntityHelper
 
@@ -198,10 +197,6 @@ class SQLUtils {
           if (arg instanceof Collection) {
             for (int i = 0; i < arg.size(); i++) {
               args2[argIndex] = arg[i]
-              if (WorkArounds.workAroundUuidString && args2[argIndex] instanceof UUID) {
-                // Force UUIDs to strings.
-                args2[argIndex] = args2[argIndex].toString()
-              }
               argIndex++
             }
           } else {

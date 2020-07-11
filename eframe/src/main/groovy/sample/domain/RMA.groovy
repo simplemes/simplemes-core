@@ -59,7 +59,9 @@ class RMA {
   String customFields
 
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * A transient list of the fields defined for this flex type.

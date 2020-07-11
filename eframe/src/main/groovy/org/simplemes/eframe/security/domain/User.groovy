@@ -38,7 +38,7 @@ class User {
   /**
    * The user name (e.g. logon ID).
    */
-  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)   // TODO: Add unique to DDL.
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String userName
 
   /**
@@ -111,7 +111,9 @@ class User {
   /**
    * The internal unique ID for this record.
    */
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
 
   /**

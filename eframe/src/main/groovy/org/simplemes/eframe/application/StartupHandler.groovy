@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ser.FilterProvider
 import com.fasterxml.jackson.databind.ser.PropertyFilter
 import com.fasterxml.jackson.databind.ser.impl.SimpleFilterProvider
 import groovy.util.logging.Slf4j
-import io.micronaut.discovery.event.ServiceStartedEvent
+import io.micronaut.context.event.StartupEvent
 import io.micronaut.runtime.event.annotation.EventListener
 import io.micronaut.scheduling.annotation.Async
 import org.simplemes.eframe.application.issues.WorkArounds
@@ -40,7 +40,7 @@ class StartupHandler {
    */
   @EventListener
   @Async
-  void onStartup(ServiceStartedEvent event) {
+  void onStartup(StartupEvent event) {
     log.debug('Server Started with configuration {}', Holders.configuration)
 
     if (log.debugEnabled) {

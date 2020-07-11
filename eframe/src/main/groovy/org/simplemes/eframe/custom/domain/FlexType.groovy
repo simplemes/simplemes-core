@@ -53,7 +53,6 @@ class FlexType implements ConfigurableTypeInterface, ChoiceListItemInterface {
    */
   @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String category = CATEGORY_BASIC
-  // TODO: DDL Add unique constraint and non null and flexType.
 
   /**
    * The flexible type name.
@@ -86,16 +85,21 @@ class FlexType implements ConfigurableTypeInterface, ChoiceListItemInterface {
    */
   @Transient String fieldSummary
 
+  @SuppressWarnings('unused')
   @DateCreated
-  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE') Date dateCreated
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateCreated
 
+  @SuppressWarnings('unused')
   @DateUpdated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateUpdated
 
   Integer version = 0
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * Defines the order the fields are shown in the edit/show/etc GUIs.

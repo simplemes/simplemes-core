@@ -9,7 +9,6 @@ import ch.qos.logback.classic.LoggerContext
 import ch.qos.logback.core.Appender
 import ch.qos.logback.core.AppenderBase
 import ch.qos.logback.core.ConsoleAppender
-import com.sun.xml.internal.messaging.saaj.util.ByteOutputStream
 import org.slf4j.LoggerFactory
 
 /**
@@ -178,12 +177,12 @@ class MockAppender extends AppenderBase {
     // Suppress the console output if the normal default console appender for root is used.
     // This reduces console output during unit tests.
     def consoleAppender = loggerContext.getLogger("root").getAppender("STDOUT")
-    if (consoleAppender instanceof ConsoleAppender && !(consoleAppender.outputStream instanceof ByteOutputStream)) {
+    if (consoleAppender instanceof ConsoleAppender && !(consoleAppender.outputStream instanceof ByteArrayOutputStream)) {
       //println "consoleAppender = $consoleAppender, target = ${consoleAppender.target}, output = ${consoleAppender.outputStream.class}"
       if (originalOutputStream == null) {
         originalOutputStream = consoleAppender.outputStream
       }
-      consoleAppender.outputStream = new ByteOutputStream(2000)
+      consoleAppender.outputStream = new ByteArrayOutputStream(2000)
     }
 
     def appender = new MockAppender()

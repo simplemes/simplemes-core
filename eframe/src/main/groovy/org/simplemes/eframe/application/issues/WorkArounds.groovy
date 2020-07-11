@@ -21,14 +21,11 @@ class WorkArounds {
   static boolean workAroundOptimistic = true
 
   /**
-   * This make small changes to the SQLUtils to force UUIDs to strings for dynamic SQl queries.  This
-   * is needed since setting the column type to UUID in Postgres prevents inserts with vanilla Micronaut Data.
-   * No bug logged yet.  Affects prepareStatement.  Core MN-Data functions that fail with uuid column type: findById(), insert.
-   * Seems to be an issue with the WHERE clause.  Re-evaluate after MN-Data 1.1.1 upgrade and/or conversion to test
-   * using postgres.
+   * Works around use of deprecated constructor in the AssetPipelineService.
+   * https://github.com/bertramdev/asset-pipeline/issues/265
    *
    */
-  static boolean workAroundUuidString = true
+  static boolean workAround265 = true
 
   /**
    * Lists the current work arounds enabled.

@@ -68,7 +68,9 @@ class Order {
 
   Integer version = 0
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   Order() {
   }
@@ -142,7 +144,6 @@ class Order {
           def date = new DateOnly(new DateOnly().time - DateUtils.MILLIS_PER_DAY * (300 - random.nextInt(300)))
           def order = new Order(order: "M$i",
                                 product: products[random.nextInt(products.size())],
-                                // TODO: Restore status: statuses[random.nextInt(statuses.size())],
                                 dueDate: date,
                                 qtyToBuild: new BigDecimal(random.nextInt(99) + 1)
           )

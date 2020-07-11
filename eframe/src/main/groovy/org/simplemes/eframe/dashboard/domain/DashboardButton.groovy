@@ -10,6 +10,8 @@ import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.FieldSizes
 
@@ -72,7 +74,7 @@ class DashboardButton {
    * The panel (name) to display the activity in.  (<b>Required</b>.  No default provided.)
    * Must exist in the dashboard.
    */
-  @Column(length = FieldSizes.MAX_KEY_LENGTH, nullable = false)
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String panel
 
   /**
@@ -86,7 +88,9 @@ class DashboardButton {
   @Column(length = FieldSizes.MAX_SINGLE_LINE_LENGTH, nullable = true)
   String css
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * The primary keys for this object.

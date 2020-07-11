@@ -14,7 +14,6 @@ import sample.domain.AllFieldsDomain
 import sample.domain.Order
 import sample.domain.SampleChild
 import sample.domain.SampleParent
-import sample.domain.SampleSubClass
 import sample.pogo.FindComponentResponseDetail
 
 /**
@@ -102,8 +101,6 @@ class SimpleFieldDefinitionSpec extends BaseSpecification {
     SampleParent   | 'allFieldsDomain'  | false
     SampleParent   | 'allFieldsDomains' | false
     SampleParent   | 'sampleChildren'   | true
-    SampleSubClass | 'sampleChildren'   | true
-    SampleSubClass | 'allFieldsDomains' | false
   }
 
   def "verify that isParentReference works for supported field types"() {

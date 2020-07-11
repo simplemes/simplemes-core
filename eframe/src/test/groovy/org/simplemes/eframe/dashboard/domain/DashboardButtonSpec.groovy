@@ -1,15 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.dashboard.domain
 
 
 import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DomainTester
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -28,7 +26,7 @@ class DashboardButtonSpec extends BaseSpecification {
       maxSize 'label', FieldSizes.MAX_TITLE_LENGTH
       maxSize 'title', FieldSizes.MAX_TITLE_LENGTH
       maxSize 'url', FieldSizes.MAX_URL_LENGTH
-      maxSize 'panel', FieldSizes.MAX_KEY_LENGTH
+      maxSize 'panel', FieldSizes.MAX_CODE_LENGTH
       maxSize 'css', FieldSizes.MAX_SINGLE_LINE_LENGTH
       notNullCheck 'label'
       notNullCheck 'sequence'

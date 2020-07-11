@@ -9,6 +9,8 @@ import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
 import org.simplemes.eframe.data.format.BasicFieldFormat
 import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.domain.annotation.DomainEntity
@@ -30,7 +32,6 @@ class FieldExtension implements FieldInterface, FieldTrait {
   /**
    * The domain class name this field is applied to (full package name and class).
    */
-  // TODO: DDL Add unique constraint on domainClassName+fieldName
   @Column(length = FieldSizes.MAX_CLASS_NAME_LENGTH, nullable = false)
   String domainClassName
 
@@ -82,7 +83,9 @@ class FieldExtension implements FieldInterface, FieldTrait {
 
   Integer version = 0
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * Defines the order the fields are shown in the edit/show/etc GUIs.

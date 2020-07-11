@@ -90,7 +90,9 @@ class AllFieldsDomain {
 
   int version = 0
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   // anotherField left out intentionally for custom field editor checks.  See DefinitionEditorGUISpec.
   static fieldOrder = ['name', 'title', 'qty', 'count', 'enabled', 'dueDate', 'dateTime',

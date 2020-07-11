@@ -30,7 +30,6 @@
   <!--<logger name="asset.pipeline" level="trace"/>-->
   <logger name="io.netty.handler.logging" level="warn"/>
 
-  <logger name="org.simplemes.eframe" level="warn"/>
   <logger name="org.simplemes.eframe.application" level="warn"/>
   <logger name="org.simplemes.eframe.application.StartupHandler"
           level="error"/>  <!--warn for workaround warnings.  debug for all beans-->
@@ -42,6 +41,8 @@
   <logger name="org.simplemes.eframe.test" level="warn"/>
   <logger name="org.simplemes.eframe.search" level="warn"/>
   <logger name="org.simplemes.eframe.preference" level="warn"/> <!--trace for stack trace on null element warning-->
+  <logger name="org.simplemes.eframe" level="warn"/>
+
   <logger name="sample" level="warn"/>
   <logger name="client.to-server" level="warn"/>
   <logger name="client.dashboard" level="warn"/>

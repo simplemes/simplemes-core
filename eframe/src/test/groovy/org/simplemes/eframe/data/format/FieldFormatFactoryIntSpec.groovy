@@ -4,17 +4,16 @@
 
 package org.simplemes.eframe.data.format
 
-
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.test.BaseSpecification
 import sample.domain.SampleParent
-import sample.domain.SampleSubClass
 
 /**
  * Tests for the Factory.
  */
 class FieldFormatFactoryIntSpec extends BaseSpecification {
 
+  @SuppressWarnings('unused')
   static specNeeds = [SERVER]
 
 
@@ -25,9 +24,7 @@ class FieldFormatFactoryIntSpec extends BaseSpecification {
 
     where:
     clazz          | propertyName       | resultClass
-    SampleSubClass | 'sampleChildren'   | ChildListFieldFormat
     SampleParent   | 'sampleChildren'   | ChildListFieldFormat
-    SampleSubClass | 'allFieldsDomains' | DomainRefListFieldFormat
     SampleParent   | 'allFieldsDomains' | DomainRefListFieldFormat
   }
 

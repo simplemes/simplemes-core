@@ -4,14 +4,12 @@
 
 package org.simplemes.eframe.custom.gui
 
-
 import org.simplemes.eframe.custom.domain.FieldGUIExtension
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.SampleParent
-import sample.domain.SampleSubClass
 
 class FieldAdjusterSpec extends BaseSpecification {
 
@@ -93,23 +91,6 @@ class FieldAdjusterSpec extends BaseSpecification {
     then: "field order contains the new field in the right place"
     fieldOrder.size() == 1
     fieldOrder.findIndexOf { it == 'custom1' } >= 0
-  }
-
-  @Rollback
-  def "verify that applyUserAdjustments works with adjustments to sub-class domain"() {
-    given: 'a field order and adjustment'
-    def originalFieldOrder = DomainUtils.instance.getStaticFieldOrder(SampleSubClass)
-    def originalSize = originalFieldOrder.size()
-    def adj1 = new FieldInsertAdjustment(fieldName: 'custom1', afterFieldName: 'subTitle')
-    def extension = new FieldGUIExtension(domainName: SampleSubClass.name, adjustments: [adj1])
-    extension.save()
-
-    when: "field order is calculated"
-    def fieldOrder = FieldAdjuster.applyUserAdjustments(SampleSubClass, originalFieldOrder)
-
-    then: "field order contains the new field in the right place"
-    fieldOrder.size() == originalSize + 1
-    fieldOrder.findIndexOf { it == 'custom1' } == fieldOrder.findIndexOf { it == 'subTitle' } + 1
   }
 
   // Some constants to make the tests shorter
