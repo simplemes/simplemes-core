@@ -190,7 +190,7 @@ _ef.eframe = function () {
       };
       xhr.setRequestHeader('Cache-Control', 'no-cache');  // Never cache these.
       xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-      xhr.setRequestHeader('Accept', 'application/json');
+      xhr.setRequestHeader('Accept', 'application/json,*/*');
       xhr.send();
       return xhr;
     },

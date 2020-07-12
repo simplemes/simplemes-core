@@ -34,7 +34,7 @@ class DBAuthenticationProviderSpec extends BaseSpecification {
 
 
     when: 'the authentication is checked'
-    UserDetails res = new DBAuthenticationProvider().authenticate(new UsernamePasswordCredentials('ABC', 'XYZ')).call()
+    UserDetails res = new DBAuthenticationProvider().authenticate(mockRequest(), new UsernamePasswordCredentials('ABC', 'XYZ')).call()
 
     then: 'the user is authenticated'
     res instanceof UserDetails
@@ -47,7 +47,7 @@ class DBAuthenticationProviderSpec extends BaseSpecification {
   @Rollback
   def "verify that authenticate detects missing user record"() {
     when: 'the authentication is checked'
-    def res = new DBAuthenticationProvider().authenticate(new UsernamePasswordCredentials('ABC', 'XYZ')).call()
+    def res = new DBAuthenticationProvider().authenticate(mockRequest(), new UsernamePasswordCredentials('ABC', 'XYZ')).call()
 
     then: 'the user is authenticated'
     res instanceof AuthenticationFailed
@@ -60,7 +60,7 @@ class DBAuthenticationProviderSpec extends BaseSpecification {
     user.save()
 
     when: 'the authentication is checked'
-    def res = new DBAuthenticationProvider().authenticate(new UsernamePasswordCredentials('ABC', 'XYZ')).call()
+    def res = new DBAuthenticationProvider().authenticate(mockRequest(), new UsernamePasswordCredentials('ABC', 'XYZ')).call()
 
     then: 'the user is authenticated'
     res instanceof AuthenticationFailed
@@ -76,7 +76,7 @@ class DBAuthenticationProviderSpec extends BaseSpecification {
     }
 
     when: 'the authentication is checked'
-    AuthenticationFailed res = new DBAuthenticationProvider().authenticate(new UsernamePasswordCredentials('ABC', 'XYZ')).call()
+    AuthenticationFailed res = new DBAuthenticationProvider().authenticate(mockRequest(), new UsernamePasswordCredentials('ABC', 'XYZ')).call()
 
     then: 'the user is authenticated'
     res instanceof AuthenticationFailed

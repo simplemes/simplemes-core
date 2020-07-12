@@ -85,7 +85,7 @@ class ControllerUtilsSpec extends BaseSpecification {
 
   def "verify calculateFromAndSizeForList works for basic cases"() {
     expect:
-    ControllerUtils.instance.calculateFromAndSizeForList(map) == result
+    ControllerUtils.instance.calculateFromAndSizeForList(map) == new Tuple2(result[0], result[1])
 
     where:
     map                      | result
@@ -105,7 +105,7 @@ class ControllerUtilsSpec extends BaseSpecification {
     Holders.configuration = new EFrameConfiguration(maxRowLimit: 237)
 
     expect:
-    ControllerUtils.instance.calculateFromAndSizeForList([from: 12, size: 500]) == [12, 237]
+    ControllerUtils.instance.calculateFromAndSizeForList([from: 12, size: 500]) == new Tuple2(12, 237)
 
     cleanup:
     Holders.configuration = originalConfig
@@ -113,7 +113,7 @@ class ControllerUtilsSpec extends BaseSpecification {
 
   def "verify calculateFromAndSizeForList with allowNulls true and false"() {
     expect: 'a POGO response class with a domain reference'
-    ControllerUtils.instance.calculateFromAndSizeForList(params, allowNulls) == result
+    ControllerUtils.instance.calculateFromAndSizeForList(params, allowNulls) == new Tuple2(result[0], result[1])
 
     where:
     params | allowNulls | result
@@ -124,7 +124,7 @@ class ControllerUtilsSpec extends BaseSpecification {
 
   def "verify calculateSortingForList works for basic cases"() {
     expect:
-    ControllerUtils.instance.calculateSortingForList(map) == result
+    ControllerUtils.instance.calculateSortingForList(map) == new Tuple2(result[0], result[1])
 
     where:
     map                           | result

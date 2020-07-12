@@ -70,7 +70,11 @@ class AllFieldsDomain {
   @Nullable String notes
   @Nullable String anotherField
   @Nullable ReportTimeIntervalEnum reportTimeInterval
-  @Nullable @ManyToOne(targetEntity = Order) Order order
+
+  @Nullable
+  @ManyToOne(targetEntity = Order)
+  @MappedProperty(type = DataType.UUID)
+  Order order
 
   @Column(length = 12, nullable = true)
   @Nullable BasicStatus status = EnabledStatus.instance

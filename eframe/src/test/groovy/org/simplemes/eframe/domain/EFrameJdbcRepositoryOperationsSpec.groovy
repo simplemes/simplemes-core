@@ -8,6 +8,9 @@ package org.simplemes.eframe.domain
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
+import sample.domain.AllFieldsDomain
+import sample.domain.CustomOrderComponent
 import sample.domain.Order
 
 /**
@@ -83,6 +86,27 @@ class EFrameJdbcRepositoryOperationsSpec extends BaseSpecification {
     then: 'the right exception is thrown'
     def ex = thrown(IllegalStateException)
     UnitTestUtils.assertExceptionIsValid(ex, ['active', 'transaction'])
+  }
+
+  @Rollback
+  def "verify that updating foreign references works with null value - tests workAroundXXX"() {
+    given: 'a saved record with and without a foreign reference'
+    def afd = new AllFieldsDomain(name: 'AFD1').save()
+    def order = new Order(order: 'M1001').save()
+    def comp1 = new CustomOrderComponent(order: order, sequence: 1, product: 'PROD1', foreignReference: afd).save()
+    def comp2 = new CustomOrderComponent(order: order, sequence: 2, product: 'PROD2').save()
+
+    when: 'the record is updated'
+    comp1.product = 'PROD1A'
+    comp2.product = 'PROD2A'
+    comp1.save()
+    comp2.save()
+
+    then: 'the record is saved'
+    def comp1_a = CustomOrderComponent.findById(comp1.uuid)
+    def comp2_a = CustomOrderComponent.findById(comp2.uuid)
+    comp1_a.product == 'PROD1A'
+    comp2_a.product == 'PROD2A'
   }
 
 }

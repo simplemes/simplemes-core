@@ -1,18 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import groovy.transform.ToString
 import org.simplemes.eframe.preference.PreferenceHolder
 import org.simplemes.eframe.preference.PreferenceSettingInterface
-import org.spockframework.mock.IDefaultResponse
-import org.spockframework.mock.IMockInvocation
-import org.spockframework.mock.ZeroOrNullResponse
-import spock.mock.DetachedMockFactory
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Builds a very simple mock/stub for the PreferenceHolder that returns the given preference.
@@ -30,7 +24,7 @@ import spock.mock.DetachedMockFactory
  *
  */
 @ToString(includePackage = false, includeNames = true)
-class MockPreferenceHolder implements AutoCleanupMockInterface, IDefaultResponse {
+class MockPreferenceHolder extends PreferenceHolder implements AutoCleanupMockInterface {
 
   /**
    * The preference to return when requested, by the correct key.
@@ -51,13 +45,9 @@ class MockPreferenceHolder implements AutoCleanupMockInterface, IDefaultResponse
    *        added to this mock holder.
    */
   MockPreferenceHolder(BaseSpecification baseSpec, List<PreferenceSettingInterface> preferences) {
-    def mockFactory = new DetachedMockFactory()
-
-    holder = (PreferenceHolder) mockFactory.Stub(defaultResponse: this, PreferenceHolder)
+    holder = this
     this.preferences = preferences
-
     baseSpec.registerAutoCleanup(this)
-
   }
 
   /**
@@ -82,6 +72,7 @@ class MockPreferenceHolder implements AutoCleanupMockInterface, IDefaultResponse
    * Returns the appropriate bean implementation, if needed.
    * @return The bean implementation for the getBean() response.
    */
+  @Override
   PreferenceSettingInterface get(String name) {
     return preferences?.find() { it?.key == name }
   }
@@ -90,7 +81,8 @@ class MockPreferenceHolder implements AutoCleanupMockInterface, IDefaultResponse
    * Internal method to set/update the preference.
    * @param setting The setting to store.
    */
-  void addOrUpdatePreference(PreferenceSettingInterface setting) {
+  @Override
+  PreferenceHolder setPreference(PreferenceSettingInterface setting) {
     def settings = preferences
     def index = settings.findIndexOf() { it.key == setting.key }
     if (index >= 0) {
@@ -98,21 +90,24 @@ class MockPreferenceHolder implements AutoCleanupMockInterface, IDefaultResponse
     } else {
       settings << setting
     }
+    return this
   }
 
-
+  /**
+   * Returns the list of settings.
+   * @return The settings.
+   */
   @Override
-  Object respond(IMockInvocation invocation) {
-    //println "invocation = $invocation.method.name, args = ${invocation?.arguments}"
-    if (invocation.method.name == 'getProperty') {
-      String name = (String) invocation?.arguments[0]
-      return get(name)
-    } else if (invocation.method.name == 'getSettings') {
-      return preferences
-    } else if (invocation.method.name == 'setPreference') {
-      //noinspection GroovyAssignabilityCheck
-      addOrUpdatePreference(invocation?.arguments[0])
-    }
-    return ZeroOrNullResponse.INSTANCE.respond(invocation)
+  List getSettings() {
+    return preferences
+  }
+
+  /**
+   * Save current setting to database.
+   * @return This holder.
+   */
+  @Override
+  PreferenceHolder save() {
+    return this
   }
 }

@@ -1,21 +1,19 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.security.domain
 
-
+import io.micronaut.data.jdbc.annotation.JdbcRepository
+import io.micronaut.data.model.query.builder.sql.Dialect
 import io.micronaut.data.repository.CrudRepository
 import org.simplemes.eframe.domain.BaseRepository
 
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
-
 /**
- * The sample order repository base interface.  Provides the methods for the repo,
- * but sub-classes need to implement the dialect needed.  The sub-classes will be the concrete
- * beans generated for the runtime.
+ * The Role repository base interface.  Provides the methods for the repo.
  */
 @SuppressWarnings("unused")
+@JdbcRepository(dialect = Dialect.POSTGRES)
 interface RoleRepository extends BaseRepository, CrudRepository<Role, UUID> {
 
   Optional<Role> findByAuthority(String authority)

@@ -65,7 +65,7 @@ class FieldExtensionSpec extends BaseSpecification {
 
     then: 'the right exception is thrown'
     def ex = thrown(SimplifiedSQLException)
-    UnitTestUtils.assertExceptionIsValid(ex, ['Unique'])
+    UnitTestUtils.assertExceptionIsValid(ex, ['already', 'exists'])
   }
 
   @Rollback

@@ -14,9 +14,8 @@ Update low-level will trigger searchable top-level re-index.  Includes custom su
 Upgrade-marathon (MN, MN-D).
 ---------------------------
 Convert to using single dialect (POSTGRES) with environment.  Avoids testing on H2, runtime on Postgres.
-  Why? H2 does not support UUID or Object in MN-D.
-  Support native UUID in postgres
-  Drop H2 and sub-interface repository.
+  Fix workAroundXXX - Log bug with MN-D.
+  Cleanup deprecated Class.newInstance() use.
   Use docker/postgres for local testing to verify speed on startup.
     https://elanderson.net/2018/02/setup-postgresql-on-windows-with-docker/
     Make sure it can work on Github actions.

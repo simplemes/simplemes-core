@@ -466,7 +466,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
 
     then: 'the right exception is thrown'
     def ex = thrown(SimplifiedSQLException)
-    UnitTestUtils.assertExceptionIsValid(ex, ['Unique'])
+    UnitTestUtils.assertExceptionIsValid(ex, ['exists'])
   }
 
   @Rollback
@@ -565,7 +565,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
     DataSource dataSource = Holders.getApplicationContext().getBean(DataSource.class)
     Connection connection = DataSourceUtils.getConnection(dataSource)
     def ps = connection.prepareStatement("SELECT * from user_role where user_id=?")
-    ps.setString(1, user.uuid.toString())
+    ps.setObject(1, user.uuid)
     ps.execute()
     def resultSet = ps.getResultSet()
     def list = []

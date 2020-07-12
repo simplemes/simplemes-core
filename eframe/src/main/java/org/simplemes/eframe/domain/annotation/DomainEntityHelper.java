@@ -191,12 +191,13 @@ public class DomainEntityHelper {
     if (repo == null) {
       throw new IllegalArgumentException("Missing repository for " + object.getClass());
     }
+    deleteAllManyToMany(object);
+    deleteChildren(object);
+    // Now, delete the parent last since the children should have a foreign key on the parent field.
     if (repo instanceof CrudRepository) {
       CrudRepository<DomainEntityInterface, UUID> repo2 = (CrudRepository<DomainEntityInterface, UUID>) repo;
       repo2.delete(object);
     }
-    deleteAllManyToMany(object);
-    deleteChildren(object);
     ASTUtils.invokeGroovyMethod("org.simplemes.eframe.search.SearchHelper.instance", "handlePersistenceDelete", object);
     //SearchHelper.getInstance().handlePersistenceDelete(object);
 
@@ -551,14 +552,16 @@ public class DomainEntityHelper {
             if (child instanceof DomainEntityInterface && ann.mappedBy().length() > 0) {
               // Make sure the parent element is set before the save.
               String sql = "INSERT INTO " + tableName + " (" + fromIDName + "," + toIDName + ") VALUES (?,?)";
-
+              log.debug("saveManyToMany(): Executing {}", sql);
               try (PreparedStatement ps = getPreparedStatement(sql)) {
                 ps.setObject(1, object.getUuid());
                 ps.setObject(2, ((DomainEntityInterface) child).getUuid());
+                log.trace("saveManyToMany(): Binding parameter {} value = {}", 1, object.getUuid());
+                log.trace("saveManyToMany(): Binding parameter {} value = {}", 2, ((DomainEntityInterface) child).getUuid());
                 ps.execute();
               }
 
-              ((DomainEntityInterface) child).save();
+              //  TODO: is this needed? ((DomainEntityInterface) child).save();
             }
           }
         }

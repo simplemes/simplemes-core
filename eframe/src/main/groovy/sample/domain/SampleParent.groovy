@@ -18,7 +18,6 @@ import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.domain.annotation.DomainEntity
 
 import javax.annotation.Nullable
-import javax.persistence.CascadeType
 import javax.persistence.Column
 import javax.persistence.ManyToMany
 import javax.persistence.ManyToOne
@@ -67,12 +66,15 @@ class SampleParent implements SampleParentInterface {
   /**
    * A reference to another domain object.
    */
-  @Nullable @ManyToOne(targetEntity = AllFieldsDomain) AllFieldsDomain allFieldsDomain
+  @Nullable
+  @ManyToOne(targetEntity = AllFieldsDomain)
+  @MappedProperty(type = DataType.UUID)
+  AllFieldsDomain allFieldsDomain
 
   /**
    * A list of foreign references.
    */
-  @ManyToMany(cascade = CascadeType.ALL, mappedBy = "sample_parent_all_fields_domain")
+  @ManyToMany(mappedBy = "sample_parent_all_fields_domain")
   List<AllFieldsDomain> allFieldsDomains
 
   /**

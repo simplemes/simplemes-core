@@ -11,6 +11,7 @@ import org.simplemes.eframe.domain.annotation.DomainEntityHelper
 
 import java.sql.PreparedStatement
 import java.sql.ResultSet
+import java.sql.Timestamp
 
 /**
  * Common utility methods used to access SQL data directly. Use with caution.
@@ -127,6 +128,8 @@ class SQLUtils {
   private setArg(PreparedStatement ps, int argIndex, Object value) {
     if (value instanceof DateOnly) {
       ps.setDate(argIndex, new java.sql.Date(((DateOnly) value).time))
+    } else if (value instanceof Date) {
+      ps.setTimestamp(argIndex, new Timestamp(((Date) value).time))
     } else {
       ps.setObject(argIndex, value)
     }

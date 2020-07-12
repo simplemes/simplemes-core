@@ -95,7 +95,7 @@ class BaseAPISpecification extends BaseSpecification {
     def client = getClient()
     Flowable<HttpResponse<Map>> flowable = Flowable.fromPublisher(client.exchange(
       HttpRequest.POST("/login", [username: _userName, password: _userName])
-        .accept(MediaType.TEXT_HTML_TYPE)
+        .accept(MediaType.ALL_TYPE)
         .header("X-My-Header", "Foo"),
       Map
     ))

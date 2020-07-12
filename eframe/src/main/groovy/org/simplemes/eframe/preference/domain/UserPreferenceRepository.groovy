@@ -4,14 +4,15 @@
 
 package org.simplemes.eframe.preference.domain
 
+import io.micronaut.data.jdbc.annotation.JdbcRepository
+import io.micronaut.data.model.query.builder.sql.Dialect
 import io.micronaut.data.repository.CrudRepository
 import org.simplemes.eframe.domain.BaseRepository
 
 /**
- * The sample UserPreference repository base interface.  Provides the methods for the repo,
- * but sub-classes need to implement the dialect needed.  The sub-classes will be the concrete
- * beans generated for the runtime.
+ * The UserPreference repository base interface.  Provides the methods for the repo.
  */
+@JdbcRepository(dialect = Dialect.POSTGRES)
 interface UserPreferenceRepository extends BaseRepository, CrudRepository<UserPreference, UUID> {
   Optional<UserPreference> findByUuid(UUID uuid)
 

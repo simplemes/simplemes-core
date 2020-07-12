@@ -8,7 +8,6 @@ import ch.qos.logback.classic.Level
 import geb.spock.GebSpec
 import groovy.util.logging.Slf4j
 import io.micronaut.context.ApplicationContext
-import io.micronaut.context.env.DefaultEnvironment
 import io.micronaut.core.convert.ConversionService
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.simple.SimpleHttpHeaders
@@ -19,7 +18,6 @@ import org.junit.Rule
 import org.junit.rules.TestName
 import org.openqa.selenium.TimeoutException
 import org.simplemes.eframe.application.Holders
-import org.simplemes.eframe.application.InitialDataLoader
 import org.simplemes.eframe.application.StartupHandler
 import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.custom.annotation.ExtensionPointHelper
@@ -124,11 +122,11 @@ class BaseSpecification extends GebSpec {
    * The setup method.  This method writes the test in IDEA runner format to allow us to re-produce the
    * order of execution.  Writes each test suite to 'tmp/tests.txt'.
    */
-  @SuppressWarnings(["SystemOutPrint"])
+  @SuppressWarnings(["SystemOutPrint", 'unused'])
   def setupSpec() {
     StartupHandler.preStart()
     // Uses -DwriteTests=true to write the tests as they are executed to a text file for sequence testing.
-    // Supports DwriteTests=echo To write the test name to the output.
+    // Supports -DwriteTests=echo To write the test name to the output.
     def writeTests = System.getProperty('writeTests')
     if (writeTests) {
       if (writeTests.equalsIgnoreCase('true')) {
@@ -169,7 +167,9 @@ class BaseSpecification extends GebSpec {
       // Finally, set the environment to test it not set already
       if (!needsServer()) {
         // Store a dummy environment for non-server tests.
-        Holders.fallbackEnvironment = Holders.fallbackEnvironment ?: new DefaultEnvironment('test')
+        if (!Holders.fallbackEnvironmentNames) {
+          Holders.fallbackEnvironmentNames = ['test']
+        }
       }
 
       // See if a mock extensible field helper is needed.
@@ -260,6 +260,7 @@ class BaseSpecification extends GebSpec {
       // No db, so nothing to check
       return
     }
+    waitForInitialDataLoad()  // Make sure the data is loaded before exiting.
     def start = System.currentTimeMillis()
     def allDomains = DomainUtils.instance.allDomains
     for (clazz in allDomains) {
@@ -291,7 +292,7 @@ class BaseSpecification extends GebSpec {
       def s = clazz.instance.toString()
       if (s.contains('Mock')) {
         //throw new IllegalStateException("Mock instance left in $clazz.simpleName for test ${this.class.simpleName}.  Class = $s")
-        clazz.instance = clazz.newInstance()
+        clazz.instance = clazz.getConstructor().newInstance()
       }
     }
   }
@@ -436,8 +437,7 @@ class BaseSpecification extends GebSpec {
    * Waits up to 5 seconds.  Will throw an exception if it never finishes.
    */
   void waitForInitialDataLoad() {
-    def loader = Holders.applicationContext.getBean(InitialDataLoader)
-    if (loader.loadFinished) {
+    if (InitialDataRecords.instance.loadFinished) {
       return
     }
 
@@ -445,7 +445,8 @@ class BaseSpecification extends GebSpec {
     def elapsed = 0
     while (elapsed < 5000) {
       elapsed = System.currentTimeMillis() - start
-      if (loader.loadFinished) {
+      if (InitialDataRecords.instance.loadFinished) {
+        log.debug("waitForInitialDataLoad(): Waited {}ms", elapsed)
         return
       }
     }
@@ -660,6 +661,7 @@ class BaseSpecification extends GebSpec {
    * Enable SQL trace.  Used mainly in debugging of SQL without enabling it during startup.
    * @param includeParams If true, then parameters are logged too.  (<b>Default</b>: false).
    */
+  @SuppressWarnings('unused')
   void enableSQLTrace(boolean includeParams = false) {
     def logger = LogUtils.getLogger('io.micronaut.data')
     def oldLevel = LogUtils.getLogger('io.micronaut.data').level

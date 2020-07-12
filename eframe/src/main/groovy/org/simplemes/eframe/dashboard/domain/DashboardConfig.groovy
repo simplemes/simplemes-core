@@ -14,6 +14,7 @@ import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.misc.FieldSizes
@@ -262,7 +263,6 @@ class DashboardConfig {
   @SuppressWarnings('UnnecessaryQualifiedReference')
   static initialDataLoad() {
     // Load some test dashboard configs, but only for eframe work.
-/*
     if (DashboardConfig.count() == 0 && Holders.configuration.appName == 'EFrame') {
       DashboardConfig dashboardConfig
 
@@ -303,7 +303,6 @@ class DashboardConfig {
       //noinspection UnnecessaryQualifiedReference
       log.warn("Created ${DashboardConfig.count()} default dashboards.")
     }
-*/
 
     return null // No real initial data loaded, yet.
   }

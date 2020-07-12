@@ -36,7 +36,7 @@ class Holders {
   /**
    * A fallback environment for unit only tests and such.
    */
-  static Environment fallbackEnvironment
+  static Set<String> fallbackEnvironmentNames
 
   /**
    * The configuration.
@@ -80,11 +80,19 @@ class Holders {
    * Returns the current environment.  Supports non-server scenarios.
    * @return The environment.
    */
-  static Environment getEnvironment() {
-    if (!environment) {
-      return fallbackEnvironment
-    }
+  private static Environment getEnvironment() {
     return environment
+  }
+
+  /**
+   * Returns the current environment names.  Supports non-server scenarios.
+   * @return The active environment names.
+   */
+  private static Set<String> getEnvironmentNames() {
+    if (getEnvironment()) {
+      return getEnvironment().activeNames
+    }
+    return fallbackEnvironmentNames
   }
 
   /**
@@ -92,7 +100,7 @@ class Holders {
    * @return True if dev.
    */
   static boolean isEnvironmentDev() {
-    return getEnvironment()?.activeNames?.contains('dev')
+    return getEnvironmentNames().contains('dev')
   }
 
   /**
@@ -108,7 +116,7 @@ class Holders {
     if (simulateProductionEnvironment) {
       return false
     }
-    return getEnvironment()?.activeNames?.contains('test')
+    return getEnvironmentNames().contains('test')
   }
 
   /**

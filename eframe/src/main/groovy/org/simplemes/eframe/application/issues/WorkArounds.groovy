@@ -28,6 +28,13 @@ class WorkArounds {
   static boolean workAround265 = true
 
   /**
+   * Works around Micronaut Data issue with updating foreign references (ManyToOne with a targetEntity).
+   *
+   *
+   */
+  static boolean workAroundXXX = true
+
+  /**
    * Lists the current work arounds enabled.
    * @return
    */

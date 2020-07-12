@@ -270,13 +270,16 @@ class DomainToolkitUtils {
     // See https://docs.webix.com/mobile_calendar__date_format.html for webix details.
     def pattern = dateFormat.toPattern()
     //def orig = pattern
+    //println "pattern = $pattern"
+    pattern = pattern.replace('y', '@')  // Temporarily convert to '@' to avoid the 'y' replacements below.
     pattern = pattern.replace('MM', '%m')
     pattern = pattern.replace('M', '%n')
     pattern = pattern.replace('dd', '%x')  // Temporarily convert to 'x' to avoid the next replacement
     pattern = pattern.replace('d', '%j')
     pattern = pattern.replace('%x', '%d')  // Revert back to the toolkit '%d'
-    pattern = pattern.replace('yyyy', '%Y')
-    pattern = pattern.replace('yy', '%y')
+    pattern = pattern.replace('@@@@', '%Y')
+    pattern = pattern.replace('@@', '%y')
+    pattern = pattern.replace('@', '%y')
     pattern = pattern.replace('hh', '%G')
     pattern = pattern.replace('h', '%g')
     pattern = pattern.replace('HH', '%x') // Temporarily convert to 'x' to avoid the next replacement
@@ -286,8 +289,7 @@ class DomainToolkitUtils {
     pattern = pattern.replace('ss', '%s')
     pattern = pattern.replace('a', '%A')
 
-    //def sample = getDateFormat.format(new Date()+10)
-    //println "converted $orig ($sample) to $pattern"
+    //println "converted $orig  to $pattern"
 
     return pattern
   }

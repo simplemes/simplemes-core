@@ -4,15 +4,16 @@
 
 package sample.domain
 
-
+import io.micronaut.data.jdbc.annotation.JdbcRepository
+import io.micronaut.data.model.query.builder.sql.Dialect
 import io.micronaut.data.repository.CrudRepository
 import org.simplemes.eframe.domain.BaseRepository
 
 /**
- * The sample SampleChild repository base interface.  Provides the methods for the repo,
- * but sub-classes need to implement the dialect needed.  The sub-classes will be the concrete
- * beans generated for the runtime.
+ * The SampleChild repository base interface.  Provides the methods for the repo.
  */
+@SuppressWarnings('unused')
+@JdbcRepository(dialect = Dialect.POSTGRES)
 interface SampleChildRepository extends BaseRepository, CrudRepository<SampleChild, UUID> {
   Optional<SampleChild> findByUuid(UUID uuid)
   List<SampleChild> list()

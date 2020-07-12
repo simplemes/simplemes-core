@@ -34,6 +34,7 @@ class DashboardButton {
    * The parent dashboard this button is a child of. <b>Required.</b>
    */
   @ManyToOne
+  @MappedProperty(type = DataType.UUID)
   DashboardConfig dashboardConfig
 
   /**

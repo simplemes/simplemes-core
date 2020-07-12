@@ -41,7 +41,9 @@ class RMA {
   BigDecimal qty = 1.0
   @Nullable Date returnDate
 
-  @Nullable @ManyToOne(targetEntity = FlexType)
+  @Nullable
+  @ManyToOne(targetEntity = FlexType)
+  @MappedProperty(type = DataType.UUID)
   FlexType rmaType
 
   @DateCreated

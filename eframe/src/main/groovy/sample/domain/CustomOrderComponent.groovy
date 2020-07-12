@@ -31,6 +31,7 @@ import javax.persistence.ManyToOne
 @SuppressWarnings("unused")
 class CustomOrderComponent {
   @ManyToOne
+  @MappedProperty(type = DataType.UUID)
   Order order
 
   Integer sequence = 1
@@ -41,10 +42,12 @@ class CustomOrderComponent {
 
   @Nullable
   @ManyToOne(targetEntity = AllFieldsDomain)
+  @MappedProperty(type = DataType.UUID)
   AllFieldsDomain foreignReference
 
   @Nullable
   @ManyToOne(targetEntity = FlexType)
+  @MappedProperty(type = DataType.UUID)
   FlexType assyDataType
 
   @ExtensibleFieldHolder

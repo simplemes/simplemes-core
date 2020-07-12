@@ -4,14 +4,15 @@
 
 package org.simplemes.eframe.archive.domain
 
+import io.micronaut.data.jdbc.annotation.JdbcRepository
+import io.micronaut.data.model.query.builder.sql.Dialect
 import io.micronaut.data.repository.CrudRepository
 import org.simplemes.eframe.domain.BaseRepository
 
 /**
- * The sample ArchiveLog repository base interface.  Provides the methods for the repo,
- * but sub-classes need to implement the dialect needed.  The sub-classes will be the concrete
- * beans generated for the runtime.
+ * The ArchiveLog repository base interface.  Provides the methods for the repo.
  */
+@JdbcRepository(dialect = Dialect.POSTGRES)
 interface ArchiveLogRepository extends BaseRepository, CrudRepository<ArchiveLog, UUID> {
   Optional<ArchiveLog> findByUuid(UUID uuid)
 

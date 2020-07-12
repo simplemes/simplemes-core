@@ -31,7 +31,9 @@ class SampleGrandChild {
   // ********************************************************
 
   @ManyToOne
+  @MappedProperty(type = DataType.UUID)
   SampleChild sampleChild
+
   String grandKey
   @Nullable String title
   @Id @AutoPopulated

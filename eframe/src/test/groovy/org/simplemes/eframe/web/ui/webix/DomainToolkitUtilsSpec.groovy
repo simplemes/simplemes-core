@@ -285,17 +285,17 @@ class DomainToolkitUtilsSpec extends BaseSpecification {
 
     where:
     locale                         | dateOnlyFormat | dateFormat
-    Locale.US                      | '%n/%j/%y'     | '%n/%j/%y %g:%i:%s %A'
-    Locale.GERMANY                 | '%d.%m.%y'     | '%d.%m.%y %H:%i:%s'
-    Locale.forLanguageTag('es-ES') | '%j/%m/%y'     | '%j/%m/%y %G:%i:%s'
-    Locale.forLanguageTag('be-BY') | '%j.%n.%y'     | '%j.%n.%y %G.%i.%s'
+    Locale.US                      | '%n/%j/%y'     | '%n/%j/%y, %g:%i:%s %A'
+    Locale.GERMANY                 | '%d.%m.%y'     | '%d.%m.%y, %H:%i:%s'
+    Locale.forLanguageTag('es-ES') | '%j/%n/%y'     | '%j/%n/%y %G:%i:%s'
+    Locale.forLanguageTag('be-BY') | '%j.%m.%y'     | '%j.%m.%y, %H:%i:%s'
     Locale.forLanguageTag('fr-FR') | '%d/%m/%y'     | '%d/%m/%y %H:%i:%s'
-    Locale.forLanguageTag('en-GB') | '%d/%m/%y'     | '%d/%m/%y %H:%i:%s'
-    Locale.forLanguageTag('it-IT') | '%d/%m/%y'     | '%d/%m/%y %G.%i.%s'
+    Locale.forLanguageTag('en-GB') | '%d/%m/%y'     | '%d/%m/%y, %H:%i:%s'
+    Locale.forLanguageTag('it-IT') | '%d/%m/%y'     | '%d/%m/%y, %H:%i:%s'
     Locale.forLanguageTag('ja-JP') | '%y/%m/%d'     | '%y/%m/%d %G:%i:%s'
     Locale.forLanguageTag('pt-BR') | '%d/%m/%y'     | '%d/%m/%y %H:%i:%s'
-    Locale.forLanguageTag('ru-RU') | '%d.%m.%y'     | '%d.%m.%y %G:%i:%s'
-    Locale.forLanguageTag('zh-CN') | '%y-%n-%j'     | '%y-%n-%j %G:%i:%s'
+    Locale.forLanguageTag('ru-RU') | '%d.%m.%y'     | '%d.%m.%y, %H:%i:%s'
+    Locale.forLanguageTag('zh-CN') | '%y/%n/%j'     | '%y/%n/%j %A%g:%i:%s'
   }
 
   // verify that column width options can be passed in to buildTableColumns

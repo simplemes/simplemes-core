@@ -300,6 +300,7 @@ class UserPreferenceControllerSpec extends BaseAPISpecification {
     setCurrentUser(SecurityUtils.API_TEST_USER)
 
     when: 'the request is made'
+    waitForInitialDataLoad()
     login()
 
     then: 'the response it Ok'

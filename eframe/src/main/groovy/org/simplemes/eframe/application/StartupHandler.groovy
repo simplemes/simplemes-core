@@ -57,6 +57,8 @@ class StartupHandler {
     SearchEnginePoolExecutor.startPool()
 
     // Modify the Object mapper
+    waitForApplicationContext()
+    // Need to wait since thie handler is running in a different thread than the app context startup.
     def mapper = Holders.applicationContext.getBean(ObjectMapper)
     configureJacksonObjectMapper(mapper)
 
@@ -67,8 +69,27 @@ class StartupHandler {
     } else {
       log.debug("Disabled Initial Data Load for mock applicationContext")
     }
+  }
 
+  /**
+   * Waits for the application context to be defined.
+   */
+  void waitForApplicationContext() {
+    if (Holders.applicationContext) {
+      return
+    }
 
+    def start = System.currentTimeMillis()
+    def elapsed = 0
+    while (elapsed < 5000) {
+      elapsed = System.currentTimeMillis() - start
+      if (Holders.applicationContext) {
+        log.debug("waitForApplicationContext(): Waited {}ms", elapsed)
+        return
+      }
+    }
+
+    throw new IllegalStateException("waitForApplicationContext(): ApplicationContext was not created in ${elapsed}ms.  Is server started?")
   }
 
   /**

@@ -13,11 +13,8 @@ datasources:
     username: "mph"
     password: "mh1234"
     dialect: POSTGRES
-    #schema-generate: CREATE
-    #autoCommit: true
 
 ---
-
 flyway:
   datasources:
     default:

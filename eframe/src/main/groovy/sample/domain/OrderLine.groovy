@@ -27,6 +27,7 @@ import javax.persistence.ManyToOne
 @SuppressWarnings("unused")
 class OrderLine implements Comparable {
   @ManyToOne
+  @MappedProperty(type = DataType.UUID)
   Order order
 
   Integer sequence = 1

@@ -40,6 +40,7 @@ class SampleChild {
   // ********************************************************
 
   @ManyToOne
+  @MappedProperty(type = DataType.UUID)
   SampleParent sampleParent
 
   @Column(name = 'key_value', length = 30, nullable = false)
@@ -53,7 +54,11 @@ class SampleChild {
   @Nullable Date dateTime
   @Nullable DateOnly dueDate
   @Nullable ReportTimeIntervalEnum reportTimeInterval
-  @Nullable @ManyToOne(targetEntity = Order) Order order
+
+  @Nullable
+  @ManyToOne(targetEntity = Order)
+  @MappedProperty(type = DataType.UUID)
+  Order order
 
   /**
    * A list of grand children.

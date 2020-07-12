@@ -15,11 +15,14 @@ import io.micronaut.context.annotation.Parameter
 import io.micronaut.core.annotation.AnnotationMetadata
 import io.micronaut.data.annotation.Query
 import io.micronaut.data.exceptions.DataAccessException
+import io.micronaut.data.jdbc.mapper.JdbcQueryStatement
 import io.micronaut.data.jdbc.operations.DefaultJdbcRepositoryOperations
+import io.micronaut.data.model.DataType
 import io.micronaut.data.model.runtime.InsertOperation
 import io.micronaut.data.model.runtime.PreparedQuery
 import io.micronaut.data.model.runtime.UpdateOperation
 import io.micronaut.data.runtime.date.DateTimeProvider
+import io.micronaut.data.runtime.mapper.QueryStatement
 import io.micronaut.http.codec.MediaTypeCodec
 import io.micronaut.transaction.TransactionOperations
 import io.micronaut.transaction.jdbc.exceptions.CannotGetJdbcConnectionException
@@ -30,6 +33,8 @@ import javax.inject.Named
 import javax.sql.DataSource
 import java.lang.annotation.Annotation
 import java.sql.Connection
+import java.sql.PreparedStatement
+import java.sql.Types
 import java.util.concurrent.ExecutorService
 
 /**
@@ -69,6 +74,13 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
     super(dataSourceName, dataSource, transactionOperations, executorService, beanContext, codecs, dateTimeProvider)
     localTransactionOperations = transactionOperations
     localTransactionOperationsStatic = transactionOperations
+
+    if (WorkArounds.workAroundXXX) {
+      def clazz = getClass().superclass.superclass
+      def field = clazz.getDeclaredField('preparedStatementWriter')
+      field.setAccessible(true)
+      field.set(this, new WorkaroundJdbcQueryStatement())
+    }
   }
 
   /**
@@ -103,6 +115,7 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
       //AnnotationMetadata annotationMetadata = operation.getAnnotationMetadata()
       //String[] params = annotationMetadata.stringValues(DataMethod.class, DataMethod.META_MEMBER_PARAMETER_BINDING_PATHS)
       //String query = annotationMetadata.stringValue(Query.class).orElse(null)
+      //println "query = $query, params: $params"
       //println "thread = ${Thread.currentThread()} ${Thread.currentThread().dump()}"
       //operation.entity.version = operation.entity.version + 1
       //println "update2() operation = $operation ${operation.entity} ${operation.method}"
@@ -274,3 +287,15 @@ class AlterableAnnotationMetadata implements AnnotationMetadata {
 
 }
 
+@Slf4j
+class WorkaroundJdbcQueryStatement extends JdbcQueryStatement {
+
+  @Override
+  QueryStatement<PreparedStatement, Integer> setDynamic(@NonNull PreparedStatement statement, @NonNull Integer index, @NonNull DataType dataType, Object value) {
+    if (dataType == DataType.ENTITY) {
+      statement.setNull(index, Types.OTHER)
+      return this
+    }
+    return super.setDynamic(statement, index, dataType, value)
+  }
+}

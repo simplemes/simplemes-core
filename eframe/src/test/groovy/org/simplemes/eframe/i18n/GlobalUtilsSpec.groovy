@@ -104,7 +104,7 @@ class GlobalUtilsSpec extends BaseSpecification {
 
   def "verify that lookupLabelAndTooltip returns expected values"() {
     expect: ''
-    GlobalUtils.lookupLabelAndTooltip(labelKey, tooltipKey) == result
+    GlobalUtils.lookupLabelAndTooltip(labelKey, tooltipKey) == new Tuple2(result[0], result[1])
 
     where:
     labelKey            | tooltipKey          | result

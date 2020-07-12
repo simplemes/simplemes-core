@@ -17,7 +17,7 @@ CREATE TABLE public.all_fields_domain (
     notes                varchar(255),
     another_field        varchar(255),
     report_time_interval varchar(255),
-    order_id             varchar(255),
+    order_id             uuid,
     status               varchar(255),
     other_custom_fields  varchar(255),
     date_created         timestamp with time zone,
@@ -76,7 +76,7 @@ CREATE TABLE public.rma (
 
 CREATE TABLE public.sample_child (
     uuid                 uuid PRIMARY KEY,
-    sample_parent_id     varchar(255),
+    sample_parent_id     uuid,
     key_value            varchar(255) NOT NULL,
     sequence             integer,
     title                varchar(255),

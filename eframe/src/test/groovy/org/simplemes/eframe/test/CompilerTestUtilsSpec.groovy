@@ -1,10 +1,8 @@
-package org.simplemes.eframe.test
 /*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
 
+package org.simplemes.eframe.test
 /**
  * Tests.
  */
@@ -35,8 +33,8 @@ class CompilerTestUtilsSpec extends BaseSpecification {
     def src = """
     package sample
     
-    Yclass SampleClass {
-      String test() {
+    class SampleClass {
+      yString test() {
         return "ABC"
       }
     }
@@ -51,7 +49,7 @@ class CompilerTestUtilsSpec extends BaseSpecification {
 
     then: 'the class can be used'
     def ex = thrown(Exception)
-    UnitTestUtils.assertContainsAllIgnoreCase(ex, ['yclass'])
+    UnitTestUtils.assertContainsAllIgnoreCase(ex, ['yString'])
 
     cleanup:
     CompilerTestUtils.printCompileFailureSource = original

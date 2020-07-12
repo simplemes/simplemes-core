@@ -1,15 +1,12 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test.annotation
 
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import sample.domain.Order
-import spock.util.EmbeddedSpecRunner
-
-/*
- * Copyright Michael Houston 2019. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -51,34 +48,6 @@ class RollbackTransformationSpec extends BaseSpecification {
     Order.findByOrder('M1001') != null
 
     // When this test ends, the records will not be in the DB and the check for left over records will pass.
-  }
-
-  def "verify that rollback can compile a spock test that does not use a where clause"() {
-    given: 'a class to compile with a method marked for rollback'
-    def src = """
-      import spock.lang.Specification
-      import org.simplemes.eframe.test.annotation.Rollback
-      import sample.domain.Order
-
-      class TestSpec extends Specification {
-        @Rollback
-        def "verify that rollback use with where clause is detected"() {
-          when: 'an action is performed'
-          def a = 'ABC'
-      
-          then: 'it passes'
-          a == 'ABC'
-        }
-      }
-    """
-    def clazz = CompilerTestUtils.compileSource(src)
-
-    when: 'the method can be called'
-    EmbeddedSpecRunner runner = new EmbeddedSpecRunner()
-    runner.runClass(clazz)
-
-    then: 'the exception is thrown'
-    notThrown(Exception)
   }
 
   def "verify that rollback fails when used with a spock test that uses a where clause"() {

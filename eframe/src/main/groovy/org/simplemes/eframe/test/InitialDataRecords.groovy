@@ -1,12 +1,10 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.test
 
 import groovy.transform.ToString
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * A holder that records the initial data records that are normally loaded by all initial data loaders.
@@ -27,6 +25,11 @@ class InitialDataRecords {
    * A list of allowed left-over records.  These will not be deleted automatically on exit.
    */
   Map<String, List<String>> records = [:]
+
+  /**
+   * Set to true if the initial data load is finished.
+   */
+  boolean loadFinished = false
 
   /**
    * Register any possible new records.  These will be added to the list, if not already in the list.

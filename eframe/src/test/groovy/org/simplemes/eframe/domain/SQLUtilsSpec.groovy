@@ -12,6 +12,7 @@ import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.AllFieldsDomain
 import sample.domain.Order
 import sample.domain.OrderLine
+import spock.lang.Unroll
 
 import java.sql.PreparedStatement
 import java.sql.ResultSet
@@ -53,13 +54,13 @@ class SQLUtilsSpec extends BaseSpecification {
     order.save()
 
     when: 'the query is executed'
-    def uuidList = order.orderLines*.uuid*.toString()
+    def uuidList = order.orderLines*.uuid
     def list = SQLUtils.instance.executeQuery("SELECT * FROM ORDER_LINE where uuid IN(?) order by uuid limit ? offset ? ",
                                               OrderLine, uuidList, 10, 0)
 
     then: 'the list is correct'
     list.size() == 3
-    def uuidList2 = list*.uuid*.toString()
+    def uuidList2 = list*.uuid
     uuidList2.contains(uuidList[0])
     uuidList2.contains(uuidList[1])
     uuidList2.contains(uuidList[2])
@@ -89,7 +90,7 @@ class SQLUtilsSpec extends BaseSpecification {
     def order = new Order(order: 'M1001').save()
 
     when: 'the query is executed'
-    def list = SQLUtils.instance.executeQuery("SELECT * FROM ORDR where uuid=?", Order, order.uuid.toString())
+    def list = SQLUtils.instance.executeQuery("SELECT * FROM ORDR where uuid=?", Order, order.uuid)
 
     then: 'the list is correct'
     list.size() == 1
@@ -98,6 +99,7 @@ class SQLUtilsSpec extends BaseSpecification {
     list[0] == order
   }
 
+  @Unroll
   def "verify that executeQuery works - supported argument scenarios"() {
     when: 'the query is executed'
     def afd = null
@@ -152,7 +154,7 @@ class SQLUtilsSpec extends BaseSpecification {
     ResultSet rs = null
     try {
       ps = SQLUtils.instance.getPreparedStatement(sql)
-      ps.setString(1, order.getUuid().toString())
+      ps.setObject(1, order.getUuid())
       ps.execute()
       rs = ps.getResultSet()
       while (rs.next()) {

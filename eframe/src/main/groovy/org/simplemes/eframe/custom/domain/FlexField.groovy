@@ -36,6 +36,7 @@ class FlexField implements FieldInterface, FieldTrait {
    * The parent flex type this field is a child of.
    */
   @ManyToOne
+  @MappedProperty(type = DataType.UUID)
   FlexType flexType
 
   /**

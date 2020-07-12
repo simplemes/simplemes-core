@@ -121,7 +121,7 @@ dependencies {
   }
 */
   test {
-    useJUnitPlatform()
+    useJUnitPlatform()  // Forces Junit5 for Spock in Gradle tests.
   }
   compile "org.seleniumhq.selenium:selenium-chrome-driver:$webDriversVersion"
   compile "org.seleniumhq.selenium:selenium-firefox-driver:$webDriversVersion"
@@ -131,9 +131,9 @@ dependencies {
   }
 
   
-  // runtime 'mysql:mysql-connector-java:5.1.36'
+  // runtime 'mysql:mysql-connector-java:5.1.36 '
   // https://mvnrepository.com/artifact/org.postgresql/postgresql
-  compile group: 'org.postgresql', name: 'postgresql', version: '42.2.6'
+  compile group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
 
 
   // For Java code

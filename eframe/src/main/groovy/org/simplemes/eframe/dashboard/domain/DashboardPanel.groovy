@@ -30,8 +30,10 @@ class DashboardPanel {
   /**
    * The parent dashboard this is a child of. <b>Required.</b>
    */
+  @ManyToOne
+  @MappedProperty(type = DataType.UUID)
   @SuppressWarnings('unused')
-  @ManyToOne DashboardConfig dashboardConfig
+  DashboardConfig dashboardConfig
 
   /**
    * The panel's index in the dashboard's list of panels. (Set automatically during validation).
