@@ -34,9 +34,6 @@ jobs:
         with:
           java-version: 14
       - name: Build and Test
-        run: |
-          cd eframe
-          ../gradlew test --tests *FlexTypeSpec
-        # run: ./gradlew cleanAll testAll -DwriteTests=false
+        run: ./gradlew cleanAll testAll -DwriteTests=false --tests *FlexTypeSpec
 #      - name: Upload
 #        run: ./gradlew bintrayUploadAll -Dbintray_key=${{ secrets.bintray_key }}
