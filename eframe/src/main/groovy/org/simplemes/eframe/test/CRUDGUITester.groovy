@@ -720,7 +720,7 @@ class CRUDGUITester {
   @SuppressWarnings("GrReassignedInClosureLocalVar")
   void testCreatePage() {
     // Create a a default record for comparison to the displayed values.
-    def mainRecord = _domain.newInstance()
+    def mainRecord = _domain.getDeclaredConstructor().newInstance()
     log.debug("testCreatePage(): Checking fields {}", effectiveCreateFields)
     go("/create")
     waitForCompletion()
@@ -990,6 +990,7 @@ class CRUDGUITester {
 
     // Now, tab through the fields, setting the values are defined in the rowData
     def childDomainClass = fieldDef.referenceType
+    def fieldDefinitions = DomainUtils.instance.getFieldDefinitions(childDomainClass)
     def fieldOrder = DomainUtils.instance.getStaticFieldOrder(childDomainClass)
     for (field in fieldOrder) {
       def cellValue = rowData[field]
@@ -1002,13 +1003,16 @@ class CRUDGUITester {
         } else {
           def s = formatExpectedValueForShow(cellValue)
           _tester.sendKey(s)
+          def fieldFormat = fieldDefinitions[field].format
+          if (fieldFormat == EnumFieldFormat.instance ||
+            fieldFormat == EncodedTypeFieldFormat.instance ||
+            fieldFormat == DomainReferenceFieldFormat.instance) {
+            _tester.waitForGridComboboxInputValue(s as String)
+          }
         }
       }
-
       _tester.sendKey(Keys.TAB)
     }
-
-
   }
 
   /**
@@ -1212,7 +1216,7 @@ class CRUDGUITester {
   def createRecord(Map params) {
     def res = null
     _domain.withTransaction {
-      def object = _domain.newInstance()
+      def object = _domain.getDeclaredConstructor().newInstance()
       DomainBinder.build().bind(object, params)
       object.save()
       def list = recordsCreated[_domain]

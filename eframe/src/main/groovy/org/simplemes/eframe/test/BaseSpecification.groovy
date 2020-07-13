@@ -14,8 +14,6 @@ import io.micronaut.http.simple.SimpleHttpHeaders
 import io.micronaut.http.simple.SimpleHttpParameters
 import io.micronaut.runtime.server.EmbeddedServer
 import io.micronaut.transaction.jdbc.DataSourceUtils
-import org.junit.Rule
-import org.junit.rules.TestName
 import org.openqa.selenium.TimeoutException
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.application.StartupHandler
@@ -31,7 +29,6 @@ import org.simplemes.eframe.misc.LogUtils
 import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.security.SecurityUtils
-import spock.lang.Shared
 
 import javax.sql.DataSource
 import java.sql.Connection
@@ -188,47 +185,9 @@ class BaseSpecification extends GebSpec {
       def start = System.currentTimeMillis()
       embeddedServer = ApplicationContext.run(EmbeddedServer)
       System.out.println("Started Server ${System.currentTimeMillis() - start}ms")
-      executeTestDDLStatements()
 
       log.debug("All Beans = ${Holders.applicationContext.getAllBeanDefinitions()*.name}")
     }
-  }
-
-  /**
-   * Executes any DDL Statements needed for a test database (H2).
-   * Checks all loaded modules (via classpath) for 'ddl/_testH2.sql' files.
-   */
-  void executeTestDDLStatements() {
-    FieldExtension.withTransaction {
-      def resources = getClass().classLoader.getResources('ddl/_testH2.sql')
-      for (url in resources) {
-        def inputStream = null
-        try {
-          log.debug("executeTestDDLStatements(): Executing statements from {} ", url)
-          inputStream = url.openStream()
-          List<String> lines = []
-          //noinspection GroovyMissingReturnStatement
-          inputStream.eachLine { line ->
-            // Put the DDL lines in an array since the log.debug() method is not found inside of this closure for some reason.
-            if (line.contains(';')) {
-              line = line - ';'
-              lines << line
-            }
-          }
-          for (line in lines) {
-            log.debug("executeTestDDLStatements(): Executing {} ", line)
-            javax.sql.DataSource dataSource = org.simplemes.eframe.application.Holders.getApplicationContext().getBean(javax.sql.DataSource.class)
-            java.sql.Connection connection = io.micronaut.transaction.jdbc.DataSourceUtils.getConnection(dataSource)
-            def ps = connection.prepareStatement(line)
-            ps.execute()
-          }
-
-        } finally {
-          inputStream?.close()
-        }
-      }
-    }
-
   }
 
   /**
@@ -318,30 +277,23 @@ class BaseSpecification extends GebSpec {
   /**
    * This method is called when the report fails.   It is sent by global Spock extension BaseFailureListener.
    */
-  void reportFailure(String title = null) {
+  void reportFailure(String methodName = null) {
     if (needs(GUI)) {
-      report(title ?: 'failure')
+      report(methodName ?: 'unknown-method-name')
     }
   }
 
   /**
    * A running counter to make sure we don't have screen shot name collisions.
    */
-  @Shared
-  int reportScreenShotCount = 1
-
-  /**
-   * The test name.
-   */
-  @Rule
-  TestName gebReportingSpecTestName
+  static int reportScreenShotCount = 1
 
   /**
    * Writes the screen shot to the reports directory.
-   * @param label The label to add to the end of the file names generated.
+   * @param methodName The method that failed.
    */
-  void report(String label) {
-    def s = createReportLabel(label)
+  void report(String methodName) {
+    def s = createReportLabel(methodName)
     log.debug('Logging failure screen shot to {}', s)
     browser.report(s)
     reportScreenShotCount++
@@ -349,13 +301,13 @@ class BaseSpecification extends GebSpec {
 
   /**
    * Builds a unique file name.
-   * @param label The core label.
+   * @param methodName The core label.
    * @return The unique file name.
    */
-  String createReportLabel(String label = "") {
-    def methodName = gebReportingSpecTestName?.methodName ?: 'fixture'
+  String createReportLabel(String methodName = "") {
+    def className = this.class.simpleName
     def numberFormat = "%03d"
-    return "${String.format(numberFormat, reportScreenShotCount)}-$methodName-$label"
+    return "$className-$methodName-${String.format(numberFormat, reportScreenShotCount)}"
   }
 
   /**

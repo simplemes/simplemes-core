@@ -54,9 +54,9 @@ class MultiComboboxWidgetGUISpec extends BaseGUISpecification {
     SampleParent.withTransaction {
       def record = SampleParent.findByName('ABC')
       assert record.allFieldsDomains.size() == 3
-      assert record.allFieldsDomains[0] == listOfDomains[0]
-      assert record.allFieldsDomains[1] == listOfDomains[9]
-      assert record.allFieldsDomains[2] == listOfDomains[1]
+      assert record.allFieldsDomains.contains(listOfDomains[0])
+      assert record.allFieldsDomains.contains(listOfDomains[9])
+      assert record.allFieldsDomains.contains(listOfDomains[1])
       true
     }
   }

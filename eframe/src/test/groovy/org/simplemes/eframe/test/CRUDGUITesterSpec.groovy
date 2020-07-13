@@ -11,6 +11,7 @@ import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
 import sample.domain.Order
+import sample.domain.SampleChild
 import sample.domain.SampleParent
 import spock.lang.IgnoreIf
 
@@ -21,7 +22,7 @@ import spock.lang.IgnoreIf
 class CRUDGUITesterSpec extends BaseGUISpecification {
 
   @SuppressWarnings("unused")
-  static dirtyDomains = [AllFieldsDomain, Order]
+  static dirtyDomains = [AllFieldsDomain, Order, SampleChild, SampleParent]
 
   def "verify that the standard GUI definition pages work"() {
     given: 'some dates'

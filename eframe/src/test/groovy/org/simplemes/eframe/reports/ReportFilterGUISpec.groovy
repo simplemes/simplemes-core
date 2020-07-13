@@ -91,7 +91,7 @@ class ReportFilterGUISpec extends BaseGUISpecification {
       PreferenceHolder preference = PreferenceHolder.find {
         page ReportHelper.REPORT_PAGE
         user 'admin'
-        element SAMPLE_REPORT
+        element ReportFilterGUISpec.SAMPLE_REPORT
       }
       assert preference['name'].value == 'record_5'
       assert preference['reportTimeInterval'].value == 'CUSTOM_RANGE'
@@ -113,6 +113,9 @@ class ReportFilterGUISpec extends BaseGUISpecification {
 
     when: 'the report interval is changed to custom'
     reportTimeInterval.input.value(ReportTimeIntervalEnum.CUSTOM_RANGE.toStringLocalized())
+    waitFor {  // Waits for the input to finish before TAB out.
+      reportTimeInterval.input.focused
+    }
     sendKey(Keys.TAB)
 
     then: 'we wait for the field to change to editable'

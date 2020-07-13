@@ -58,9 +58,9 @@ class OrderController extends BaseCrudRestController {
   }
 
   /**
-   * The dummy work list values.
+   * A static list of UUIDs for the dummy work list.
    */
-  static workList
+  static List<UUID> workListUUIDs = []
 
   /**
    * Returns a list (JSON formatted) that contains a POGO list of values.  Dummy static list.
@@ -77,26 +77,26 @@ class OrderController extends BaseCrudRestController {
     sortField = sortField ?: 'order'
     sortDir = sortDir ?: 'asc'
 
-    // Build some dummy data
-    if (!workList) {
-      def products = ['BIKE-27', 'BIKE-24', 'BIKE-21']
-      def workCenter = params.workCenter ?: ''
-      workList = []
-      def rng = new Random(1)
+    if (!workListUUIDs) {
+      // Create some UUIDs that can be re-used for later calls.
       for (i in (1..WORK_RECORD_COUNT)) {
-        def qtyInQueue = 10.0 * rng.nextDouble() as BigDecimal
-        def qtyInWork = 10.0 * rng.nextDouble() as BigDecimal
-        def order = "M1${sprintf("%03d", i)}"
-        def product = products[rng.nextInt(products.size())]
-        workList << new FindWorkResponseDetail(qtyInQueue: qtyInQueue, order: order, qtyInWork: qtyInWork,
-                                               product: product, workCenter: workCenter,
-                                               id: UUID.randomUUID())
+        workListUUIDs << UUID.randomUUID()
       }
     }
-    // Each time this is re-displayed, we get a different qtyInWork.
+
+    // Build some dummy data
+    def workList = []
+    def products = ['BIKE-27', 'BIKE-24', 'BIKE-21']
+    def workCenter = params.workCenter ?: ''
     def rng = new Random()
-    workList.each {
-      it.qtyInWork = 10.0 * rng.nextDouble() as BigDecimal
+    for (i in (1..WORK_RECORD_COUNT)) {
+      def qtyInQueue = 10.0 * rng.nextDouble() as BigDecimal
+      def qtyInWork = 10.0 * rng.nextDouble() as BigDecimal
+      def order = "M1${sprintf("%03d", i)}"
+      def product = products[rng.nextInt(products.size())]
+      workList << new FindWorkResponseDetail(qtyInQueue: qtyInQueue, order: order, qtyInWork: qtyInWork,
+                                             product: product, workCenter: workCenter,
+                                             id: workListUUIDs[i - 1])
     }
 
     // Now, sort the list as needed

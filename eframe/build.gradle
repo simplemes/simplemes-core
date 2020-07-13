@@ -39,10 +39,11 @@ apply plugin: 'org.asciidoctor.convert'
 // Common tasks from the overall common.gradle file provides: version, bintrayUpload, maven artifact creation.
 apply from: "../gradle/common.gradle"
 
-
+// Force some specific versions on all dependencies.
 configurations.all {
   resolutionStrategy {
     eachDependency { DependencyResolveDetails details ->
+      // Force Groovy 3.0.3
       if (details.requested.group == 'org.codehaus.groovy') {
         details.useVersion('3.0.3')
       }

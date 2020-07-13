@@ -181,7 +181,7 @@ class BaseGUISpecification extends BaseSpecification {
    */
   void sendKey(Object keys) {
     interact {
-      sendKeys(keys)
+      sendKeys(keys as String)
     }
   }
 
@@ -196,6 +196,17 @@ class BaseGUISpecification extends BaseSpecification {
       count = (int) domainClass.count()
     }
     return count > 0
+  }
+
+  /**
+   * Waits for the combobox in a grid to display the input value.  Assumes the focus is in the cell with
+   * the combobox.
+   * @param value The value in the current combobox editor field.
+   */
+  void waitForGridComboboxInputValue(String value) {
+    waitFor {
+      $('div.webix_dt_editor').find('input').value().contains(value)
+    }
   }
 
   /**

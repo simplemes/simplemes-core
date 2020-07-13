@@ -4,7 +4,6 @@
 
 package org.simplemes.eframe.web.ui.webix.widget
 
-
 import org.openqa.selenium.Keys
 import org.simplemes.eframe.data.format.DomainReferenceFieldFormat
 import org.simplemes.eframe.data.format.EncodedTypeFieldFormat
@@ -117,9 +116,11 @@ class GridWidgetGUISpec extends BaseGUISpecification {
     sendKey(Keys.TAB)
 
     sendKey(EnumFieldFormat.instance.toStringLocalized())   // Format field
+    waitForGridComboboxInputValue(EnumFieldFormat.instance.toStringLocalized())
     sendKey(Keys.TAB)
 
     sendKey(ReportTimeIntervalEnum.YESTERDAY.toStringLocalized())   // report Time Interval field
+    waitForGridComboboxInputValue(ReportTimeIntervalEnum.YESTERDAY.toStringLocalized())
     sendKey(Keys.TAB)
 
     sendKey(order.order)   // Order field

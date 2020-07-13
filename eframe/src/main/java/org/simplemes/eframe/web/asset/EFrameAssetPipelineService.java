@@ -16,10 +16,11 @@ import io.micronaut.http.MutableHttpResponse;
 import io.micronaut.http.filter.ServerFilterChain;
 import io.micronaut.http.server.types.files.StreamedFile;
 import io.reactivex.Flowable;
-import org.simplemes.eframe.application.issues.WorkArounds;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Collection;
@@ -108,7 +109,17 @@ public class EFrameAssetPipelineService extends AssetPipelineService {
 
     }
 
-    if (WorkArounds.getWorkAround265()) {
+    // Use reflection to find the work around 265.
+    Boolean workAround265 = false;
+    try {
+      Class waClass = Class.forName("org.simplemes.eframe.application.issues.WorkArounds");
+      @SuppressWarnings("unchecked")
+      Method method = waClass.getDeclaredMethod("getWorkAround265");
+      workAround265 = (Boolean) method.invoke(null);
+    } catch (ClassNotFoundException | NoSuchMethodException | IllegalAccessException | InvocationTargetException ignored) {
+    }
+
+    if (workAround265) {
       return handleAssetWorkAround(filename, contentType, encoding, request, chain);
     } else {
       return super.handleAsset(filename, contentType, encoding, request, chain);
@@ -183,7 +194,7 @@ public class EFrameAssetPipelineService extends AssetPipelineService {
   private boolean isDigestVersion(String uri) {
     String manifestPath = uri;
     Properties manifest = AssetPipelineConfigHolder.manifest;
-    return manifest.getProperty(manifestPath, null) != null ? false : true;
+    return manifest.getProperty(manifestPath, null) == null;
   }
 
   private String getCurrentETag(String uri) {
