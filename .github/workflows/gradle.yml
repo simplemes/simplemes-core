@@ -14,7 +14,9 @@ jobs:
         image: postgres
         # Provide the password for postgres
         env:
+          POSTGRES_USER: mph
           POSTGRES_PASSWORD: mh1234
+          POSTGRES_DB: eframe_test
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -34,6 +36,6 @@ jobs:
         with:
           java-version: 14
       - name: Build and Test
-        run: ./gradlew cleanAll testAll -DwriteTests=false --tests *FlexTypeSpec
+        run: ./gradlew cleanAll testAll -DwriteTests=false 
 #      - name: Upload
 #        run: ./gradlew bintrayUploadAll -Dbintray_key=${{ secrets.bintray_key }}
