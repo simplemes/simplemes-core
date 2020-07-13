@@ -39,16 +39,17 @@ class DateUtilsSpec extends BaseSpecification {
 
   def "verify that format works for display"() {
     expect:
-    DateUtils.formatDate(new Date(UnitTestUtils.SAMPLE_TIME_MS), Locale.US) == '2/13/09, 6:31:30 PM'
-    DateUtils.formatDate(new Date(UnitTestUtils.SAMPLE_TIME_MS), Locale.GERMANY) == '13.02.09, 18:31:30'
+    // Need to remove the comma's since some versions of the JDK inserts a comma after it (gradle vs. IDEA difference).
+    DateUtils.formatDate(new Date(UnitTestUtils.SAMPLE_TIME_MS), Locale.US).replace(',', '') == '2/13/09 6:31:30 PM'
+    DateUtils.formatDate(new Date(UnitTestUtils.SAMPLE_TIME_MS), Locale.GERMANY).replace(',', '') == '13.02.09 18:31:30'
     DateUtils.formatDate(new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS), Locale.US) == '6/15/10'
     DateUtils.formatDate(new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS), Locale.GERMANY) == '15.06.10'
   }
 
   def "verify that determineDateFormat returns the right format"() {
     expect:
-    DateUtils.getDateFormat(Locale.US).toPattern() == 'M/d/yy, h:mm:ss a'
-    DateUtils.getDateFormat(Locale.GERMANY).toPattern() == 'dd.MM.yy, HH:mm:ss'
+    DateUtils.getDateFormat(Locale.US).toPattern().replace(',', '') == 'M/d/yy h:mm:ss a'
+    DateUtils.getDateFormat(Locale.GERMANY).toPattern().replace(',', '') == 'dd.MM.yy HH:mm:ss'
     DateUtils.getDateOnlyFormat(Locale.US).toPattern() == 'M/d/yy'
     DateUtils.getDateOnlyFormat(Locale.GERMANY).toPattern() == 'dd.MM.yy'
   }

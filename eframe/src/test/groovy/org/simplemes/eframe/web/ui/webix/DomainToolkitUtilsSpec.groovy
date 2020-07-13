@@ -16,7 +16,6 @@ import org.simplemes.eframe.data.format.EnumFieldFormat
 import org.simplemes.eframe.data.format.IntegerFieldFormat
 import org.simplemes.eframe.data.format.LongFieldFormat
 import org.simplemes.eframe.data.format.StringFieldFormat
-import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.test.BaseSpecification
@@ -276,26 +275,38 @@ class DomainToolkitUtilsSpec extends BaseSpecification {
     !page.contains('scheme:{')
   }
 
-  def "verify that convertDateFormatToToolkit converts date correctly"() {
+  def "verify that convertDateFormatToToolkit converts supported date elements correctly"() {
     expect: 'the format is converted correctly'
-    def s1 = DomainToolkitUtils.instance.convertDateFormatToToolkit((SimpleDateFormat) DateUtils.getDateOnlyFormat(locale))
-    s1 == dateOnlyFormat
-    def s2 = DomainToolkitUtils.instance.convertDateFormatToToolkit((SimpleDateFormat) DateUtils.getDateFormat(locale))
-    s2 == dateFormat
+    //def sdf1 = (SimpleDateFormat) DateUtils.getDateOnlyFormat(locale)
+    //def sdf2 = (SimpleDateFormat) DateUtils.getDateFormat(locale)
+    //println "'${sdf1.toPattern()}' | '${DomainToolkitUtils.instance.convertDateFormatToToolkit(sdf1)}' // $locale"
+    //println "'${sdf2.toPattern()}' | '${DomainToolkitUtils.instance.convertDateFormatToToolkit(sdf2)}' // $locale"
 
+    DomainToolkitUtils.instance.convertDateFormatToToolkit(new SimpleDateFormat(javaFormat)) == toolkitFormat
     where:
-    locale                         | dateOnlyFormat | dateFormat
-    Locale.US                      | '%n/%j/%y'     | '%n/%j/%y, %g:%i:%s %A'
-    Locale.GERMANY                 | '%d.%m.%y'     | '%d.%m.%y, %H:%i:%s'
-    Locale.forLanguageTag('es-ES') | '%j/%n/%y'     | '%j/%n/%y %G:%i:%s'
-    Locale.forLanguageTag('be-BY') | '%j.%m.%y'     | '%j.%m.%y, %H:%i:%s'
-    Locale.forLanguageTag('fr-FR') | '%d/%m/%y'     | '%d/%m/%y %H:%i:%s'
-    Locale.forLanguageTag('en-GB') | '%d/%m/%y'     | '%d/%m/%y, %H:%i:%s'
-    Locale.forLanguageTag('it-IT') | '%d/%m/%y'     | '%d/%m/%y, %H:%i:%s'
-    Locale.forLanguageTag('ja-JP') | '%y/%m/%d'     | '%y/%m/%d %G:%i:%s'
-    Locale.forLanguageTag('pt-BR') | '%d/%m/%y'     | '%d/%m/%y %H:%i:%s'
-    Locale.forLanguageTag('ru-RU') | '%d.%m.%y'     | '%d.%m.%y, %H:%i:%s'
-    Locale.forLanguageTag('zh-CN') | '%y/%n/%j'     | '%y/%n/%j %A%g:%i:%s'
+    javaFormat           | toolkitFormat
+    'M/d/yy'             | '%n/%j/%y' // en_US
+    'M/d/yy, h:mm:ss a'  | '%n/%j/%y, %g:%i:%s %A' // en_US
+    'dd.MM.yy'           | '%d.%m.%y' // de_DE
+    'dd.MM.yy, HH:mm:ss' | '%d.%m.%y, %H:%i:%s' // de_DE
+    'd/M/yy'             | '%j/%n/%y' // es_ES
+    'd/M/yy H:mm:ss'     | '%j/%n/%y %G:%i:%s' // es_ES
+    'd.MM.yy'            | '%j.%m.%y' // be_BY
+    'd.MM.yy, HH:mm:ss'  | '%j.%m.%y, %H:%i:%s' // be_BY
+    'dd/MM/y'            | '%d/%m/%y' // fr_FR
+    'dd/MM/y HH:mm:ss'   | '%d/%m/%y %H:%i:%s' // fr_FR
+    'dd/MM/y'            | '%d/%m/%y' // en_GB
+    'dd/MM/y, HH:mm:ss'  | '%d/%m/%y, %H:%i:%s' // en_GB
+    'dd/MM/yy'           | '%d/%m/%y' // it_IT
+    'dd/MM/yy, HH:mm:ss' | '%d/%m/%y, %H:%i:%s' // it_IT
+    'y/MM/dd'            | '%y/%m/%d' // ja_JP
+    'y/MM/dd H:mm:ss'    | '%y/%m/%d %G:%i:%s' // ja_JP
+    'dd/MM/y'            | '%d/%m/%y' // pt_BR
+    'dd/MM/y HH:mm:ss'   | '%d/%m/%y %H:%i:%s' // pt_BR
+    'dd.MM.y'            | '%d.%m.%y' // ru_RU
+    'dd.MM.y, HH:mm:ss'  | '%d.%m.%y, %H:%i:%s' // ru_RU
+    'y/M/d'              | '%y/%n/%j' // zh_CN
+    'y/M/d ah:mm:ss'     | '%y/%n/%j %A%g:%i:%s' // zh_CN
   }
 
   // verify that column width options can be passed in to buildTableColumns

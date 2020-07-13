@@ -17,7 +17,7 @@ plugins {
   id "io.spring.dependency-management" version "1.0.6.RELEASE"
   id 'maven-publish'
   id "com.jfrog.bintray" version "1.8.4"
-  id "com.bertramlabs.asset-pipeline" version "3.0.6"
+  id "com.bertramlabs.asset-pipeline" version "3.0.10"
   id "org.owasp.dependencycheck" version "4.0.0.1"
 }
 
@@ -51,7 +51,7 @@ dependencyManagement {
 dependencies {
   compileOnly "io.micronaut:micronaut-http-client"
   compileOnly "io.micronaut:micronaut-http-server-netty"
-  compileOnly "io.micronaut:micronaut-runtime-groovy"
+  compileOnly "io.micronaut.groovy:micronaut-runtime-groovy"
   compileOnly "io.micronaut:micronaut-validation"
   compileOnly "ch.qos.logback:logback-classic:$logbackVersion"
   compileOnly "io.micronaut:micronaut-inject-groovy"
@@ -60,7 +60,7 @@ dependencies {
   }
 
   // Changes from std micronaut build.gradle
-  compileOnly  "io.micronaut:micronaut-views"
+  compileOnly "io.micronaut.views:micronaut-views-handlebars"
   testImplementation  "com.github.jknack:handlebars:4.1.0"
   testImplementation  ("com.bertramlabs.plugins:asset-pipeline-micronaut:$assetPipelineVersion") {
     exclude group: "io.micronaut", module: "http-server-netty"
