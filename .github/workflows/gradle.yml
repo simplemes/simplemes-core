@@ -16,7 +16,7 @@ jobs:
         env:
           POSTGRES_USER: mph
           POSTGRES_PASSWORD: mh1234
-          #POSTGRES_DB: eframe_test
+          POSTGRES_DB: test
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -40,13 +40,6 @@ jobs:
 #        sudo apt-get update
 #        sudo apt-get -yq install libpq-dev postgresql-client-12
 #  Look into: docker-entrypoint-initdb.d from https://hub.docker.com/_/postgres
-      - name: Check installed components for PostgreSQL
-        run: |
-          pg_isready
-          psql "host=localhost user=eframe_test password=mh1234 " -c "\l"
-          psql "host=localhost user=eframe_test password=mh1234 " -c "CREATE DATABASE mes_test"
-          psql "host=localhost user=eframe_test password=mh1234 " -c "\l"
-
       - name: Check installed components for PostgreSQL
         run: |
           pg_isready
