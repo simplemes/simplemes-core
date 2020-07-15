@@ -16,7 +16,7 @@ jobs:
         env:
           POSTGRES_USER: mph
           POSTGRES_PASSWORD: mh1234
-          POSTGRES_DB: eframe_test
+          #POSTGRES_DB: eframe_test
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
@@ -31,6 +31,27 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v1
+
+      - name: Install PostgreSQL 12 client required for loading structure.sql
+      run: |
+        sudo bash -c "echo deb http://apt.postgresql.org/pub/repos/apt/ bionic-pgdg main >> /etc/apt/sources.list.d/pgdg.list"
+        wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
+        sudo apt-get update
+        sudo apt-get -yq install libpq-dev postgresql-client-12
+
+      - name: Check installed components for PostgreSQL
+        run: |
+          pg_isready
+          psql "host=localhost user=eframe_test password=mh1234 " << EOF
+          CREATE DATABASE mes_test
+          \l
+          \q
+          EOF
+          
+      - name: Check installed components for PostgreSQL
+        run: |
+          pg_isready
+
       - name: Set up JDK 14
         uses: actions/setup-java@v1
         with:
