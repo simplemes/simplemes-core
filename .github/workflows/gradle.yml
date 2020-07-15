@@ -42,12 +42,10 @@ jobs:
       - name: Check installed components for PostgreSQL
         run: |
           pg_isready
-          psql "host=localhost user=eframe_test password=mh1234 " << EOF
-          CREATE DATABASE mes_test
-          \l
-          \q
-          EOF
-          
+          psql "host=localhost user=eframe_test password=mh1234 " -c "\l"
+          psql "host=localhost user=eframe_test password=mh1234 " -c "CREATE DATABASE mes_test"
+          psql "host=localhost user=eframe_test password=mh1234 " -c "\l"
+
       - name: Check installed components for PostgreSQL
         run: |
           pg_isready
