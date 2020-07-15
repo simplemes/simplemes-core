@@ -35,6 +35,13 @@ class WorkArounds {
   static boolean workAroundXXX = true
 
   /**
+   * Works around Micronaut Data issue with the JsonCodec wrapping JSONB data in quotes and escaping them.
+   *
+   *
+   */
+  static boolean workAroundXYZ = true
+
+  /**
    * Lists the current work arounds enabled.
    * @return
    */

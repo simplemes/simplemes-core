@@ -18,6 +18,7 @@ import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.json.TypeableMapper
 import org.simplemes.eframe.misc.FieldSizes
 
+import javax.annotation.Nullable
 import javax.persistence.Column
 
 /**
@@ -46,8 +47,8 @@ class FieldGUIExtension {
   /**
    * The JSON form of the adjustments.  This is the value persisted to the database.
    */
-  @Column(nullable = true)
-  @MappedProperty(type = DataType.STRING, definition = 'TEXT')
+  @Nullable
+  @MappedProperty(type = DataType.JSON)
   String adjustmentsText
 
   /**

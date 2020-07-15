@@ -6,13 +6,11 @@ package org.simplemes.eframe.data.annotation
 
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
-import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
-import sample.domain.AllFieldsDomain
 import sample.domain.RMA
 
 /**
@@ -72,7 +70,7 @@ class ExtensibleFieldHolderTransformationSpec extends BaseSpecification {
     def clazz = compileSimpleClass("@ExtensibleFieldHolder String customFields")
 
     when: "an instance is made and values are stored in the added field"
-    def instance = clazz.newInstance()
+    def instance = clazz.getConstructor().newInstance()
 
     then: "the storage field works."
     instance.setFieldValue('xyz', 'pdq')
@@ -90,17 +88,6 @@ class ExtensibleFieldHolderTransformationSpec extends BaseSpecification {
     def complexHolderMap = instance[ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME]
     complexHolderMap instanceof Map
     complexHolderMap[ExtensibleFieldHolder.COMPLEX_THIS_NAME] == instance
-  }
-
-  def "verify that field size and field name can be overridden in the annotation in a real domain"() {
-    expect: 'the field size constraint is set correctly'
-    def property = DomainUtils.instance.getPersistentField(AllFieldsDomain, 'otherCustomFields')
-    property.maxLength == 513
-
-    and: "the new field is defined"
-    def o = new AllFieldsDomain()
-    o.setOtherCustomFields('XYZ')
-    o.otherCustomFields == 'XYZ'
   }
 
   def "verify that the annotation detects when the getFieldValue method already exists"() {
@@ -154,7 +141,7 @@ class ExtensibleFieldHolderTransformationSpec extends BaseSpecification {
     def flexType = DataGenerator.buildFlexType(fieldCount: 2)
 
     and: 'a domain using the flex type'
-    def object = clazz.newInstance()
+    def object = clazz.getConstructor().newInstance()
     object.rmaType = flexType
 
     when: 'the values are set'
@@ -175,7 +162,7 @@ class ExtensibleFieldHolderTransformationSpec extends BaseSpecification {
     ExtensibleFieldHelper.instance = mock
 
     when: "an instance is made and values are stored in the added field"
-    def instance = clazz.newInstance()
+    def instance = clazz.getConstructor().newInstance()
     instance.uuid = UUID.randomUUID()
 
     and: "setter is called"
@@ -197,7 +184,7 @@ class ExtensibleFieldHolderTransformationSpec extends BaseSpecification {
     ExtensibleFieldHelper.instance = mock
 
     when: "an instance is made and values are stored in the added field"
-    def instance = clazz.newInstance()
+    def instance = clazz.getConstructor().newInstance()
     instance.uuid = UUID.randomUUID()
 
     and: "setter is called"

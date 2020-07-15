@@ -15,12 +15,13 @@ Upgrade-marathon (MN, MN-D).
 ---------------------------
 Convert to using single dialect (POSTGRES) with environment.  Avoids testing on H2, runtime on Postgres.
   Fix workAroundXXX - Log bug with MN-D.
+  Fix workAroundXYZ - Log bug with MN-D.  Conflicts with https://github.com/micronaut-projects/micronaut-data/issues/482
   Cleanup deprecated Class.newInstance() use.
   Use docker/postgres for local testing to verify speed on startup.
-    https://elanderson.net/2018/02/setup-postgresql-on-windows-with-docker/
     Make sure it can work on Github actions.
       https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-postgresql-service-containers
-
+    Links to running setup script for PG:
+      https://stackoverflow.com/questions/57915791/how-to-connect-to-postgres-in-githhub-actions
 
 
 Micronaut Data Conversion Tasks
@@ -31,7 +32,7 @@ Add workaround for update failure: 299.  Remove sop.
 Investigate timezone issues on findAllByDateTimeLessThan(Date) queries.  Seems to be off by 5 hours?  ProductionLog.archive()?
 Version and opt locking (custom JDBCOperations).
 Cascading updates.  Find some way to prevent? - isDirty or save() option?
-Is Repository findByUuid() and findAll() needed?  Use CrudRepository.findById()
+Is Repository findByUuid() and findAll() needed?  Use CrudRepository.findById() and .findAll()?
 
 Support cache in specific use cases:
   UserPreferences - timed, any update for user flushed cache? done in PreferenceHolder?

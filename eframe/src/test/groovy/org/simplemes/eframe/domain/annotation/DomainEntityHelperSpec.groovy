@@ -628,7 +628,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
         }
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     when: 'the object is validated'
     DomainEntityHelper.instance.validate((DomainEntityInterface) object)
@@ -652,7 +652,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
         }
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     when: 'the object is validated'
     def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) object)
@@ -677,7 +677,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
         }
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     when: 'the object is validated'
     def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) object)
@@ -707,7 +707,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
         }
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     when: 'the object is validated'
     def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) object)
@@ -734,7 +734,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
         @Nullable String title
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     when: 'the object is validated'
     def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) object)
@@ -761,7 +761,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
         @Nullable String title
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
     object.notNullableField = ''
 
     when: 'the object is validated'
@@ -788,7 +788,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
         @Column(nullable=true) String title
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     when: 'the object is validated'
     def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) object)
@@ -811,7 +811,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
         @Nullable String title
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     when: 'the object is validated'
     object.notNullableField = "ABC"
@@ -835,7 +835,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
         String title
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
     object.title = "A" * 500
 
     when: 'the object is validated'
@@ -847,6 +847,31 @@ class DomainEntityHelperSpec extends BaseSpecification {
     errors[0].code == 2
     errors[0].fieldName == 'title'
     UnitTestUtils.assertContainsAllIgnoreCase(errors[0].toString(), ["long", "128", "500", "title"])
+  }
+
+  def "verify that validate allows unlimited length in json column"() {
+    given: 'a domain'
+    def src = """
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      import org.simplemes.eframe.domain.validate.ValidationError
+      import io.micronaut.data.annotation.MappedProperty
+      import io.micronaut.data.model.DataType
+  
+      @DomainEntity
+      class TestClass {
+        UUID uuid
+        @MappedProperty(type = DataType.JSON)
+        String title
+      }
+    """
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
+    object.title = "A" * 5000
+
+    when: 'the object is validated'
+    def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) object)
+
+    then: 'there are no errors'
+    errors.size() == 0
   }
 
   def "verify that validate handles column length passing and edge cases"() {
@@ -863,7 +888,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
         String title
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
     object.title = "A" * sLength
 
     when: 'the object is validated'
@@ -894,7 +919,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
         String title
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     when: 'the object is saved'
     DomainEntityHelper.instance.save((DomainEntityInterface) object)
@@ -1234,7 +1259,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
         UUID uuid
       }
     """
-    def o = CompilerTestUtils.compileSource(src).newInstance()
+    def o = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     then: 'the field has the repository '
     DomainEntityHelper.instance.getComplexHolder(o as DomainEntityInterface) instanceof Map
@@ -1256,7 +1281,7 @@ class DomainEntityHelperSpec extends BaseSpecification {
         }
       }
     """
-    def o = CompilerTestUtils.compileSource(src).newInstance()
+    def o = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     and: 'the domain method is executed'
     DomainEntityHelper.instance.executeDomainMethod(o as DomainEntityInterface, 'testMethod')

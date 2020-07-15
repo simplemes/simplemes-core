@@ -187,11 +187,9 @@ class DomainBinder {
             if (!(value instanceof Collection)) {
               object[key] = value
             }
+          } else if (isToStringAllowed(value)) {
+            object[key] = value.toString()
           } else {
-            if (fieldDef.name == 'intPrimitive') {
-              object[key] = value
-            }
-
             def s = "Invalid value type ${value.getClass()}, value: ${value}. Expected String or ${propertyClass}. Property $key in object $object"
             throw new UnsupportedOperationException(s)
           }
@@ -208,6 +206,10 @@ class DomainBinder {
     //bindAnyChildrenValues(object, params)
   }
 
+  boolean isToStringAllowed(value) {
+    return value.getClass().simpleName == 'PGobject'
+  }
+
   /**
    * Binds the current row of the result set to the given object instance.
    * @param object The object to bind to.
@@ -216,7 +218,7 @@ class DomainBinder {
   @SuppressWarnings(["GroovyAssignabilityCheck", "EmptyIfStatement"])
   void bind(Object object, ResultSet rs) {
     Class<? extends NamingStrategy> namingStrategyClass = object.getClass().getAnnotation(MappedEntity.class).namingStrategy()
-    def namingStrategy = namingStrategyClass.newInstance()
+    def namingStrategy = namingStrategyClass.getConstructor().newInstance()
     // Build a list of possible column to property mappings.
     def mappings = [:]
     def props = DomainUtils.instance.getPersistentFields(object.getClass())
@@ -382,7 +384,7 @@ class DomainBinder {
           }
           if (!record) {
             // Must be a new child record, so just create it.
-            record = fieldDef.referenceType.newInstance()
+            record = fieldDef.referenceType.getConstructor().newInstance()
             if (object.hasProperty(prefix)) {
               // This is a natural child list in the domain.
               DomainUtils.instance.addChildToDomain(object, record, prefix)
@@ -469,7 +471,7 @@ class DomainBinder {
    * @return The domain object.
    */
   static DomainEntityInterface bindResultSet(ResultSet rs, Class domainClazz) throws IllegalAccessException, InstantiationException {
-    DomainEntityInterface object = (DomainEntityInterface) domainClazz.newInstance()
+    DomainEntityInterface object = (DomainEntityInterface) domainClazz.getConstructor().newInstance()
     build().bind(object, rs)
     return object
   }

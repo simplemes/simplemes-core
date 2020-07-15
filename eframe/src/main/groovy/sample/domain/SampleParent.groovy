@@ -83,8 +83,9 @@ class SampleParent implements SampleParentInterface {
   @OneToMany(mappedBy = "sampleParent")
   List<SampleChild> sampleChildren
 
+  @Nullable
   @ExtensibleFieldHolder
-  @Column(nullable = true, length = 255)
+  @MappedProperty(type = DataType.JSON)
   String customFields
 
   Integer version = 0

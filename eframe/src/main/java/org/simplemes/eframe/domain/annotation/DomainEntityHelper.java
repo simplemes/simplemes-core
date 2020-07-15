@@ -1114,7 +1114,7 @@ public class DomainEntityHelper {
    * @param object The domain object.
    * @return The list of validation errors.  Never null.
    */
-  protected List<ValidationErrorInterface> validateColumns(DomainEntityInterface object) {
+  protected List<ValidationErrorInterface> validateColumns(DomainEntityInterface object) throws NoSuchMethodException, InvocationTargetException {
     List<ValidationErrorInterface> res = new ArrayList<>();
     for (PersistentProperty property : getPersistentProperties(object.getClass())) {
       if (!ignoreFieldForValidation(property)) {
@@ -1158,7 +1158,7 @@ public class DomainEntityHelper {
    * @param domainClass The domain class.
    * @return The list of persistent properties.  Never null.
    */
-  public List<PersistentProperty> getPersistentProperties(Class domainClass) {
+  public List<PersistentProperty> getPersistentProperties(Class domainClass) throws NoSuchMethodException, InvocationTargetException {
     List<PersistentProperty> res = new ArrayList<>();
     for (Field field : domainClass.getDeclaredFields()) {
       if (!Modifier.isStatic(field.getModifiers()) && !Modifier.isTransient(field.getModifiers())) {

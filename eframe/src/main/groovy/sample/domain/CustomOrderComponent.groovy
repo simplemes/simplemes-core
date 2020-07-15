@@ -16,7 +16,6 @@ import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.domain.annotation.DomainEntity
 
 import javax.annotation.Nullable
-import javax.persistence.Column
 import javax.persistence.ManyToOne
 
 /**
@@ -50,8 +49,9 @@ class CustomOrderComponent {
   @MappedProperty(type = DataType.UUID)
   FlexType assyDataType
 
+  @Nullable
   @ExtensibleFieldHolder
-  @Column(nullable = true, length = 255)
+  @MappedProperty(type = DataType.JSON)
   String customFields
 
 

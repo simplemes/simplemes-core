@@ -19,7 +19,7 @@ CREATE TABLE public.all_fields_domain (
     report_time_interval varchar(255),
     order_id             uuid,
     status               varchar(255),
-    other_custom_fields  varchar(255),
+    other_custom_fields  jsonb,
     date_created         timestamp with time zone,
     date_updated         timestamp with time zone,
     version              integer      NOT NULL
@@ -35,7 +35,7 @@ CREATE TABLE public.ordr (
     date_created  timestamp with time zone,
     date_updated  timestamp with time zone,
     notes         varchar(255),
-    custom_fields varchar(255),
+    custom_fields jsonb,
     version       integer      NOT NULL
 );
 
@@ -48,7 +48,7 @@ CREATE TABLE public.custom_order_component (
     notes                varchar(255),
     foreign_reference_id uuid,
     assy_data_type_id    uuid,
-    custom_fields        varchar(255)
+    custom_fields jsonb
 );
 
 CREATE TABLE public.order_line (
@@ -71,7 +71,7 @@ CREATE TABLE public.rma (
     date_created  timestamp with time zone,
     date_updated  timestamp with time zone,
     version       integer      NOT NULL,
-    custom_fields varchar(255)
+    custom_fields jsonb
 );
 
 CREATE TABLE public.sample_child (
@@ -106,7 +106,7 @@ CREATE TABLE public.sample_parent (
     date_created         timestamp with time zone,
     date_updated         timestamp with time zone,
     all_fields_domain_id uuid,
-    custom_fields        varchar(255),
+    custom_fields        jsonb,
     version              integer     NOT NULL
 );
 

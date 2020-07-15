@@ -63,6 +63,7 @@ class PersistentPropertySpec extends BaseSpecification {
       import org.simplemes.eframe.domain.annotation.DomainEntity
       import org.simplemes.eframe.domain.validate.ValidationError
       import io.micronaut.data.annotation.MappedProperty
+      import io.micronaut.data.model.DataType
       import javax.persistence.Column
       import javax.annotation.Nullable
 
@@ -81,12 +82,13 @@ class PersistentPropertySpec extends BaseSpecification {
     prop.maxLength == maxLength
 
     where:
-    definition                                     | maxLength
-    '@Column(length = 30) String '                 | 30
-    '@MappedProperty(definition = "TEXT") String ' | 0
-    '@Column String '                              | 255
-    'String '                                      | 255
-    'Integer '                                     | null
+    definition                                      | maxLength
+    '@Column(length = 30) String '                  | 30
+    '@MappedProperty(definition = "TEXT") String '  | 0
+    '@MappedProperty(type = DataType.JSON) String ' | 0
+    '@Column String '                               | 255
+    'String '                                       | 255
+    'Integer '                                      | null
   }
 
 

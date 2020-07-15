@@ -119,7 +119,7 @@ archiver.unarchive(reference)
 <.> Archive a domain object and two related objects.
 <.> Later, unarchive the object(s)
 
-This creates an XML file in a configurable directory and deletes the archived objects.  Later, this example uses the
+This creates an JSON file in a configurable directory and deletes the archived objects.  Later, this example uses the
 archive `reference` to unarchive the domain objects.
 
 

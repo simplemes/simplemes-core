@@ -64,15 +64,16 @@ class RMA {
   @ManyToOne(targetEntity=FlexType) <.>
   FlexType rmaType
 
-  @ExtensibleFieldHolder <.>
-  @Column(nullable = true)
-  @MappedProperty(type = DataType.STRING, definition = 'TEXT')
-  String customFields
+  @Nullable
+  @ExtensibleFieldHolder  <.>
+  @MappedProperty(type = DataType.JSON)
+  String fields
+
 }
 
 ----
 <.> The field `rmaType` will hold the reference to the appropriate flex type.  The actual
-    values will be stored in the `customFields` field as described
+    values will be stored in the `fields` field as described
     in <<Configurable Type Persistent Storage>>.
     Note the _@ManyToOne_ usage is needed for this <<Simple Foreign Reference>>.
 <.> The FlexType requires a place to store the values for RMA records created.
@@ -186,13 +187,15 @@ class RMAResponse {
 
   FlexType rmaType  <.>
 
-  @ExtensibleFieldHolder <.>
-  String customFields
+  @Nullable
+  @ExtensibleFieldHolder  <.>
+  @MappedProperty(type = DataType.JSON)
+  String fields
 }
 
 ----
 <.> The field `rmaType` will hold the reference to the appropriate flex type.  The actual
-    values will be stored in the `customFields` field as described
+    values will be stored in the `fields` field as described
     in <<Configurable Type Persistent Storage>>.
 <.> The FlexType requires a place to store the values for this POGO.
     This is done in the normal location for <<Field Extensions>>.
@@ -210,8 +213,8 @@ def response = new RMAResponse()
 
 response.qty = rma.qty
 response.rmaType = rma.rmaType  <.>
-response.customFields = rma.customFields
+response.fields = rma.fields
 
 ----
-<.> You need to copy the flex type field and the values holder (customFields).
+<.> You need to copy the flex type field and the values holder (typically `fields`).
 

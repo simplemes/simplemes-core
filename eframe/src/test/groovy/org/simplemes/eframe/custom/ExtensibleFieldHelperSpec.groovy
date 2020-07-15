@@ -22,6 +22,7 @@ import org.simplemes.eframe.data.format.LongFieldFormat
 import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.DomainUtils
+import org.simplemes.eframe.domain.SQLUtils
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.misc.TypeUtils
@@ -210,7 +211,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
         UUID uuid 
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     when: 'the value is set'
     ExtensibleFieldHelper.instance.setFieldValue(object, 'field1', 'ABC')
@@ -230,7 +231,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
         UUID uuid 
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     and: 'a field extension'
     FieldExtension.withTransaction {
@@ -360,7 +361,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
         UUID uuid
       }
     """
-    def object = (DomainEntityInterface) CompilerTestUtils.compileSource(src).newInstance()
+    def object = (DomainEntityInterface) CompilerTestUtils.compileSource(src).getConstructor().newInstance()
     def nFields = 100
     def nIterations = 1000
 
@@ -395,7 +396,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
         UUID uuid
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
     def nFields = 100
 
     when: 'too much is stored'
@@ -422,7 +423,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
         UUID uuid
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
     def nFields = 100
 
     when: 'too much is stored'
@@ -442,7 +443,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
       class TestClass {
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     when: 'a custom value is stored'
     ExtensibleFieldHelper.instance.setFieldValue(object, "field1", '1234567890')
@@ -459,7 +460,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
       class TestClass {
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     when: 'a custom value is stored'
     ExtensibleFieldHelper.instance.getFieldValue(object, "field1")
@@ -483,7 +484,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
         UUID uuid
       }
     """
-    def object = CompilerTestUtils.compileSource(src).newInstance()
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     when: 'the value is set'
     ExtensibleFieldHelper.instance.setFieldValue(object, 'field1', 'ABC')
@@ -846,6 +847,24 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
 
     and: 'the underlying getFieldValue method still works'
     sampleParent.getFieldValue('abc') == 'xyz'
+  }
+
+  @Rollback
+  def "verify that custom fields work with Postgres SQL extensions"() {
+    given: 'a custom field on a domain'
+    new FieldExtension(fieldName: 'abc', domainClassName: SampleParent.name).save()
+
+    when: 'the value is saved'
+    def sampleParent = new SampleParent(name: 'XYZ')
+    sampleParent.abc = 'blue'
+    sampleParent.save()
+
+    then: 'the underlying getFieldValue method still works'
+    sampleParent.getFieldValue('abc') == 'blue'
+
+    and: 'the postgres SQL query on the field works'
+    def list = SQLUtils.instance.executeQuery("SELECT * FROM sample_parent WHERE custom_fields->>'abc' = ?", SampleParent, 'blue')
+    list.size() == 1
   }
 
   def "verify that propertyMissingSetter gracefully handles missing property"() {

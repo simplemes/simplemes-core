@@ -97,7 +97,7 @@ class DomainBinderSpec extends BaseSpecification {
       Date dateTime
     }
     """
-    def o = CompilerTestUtils.compileSource(src).newInstance()
+    def o = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     when: 'the string params are bound'
     DomainBinder.build().bind(o, [name    : 'ABC', title: 'abc', qty: '12.2', count: '247', enabled: 'true',
@@ -120,7 +120,7 @@ class DomainBinderSpec extends BaseSpecification {
       BigDecimal qty
     }
     """
-    def o = CompilerTestUtils.compileSource(src).newInstance()
+    def o = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     when: 'the params are bound'
     DomainBinder.build().bind(o, [qty: 237L])
@@ -144,7 +144,7 @@ class DomainBinderSpec extends BaseSpecification {
       Date dateTime
     }
     """
-    def o = CompilerTestUtils.compileSource(src).newInstance()
+    def o = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     and: 'the values are set to non-nulls'
     o.name = 'ABC'
@@ -179,7 +179,7 @@ class DomainBinderSpec extends BaseSpecification {
       Date dateTime
     }
     """
-    def o = CompilerTestUtils.compileSource(src).newInstance()
+    def o = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     and: 'the values are set to non-nulls'
     o.name = 'ABC'
@@ -213,7 +213,7 @@ class DomainBinderSpec extends BaseSpecification {
       boolean enabled
     }
     """
-    def o = CompilerTestUtils.compileSource(src).newInstance()
+    def o = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     and: 'the locale is set'
     GlobalUtils.defaultLocale = locale
@@ -244,7 +244,7 @@ class DomainBinderSpec extends BaseSpecification {
       Date dateTime
     }
     """
-    def o = CompilerTestUtils.compileSource(src).newInstance()
+    def o = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     when: 'the params are bound using a locale-independent date format'
     DomainBinder.build().bind(o, [dateTime: 'gibberish'], true)

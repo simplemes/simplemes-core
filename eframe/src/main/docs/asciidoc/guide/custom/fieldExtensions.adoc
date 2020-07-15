@@ -10,7 +10,6 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<ExtensibleFieldHolder Annotation>>#
 [inline-toc]#<<Extension Logging>>#
 [inline-toc]#<<Field Extension Example>>#
-[inline-toc]#<<Storage Limitations>>#
 [inline-toc]#<<Field Types>>#
 [inline-toc]#<<Single Domain Reference>>#
 [inline-toc]#<<Custom Child List>>#
@@ -110,7 +109,7 @@ endif::[]
                                                v
                                   +--------------------------+
                                   |Domain Record             |
-                                  | _customFields            |
+                                  | fields                   |
                                   | {                        |
                                   | "warehouse" "CENTER",    |
                                   | "rmaType_location" "SW"  |
@@ -123,7 +122,7 @@ endif::[]
 //end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
 :imagesdir: {imagesdir-src}
 
-All of these types of custom fields store the values in the _customFields (by default)
+All of these types of custom fields store the values in the JSON column `fields`
 in the domain record.
 The FieldExtension (user-defined and additions) are stored with the field name as-is.
 The Configurable Types and flex types use a prefix that is the field name for the
@@ -161,39 +160,25 @@ class SampleDomain {
   String name
   . . .
 
-  @ExtensibleFieldHolder <.>
-  @Column(nullable = true, length = 1024)
-  String customFields
+  @Nullable <.>
+  @ExtensibleFieldHolder  <.>
+  @MappedProperty(type = DataType.JSON) <.>
+  String fields  <.>
+
 }
 ----
+<.> The field should allow no custom fields.
 <.> The extensible fields requires a place to store the values (in JSON).
+<.> The data type is a native JSON type (jsonb in Postgres).  This allows direct queries on
+    the custom values.
+<.> The suggested field name is `fields`.  This is a short name for use in complex
+    SQL queries on the custom fields.
 
 NOTE: You should not change the column name for custom fields on a production database.
       There is no automatic database migration to handle a column name change.
 
-This will use the field `customFields` in the domain class and save it in the database with
-a limited size (1024). If you want unlimited length field, you can specify
-them as below:
-
-[source,groovy]
-.Extensible Fields - Unlimited Length
-----
-@MappedEntity
-@DomainEntity
-class SampleDomain {
-  String key
-  String name
-  . . .
-
-  @ExtensibleFieldHolder
-  @Column(nullable = true)
-  @MappedProperty(type = DataType.STRING, definition = 'TEXT') // <.>
-  String customFields
-}
-----
-<.> A standard TEXT field - unlimited length.  This slower than a limited field length.
-
-
+This will use the field `fields` in the domain class and save it in the database with
+an unlimited `jsonb` column.
 ===== Accessing Custom Field Values
 
 Now that your domain supports custom fields, how do you access them?
@@ -239,9 +224,9 @@ Date promiseDate = order.getFieldValue('promiseDate') // <.>
 ===== Deleting Fields
 
 You can delete the field definition.  Existing records will not have the value removed from the
-`_customFields` column, but the the support logic won't process them for display/editing.
+`fields` column, but the the support logic won't process them for display/editing.
 
-Also, the data in the `_customFields` column will no longer be validated, but it is part of the
+Also, the data in the `fields` column will no longer be validated, but it is part of the
 stored values.
 
 You can also change the custom field name, but existing values in domain records will not
@@ -271,14 +256,14 @@ public class Order {
   String product
   BigDecimal quantity
      . . .
-  @ExtensibleFieldHolder <.>
-  @Column(length = 1024, nullable = true)
-  String customFields
+  @Nullable
+  @ExtensibleFieldHolder  <.>
+  @MappedProperty(type = DataType.JSON)
+  String fields
 }
 ----
 <.> The order name, product and quantity ordered.
 <.> Defines the column that will hold the JSON values of the custom fields.
-    Up to 1024 characters of JSON data can be stored here.
 
 The end user of your application wants to add some custom fields to help them process orders more
 easily. The fields needed are:
@@ -324,34 +309,6 @@ If a custom field is no longer defined for the object, you can still get the val
 set values when the custom field definition for the specific field is deleted.  This `setValue()`
 method will trigger an exception.
 
-==== Storage Limitations
-
-Custom field values are stored in the domain object (and database table) along with the core fields.
-These custom fields are stored in a text column with a limited length.  This means there is a limit
-on the number of custom fields that can be
-added.  It also means that SQL queries will need to use JSON queries to find the records.
-
-The values are stored in a column __customFields._  This is typically limited to 1024 characters by
-default. This means you can store about 20 fields with an average length of 20 characters.
-Shorter field names will allow more data to be stored. When the value exceeds the actual database
-field limit, then a validation error will happen on save.
-
-The fields are stored in a text column in a JSON format.  An example is shown below (new lines
-added for clarity).
-
-[source,JSON]
-.JSON Format of Custom Fields
-----
-{
-  "color" : "Red",
-  "length" : 12.01,
-  "passed" : true,
-  "releasedTime" : "2011-04-03T06:06:17.000-04:00"
-}
-----
-
-The field type (boolean, date, etc) is not encoded in this storage JSON.  The types are enforced when
-getting or setting values.
 
 ==== Single Domain Reference
 
@@ -397,9 +354,10 @@ the product.
 public class Product {
   String product
      . . .
+  @Nullable
   @ExtensibleFieldHolder
-  @Column(nullable = true, length = 1024)
-  String customFields
+  @MappedProperty(type = DataType.JSON)
+  String fields
 }
 ----
 

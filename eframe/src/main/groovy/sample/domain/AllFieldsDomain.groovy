@@ -79,8 +79,9 @@ class AllFieldsDomain {
   @Column(length = 12, nullable = true)
   @Nullable BasicStatus status = EnabledStatus.instance
 
+  @Nullable
   @ExtensibleFieldHolder
-  @Column(nullable = true, length = 513)
+  @MappedProperty(type = DataType.JSON)
   String otherCustomFields
 
 

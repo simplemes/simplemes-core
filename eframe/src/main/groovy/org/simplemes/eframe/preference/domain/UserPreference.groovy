@@ -19,6 +19,7 @@ import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.misc.LogUtils
 import org.simplemes.eframe.preference.Preference
 
+import javax.annotation.Nullable
 import javax.persistence.Column
 
 /**
@@ -61,8 +62,8 @@ class UserPreference {
   /**
    * The JSON form of the preferences.  This is the value persisted to the database.
    */
-  @Column(nullable = true)
-  @MappedProperty(type = DataType.STRING, definition = 'TEXT')
+  @Nullable
+  @MappedProperty(type = DataType.JSON)
   String preferencesText
 
   /**

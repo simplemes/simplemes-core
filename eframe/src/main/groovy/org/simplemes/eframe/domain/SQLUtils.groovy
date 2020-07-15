@@ -153,6 +153,13 @@ class SQLUtils {
    */
   void checkSQL(String sql) {
     if (sql?.contains("'") || sql?.contains('"')) {
+      if (sql?.contains("'")) {
+        // Special case for JSONB queries.   Needs to use single quotes.
+        if (sql.contains("->")) {
+          // TODO: More robust check for custom_fields->>'abc' =
+          return
+        }
+      }
       throw new IllegalArgumentException("Dynamic SQL Statements can't contain quotes: $sql")
     }
   }

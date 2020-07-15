@@ -465,7 +465,7 @@ class ExtensibleFieldHelper {
 
   /**
    * Formats the Extensible Field name/value pairs for display.  Optionally highlights the field name
-   * with HTML bold notation and limits the length to a given max length.
+   * with HTML bold notation.
    * The @ExtensibleFieldHolder annotation must be used on the domain object.
    * The output will be generated in the flex field sequence order for predictable display order.
    * <p>
@@ -503,7 +503,7 @@ class ExtensibleFieldHelper {
 
   /**
    * Formats all of the Extensible Field name/value pairs for display.  Optionally highlights the field name
-   * with HTML bold notation and limits the length to a given max length.
+   * with HTML bold notation.
    * The @ExtensibleFieldHolder annotation must be used on the domain object.
    * The output will be generated in the flex field sequence order for predictable display order.
    * <p>

@@ -10,6 +10,7 @@ package org.simplemes.eframe.domain;/*
 
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.annotation.MappedProperty;
+import io.micronaut.data.model.DataType;
 import io.micronaut.data.model.naming.NamingStrategy;
 
 import javax.annotation.Nullable;
@@ -17,6 +18,7 @@ import javax.persistence.Column;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.Collection;
@@ -88,7 +90,7 @@ public class PersistentProperty {
    *
    * @param field The field to create the property from.
    */
-  public PersistentProperty(Field field) {
+  public PersistentProperty(Field field) throws NoSuchMethodException, InvocationTargetException {
     this.name = field.getName();
     this.type = field.getType();
     nullable = (field.getAnnotation(Nullable.class) != null);
@@ -110,7 +112,7 @@ public class PersistentProperty {
       if (annotation != null) {
         Class<? extends NamingStrategy> namingStrategyClass = annotation.namingStrategy();
         try {
-          namingStrategy = namingStrategyClass.newInstance();
+          namingStrategy = namingStrategyClass.getConstructor().newInstance();
         } catch (InstantiationException | IllegalAccessException ignored) {
         }
       }
@@ -157,16 +159,18 @@ public class PersistentProperty {
   static public int getFieldMaxLength(Field field) {
     int maxLength;
     Column column = field.getAnnotation(Column.class);
+    MappedProperty mappedProperty = field.getAnnotation(MappedProperty.class);
     if (column != null) {
       maxLength = 255;
       if (column.length() > 0) {
         maxLength = column.length();
       }
+    } else if (mappedProperty != null && mappedProperty.type() == DataType.JSON) {
+      maxLength = 0;
     } else {
       // A simple string, so treat it as a limited length string.
       maxLength = 255;
     }
-    MappedProperty mappedProperty = field.getAnnotation(MappedProperty.class);
     if (mappedProperty != null) {
       if (mappedProperty.definition().equals("TEXT")) {
         // A TEXT/CLOB will be treated as no max length.

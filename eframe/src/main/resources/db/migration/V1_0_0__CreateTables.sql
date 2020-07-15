@@ -6,6 +6,10 @@
  * Copyright (c) Michael Houston 2020. All rights reserved.
  */
 
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 
 CREATE TABLE public.archive_log (
     uuid uuid PRIMARY KEY,
@@ -83,7 +87,7 @@ CREATE TABLE IF NOT EXISTS public.field_extension (
 CREATE TABLE public.field_gui_extension (
     uuid uuid PRIMARY KEY,
     domain_name varchar(255) NOT NULL,
-    adjustments_text text,
+    adjustments_text jsonb,
     date_created timestamp with time zone,
     date_updated timestamp with time zone,
     version integer NOT NULL,
@@ -153,7 +157,7 @@ CREATE TABLE public.user_preference (
     uuid uuid PRIMARY KEY,
     user_name varchar(30) NOT NULL,
     page varchar(100) NOT NULL,
-    preferences_text text,
+    preferences_text jsonb,
     date_created timestamp with time zone,
     date_updated timestamp with time zone,
     version integer NOT NULL,

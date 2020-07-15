@@ -62,8 +62,9 @@ class Order {
   // Larger than the default for H2 to allow SQL error generation in unit tests.  See DomainEntityHelperSpec.
   String notes
 
+  @Nullable
   @ExtensibleFieldHolder
-  @Column(nullable = true, length = 255)
+  @MappedProperty(type = DataType.JSON)
   String customFields
 
   Integer version = 0

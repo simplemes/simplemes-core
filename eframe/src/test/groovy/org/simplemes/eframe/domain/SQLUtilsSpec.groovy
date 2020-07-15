@@ -7,6 +7,7 @@ package org.simplemes.eframe.domain
 import io.micronaut.data.model.Pageable
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.AllFieldsDomain
@@ -42,6 +43,24 @@ class SQLUtilsSpec extends BaseSpecification {
     list[0].sequence == 1
     list[1].sequence == 2
     list[2].sequence == 3
+  }
+
+  @Rollback
+  def "verify that executeQuery works - with custom fields as JSONB column"() {
+    given: 'a custom field for the domain'
+    DataGenerator.buildCustomField(fieldName: 'color', domainClass: Order)
+
+    and: 'a domain record to find'
+    def order = new Order(order: 'M1001')
+    order.color = 'Blue'
+    order.save()
+
+    when: 'the query is executed'
+    def list = SQLUtils.instance.executeQuery("SELECT * FROM ORDR where uuid=?", Order, order.uuid)
+
+    then: 'the list is correct'
+    list.size() == 1
+    list[0].color == 'Blue'
   }
 
   @Rollback

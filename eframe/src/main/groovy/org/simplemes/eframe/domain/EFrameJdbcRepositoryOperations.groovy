@@ -75,11 +75,22 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
     localTransactionOperations = transactionOperations
     localTransactionOperationsStatic = transactionOperations
 
+    //def value = '{"color": "blue"}'
+    //println "jsonCodec = $jsonCodec ${new String(jsonCodec.encode(value), StandardCharsets.UTF_8)}"
+    //value = new String(jsonCodec.encode(value), StandardCharsets.UTF_8);
+    //println "value = $value"
+
     if (WorkArounds.workAroundXXX) {
       def clazz = getClass().superclass.superclass
       def field = clazz.getDeclaredField('preparedStatementWriter')
       field.setAccessible(true)
       field.set(this, new WorkaroundJdbcQueryStatement())
+    }
+    if (WorkArounds.workAroundXYZ) {
+      def clazz = getClass().superclass.superclass
+      def field2 = clazz.getDeclaredField('jsonCodec')
+      field2.setAccessible(true)
+      field2.set(this, null)
     }
   }
 
@@ -124,6 +135,8 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
     } else {
       return super.update(operation)
     }
+
+
   }
 
   /**

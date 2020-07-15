@@ -154,10 +154,10 @@ class RMA {
   Date returnDate
   FlexType rmaType  <.>
 
-  @ExtensibleFieldHolder <.>
-  @Column(nullable = true)
-  @MappedProperty(type = DataType.STRING, definition = 'TEXT')
-  String customFields
+  @Nullable
+  @ExtensibleFieldHolder  <.>
+  @MappedProperty(type = DataType.JSON)
+  String fields
 
 }
 
