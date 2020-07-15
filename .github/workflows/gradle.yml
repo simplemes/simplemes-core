@@ -16,7 +16,7 @@ jobs:
         env:
           POSTGRES_USER: mph
           POSTGRES_PASSWORD: mh1234
-          POSTGRES_DB: eframe_test
+          POSTGRES_DB: test
         # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
