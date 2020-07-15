@@ -26,7 +26,8 @@ jobs:
         ports:
           # Allows localhost:5432 to work in tests.
           - 5432:5432
-
+        #volumes:
+        #  - /source/directory:/destination/directory
 
     steps:
       - name: Checkout
@@ -38,7 +39,7 @@ jobs:
 #        wget --quiet -O - http://apt.postgresql.org/pub/repos/apt/ACCC4CF8.asc | sudo apt-key add -
 #        sudo apt-get update
 #        sudo apt-get -yq install libpq-dev postgresql-client-12
-
+#  Look into: docker-entrypoint-initdb.d from https://hub.docker.com/_/postgres
       - name: Check installed components for PostgreSQL
         run: |
           pg_isready
