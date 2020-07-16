@@ -338,27 +338,27 @@ class DomainBinderSpec extends BaseSpecification {
     then: 'the child object has the right values'
     o.sampleChildren.size() == 3
     SampleChild child1 = (SampleChild) o.sampleChildren[0]
-    child1.key == 'XYZ'
-    child1.sequence == 147
+    child1.key == 'ABC'
+    child1.sequence == 247
     SampleChild child2 = (SampleChild) o.sampleChildren[1]
-    child2.key == 'ABC'
-    child2.sequence == 247
+    child2.key == 'PDQ'
+    child2.sequence == 347
     SampleChild child3 = (SampleChild) o.sampleChildren[2]
-    child3.key == 'PDQ'
-    child3.sequence == 347
+    child3.key == 'XYZ'
+    child3.sequence == 147
 
     and: 'the record can be read from the DB'
     def record = SampleParent.findByName('ABC')
     record.sampleChildren.size() == 3
     SampleChild child1a = (SampleChild) record.sampleChildren[0]
-    child1a.key == 'XYZ'
-    child1a.sequence == 147
+    child1a.key == 'ABC'
+    child1a.sequence == 247
     SampleChild child2a = (SampleChild) record.sampleChildren[1]
-    child2a.key == 'ABC'
-    child2a.sequence == 247
+    child2a.key == 'PDQ'
+    child2a.sequence == 347
     SampleChild child3a = (SampleChild) record.sampleChildren[2]
-    child3a.key == 'PDQ'
-    child3a.sequence == 347
+    child3a.key == 'XYZ'
+    child3a.sequence == 147
   }
 
   def "verify that one level child bindings works on single row update - commit test too"() {

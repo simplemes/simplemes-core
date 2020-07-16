@@ -86,7 +86,8 @@ CREATE TABLE public.sample_child (
     date_time            timestamp with time zone,
     due_date             date,
     report_time_interval varchar(255),
-    order_id             uuid
+    order_id             uuid,
+    UNIQUE (sample_parent_id, key_value)
 );
 
 CREATE TABLE public.sample_grand_child (

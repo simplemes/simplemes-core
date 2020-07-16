@@ -163,14 +163,48 @@ class MockSearchEngineClient implements SearchEngineClientInterface {
    */
   void verify(Map expectedAction) {
     if (expectedAction) {
-      if (!actions.contains(expectedAction)) {
-        log.warn("Mock Client  action $expectedAction was not called during test.  Actions called: $actions")
+      for (action in actions) {
+        if (compareActions(action, expectedAction)) {
+          return
+        }
       }
-      assert actions.contains(expectedAction), "Mock Client action $expectedAction was not called during test.  Actions called: $actions"
+      assert expectedAction == null, "Expected action $expectedAction is not in the actual actions called: $actions"
     } else {
       // No action should be called.
       assert actions.size() == 0, "No Mock Client actions should have been called during the test.  Actions called: $actions"
     }
+  }
+
+  /**
+   * Compares two Maps for matching expected actions.
+   * @param a
+   * @param b
+   * @return True if they are the same.
+   */
+  boolean compareActions(Map a, Map b) {
+    if (a?.equals(b)) {
+      // Simple test with exact mathcing Maps.
+      return true
+    }
+    if (a.action != b.action) {
+      log.warn("Mock Client action $a.action does not match $b.action")
+      return false
+    }
+    if (a.object instanceof Collection && b.object instanceof Collection) {
+      // Check the list of objects
+      if (a.object.size() != b.object.size()) {
+        log.warn("Mock Client action size ${a.object.size()} does not match ${b.object.size()}")
+        return false
+      }
+      for (o in a.object) {
+        if (!b.object.contains(o)) {
+          log.warn("Mock Client actions does not contain expected action ${o}.  Actions = ${b.object}")
+          return false
+        }
+      }
+    }
+
+    return a.object?.equals(b.object)
   }
 
   /**

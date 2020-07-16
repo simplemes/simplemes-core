@@ -415,7 +415,27 @@ public class DomainEntityHelper {
     Field parentField = null;  // The reference to the parent field in the child object.
     Class lastChildClass = childClass;
     if (list != null) {
-      List<Object> newRecordList = new ArrayList();
+      // Delete any records not in the current list of records to update.
+      List<UUID> uuidsInList = new ArrayList();
+      for (Object child : list) {
+        if (child instanceof DomainEntityInterface && parentFieldName.length() > 0) {
+          uuidsInList.add(((DomainEntityInterface) child).getUuid());
+        }
+      }
+      if (domainSettings != null) {
+        List<UUID> previouslyLoadedList = (List) domainSettings.get(SETTINGS_LOADED_CHILDREN_PREFIX + fieldName);
+        if (previouslyLoadedList != null) {
+          for (UUID uuid : previouslyLoadedList) {
+            if (!uuidsInList.contains(uuid)) {
+              // The child record is no longer in the the list, so delete it.
+              DomainEntityInterface childObject = (DomainEntityInterface) lastChildClass.getDeclaredConstructor().newInstance();
+              childObject.setUuid(uuid);
+              childObject.delete();
+            }
+          }
+        }
+      }
+
       for (Object child : list) {
         if (child instanceof DomainEntityInterface && parentFieldName.length() > 0) {
           if (!lastChildClass.equals(child.getClass())) {
@@ -431,29 +451,12 @@ public class DomainEntityHelper {
             parentField.set(child, object);
           }
           ((DomainEntityInterface) child).save();
-          newRecordList.add(((DomainEntityInterface) child).getUuid());
         }
       }
       // Sort the list, if possible
       if (Comparable.class.isAssignableFrom(lastChildClass)) {
         log.trace("Sorting {} list {}", lastChildClass, list);
         Collections.sort(list);
-      }
-
-      // Now, delete any removed records from the previous read.
-      if (domainSettings != null) {
-        List<UUID> previouslyLoadedList = (List) domainSettings.get(SETTINGS_LOADED_CHILDREN_PREFIX + fieldName);
-
-        if (previouslyLoadedList != null) {
-          for (UUID uuid : previouslyLoadedList) {
-            if (!newRecordList.contains(uuid)) {
-              // The child record is no longer in the the list, so delete it.
-              DomainEntityInterface childObject = (DomainEntityInterface) lastChildClass.getDeclaredConstructor().newInstance();
-              childObject.setUuid(uuid);
-              childObject.delete();
-            }
-          }
-        }
       }
 
       // Finally, use the new list of updated records.

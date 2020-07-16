@@ -97,7 +97,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     }
 
     when: 'the get is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restGet('ABC', null)
 
     then: 'the JSON is valid'
@@ -111,7 +111,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
   @Rollback
   def "verify restGet works with record ID"() {
     given: 'a controller for the base class for SampleParent'
-    def controller = buildSampleParentController().newInstance()
+    def controller = buildSampleParentController().getConstructor().newInstance()
 
     and: 'some test data is created'
     def record = new SampleParent(name: 'ABC1', title: 'abc').save()
@@ -142,7 +142,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     }
 
     when: 'the get is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restGet(record.uuid.toString(), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
@@ -174,7 +174,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     allFieldsDomain.save()
 
     when: 'the get is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restGet('ABC', null)
 
     then: 'the JSON is valid'
@@ -199,7 +199,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     order.save()
 
     when: 'the get is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restGet('M1001', null)
 
     then: 'the JSON is valid'
@@ -223,7 +223,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     Class clazz = buildSampleParentController()
 
     when: 'the get is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restGet('1111', null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
@@ -237,7 +237,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     Class clazz = buildSampleParentController()
 
     when: 'the get is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restGet('gibberish', null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
@@ -251,7 +251,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     Class clazz = buildSampleParentController()
 
     when: 'the get is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restGet('', null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
@@ -262,7 +262,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
   @Rollback
   def "verify restGet checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller'
-    Object controller = buildAllFieldsDomainController().newInstance()
+    Object controller = buildAllFieldsDomainController().getConstructor().newInstance()
 
     and: 'a mocked security utils that will fail'
     new MockSecurityUtils(this, HttpStatus.FORBIDDEN).install()
@@ -295,7 +295,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
       """
 
     when: 'the post is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restPost(mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
@@ -340,7 +340,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
       """
 
     when: 'the post is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restPost(mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
@@ -371,7 +371,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
 
 
     when: 'the post is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restPost(mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
@@ -386,8 +386,8 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     def children = record.sampleChildren
     children.size() == 3
     children[0].key == 'C1'
-    children[1].key == 'C3'
-    children[2].key == 'C2'
+    children[1].key == 'C2'
+    children[2].key == 'C3'
 
     and: 'the JSON is valid'
     def json = new JsonSlurper().parseText((String) res.getBody().get())
@@ -396,8 +396,8 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     List jsonChildren = json.sampleChildren
     jsonChildren.size() == 3
     jsonChildren[0].key == 'C1'
-    jsonChildren[1].key == 'C3'
-    jsonChildren[2].key == 'C2'
+    jsonChildren[1].key == 'C2'
+    jsonChildren[2].key == 'C3'
   }
 
   @Rollback
@@ -418,7 +418,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
       """
 
     when: 'the post is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restPost(mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
@@ -452,7 +452,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     """
 
     when: 'the post is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restPost(mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
@@ -501,7 +501,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
       """
 
     when: 'the post is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restPost(mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
@@ -520,7 +520,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     Class clazz = buildAllFieldsDomainController()
 
     when: 'the post is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restPost(mockRequest([:]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
@@ -535,7 +535,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
   @Rollback
   def "verify restPost checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller'
-    Object controller = buildAllFieldsDomainController().newInstance()
+    Object controller = buildAllFieldsDomainController().getConstructor().newInstance()
 
     and: 'a mocked security utils that will fail'
     new MockSecurityUtils(this, HttpStatus.FORBIDDEN).install()
@@ -568,7 +568,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
       """
 
     when: 'the put is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restPut(record1.uuid.toString(), mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
 
@@ -615,7 +615,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
       """
 
     when: 'the put is called to update by name'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restPut(record1.name, mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
 
@@ -646,14 +646,14 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
         "title" : "abc-001",
         "sampleChildren" : [
           {"key": "C1"},
-          {"key": "C3"},
-          {"key": "C2"}
+          {"key": "C2"},
+          {"key": "C3"}
         ]
       }
       """
 
     when: 'the put is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restPut(record1.uuid.toString(), mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
 
@@ -666,8 +666,8 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     record.title == 'abc-001'
     record.sampleChildren.size() == 3
     record.sampleChildren[0].key == 'C1'
-    record.sampleChildren[1].key == 'C3'
-    record.sampleChildren[2].key == 'C2'
+    record.sampleChildren[1].key == 'C2'
+    record.sampleChildren[2].key == 'C3'
 
     and: 'the JSON is valid'
     def json = new JsonSlurper().parseText((String) res.getBody().get())
@@ -675,8 +675,11 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     List jsonChildren = json.sampleChildren
     jsonChildren.size() == 3
     jsonChildren[0].key == 'C1'
-    jsonChildren[1].key == 'C3'
-    jsonChildren[2].key == 'C2'
+    jsonChildren[1].key == 'C2'
+    jsonChildren[2].key == 'C3'
+
+    and: 'no extra child records are created'
+    SampleChild.list().size() == 3
   }
 
   @Rollback
@@ -686,8 +689,8 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
 
     and: 'an existing record'
     def record1 = new SampleParent(name: 'ABC-021')
-    record1.sampleChildren << (new SampleChild(key: 'C1'))
-    record1.sampleChildren << (new SampleChild(key: 'C2'))
+    record1.sampleChildren << (new SampleChild(key: 'C1', sequence: 1))
+    record1.sampleChildren << (new SampleChild(key: 'C2', sequence: 2))
     record1.save()
 
     and: 'the source JSON'
@@ -695,13 +698,13 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
       {
         "title" : "abc-001",
         "sampleChildren" : [
-          {"key": "C3"}
+          {"key": "C2", "sequence": 3}
         ]
       }
       """
 
     when: 'the put is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restPut(record1.uuid.toString(), mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
 
@@ -713,14 +716,20 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     record.name == 'ABC-021'
     record.title == 'abc-001'
     record.sampleChildren.size() == 1
-    record.sampleChildren[0].key == 'C3'
+    record.sampleChildren[0].key == 'C2'
+    record.sampleChildren[0].sequence == 3
 
     and: 'the JSON is valid'
     def json = new JsonSlurper().parseText((String) res.getBody().get())
 
     List jsonChildren = json.sampleChildren
     jsonChildren.size() == 1
-    jsonChildren[0].key == 'C3'
+    jsonChildren[0].key == 'C2'
+    jsonChildren[0].sequence == 3
+
+    and: 'no extra child records are created'
+    SampleChild.list().size() == 1
+
   }
 
   @Rollback
@@ -750,7 +759,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     """
 
     when: 'the post is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     //HttpResponse res = controller.restPut(mockRequest([body: src]), null)
     HttpResponse res = controller.restPut(order.uuid.toString(), mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
@@ -805,7 +814,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
       """
 
     when: 'the put is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restPut(record1.uuid.toString(), mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
 
@@ -852,7 +861,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
       """
 
     when: 'the put is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restPut(record1.uuid.toString(), mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
 
@@ -884,7 +893,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
       """
 
     when: 'the post is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restPut(record1.uuid.toString(), mockRequest([body: src]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
@@ -903,7 +912,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     Class clazz = buildAllFieldsDomainController()
 
     when: 'the post is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restPut('', mockRequest([:]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
@@ -922,7 +931,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     Class clazz = buildAllFieldsDomainController()
 
     when: 'the put is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restPut('', mockRequest([body: "{}"]), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
@@ -933,7 +942,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
   @Rollback
   def "verify restPut checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller'
-    Object controller = buildAllFieldsDomainController().newInstance()
+    Object controller = buildAllFieldsDomainController().getConstructor().newInstance()
 
     and: 'a mocked security utils that will fail'
     new MockSecurityUtils(this, HttpStatus.FORBIDDEN).install()
@@ -954,7 +963,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     def record1 = new AllFieldsDomain(name: 'ABC-021').save()
 
     when: 'the put is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restDelete(record1.uuid.toString(), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
 
@@ -977,7 +986,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     record1.save()
 
     when: 'the put is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restDelete(record1.uuid.toString(), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
 
@@ -999,7 +1008,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     def sampleParent = new SampleParent(name: 'SAMPLE', title: 'Sample').save()
 
     when: 'the put is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restDelete(sampleParent.uuid.toString(), null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
 
@@ -1017,7 +1026,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     Class clazz = buildAllFieldsDomainController()
 
     when: 'the put is called'
-    def controller = clazz.newInstance()
+    def controller = clazz.getConstructor().newInstance()
     HttpResponse res = controller.restDelete('', null)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
 
@@ -1028,7 +1037,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
   @Rollback
   def "verify restDelete checks for controller-level secured annotation and fails when user has wrong permissions"() {
     given: 'a controller'
-    Object controller = buildAllFieldsDomainController().newInstance()
+    Object controller = buildAllFieldsDomainController().getConstructor().newInstance()
 
     and: 'a mocked security utils that will fail'
     new MockSecurityUtils(this, HttpStatus.FORBIDDEN).install()
