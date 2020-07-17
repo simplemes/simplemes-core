@@ -303,4 +303,51 @@ of records created as described in <<Initial Data Loading and Tests>>.
 This will be used to ignore those records during the test cleanup.
 
 
+==== Multiple Record References
+
+The `dirtyDomains` static value in most tests will clean up any records created in those tables.
+This simplifies the cleanup process, but has some issues with complex cases.
+For example, you might have a foreign key reference like this Product/Component relationship:
+
+* Product CPU
+* Product BOARD
+* Product DISK
+* Product PC - Has references to these components:
+** Product CPU
+** Product BOARD
+** Product DISK
+
+When you delete all _Product_ records, it might delete them in the wrong order.
+The delete will fail with an error like:
+
+[source,text]
+.Example - Error with Reference Error from Database
+----
+io.micronaut.data.exceptions.DataAccessException: Error executing SQL UPDATE: ERROR: update or
+  delete on table "product" violates foreign key constraint "product_component_component_id_fkey"
+  on table "product_component"
+    Detail: Key (uuid)=(2e9aecd6-ab7b-4b7b-8281-dd9dec9eae84) is still referenced from table
+    "product_component".
+
+----
+
+The link:groovydoc/org/simplemes/eframe/test/BaseSpecification.html[BaseSpecification^]
+icon:share-square-o[role="link-blue"] `cleanup()` method will try to delete the Product records.
+It may delete the _CPU_ record first, which has a reference under the _PC_ product, so the delete
+will fail.
+
+Sometimes this will work if the records are delete in the correct order (PC first, followed by the
+component records).  Most of the time, it will fail.
+
+How can you avoid this?  You just need to force the `cleanup()` code to delete the child
+records first.
+
+[source,groovy]
+.Example - dirtDomains for Complex Reference Scenarios
+----
+static dirtyDomains = [ProductComponent,  Product, MasterRouting]
+----
+
+Ideally, the use of _ProductComponent_ should not be needed, but it simplifies the `cleanup()`
+logic.
 

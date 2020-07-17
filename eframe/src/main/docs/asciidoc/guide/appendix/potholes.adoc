@@ -66,6 +66,22 @@ added to the method.
 
 To work around this, you can use the withTransaction closure on a domain (see <<Transactions>>).
 
+==== Key (xyz)=(xyz) is still referenced from table "abc".
+
+This is a 'chicken of egg' scenario in some tests that triggers the 'still referenced' errors.
+See <<Multiple Record References>> for details.
+
+[source,text]
+.Example - Error with Reference Error from Database
+----
+io.micronaut.data.exceptions.DataAccessException: Error executing SQL UPDATE: ERROR: update or
+  delete on table "product" violates foreign key constraint "product_component_component_id_fkey"
+  on table "product_component"
+    Detail: Key (uuid)=(2e9aecd6-ab7b-4b7b-8281-dd9dec9eae84) is still referenced from table
+    "product_component".
+
+----
+
 
 
 ==== HTTP Requests return Forbidden Status
