@@ -64,6 +64,7 @@ class ScanServiceSpec extends BaseSpecification {
     scanResponse.scanActions[0].button == 'START'
   }
 
+  @SuppressWarnings('GroovyAssignabilityCheck')
   def "test scan with order scanned - starts inQueue"() {
     given: 'a released order'
     def order = MESUnitTestUtils.releaseOrder(qty: 1.2)
@@ -84,9 +85,9 @@ class ScanServiceSpec extends BaseSpecification {
 
     and: 'scan action tells the client to refresh the Order status with a type REFRESH_ORDER_STATUS'
     def refreshAction = scanResponse.scanActions.find {
-      it.type == RefreshOrderStatusAction.TYPE_REFRESH_ORDER_STATUS
+      it.type == OrderLSNStatusChangedAction.TYPE_ORDER_LSN_STATUS_CHANGED
     }
-    refreshAction.order == order.order
+    refreshAction.list[0].order == order.order
 
     and: 'scan action tells the client that the order changed'
     def orderChangedAction = scanResponse.scanActions.find { it.type == OrderLSNChangeAction.TYPE_ORDER_LSN_CHANGED }
@@ -116,6 +117,7 @@ class ScanServiceSpec extends BaseSpecification {
     Locale.GERMANY | _
   }
 
+  @SuppressWarnings('GroovyAssignabilityCheck')
   def "test scan with order scanned - completes inWork"() {
     given: 'a released order'
     def order = MESUnitTestUtils.releaseOrder(qty: 1.2, qtyInWork: 1.2)
@@ -136,9 +138,9 @@ class ScanServiceSpec extends BaseSpecification {
 
     and: 'scan action tells the client to refresh the Order status with a type REFRESH_ORDER_STATUS'
     def refreshAction = scanResponse.scanActions.find {
-      it.type == RefreshOrderStatusAction.TYPE_REFRESH_ORDER_STATUS
+      it.type == OrderLSNStatusChangedAction.TYPE_ORDER_LSN_STATUS_CHANGED
     }
-    refreshAction.order == order.order
+    refreshAction.list[0].order == order.order
 
     and: 'scan action tells the client that the order changed'
     def orderChangedAction = scanResponse.scanActions.find { it.type == OrderLSNChangeAction.TYPE_ORDER_LSN_CHANGED }

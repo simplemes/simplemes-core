@@ -15,7 +15,8 @@ import org.simplemes.mes.demand.service.WorkService
 import org.simplemes.mes.system.ButtonPressAction
 import org.simplemes.mes.system.OrderLSNChangeAction
 import org.simplemes.mes.system.OrderLSNChangeDetail
-import org.simplemes.mes.system.RefreshOrderStatusAction
+import org.simplemes.mes.system.OrderLSNStatusChangeDetail
+import org.simplemes.mes.system.OrderLSNStatusChangedAction
 import org.simplemes.mes.system.ScanRequestInterface
 import org.simplemes.mes.system.ScanResponse
 import org.simplemes.mes.system.ScanResponseInterface
@@ -182,7 +183,8 @@ class ScanService {
       scanResponse.messageHolder.addInfo(text: msg)
 
       // Let the client know it should refresh the order status.
-      scanResponse.scanActions << new RefreshOrderStatusAction(order: order.order, source: EVENT_SOURCE)
+      def list = [new OrderLSNStatusChangeDetail(order: order.order)]
+      scanResponse.scanActions << new OrderLSNStatusChangedAction(list: list, source: EVENT_SOURCE)
       qtyInQueue -= startResponse.qty
       qtyInWork += startResponse.qty
 
@@ -203,7 +205,8 @@ class ScanService {
       scanResponse.messageHolder.addInfo(text: msg)
 
       // Let the client know it should refresh the order status.
-      scanResponse.scanActions << new RefreshOrderStatusAction(order: order.order, source: EVENT_SOURCE)
+      def list = [new OrderLSNStatusChangeDetail(order: order.order)]
+      scanResponse.scanActions << new OrderLSNStatusChangedAction(list: list, source: EVENT_SOURCE)
       qtyInWork -= completeResponse.qty
       qtyDone += completeResponse.qty
 

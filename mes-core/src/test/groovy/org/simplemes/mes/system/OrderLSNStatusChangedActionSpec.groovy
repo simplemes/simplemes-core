@@ -13,13 +13,16 @@ import org.simplemes.eframe.test.BaseSpecification
 /**
  * Tests.
  */
-class RefreshOrderStatusActionSpec extends BaseSpecification {
+class OrderLSNStatusChangedActionSpec extends BaseSpecification {
 
+  @SuppressWarnings('unused')
   static specNeeds = SERVER
 
+  @SuppressWarnings('GroovyAssignabilityCheck')
   def "verify that JSON formatting of action works"() {
     given: 'an action'
-    def action = new RefreshOrderStatusAction(order: 'TEST')
+    def list = [new OrderLSNStatusChangeDetail(order: 'TEST', lsn: 'SN001')]
+    def action = new OrderLSNStatusChangedAction(list: list)
 
     when: 'the object is formatted'
     def s = Holders.objectMapper.writeValueAsString(action)
@@ -28,15 +31,8 @@ class RefreshOrderStatusActionSpec extends BaseSpecification {
     //println "s = $s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
     def json = new JsonSlurper().parseText(s)
-    json.type == RefreshOrderStatusAction.TYPE_REFRESH_ORDER_STATUS
-    json.order == 'TEST'
-  }
-
-  def "verify that the type is correct"() {
-    given: 'an action'
-    def action = new RefreshOrderStatusAction(order: 'TEST')
-
-    expect: 'right type'
-    action.type == RefreshOrderStatusAction.TYPE_REFRESH_ORDER_STATUS
+    json.type == OrderLSNStatusChangedAction.TYPE_ORDER_LSN_STATUS_CHANGED
+    json.list[0].order == 'TEST'
+    json.list[0].lsn == 'SN001'
   }
 }

@@ -50,7 +50,7 @@ ${variable}.determineStatusToDisplayForOrder = function(status) {
 ${variable}.postScript = "mes_dashboard._initScanHandlers()";
 
 <@efForm id="scanArea" dashboard="buttonHolder">
-  <@efHTML spacer="before" height="1em">
+  <@efHTML spacer="before" height="2em">
     <div id="scan">
       <span class="scanHeader"><@efLookup key="scanDashboard.main.header"/>&nbsp;</span><span id="scanText"></span>
       <div class="orderBlock">

@@ -24,7 +24,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<scan-actions,Overview>>#
 [inline-toc]#<<ButtonPressAction>>#
 [inline-toc]#<<OrderLSNChangeAction>>#
-[inline-toc]#<<RefreshOrderStatusAction>>#
+[inline-toc]#<<OrderLSNStatusChangedAction>>#
 
 endif::[]
 

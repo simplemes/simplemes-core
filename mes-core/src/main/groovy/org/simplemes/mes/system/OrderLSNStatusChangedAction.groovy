@@ -12,19 +12,33 @@ import groovy.transform.ToString
  * This action is recommended based on the barcode scanned.
  */
 @ToString(includePackage = false, includeNames = true)
-class RefreshOrderStatusAction extends ScanAction {
+class OrderLSNStatusChangedAction extends ScanAction {
   /**
    * The action.type for this action.
    */
-  static final String TYPE_REFRESH_ORDER_STATUS = 'REFRESH_ORDER_STATUS'
+  static final String TYPE_ORDER_LSN_STATUS_CHANGED = 'ORDER_LSN_STATUS_CHANGED'
 
   /**
-   * The order which changed the status.
+   * The list of new Order/LSN value(s).
    */
-  String order
+  List<OrderLSNStatusChangeDetail> list
 
   /**
    * The recommended client action.
    */
-  String type = TYPE_REFRESH_ORDER_STATUS
+  String type = TYPE_ORDER_LSN_STATUS_CHANGED
 }
+
+class OrderLSNStatusChangeDetail {
+  /**
+   * The order that was changed.
+   */
+  String order
+
+  /**
+   * The LSN that was changed.
+   */
+  String lsn
+
+}
+

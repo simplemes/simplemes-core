@@ -8,7 +8,7 @@ micronaut:
 ---
 datasources:
   default:
-    url: "jdbc:postgresql://localhost:5432/mes_dev"
+    url: "jdbc:postgresql://localhost:5432/core_dev"
     driverClassName: "org.postgresql.Driver"
     username: "mph"
     password: "mh1234"

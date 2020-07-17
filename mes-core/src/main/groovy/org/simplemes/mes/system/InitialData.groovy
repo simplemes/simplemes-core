@@ -99,6 +99,8 @@ class InitialData {
       //                                                 title: 'reverseStart.title', style: 'font-size:1.0em', buttonID: 'REVERSE_START'))
       dashboardConfig.buttons << new DashboardButton(label: 'complete.label', url: '/work/completeActivity', panel: 'A',
                                                      title: 'complete.title', css: 'caution-button', buttonID: 'COMPLETE')
+      dashboardConfig.buttons << new DashboardButton(label: 'reverseComplete.label', url: '/work/reverseCompleteActivity', panel: 'A',
+                                                     title: 'reverseComplete.title', buttonID: 'REVERSE_COMPLETE')
       dashboardConfig.save()
       log.warn("Created Dashboard ${dashboardConfig}.")
 

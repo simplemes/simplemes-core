@@ -6,7 +6,7 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<ButtonPressAction>>#
 [inline-toc]#<<OrderLSNChangeAction>>#
-[inline-toc]#<<RefreshOrderStatusAction>>#
+[inline-toc]#<<OrderLSNStatusChangedAction>>#
 
 endif::[]
 
@@ -57,26 +57,17 @@ The link:groovydoc/org/simplemes/mes/system/OrderLSNChangeAction.html[OrderLSNCh
 is used to notify the client that the current order/LSN needs to be changed in the client.
 This is used when an order/LSN is scanned should be the 'current' order to be processed in the client.
 
-===== Scan Action Properties
+This server-side action is used to trigger the client-side dashboard event: <<ORDER_LSN_CHANGED>>.
+The event details are listed there.
 
-The main properties of the scan action are:
 
-* `type` - _ORDER_LSN_CHANGED_
-* `order` - The new order.
-* `lsn` - The new LSN (optional).
-* `qtyInQueue` - The qty in queue after processing.
-* `qtyInWork` - The qty in work after processing.
+==== OrderLSNStatusChangedAction
 
-==== RefreshOrderStatusAction
-
-The link:groovydoc/org/simplemes/mes/system/RefreshOrderStatusAction.html[RefreshOrderStatusAction^] icon:share-square-o[role="link-blue"]
-is used to notify the client that the status of an order has changed.  Typically, this is used by specific
+The link:groovydoc/org/simplemes/mes/system/OrderLSNStatusChangedAction.html[OrderLSNStatusChangedAction^]
+icon:share-square-o[role="link-blue"]
+is used to notify the client that the status of an order/lsn has changed.  Typically, this is used by specific
 dashboard activities to refresh the displayed status of the current order.
 
-===== Scan Action Properties
-
-The main properties of the scan action are:
-
-* `type` - _REFRESH_ORDER_STATUS_
-* `order` - The order ID of the order that has a changed status.
+This server-side action is used to trigger the client-side dashboard event: <<ORDER_LSN_STATUS_CHANGED>>.
+The event details are listed there.
 
