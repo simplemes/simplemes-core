@@ -14,12 +14,10 @@ import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.mes.demand.WorkStateTrait
 import org.simplemes.mes.demand.WorkableInterface
-import org.simplemes.mes.misc.FieldSizes
 import org.simplemes.mes.product.OperationTrait
 import org.simplemes.mes.product.RoutingUtils
 
 import javax.annotation.Nullable
-import javax.persistence.Column
 import javax.persistence.ManyToOne
 
 /*
@@ -34,8 +32,9 @@ import javax.persistence.ManyToOne
  * This object also implements the WorkableInterface to encapsulate the process of working
  * on various objects.
  */
-@MappedEntity('lsn_oper_state')
 @DomainEntity
+@MappedEntity('lsn_oper_state')
+@SuppressWarnings('unused')
 @ToString(includeNames = true, includePackage = false)
 @EqualsAndHashCode(includes = ['lsn', 'sequence'])
 class LSNOperState implements WorkStateTrait, WorkableInterface {
@@ -48,8 +47,8 @@ class LSNOperState implements WorkStateTrait, WorkableInterface {
    * This operation state always belongs to a single LSN.
    */
   @ManyToOne
+  @MappedProperty(type = DataType.UUID)
   LSN lsn
-  // TODO: Add index to DDL.
 
   /**
    * The number of pieces waiting to be worked (in queue) for this object.
@@ -100,28 +99,26 @@ class LSNOperState implements WorkStateTrait, WorkableInterface {
   Date dateFirstStarted
 
   /**
-   * The custom field holder.  Max size: {@link FieldSizes#MAX_CUSTOM_FIELDS_LENGTH}
+   * The custom field holder.
    */
+  @Nullable
   @ExtensibleFieldHolder
-  @Column(length = FieldSizes.MAX_CUSTOM_FIELDS_LENGTH, nullable = true)
-  @SuppressWarnings("unused")
-  String customFields
+  @MappedProperty(type = DataType.JSON)
+  String fields
 
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
-  @SuppressWarnings("unused")
   Date dateCreated
 
   @DateUpdated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
-  @SuppressWarnings("unused")
   Date dateUpdated
 
-  @SuppressWarnings("unused")
   Integer version = 0
 
-  @SuppressWarnings("unused")
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * The empty constructor.  

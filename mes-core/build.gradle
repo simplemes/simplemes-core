@@ -65,6 +65,9 @@ dependencies {
   gems "rubygems:asciidoctor-diagram:$asciidoctorDiagramVersion"
   gems "rubygems:asciidoctor-plantuml:$asciidoctorPlantumlVersion"  // Needs GraphViz dot.exe on PATH.
 
+  test {
+    useJUnitPlatform()  // Forces Junit5 for Spock in Gradle tests.
+  }
 }
 
 mainClassName = "org.simplemes.mes.application.Application"

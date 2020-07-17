@@ -17,6 +17,7 @@ import org.simplemes.mes.misc.FieldSizes
 import org.simplemes.mes.product.OperationTrait
 import org.simplemes.mes.product.RoutingTrait
 
+import javax.annotation.Nullable
 import javax.persistence.Column
 import javax.persistence.OneToMany
 
@@ -38,6 +39,7 @@ import javax.persistence.OneToMany
 @MappedEntity
 @DomainEntity
 @JsonFilter("searchableFilter")
+@SuppressWarnings('unused')
 @ToString(includeNames = true, includePackage = false)
 @EqualsAndHashCode(includes = ['routing'])
 class MasterRouting implements RoutingTrait {
@@ -55,7 +57,6 @@ class MasterRouting implements RoutingTrait {
    * Maximum length is defined by {@link FieldSizes#MAX_TITLE_LENGTH}.
    */
   @Column(length = FieldSizes.MAX_TITLE_LENGTH, nullable = true)
-  @SuppressWarnings("unused")
   String title
 
   /**
@@ -67,32 +68,29 @@ class MasterRouting implements RoutingTrait {
   /**
    * This domain is a top-level searchable element.
    */
-  @SuppressWarnings("unused")
   static searchable = true
 
   /**
-   * The custom field holder.  Max size: {@link FieldSizes#MAX_CUSTOM_FIELDS_LENGTH}
+   * The custom field holder.
    */
+  @Nullable
   @ExtensibleFieldHolder
-  @Column(length = FieldSizes.MAX_CUSTOM_FIELDS_LENGTH, nullable = true)
-  @SuppressWarnings("unused")
-  String customFields
+  @MappedProperty(type = DataType.JSON)
+  String fields
 
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
-  @SuppressWarnings("unused")
   Date dateCreated
 
   @DateUpdated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
-  @SuppressWarnings("unused")
   Date dateUpdated
 
-  @SuppressWarnings("unused")
   Integer version = 0
 
-  @SuppressWarnings("unused")
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * Defines the default general field ordering for GUIs and other field listings/reports.

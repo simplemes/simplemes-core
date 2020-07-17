@@ -445,6 +445,9 @@ class OrderServiceSpec extends BaseSpecification {
     and: 'a mock logging appender to capture the log message'
     def mockAppender = MockAppender.mock(OrderService, Level.ERROR)
 
+    and: 'clear the flag to indicate the error is still needed'
+    service.lastLogTime = 0
+
     and: 'one really old order'
     Date d = new Date() - 1002
     new Order(order: '1', qtyToBuild: 1, dateCompleted: d).save()

@@ -128,7 +128,7 @@ class MESUnitTestUtils {
    *   <li><b>lotSize</b> - The size of each LSN created (if configured for LSNs) (<b>Default</b>: 1.0) </li>
    *   <li><b>lsnTrackingOption</b> - Configures the LSN option (<b>Default</b>: LSNTrackingOption.ORDER_ONLY) </li>
    *   <li><b>lsnSequence</b> - The LSN Sequence to use to generate the LSN names (<b>Default</b>: default LSN Sequence) </li>
-   *   <li><b>lsns</b> - A list of LSN names (Strings) to use for the order. LSNs are created using this and the ID and the order # (if needed).  (<b>Default</b>: default LSN Sequence) </li>
+   *   <li><b>lsns</b> - A list of LSN names (Strings) to use for the order. LSNs are created using this and the order # (if nOrders>1).  (<b>Default</b>: default LSN Sequence) </li>
    *   <li><b>spreadQueuedDates</b> - If true, then the dateFirstQueued for all created objects will be spread from a date 14 days ago (+1 second for each).  (<b>Default</b>: false) </li>
    *   <li><b>orderSequenceStart</b> - The sequence number for the first order created (<b>Default</b>: 1000) </li>
    * </ul>
@@ -155,6 +155,7 @@ class MESUnitTestUtils {
    * @param options See for the {@link #releaseOrders(java.util.Map)} for details.  (<b>Optional</b>)
    * @return The order(s) created and released.
    */
+  @SuppressWarnings('AbcMetric')
   protected List<Order> releaseOrdersInternal(Map options = [:]) {
     List<Order> list = []
     Order.withTransaction {
@@ -216,7 +217,7 @@ class MESUnitTestUtils {
           order.save()
           for (lsnBase in options?.lsns) {
             def lsnSuffix = nOrders > 1 ? "$nOrders" : ''
-            order.lsns << new LSN(lsn: "$lsnBase$id$lsnSuffix")
+            order.lsns << new LSN(lsn: "$lsnBase$lsnSuffix")
           }
           orderService.release(new OrderReleaseRequest(order))
           seq++

@@ -6,6 +6,7 @@ micronaut:
     http:
       cookiePath: /
   security:
+    authentication: cookie
     enabled: true
     endpoints:
       login:
@@ -42,6 +43,7 @@ micronaut:
         access:
           - isAnonymous()
   server.netty.logLevel: DEBUG
+  server.thread-selection: AUTO
 
 ---
 dataSource:
@@ -53,6 +55,18 @@ dataSource:
   username: sa
   password: ''
 
+---
+
+flyway:
+  datasources:
+    default:
+      enabled: true
+      locations:
+        - classpath:db/migration
+      ignore-missing-migrations: true
+      #baseline-on-migrate: true
+      #baseline-version: 0.1
+      #baseline-description: empty
 
 ---
 jackson:

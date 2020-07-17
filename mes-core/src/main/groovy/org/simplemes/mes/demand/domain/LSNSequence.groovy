@@ -14,6 +14,7 @@ import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.mes.misc.FieldSizes
 import org.simplemes.mes.numbering.CodeSequenceTrait
 
+import javax.annotation.Nullable
 import javax.persistence.Column
 
 /**
@@ -24,8 +25,9 @@ import javax.persistence.Column
  */
 
 @Slf4j
-@MappedEntity('lsn_sequence')
+@SuppressWarnings('unused')
 @DomainEntity
+@MappedEntity('lsn_sequence')
 @ToString(includeNames = true, includePackage = false)
 class LSNSequence implements CodeSequenceTrait {
 
@@ -60,12 +62,12 @@ class LSNSequence implements CodeSequenceTrait {
   boolean defaultSequence = false
 
   /**
-   * The custom field holder.  Max size: {@link FieldSizes#MAX_CUSTOM_FIELDS_LENGTH}
+   * The custom field holder.
    */
+  @Nullable
   @ExtensibleFieldHolder
-  @Column(length = FieldSizes.MAX_CUSTOM_FIELDS_LENGTH, nullable = true)
-  @SuppressWarnings("unused")
-  String customFields
+  @MappedProperty(type = DataType.JSON)
+  String fields
 
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
@@ -77,7 +79,9 @@ class LSNSequence implements CodeSequenceTrait {
 
   Integer version = 0
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * Defines the default general field ordering for GUIs and other field listings/reports.

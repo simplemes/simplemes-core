@@ -161,7 +161,7 @@ class ResolveServiceSpec extends BaseSpecification {
   @Rollback
   def "test resolveProductionRequest with a barcode and LSN and order are use same ID"() {
     given: 'a released order with matching LSN'
-    def order = MESUnitTestUtils.releaseOrder(id: 'RS', qtyToBuild: 1.0, lsnTrackingOption: LSNTrackingOption.LSN_ONLY,
+    def order = MESUnitTestUtils.releaseOrder(qtyToBuild: 1.0, lsnTrackingOption: LSNTrackingOption.LSN_ONLY,
                                               lsns: ['M1000'])
     // Make sure we created LSNs that match.
     assert order.order == order.lsns[0].lsn
@@ -232,7 +232,7 @@ class ResolveServiceSpec extends BaseSpecification {
   def "test resolveID with duplicate LSN - gracefully fails"() {
     given: 'create two LSNs with the same ID'
     def order1 = MESUnitTestUtils.releaseOrder(lsnTrackingOption: LSNTrackingOption.LSN_ONLY, lsns: ['SNX001'])
-    MESUnitTestUtils.releaseOrder(lsnTrackingOption: LSNTrackingOption.LSN_ONLY, lsns: ['SNX001'])
+    MESUnitTestUtils.releaseOrder(id: '1', lsnTrackingOption: LSNTrackingOption.LSN_ONLY, lsns: ['SNX001'])
 
     when: 'the resolve is attempted'
     resolveService.resolveID(new ResolveIDRequest(barcode: order1.lsns[0].lsn))
@@ -248,7 +248,7 @@ class ResolveServiceSpec extends BaseSpecification {
     given: 'released orders with the same LSN'
     def order1 = MESUnitTestUtils.releaseOrder(orderSequenceStart: 1001, lsnTrackingOption: LSNTrackingOption.LSN_ONLY,
                                                lsns: ['SN1001'])
-    def order2 = MESUnitTestUtils.releaseOrder(orderSequenceStart: 1002, lsnTrackingOption: LSNTrackingOption.LSN_ONLY,
+    def order2 = MESUnitTestUtils.releaseOrder(id: '1', orderSequenceStart: 1002, lsnTrackingOption: LSNTrackingOption.LSN_ONLY,
                                                lsns: ['SN1001'])
 
     when: 'the lsn/order is fixed'
@@ -279,7 +279,7 @@ class ResolveServiceSpec extends BaseSpecification {
     given: 'released orders with different LSNs'
     def order1 = MESUnitTestUtils.releaseOrder(orderSequenceStart: 1001, lsnTrackingOption: LSNTrackingOption.LSN_ONLY,
                                                lsns: ['SN1001'])
-    def order2 = MESUnitTestUtils.releaseOrder(orderSequenceStart: 1002, lsnTrackingOption: LSNTrackingOption.LSN_ONLY,
+    def order2 = MESUnitTestUtils.releaseOrder(id: '1', orderSequenceStart: 1002, lsnTrackingOption: LSNTrackingOption.LSN_ONLY,
                                                lsns: ['SN1002'])
 
     when: 'the lsn/order is fixed'

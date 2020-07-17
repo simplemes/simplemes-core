@@ -54,6 +54,7 @@ class ActionLog {
    */
   @Nullable
   @ManyToOne(targetEntity = Order)
+  @MappedProperty(type = DataType.UUID)
   Order order
 
   /**
@@ -61,6 +62,7 @@ class ActionLog {
    */
   @Nullable
   @ManyToOne(targetEntity = LSN)
+  @MappedProperty(type = DataType.UUID)
   LSN lsn
 
   /**
@@ -68,13 +70,13 @@ class ActionLog {
    */
   @Nullable
   BigDecimal qty
-  // TODO: Set scale in DDL for STANDARD_DECIMAL_SCALE (4?).
 
   /**
    * The Product for the LSN/Order.  Determined automatically on save.
    */
   @Nullable
   @ManyToOne(targetEntity = Product)
+  @MappedProperty(type = DataType.UUID)
   Product product
 
   /**
@@ -82,21 +84,24 @@ class ActionLog {
    */
   @Nullable
   @ManyToOne(targetEntity = WorkCenter)
+  @MappedProperty(type = DataType.UUID)
   WorkCenter workCenter
 
   /**
-   * The custom field holder.  Max size: {@link FieldSizes#MAX_CUSTOM_FIELDS_LENGTH}
+   * The custom field holder.
    */
+  @Nullable
   @ExtensibleFieldHolder
-  @Column(length = FieldSizes.MAX_CUSTOM_FIELDS_LENGTH, nullable = true)
-  @SuppressWarnings("unused")
-  String customFields
+  @MappedProperty(type = DataType.JSON)
+  String fields
 
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateCreated
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
 
   /**

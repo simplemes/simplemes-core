@@ -77,7 +77,7 @@ enum LSNTrackingOption {
     /**
      * The size of the column needed for persistence.
      */
-    public static final int COLUMN_SIZE = 1
+    public static final int ID_LENGTH = 16
   }
 
 }

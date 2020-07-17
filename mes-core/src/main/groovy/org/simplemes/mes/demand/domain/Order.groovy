@@ -44,6 +44,7 @@ import javax.persistence.OneToMany
  */
 @MappedEntity('ordr')
 @DomainEntity
+@SuppressWarnings("unused")
 @JsonFilter("searchableFilter")
 @ToString(includeNames = true, includePackage = false, excludes = ['dateCreated', 'dateUpdated'])
 @EqualsAndHashCode(includes = ["order"])
@@ -58,11 +59,11 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    */
   @Column(name = 'ordr', length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String order
-  // TODO: Add unique index to DDL.
 
   /**
    * The Order's overall status.  This is one of the pre-defined OrderStatus codes.
    */
+  @Column(length = OrderStatus.ID_LENGTH, nullable = false)
   OrderStatus overallStatus
 
   /**
@@ -70,7 +71,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    * <p/>
    * Default value=1.0
    * <p/>
-   * Minimum value=0.000000001
+   * Must be greater than 0.0.
    */
   BigDecimal qtyToBuild = 1.0
 
@@ -86,6 +87,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    */
   @Nullable
   @ManyToOne(targetEntity = Product)
+  @MappedProperty(type = DataType.UUID)
   Product product
 
   /**
@@ -114,6 +116,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    * Copied from Product on creation to determine what type of tracking is needed.  If product is not given,
    * then defaults to Order only.
    */
+  @Column(length = LSNTrackingOption.Sizes.ID_LENGTH, nullable = false)
   LSNTrackingOption lsnTrackingOption = LSNTrackingOption.ORDER_ONLY
 
   /**
@@ -153,7 +156,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    * Can be null if the nothing is in queue.
    * <p/><b>WorkStateTrait field</b>.
    */
-  @Nullable @SuppressWarnings("unused")
+  @Nullable
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateQtyQueued
 
@@ -162,7 +165,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    * Can be null if the nothing is in work.
    * <p/><b>WorkStateTrait field</b>.
    */
-  @Nullable @SuppressWarnings("unused")
+  @Nullable
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateQtyStarted
 
@@ -170,7 +173,7 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    * The date/time any quantity was first queued at this point (operation or top-level).
    * <p/><b>WorkStateTrait field</b>.
    */
-  @Nullable @SuppressWarnings("unused")
+  @Nullable
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateFirstQueued
 
@@ -178,31 +181,31 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
    * The date/time any quantity was first started at this point (operation or top-level).
    * <p/><b>WorkStateTrait field</b>.
    */
-  @Nullable @SuppressWarnings("unused")
+  @Nullable
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateFirstStarted
 
   /**
    * The custom field holder.  Unlimited size.
    */
+  @Nullable
   @ExtensibleFieldHolder
-  @Column(nullable = true)
-  @MappedProperty(type = DataType.STRING, definition = 'TEXT')
-  @SuppressWarnings("unused")
-  String customFields
+  @MappedProperty(type = DataType.JSON)
+  String fields
 
-  @DateCreated @SuppressWarnings("unused")
+  @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateCreated
 
-  @DateUpdated @SuppressWarnings("unused")
+  @DateUpdated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateUpdated
 
-  @SuppressWarnings("unused")
   Integer version = 0
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * This is a list of fields that are not allowed in the standard CRUD (Create, Read, Update, Delete) APIs provided by the standard
@@ -216,13 +219,12 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
   /**
    * This domain is a top-level searchable element.
    */
-  @SuppressWarnings("unused")
   static searchable = true
 
   /**
    * Defines the default general field ordering for GUIs and other field listings/reports.
    */
-  @SuppressWarnings("GroovyUnusedDeclaration")
+  //@SuppressWarnings("GroovyUnusedDeclaration")
   static fieldOrder = ['order', 'overallStatus', 'qtyToBuild', 'product',
                        'group:state', 'qtyReleased', 'qtyInQueue', 'qtyInWork', 'qtyDone',
                        'dateCompleted',
@@ -231,7 +233,6 @@ class Order implements WorkStateTrait, WorkableInterface, DemandObject, RoutingT
   /**
    * Called before validate happens.  Used to set the order if needed.
    */
-  @SuppressWarnings("unused")
   def beforeValidate() {
     // Set the order name if none provided.
     if (!order) {

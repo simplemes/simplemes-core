@@ -29,26 +29,28 @@ import javax.persistence.OneToMany
  */
 @MappedEntity
 @DomainEntity
+@SuppressWarnings("unused")
 @EqualsAndHashCode(includes = ['lsn', 'order'])
 @ToString(includeNames = true, includePackage = false, excludes = ['order'])
-class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
+class LSN implements WorkStateTrait, WorkableInterface, DemandObject, Comparable {
   /**
    * The Lot/Serial Number (LSN) of the unit to be tracked.
    */
   @Column(length = FieldSizes.MAX_LSN_LENGTH, nullable = false)
   String lsn
-  // TODO: Add unique constraint on order/lsn to DDL.  Index on LSN/Order?
 
   /**
    * An LSN always belongs to one order.  It is a child of the order and may be processed individually within
    * the order in many cases.
    */
   @ManyToOne
+  @MappedProperty(type = DataType.UUID)
   Order order
 
   /**
    * The status of this LSN.  Uses the default LSNStatus if none is provided.
    */
+  @Column(length = LSNStatus.ID_LENGTH, nullable = false)
   LSNStatus status
 
   /**
@@ -113,12 +115,12 @@ class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
   Date dateFirstStarted
 
   /**
-   * The custom field holder.  Max size: 1024.
+   * The custom field holder.  Unlimited size.
    */
   @ExtensibleFieldHolder
-  @Column(length = 1024, nullable = true)
-  @SuppressWarnings("unused")
-  String customFields
+  @Nullable
+  @MappedProperty(type = DataType.JSON)
+  String fields
 
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
@@ -128,15 +130,15 @@ class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateUpdated
 
-  @SuppressWarnings("unused")
   Integer version = 0
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * The primary keys for this record are order and lsn.  Order is the parent key.
    */
-  @SuppressWarnings("unused")
   static keys = ['lsn', 'order']
 
   /**
@@ -194,5 +196,21 @@ class LSN implements WorkStateTrait, WorkableInterface, DemandObject {
   String toShortString() {
     return lsn
   }
-
+/**
+ * Compares this object with the specified object for order.  Returns a
+ * negative integer, zero, or a positive integer as this object is less
+ * than, equal to, or greater than the specified object.
+ *
+ * @param o the object to be compared.
+ * @return a negative integer, zero, or a positive integer as this object
+ *          is less than, equal to, or greater than the specified object.
+ */
+  @Override
+  int compareTo(Object o) {
+    def res = lsn <=> o?.lsn
+    if (res == 0) {
+      return getOrder()?.order <=> o?.getOrder()?.order
+    }
+    return res
+  }
 }

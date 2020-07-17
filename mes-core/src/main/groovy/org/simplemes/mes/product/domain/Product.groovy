@@ -21,6 +21,7 @@ import org.simplemes.mes.product.RoutingTrait
 
 import javax.annotation.Nullable
 import javax.persistence.Column
+import javax.persistence.ManyToOne
 import javax.persistence.OneToMany
 
 /*
@@ -50,7 +51,6 @@ class Product implements RoutingTrait {
    */
   @Column(length = FieldSizes.MAX_PRODUCT_LENGTH, nullable = false)
   String product
-  // TODO: Add unique constraint, index
 
   /**
    * The product's title (short description).
@@ -61,12 +61,13 @@ class Product implements RoutingTrait {
   String title
 
   @Column(nullable = true)
-  @MappedProperty(type = DataType.STRING, definition = 'TEXT') String description
+  @MappedProperty(type = DataType.STRING, definition = 'TEXT')
+  String description
 
   /**
    * Defines if LSNs are used with the product.  Affects how orders can use LSNs.
    */
-  @Column(length = LSNTrackingOption.Sizes.COLUMN_SIZE, nullable = false)
+  @Column(length = LSNTrackingOption.Sizes.ID_LENGTH, nullable = false)
   LSNTrackingOption lsnTrackingOption = LSNTrackingOption.LSN_ALLOWED
 
   /**
@@ -74,6 +75,8 @@ class Product implements RoutingTrait {
    * created for the order on creation.  If not defined, then the default LSN Sequence will be used.
    */
   @Nullable
+  @ManyToOne(targetEntity = LSNSequence)
+  @MappedProperty(type = DataType.UUID)
   LSNSequence lsnSequence
 
   /**
@@ -86,6 +89,8 @@ class Product implements RoutingTrait {
    * This is ignored if the Product-level `operations` are defined.
    */
   @Nullable
+  @ManyToOne(targetEntity = MasterRouting)
+  @MappedProperty(type = DataType.UUID)
   MasterRouting masterRouting
 
   /**
@@ -95,12 +100,12 @@ class Product implements RoutingTrait {
   List<ProductOperation> operations
 
   /**
-   * The custom field holder.  Max size: {@link FieldSizes#MAX_CUSTOM_FIELDS_LENGTH}
+   * The custom field holder.
    */
+  @Nullable
   @ExtensibleFieldHolder
-  @Column(length = FieldSizes.MAX_CUSTOM_FIELDS_LENGTH, nullable = true)
-  @SuppressWarnings("unused")
-  String customFields
+  @MappedProperty(type = DataType.JSON)
+  String fields
 
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
@@ -112,7 +117,9 @@ class Product implements RoutingTrait {
 
   Integer version = 0
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * This domain is a top-level searchable element.

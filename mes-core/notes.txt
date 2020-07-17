@@ -1,15 +1,30 @@
 Scratch
 -------
 
-
-
 Micronaut-Data Migration
 ========================
-DDL creation -
-  QTY scale = STANDARD_DECIMAL_SCALE?  4?
-  Unique Key Fields
-  Indexes
+x action_log
+x lsn
+x lsn_oper_state
+x lsn_sequence
+x master_operation
+x master_routing
+x order_oper_state
+x order_operation
+x order_sequence
+x ordr
+x product
+x product_operation
+x production_log
+x work_center
 
+Is scale needed in DDL?
+Drop H2/Postgres stuff.
+
+
+order_assembled_component
+order_bom_component
+product_component
 
 Tasks
 =====

@@ -21,10 +21,10 @@ trait OperationTrait implements Comparable<OperationTrait> {
   abstract String getTitle()
 
   /**
-   * Gets the operation's customFields (JSON text).
+   * Gets the operation's fields (JSON text).
    * @return The custom field values.
    */
-  abstract String getCustomFields()
+  abstract String getFields()
 
   /**
    * Gets the operation's sequence.

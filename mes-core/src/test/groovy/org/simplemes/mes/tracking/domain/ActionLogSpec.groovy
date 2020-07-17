@@ -18,7 +18,7 @@ import org.simplemes.mes.test.MESUnitTestUtils
 */
 
 /**
- *
+ * Tests.
  */
 class ActionLogSpec extends BaseSpecification {
 

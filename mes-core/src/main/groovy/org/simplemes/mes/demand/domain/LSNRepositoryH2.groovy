@@ -6,7 +6,6 @@ package org.simplemes.mes.demand.domain
 
 import io.micronaut.context.annotation.Replaces
 import io.micronaut.context.annotation.Requires
-import io.micronaut.context.env.Environment
 import io.micronaut.data.jdbc.annotation.JdbcRepository
 import io.micronaut.data.model.query.builder.sql.Dialect
 
@@ -14,7 +13,7 @@ import io.micronaut.data.model.query.builder.sql.Dialect
  * The H2-Specific version of the repo.
  */
 @JdbcRepository(dialect = Dialect.H2)
-@Requires(env = [Environment.TEST])
+@Requires(env = ['Environment.TEST'])
 @Replaces(LSNRepository)
 interface LSNRepositoryH2 extends LSNRepository {
 }

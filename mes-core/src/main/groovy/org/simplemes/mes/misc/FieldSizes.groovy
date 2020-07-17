@@ -34,10 +34,4 @@ class FieldSizes {
    */
   public static final int MAX_LONG_STRING_LENGTH = 200
 
-  /**
-   * Defines the standard size of a client-defined custom field holders: <b>512</b> characters.
-   * Most custom fields are define with this limit (some are different).
-   */
-  public static final int MAX_CUSTOM_FIELDS_LENGTH = 512
-
 }

@@ -5,6 +5,8 @@ import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
 import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.domain.validate.ValidationError
@@ -12,6 +14,7 @@ import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.mes.misc.FieldSizes
 import org.simplemes.mes.product.OperationTrait
 
+import javax.annotation.Nullable
 import javax.persistence.Column
 import javax.persistence.ManyToOne
 
@@ -28,6 +31,7 @@ import javax.persistence.ManyToOne
 @MappedEntity
 @DomainEntity
 @EqualsAndHashCode
+@SuppressWarnings('unused')
 @ToString(includeNames = true, includePackage = false, excludes = ['masterRouting'])
 class MasterOperation implements OperationTrait {
 
@@ -35,6 +39,7 @@ class MasterOperation implements OperationTrait {
    * This operation belongs to the given master routing.
    */
   @ManyToOne
+  @MappedProperty(type = DataType.UUID)
   MasterRouting masterRouting
 
   /**
@@ -50,15 +55,16 @@ class MasterOperation implements OperationTrait {
   String title
 
   /**
-   * The custom field holder.  Max size: {@link FieldSizes#MAX_CUSTOM_FIELDS_LENGTH}
+   * The custom field holder.
    */
+  @Nullable
   @ExtensibleFieldHolder
-  @Column(length = FieldSizes.MAX_CUSTOM_FIELDS_LENGTH, nullable = true)
-  @SuppressWarnings("unused")
-  String customFields
+  @MappedProperty(type = DataType.JSON)
+  String fields
 
-  @SuppressWarnings("unused")
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * The empty constructor.
@@ -73,7 +79,7 @@ class MasterOperation implements OperationTrait {
     ArgumentUtils.checkMissing(operation, "operation")
     this.sequence = operation.sequence
     this.title = operation.title
-    this.customFields = operation.customFields
+    this.fields = operation.fields
   }
 
   /**

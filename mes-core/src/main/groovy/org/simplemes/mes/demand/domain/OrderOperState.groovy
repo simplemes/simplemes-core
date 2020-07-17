@@ -13,12 +13,10 @@ import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.mes.demand.WorkStateTrait
 import org.simplemes.mes.demand.WorkableInterface
-import org.simplemes.mes.misc.FieldSizes
 import org.simplemes.mes.product.OperationTrait
 import org.simplemes.mes.product.RoutingUtils
 
 import javax.annotation.Nullable
-import javax.persistence.Column
 import javax.persistence.ManyToOne
 
 /*
@@ -36,6 +34,7 @@ import javax.persistence.ManyToOne
  */
 @MappedEntity
 @DomainEntity
+@SuppressWarnings('unused')
 @EqualsAndHashCode(includes = ['order', 'sequence'])
 class OrderOperState implements WorkStateTrait, WorkableInterface {
   /**
@@ -47,6 +46,7 @@ class OrderOperState implements WorkStateTrait, WorkableInterface {
    * This operation state always belongs to a single Order.
    */
   @ManyToOne
+  @MappedProperty(type = DataType.UUID)
   Order order
 
   /**
@@ -98,25 +98,24 @@ class OrderOperState implements WorkStateTrait, WorkableInterface {
   Date dateFirstStarted
 
   /**
-   * The custom field holder.  Max size: {@link FieldSizes#MAX_CUSTOM_FIELDS_LENGTH}
+   * The custom field holder.
    */
+  @Nullable
   @ExtensibleFieldHolder
-  @Column(length = FieldSizes.MAX_CUSTOM_FIELDS_LENGTH, nullable = true)
-  @SuppressWarnings("unused")
-  String customFields
+  @MappedProperty(type = DataType.JSON)
+  String fields
 
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
-  @SuppressWarnings("unused")
   Date dateCreated
 
   @DateUpdated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
-  @SuppressWarnings("unused")
   Date dateUpdated
 
-  @SuppressWarnings("unused")
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * The empty constructor.

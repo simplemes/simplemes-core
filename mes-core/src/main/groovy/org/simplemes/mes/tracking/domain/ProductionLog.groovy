@@ -29,6 +29,7 @@ import javax.persistence.Column
 
 @MappedEntity
 @DomainEntity
+@SuppressWarnings('unused')
 @ToString(includeNames = true, includePackage = false)
 class ProductionLog {
   /**
@@ -114,21 +115,21 @@ class ProductionLog {
   //BigDecimal qtyWithDefects
   //BigDecimal qtyScrapped
 
-  @SuppressWarnings("unused")
   @DateCreated
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateCreated
 
   /**
-   * The custom field holder.  Max size: {@link FieldSizes#MAX_CUSTOM_FIELDS_LENGTH}
+   * The custom field holder.
    */
+  @Nullable
   @ExtensibleFieldHolder
-  @Column(length = FieldSizes.MAX_CUSTOM_FIELDS_LENGTH, nullable = true)
-  @SuppressWarnings("unused")
-  String customFields
+  @MappedProperty(type = DataType.JSON)
+  String fields
 
-  @SuppressWarnings("unused")
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @SuppressWarnings('unused')
+  UUID uuid
 
 
   /**
