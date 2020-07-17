@@ -4,9 +4,7 @@ Scratch
 Micronaut-Data Migration
 ========================
 
-order_assembled_component
-order_bom_component
-product_component
+
 
 Tasks
 =====

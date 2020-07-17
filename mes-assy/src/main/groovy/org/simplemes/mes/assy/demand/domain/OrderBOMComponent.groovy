@@ -5,6 +5,8 @@ import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.mes.assy.product.domain.ProductComponent
 import org.simplemes.mes.demand.domain.Order
@@ -23,6 +25,7 @@ import javax.persistence.ManyToOne
  */
 @DomainEntity
 @MappedEntity('order_bom_component')
+@SuppressWarnings('unused')
 @ToString(includeNames = true, includePackage = false, excludes = ['order'])
 @EqualsAndHashCode(includes = ['uuid'])
 class OrderBOMComponent {
@@ -47,6 +50,7 @@ class OrderBOMComponent {
    * The Order this component is required for.
    */
   @ManyToOne
+  @MappedProperty(type = DataType.UUID)
   Order order
 
   /**
@@ -59,6 +63,7 @@ class OrderBOMComponent {
    * This is the component (product) required for the main assembly. <b>(Required)</b>
    */
   @ManyToOne(targetEntity = Product)
+  @MappedProperty(type = DataType.UUID)
   Product component
 
   /**
@@ -66,7 +71,9 @@ class OrderBOMComponent {
    */
   BigDecimal qty = 1.0
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * The primary key(s) for this child element.

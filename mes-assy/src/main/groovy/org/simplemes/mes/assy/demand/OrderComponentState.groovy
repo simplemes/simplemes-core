@@ -69,7 +69,7 @@ class OrderComponentState {
    * The holder for the customer-defined assembly data.
    */
   @ExtensibleFieldHolder
-  String customFields
+  String fields
 
   /**
    * The name of the first assembly data field.  Used for the display focus logic.

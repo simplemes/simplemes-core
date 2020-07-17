@@ -5,6 +5,8 @@ import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
+import io.micronaut.data.annotation.MappedProperty
+import io.micronaut.data.model.DataType
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.mes.product.domain.Product
@@ -32,6 +34,7 @@ class ProductComponent {
    * The Product (assembly) this component is required for.  
    */
   @ManyToOne
+  @MappedProperty(type = DataType.UUID)
   Product product
 
   /**
@@ -44,6 +47,7 @@ class ProductComponent {
    * This is the product required for the main assembly. <b>(Required)</b>
    */
   @ManyToOne(targetEntity = Product)
+  @MappedProperty(type = DataType.UUID)
   Product component
 
   /**
@@ -52,7 +56,9 @@ class ProductComponent {
   BigDecimal qty = 1.0
 
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * The primary key(s) for this child element.

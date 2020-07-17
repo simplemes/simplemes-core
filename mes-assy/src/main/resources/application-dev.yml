@@ -3,18 +3,16 @@
 #
 micronaut:
   application:
-    name: seframe
+    name: mes-assy-dev
 
 ---
 datasources:
   default:
-    url: "jdbc:postgresql://s:5432/mes_dev"
+    url: "jdbc:postgresql://localhost:5432/assy_dev"
     driverClassName: "org.postgresql.Driver"
-    username: "mes_dev"
+    username: "mph"
     password: "mh1234"
     dialect: POSTGRES
-    #schema-generate: CREATE
-    #autoCommit: true
 
 ---
 eframe:

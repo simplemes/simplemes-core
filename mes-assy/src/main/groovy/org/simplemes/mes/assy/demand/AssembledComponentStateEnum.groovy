@@ -54,4 +54,15 @@ enum AssembledComponentStateEnum {
     return GlobalUtils.lookup("assembledComponentState.${name()}.label", locale)
   }
 
+  /**
+   * An inner class to hold the constant DB column size needed for the enum.
+   */
+  static class Sizes {
+    /**
+     * The size of the column needed for persistence.
+     */
+    public static final int ID_LENGTH = 16
+  }
+
+
 }

@@ -16,6 +16,7 @@ import org.simplemes.mes.assy.demand.domain.OrderAssembledComponent
 import org.simplemes.mes.assy.test.AssyUnitTestUtils
 import org.simplemes.mes.demand.LSNTrackingOption
 import org.simplemes.mes.demand.domain.LSN
+import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.product.domain.Product
 import org.simplemes.mes.system.ScanRequest
 import org.simplemes.mes.system.ScanResponse
@@ -399,7 +400,8 @@ class ScanAssyServiceSpec extends BaseSpecification {
     service.postScan(response, request)
 
     then: 'the component is assembled for the LSN on the second BOM component'
-    def assembledComponents = order.assembledComponents as List<OrderAssembledComponent>
+    def order2 = Order.findByUuid(order.uuid)
+    def assembledComponents = order2.assembledComponents as List<OrderAssembledComponent>
     def secondAssembledComponent = assembledComponents.find { it.bomSequence == 30 }
     secondAssembledComponent.order == order
     secondAssembledComponent.lsn == lsn

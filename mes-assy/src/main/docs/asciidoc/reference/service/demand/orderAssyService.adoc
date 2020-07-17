@@ -202,7 +202,7 @@ The response is a map with the total number of rows available and a list of the 
       "canBeRemoved": true,
       "canBeAssembled": false,
       "_complexCustomFields": null,
-      "_customFields": null,
+      "_fields": null,
       "assemblyData_VENDOR": "RRRR"
     }
   ]

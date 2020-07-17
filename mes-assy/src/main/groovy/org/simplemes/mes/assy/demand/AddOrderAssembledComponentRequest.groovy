@@ -78,6 +78,6 @@ class AddOrderAssembledComponentRequest {
    * The holder for the customer-defined assembly data.
    */
   @ExtensibleFieldHolder
-  String customFields
+  String fields
 
 }

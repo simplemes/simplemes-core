@@ -12,6 +12,7 @@ import org.simplemes.eframe.test.JavascriptTestUtils
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.mes.assy.demand.AssembledComponentStateEnum
 import org.simplemes.mes.assy.demand.domain.OrderAssembledComponent
+import org.simplemes.mes.assy.product.domain.ProductComponent
 import org.simplemes.mes.assy.test.AssyUnitTestUtils
 import org.simplemes.mes.demand.LSNTrackingOption
 import org.simplemes.mes.demand.domain.LSN
@@ -32,7 +33,7 @@ import org.simplemes.mes.tracking.domain.ActionLog
 class OrderAssyControllerSpec extends BaseAPISpecification {
 
   @SuppressWarnings("unused")
-  static dirtyDomains = [ActionLog, Order, Product, FlexType, WorkCenter]
+  static dirtyDomains = [ActionLog, OrderAssembledComponent, Order, ProductComponent, Product, FlexType, WorkCenter]
 
   OrderAssyController controller
 

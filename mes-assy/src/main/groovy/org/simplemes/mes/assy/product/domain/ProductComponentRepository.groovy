@@ -4,7 +4,8 @@
 
 package org.simplemes.mes.assy.product.domain
 
-
+import io.micronaut.data.jdbc.annotation.JdbcRepository
+import io.micronaut.data.model.query.builder.sql.Dialect
 import io.micronaut.data.repository.CrudRepository
 import org.simplemes.eframe.domain.BaseRepository
 import org.simplemes.mes.product.domain.Product
@@ -14,6 +15,7 @@ import org.simplemes.mes.product.domain.Product
  * but sub-classes need to implement the dialect needed.  The sub-classes will be the concrete
  * beans generated for the runtime.
  */
+@JdbcRepository(dialect = Dialect.POSTGRES)
 interface ProductComponentRepository extends BaseRepository, CrudRepository<ProductComponent, UUID> {
 
   Optional<ProductComponent> findByUuid(UUID uuid)

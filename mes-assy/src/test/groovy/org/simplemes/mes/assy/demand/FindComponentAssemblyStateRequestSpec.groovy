@@ -120,8 +120,9 @@ class FindComponentAssemblyStateRequestSpec extends BaseSpecification {
   def "verify that the Map constructor detects error - non-unique LSN"() {
     given: 'an LSN'
     def order1 = new Order(order: 'ABC1').save()
+    def order2 = new Order(order: 'ABC2').save()
     def lsn1 = new LSN(lsn: 'XYZ', order: order1).save()
-    new LSN(lsn: 'XYZ', order: order1).save()
+    new LSN(lsn: 'XYZ', order: order2).save()
 
     when: 'the constructor is used'
     new FindComponentAssemblyStateRequest([lsn: lsn1.lsn]).hideAssembled

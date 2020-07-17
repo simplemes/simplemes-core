@@ -47,6 +47,7 @@ class OrderAssembledComponent {
    * This is the order this component was assembled onto.
    */
   @ManyToOne
+  @MappedProperty(type = DataType.UUID)
   Order order
 
   /**
@@ -54,6 +55,7 @@ class OrderAssembledComponent {
    */
   @Nullable
   @ManyToOne(targetEntity = LSN)
+  @MappedProperty(type = DataType.UUID)
   LSN lsn
 
   /**
@@ -77,6 +79,7 @@ class OrderAssembledComponent {
    * This is the product for the component. <b>(Required)</b>
    */
   @ManyToOne(targetEntity = Product)
+  @MappedProperty(type = DataType.UUID)
   Product component
 
   /**
@@ -85,12 +88,16 @@ class OrderAssembledComponent {
    */
   @Nullable
   @ManyToOne(targetEntity = FlexType)
+  @MappedProperty(type = DataType.UUID)
   FlexType assemblyData
 
+  /**
+   * Holder for custom fields.
+   */
+  @Nullable
   @ExtensibleFieldHolder
-  @Column(nullable = true)
-  @MappedProperty(type = DataType.STRING, definition = 'TEXT')
-  String customFields
+  @MappedProperty(type = DataType.JSON)
+  String fields
 
   /**
    * The number of pieces assembled (<b>Optional</b>).
@@ -109,11 +116,13 @@ class OrderAssembledComponent {
    */
   @Nullable
   @ManyToOne(targetEntity = WorkCenter)
+  @MappedProperty(type = DataType.UUID)
   WorkCenter workCenter
 
   /**
    * The current state of this component (can be removed).  (<b>Default:</b> ASSEMBLED)
    */
+  @Column(length = AssembledComponentStateEnum.Sizes.ID_LENGTH)
   AssembledComponentStateEnum state = AssembledComponentStateEnum.ASSEMBLED
 
   /**
@@ -136,7 +145,9 @@ class OrderAssembledComponent {
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateUpdated
 
-  @Id @AutoPopulated UUID uuid
+  @Id @AutoPopulated
+  @MappedProperty(type = DataType.UUID)
+  UUID uuid
 
   /**
    * The primary key(s) for this child element.

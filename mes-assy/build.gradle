@@ -30,9 +30,6 @@ repositories {
 
 }
 
-version "0.5"
-group "org.simplemes"
-
 
 
 apply plugin: "application"
@@ -60,9 +57,15 @@ dependencies {
   gems "rubygems:asciidoctor-diagram:$asciidoctorDiagramVersion"
   gems "rubygems:asciidoctor-plantuml:$asciidoctorPlantumlVersion"  // Needs GraphViz dot.exe on PATH.
 
+  test {
+    useJUnitPlatform()  // Forces Junit5 for Spock in Gradle tests.
+  }
 }
 
 mainClassName = "org.simplemes.mes.assy.application.Application"
 
-
+test {
+  // Force STDOUT to echo in github server.
+  testLogging.showStandardStreams = true
+}
 

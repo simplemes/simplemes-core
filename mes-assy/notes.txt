@@ -1,6 +1,10 @@
 Scratch
 ===========
 
+order_assembled_component
+order_bom_component
+product_component
+
 Search support
 
 

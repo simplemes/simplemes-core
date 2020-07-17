@@ -154,6 +154,8 @@ class AssyUnitTestUtils extends MESUnitTestUtils {
     try {
       OrderAssembledComponent.withTransaction {
         setLoginUser()
+        def highestSequence = order.assembledComponents*.sequence.max() ?: 0
+        def assembledComponentSequence = highestSequence + 10
         def currentComponentWithMaxSequence = order.assembledComponents?.max() { it.sequence }
         def sequence = currentComponentWithMaxSequence?.sequence ?: 0
         sequence = options.sequence ?: sequence + 1
@@ -171,7 +173,7 @@ class AssyUnitTestUtils extends MESUnitTestUtils {
         orderAssembledComponent.bomSequence = orderComponent?.sequence ?: 0
         orderAssembledComponent.lsn = options.lsn as LSN
         orderAssembledComponent.assemblyData = options.assemblyDataType as FlexType
-        orderAssembledComponent.sequence = (int) sequence
+        orderAssembledComponent.sequence = (int) assembledComponentSequence
         if (options.removed) {
           orderAssembledComponent.removedByUserName = SecurityUtils.currentUserName
           orderAssembledComponent.removedDate = new Date()

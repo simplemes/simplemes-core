@@ -111,7 +111,7 @@ class OrderAssyService implements OrderReleasePoint {
     orderAssembledComponent.userName = SecurityUtils.currentUserName
     orderAssembledComponent.qty = request.qty ?: 1.0
     orderAssembledComponent.assemblyData = request.assemblyData
-    orderAssembledComponent.customFields = request.customFields
+    orderAssembledComponent.fields = request.fields
     orderAssembledComponent.bomSequence = request.bomSequence ?: 0
     orderAssembledComponent.lsn = request.lsn
     orderAssembledComponent.workCenter = request.workCenter
@@ -300,7 +300,7 @@ class OrderAssyService implements OrderReleasePoint {
       if (matches) {
         // Use only the first Assy data type (only one is valid).
         orderComponentState.assemblyData = matches[0].assemblyData
-        orderComponentState.customFields = matches[0].customFields
+        orderComponentState.fields = matches[0].fields
         // Now, add the unique assy data values to the output string.
         for (match in matches) {
           addAssemblyDataValues(orderComponentState, match)
@@ -348,7 +348,7 @@ class OrderAssyService implements OrderReleasePoint {
                                                           qtyRequired: 0.0,
                                                           qtyAssembled: nonBOM.qty)
         orderComponentState.assemblyData = nonBOM.assemblyData
-        orderComponentState.customFields = nonBOM.customFields
+        orderComponentState.fields = nonBOM.fields
         orderComponentState.canBeRemoved = true
         orderComponentState.canBeAssembled = false
         addAssemblyDataValues(orderComponentState, nonBOM)

@@ -50,7 +50,7 @@ class OrderAssyServiceSpec extends BaseSpecification {
   OrderAssyService service
 
   @SuppressWarnings("unused")
-  static dirtyDomains = [ActionLog, Order, Product, MasterRouting]
+  static dirtyDomains = [ActionLog, OrderAssembledComponent, Order, ProductComponent, Product, MasterRouting]
 
   def setup() {
     service = Holders.getBean(OrderAssyService)
@@ -891,8 +891,8 @@ class OrderAssyServiceSpec extends BaseSpecification {
     def product1 = new Product(product: 'EMBLEM').save()
     def orderAssyComp = AssyUnitTestUtils.assembleComponent(order, [component: product1])
 
-    and: 'some old assy data is forced into the customFields'
-    orderAssyComp.customFields = '{"FIELD1": "ACME"}'
+    and: 'some old assy data is forced into the custom fields'
+    orderAssyComp.fields = '{"FIELD1": "ACME"}'
     orderAssyComp.save()
 
     when: 'the components are searched'
