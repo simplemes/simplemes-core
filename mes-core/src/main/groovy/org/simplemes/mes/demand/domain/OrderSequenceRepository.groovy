@@ -5,7 +5,9 @@
 package org.simplemes.mes.demand.domain
 
 import io.micronaut.data.annotation.Query
+import io.micronaut.data.jdbc.annotation.JdbcRepository
 import io.micronaut.data.model.Pageable
+import io.micronaut.data.model.query.builder.sql.Dialect
 import io.micronaut.data.repository.CrudRepository
 import org.simplemes.eframe.domain.BaseRepository
 
@@ -14,6 +16,7 @@ import org.simplemes.eframe.domain.BaseRepository
  * but sub-classes need to implement the dialect needed.  The sub-classes will be the concrete
  * beans generated for the runtime.
  */
+@JdbcRepository(dialect = Dialect.POSTGRES)
 interface OrderSequenceRepository extends BaseRepository, CrudRepository<OrderSequence, UUID> {
 
   Optional<OrderSequence> findBySequence(String sequence)
