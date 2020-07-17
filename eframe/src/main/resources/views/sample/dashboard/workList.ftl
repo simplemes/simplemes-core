@@ -48,4 +48,7 @@
       {width: tk.pw('5%')}
     ]
   };
+  ${params._variable}.handleEvent = function (event) {
+    console.log(event);
+  }
 </script>

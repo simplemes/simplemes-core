@@ -243,21 +243,26 @@ ef.dashboard = function () {
     },
     // Sends an event to all panel activities.  Event has only one require field 'type'.
     sendEvent: function (event) {
-      JL().debug("sendEvent(): " + JSON.stringify(event));
+      JL().debug("sendEvent(): Sending event: " + JSON.stringify(event));
       var variables = dashboard._getActivePanelVariables();
+      var handledCount = 0;
       for (var i = 0; i < variables.length; i++) {
         // See if the activity has a handleEvent() function.
         var fn = variables[i].handleEvent;
-        JL().trace("sendEvent() delivered to: " + JSON.stringify(variables[i]));
         if (typeof fn === 'function') {
-          JL().trace('handler function:' + fn);
+          JL().debug("sendEvent(): Delivering event " + event.type + " to panel " + variables[i]._panel + ". Url:" + variables[i]._url);
+          JL().trace('  handler function:' + fn);
           fn(event);
+          handledCount++;
         }
       }
       // Now, Push the event into the stack for testing purposes.
       eventStack.push(event);
       if (eventStack.length > 4) {
         eventStack.shift();
+      }
+      if (handledCount > 0) {
+        JL().debug("sendEvent(): Sent event to " + handledCount + " handler functions.");
       }
     },
     // Performs the next undo action available.
@@ -401,7 +406,7 @@ ef.dashboard = function () {
           if (params != undefined) {
             extraParams[extraParams.length] = params;
           }
-          JL().trace('extra params panel=' + i + ', values=' + params);
+          JL().trace('_getExtraParamsFromActivities(): extra params panel=' + variables[i]._panel + ', values=' + params);
         }
       }
       return extraParams;
@@ -485,9 +490,11 @@ ef.dashboard = function () {
             window[sharedVarName] = {};  // Clear any previous values from the shared object.
             //console.log(url);
             //console.log(s);
-            JL().trace(url);
-            JL().trace(s);
+            JL().debug('_load() loading:' + url);
+            JL().trace('_load(): loading panel contents for panel ' + sharedVarName + ': ' + s);
             var res = eval(s);
+            window[sharedVarName]._panel = panelName;
+            window[sharedVarName]._url = url;
           } catch (e) {
             var msg = "Invalid Javascript for dashboard. Error: '" + e.toString() + "' on " + url + '. (Set client.dashboard Trace log level for details).';
             ef.displayMessage({error: msg});
@@ -498,7 +505,7 @@ ef.dashboard = function () {
           if (window[sharedVarName].cache) {
             let s1 = dashboard._stringAfter(url, '&_pageSrc=');
             cachedActivities[s1] = s;
-            JL().trace('Caching[' + s1 + ']: ' + s);
+            JL().trace('_load(): Caching[' + s1 + ']: ' + s);
           }
           //console.log(window[sharedVarName]);
           var content = window[sharedVarName].display;
@@ -518,7 +525,7 @@ ef.dashboard = function () {
             try {
               var execute = window[sharedVarName].execute;
               if (execute) {
-                JL().trace('Executing ' + sharedVarName + '.execute()');
+                JL().debug('_load(): Executing ' + sharedVarName + '.execute()');
                 execute();
               }
               dashboard._runScriptOrFunction(window[sharedVarName].postScript);
@@ -537,7 +544,7 @@ ef.dashboard = function () {
 
         var src = cachedActivities[dashboard._stringAfter(url, '&_pageSrc=')];
         if (src) {
-          JL().trace('Using value from cache for url: ' + url);
+          JL().trace('_load(): Using value from cache for url: ' + url);
           //console.log('Using value from cache for url: '+url);
           loadFunction(src);
         } else {

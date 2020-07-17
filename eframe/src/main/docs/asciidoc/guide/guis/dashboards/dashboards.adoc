@@ -86,12 +86,20 @@ link:groovydoc/org/simplemes/eframe/dashboard/domain/DashboardConfig.html[Dashbo
 
 The standard dashboard page (e.g. _views/dashboard/index.ftl_) uses the javascript assets for the dashboard.
 The <<Dashboard API>> is provided for your dashboard activities by the core dashboard pages.
-You can define your own dashboard page if needed.  See <<Dashboard Usage>> for details.
+You can define your own dashboard page if needed.  See <<Dashboard Activities>> for details.
 
 ==== Debugging Dashboard Activities
 
-Dashboards are complex.  They have a lot of pieces that need to work together.  Some of the
-<<Logging>> settings are shown below.
+Dashboards are complex.  They have a lot of pieces that need to work together.  You may need
+to use these techniques to track down problems:
+
+* Enabled 'client.dashboard' logging. See below.
+* Check for Javascript syntax errors in the panel activity source. See below.
+
+
+===== Dashboard Logging Levels
+
+Some of the <<Logging>> settings are shown below.
 
 [cols="2,1,4",width=95%]
 |===
@@ -102,6 +110,18 @@ Dashboards are complex.  They have a lot of pieces that need to work together.  
 |
 |===
 
+===== Dashboard Activity Source
+
+The source for each dashboard activity is a _.ftl_ file that is loaded dynamically by the dashboard.
+This contains Javascript, which is rendered as HTML by the <<GUI Toolkit>> library.
+The Javascript syntax can be complex and deeply nested.  Sometimes, it is good to grab the source
+and view it in an _.html_ scratch file in the IDE (IDEA is a good choice).  You
+can grab the response from the browser's developer tools window (see the _Network_ tab in
+Chrome DevTools - F12).
+
+This allows you to see the syntax errors clearly as shown below:
+
+image::guis/DashboardScriptDebugging.png[title="DashboardScriptDebugging",align="center", width="750"]
 
 
 include::dashboardActivities.adoc[]

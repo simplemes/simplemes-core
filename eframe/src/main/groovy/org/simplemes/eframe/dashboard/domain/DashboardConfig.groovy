@@ -14,6 +14,7 @@ import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.misc.FieldSizes
@@ -257,13 +258,18 @@ class DashboardConfig {
   }
 
   /**
-   * Load initial user and all roles available.
+   * Loads sample data for framework module development only. Set the flag to load the sample with this <b>application.yml</b>:
+   * <p>
+   * <pre>
+   *  ---
+   *  eframe:
+   *    loadSampleData: true
+   * </pre>
    */
   @SuppressWarnings('UnnecessaryQualifiedReference')
   static initialDataLoad() {
     // Load some test dashboard configs, but only for eframe work.
-/*
-    if (DashboardConfig.count() == 0 && Holders.configuration.appName == 'EFrame') {
+    if (DashboardConfig.count() == 0 && Holders.configuration.appName == 'EFrame' && Holders.configuration.loadSampleData) {
       DashboardConfig dashboardConfig
 
       dashboardConfig = new DashboardConfig(dashboard: 'SUPERVISOR_DEFAULT', category: 'SUPERVISOR', title: 'Supervisor')
@@ -303,7 +309,6 @@ class DashboardConfig {
       //noinspection UnnecessaryQualifiedReference
       log.warn("Created ${DashboardConfig.count()} default dashboards.")
     }
-*/
 
     return null // No real initial data loaded, yet.
   }
