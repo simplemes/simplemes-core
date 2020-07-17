@@ -24,7 +24,7 @@ import spock.lang.IgnoreIf
 class ProductAssemblyAdditionGUISpec extends BaseGUISpecification {
 
   @SuppressWarnings("unused")
-  static dirtyDomains = [Product, FlexType]
+  static dirtyDomains = [ProductComponent, Product, FlexType]
 
   def "verify that the product components can be displayed and changed - edit mode"() {
     given: 'a product with components'
@@ -60,6 +60,7 @@ class ProductAssemblyAdditionGUISpec extends BaseGUISpecification {
     sendKey(Keys.TAB)
 
     sendKey('COMP3')   // Component field
+    waitForGridComboboxInputValue('COMP3')
     sendKey(Keys.TAB)
 
     sendKey(NumberUtils.formatNumber(4.2))   // Qty field

@@ -64,9 +64,9 @@ flyway:
       locations:
         - classpath:db/migration
       ignore-missing-migrations: true
-      #baseline-on-migrate: true
-      #baseline-version: 0.1
-      #baseline-description: empty
+      baseline-on-migrate: true
+      baseline-version: 1.0.3
+      baseline-description: empty
 
 ---
 jackson:

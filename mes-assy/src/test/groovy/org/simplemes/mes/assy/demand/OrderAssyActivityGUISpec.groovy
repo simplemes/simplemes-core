@@ -12,6 +12,7 @@ import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.mes.assy.demand.domain.OrderAssembledComponent
 import org.simplemes.mes.assy.demand.page.AssemblyActivityWCDashboardPage
 import org.simplemes.mes.assy.demand.service.OrderAssyService
+import org.simplemes.mes.assy.product.domain.ProductComponent
 import org.simplemes.mes.assy.test.AssyUnitTestUtils
 import org.simplemes.mes.demand.domain.Order
 import org.simplemes.mes.product.domain.Product
@@ -31,7 +32,7 @@ import spock.lang.IgnoreIf
 class OrderAssyActivityGUISpec extends BaseDashboardSpecification {
 
   @SuppressWarnings("unused")
-  static dirtyDomains = [ActionLog, Order, Product, FlexType]
+  static dirtyDomains = [ActionLog, OrderAssembledComponent, Order, ProductComponent, Product, FlexType]
 
   @SuppressWarnings("GroovyAssignabilityCheck")
   def "verify that the activity is displayed in the dashboard correctly"() {
