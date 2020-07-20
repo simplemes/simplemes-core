@@ -6,6 +6,7 @@ package org.simplemes.eframe.search
 
 import groovy.util.logging.Slf4j
 import org.apache.http.HttpHost
+import org.simplemes.eframe.misc.TypeUtils
 
 /**
  * This mock client simulates the search interface to the external search engine (Elastic Search in this case).
@@ -168,7 +169,26 @@ class MockSearchEngineClient implements SearchEngineClientInterface {
           return
         }
       }
-      assert expectedAction == null, "Expected action $expectedAction is not in the actual actions called: $actions"
+      // Make a nice readable form of the two actions that don't match.
+      def se = expectedAction?.action
+      def sa = actions[0]?.action
+
+      if (expectedAction?.object instanceof List) {
+        se += "["
+        for (o in expectedAction?.object) {
+          se += "${TypeUtils.toShortString(o)},"
+        }
+        se += "]"
+      }
+      if (actions[0]?.object instanceof List) {
+        sa += "["
+        for (o in actions[0]?.object) {
+          sa += "${TypeUtils.toShortString(o)},"
+        }
+        sa += "]"
+      }
+
+      assert expectedAction == null, "Expected action $se is not in the actions called in this Mock: $sa.  \nFull Data: $expectedAction \n Actions Called: $actions"
     } else {
       // No action should be called.
       assert actions.size() == 0, "No Mock Client actions should have been called during the test.  Actions called: $actions"
@@ -182,8 +202,9 @@ class MockSearchEngineClient implements SearchEngineClientInterface {
    * @return True if they are the same.
    */
   boolean compareActions(Map a, Map b) {
+    log.error("Comparing A ${a.object.getClass()}, B ${b.object.getClass()}")
     if (a?.equals(b)) {
-      // Simple test with exact mathcing Maps.
+      // Simple test with exact matching Maps.
       return true
     }
     if (a.action != b.action) {
@@ -202,7 +223,11 @@ class MockSearchEngineClient implements SearchEngineClientInterface {
           return false
         }
       }
+      log.warn("Both objects are lists and all of B is in A. A ${a.object}, B ${b.object}")
+      return true
     }
+
+    log.warn("Both objects are not lists or are missing one row. A ${a.object.getClass()}, B ${b.object.getClass()}")
 
     return a.object?.equals(b.object)
   }

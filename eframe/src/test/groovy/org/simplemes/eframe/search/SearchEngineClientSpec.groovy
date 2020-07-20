@@ -657,6 +657,27 @@ class SearchEngineClientSpec extends BaseSpecification {
     res.hits[1].className == SampleParent.name
   }
 
+  def "verify that domainSearch works with std toolkit paging"() {
+    given: 'a mock search rest client and response'
+    def uuid1 = UUID.randomUUID()
+    def uuid2 = UUID.randomUUID()
+    def mockRestClient = new MockRestClient(method: 'GET', uri: '/sample-parent/_search?q=abc*&size=13&from=23',
+                                            response: [took: '13', _index: 'sample-parent',
+                                                       hits: [[code: 'abc1', uuid: uuid1], [code: 'abc2', uuid: uuid2]]])
+    def searchEngineClient = new SearchEngineClient(restClient: mockRestClient)
+
+    when: 'the search is performed'
+    def res = searchEngineClient.domainSearch(SampleParent, 'abc*', [start: 23, count: 13])
+
+    then: 'the result is correct'
+    res.totalHits == 2
+    res.elapsedTime == 13
+    res.hits[0].uuid == uuid1
+    res.hits[0].className == SampleParent.name
+    res.hits[1].uuid == uuid2
+    res.hits[1].className == SampleParent.name
+  }
+
   def "verify that domainSearch fails when domain is not searchable"() {
     when: 'the search is performed'
     new SearchEngineClient().domainSearch(RMA, 'abc*')

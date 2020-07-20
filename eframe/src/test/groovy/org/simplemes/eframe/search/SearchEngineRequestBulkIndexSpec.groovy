@@ -47,16 +47,10 @@ class SearchEngineRequestBulkIndexSpec extends BaseSpecification {
     def mockSearchEngineClient = new MockSearchEngineClient()
     SearchHelper.instance.searchEngineClient = mockSearchEngineClient
 
-    and: 'a mock appender is used for the error logging'
-    def mockAppender = MockAppender.mock(SearchEngineRequestBulkIndex, Level.ERROR)
-
     when: 'an attempt is made to index an object'
     new SearchEngineRequestBulkIndex(objects).run()
 
-    then: 'no message is logged'
-    mockAppender.messages.size() == 0
-
-    and: 'the bulk action is performed'
+    then: 'the bulk action is performed'
     mockSearchEngineClient.verify([action: 'bulkIndex', object: objects])
   }
 

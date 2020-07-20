@@ -147,18 +147,4 @@ class AllFieldsDomain {
   }
 */
 
-/*
-    def afd = findByName('B')
-    afd.reportTimeInterval = ReportTimeIntervalEnum.LAST_6_MONTHS
-    afd.save()
-    findByName('EST')?.delete()
-    findByName('EDT')?.delete()
-    def sdf = new SimpleDateFormat('MM-dd HH:mm:ss zzz')
-    def date = new Date(UnitTestUtils.SAMPLE_TIME_MS)
-    def dueDate = new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS)
-    new AllFieldsDomain(name: 'EST', dateTime: date, dueDate: dueDate, title: sdf.format(date)).save()
-    date = new Date(UnitTestUtils.SAMPLE_TIME_NO_FRACTION_MS)
-    new AllFieldsDomain(name: 'EDT', dateTime: date, dueDate: dueDate, title: sdf.format(date)).save()
-*/
-
 }

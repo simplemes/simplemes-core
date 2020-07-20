@@ -145,6 +145,7 @@ class BaseSpecification extends GebSpec {
    */
   @SuppressWarnings(["Println", "GroovyAssignabilityCheck", "SystemOutPrint"])
   def setup() {
+    log.debug("setup(): Starting Specification: ", this)
     startServerIfNeeded()
 
 

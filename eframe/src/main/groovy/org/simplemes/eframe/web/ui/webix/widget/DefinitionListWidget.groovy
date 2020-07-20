@@ -61,7 +61,11 @@ class DefinitionListWidget extends ListWidget {
    * Build the event handler that performs the search.
    */
   void buildSearchEnterKeyEventHandler() {
+    // The event handler refreshes the list with the search string and forces page 0.
     addPostscriptText("""    ${$$}("${id}Search").attachEvent("onEnter", function (id) {
+      var value = ${$$}("${id}Search").getValue();
+      console.log("Searching for "+value);
+      tk.refreshList("$id",{search:value});
       return true;
     });
     """)

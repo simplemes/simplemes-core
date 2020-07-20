@@ -77,7 +77,7 @@ class SQLUtils {
     PreparedStatement ps = null
     ResultSet rs = null
     try {
-      log.trace("executeQuery(): sql = {}, args = {}", sql, args)
+      log.debug("executeQuery(): sql = {}, args = {}", sql, args)
       ps = getPreparedStatement(sql)
       //ps.setString(1, order.getUuid().toString())
       def lastArgIndex = 1

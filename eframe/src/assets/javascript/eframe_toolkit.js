@@ -115,7 +115,8 @@ _ef_tk.toolkit = function () {
       if (pager) {
         // Need to add page/sort attributes to the URL manually since the original URL does not have them.
         // Otherwise, the request will be made twice.
-        if (pager.data.page > 0) {
+        //console.log('url:'+url);
+        if (pager.data.page > 0 && url.indexOf('&start=') < 0) {
           var start = pager.data.page * pager.data.size + 1;
           url = ef.addArgToURI(url, 'start', start);
           url = ef.addArgToURI(url, 'count', pager.data.size);
@@ -129,7 +130,6 @@ _ef_tk.toolkit = function () {
         url = ef.addArgToURI(url, key, sortState.dir);
       }
       if (url) {
-        //console.log('url:'+url);
         var rowData = list.getSelectedItem();
         list.clearAll();
         list.load(url, function (text, data, http_request) {

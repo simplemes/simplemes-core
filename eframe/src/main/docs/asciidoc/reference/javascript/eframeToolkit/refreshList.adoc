@@ -17,7 +17,7 @@ The arguments are:
 |Parameter|Type|Description
 
 |*listID*|String| The list's ID (*Required*).
-|*arg*|Object| Any arguments to set on the URL for the refresh (*Optional*).
+|*args*|Object| Any arguments to set on the URL for the refresh (*Optional*).
 |*finished*|function| A function that is called after the data is loaded (*Optional*).
                      Arguments: `listID`, `data`, `http_request`.  The `data` argument
                      is the parsed JSON response for the given page.

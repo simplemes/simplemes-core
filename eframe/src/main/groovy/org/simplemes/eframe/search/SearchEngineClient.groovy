@@ -225,7 +225,21 @@ class SearchEngineClient implements SearchEngineClientInterface {
       throw new IllegalArgumentException("Domain ${domainClass} is not searchable.")
     }
     def uri = buildURIForSearchRequest(domainClass)
+    convertPagingFromToolkitToSearch(params)
     return search(uri, query, params)
+  }
+
+  /**
+   * Converts the paging parameters from the toolkit (start,count,sort[name]=asc) to the standard
+   * search engine protocol (from,size,
+   * @param params
+   */
+  void convertPagingFromToolkitToSearch(Map params) {
+    if (params) {
+      params.from = params?.start
+      params.size = params?.count
+    }
+    // TODO: support sorting?
   }
 
   /**

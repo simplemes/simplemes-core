@@ -60,9 +60,9 @@ class SearchHelper {
   SearchEngineClientInterface searchEngineClient
 
   /**
-   * Keeps track of when the search feature is disabled (not configured).
+   * Keeps track of when the search feature is disabled (not configured). This means the hosts
    */
-  boolean searchDisabled = false
+  Boolean searchDisabled = null
 
   /**
    * The number of requests processed.  Updated by the search engine thread pool.
@@ -117,11 +117,6 @@ class SearchHelper {
   int bulkIndexErrorCount = 0
 
   /**
-   * If true, then all search actions that have a fallback should use it.  Mostly domainSearch().
-   */
-  boolean fallback = false
-
-  /**
    * The suffix to add to all indices created for archived elements.
    */
   public static final String ARCHIVE_INDEX_SUFFIX = '-arc'
@@ -134,10 +129,12 @@ class SearchHelper {
         // All others, attempt to connect
         searchEngineClient = new SearchEngineClient(hosts: hosts)
       } else {
-        fallback = true
+        searchDisabled = true
         searchEngineClient = new MockSearchEngineClient()
         if (!Holders.environmentTest) {
           log.warn('getSearchEngineClient: Using Mock Engine - No eframe.search.hosts entry in application.yml')
+        } else {
+          log.debug('getSearchEngineClient: Using Mock Engine - No eframe.search.hosts entry in application.yml')
         }
       }
     }
@@ -166,11 +163,25 @@ class SearchHelper {
     }
 
     log.debug('determineHosts: Returning {}', hosts)
-    if (!hosts && !searchDisabled) {
+    if (!hosts && searchDisabled == null) {
       log.info('determineHosts: No host found in application configuration. External search engine disabled. ')
       searchDisabled = true
     }
     return hosts
+  }
+
+  /**
+   * Determines if the search engine is configured and enabled.
+   * @return True if enabled.
+   */
+  boolean isSearchDisabled() {
+    if (searchDisabled == null) {
+      searchDisabled = (determineHosts().size() == 0)
+      if (searchDisabled) {
+        log.info('determineHosts: No host found in application configuration. External search engine disabled. ')
+      }
+    }
+    return searchDisabled
   }
 
   /**
@@ -226,7 +237,7 @@ class SearchHelper {
     // Figure out if the domain supports search first
     if (isSearchable(domainClass)) {
       // Uses the global fallback in the case where the search engine is not configured.
-      return !fallback
+      return !isSearchDisabled()
     }
 
     return false
@@ -276,6 +287,8 @@ class SearchHelper {
     // Figure out the criteria for paging/sorting
     def (int from, int max) = ControllerUtils.instance.calculateFromAndSizeForList(params)
     def (String sortField, String sortDir) = ControllerUtils.instance.calculateSortingForList(params)
+    sortField = sortField ?: DomainUtils.instance.getPrimaryKeyField(domainClass)
+    sortDir = sortDir ?: 'asc'
 
     String tableName = DomainEntityHelper.instance.getTableName(domainClass)
     String where = search ? " WHERE $searchKey ILIKE ? " : ''
@@ -295,7 +308,7 @@ class SearchHelper {
       args[1] = "%${search}%".toString()
     }
 
-
+    log.debug("domainSearchInDB(): sql: {}, args: {}", sql, args)
     def list = SQLUtils.instance.executeQuery(sql, domainClass, args)
 
     if (params?.options?.postProcessor) {
@@ -319,7 +332,7 @@ class SearchHelper {
     }
 
     def elapsed = System.currentTimeMillis() - start
-    log.info('domainSearchInDB: Elapsed time {}ms, found {} records of {}.  Domain = {}', elapsed, list.size(), total, domainClass)
+    log.info('domainSearchInDB(): Elapsed time {}ms, found {} records of {}.  Domain = {}', elapsed, list.size(), total, domainClass)
 
     return searchResult
   }

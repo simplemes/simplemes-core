@@ -1,17 +1,18 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package sample.page
 
 import org.simplemes.eframe.test.page.AbstractPage
+import org.simplemes.eframe.test.page.ButtonModule
 import org.simplemes.eframe.test.page.DefinitionListModule
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+import org.simplemes.eframe.test.page.TextFieldModule
 
 /**
  * The page definition for the All fields Domain List (index) page.
  */
+@SuppressWarnings('unused')
 class AllFieldsDomainListPage extends AbstractPage {
 
   static url = '/allFieldsDomain'
@@ -20,6 +21,8 @@ class AllFieldsDomainListPage extends AbstractPage {
 
   static content = {
     allFieldsDomainGrid { module(new DefinitionListModule(field: 'allFieldsDomain')) }
+    searchField { module(new TextFieldModule(field: 'allFieldsDomainDefinitionListSearch')) }
+    createButton { module(new ButtonModule(id: 'allFieldsDomainDefinitionListCreate')) }
   }
 
   /**

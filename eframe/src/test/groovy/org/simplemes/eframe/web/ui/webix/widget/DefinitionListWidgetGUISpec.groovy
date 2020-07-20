@@ -4,7 +4,7 @@
 
 package org.simplemes.eframe.web.ui.webix.widget
 
-
+import org.openqa.selenium.Keys
 import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.test.BaseGUISpecification
@@ -12,6 +12,7 @@ import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.web.ui.UIDefaults
 import sample.domain.AllFieldsDomain
 import sample.domain.SampleParent
+import sample.page.AllFieldsDomainCreatePage
 import sample.page.AllFieldsDomainListPage
 import sample.page.SampleParentListPage
 import spock.lang.IgnoreIf
@@ -39,13 +40,16 @@ class DefinitionListWidgetGUISpec extends BaseGUISpecification {
     to AllFieldsDomainListPage
 
     then: 'the page is sorted in default order'
-    def cell0 = allFieldsDomainGrid.cell(0, getColumnIndex(AllFieldsDomain, 'name'))
-    cell0.text() == records[0].name
+    waitFor {
+      def cell0 = allFieldsDomainGrid.cell(0, getColumnIndex(AllFieldsDomain, 'name'))
+      cell0.text() == records[0].name
+    }
 
     and: 'the default sort order is marked in the column header'
     allFieldsDomainGrid.sortAsc.text() == lookup('name.label', currentLocale)
 
     and: 'make sure the dumpElement and reportFailure works'
+    def cell0 = allFieldsDomainGrid.cell(0, getColumnIndex(AllFieldsDomain, 'name'))
     dumpElement(cell0)
     reportFailure('not-a-failure')
   }
@@ -248,10 +252,58 @@ class DefinitionListWidgetGUISpec extends BaseGUISpecification {
 
     and: 'the rows are valid'
     sampleParentList.rows(0).size() == 1
-
   }
 
-  // test search
-  // test create button
+  def "verify that search will use search helper for filtering - search in DB mode - no real search engine"() {
+    given: 'some domain records'
+    def recordsA = DataGenerator.generate {
+      domain AllFieldsDomain
+      count UIDefaults.PAGE_SIZE * 2
+      values name: 'ABC-$i', title: 'abc-$r', qty: 1.0, count: 10, enabled: true
+    } as List<AllFieldsDomain>
+
+    def recordsX = DataGenerator.generate {
+      domain AllFieldsDomain
+      count UIDefaults.PAGE_SIZE * 2
+      values name: 'XYZ-$i', title: 'xyz-$r', qty: 1.0, count: 10, enabled: true
+    } as List<AllFieldsDomain>
+
+    when: 'the list page is displayed'
+    login()
+    to AllFieldsDomainListPage
+    waitFor {
+      def cell0 = allFieldsDomainGrid.cell(0, getColumnIndex(AllFieldsDomain, 'name'))
+      cell0.text() == recordsA[0].name
+    }
+
+    then: 'the page is sorted in default order'
+    def cell0 = allFieldsDomainGrid.cell(0, getColumnIndex(AllFieldsDomain, 'name'))
+    cell0.text() == recordsA[0].name
+
+    when: 'the results are filtered'
+    searchField.input.value('XYZ')
+    standardGUISleep()
+    sendKey(Keys.ENTER)
+    waitFor {
+      def cell = allFieldsDomainGrid.cell(0, getColumnIndex(AllFieldsDomain, 'name'))
+      cell.text() == recordsX[0].name
+    }
+
+    then: 'the filtered fields are shown'
+    def cell0X = allFieldsDomainGrid.cell(0, getColumnIndex(AllFieldsDomain, 'name'))
+    cell0X.text() == recordsX[0].name
+  }
+
+  def "verify that the create button works"() {
+    when: 'the list page is displayed'
+    login()
+    to AllFieldsDomainListPage
+
+    and: 'the create button is clicked'
+    createButton.click()
+
+    then: 'the create page is displayed'
+    at AllFieldsDomainCreatePage
+  }
 
 }

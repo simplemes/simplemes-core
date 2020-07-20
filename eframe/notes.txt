@@ -3,12 +3,19 @@ Scratch
 
 Search Tasks
 ============
-Upgrade to 2.0
-  Find replacement for  -javaagent:C:\Users\mph\Tools\misc\springloaded-1.2.8.RELEASE.jar.
-
 Definition List supports search engine.
-Update low-level will trigger searchable top-level re-index.  Includes custom sub-objects.
-  Order.save() will trigger a re-index, but the low level LSN.save() should not trigger a second re-index.  Need to detect this case.
+Support Parent in SearchDomainSettings.
+  Trigger index request on parent and mark parent instance as searched.
+    Test Scenarios:
+      Update SampleChild alone will trigger SampleParent.index.
+      Update SampleChild, followed by SampleParent update will trigger single SampleParent.index.
+      Update SampleParent, followed by SampleChild update will trigger single SampleParent.index.
+    Add delay queue.  All requests sit in queue for 1-2seconds to coalesce older requres for the same object.
+
+Design
+------
+  Update low-level will trigger searchable top-level re-index.  Includes custom sub-objects.
+    Order.save() will trigger a re-index, but the low level LSN.save() should not trigger a second re-index.  Need to detect this case.
 
 
 Upgrade-marathon (MN, MN-D).
@@ -38,9 +45,6 @@ Support cache in specific use cases:
   UserPreferences - timed, any update for user flushed cache? done in PreferenceHolder?
   FieldExtension/GUI - Already cached at the domainUtils level with FieldGUIExtension via ExtensibleFieldHelper
   Others as needed.
-Add SQL DDL logic and Liquid-base/FlyWay support.
-  Find way to auto-generate core stuff?.
-Look at using an environment for DB type: h2, postgres.  Change command line to use it.
 Fix mess with efForm.dashboard.  Support type='dashboard', 'buttonHolder' and 'dialog'.
 Updated to Micronaut 2. with Groovy 3.0 and JDK 14.
   Need to change @Controller() to specify thread pool.  Use @ExecuteOn() to all methods that are blocking.
@@ -58,7 +62,8 @@ Tasks left out
   Add E2E test for optimistic locking detection.  In definition GUIs.
   Add Dashboard editor.
   Add splitter position remember in dashboard.
-  Upgrade to Webix 6.4 for window close option.
+  Upgrade to Webix 7.X for window close option.
+    Look into bug on Search Engine searching and paging.  (Search filter from page 2 is messy).  Fix is to always search filter from page one.  Maybe force refresh ot page 1?
   Reports
     Test in MES app.
   Build check from jenkins with single Repo on GitHub.

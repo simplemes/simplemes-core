@@ -6,8 +6,6 @@ package org.simplemes.eframe.controller
 
 import groovy.util.logging.Slf4j
 import io.micronaut.core.io.Writable
-import io.micronaut.data.model.Pageable
-import io.micronaut.data.model.Sort
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.HttpResponse
@@ -30,6 +28,8 @@ import org.simplemes.eframe.exception.ValidationException
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.TypeUtils
+import org.simplemes.eframe.search.SearchHit
+import org.simplemes.eframe.search.service.SearchService
 import org.simplemes.eframe.security.SecurityUtils
 
 import javax.annotation.Nullable
@@ -81,25 +81,31 @@ abstract class BaseCrudController extends BaseController {
       return res
     }
     Class clazz = getDomain()
+
+    // Calculate the criteria for the result set.
     def params = ControllerUtils.instance.convertToMap(request.parameters)
     def (from, max) = ControllerUtils.instance.calculateFromAndSizeForList(params)
     def (sortField, sortDir) = ControllerUtils.instance.calculateSortingForList(params)
     // Use some defaults if no sorting specified.
     sortField = sortField ?: DomainUtils.instance.getPrimaryKeyField(clazz)
     sortDir = sortDir ?: 'asc'
-    def sortDirection = (sortDir == 'asc') ? Sort.Order.Direction.ASC : Sort.Order.Direction.DESC
-    def data = []
-    def totalCount = 0
+    //def sortDirection = (sortDir == 'asc') ? Sort.Order.Direction.ASC : Sort.Order.Direction.DESC
     def json = null
+    def totalCount = 0
+    def data = []
+    String search = params.search
+    log.debug('List(max: {}, from: {}, sort: {}, order: {}, search: {}) : ', max, from, sortField, sortDir, search)
     clazz.withTransaction {
-      totalCount = clazz.count()
-      log.debug('List(max: {}, from: {}, sort: {}, order: {}) : ', max, from, sortField, sortDir)
-      def order = new Sort.Order((String) sortField, sortDirection, true)
-      //def objects = clazz.list(max: max, offset: from, sort: sortField, order: sortDir, fetch: [lazy: false])
-      def objects = clazz.list(Pageable.from((Integer) from, (Integer) max).order(order))
-      for (o in objects) {
-        data << o
+      // Let the search service use the search engine or the DB depending on the configuration.
+      def service = Holders.getBean(SearchService)
+      def searchResult = service.domainSearch(clazz, search, params)
+      totalCount = searchResult.totalHits
+      for (SearchHit hit in searchResult.hits) {
+        if (hit.object) {
+          data << hit.object
+        }
       }
+      log.debug('list(): {}', data)
       json = Holders.objectMapper.writeValueAsString([data: data, pos: from * max, total_count: totalCount, sort: sortField, sortDir: sortDir])
     }
     ControllerUtils.instance.delayForTesting('BaseCrudController.list()')
@@ -160,7 +166,7 @@ abstract class BaseCrudController extends BaseController {
     def domainClass = ControllerUtils.instance.getDomainClass(this)
 
     def name = NameUtils.lowercaseFirstLetter(domainClass.simpleName)
-    modelAndView.model.get().put(name, domainClass.newInstance())
+    modelAndView.model.get().put(name, domainClass.getConstructor().newInstance())
 
     log.debug('create(): {}', modelAndView)
     def renderer = Holders.applicationContext.getBean(ViewsRenderer)
@@ -193,7 +199,7 @@ abstract class BaseCrudController extends BaseController {
     def name = NameUtils.lowercaseFirstLetter(domainClass.simpleName)
 
     def errors
-    def record = domainClass.newInstance()
+    def record = domainClass.getConstructor().newInstance()
     domainClass.withTransaction {
       try {
         DomainBinder.build().bind(record, bodyParams, true)

@@ -816,6 +816,9 @@ class SearchHelperSpec extends BaseSpecification {
     """
     def domainClass = CompilerTestUtils.compileSource(src)
 
+    and: 'a configuration with a single host'
+    Holders.configuration.search.hosts = [[host: 'a-host', port: 9200, protocol: 'http']]
+
     expect: 'isDomainSearchable works'
     SearchHelper.instance.isDomainSearchable(domainClass) == results
 
