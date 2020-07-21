@@ -87,6 +87,12 @@ class SearchHelper {
   static final String BULK_INDEX_STATUS_COMPLETE = 'completed'
 
   /**
+   * The name of the element in the domain settings holder that will contain flag that the domain has
+   * been sent for search engine marking.  The setting is a Boolean.
+   */
+  public static final String SETTINGS_SEARCH_REQUEST_SENT = "sentSearchRequest"
+
+  /**
    * The time the current/last bulk index request was started.
    */
   long bulkIndexStart
@@ -420,9 +426,6 @@ class SearchHelper {
     def batchSize = Holders.configuration.search.bulkBatchSize ?: 50
     log.debug('buildAndSubmitBulkIndexRequests: building requests with max of {} documents for domains {}.', batchSize, searchableDomainClasses)
 
-    // Keep track of the domains we found, to avoid processing sub-classes twice.
-    //Set domainsProcessed = [] as Set
-
     for (Class clazz in searchableDomainClasses) {
       def total = clazz.count()
       def batchCount = NumberUtils.divideRoundingUp((long) total, (int) batchSize)
@@ -672,10 +675,25 @@ class SearchHelper {
   static void requestBackgroundIndexObject(Object object) {
     ArgumentUtils.checkMissing(object, 'object')
     def clazz = object.getClass()
-    if (!SearchHelper.instance.isSearchable(clazz)) {
+    def settings = SearchHelper.instance.getSearchDomainSettings(clazz)
+    //new IllegalArgumentException().printStackTrace()
+    if (DomainEntityHelper.instance.getDomainSettingValue((DomainEntityInterface) object, SETTINGS_SEARCH_REQUEST_SENT)) {
+      // Already marked for indexing.
       return
     }
-    SearchEnginePoolExecutor.addRequest(new SearchEngineRequestIndexObject(object))
+    if (settings.isSearchable()) {
+      DomainEntityHelper.instance.setDomainSettingValue((DomainEntityInterface) object, SETTINGS_SEARCH_REQUEST_SENT, true)
+      SearchEnginePoolExecutor.addRequest(new SearchEngineRequestIndexObject(object))
+    } else if (settings.parent) {
+      def parentFieldName = DomainUtils.instance.getParentFieldName(clazz)
+      if (parentFieldName) {
+        def parent = object[parentFieldName]
+        if (parent) {
+          DomainEntityHelper.instance.setDomainSettingValue((DomainEntityInterface) parent, SETTINGS_SEARCH_REQUEST_SENT, true)
+          SearchEnginePoolExecutor.addRequest(new SearchEngineRequestIndexObject(parent))
+        }
+      }
+    }
   }
 
   /**

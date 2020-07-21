@@ -22,9 +22,22 @@ class SearchDomainSettingsSpec extends BaseSpecification {
     when: 'the constructor is called'
     def settings = new SearchDomainSettings(closure)
 
-    then: 'the settings are read'
+    then: 'the settings are correct'
     settings.getExclude() == ['title', 'releaseDate']
     settings.parent == Order
+    !settings.searchable
+  }
+
+  def "verify that if parent is not null then the searchable is false"() {
+    given: 'a closure'
+    def closure = {
+      parent = Order
+    }
+
+    when: 'the constructor is called'
+    def settings = new SearchDomainSettings(closure)
+
+    then: 'the domain is not searchable'
     !settings.searchable
   }
 

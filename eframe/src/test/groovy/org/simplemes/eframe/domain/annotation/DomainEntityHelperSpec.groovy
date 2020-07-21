@@ -1434,4 +1434,14 @@ class DomainEntityHelperSpec extends BaseSpecification {
     Order       | 'dueDate' | 'due_date'
   }
 
+  def "verify that set and getDomainSettingValue works for a round-trip"() {
+    when: ' the record is saved'
+    DomainEntityInterface order = (DomainEntityInterface) new Order('M1001')
+    DomainEntityHelper.instance.setDomainSettingValue(order, 'DUMMY1', 'XYZZY')
+
+    then: 'the record is in the DB'
+    DomainEntityHelper.instance.getDomainSettingValue(order, 'DUMMY1') == 'XYZZY'
+  }
+
+
 }

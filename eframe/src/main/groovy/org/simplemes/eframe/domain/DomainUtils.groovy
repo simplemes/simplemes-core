@@ -19,6 +19,7 @@ import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.misc.UUIDUtils
 
+import javax.persistence.ManyToOne
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
 
@@ -156,6 +157,20 @@ class DomainUtils {
       res.addAll((Collection) list)
     }
     return res
+  }
+
+  /**
+   * Finds the field name for the parent reference field name on the given domain class.
+   * @param clazz The class to find the field on.
+   */
+  String getParentFieldName(Class clazz) {
+    for (field in clazz.getDeclaredFields()) {
+      ManyToOne manyToOne = field.getAnnotation(ManyToOne.class)
+      if (manyToOne && manyToOne.targetEntity() == void) {
+        return field.name
+      }
+    }
+    return null
   }
 
   /**

@@ -25,7 +25,8 @@ class SearchDomainSettings {
   List<String> exclude
 
   /**
-   * The parent searchable for this class.
+   * The parent searchable domain for this class.  This parent is the domain that will be indexed, not the child domain.
+   * This child class is flagged as non-seachable.
    */
   Class parent
 
@@ -59,6 +60,16 @@ class SearchDomainSettings {
 
   void setExclude(@DelegatesTo(SearchDomainSettings) List<String> exclude) {
     this.exclude = exclude
+  }
+
+  /**
+   * Returns the searchable state.
+   */
+  boolean isSearchable() {
+    if (parent) {
+      return false
+    }
+    return searchable
   }
 
 }

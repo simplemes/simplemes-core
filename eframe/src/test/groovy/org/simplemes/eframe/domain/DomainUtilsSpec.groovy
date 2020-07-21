@@ -366,4 +366,14 @@ class DomainUtilsSpec extends BaseSpecification {
     RMA          | 'rma'
   }
 
+  def "verify getParentFieldName works for supported name styles"() {
+    expect: 'the method works'
+    DomainUtils.instance.getParentFieldName(domainClass) == result
+
+    where:
+    domainClass | result
+    SampleChild | 'sampleParent'
+    RMA         | null
+  }
+
 }

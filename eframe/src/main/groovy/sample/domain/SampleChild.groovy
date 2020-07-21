@@ -30,6 +30,7 @@ import javax.persistence.OneToMany
  */
 @MappedEntity
 @DomainEntity
+@SuppressWarnings("unused")
 @ToString(includePackage = false, includeNames = true, excludes = ['sampleParent'])
 @EqualsAndHashCode(includes = ['sampleParent', 'key'])
 class SampleChild implements Comparable {
@@ -70,7 +71,13 @@ class SampleChild implements Comparable {
   @MappedProperty(type = DataType.UUID)
   UUID uuid
 
-  @SuppressWarnings("unused")
+/**
+ * A searchable top-level domain.
+ */
+  static searchable = {
+    parent = SampleParent
+  }
+
   static fieldOrder = ['key', 'sequence', 'title', 'qty', 'enabled', 'dueDate', 'dateTime', 'format',
                        'reportTimeInterval', 'order']
 

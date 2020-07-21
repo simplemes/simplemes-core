@@ -50,11 +50,17 @@ class SearchEngineRequestIndexObject implements SearchEngineRequestInterface {
     int count = 0
     while (domainObject == null) {
       // Attempt to read.  Allows retry to wait for record to commit.
+      if (Holders.environmentTest) {
+        // Tests won't retry (see below), so we need to always wait for the records to commit.
+        // This is ugly, but the alternative is to use the MN-Data TransactionalEventListener.
+        sleep(100)
+      }
       domainObject = domainClass.findByUuid(uuid)
       count++
       if (!domainObject) {
         if (Holders.environmentTest) {
-          // We don't want to keeep re-trying since that causes problems in some tests (that waitForIdle on the thread pool).
+          // We don't want to keep re-trying since that causes problems in some tests that waitForIdle on the thread pool.
+          // A retry loop will cause tests to wait forever in some cases.
           log.debug("Index could not find record ${domainClass?.simpleName} $uuid.  Ignoring.")
           return
         }

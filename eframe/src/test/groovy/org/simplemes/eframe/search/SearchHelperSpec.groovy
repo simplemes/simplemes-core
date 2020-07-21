@@ -21,6 +21,7 @@ import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.eframe.web.ui.UIDefaults
 import sample.domain.AllFieldsDomain
 import sample.domain.RMA
+import sample.domain.SampleChild
 import sample.domain.SampleParent
 import spock.lang.Shared
 
@@ -55,7 +56,7 @@ class SearchHelperSpec extends BaseSpecification {
   }
 
   def cleanup() {
-    Holders.configuration.search.hosts = configuredHosts
+    Holders.configuration.search = new EFrameConfiguration.Search()
     // Make sure the executor pool is the default
     SearchEnginePoolExecutor.pool = null
     // Reset to File archiver settings to the default. 
@@ -458,27 +459,84 @@ class SearchHelperSpec extends BaseSpecification {
     SearchEnginePoolExecutor.startPool()
 
     when: 'the domain is saved'
+    def object = null
     SampleParent.withTransaction {
-      object.save()
+      object = new SampleParent(name: 'ABC').save()
       object = SampleParent.findByUuid(object.uuid)  // Re-read to make sure the objects are exactly the same.
     }
+
+    and: 'the mock is reset to detect the new index request'
+    SearchEnginePoolExecutor.waitForIdle()
+    mockSearchEngineClient = new MockSearchEngineClient()
+    SearchHelper.instance.searchEngineClient = mockSearchEngineClient
 
     and: 'the handler is called directly to simulate the normal persistence handler logic'
     SearchHelper.instance.handlePersistenceChange((DomainEntityInterface) object)
     SearchEnginePoolExecutor.waitForIdle()
 
     then: 'the correct action was performed'
-    if (wasIndexed) {
-      mockSearchEngineClient.verify([action: 'indexObject', object: object])
-    } else {
-      mockSearchEngineClient.actions.size() == 0
+    mockSearchEngineClient.verify([action: 'indexObject', object: object])
+  }
+
+  def "verify that handlePersistenceChange queues the parent object"() {
+    given: 'a mock client is created'
+    def mockSearchEngineClient = new MockSearchEngineClient()
+    SearchHelper.instance.searchEngineClient = mockSearchEngineClient
+
+    and: 'the search executor pool is running'
+    SearchEnginePoolExecutor.startPool()
+
+    and: 'a parent domain that is already saved'
+    def sampleParent = null
+    SampleParent.withTransaction {
+      sampleParent = new SampleParent(name: 'ABC').save()
+      sampleParent = SampleParent.findByUuid(sampleParent.uuid)
+      // Re-read to make sure the objects are exactly the same.
     }
 
-    where:
-    object                        | wasIndexed
-    new SampleParent(name: 'ABC') | true
-    new SampleParent(name: 'ABC') | true
-    new SampleParent(name: 'ABC') | false
+    when: 'a child record is saved'
+    def object = null
+    SampleParent.withTransaction {
+      def child = new SampleChild(sampleParent: sampleParent, key: 'XYZ').save()
+      object = SampleChild.findByUuid(child.uuid)
+    }
+
+    and: 'the mock is reset to detect the new index request'
+    SearchEnginePoolExecutor.waitForIdle()
+    mockSearchEngineClient = new MockSearchEngineClient()
+    SearchHelper.instance.searchEngineClient = mockSearchEngineClient
+
+    and: 'the handler is called directly to simulate the normal persistence handler logic'
+    SearchHelper.instance.handlePersistenceChange((DomainEntityInterface) object)
+    SearchEnginePoolExecutor.waitForIdle()
+
+    then: 'the correct action was performed'
+    mockSearchEngineClient.verify([action: 'indexObject', object: SampleParent.findByUuid(sampleParent.uuid)])
+
+    and: 'only the parent is indexed'
+    mockSearchEngineClient.actions.size() == 1
+  }
+
+  def "verify that handlePersistenceChange will index only the parent when saving both"() {
+    given: 'a mock client with a simulated status'
+    def mockSearchEngineClient = new MockSearchEngineClient()
+    SearchHelper.instance.searchEngineClient = mockSearchEngineClient
+    SearchEnginePoolExecutor.waitForIdle()
+
+    and: 'the search executor pool is running'
+    SearchEnginePoolExecutor.startPool()
+
+    when: 'the parent is saved with the children'
+    SampleParent sampleParent = null
+    SampleParent.withTransaction {
+      sampleParent = new SampleParent(name: 'ABC')
+      sampleParent.sampleChildren << new SampleChild(key: 'XYZ')
+      sampleParent.save()
+    }
+    SearchEnginePoolExecutor.waitForIdle()
+
+    then: 'the correct action was performed'
+    mockSearchEngineClient.actions.object.size() == 1
   }
 
   def "verify that handlePersistenceDelete will remove a object from the index correctly for delete events"() {
@@ -534,12 +592,15 @@ class SearchHelperSpec extends BaseSpecification {
     mockSearchEngineClient.verify(null)
   }
 
-  def "verify that startBulkIndexRequest works - with no transaction created when calling the method"() {
+  def "verify that startBulkIndexRequest works - with transaction created when calling the method"() {
     given: 'a large number of domain records to index'
+    SearchHelper.instance = Mock(SearchHelper)
+    SearchEnginePoolExecutor.pool = Mock(SearchEnginePoolExecutor)
     SampleParent.withTransaction {
       buildArchiveLogRecords(65)
       buildSampleParentRecords(45)
     }
+    SearchHelper.instance = new SearchHelper()
 
     and: 'a mock for the execution pool that will keep track of the request submitted'
     def requests = []

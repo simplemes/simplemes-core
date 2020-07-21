@@ -24,6 +24,8 @@ class SearchEnginePoolExecutorSpec extends BaseSpecification {
 
   def setup() {
     SearchEnginePoolExecutor.startPool()
+    // Make sure all Pool-related request from other tests are finished before this test.
+    SearchEnginePoolExecutor.waitForIdle()
   }
 
   void cleanup() {

@@ -1007,6 +1007,35 @@ public class DomainEntityHelper {
   }
 
   /**
+   * Gets a value from the domain settings in the given object.   Provides access to object-specific values to other modules
+   * (e.g. search, etc).
+   *
+   * @param object      The domain object.
+   * @param settingName The name of the setting.
+   * @return The settings value (can be null).
+   */
+  public Object getDomainSettingValue(DomainEntityInterface object, String settingName) throws IllegalAccessException, NoSuchFieldException {
+    Map settings = getDomainSettings(object);
+    //noinspection ConstantConditions
+    return settings.get(settingName);
+  }
+
+  /**
+   * Sets a value in the domain settings in the given object.   Provides access to object-specific values to other modules
+   * (e.g. search, etc).
+   *
+   * @param object      The domain object.
+   * @param settingName The name of the setting.
+   * @param value       The value to set.
+   */
+  @SuppressWarnings("unchecked")
+  public void setDomainSettingValue(DomainEntityInterface object, String settingName, Object value) throws IllegalAccessException, NoSuchFieldException {
+    Map settings = getDomainSettings(object);
+    //noinspection ConstantConditions
+    settings.put(settingName, value);
+  }
+
+  /**
    * Finds the complex custom fields holder for given domain object.
    *
    * @param object The domain object.
