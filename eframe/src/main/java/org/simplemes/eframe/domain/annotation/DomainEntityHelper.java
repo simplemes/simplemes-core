@@ -6,6 +6,7 @@ package org.simplemes.eframe.domain.annotation;
 
 import groovy.lang.Closure;
 import io.micronaut.context.ApplicationContext;
+import io.micronaut.context.event.ApplicationEventPublisher;
 import io.micronaut.core.util.StringUtils;
 import io.micronaut.data.annotation.MappedEntity;
 import io.micronaut.data.exceptions.DataAccessException;
@@ -19,6 +20,7 @@ import io.micronaut.transaction.TransactionStatus;
 import io.micronaut.transaction.jdbc.DataSourceUtils;
 import org.simplemes.eframe.ast.ASTUtils;
 import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder;
+import org.simplemes.eframe.domain.DomainSaveTransactionEvent;
 import org.simplemes.eframe.domain.PersistentProperty;
 import org.simplemes.eframe.domain.validate.ValidationError;
 import org.simplemes.eframe.domain.validate.ValidationErrorInterface;
@@ -129,8 +131,10 @@ public class DomainEntityHelper {
       }
       saveManyToMany(object);
       saveChildren(object);
-      //SearchHelper.getInstance().handlePersistenceChange(object);
-      ASTUtils.invokeGroovyMethod("org.simplemes.eframe.search.SearchHelper.instance", "handlePersistenceChange", object);
+
+      // Publish an event on commit for things like Search to handle.
+      ApplicationEventPublisher eventPublisher = getApplicationContext().getBean(ApplicationEventPublisher.class);
+      eventPublisher.publishEvent(new DomainSaveTransactionEvent(object));
 
       return object;
     } catch (Exception e) {

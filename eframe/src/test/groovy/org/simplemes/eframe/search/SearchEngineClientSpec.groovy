@@ -8,6 +8,7 @@ import ch.qos.logback.classic.Level
 import org.simplemes.eframe.application.EFrameConfiguration
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.MockAppender
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
@@ -730,7 +731,7 @@ class SearchEngineClientSpec extends BaseSpecification {
 
   @Rollback
   @SuppressWarnings("GroovyAssignabilityCheck")
-  def "verify that formatForIndex does a deep format"() {
+  def "verify that formatForIndex does a deep format with custom child list"() {
     given: 'a domain object with custom values'
     def order = new Order(order: 'ABC')
     order.customComponents << new CustomOrderComponent(sequence: 10, product: 'A1')
@@ -751,6 +752,26 @@ class SearchEngineClientSpec extends BaseSpecification {
     json.customComponents[0].product == 'A1'
     json.customComponents[2].uuid == order.customComponents[2].uuid.toString()
     json.customComponents[2].product == 'A3'
+  }
+
+  @Rollback
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that formatForIndex does a deep format with custom fields"() {
+    given: 'a domain object with custom values'
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: Order)
+    def order = new Order(order: 'ABC')
+    order.custom1 = 'XYZ'
+    order.save()
+
+    when: 'the object is formatted'
+    def s = new SearchEngineClient().formatForIndex(order)
+    //println "s = $s"
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+    def json = Holders.objectMapper.readValue(s, Map)
+
+    then: 'the JSON contents are correct'
+    json.order == "ABC"
+    json.custom1 == 'XYZ'
   }
 
 

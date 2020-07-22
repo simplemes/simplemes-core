@@ -374,7 +374,7 @@ class SearchEngineClient implements SearchEngineClientInterface {
    */
   static String formatForIndex(Object object) {
     def settings = SearchHelper.instance.getSearchDomainSettings(object.getClass())
-    def filter = new SearchableJacksonFilter(settings?.exclude)
+    def filter = new SearchableJacksonFilter(settings?.exclude, object.getClass())
 
     FilterProvider filters = new SimpleFilterProvider().addFilter("searchableFilter", (PropertyFilter) filter)
     def writer = Holders.objectMapper.writer(filters)

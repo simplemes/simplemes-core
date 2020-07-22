@@ -53,7 +53,7 @@ class RMA {
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateUpdated
 
-  int version = 0
+  Integer version = 0
 
   @Nullable
   @ExtensibleFieldHolder

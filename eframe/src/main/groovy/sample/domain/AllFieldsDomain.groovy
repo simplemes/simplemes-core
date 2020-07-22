@@ -93,7 +93,7 @@ class AllFieldsDomain {
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date dateUpdated
 
-  int version = 0
+  Integer version = 0
 
   @Id @AutoPopulated
   @MappedProperty(type = DataType.UUID)

@@ -4,11 +4,12 @@
 
 package org.simplemes.eframe.domain.annotation
 
-
 import io.micronaut.transaction.SynchronousTransactionManager
+import io.micronaut.transaction.annotation.TransactionalEventListener
 import io.micronaut.transaction.jdbc.DataSourceUtils
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.custom.domain.FieldExtension
+import org.simplemes.eframe.domain.DomainSaveTransactionEvent
 import org.simplemes.eframe.exception.MessageBasedException
 import org.simplemes.eframe.exception.SimplifiedSQLException
 import org.simplemes.eframe.search.SearchHelper
@@ -28,6 +29,7 @@ import sample.domain.SampleChild
 import sample.domain.SampleGrandChild
 import sample.domain.SampleParent
 
+import javax.inject.Singleton
 import javax.sql.DataSource
 import java.lang.reflect.Field
 import java.sql.Connection
@@ -945,23 +947,6 @@ class DomainEntityHelperSpec extends BaseSpecification {
   }
 
   @Rollback
-  def "verify that save calls the handlePersistenceChange method for the search helper"() {
-    given: 'a mock helper'
-    waitForInitialDataLoad()
-    def searchHelper = Mock(SearchHelper)
-    SearchHelper.instance = searchHelper
-
-    when: 'the domain is saved'
-    new Order(order: 'ABC').save()
-
-    then: 'the handle method is called'
-    1 * searchHelper.handlePersistenceChange({ it.order == 'ABC' })
-
-    cleanup:
-    SearchHelper.instance = new SearchHelper()
-  }
-
-  @Rollback
   def "verify that delete calls the handlePersistenceDelete method for the search helper"() {
     given: 'a mock helper'
     waitForInitialDataLoad()
@@ -1443,5 +1428,39 @@ class DomainEntityHelperSpec extends BaseSpecification {
     DomainEntityHelper.instance.getDomainSettingValue(order, 'DUMMY1') == 'XYZZY'
   }
 
+  def "verify that save published an event on commit"() {
+    given: 'the events are cleared'
+    TestSearchTransactionEventListener.lastEvent = null
+
+    when: 'a record is saved'
+    SampleParent.withTransaction {
+      new SampleParent(name: 'ABC').save()
+    }
+
+    then: 'the event is correct'
+    TestSearchTransactionEventListener.lastEvent
+    TestSearchTransactionEventListener.lastEvent.domainObject.name == 'ABC'
+  }
+
+
+}
+
+
+/**
+ * A test listener to verify event publishing.
+ */
+@Singleton
+class TestSearchTransactionEventListener {
+
+  /**
+   * The last event published.
+   */
+  static DomainSaveTransactionEvent lastEvent
+
+  @SuppressWarnings('unused')
+  @TransactionalEventListener
+  void onNewSaveEvent(DomainSaveTransactionEvent event) {
+    lastEvent = event
+  }
 
 }

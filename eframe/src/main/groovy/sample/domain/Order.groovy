@@ -4,6 +4,7 @@
 
 package sample.domain
 
+import com.fasterxml.jackson.annotation.JsonFilter
 import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import io.micronaut.data.annotation.AutoPopulated
@@ -29,6 +30,7 @@ import javax.persistence.OneToMany
  */
 @MappedEntity('ordr')
 @DomainEntity
+@JsonFilter("searchableFilter")
 @ToString(includeNames = true)
 @EqualsAndHashCode(includes = ['order'])
 @SuppressWarnings("unused")
@@ -94,6 +96,11 @@ class Order {
   }
 
   static fieldOrder = ['order', 'product', 'qtyToBuild', 'status', 'dueDate']
+
+  /**
+   * Searchable domain.
+   */
+  static searchable = true
 
   /**
    * Sample beforeValidate method.  Will alter the product is set to XYZZY.

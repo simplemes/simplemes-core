@@ -239,6 +239,7 @@ engine is only made when it is first used.
 
 ifeval::["{backend}" != "pdf"]
 
+[inline-toc]#<<Index Domain Requirements>>#
 [inline-toc]#<<Index Options>>#
 [inline-toc]#<<Excluded Fields>>#
 [inline-toc]#<<Indices Created>>#
@@ -247,6 +248,7 @@ ifeval::["{backend}" != "pdf"]
 endif::[]
 
 
+==== Index Example
 
 By default, domains are not searchable.  You will need to add a static field to the domain class
 to tell the framework that the domain is searchable.  The simplest approach is:
@@ -275,6 +277,16 @@ child elements of these top-level domains.  They will be part of the nested JSON
 sent to the search engine. This allows you to
 search for nested values more easily.  It does have the drawback of using larger documents
 in the index.  Of course, it means fewer documents in the index too.
+
+
+==== Index Domain Requirements
+
+The domains have some requirements to make indexing work:
+
+* *@JsonFilter("searchableFilter")* - Indicates the JSON filter used for the search content.
+                                      See <<Index Example>>.
+* *version* - A version field in the domain.  Must default to 0 for new records.
+* *static searchable field* - The domain must be flagged as searchable.  See <<Index Options>>.
 
 
 ==== Index Options

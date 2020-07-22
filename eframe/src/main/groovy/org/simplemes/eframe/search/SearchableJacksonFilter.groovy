@@ -21,21 +21,29 @@ class SearchableJacksonFilter extends SimpleBeanPropertyFilter {
   List<String> excludes
 
   /**
+   * The domain class this filter is used with.
+   */
+  Class domainClass
+
+  /**
    * The list of standard fields that are excluded.
    */
   static List<String> stdExcludes = ['dateCreated', 'dateUpdated', 'uuid', 'version']
 
   /**
-   * If true, then exclude all fields that start with underscore.
+   * If true, then exclude all fields that start with underscore. ('_complexCustomFields' and '_customFields') are
+   * always sent to the search engine for indexing.
    */
   static boolean excludeUnderScores = true
 
   /**
    * Constructor that supports a list of fields to exclude from the serialized JSON.
    * @param excludes The list of excluded fields.
+   * @param domainClass The domain class for this filter.
    */
-  SearchableJacksonFilter(List<String> excludes) {
+  SearchableJacksonFilter(List<String> excludes, Class domainClass) {
     this.excludes = excludes
+    this.domainClass = domainClass
   }
 
   @Override
@@ -57,6 +65,9 @@ class SearchableJacksonFilter extends SimpleBeanPropertyFilter {
     }
     if (stdExcludes.contains(fieldName)) {
       return false
+    }
+    if (fieldName == "_complexCustomFields" || fieldName == '_customFields') {
+      return true
     }
     if (excludeUnderScores && fieldName[0] == '_') {
       return false

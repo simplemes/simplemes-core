@@ -48,7 +48,7 @@ endif::[]
 
 Your domain classes have a few requirements to be easily used by various pieces of the framework.
 Your domain classes should be in proper packages, but that is not required.
-See <<domain-testing>> for details on testing.
+See <<domain-testing,Domain Testing>> for details on testing.
 
 
 ==== Micronaut Data
@@ -118,6 +118,11 @@ API on the domain to process domain records.  It adds methods such as:
 * withTransaction()
 * Lazy loaders for <<Simple Foreign Reference>> and <<parent-child-one-to-many>>
 * Access to all repository interface methods (e.g. list(), findBy...()  and others))
+
+NOTE: Do not call the repository `save()`, `update()` or `delete()` methods directly.  There
+      are a number of features such as <<Searching>> that will not work when the repository methods
+      are called directly.  You should use the convenience methods on the domain.
+
 
 A short example is shown below:
 
@@ -371,7 +376,9 @@ Base interfaces include:
 * BaseRepository
 * CrudRepository<__Domain__, UUID>
 
-
+NOTE: Do not call the repository `save()`, `update()` or `delete()` methods directly.  There
+      are a number of features such as <<Searching>> that will not work when the repository methods
+      are called directly.  You should use the convenience methods on the domain.
 
 
 ===== Standard Repository Methods
@@ -506,7 +513,7 @@ NOTE: The framework checks for an active transaction on every insert/update/dele
       withTransaction.
 
 The _@Transactional_ annotation only works in classes that are processed as beans in Micronaut.
-This means you can't use this annotation in most test classes or in plain of groovy/java logic.
+This means you can't use this annotation in most test classes or in POGO/POJO logic.
 
 ===== Transactions and Prepared Statements
 
