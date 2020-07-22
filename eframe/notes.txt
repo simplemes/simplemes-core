@@ -3,20 +3,7 @@ Scratch
 
 Search Tasks
 ============
-Definition List supports search engine.
-Support Parent in SearchDomainSettings.
-  Trigger index request on parent and mark parent instance as searched.
-    Test Scenarios:
-      Update SampleChild alone will trigger SampleParent.index.
-      Update SampleChild, followed by SampleParent update will trigger single SampleParent.index.
-      Update SampleParent, followed by SampleChild update will trigger single SampleParent.index.
-    Add delay queue.  All requests sit in queue for 1-2seconds to coalesce older requres for the same object.
-
-Design
-------
-  Update low-level will trigger searchable top-level re-index.  Includes custom sub-objects.
-    Order.save() will trigger a re-index, but the low level LSN.save() should not trigger a second re-index.  Need to detect this case.
-
+mes-core/assy search adjustments.
 
 Upgrade-marathon (MN, MN-D).
 ---------------------------
@@ -24,11 +11,7 @@ Convert to using single dialect (POSTGRES) with environment.  Avoids testing on 
   Fix workAroundXXX - Log bug with MN-D.
   Fix workAroundXYZ - Log bug with MN-D.  Conflicts with https://github.com/micronaut-projects/micronaut-data/issues/482
   Cleanup deprecated Class.newInstance() use.
-  Use docker/postgres for local testing to verify speed on startup.
-    Make sure it can work on Github actions.
-      https://docs.github.com/en/actions/configuring-and-managing-workflows/creating-postgresql-service-containers
-    Links to running setup script for PG:
-      https://stackoverflow.com/questions/57915791/how-to-connect-to-postgres-in-githhub-actions
+Support doc generation on github with hosting.
 
 
 Micronaut Data Conversion Tasks

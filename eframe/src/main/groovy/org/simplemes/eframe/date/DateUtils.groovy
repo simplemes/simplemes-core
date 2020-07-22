@@ -337,25 +337,24 @@ class DateUtils {
   }
 
   /**
-   * Build a human-readable relative time from a given absolute time. Only shows one number
-   * to make it readable.  Handles past times and future times ('2 minutes ago' and '2 minutes from now').
+   * Build a human-readable relative time. Only shows one number
+   * to make it readable.  Handles past times (negative) and future times ('2 minutes ago' and '2 minutes from now').
    * Use this in scenarios when super-precise display is not needed.
    * Supports seconds, minutes, days and years.  This method does <b>not</b> round to nearest whole number when precision is
    * set to LOW (default).<p/>
    * This method ignores leap years. All years are assumed to be 365 days.
-   * @param timeMS The elapsed time (ms).
+   * @param relativeTime The related time (ms).
    * @param locale The locale to use for the elapsed time string (<b>Default:</b> Request Locale, or Locale.default).
    * @param precision The precision to display. (<b>Default:</b> PRECISION_LOW).
    * @return The string. (e.g. for 70 seconds, returns "1 minute ago").
    */
-  static String formatRelativeTime(long timeMS, Locale locale = null, String precision = PRECISION_LOW) {
-    def elapsed = System.currentTimeMillis() - timeMS
-    def messageKey = 'time.ago.label'
-    if (elapsed < 0) {
-      messageKey = 'time.fromNow.label'
-      elapsed = -elapsed
+  static String formatRelativeTime(long relativeTime, Locale locale = null, String precision = PRECISION_LOW) {
+    def messageKey = 'time.fromNow.label'
+    if (relativeTime <= 0) {
+      messageKey = 'time.ago.label'
+      relativeTime = -relativeTime
     }
-    def s = formatElapsedTime(elapsed, locale, precision)
+    def s = formatElapsedTime(relativeTime, locale, precision)
     return GlobalUtils.lookup(messageKey, locale, s)
   }
 }

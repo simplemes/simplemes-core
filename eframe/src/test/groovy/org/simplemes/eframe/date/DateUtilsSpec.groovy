@@ -218,7 +218,7 @@ class DateUtilsSpec extends BaseSpecification {
 
   def "verify that formatRelativeTime handles supported cases"() {
     expect: ''
-    DateUtils.formatRelativeTime(System.currentTimeMillis() + relative, locale, precision) == result
+    DateUtils.formatRelativeTime(relative, locale, precision) == result
 
     where:
     relative    | locale    | precision               | result

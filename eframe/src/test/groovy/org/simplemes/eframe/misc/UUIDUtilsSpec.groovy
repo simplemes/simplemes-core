@@ -49,6 +49,6 @@ class UUIDUtilsSpec extends BaseSpecification {
 
     then: 'the time is reasonable'
     def elapsed = System.currentTimeMillis() - start
-    elapsed < 100          // Actual is about ‭0.0025‬ms per call.
+    assert elapsed < 500 // Actual is about ‭0.0025‬ms per call.
   }
 }

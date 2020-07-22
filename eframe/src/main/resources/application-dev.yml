@@ -4,7 +4,14 @@
 micronaut:
   application:
     name: seframe
-
+  security:
+    token:
+      jwt:
+        signatures:
+          secret:
+            generator:
+              secret: testKey890123456789012345678901234567890
+              # Never used in production.
 ---
 datasources:
   default:
