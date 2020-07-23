@@ -286,6 +286,26 @@ class ScanAssyServiceSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify postScan assembles when passed a barcode with component and lot - field name wrong case"() {
+    given: 'an order'
+    def flexType = DataGenerator.buildFlexType(flexType: 'ASSEMBLY', fieldName: 'lot')
+    def order = AssyUnitTestUtils.releaseOrder(components: ['WHEEL', 'SEAT'], assemblyDataType: flexType)
+
+    and: 'a scan request and response as given to the postScan method'
+    ScanRequest request
+    ScanResponse response
+    (request, response) = AssyUnitTestUtils.buildRequestAndResponse(order: order, component: 'WHEEL', lot: '12345')
+
+    when: "the post method is called"
+    service.postScan(response, request)
+
+    then: 'the component is assembled with the right data'
+    def assembledComponents = order.assembledComponents as List<OrderAssembledComponent>
+    assembledComponents.size() == 1
+    response.resolved
+  }
+
+  @Rollback
   def "verify that postScan already resolved scans are ignored"() {
     given: 'an order'
     def flexType = DataGenerator.buildFlexType(flexType: 'ASSEMBLY', fieldName: 'LOT')

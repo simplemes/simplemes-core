@@ -1,6 +1,7 @@
 package org.simplemes.mes.assy.system.service
 
 import groovy.util.logging.Slf4j
+import org.simplemes.eframe.custom.domain.FlexField
 import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.mes.assy.demand.AddOrderAssembledComponentRequest
@@ -137,6 +138,7 @@ class ScanAssyService implements ScanPoint, GetBarcodePrefixPoint {
    * @param componentProduct The product for the component.
    * @param result The scan results from the core method.
    */
+  @SuppressWarnings('GroovyAssignabilityCheck')
   protected void assembleComponent(ScanRequestInterface scanRequest, String componentProduct, ScanResponseInterface result) {
     def orderComponent = determineOrderComponent(scanRequest, componentProduct)
     def component
@@ -163,12 +165,8 @@ class ScanAssyService implements ScanPoint, GetBarcodePrefixPoint {
     FlexType assemblyDataType = component.assemblyDataType
     if (assemblyDataType) {
       def fieldMatchCount = 0
-      for (field in assemblyDataType.fields) {
-        String fieldName = field.fieldName
-        if (result?.parsedBarcode[fieldName]) {
-          addRequest.setAssemblyDataValue(fieldName, result?.parsedBarcode[(String) fieldName])
-          fieldMatchCount++
-        }
+      for (FlexField field in assemblyDataType.fields) {
+        fieldMatchCount = fieldMatchCount + processBarcodeForFlexField(result, field.fieldName, addRequest)
       }
       addRequest.assemblyData = assemblyDataType
 
@@ -283,4 +281,30 @@ class ScanAssyService implements ScanPoint, GetBarcodePrefixPoint {
     return matches.sort() { it.sequence } as List<OrderBOMComponent>
   }
 
+  /**
+   * Check the parsed barcode for the given flex field name (case insensitive) and adjust the addRequest to include
+   * the value if the field is in the barcode.  This helps detect when a barcode like ^PRD^WHEEL-27^LOT^87929459
+   * is used with a FlexType field = 'lot' or 'LOT' and will use the value ('87929459') in the add component
+   * request.
+   *
+   * @param scanResponse The response being built for this scan.  Includes the barcode fields.
+   * @param fieldName The flex type field name.
+   * @param addRequest The add component request to add the field value to, if it matches.
+   * @return 1 if the field was found.  Otherwise, 0.
+   */
+  int processBarcodeForFlexField(ScanResponseInterface scanResponse, String fieldName,
+                                 AddOrderAssembledComponentRequest addRequest) {
+    def fieldNameLC = fieldName.toLowerCase()
+    if (scanResponse.parsedBarcode) {
+      def foundCounter = 0
+      scanResponse.parsedBarcode.each { k, v ->
+        if (fieldNameLC == k.toLowerCase()) {
+          addRequest.setAssemblyDataValue(fieldName, scanResponse?.parsedBarcode[(String) k])
+          foundCounter++
+        }
+      }
+      return foundCounter
+    }
+    return 0
+  }
 }

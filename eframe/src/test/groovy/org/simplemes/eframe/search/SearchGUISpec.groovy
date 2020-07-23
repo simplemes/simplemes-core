@@ -33,28 +33,6 @@ class SearchGUISpec extends BaseGUISpecification {
     //SearchHelper.instance.searchEngineClient = new SearchEngineClient()
   }
 
-  /**
-   * See if the search server is up.
-   */
-  @Shared
-  static Boolean searchServerUp = null
-
-  private static boolean isSearchServerUp() {
-    if (searchServerUp != null) {
-      return searchServerUp
-    }
-    try {
-      // Try to open a connection to the localhost:9200
-      def restClient = RestClient.builder([new HttpHost('localhost', 9200)] as HttpHost[]).build()
-      restClient.performRequest(new Request("GET", "/_cluster/health"))
-      // No exception, so assume the server is live.
-      searchServerUp = true
-      return true
-    } catch (Exception ignored) {
-    }
-    searchServerUp = false
-    return false
-  }
 
   /**
    * Waits for up to 5 seconds for the given search string to return a hit.

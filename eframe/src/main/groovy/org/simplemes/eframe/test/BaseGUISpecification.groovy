@@ -6,12 +6,16 @@ package org.simplemes.eframe.test
 
 import geb.navigator.Navigator
 import groovy.util.logging.Slf4j
+import org.apache.http.HttpHost
+import org.elasticsearch.client.Request
+import org.elasticsearch.client.RestClient
 import org.openqa.selenium.Point
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.misc.LogUtils
 import org.simplemes.eframe.test.page.HomePage
 import org.simplemes.eframe.test.page.LoginPage
 import spock.lang.IgnoreIf
+import spock.lang.Shared
 
 /**
  * This is the common Spock specification base class for GUI/GEB tests.
@@ -402,5 +406,27 @@ class BaseGUISpecification extends BaseSpecification {
     return super.lookupRequired(key, locale, args)
   }
 
+  /**
+   * See if the search server is up.
+   */
+  @Shared
+  static Boolean searchServerUp = null
+
+  static boolean isSearchServerUp() {
+    if (searchServerUp != null) {
+      return searchServerUp
+    }
+    try {
+      // Try to open a connection to the localhost:9200
+      def restClient = RestClient.builder([new HttpHost('localhost', 9200)] as HttpHost[]).build()
+      restClient.performRequest(new Request("GET", "/_cluster/health"))
+      // No exception, so assume the server is live.
+      searchServerUp = true
+      return true
+    } catch (Exception ignored) {
+    }
+    searchServerUp = false
+    return false
+  }
 
 }

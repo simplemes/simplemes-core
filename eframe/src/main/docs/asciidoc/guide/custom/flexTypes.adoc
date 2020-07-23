@@ -14,6 +14,16 @@ Flex types allow you to define this order type and make the data fields dependen
 
 image::guis/flexTypeCreate.png[title="Flex Type Create",align="center", width=75%]
 
+==== Flex Type Field Names - Uppercase or Lowercase?
+
+The <<searching,Search Engine >> and the Postgres JSON SQL queries use the flex type
+field names in case-sensitive queries.  If you define a field name as _'LOT'_ and
+then try to query on _'lot'_, then the values won't be found.
+
+You should make sure you use a consistent field naming convention.  In particular, make
+sure to use the same case for all field names.  Use all upper case, all lower case
+or consistent mixed case.
+
 ==== Flex Types vs. Configurable Types
 
 One question that frequently comes up as developer is:

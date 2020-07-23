@@ -5,7 +5,7 @@
 CREATE TABLE public.order_assembled_component (
     uuid                 uuid PRIMARY KEY,
     order_id             uuid REFERENCES ordr  NOT NULL,
-    lsn_id               uuid REFERENCES lsn,
+    lsn_id               uuid REFERENCES lsn   NULL,
     sequence             integer               NOT NULL,
     bom_sequence         integer               NOT NULL,
     location             character varying(30),

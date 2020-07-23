@@ -9,6 +9,8 @@ import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.misc.TypeUtils
+import org.simplemes.eframe.search.AdjustQueryInterface
+import org.simplemes.eframe.search.SearchHelper
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.mes.assy.demand.AddOrderAssembledComponentRequest
 import org.simplemes.mes.assy.demand.AssembledComponentStateEnum
@@ -40,7 +42,7 @@ import javax.transaction.Transactional
 @Slf4j
 @Singleton
 @Transactional
-class OrderAssyService implements OrderReleasePoint {
+class OrderAssyService implements OrderReleasePoint, AdjustQueryInterface {
 
   /**
    * The maximum length of the assembly data string total. (Default: 300).  Each single assembly record
@@ -459,6 +461,55 @@ class OrderAssyService implements OrderReleasePoint {
         def flexField = FlexField.findByFieldNameIlike(fieldName)
         if (flexField) {
           results = "order.assembledComponents.assemblyDataValues.${flexField.fieldName}${coreQuery[loc..-1]}"
+        }
+      }
+    }
+
+    return results
+  }
+
+  /**
+   * ExtensionPoint pre method to adjust the query string to make the input more user friendly.
+   * <p>
+   * This implementation will change the query string if it detects an attempt to search on dynamic
+   * assembly data field and adjusts the query with the right document path.
+   * If the query string starts with a flex type, then it will be adjusted to
+   * the right field name to find the data.
+   *
+   * @param queryString The input query string from the user. Null not allowed.
+   * @param domainClass The domain class for domain-specific searches.  Null allowed.
+   * @return The adjusted query string.
+   */
+  @Override
+  void preAdjustQuery(String queryString, Class domainClass) {
+
+  }
+
+  /**
+   * ExtensionPoint post method to adjust the query string to make the input more user friendly.
+   * @param response The core response.
+   * @param queryString The input query string from the user. Null not allowed.
+   * @param domainClass The domain class for domain-specific searches.  Null allowed.
+   * @return The adjusted query string.
+   */
+  @Override
+  String postAdjustQuery(String response, String queryString, Class domainClass) {
+    def results = response
+
+    if (SearchHelper.instance.isSimpleQueryString(response)) {
+      // First, find the field name from the query.
+      if (response.toLowerCase().startsWith('assy.')) {
+        // We can ignore the assy. in this case.
+        response = response[5..-1]
+      }
+      def loc = response.indexOf(':')
+      if (loc > 0) {
+        // Then it has a simple field name, so extract it and see if it matches a FlexField.
+        def fieldName = response[0..(loc - 1)]
+        def list = FlexField.findAllByFieldNameIlike(fieldName)
+        if (list) {
+          def flexField = list[0]
+          results = "assembledComponents.assemblyData_${flexField.fieldName}${response[loc..-1]}"
         }
       }
     }

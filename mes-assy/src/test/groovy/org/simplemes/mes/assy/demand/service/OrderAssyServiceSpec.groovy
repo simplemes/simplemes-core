@@ -2,6 +2,7 @@ package org.simplemes.mes.assy.demand.service
 
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.archive.FileArchiver
+import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.json.TypeableMapper
@@ -9,6 +10,7 @@ import org.simplemes.eframe.misc.FileFactory
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.misc.TypeUtils
+import org.simplemes.eframe.search.service.SearchService
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DataGenerator
@@ -34,7 +36,6 @@ import org.simplemes.mes.floor.domain.WorkCenter
 import org.simplemes.mes.product.domain.MasterRouting
 import org.simplemes.mes.product.domain.Product
 import org.simplemes.mes.tracking.domain.ActionLog
-import spock.lang.Ignore
 
 /*
  * Copyright Michael Houston 2020. All rights reserved.
@@ -50,7 +51,7 @@ class OrderAssyServiceSpec extends BaseSpecification {
   OrderAssyService service
 
   @SuppressWarnings("unused")
-  static dirtyDomains = [ActionLog, OrderAssembledComponent, Order, ProductComponent, Product, MasterRouting]
+  static dirtyDomains = [ActionLog, OrderAssembledComponent, Order, ProductComponent, Product, MasterRouting, FlexType]
 
   def setup() {
     service = Holders.getBean(OrderAssyService)
@@ -1222,24 +1223,24 @@ class OrderAssyServiceSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, [order.order, comp.component.toString()], 10003)
   }
 
-  @Ignore("Implement when search is available")
-  def "verify that adjustQueryAssemblyData detects assembly data field shorthand"() {
+  def "verify that adjustQueryAssemblyData detects assembly data field shorthand and is connected to core scanService"() {
     given: 'a flex type with an assembly data field'
-    UnitTestUtils.buildFlexType('XYZ', ['LOT', 'VENDOR'])
+    DataGenerator.buildFlexType(fieldName: 'LOT')
 
     expect: 'the query string is adjusted correctly'
-    service.adjustQueryAssemblyData(query, Order, query) == result
+    def searchService = Holders.getBean(SearchService)
+    searchService.adjustQuery(query, Order) == result
 
     where:
     query            | result
-    'lot:abc*'       | 'order.assembledComponents.assemblyDataValues.LOT:abc*'
-    'LOT:abc*'       | 'order.assembledComponents.assemblyDataValues.LOT:abc*'
-    'assy.lot:abc*'  | 'order.assembledComponents.assemblyDataValues.LOT:abc*'
-    'ASSY.lot:abc*'  | 'order.assembledComponents.assemblyDataValues.LOT:abc*'
-    'assy.LOT:abc'   | 'order.assembledComponents.assemblyDataValues.LOT:abc'
+    'lot:abc*'       | 'assembledComponents.assemblyData_LOT:abc*'
+    'LOT:abc*'       | 'assembledComponents.assemblyData_LOT:abc*'
+    'assy.lot:abc*'  | 'assembledComponents.assemblyData_LOT:abc*'
+    'ASSY.lot:abc*'  | 'assembledComponents.assemblyData_LOT:abc*'
+    'assy.LOT:abc'   | 'assembledComponents.assemblyData_LOT:abc*'
     '"complex"'      | '"complex"'
-    'notLot'         | 'notLot'
-    'defect.LOT:abc' | 'defect.LOT:abc'
+    'notLot'         | 'notLot*'
+    'defect.LOT:abc' | 'defect.LOT:abc*'
   }
 
 }
