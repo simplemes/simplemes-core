@@ -12,10 +12,14 @@ import org.simplemes.eframe.domain.BaseRepository
 /**
  * The FlexField repository base interface.  Provides the methods for the repo.
  */
+@SuppressWarnings('unused')
 @JdbcRepository(dialect = Dialect.POSTGRES)
 interface FlexFieldRepository extends BaseRepository, CrudRepository<FlexField, UUID> {
   Optional<FlexField> findByUuid(UUID uuid)
 
   List<FlexField> findAllByFlexType(FlexType flexType)
+
+  List<FlexField> findAllByFieldNameIlike(String fieldName)
+
   List<FlexField> list()
 }

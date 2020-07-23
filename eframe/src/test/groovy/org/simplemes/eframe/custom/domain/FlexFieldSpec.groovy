@@ -87,4 +87,25 @@ class FlexFieldSpec extends BaseSpecification {
     assertValidationFails(flexField, 1, 'valueClassName', ['valueClassName', 'missing', FlexField.simpleName])
   }
 
+  @Rollback
+  def "verify that findAllByFieldNameILike works"() {
+    given: 'a flex type with some fields'
+    def flexType = new FlexType(flexType: 'XYZ')
+
+    and: 'some flex fields to compare'
+    flexType.fields << new FlexField(flexType: flexType, fieldName: 'ABC')
+    flexType.fields << new FlexField(flexType: flexType, fieldName: 'aBc')
+    flexType.fields << new FlexField(flexType: flexType, fieldName: 'xyzAbc')
+    flexType.save()
+
+    when: 'the query is executed'
+    def list = FlexField.findAllByFieldNameIlike('abc')
+
+    then: 'the right elements are found'
+    list.size() == 2
+    for (field in list) {
+      assert field.fieldName.toLowerCase() == 'abc'
+    }
+  }
+
 }

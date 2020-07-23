@@ -89,6 +89,8 @@ dependencies {
   runtime 'io.micronaut.sql:micronaut-jdbc-hikari'
   implementation("io.micronaut.flyway:micronaut-flyway")
 
+  // Needed for groovydoc tasks.
+  compile ("com.github.javaparser:javaparser-core:3.15.17")
 
   // gems dependency configuration is added by
   // jruby-gradle-plugin. Here we define
