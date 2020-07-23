@@ -35,7 +35,9 @@ public class ExtensionPointHelper {
       Class<?> clazz = bean.getClass();
       Class[] parameterTypes = new Class[arguments.length];
       for (int i = 0; i < arguments.length; i++) {
-        parameterTypes[i] = arguments[i].getClass();
+        if (arguments[i] != null) {
+          parameterTypes[i] = arguments[i].getClass();
+        }
       }
       //System.out.println("methods:" + Arrays.toString(clazz.getDeclaredMethods()));
       Method method = ASTUtils.findMethod(clazz, methodName, parameterTypes);
@@ -70,7 +72,9 @@ public class ExtensionPointHelper {
         argumentsPlusResponse[0] = response;
       }
       for (int i = 0; i < arguments.length; i++) {
-        parameterTypes[i + adjustParamCount] = arguments[i].getClass();
+        if (arguments[i] != null) {
+          parameterTypes[i + adjustParamCount] = arguments[i].getClass();
+        }
         argumentsPlusResponse[i + adjustParamCount] = arguments[i];
       }
       Method method = ASTUtils.findMethod(clazz, methodName, parameterTypes);

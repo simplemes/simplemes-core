@@ -376,7 +376,7 @@ Another more complex issue is when the data is deeply nested. To find a custom `
 _'87929459'_ in an assembled order (the MES-Assembly module) the user needs to use the
 query string:
 
-  order.assembledComponents.assemblyData_LOT:87929459
+  assembledComponents.assemblyData_LOT:87929459
 
 We want to use a simpler format:
 

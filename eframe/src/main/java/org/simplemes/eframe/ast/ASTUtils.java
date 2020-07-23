@@ -368,7 +368,7 @@ public class ASTUtils {
    *
    * @param clazz          The class to search for the method.
    * @param methodName     The method name.
-   * @param parameterTypes The parameter classes for the method.  Null not allowed.
+   * @param parameterTypes The parameter classes for the method.  Null means it will match any method type.
    * @return The method or an exception is thrown.
    */
   public static Method findMethod(Class clazz, String methodName, Class[] parameterTypes) throws NoSuchMethodException {
@@ -384,8 +384,10 @@ public class ASTUtils {
 
       boolean matches = true;
       for (int i = 0; i < parameterTypes.length; ++i) {
-        if (!methodParameterTypes[i].isAssignableFrom(parameterTypes[i])) {
-          matches = false;
+        if (parameterTypes[i] != null) {
+          if (!methodParameterTypes[i].isAssignableFrom(parameterTypes[i])) {
+            matches = false;
+          }
         }
       }
       if (matches) {
@@ -398,7 +400,11 @@ public class ASTUtils {
       if (sb.length() > 0) {
         sb.append(", ");
       }
-      sb.append(parameterType.getName());
+      if (parameterType != null) {
+        sb.append(parameterType.getName());
+      } else {
+        sb.append("(null)");
+      }
     }
 
     throw new NoSuchMethodException(clazz.getName() + "." + methodName + "(" + sb + ")");

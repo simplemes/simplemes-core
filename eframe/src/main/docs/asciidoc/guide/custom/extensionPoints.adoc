@@ -148,7 +148,7 @@ ReleaseResponse release1(ReleaseRequest request) {
 @ExtensionPoint(value=ReleasePoint)
 ReleaseResponse release2(ReleaseRequest request) {
   . . .
-  if () {  // <.>
+  if (...) {  // <.>
     return new ReleaseResponse(...)
   } else {
     return new ReleaseResponse(...)
@@ -184,8 +184,8 @@ ASCII doctor files like any other include file.  The result will look like this:
 include::../../../../../../build/generated/extensions.adoc[]
 
 
-NOTE: This example above is from the extension points in the framework sample code.  These are
-not real extension points.
+NOTE: The *OrderService* example above is from the extension points in the framework sample code.
+      This is not a real extension point.  The other extension point(s) above are real.
 
 This file is generated when the Groovy classes are compiled.  It is also removed by a _clean_
 action.  

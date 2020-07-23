@@ -6,6 +6,9 @@ package org.simplemes.eframe.search.service
 
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.custom.annotation.ExtensionPoint
+import org.simplemes.eframe.misc.ArgumentUtils
+import org.simplemes.eframe.search.AdjustQueryInterface
 import org.simplemes.eframe.search.SearchHelper
 import org.simplemes.eframe.search.SearchResult
 import org.simplemes.eframe.search.SearchStatus
@@ -79,18 +82,23 @@ class SearchService {
    * Adjusts the query string to make the input more user friendly. This also serves as an extension point
    * for modules to make their own ease-of-use adjustments to the query string.  For example, this framework
    * adds the wildcard '*' to the end of the string to make it easier to to find partial matches.
-   * @param queryString The input query string from the user.
+   * @param queryString The input query string from the user. Null not allowed.
    * @param domainClass The domain class for domain-specific searches.  Null allowed.
    * @return The adjusted query string.
    */
-  @SuppressWarnings('unused')
+  @ExtensionPoint(value = AdjustQueryInterface, comment = "Search query string adjust - Allows modules to adjust the search engine query string.")
   String adjustQuery(String queryString, Class domainClass) {
-    if ((!queryString) || queryString.contains('*')) {
+    ArgumentUtils.checkMissing(queryString, 'queryString')
+    if (!queryString) {
+      return queryString
+    }
+    if (queryString.contains('*')) {
       return queryString
     }
 
     if (SearchHelper.isSimpleQueryString(queryString)) {
-      return queryString + '*'
+      queryString = queryString + '*'
+      return queryString
     } else {
       return queryString
     }

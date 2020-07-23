@@ -11,8 +11,10 @@ import org.simplemes.eframe.search.SearchResult
 import org.simplemes.eframe.search.SearchStatus
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.annotation.Rollback
+import sample.SearchAdjustQueryExtension
 import sample.domain.RMA
 import sample.domain.SampleParent
+import spock.lang.Unroll
 
 /**
  * Tests.
@@ -91,13 +93,13 @@ class SearchServiceSpec extends BaseSpecification {
     1 * searchHelper.clearStatistics()
   }
 
+  @Unroll
   def "verify that adjustQuery adjusts the query by adding the wildcard when needed."() {
     expect: 'the adjustment is made on the simple queries'
     service.adjustQuery(query, null) == result
 
     where:
     query        | result
-    null         | null
     ''           | ''
     'abc'        | 'abc*'
     'abc*'       | 'abc*'
@@ -172,6 +174,20 @@ class SearchServiceSpec extends BaseSpecification {
     hits.size() == 3
     hits[0].object == parents[0]
     hits[1].object == parents[1]
+  }
+
+  def "verify that adjustQuery calls the extensions"() {
+    given: 'the extension is configured to adjust the value'
+    SearchAdjustQueryExtension.adjust = true
+
+    when: 'the method is called'
+    def res = service.adjustQuery('abc', RMA)
+
+    then: 'extension was called'
+    res == 'abc*.SearchAdjustQueryExtension'
+
+    cleanup:
+    SearchAdjustQueryExtension.adjust = false
   }
 
 }

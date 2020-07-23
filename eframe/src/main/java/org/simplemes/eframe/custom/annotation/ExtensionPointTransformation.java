@@ -283,15 +283,19 @@ public class ExtensionPointTransformation implements ASTTransformation {
 
     // Find all returns, insert call to invokePost.
     // {
-    //   Object returnValue = (original return expression);
+    //   Object _returnValue = (original return expression);
     //   return ExtensionPointHelper.instance.invokePost(SampleExtensionInterface, 'postCoreMethod', returnValue, argument1);
     // }
-    BlockStatement replacementStatement;
     for (int i = 0; i < statements.size(); i++) {
       Statement statement = statements.get(i);
       if (statement instanceof ReturnStatement) {
         ReturnStatement returnStatement = (ReturnStatement) statement;
         Expression returnExpression = returnStatement.getExpression();
+        if (isExpressionPostCall(returnExpression)) {
+          // Make sure we don't alter any return statements we already added.  Avoids stack overflow.
+          continue;
+        }
+        BlockStatement replacementStatement;
 
         VariableExpression returnVariableExpression = new VariableExpression("_returnValue");
         DeclarationExpression declarationExpression = new DeclarationExpression(returnVariableExpression,
@@ -312,14 +316,22 @@ public class ExtensionPointTransformation implements ASTTransformation {
             new PropertyExpression(new ClassExpression(new ClassNode(ExtensionPointHelper.class)), "instance"),
             "invokePost",
             new ArgumentListExpression(argumentList));
-        BlockStatement invokePostStatement = new BlockStatement();
-        invokePostStatement.addStatement(new ExpressionStatement(postMethodCall));
-        replacementStatement.addStatement(new ExpressionStatement(postMethodCall));
+        replacementStatement.addStatement(new ReturnStatement(new ExpressionStatement(postMethodCall)));
         statements.set(i, replacementStatement);
         count++;
       }
     }
     return count;
+  }
+
+  /**
+   * Determines if the given return expression is one that we already have modified to make the post call.
+   *
+   * @param returnExpression The expression to check.
+   * @return True if it already calls the post expression.
+   */
+  private boolean isExpressionPostCall(Expression returnExpression) {
+    return returnExpression.getText().contains("ExtensionPointHelper.instance.invokePost");
   }
 
 }

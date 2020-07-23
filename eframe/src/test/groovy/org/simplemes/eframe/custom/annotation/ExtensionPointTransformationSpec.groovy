@@ -46,7 +46,7 @@ class ExtensionPointTransformationSpec extends BaseSpecification {
     def alteredReturnValue = new SampleAlternatePOGO(name: "Return from post")
 
     when: 'the method is called'
-    def o = clazz.newInstance()
+    def o = clazz.getConstructor().newInstance()
     def res = o.coreMethod(argument1) as SampleAlternatePOGO
 
     then: 'the helper pre and post methods are called'
@@ -82,7 +82,7 @@ class ExtensionPointTransformationSpec extends BaseSpecification {
     def alteredReturnValue = [argument1: 'ABC', argument2: 237, x: 'XYZ']
 
     when: 'the method is called'
-    def o = clazz.newInstance()
+    def o = clazz.getConstructor().newInstance()
     def res = o.coreMethod('ABC', 237) as Map
 
     then: 'the helper pre and post methods are called'
@@ -122,7 +122,53 @@ class ExtensionPointTransformationSpec extends BaseSpecification {
     def alteredReturnValue = [argument1: 'ABC', argument2: 237, x: 'XYZ']
 
     when: 'the method is called'
-    def o = clazz.newInstance()
+    def o = clazz.getConstructor().newInstance()
+    def res = o.coreMethod('ABC', 237) as Map
+
+    then: 'the helper pre and post methods are called'
+    1 * mock.invokePre(SampleExtensionInterface, 'preCoreMethod', 'ABC', 237)
+    1 * mock.invokePost(SampleExtensionInterface, 'postCoreMethod', coreReturnValue, 'ABC', 237) >> alteredReturnValue
+
+    then: 'the correct value is returned from the method call'
+    res == alteredReturnValue
+  }
+
+  def "verify that the annotation calls the invokePost helper method - multiple returns with multiple if statements"() {
+    given: "an extension point that has multiple return paths, not on the last block"
+    def src = """
+      import org.simplemes.eframe.custom.annotation.ExtensionPoint
+      import sample.SampleExtensionInterface
+      
+      class TestClass {
+        @ExtensionPoint(SampleExtensionInterface)
+        Map coreMethod(String argument1, Integer argument2) {
+          def res1 = [x:237]
+          def res2 = [x:337]
+          def res3 = [x:437]
+          if (argument2==237) {
+            return res1
+          }
+          throw new IllegalArgumentException('Should never get here in this test spec. Transform failed.')
+      
+          if (argument2==337) {
+            return res2
+          } else {
+            return res3
+          }
+        }
+      }
+    """
+    def clazz = CompilerTestUtils.compileSource(src)
+
+    and: 'a mocked helper'
+    def mock = Mock(ExtensionPointHelper)
+    ExtensionPointHelper.instance = mock
+
+    def coreReturnValue = [x: 237]
+    def alteredReturnValue = [x: 99237]
+
+    when: 'the method is called'
+    def o = clazz.getConstructor().newInstance()
     def res = o.coreMethod('ABC', 237) as Map
 
     then: 'the helper pre and post methods are called'
@@ -164,7 +210,7 @@ class ExtensionPointTransformationSpec extends BaseSpecification {
     def alteredReturnValue = [argument1: 'ABC', argument2: 237, x: 'XYZ']
 
     when: 'the method is called'
-    def o = clazz.newInstance()
+    def o = clazz.getConstructor().newInstance()
     def res = o.coreMethod('ABC', 237) as Map
 
     then: 'the helper pre and post methods are called'
@@ -194,7 +240,7 @@ class ExtensionPointTransformationSpec extends BaseSpecification {
     ExtensionPointHelper.instance = mock
 
     when: 'the method is called'
-    def o = clazz.newInstance()
+    def o = clazz.getConstructor().newInstance()
     o.coreMethod()
 
     then: 'the helper pre and post methods are called'
