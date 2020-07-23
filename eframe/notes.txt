@@ -1,16 +1,8 @@
 Scratch
 =======
 
-Search Tasks
-============
-mes-core/assy search adjustments.
-
 Upgrade-marathon (MN, MN-D).
 ---------------------------
-Convert to using single dialect (POSTGRES) with environment.  Avoids testing on H2, runtime on Postgres.
-  Fix workAroundXXX - Log bug with MN-D.
-  Fix workAroundXYZ - Log bug with MN-D.  Conflicts with https://github.com/micronaut-projects/micronaut-data/issues/482
-  Cleanup deprecated Class.newInstance() use.
 Support doc generation on github with hosting.
 
 

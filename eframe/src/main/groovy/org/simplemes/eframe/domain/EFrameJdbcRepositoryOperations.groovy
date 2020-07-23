@@ -80,13 +80,13 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
     //value = new String(jsonCodec.encode(value), StandardCharsets.UTF_8);
     //println "value = $value"
 
-    if (WorkArounds.workAroundXXX) {
+    if (WorkArounds.workAround671) {
       def clazz = getClass().superclass.superclass
       def field = clazz.getDeclaredField('preparedStatementWriter')
       field.setAccessible(true)
       field.set(this, new WorkaroundJdbcQueryStatement())
     }
-    if (WorkArounds.workAroundXYZ) {
+    if (WorkArounds.workAround672) {
       def clazz = getClass().superclass.superclass
       def field2 = clazz.getDeclaredField('jsonCodec')
       field2.setAccessible(true)
