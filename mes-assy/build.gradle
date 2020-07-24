@@ -25,7 +25,8 @@ repositories {
 
 }
 
-
+version "0.5"
+group "org.simplemes"
 
 apply plugin: "application"
 apply plugin: "java"
@@ -43,16 +44,24 @@ dependencyManagement {
 
 dependencies {
   compile ("org.simplemes:mes-core:0.5")
-
   test {
     useJUnitPlatform()  // Forces Junit5 for Spock in Gradle tests.
+    jvmArgs = ['-Dnashorn.args="--no-deprecation-warning"']  // Suppress Javascript engine deprecation warning
+    // Force STDOUT to echo in github server.
+    testLogging.showStandardStreams = true
   }
+
 }
 
 mainClassName = "org.simplemes.mes.assy.application.Application"
 
-test {
-  // Force STDOUT to echo in github server.
-  testLogging.showStandardStreams = true
+// Local Tasks
+// Remove some sample/test files from the published jar.
+jar {
+  exclude "logback.xml"
+  exclude "application-test.yml"
+  exclude "/sample/**"
+  exclude "/org/simplemes/mes/assy/application/Application.class"
+  exclude "/reports/sample/**"
 }
 

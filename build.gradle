@@ -18,6 +18,8 @@ repositories {
   jcenter()
 }
 
+
+
 /*
   Some tasks that apply to all sub-projects in this composite build.
   Update gradle.properties in the top-level directory to change the sub-projects that are processed
@@ -43,17 +45,17 @@ task testAll {
 
 task asciidoctorAll {
   includedBuilds.tokenize(',').each { buildName ->
-    if (buildName!='webix') {
+    if (buildName != 'webix') {
       dependsOn gradle.includedBuild(buildName).task(':asciidoctor')
-	}
+    }
   }
 }
 
 task groovydocAll {
   includedBuilds.tokenize(',').each { buildName ->
-    if (buildName!='webix') {
+    if (buildName != 'webix') {
       dependsOn gradle.includedBuild(buildName).task(':groovydoc')
-	}
+    }
   }
 }
 

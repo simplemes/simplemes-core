@@ -110,9 +110,6 @@ dependencies {
 
   }
 */
-  test {
-    useJUnitPlatform()  // Forces Junit5 for Spock in Gradle tests.
-  }
   compile "org.seleniumhq.selenium:selenium-chrome-driver:$webDriversVersion"
   compile "org.seleniumhq.selenium:selenium-firefox-driver:$webDriversVersion"
   compile "org.seleniumhq.selenium:selenium-api:$webDriversVersion"
@@ -152,6 +149,12 @@ dependencies {
 
   compile ("org.simplemes:webix:6.0.9") // { transitive = false}
 
+  test {
+    useJUnitPlatform()  // Forces Junit5 for Spock in Gradle tests.
+    jvmArgs = ['-Dnashorn.args="--no-deprecation-warning"']  // Suppress Javascript engine deprecation warning
+    // Force STDOUT to echo in github server.
+    testLogging.showStandardStreams = true
+  }
 }
 
 mainClassName = "org.simplemes.eframe.application.Application"

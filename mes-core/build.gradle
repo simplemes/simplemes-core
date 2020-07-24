@@ -47,13 +47,14 @@ dependencyManagement {
 
 dependencies {
   compile ("org.simplemes:eframe:0.5")
-  //compileOnly("org.codehaus.groovy:groovy:${groovyDateUtilsVersions}")
-  //compileOnly "io.micronaut:micronaut-inject-groovy"
-  //compile "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
 
   test {
     useJUnitPlatform()  // Forces Junit5 for Spock in Gradle tests.
+    jvmArgs = ['-Dnashorn.args="--no-deprecation-warning"']  // Suppress Javascript engine deprecation warning
+    // Force STDOUT to echo in github server.
+    testLogging.showStandardStreams = true
   }
+
 }
 
 mainClassName = "org.simplemes.mes.application.Application"
@@ -70,7 +71,3 @@ jar {
   exclude "/reports/sample/**"
 }
 
-test {
-  // Force STDOUT to echo in github server.
-  testLogging.showStandardStreams = true
-}

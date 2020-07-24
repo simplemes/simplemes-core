@@ -25,7 +25,6 @@ import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.domain.SQLUtils
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.exception.BusinessException
-import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.system.DisabledStatus
 import org.simplemes.eframe.test.BaseSpecification
@@ -381,60 +380,6 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     def elapsed = System.currentTimeMillis() - start
     def rate = elapsed / nIterations
     rate < 2.5  // Real value is 0.05 ms/iteration. 0.5 works fine on desktop.  1.6 on S server.
-  }
-
-  def "verify that setFieldValue fails when there is not enough size - Default Size case"() {
-    given: 'a domain object with a custom field'
-    def src = """
-      import org.simplemes.eframe.data.annotation.*
-      import javax.persistence.Column
-      import org.simplemes.eframe.domain.annotation.DomainEntity
-      @DomainEntity
-      class TestClass {
-        @ExtensibleFieldHolder 
-        String customFields
-        UUID uuid
-      }
-    """
-    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
-    def nFields = 100
-
-    when: 'too much is stored'
-    for (i in 1..nFields) {
-      ExtensibleFieldHelper.instance.setFieldValue(object, "field$i", '1234567890')
-    }
-
-    then: 'the right exception is thrown'
-    def ex = thrown(Exception)
-    UnitTestUtils.assertExceptionIsValid(ex, ['TestClass', 'field', TypeUtils.toShortString(object)])
-  }
-
-  def "verify that setFieldValue fails when there is not enough size - custom Size case"() {
-    given: 'a domain object with a custom field'
-    def src = """
-      import org.simplemes.eframe.data.annotation.*
-      import org.simplemes.eframe.domain.annotation.DomainEntity
-      import javax.persistence.Column
-      @DomainEntity
-      class TestClass {
-        @ExtensibleFieldHolder 
-        @Column(nullable = true, length = 437)
-        String customFields
-        UUID uuid
-      }
-    """
-    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
-    def nFields = 100
-
-    when: 'too much is stored'
-    for (i in 1..nFields) {
-      ExtensibleFieldHelper.instance.setFieldValue(object, "field$i", '1234567890')
-    }
-
-    then: 'the right exception is thrown'
-    def ex = thrown(BusinessException)
-    ex.code == 130
-    UnitTestUtils.assertExceptionIsValid(ex, ['TestClass', 'field', "437"])
   }
 
   def "verify that setFieldValue fails when the annotation is not used on the domain"() {
