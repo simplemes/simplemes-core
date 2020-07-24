@@ -45,12 +45,22 @@ jobs:
       - name: Create Databases
         run: psql "dbname=test host=localhost user=mph password=mh1234" -c "\l"
 
+      - name: Setup Graphviz
+        uses: ts-graphviz/setup-graphviz@v1
+
       - name: Set up JDK 14
         uses: actions/setup-java@v1
         with:
           java-version: 14
 
-      - name: Build and Test
-        run: ./gradlew cleanAll testAll -DwriteTests=false 
+      #- name: Build and Test
+      #  run: ./gradlew cleanAll testAll -DwriteTests=false
+
+      - name: Generate Docs
+        run: ./gradlew asciidoctorAll
+
+      - name: Print DU
+        run: du -d 2
+
 #      - name: Upload
 #        run: ./gradlew bintrayUploadAll -Dbintray_key=${{ secrets.bintray_key }}

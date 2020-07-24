@@ -3,7 +3,7 @@ Scratch
 
 Upgrade-marathon (MN, MN-D).
 ---------------------------
-Support doc generation on github with hosting.
+Support doc generation on github with hosting.   See https://github.com/ts-graphviz/setup-graphviz.
 
 
 Micronaut Data Conversion Tasks
@@ -22,7 +22,7 @@ Support cache in specific use cases:
   Others as needed.
 Fix mess with efForm.dashboard.  Support type='dashboard', 'buttonHolder' and 'dialog'.
 Updated to Micronaut 2. with Groovy 3.0 and JDK 14.
-  Need to change @Controller() to specify thread pool.  Use @ExecuteOn() to all methods that are blocking.
+  ?Need to change @Controller() to specify thread pool.  Use @ExecuteOn() to all methods that are blocking.
     or set micronaut.server.thread-selection: AUTO
 
 
@@ -37,7 +37,7 @@ Tasks left out
   Add E2E test for optimistic locking detection.  In definition GUIs.
   Add Dashboard editor.
   Add splitter position remember in dashboard.
-  Upgrade to Webix 7.X for window close option.
+  Upgrade to Webix 7.X for window close option.  Webix 0.5 vs. 6.0.9 issue on Linux?
     Look into bug on Search Engine searching and paging.  (Search filter from page 2 is messy).  Fix is to always search filter from page one.  Maybe force refresh ot page 1?
   Reports
     Test in MES app.
