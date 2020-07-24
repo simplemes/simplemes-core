@@ -1,5 +1,0 @@
-
-include::workCenter.adoc[]
-
-//include::workCenterComponent.adoc[]
-

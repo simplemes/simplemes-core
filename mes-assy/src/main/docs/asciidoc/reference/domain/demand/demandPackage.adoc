@@ -1,9 +1,0 @@
-
-=== Demand
-
-
-
-
-include::orderBOMComponent.adoc[]
-
-include::orderAssembledComponent.adoc[]

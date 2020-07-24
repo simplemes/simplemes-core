@@ -1,7 +1,0 @@
-rootProject.name = 'simplemes-core'
-
-includeBuild 'webix'
-includeBuild 'eframe'
-includeBuild 'mes-core'
-includeBuild 'mes-assy'
-

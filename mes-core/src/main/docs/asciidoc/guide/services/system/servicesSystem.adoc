@@ -1,7 +1,0 @@
-
-=== System Services
-
-This system package provides objects to handle generic actions within the MES.
-
-include::scanServiceGuide.adoc[]
-

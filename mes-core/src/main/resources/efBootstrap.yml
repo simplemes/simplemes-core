@@ -1,4 +1,0 @@
----
-eframe:
-  # A list of addition classes for this module.  EFrame has one internal addition, used to test discovery of additions.
-  additions: [org.simplemes.mes.application.MesCoreAddition]
