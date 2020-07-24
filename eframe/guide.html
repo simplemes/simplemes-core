@@ -2117,6 +2117,45 @@ ul.sectlevel1 {
 
 <!-- docinfo.html - Provides the Table of contents hide/display logic. -->
 <link rel="shortcut icon" href="images/common/books_favicon.ico" type="image/x-icon">
+<a href="https://github.com/simplemes/simplemes-core" class="github-corner" title="View source on GitHub"
+   aria-label="View source on GitHub">
+  <svg width="80" height="80" viewBox="0 0 250 250"
+       style="fill:#151513; color:#fff; position: absolute; top: 0; border: 0; right: 0;" aria-hidden="true">
+    <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+    <path
+      d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+      fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+    <path
+      d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+      fill="currentColor" class="octo-body"></path>
+  </svg>
+</a>
+<style>.github-corner:hover .octo-arm {
+  animation: octocat-wave 560ms ease-in-out
+}
+
+@keyframes octocat-wave {
+  0%, 100% {
+    transform: rotate(0)
+  }
+  20%, 60% {
+    transform: rotate(-25deg)
+  }
+  40%, 80% {
+    transform: rotate(10deg)
+  }
+}
+
+@media (max-width: 500px) {
+  .github-corner:hover .octo-arm {
+    animation: none
+  }
+
+  .github-corner .octo-arm {
+    animation: octocat-wave 560ms ease-in-out
+  }
+}</style>
+
 <script>
   window.onload = _init;
 
@@ -3891,7 +3930,7 @@ the controller to enforce security.  This service then typically works with one 
 classes which update the database, usually in a single database transaction.</p>
 </div>
 <div class="paragraph">
-<p>See <a href="#other-actions-api">[other-actions-api]</a> for an example of how the framework makes these actions simpler.</p>
+<p>See <a href="#controllers">Controllers</a> for an example of how the framework makes these actions simpler.</p>
 </div>
 <div class="sect3">
 <h4 id="what-about-domain-validation"><a class="link" href="#what-about-domain-validation">What about Domain Validation?</a></h4>
@@ -3912,7 +3951,7 @@ defining the core fields and custom fields for that domain.  This framework allo
 <div class="ulist">
 <ul>
 <li>
-<p>Use of core/custom fields in standard definition <a href="#GUIS">[GUIS]</a>.</p>
+<p>Use of core/custom fields in standard definition <a href="#guis">GUIs</a>.</p>
 </li>
 <li>
 <p>Binding of these fields to complex domain objects, including child records.</p>
@@ -5076,7 +5115,7 @@ to specify the column type for the DB:</p>
 <h4 id="field-ordering"><a class="link" href="#field-ordering">Field Ordering</a></h4>
 <div class="paragraph">
 <p>Frequently, the framework features will need to list or display your domain fields in a logical order.
-Framework markers such as <a href="#ef-show">[ef-show]</a> will show the fields in any order you like, but you would have to
+Framework markers such as <a href="#efshow">efShow</a> will show the fields in any order you like, but you would have to
 update the <code>&lt;@efShow/&gt;</code> marker for every new field added to the domain class.
 To simplify this maintenance task, the framework supports an optional
 <a href="reference.html#field-order" target="_blank" rel="noopener">fieldOrder</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>
@@ -5099,7 +5138,7 @@ Philosophical Discussion Ahead!
 'Don&#8217;t Repeat Yourself' philosophy, a central place to store the field ordering
 'hints' is needed.  We chose the domain class. This is optional. If you don&#8217;t want to embed field
 ordering in your domain classes, then you can specify the field ordering on the respective
-<a href="reference.html#ef-show">efShow</a> markers in your HTML files.  This means updating 3  files
+<a href="reference.html#efshow">efShow</a> markers in your HTML files.  This means updating 3  files
 whenever you add a new field to a domain class.  This is your choice.</p>
 </div>
 <div class="paragraph">
@@ -6503,7 +6542,7 @@ This is done in the normal location for <a href="#field-extensions">Field Extens
 <div class="paragraph">
 <p>It is also possible to define configurable types that are not based on <a href="#flex-types">Flex Types</a>.
 This requires more programming to provide the information needed. One example is
-in the display/editing of the <a href="#Report Filter">[Report Filter]</a> mechanism.</p>
+in the display/editing of the <a href="#report-filter-panel">Report Filter Panel</a> mechanism.</p>
 </div>
 <div class="paragraph">
 <p>The flex type definition will look something like this:</p>
@@ -6699,7 +6738,7 @@ response.fields = rma.fields</code></pre>
 <span class="inline-toc"><a href="#controller-method-names">Controller Method Names</a></span>
 <span class="inline-toc"><a href="#controller-security">Controller Security</a></span>
 <span class="inline-toc"><a href="#controller-base-classes">Controller Base Classes</a></span>
-<span class="inline-toc"><a href="#controller-logging">Logging</a></span>
+<span class="inline-toc"><a href="#logging">Logging</a></span>
 <span class="inline-toc"><a href="#controller-task-menus">Controller Task Menus</a></span>
 <span class="inline-toc"><a href="#standard-domain-model-and-markers">Standard Domain Model and Markers</a></span>
 <span class="inline-toc"><a href="#controller-method-for-page-display">Controller Method for Page Display</a></span></p>
@@ -7068,7 +7107,7 @@ Currently, no global error handler is provided for controllers.</p>
 <h3 id="controller-task-menus"><a class="link" href="#controller-task-menus">Controller Task Menus</a></h3>
 <div class="paragraph">
 <p>Controllers are the main way users will access your application from a browser.
-The framework provides a way to define <a href="#Task Menus">[Task Menus]</a> from your controller.  These usually
+The framework provides a way to define <a href="#task-menu">Task Menu</a> from your controller.  These usually
 refer to the main (root or index) page of your controller.</p>
 </div>
 <div class="paragraph">
@@ -7380,7 +7419,7 @@ generate the consistent HTML elements.</p>
 <div class="ulist">
 <ul>
 <li>
-<p>Standard GUIs (<a href="#Definition GUIs">[Definition GUIs]</a>, etc).</p>
+<p>Standard GUIs (<a href="#definition-pages">Definition Pages</a>, etc).</p>
 </li>
 <li>
 <p>Optimized GUIs for User Scenarios</p>
@@ -7420,7 +7459,7 @@ controller.</p>
 <p>The framework provides a number of Freemarker markers (directives) that help you quickly define
 professional GUIs for a number of scenarios. This includes the low-level elements such as
 <a href="#effield">efField</a> and higher-level markers that define
-much of a <a href="#Definition GUIs">[Definition GUIs]</a>.  There are also markers for configurable <a href="#dashboards">Dashboards</a> too.</p>
+much of a <a href="#definition-pages">Definition Pages</a>.  There are also markers for configurable <a href="#dashboards">Dashboards</a> too.</p>
 </div>
 <div class="paragraph">
 <p>If you use the standard markers and GUIs, then your users will get these features with very little effort on your part:</p>
@@ -8575,10 +8614,10 @@ variable for the object.  For example, to access the displayDialog() function:</
 <div class="ulist">
 <ul>
 <li>
-<p><em>ef</em> or <em>eframe</em>  - <a href="#eframe.js">[eframe.js]</a></p>
+<p><em>ef</em> or <em>eframe</em>  - <a href="#eframe-js">eframe.js</a></p>
 </li>
 <li>
-<p><em>tk</em> or <em>toolkit</em> - <a href="#eframe_toolkit.js">[eframe_toolkit.js]</a></p>
+<p><em>tk</em> or <em>toolkit</em> - <a href="#eframe_toolkit-js">eframe_toolkit.js</a></p>
 </li>
 </ul>
 </div>
@@ -9492,7 +9531,7 @@ The panels will still have the current activities active while the non-GUI activ
 <p>Ask questions in a dialog.</p>
 </li>
 <li>
-<p>Handle requests from the server (<a href="#Asking Questions">[Asking Questions]</a>).</p>
+<p>Handle requests from the server (Asking Questions).</p>
 </li>
 <li>
 <p>Display messages for the Dashboard.</p>
@@ -11132,12 +11171,12 @@ make building GUI simpler and provide the basic building blocks for most GUIs.</
 <p><span class="inline-toc"><a href="#markers-and-models">Markers and Models</a></span>
 <span class="inline-toc"><a href="#markers-and-options">Markers and Options (Field-Specific)</a></span>
 <span class="inline-toc"><a href="#markers-and-labels">Markers and Labels</a></span>
-<span class="inline-toc"><a href="#Pagination">Filtering and Sorting</a></span></p>
+<span class="inline-toc"><a href="#pagination-filtering-and-sorting">Pagination, Filtering and Sorting</a></span></p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Many of the GUI markers in the framework use <a href="#Toolkit JS">[Toolkit JS]</a> elements for display.
+<p>Many of the GUI markers in the framework use <a href="#gui-toolkit">GUI Toolkit</a> elements for display.
 These are Javascript GUI elements that rely on third party GUI features.</p>
 </li>
 <li>
@@ -13826,7 +13865,7 @@ running system (embedded).
 A GUI test should exercise the features of one GUI or related GUIs.  For example, testing the
 create/update/read/delete actions for the User domain/controller can be considered one GUI test.
 Most GUI tests that cover multiple domains, services or controllers should be considered an
-<a href="#e2e-testing">End-to-End Test</a>.</p>
+End-to-End Test.</p>
 </div>
 <div class="paragraph">
 <p>You can use whatever functional/GUI testing framework that you prefer, but the framework and
@@ -16098,10 +16137,10 @@ You can also use the programmatic API to trigger the archive/unarchive under oth
 <div class="paragraph">
 <p>Most archiving is done automatically when records reach a specific age.  For example,
 the <a href="../../mes-core/html5/guide.html" target="_blank" rel="noopener">MES Core</a> <span class="icon link-blue"><i class="fa fa-share-square"></i></span>
-Production Log records are archived after they reach a user-configurable age.
-This is done by a background task that is configured in the <a href="#Background Tasks">[Background Tasks]</a>
-domain object.
-The MES Core module configures a background task record, which the user can edit to
+Production Log records are archived after they reach a user-configurable age.</p>
+</div>
+<div class="paragraph">
+<p>The MES Core module configures a background task record, which the user can edit to
 adjust the archive window and other options.</p>
 </div>
 <div class="paragraph">
@@ -16633,7 +16672,7 @@ Downtime is not allowed.</p>
 <li>
 <p>Configuration objects (e.g. Products) and production objects (e.g. Orders) will both
 need user-defined fields added.  The configuration objects will use one type of customizations
-(<a href="#field-extensions">Field Extensions</a>) and production objects will tend to use another type (<a href="#Flex Fields">[Flex Fields]</a>).</p>
+(<a href="#field-extensions">Field Extensions</a>) and production objects will tend to use another type (<a href="#flex-types">Flex Types</a>).</p>
 </li>
 </ul>
 </div>
@@ -17525,7 +17564,7 @@ A simple service class might look like this:</p>
 <td>The extension point uses a <em>ReleasePoint</em> (interface) to define the pre/post method
 signature.  This must match the <code>release()</code> method&#8217;s signature. All beans that implement this
 interface will be executed for all calls to the core <code>release()</code> method.
-The annotation also includes an optional comment that is used for the <a href="#ExtensionPoint Documentation">[ExtensionPoint Documentation]</a>
+The annotation also includes an optional comment that is used for the <a href="#extension-point-documentation">Extension Point Documentation</a>
 file as noted below.</td>
 </tr>
 <tr>
@@ -17773,7 +17812,7 @@ your app.</p>
 <div class="sect3">
 <h4 id="module-terminology"><a class="link" href="#module-terminology">Module Terminology</a></h4>
 <div class="paragraph">
-<p>In general, a module adds features using <a href="#field-extensions">Field Extensions</a> <a href="#method-extensions">[method-extensions]</a> added to the
+<p>In general, a module adds features using <a href="#field-extensions">Field Extensions</a> <a href="#extension-points">Extension Points</a> added to the
 core features.</p>
 </div>
 <div class="paragraph">
@@ -17790,7 +17829,7 @@ for many drop-down lists.</p>
 <div class="paragraph">
 <p>Why not use inheritance to add features to domains, controllers and services?  The main reason
 is that you may need multiple optional modules.  An inheritance hierarchy can&#8217;t be configured
-as optional. For this reason, the <a href="#field-extensions">Field Extensions</a> and <a href="#Method Extensions">[Method Extensions]</a> mechanisms
+as optional. For this reason, the <a href="#field-extensions">Field Extensions</a> and <a href="#extension-points">Extension Points</a> mechanisms
 are used.</p>
 </div>
 </div>
@@ -18909,7 +18948,7 @@ to the repository.  If you use the repository method directly, then this is not 
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-07-24 19:27:04 UTC
+Last updated 2020-07-24 22:08:43 UTC
 </div>
 </div>
 <style>
