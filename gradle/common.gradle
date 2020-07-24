@@ -39,7 +39,7 @@ if (compositePropFile.exists()) {
   }
 }
 
-println "in common setup, module = ${moduleName}, version = ${project.version}, micronaut = ${micronautBomVersion}"
+//println "in common setup, module = ${moduleName}, version = ${project.version}, micronaut = ${micronautBomVersion}"
 //println "user.dir = ${System.getProperty('user.dir')}, root = ${rootProject.name}"
 
 
@@ -85,12 +85,8 @@ tasks.withType(Test) {
   systemProperty "webdriver.gecko.driver", System.getProperty('webdriver.gecko.driver')
 }
 
-// The ASCIIDOCTOR related tasks.
-asciidoctorj {
-  version = '1.5.4'
-}
 
-def backend =  'html5'
+//def backend =  'html5'
 def imagesBuildDir = 'images'
 
 // Use -PbackendProp=pdf to generate the PDF.
@@ -99,11 +95,14 @@ def imagesBuildDir = 'images'
 // The imagesBuildDir will point to the location of the HTML generated docs images directory.
 // This work around may only work with diagrams two layers down (e.g. in guide/introduction).
 ////workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+// TODO: Fix this
+/*
 if (hasProperty('backendProp') && backendProp == 'pdf') {
   //println "backendProp = $backendProp"
   backend = backendProp
   imagesBuildDir = "../../../../../staging/docs/${moduleName}/html5/images"
 }
+*/
 
 task generateExtensionDoc(type:JavaExec) {
   main = "org.simplemes.eframe.application.ExtensionPointDocumentExtractor"
@@ -112,20 +111,16 @@ task generateExtensionDoc(type:JavaExec) {
 }
 
 asciidoctor {
-  //sourceDir "${projectDir}/src/docs/asciidoc"
-  //println "${projectDir}/src/docs/asciidoc"
+  baseDir "src/main/docs/asciidoc"
   sourceDir "src/main/docs/asciidoc"
   sources {
     include 'guide.adoc'
     include 'reference.adoc'
-    //include 'allElements.adoc'
-    //include 'convBook.adoc'
-    //include 'convReference.adoc'
   }
   outputDir "${project.docsDir}"
   options doctype: 'book', ruby: 'erubis'
   //backends=['html5', 'pdf']
-  backends = [backend]
+  //backends = [backend]
   //println "inHTML $backend"
 
   //noinspection GroovyAssignabilityCheck
@@ -137,17 +132,13 @@ asciidoctor {
              stylesheet: "${projectDir}/src/main/docs/asciidoc/resources/asciidoctor.css",
              sectlinks: true,
              idseparator: '-'
-
-  // Diagram support
-  if (!project.hasProperty('ignoreJrubyPrepareGems')) {
-    //println "still jruby"
-    dependsOn jrubyPrepareGems
-  }
-  jrubyPrepareGems.outputDir = new File((String) "${projectDir}/tmp/gems")   // Keep GEMs out of the build directory.
-  gemPath = jrubyPrepareGems.outputDir
-  requires = ['asciidoctor-diagram']
 }
 
+asciidoctorj {
+  modules {
+    diagram.use()
+  }
+}
 
 
 // Module publishing task setup.
