@@ -1,3 +1,7 @@
+<!--
+  ~ Copyright (c) Michael Houston 2020. All rights reserved.
+  -->
+
 <!-- docinfo.html - Provides the Table of contents hide/display logic. -->
 <link rel="shortcut icon" href="images/common/books_favicon.ico" type="image/x-icon">
 <script>
@@ -16,15 +20,17 @@
     tocDiv.innerHTML = isReference ? "Reference - Table of Contents" : "Guide - Table of Contents";
 
     var element = document.getElementById("toctitle");
-    element.innerHTML = "";  // Remove original test content
-    element.appendChild(tocDiv);
-    element.appendChild(link);
+    if (element) {
+      element.innerHTML = "";  // Remove original test content
+      element.appendChild(tocDiv);
+      element.appendChild(link);
 
-    document.getElementById("toc-header").onmouseover = _mouseOver;
-    document.getElementById("toc-header").onmouseout = _mouseOut;
-    document.getElementsByClassName("sectlevel1")[0].onmouseover = _mouseOver;
-    document.getElementsByClassName("sectlevel1")[0].onmouseout = _mouseOut;
-    document.getElementsByClassName("sectlevel1")[0].onclick = _mouseClick;
+      document.getElementById("toc-header").onmouseover = _mouseOver;
+      document.getElementById("toc-header").onmouseout = _mouseOut;
+      document.getElementsByClassName("sectlevel1")[0].onmouseover = _mouseOver;
+      document.getElementsByClassName("sectlevel1")[0].onmouseout = _mouseOut;
+      document.getElementsByClassName("sectlevel1")[0].onclick = _mouseClick;
+    }
   }
 
   function _mouseOver(event) {

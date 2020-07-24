@@ -8,6 +8,7 @@ v0.0,
 :icons: font
 :revnumber: {project-version}
 :linkattrs:
+:toc:
 ifeval::["{backend}" != "pdf"]
 :toclevels: 1
 endif::[]

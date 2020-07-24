@@ -63,5 +63,11 @@ jobs:
       - name: Print DU
         run: du -d 2
 
+      - name: Publish Docs to Github Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./staging/docs
+
 #      - name: Upload
 #        run: ./gradlew bintrayUploadAll -Dbintray_key=${{ secrets.bintray_key }}

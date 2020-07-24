@@ -24,6 +24,7 @@ Fix mess with efForm.dashboard.  Support type='dashboard', 'buttonHolder' and 'd
 Updated to Micronaut 2. with Groovy 3.0 and JDK 14.
   ?Need to change @Controller() to specify thread pool.  Use @ExecuteOn() to all methods that are blocking.
     or set micronaut.server.thread-selection: AUTO
+Drop support for maxSize on ExtensionHolder (Javadoc).
 
 
 Tasks

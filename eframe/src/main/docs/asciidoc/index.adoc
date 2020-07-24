@@ -1,0 +1,60 @@
+= SimpleMES Documentation
+doc@simplemes.org
+v0.0,
+:doctype: book
+:example-caption!:
+:compat-mode!:
+:experimental:
+:icons: font
+:revnumber: {project-version}
+:linkattrs:
+ifndef::demo-server[:demo-server: long:8080]
+//:demo-server: long:8080
+// Document specific and general custom
+// content files are used:
+:docinfo2:
+// Include general custom content files:
+//:docinfo1:
+// Include document specific content files:
+//:docinfo:
+// Some relative paths to other docs
+:eframe-path: eframe
+:mes-core-path: mes-core
+:mes-assy-path: mes-assy
+
+//workaround for issue 271 https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir-src: images
+ifndef::imagesdir[:imagesdir: {imagesdir-src}]
+//end workaround
+
+ifndef::imagesdir[:imagesdir: images]
+ifndef::sourcedir[:sourcedir: ../java]
+
+
+= Modules
+
+This application is made up of a number of modules (plugins).  Each module is documented separately
+with user guides, reference docs and the Groovy API documents:
+
+.Documentation
+[cols="1,1,1,1"]
+|===
+|Module|Guide|Reference|GroovyDoc
+
+|MES Core|link:{mes-core-path}/guide.html#[Guide^] icon:share-square[role="link-blue"]|
+link:{mes-core-path}/reference.html#[Reference^] icon:share-square[role="link-blue"]|
+link:{mes-core-path}/groovydoc/index.html[API^] icon:share-square[role="link-blue"]
+
+|MES Assembly|link:{mes-assy-path}/guide.html#[Guide^] icon:share-square[role="link-blue"]|
+link:{mes-assy-path}/reference.html#[Reference^] icon:share-square[role="link-blue"]|
+link:{mes-assy-path}/groovydoc/index.html[API^] icon:share-square[role="link-blue"]
+
+|Framework|link:{eframe-path}/guide.html#[Guide^] icon:share-square[role="link-blue"]|
+link:{eframe-path}/reference.html#[Reference^] icon:share-square[role="link-blue"]|
+link:{eframe-path}/groovydoc/index.html[API^] icon:share-square[role="link-blue"]
+
+|===
+
+== Created for SimpleMES
+
+

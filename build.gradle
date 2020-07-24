@@ -49,6 +49,14 @@ task asciidoctorAll {
   }
 }
 
+task groovydocAll {
+  includedBuilds.tokenize(',').each { buildName ->
+    if (buildName!='webix') {
+      dependsOn gradle.includedBuild(buildName).task(':groovydoc')
+	}
+  }
+}
+
 task assembleAll {
   includedBuilds.tokenize(',').each { buildName ->
     dependsOn gradle.includedBuild(buildName).task(':assemble')

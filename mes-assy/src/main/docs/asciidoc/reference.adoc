@@ -7,6 +7,7 @@ v0.2,
 :experimental:
 :icons: font
 :linkattrs:
+:toc:
 ifeval::["{backend}" != "pdf"]
 :toclevels: 1
 endif::[]

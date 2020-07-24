@@ -52,9 +52,23 @@ assets {
 run.jvmArgs('-noverify', '-XX:TieredStopAtLevel=1')
 
 groovydoc {
-  destinationDir = new File("${project.docsDir}/html5/groovydoc")
+  destinationDir = new File("${project.projectDir}/${project.docsDir}/groovydoc")
   source = [sourceSets.main.groovy,sourceSets.main.java]
 }
+
+// Copy the index file (if it exists) to the parent folder for deployment to the doc server.
+task copyDocIndex(type: Copy) {
+  from file('../staging/docs/eframe/index.html')
+  into file('../staging/docs')
+}
+
+// Copy the ICO file (if it exists) to the parent folder for deployment to the doc server.
+task copyDocICO(type: Copy) {
+  from file('../staging/docs/eframe/images/common/books_favicon.ico')
+  into file('../staging/docs/images/common')
+}
+
+asciidoctor.finalizedBy([copyDocIndex,copyDocICO])
 
 allprojects {
   tasks.withType(Javadoc) {
@@ -114,6 +128,7 @@ asciidoctor {
   baseDir "src/main/docs/asciidoc"
   sourceDir "src/main/docs/asciidoc"
   sources {
+    include 'index.adoc'
     include 'guide.adoc'
     include 'reference.adoc'
   }
@@ -125,7 +140,7 @@ asciidoctor {
 
   //noinspection GroovyAssignabilityCheck
   attributes 'source-highlighter': 'coderay',
-             toc: 'auto',
+             //toc: 'auto',
              'imagesdir-build': imagesBuildDir,
              idprefix: '',
              'project-version': project.version,
