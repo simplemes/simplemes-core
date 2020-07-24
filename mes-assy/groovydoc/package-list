@@ -1,0 +1,9 @@
+org.simplemes.mes.assy.application
+org.simplemes.mes.assy.demand
+org.simplemes.mes.assy.demand.controller
+org.simplemes.mes.assy.demand.domain
+org.simplemes.mes.assy.demand.service
+org.simplemes.mes.assy.product
+org.simplemes.mes.assy.product.domain
+org.simplemes.mes.assy.system.service
+org.simplemes.mes.assy.test

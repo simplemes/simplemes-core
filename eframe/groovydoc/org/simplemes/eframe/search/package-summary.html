@@ -1,0 +1,368 @@
+<!--
+
+     Licensed to the Apache Software Foundation (ASF) under one
+     or more contributor license agreements.  See the NOTICE file
+     distributed with this work for additional information
+     regarding copyright ownership.  The ASF licenses this file
+     to you under the Apache License, Version 2.0 (the
+     "License"); you may not use this file except in compliance
+     with the License.  You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing,
+     software distributed under the License is distributed on an
+     "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+     KIND, either express or implied.  See the License for the
+     specific language governing permissions and limitations
+     under the License.
+
+-->
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+
+<title>org.simplemes.eframe.search (eframe 0.5 API)</title>
+<meta name="keywords" content="org.simplemes.eframe.search package">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel ="stylesheet" TYPE="text/css" HREF="../../../../stylesheet.css" title="Style">
+<link href="../../../../groovy.ico" type="image/x-icon" rel="shortcut icon">
+<link href="../../../../groovy.ico" type="image/x-icon" rel="icon">
+<script type="text/javascript">
+function windowTitle()
+{
+    parent.document.title="org.simplemes.eframe.search (eframe 0.5 API)";
+}
+</script>
+<noscript>
+</noscript>
+
+</head>
+
+<body class="center" onload="windowTitle();">
+
+<!-- ========= START OF TOP NAVBAR ======= -->
+<div class="topNav"><a name="navbar_top">
+    <!--   -->
+</a><a href="#skip-navbar_top" title="Skip navigation links"></a><a name="navbar_top_firstrow">
+    <!--   -->
+</a>
+<a name="navbar_top_firstrow"><!-- --></a>
+<ul class="navList" title="Navigation">
+    <li><a href="../../../../overview-summary.html">Overview</a></li>
+    <li class="navBarCell1Rev">Package</li>
+    <li>Class</li>
+    <li><a href="../../../../deprecated-list.html">Deprecated</a></li>
+    <li><a href="../../../../index-all.html">Index</a></li>
+    <li><a href="../../../../help-doc.html">Help</a></li>
+</ul>
+</div>
+
+<div class="subNav">
+    <ul class="navList">
+        <li><a href="../../../../index.html?org/simplemes/eframe/search/package-summary.html" target="_top">Frames</a></li>
+        <li><a href="package-summary.html" target="_top">No Frames</a></li>
+    </ul>
+</div>
+
+<!-- ========= END OF TOP NAVBAR ========= -->
+
+<div class="header">
+    <h1 class="title">Package org.simplemes.eframe.search</h1>
+</div>
+
+
+<h2 title="Package org.simplemes.eframe.search Description" class="title">Package org.simplemes.eframe.search Description</h2>
+<div class="header"> Classes that provide the search engine features.
+
+ 
+ </div>
+
+
+<div class="contentContainer">
+
+
+    <div class="summary">
+        <ul class="blockList">
+            <li class="blockList">
+                <table border="0" cellpadding="3" cellspacing="0" summary="Interface Summary">
+                    <caption><span>Interface Summary</span><span class="tabEnd">&nbsp;</span></caption>
+                    <tbody>
+                    <tr>
+                        <th class="colFirst" scope="col">Interface</th>
+                        <th class="colLast" scope="col">Description</th>
+                    </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="AdjustQueryInterface.html" title="class in org/simplemes/eframe/search">
+                                    AdjustQueryInterface
+                                </a></strong>
+                            </td>
+                            <td>Defines the API for the adjustQuery extension point.  </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchEngineClientInterface.html" title="class in org/simplemes/eframe/search">
+                                    SearchEngineClientInterface
+                                </a></strong>
+                            </td>
+                            <td>This interface defines the API provided by the search interface to the external search engine (Elastic Search in this case).
+ </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchEngineRequestInterface.html" title="class in org/simplemes/eframe/search">
+                                    SearchEngineRequestInterface
+                                </a></strong>
+                            </td>
+                            <td>This is the common interface for all request handled by the search engine clients.
+ </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </li>
+            </ul>
+        </div>
+    
+
+
+
+    <div class="summary">
+        <ul class="blockList">
+            <li class="blockList">
+                <table border="0" cellpadding="3" cellspacing="0" summary="Class Summary">
+                    <caption><span>Class Summary</span><span class="tabEnd">&nbsp;</span></caption>
+                    <tbody>
+                    <tr>
+                        <th class="colFirst" scope="col">Class</th>
+                        <th class="colLast" scope="col">Description</th>
+                    </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="ArchiveSearchHit.html" title="class in org/simplemes/eframe/search">
+                                    ArchiveSearchHit
+                                </a></strong>
+                            </td>
+                            <td>A single archive search hit from the search engine.</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="MockRestClient.html" title="class in org/simplemes/eframe/search">
+                                    MockRestClient
+                                </a></strong>
+                            </td>
+                            <td>This is a mock client that can simulate the external search engine's response to various requests.
+ </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="MockRestClient.MockResponse.html" title="class in org/simplemes/eframe/search">
+                                    MockRestClient.MockResponse
+                                </a></strong>
+                            </td>
+                            <td>A mock for the response from the rest client.</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="MockSearchEngineClient.html" title="class in org/simplemes/eframe/search">
+                                    MockSearchEngineClient
+                                </a></strong>
+                            </td>
+                            <td>This mock client simulates the search interface to the external search engine (Elastic Search in this case).
+ </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="MockSearchEngineRequest.html" title="class in org/simplemes/eframe/search">
+                                    MockSearchEngineRequest
+                                </a></strong>
+                            </td>
+                            <td>A mock request used for testing.  </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="PassAllJacksonFilter.html" title="class in org/simplemes/eframe/search">
+                                    PassAllJacksonFilter
+                                </a></strong>
+                            </td>
+                            <td>Defines a filter that allows all fields to be serialized.  </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchDomainSettings.html" title="class in org/simplemes/eframe/search">
+                                    SearchDomainSettings
+                                </a></strong>
+                            </td>
+                            <td>Defines the search settings for single domain class.</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchEngineClient.html" title="class in org/simplemes/eframe/search">
+                                    SearchEngineClient
+                                </a></strong>
+                            </td>
+                            <td>This helper encapsulates the search interface to the external search engine (Elastic Search in this case).
+ </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchEnginePoolExecutor.html" title="class in org/simplemes/eframe/search">
+                                    SearchEnginePoolExecutor
+                                </a></strong>
+                            </td>
+                            <td>The thread pool executor that provides background processing of search engine requests.
+ </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchEnginePoolExecutor.SearchThreadFactory.html" title="class in org/simplemes/eframe/search">
+                                    SearchEnginePoolExecutor.SearchThreadFactory
+                                </a></strong>
+                            </td>
+                            <td>The thread factory for the pool.  </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchEngineRequestBulkArchiveIndex.html" title="class in org/simplemes/eframe/search">
+                                    SearchEngineRequestBulkArchiveIndex
+                                </a></strong>
+                            </td>
+                            <td>This encapsulates a bulk index request on a list of archive references.  </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchEngineRequestBulkIndex.html" title="class in org/simplemes/eframe/search">
+                                    SearchEngineRequestBulkIndex
+                                </a></strong>
+                            </td>
+                            <td>This encapsulates a bulk index request on a list of domain objects.  </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchEngineRequestIndexObject.html" title="class in org/simplemes/eframe/search">
+                                    SearchEngineRequestIndexObject
+                                </a></strong>
+                            </td>
+                            <td>This encapsulates a index request on a domain object.  </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchEngineRequestObjectRemoval.html" title="class in org/simplemes/eframe/search">
+                                    SearchEngineRequestObjectRemoval
+                                </a></strong>
+                            </td>
+                            <td>This encapsulates a request to remove a domain object from the search engine index.  </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchEngineRequestQueue.html" title="class in org/simplemes/eframe/search">
+                                    SearchEngineRequestQueue
+                                </a></strong>
+                            </td>
+                            <td>The search request queue.  </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchHelper.html" title="class in org/simplemes/eframe/search">
+                                    SearchHelper
+                                </a></strong>
+                            </td>
+                            <td>This helper encapsulates the search interface.  </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchHit.html" title="class in org/simplemes/eframe/search">
+                                    SearchHit
+                                </a></strong>
+                            </td>
+                            <td>A single search hit from the search engine.</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchResult.html" title="class in org/simplemes/eframe/search">
+                                    SearchResult
+                                </a></strong>
+                            </td>
+                            <td>This class contains the results of a search.  </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchStatus.html" title="class in org/simplemes/eframe/search">
+                                    SearchStatus
+                                </a></strong>
+                            </td>
+                            <td>This class contains the current search engine status.  </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchTransactionEventListener.html" title="class in org/simplemes/eframe/search">
+                                    SearchTransactionEventListener
+                                </a></strong>
+                            </td>
+                            <td>Listens for the transaction commit events on domain objects.
+ </td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchValidation.html" title="class in org/simplemes/eframe/search">
+                                    SearchValidation
+                                </a></strong>
+                            </td>
+                            <td>Provides validations for Domain Entities that check for search mis-configurations.</td>
+                        </tr>
+<tr class="altColor">
+                            <td class="colOne">
+                                <strong><a href="SearchableJacksonFilter.html" title="class in org/simplemes/eframe/search">
+                                    SearchableJacksonFilter
+                                </a></strong>
+                            </td>
+                            <td>Defines a filter that looks at the searchable static field for any excluded fields and
+ removes them from the JSON for the search engine.</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </li>
+            </ul>
+        </div>
+    
+
+
+
+
+
+
+</div>
+
+<!-- ======= START OF BOTTOM NAVBAR ====== -->
+<div class="bottomNav"><a name="navbar_bottom">
+    <!--   -->
+</a><a href="#skip-navbar_bottom" title="Skip navigation links"></a><a name="navbar_bottom_firstrow">
+    <!--   -->
+</a>
+    <ul class="navList" title="Navigation">
+        <li><a href="overview-summary.html">Overview</a></li>
+        <li class="navBarCell1Rev">Package</li>
+        <li>Class</li>
+        <li><a href="deprecated-list.html">Deprecated</a></li>
+        <li><a href="index-all.html">Index</a></li>
+        <li><a href="help-doc.html">Help</a></li>
+    </ul>
+</div>
+<div class="subNav">
+    <div>
+        <ul class="navList">
+            <li><a href="index.html?deprecated-list.html" target="_top">Frames</a></li>
+            <li><a href="deprecated-list.html" target="_top">No Frames</a></li>
+        </ul>
+    </div>
+
+    <div class="aboutLanguage"><em>Groovy Documentation</em></div>
+    <a name="skip-navbar_bottom">
+        <!--   -->
+    </a></div>
+<!-- ======== END OF BOTTOM NAVBAR ======= -->
+
+</body>
+</html>
