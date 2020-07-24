@@ -54,11 +54,11 @@ jobs:
         with:
           java-version: 14
 
-      #- name: Build and Test
-      #  run: ./gradlew cleanAll testAll -DwriteTests=false
+      - name: Build and Test
+        run: ./gradlew cleanAll testAll -DwriteTests=false
 
       - name: Generate Docs
-        run: ./gradlew asciidoctorAll
+        run: ./gradlew asciidoctorAll groovyDocAll
 
       - name: Print DU
         run: du -d 2
