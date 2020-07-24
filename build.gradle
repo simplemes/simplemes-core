@@ -3,6 +3,9 @@
   Provides cleanAll, buildAll, etc tasks that process through all tasks.
  */
 
+plugins {
+  id 'org.asciidoctor.jvm.convert' version '3.1.0'
+}
 
 apply plugin: 'groovy'
 
