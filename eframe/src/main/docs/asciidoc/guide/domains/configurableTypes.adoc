@@ -81,7 +81,7 @@ class RMA {
 
 It is also possible to define configurable types that are not based on <<Flex Types>>.
 This requires more programming to provide the information needed. One example is
-in the display/editing of the <<Report Filter>> mechanism.
+in the display/editing of the <<Report Filter Panel>> mechanism.
 
 
 The flex type definition will look something like this:

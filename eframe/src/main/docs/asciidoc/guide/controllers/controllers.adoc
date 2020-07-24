@@ -7,7 +7,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Controller Method Names>>#
 [inline-toc]#<<Controller Security>>#
 [inline-toc]#<<Controller Base Classes>>#
-[inline-toc]#<<controller-logging,Logging>>#
+[inline-toc]#<<Logging>>#
 [inline-toc]#<<Controller Task Menus>>#
 [inline-toc]#<<Standard Domain Model and Markers>>#
 [inline-toc]#<<Controller Method for Page Display>>#
@@ -266,7 +266,7 @@ See <<Info/Warning Messages to Clients>> for more details.
 === Controller Task Menus
 
 Controllers are the main way users will access your application from a browser.
-The framework provides a way to define <<Task Menus>> from your controller.  These usually
+The framework provides a way to define <<Task Menu>> from your controller.  These usually
 refer to the main (root or index) page of your controller.
 
 Also, you can mark these tasks as a `clientRootActivity`.  This means the the javascript

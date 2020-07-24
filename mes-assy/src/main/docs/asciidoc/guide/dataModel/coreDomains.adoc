@@ -57,8 +57,12 @@ link:{mes-core-path}/guide.html#workcenter[Work Center^] icon:share-square-o[rol
 This assembly module provides:
 
 * Assembly Setup
+
+////
 * Support for <<work-center-component-guide,component>> locations (e.g. bins, hoppers or other storage location).
 * <<work-center-component-guide,Work Center Component>> Replenishment
+////
+
 
 === Flex Type
 

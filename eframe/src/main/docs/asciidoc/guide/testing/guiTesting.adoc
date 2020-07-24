@@ -20,7 +20,7 @@ running system (embedded).
 A GUI test should exercise the features of one GUI or related GUIs.  For example, testing the
 create/update/read/delete actions for the User domain/controller can be considered one GUI test.
 Most GUI tests that cover multiple domains, services or controllers should be considered an
-<<e2e-testing,End-to-End Test>>.
+End-to-End Test.
 
 You can use whatever functional/GUI testing framework that you prefer, but the framework and
 Micronaut support GEB. The http://www.gebish.org/[GEB^] module is the easiest

@@ -2,7 +2,7 @@
 === CodeSequences
 
 Code Sequences are used to control the creating of unique codes (primary keys) within the MES.
-This is typically used for <<Order,Orders>> and <<LSN,LSNs>>.
+This is typically used for <<Order,Orders>> and <<lsn,LSNs>>.
 
 For example, a bicycle serial number based on the date can be generated using the formatString:
 

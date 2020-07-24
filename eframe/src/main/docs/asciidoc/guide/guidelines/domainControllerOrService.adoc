@@ -71,7 +71,7 @@ we typically put this business logic into a service.  This service is accessed b
 the controller to enforce security.  This service then typically works with one or more domain
 classes which update the database, usually in a single database transaction.
 
-See <<other-actions-api>> for an example of how the framework makes these actions simpler.
+See <<Controllers>> for an example of how the framework makes these actions simpler.
 
 ==== What about Domain Validation?
 

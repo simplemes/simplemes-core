@@ -313,7 +313,7 @@ to specify the column type for the DB:
 ==== Field Ordering
 
 Frequently, the framework features will need to list or display your domain fields in a logical order.
-Framework markers such as <<ef-show>> will show the fields in any order you like, but you would have to
+Framework markers such as <<efShow>> will show the fields in any order you like, but you would have to
 update the `<@efShow/>` marker for every new field added to the domain class.
 To simplify this maintenance task, the framework supports an optional
 link:reference.html#field-order[fieldOrder^] icon:share-square-o[role="link-blue"]
@@ -325,7 +325,7 @@ Field ordering is not traditionally part of a domain class's definition.  Follow
 'Don't Repeat Yourself' philosophy, a central place to store the field ordering
 'hints' is needed.  We chose the domain class. This is optional. If you don't want to embed field
 ordering in your domain classes, then you can specify the field ordering on the respective
-<<reference.adoc#ef-show,efShow>> markers in your HTML files.  This means updating 3  files
+<<reference.adoc#efshow,efShow>> markers in your HTML files.  This means updating 3  files
 whenever you add a new field to a domain class.  This is your choice.
 
 See <<reference.adoc#field-order,fieldOrder >> for details.

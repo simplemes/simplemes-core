@@ -107,7 +107,7 @@ This event can be triggered by these activities:
 ==== WORK_LIST_SELECTED
 
 This event is triggered when the user changes the work selection changes in the
-<<Work List>> activity.  This event can be used to synchronize
+<<Work List Activity>> activity.  This event can be used to synchronize
 all activities with the currently selected order/LSNs.
 
 This is typically used by the <<Work Center Selection>> activity to populate the
@@ -136,5 +136,5 @@ The main properties of the event are:
 
 This event can be triggered by these activities:
 
-* <<Work List>>.
+* <<Work List Activity>>.
 

@@ -4,7 +4,7 @@
 ifeval::["{backend}" != "pdf"]
 
 [inline-toc-header]#Demand#
-[inline-toc]#<<LSN>>#
+[inline-toc]#<<lsn>>#
 [inline-toc]#<<LSNSequence>>#
 [inline-toc]#<<Order>>#
 [inline-toc]#<<OrderSequence>>#

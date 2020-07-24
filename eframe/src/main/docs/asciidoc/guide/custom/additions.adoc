@@ -92,7 +92,7 @@ your app.
 
 ==== Module Terminology
 
-In general, a module adds features using <<Field Extensions>> <<method-extensions>> added to the
+In general, a module adds features using <<Field Extensions>> <<Extension Points>> added to the
 core features.
 
 The enterprise framework supports a declarative way to define these extensions using
@@ -107,7 +107,7 @@ for many drop-down lists.
 
 Why not use inheritance to add features to domains, controllers and services?  The main reason
 is that you may need multiple optional modules.  An inheritance hierarchy can't be configured
-as optional. For this reason, the <<Field Extensions>> and <<Method Extensions>> mechanisms
+as optional. For this reason, the <<Field Extensions>> and <<Extension Points>> mechanisms
 are used.
 
 

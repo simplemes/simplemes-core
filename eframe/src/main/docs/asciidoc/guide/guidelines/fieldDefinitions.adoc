@@ -4,7 +4,7 @@
 This framework operates on a centralized field definition for the domain objects.  This includes
 defining the core fields and custom fields for that domain.  This framework allows these features:
 
-* Use of core/custom fields in standard definition <<GUIS>>.
+* Use of core/custom fields in standard definition <<GUIs>>.
 * Binding of these fields to complex domain objects, including child records.
 * Saving/retrieving values from storage (e.g. from text files for archive purposes).
 * JSON access from REST clients.

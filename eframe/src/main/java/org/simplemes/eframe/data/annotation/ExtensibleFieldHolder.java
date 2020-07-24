@@ -15,7 +15,7 @@ import java.lang.annotation.Target;
 /**
  * This annotation allows the application developer to mark a domain object as allowing extension fields (custom fields).
  * This marks the domain class as extensible with custom fields and allows the developer to store these extensible fields
- * into a column of their choosing with a user-definable column size/type.
+ * into a column of their choosing with a user-definable JSONB column.
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
@@ -28,11 +28,6 @@ public @interface ExtensibleFieldHolder {
   String HOLDER_FIELD_NAME = "_customFieldName";
 
   /**
-   * Defines the maximum size of the custom field value holder.  Default is 1024.
-   */
-  int DEFAULT_MAX_SIZE = 1024;
-
-  /**
    * The name of the transient complex custom field element.  Not configurable.  The custom field name is the key for
    * this Map.
    */
@@ -43,16 +38,5 @@ public @interface ExtensibleFieldHolder {
    */
   String COMPLEX_THIS_NAME = "_this";
 
-  /**
-   * Defines the maximum size of the custom field value holder.  This is the maximum size of all custom fields for one
-   * domain record.
-   * If the size is larger than a varchar() can hold in the database,
-   * the type of the column is changed to TEXT.  All of the custom fields combined cannot exceed this value, even
-   * if the values are stored in a TEXT column.
-   * Default: 1024.
-   *
-   * @return The max field length.
-   */
-  int maxSize() default DEFAULT_MAX_SIZE;
 }
 

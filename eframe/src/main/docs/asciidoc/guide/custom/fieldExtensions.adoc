@@ -42,7 +42,7 @@ All of the decisions below are based on a number of assumptions on the use of cu
   Downtime is not allowed.
 * Configuration objects (e.g. Products) and production objects (e.g. Orders) will both
   need user-defined fields added.  The configuration objects will use one type of customizations
-  (<<Field Extensions>>) and production objects will tend to use another type (<<Flex Fields>>).
+  (<<Field Extensions>>) and production objects will tend to use another type (<<Flex Types>>).
 
 When designing the custom field support, we had hoped to store each custom field value in its own
 database column. Unfortunately, that was not possible with Micronaut Data.  Micronaut Data requires

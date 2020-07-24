@@ -92,7 +92,7 @@ class OrderService {
 <.> The extension point uses a _ReleasePoint_ (interface) to define the pre/post method
     signature.  This must match the `release()` method's signature. All beans that implement this
     interface will be executed for all calls to the core `release()` method.
-    The annotation also includes an optional comment that is used for the <<ExtensionPoint Documentation>>
+    The annotation also includes an optional comment that is used for the <<Extension Point Documentation>>
     file as noted below.
 <.> The method accepts a POGO argument.
 <.> The method returns a POGO.

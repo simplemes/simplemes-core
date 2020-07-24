@@ -18,7 +18,6 @@ import org.simplemes.eframe.data.format.ConfigurableTypeDomainFormat
 import org.simplemes.eframe.data.format.CustomChildListFieldFormat
 import org.simplemes.eframe.data.format.ListFieldLoaderInterface
 import org.simplemes.eframe.domain.DomainUtils
-import org.simplemes.eframe.domain.PersistentProperty
 import org.simplemes.eframe.domain.annotation.DomainEntityHelper
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.exception.BusinessException
@@ -26,9 +25,6 @@ import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.ShortTermCacheMap
 import org.simplemes.eframe.misc.TextUtils
-import org.simplemes.eframe.misc.TypeUtils
-
-import java.lang.reflect.Field
 
 /**
  * This class defines methods to access extensible field definitions define by module additions, users
@@ -278,18 +274,6 @@ class ExtensibleFieldHelper {
         value = fieldDefinition.format.convertToJsonFormat(value, fieldDefinition)
       }
       map[fieldName] = value
-      // If space is tight, we can switch to the non-indented version.  Could use cached writer to avoid cost
-      // of new writer on each setField() call
-      //ObjectWriter w = Holders.objectMapper.writer()
-      //object[ExtensibleFields.DEFAULT_FIELD_NAME] = w.with(SerializationFeature.INDENT_OUTPUT).writeValueAsString(map)
-      // The default indenting is faster (25%).
-      def s = Holders.objectMapper.writeValueAsString(map)
-      def maxSize = getCustomFieldSize(object)
-      if (maxSize && s.size() > maxSize) {
-        def recordName = TypeUtils.toShortString(object)
-        //error.130.message=Not enough room to store {0} in custom fields for {1} {2}.  Max size = {3}.
-        throw new BusinessException(130, [fieldName, clazz.name, recordName, maxSize])
-      }
       object[holderName] = Holders.objectMapper.writeValueAsString(map)
       log.trace('setFieldValue(): {} value = {} to object {}', fieldName, value, object)
     }
@@ -369,16 +353,6 @@ class ExtensibleFieldHelper {
    */
   Map getComplexHolder(Object object) {
     return DomainEntityHelper.instance.getComplexHolder(object)
-  }
-
-  /**
-   * Gets the max size of the custom field value holder in the domain object.
-   * @param object The object with the ExtensibleFields annotation.
-   * @return The size.  0 is unknown or unlimited.
-   */
-  protected int getCustomFieldSize(Object object) {
-    Field field = object.getClass().getDeclaredField(getCustomHolderFieldName(object))
-    return PersistentProperty.getFieldMaxLength(field)
   }
 
   /**

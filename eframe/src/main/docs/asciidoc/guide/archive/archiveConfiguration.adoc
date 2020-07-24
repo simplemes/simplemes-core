@@ -26,8 +26,7 @@ TBD
 Most archiving is done automatically when records reach a specific age.  For example,
 the link:{mes-core-path}/guide.html[MES Core^] icon:share-square[role="link-blue"]
 Production Log records are archived after they reach a user-configurable age.
-This is done by a background task that is configured in the <<Background Tasks>>
-domain object.
+
 The MES Core module configures a background task record, which the user can edit to
 adjust the archive window and other options.
 

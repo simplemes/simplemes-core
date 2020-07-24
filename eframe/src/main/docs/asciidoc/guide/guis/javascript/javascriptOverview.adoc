@@ -44,8 +44,8 @@ variable for the object.  For example, to access the displayDialog() function:
 
 Each library is provided with a full name object and short form:
 
-* _ef_ or _eframe_  - <<eframe.js>>
-* _tk_ or _toolkit_ - <<eframe_toolkit.js>>
+* _ef_ or _eframe_  - <<eframe-js>>
+* _tk_ or _toolkit_ - <<eframe_toolkit-js>>
 
 This reduces the chance of namespace collisions with other libraries you might use in your application.
 

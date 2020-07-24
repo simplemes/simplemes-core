@@ -14,13 +14,13 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Markers and Models>>#
 [inline-toc]#<<Markers and Options,Markers and Options (Field-Specific)>>#
 [inline-toc]#<<Markers and Labels>>#
-[inline-toc]#<<Pagination, Filtering and Sorting>>#
+[inline-toc]#<<pagination-filtering-and-sorting>>#
 
 endif::[]
 
 
 
-* Many of the GUI markers in the framework use <<Toolkit JS>> elements for display.
+* Many of the GUI markers in the framework use <<GUI Toolkit>> elements for display.
 These are Javascript GUI elements that rely on third party GUI features.
 
 * For security reasons, all HTML output of text from markers is HTML encoded.

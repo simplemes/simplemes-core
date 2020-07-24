@@ -31,7 +31,7 @@ generate the consistent HTML elements.
 
 There are 4 main approaches to GUI implementation:
 
-* Standard GUIs (<<Definition GUIs>>, etc).
+* Standard GUIs (<<Definition Pages>>, etc).
 * Optimized GUIs for User Scenarios
 * Configurable <<Dashboards>>
 * Hybrid
@@ -58,7 +58,7 @@ A last option is to use configurable <<Dashboards>> to display more information 
 The framework provides a number of Freemarker markers (directives) that help you quickly define
 professional GUIs for a number of scenarios. This includes the low-level elements such as
 <<efField>> and higher-level markers that define
-much of a <<Definition GUIs>>.  There are also markers for configurable <<dashboards>> too.
+much of a <<Definition Pages>>.  There are also markers for configurable <<dashboards>> too.
 
 If you use the standard markers and GUIs, then your users will get these features with very little effort on your part:
 

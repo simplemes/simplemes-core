@@ -163,7 +163,7 @@ These non-GUI activities can have these capabilities:
 
 * Execute Ajax call(s) to perform the actions.
 * Ask questions in a dialog.
-* Handle requests from the server (<<Asking Questions>>).
+* Handle requests from the server (Asking Questions).
 * Display messages for the Dashboard.
 
 This non-GUI flow is shown below:
