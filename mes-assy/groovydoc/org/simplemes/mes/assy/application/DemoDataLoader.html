@@ -181,6 +181,18 @@ extends java.lang.Object
                             <td class="colLast"><code><strong><a href="#loadDemoData()">loadDemoData</a></strong>()</code><br>Loads the demo data.  </td>
                         </tr>
                         
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code><strong><a href="#loadProductDemoData()">loadProductDemoData</a></strong>()</code><br>Loads the demo data for Products.  </td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code><strong><a href="#loadScanAssyDashboard()">loadScanAssyDashboard</a></strong>()</code><br>Loads the a scan-based dashboard with default activities. </td>
+                        </tr>
+                        
                     </table>
                    </ul>
               </li>
@@ -254,7 +266,8 @@ extends java.lang.Object
                             <li class="blockList">
                                 <h4>@java.lang.OverrideOverride
 <a href='../../../../../List.html'>List</a> <strong>loadDemoData</strong>()</h4>
-                                <p> Loads the demo data.  Loads a FlexType (LOT) and some Products to build a Bike.
+                                <p> Loads the demo data.  Loads a FlexType (LOT) and some Products to build a Bike.  Also loads a dashboard config for
+ Assembly scanning.
 
  <h3>Results Map</h3>
  The elements in the list of Maps includes:
@@ -264,6 +277,22 @@ extends java.lang.Object
    <li><b>total</b> - The number of records that could be potentially loaded. </li>
    <li><b>uri</b> - The URI to a definition page (if available) that will show the the loaded records (e.g. '/flexType'). </li>
  </ul> <DL><DT><B>Returns:</B></DT><DD>A list of Maps with the elements defined above.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="loadProductDemoData()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4><a href='../../../../../List.html'>List</a> <strong>loadProductDemoData</strong>()</h4>
+                                <p> Loads the demo data for Products.  Loads a FlexType (LOT) and some Products to build a Bike. <DL><DT><B>Returns:</B></DT><DD>A list of Maps with the elements defined above.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="loadScanAssyDashboard()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4><a href='../../../../../List.html'>List</a> <strong>loadScanAssyDashboard</strong>()</h4>
+                                <p> Loads the a scan-based dashboard with default activities. <DL><DT><B>Returns:</B></DT><DD>A list of Maps with the elements defined above.</DD></DL></p>
                             </li>
                         </ul>
                     

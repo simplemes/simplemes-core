@@ -2345,7 +2345,7 @@ covers other details of the underlying classes.  The source code is at
 <h3 id="purpose"><a class="link" href="#purpose">Purpose</a></h3>
 <div class="paragraph">
 <p>This is the Enterprise Framework module for <a href="#micronaut">Micronaut</a>.
-We wrote this framework as we were developing the <a href="../../mes-core/html5/guide.html">SimpleMES</a> application.
+We wrote this framework as we were developing the <a href="../mes-core/guide.html">SimpleMES</a> application.
 The main goal was to allow other developers to create enterprise applications using Micronaut as
 quickly as possible.</p>
 </div>
@@ -2412,7 +2412,7 @@ are very useful for an enterprise application.  For example, quick startup time 
 if the app is host on a cloud provider.</p>
 </div>
 <div class="paragraph">
-<p>The application (<a href="../../mes-core/html5/guide.html">SimpleMES</a>) is designed as a monolith.
+<p>The application (<a href="../mes-core/guide.html">SimpleMES</a>) is designed as a monolith.
 Why use a microservice toolkit for this type of application?  Because we envision the application
 starting as monolith and evolving into a microservice app as needed.  To do this, we chose
 to build the application in separate modules that work together inside of a single JVM.
@@ -2995,11 +2995,11 @@ this framework.</p>
 </thead>
 <tbody>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../../mes-core/html5/guide.html">mes-core</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../mes-core/guide.html">mes-core</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The core module for the SimpleMES application.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../../mes-assy/html5/guide.html">mes-assy</a></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><a href="../mes-assy/guide.html">mes-assy</a></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The component assembly module for the SimpleMES application.</p></td>
 </tr>
 <tr>
@@ -16136,7 +16136,7 @@ You can also use the programmatic API to trigger the archive/unarchive under oth
 </div>
 <div class="paragraph">
 <p>Most archiving is done automatically when records reach a specific age.  For example,
-the <a href="../../mes-core/html5/guide.html" target="_blank" rel="noopener">MES Core</a> <span class="icon link-blue"><i class="fa fa-share-square"></i></span>
+the <a href="../mes-core/guide.html" target="_blank" rel="noopener">MES Core</a> <span class="icon link-blue"><i class="fa fa-share-square"></i></span>
 Production Log records are archived after they reach a user-configurable age.</p>
 </div>
 <div class="paragraph">
@@ -17845,7 +17845,7 @@ The basic steps are:</p>
 <p><a href="#design-and-name-your-module">Design and Name Your Module</a></p>
 </li>
 <li>
-<p>Create a Micronaut Module.  See the <a href="../../mes-core/html5/guide.html">SimpleMES</a> application for an example.</p>
+<p><a href="#create-a-micronaut-module">Create a Micronaut Module</a>.  See the <a href="../mes-core/guide.html">MES Core Module</a> for an example.</p>
 </li>
 <li>
 <p>Create an <a href="#addition">Addition</a>.</p>
@@ -17868,6 +17868,90 @@ This means a simple package scheme and class naming approach.</p>
 <div class="paragraph">
 <p>You will also need to decide how you will extend the core (and other) modules with additional
 fields and behavior.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="create-a-micronaut-module"><a class="link" href="#create-a-micronaut-module">Create a Micronaut Module</a></h5>
+<div class="paragraph">
+<p>Create a new module involves a number of steps.  Some are automatic and others require manual
+adjustments to many files.  The basic steps are:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Create the module:</p>
+<div class="listingblock">
+<div class="content">
+<pre>mn create-app module1 -l groovy</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This just creates an empty application, which we will adjust below.  You an include other features,
+but the <em>build.gradle</em> will be changed to include the appropriate dependencies.</p>
+</div>
+</li>
+<li>
+<p>Create a 'New Project from Existing Sources' in your IDE.</p>
+</li>
+<li>
+<p>Import/Refresh the Gradle settings.</p>
+</li>
+<li>
+<p>Edit <em>build.gradle</em> to match the
+<a href="https://github.com/simplemes/simplemes-core/blob/master/mes-core/build.gradle">MES-Core build.gradle</a>.
+This includes updating the dependencies as needed:</p>
+<div class="listingblock">
+<div class="content">
+<pre>compile ("org.simplemes:mes-assy:0.5") <i class="conum" data-value="1"></i><b>(1)</b>
+mainClassName = "org.whatever.Application"  <i class="conum" data-value="2"></i><b>(2)</b>
+
+jar {
+  exclude "logback.xml"
+  exclude "application-test.yml"
+  exclude "/org/whatever/Application.class" <i class="conum" data-value="2"></i><b>(2)</b>
+}</pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>You will need to include the modules you depend on.  Most of our provided modules depend on
+<em>eframe</em> and <em>mes-core</em>, so you don&#8217;t need those modules in your <em>build.gradle</em>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Your application name.</td>
+</tr>
+</table>
+</div>
+</li>
+<li>
+<p>Update
+<a href="https://github.com/simplemes/simplemes-core/blob/master/mes-core/src/main/resources/application.yml">application.yml</a>.
+as needed.  Create <em>application-test.yml</em> (for test mode).
+Create <em>application-dev.yml</em> (for development mode, if needed).</p>
+</li>
+<li>
+<p>For Intellij IDEA, create a 'Run Application' for the <em>Application.class</em> you created.  This will
+need an environment variable: <em>MICRONAUT_ENVIRONMENTS=dev</em>.</p>
+</li>
+<li>
+<p>Create a JUnit template in Intellij to make testing easier.  Set the VM Options to:</p>
+<div class="listingblock">
+<div class="content">
+<pre>-Dgeb.env=firefox -Dgeb.lang=en-US -Dnashorn.args="--no-deprecation-warning"</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This makes it easier to quick-run a test using Spock/JUnit (Ctrl+Shift+F10 in Intellij on Windows).</p>
+</div>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>After creation, you can add logic and tests for your module.  Later, you will need to use the
+<em>publishToMavenLocal</em> Gradle target to publish your module for use by an application.</p>
 </div>
 </div>
 </div>
@@ -18515,7 +18599,7 @@ we had to place common CRUD/Rest methods in the controller base classes such as
 <div class="paragraph">
 <p>The symptoms of this problem was inconsistent evaluation of the @<em>Secured</em> annotation in other modules
 that resulted in the annoying FORBIDDEN HTTP response.  This seemed to be worse when used in modules that
-depended on the framework (e.g. <a href="../../mes-core/html5/guide.html">MES-Core Module</a>).
+depended on the framework (e.g. <a href="../mes-core/guide.html">MES-Core Module</a>).
 See
 <a href="http://docs.groovy-lang.org/next/html/documentation/core-traits.html#_compatibility_with_ast_transformations">Groovy Documents</a>
 for details.</p>
@@ -18948,7 +19032,7 @@ to the repository.  If you use the repository method directly, then this is not 
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-07-25 14:04:58 UTC
+Last updated 2020-07-25 20:29:00 UTC
 </div>
 </div>
 <style>
