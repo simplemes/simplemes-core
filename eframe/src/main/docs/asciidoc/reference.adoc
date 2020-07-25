@@ -20,8 +20,8 @@ endif::[]
 // Include document specific content files:
 //:docinfo:
 // Some relative paths to other docs
-:mes-core-path: ../../mes-core/html5
-:mes-assy-path: ../../mes-assy/html5
+:mes-core-path: ../mes-core
+:mes-assy-path: ../mes-assy
 
 //workaround for issue 271 https://github.com/asciidoctor/asciidoctor-pdf/issues/271
 :imagesdir-src: images

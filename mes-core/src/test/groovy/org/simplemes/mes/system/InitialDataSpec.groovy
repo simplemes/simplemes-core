@@ -35,20 +35,4 @@ class InitialDataSpec extends BaseSpecification {
     res.Role.containsAll(['SUPERVISOR', 'ENGINEER', 'LEAD', 'OPERATOR'])
   }
 
-  @Rollback
-  def "tests createDashboards()"() {
-    given: 'the dashboards will be loaded even in test mode'
-    InitialData.forceDashboardLoad = true
-
-    when: 'initial data is loaded'
-    InitialData.createDashboards()
-
-    then: 'the dashboards exist'
-    DashboardConfig.findByDashboard('OPERATOR_DEFAULT')
-    DashboardConfig.findByDashboard('MANAGER_DEFAULT')
-
-    cleanup: 'reset from test mode'
-    InitialData.forceDashboardLoad = false
-
-  }
 }

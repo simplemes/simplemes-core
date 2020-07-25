@@ -1,15 +1,11 @@
-package org.simplemes.mes.assy.application
+package org.simplemes.mes.system
 
 import groovy.util.logging.Slf4j
-import org.simplemes.eframe.custom.domain.FlexField
-import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.dashboard.domain.DashboardButton
 import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.dashboard.domain.DashboardPanel
 import org.simplemes.eframe.dashboard.domain.DashboardPanelSplitter
 import org.simplemes.eframe.system.DemoDataLoaderInterface
-import org.simplemes.mes.assy.product.domain.ProductComponent
-import org.simplemes.mes.product.domain.Product
 
 import javax.inject.Singleton
 
@@ -44,65 +40,45 @@ class DemoDataLoader implements DemoDataLoaderInterface {
   List<Map<String, Object>> loadDemoData() {
     def res = []
 
-    res.addAll(loadProductDemoData())
-    res.addAll(loadScanAssyDashboard())
+    res.addAll(loadManagerDashboard())
+    res.addAll(loadScanDashboard())
 
     return res
   }
 
+
   /**
-   * Loads the demo data for Products.  Loads a FlexType (LOT) and some Products to build a Bike.
-   *
+   * Loads the a traditional dashboard with default activities.
    *
    * @return A list of Maps with the elements defined above.
    */
-  List<Map<String, Object>> loadProductDemoData() {
+  List<Map<String, Object>> loadManagerDashboard() {
     def res = []
 
     def possible = 1
     def count = 0
-    def name = FlexType.simpleName
-    def uri = '/flexType'
-    def flexType = FlexType.findByFlexType('LOT')
-    if (!flexType) {
-      flexType = new FlexType(flexType: 'LOT', title: "Lot Only Collected")
-      flexType.fields << new FlexField(fieldName: 'LOT', fieldLabel: 'lot.label')
-      flexType.save()
+    def name = "$DashboardConfig.simpleName - Traditional"
+    def uri = '/dashboard'
+
+    if (!DashboardConfig.findByDashboard('TRADITIONAL')) {
+      def dashboardConfig = new DashboardConfig(dashboard: 'TRADITIONAL', category: 'MANAGER', title: 'Traditional')
+      dashboardConfig.splitterPanels << new DashboardPanelSplitter(panelIndex: 0, vertical: false)
+      dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 1, defaultURL: '/selection/workCenterSelection', parentPanelIndex: 0)
+      dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 2, defaultURL: '/workList/workListActivity', parentPanelIndex: 0)
+      dashboardConfig.buttons << new DashboardButton(label: 'start.label', url: '/work/startActivity', panel: 'A',
+                                                     title: 'start.title', buttonID: 'START')
+      dashboardConfig.buttons << new DashboardButton(label: 'complete.label', url: '/work/completeActivity', panel: 'A',
+                                                     title: 'complete.title', buttonID: 'COMPLETE')
+      dashboardConfig.buttons << new DashboardButton(label: 'reverseStart.label', url: '/work/reverseStartActivity', panel: 'A',
+                                                     title: 'reverseStart.title', buttonID: 'REVERSE_START')
+      dashboardConfig.buttons << new DashboardButton(label: 'reverseComplete.label', url: '/work/reverseCompleteActivity', panel: 'A',
+                                                     title: 'reverseComplete.title', buttonID: 'REVERSE_COMPLETE')
+      dashboardConfig.save()
       count++
-      log.info("loadDemoData(): Loaded {}", flexType)
+      log.warn("Created Dashboard ${dashboardConfig}.")
     }
     res << [name: name, uri: uri, count: count, possible: possible]
 
-    possible = 3
-    count = 0
-    name = Product.simpleName
-    uri = '/product'
-    if (!Product.findByProduct('SEAT')) {
-      def record = new Product(product: 'SEAT', title: 'Bike Seat - Adult', lotSize: 10.0)
-      record.assemblyDataType = flexType
-      record.save()
-      count++
-      log.info("loadDemoData(): Loaded {}", record)
-    }
-    if (!Product.findByProduct('WHEEL-27')) {
-      def record = new Product(product: 'WHEEL-27', title: '27" Wheel', lotSize: 2.0)
-      record.assemblyDataType = flexType
-      record.save()
-      count++
-      log.info("loadDemoData(): Loaded {}", record)
-    }
-    if (!Product.findByProduct('BIKE-27')) {
-      def seat = Product.findByProduct('SEAT')
-      def wheel = Product.findByProduct('WHEEL-27')
-
-      def record = new Product(product: 'BIKE-27', title: '27" Bike')
-      record.components << new ProductComponent(component: seat, sequence: 10, qty: 1.0)
-      record.components << new ProductComponent(component: wheel, sequence: 20, qty: 2.0)
-      record.save()
-      count++
-      log.info("loadDemoData(): Loaded {}", record)
-    }
-    res << [name: name, uri: uri, count: count, possible: possible]
 
     return res
   }
@@ -112,20 +88,20 @@ class DemoDataLoader implements DemoDataLoaderInterface {
    *
    * @return A list of Maps with the elements defined above.
    */
-  List<Map<String, Object>> loadScanAssyDashboard() {
+  List<Map<String, Object>> loadScanDashboard() {
     def res = []
 
     def possible = 1
     def count = 0
-    def name = "$DashboardConfig.simpleName - Scan Assembly"
+    def name = "$DashboardConfig.simpleName - Scan"
     def uri = '/dashboard'
 
-    if (!DashboardConfig.findByDashboard('SCAN_ASSY')) {
+    if (!DashboardConfig.findByDashboard('SCAN')) {
       DashboardConfig dashboardConfig
-      dashboardConfig = new DashboardConfig(dashboard: 'SCAN_ASSY', category: 'OPERATOR', title: 'Scan Assembly')
+      dashboardConfig = new DashboardConfig(dashboard: 'SCAN', category: 'OPERATOR', title: 'Scan Dashboard')
       dashboardConfig.splitterPanels << new DashboardPanelSplitter(panelIndex: 0, vertical: false)
       dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 1, defaultURL: '/scan/scanActivity', parentPanelIndex: 0)
-      dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 2, defaultURL: '/orderAssy/assemblyActivity', parentPanelIndex: 0)
+      dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 2, defaultURL: '/workList/workListActivity', parentPanelIndex: 0)
       dashboardConfig.buttons << new DashboardButton(label: 'complete.label', url: '/work/completeActivity', panel: 'A',
                                                      title: 'complete.title', css: 'caution-button', buttonID: 'COMPLETE')
       dashboardConfig.buttons << new DashboardButton(label: 'reverseComplete.label', url: '/work/reverseCompleteActivity', panel: 'A',
@@ -139,5 +115,4 @@ class DemoDataLoader implements DemoDataLoaderInterface {
 
     return res
   }
-
 }

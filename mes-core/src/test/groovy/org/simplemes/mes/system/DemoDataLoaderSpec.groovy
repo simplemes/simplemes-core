@@ -1,4 +1,4 @@
-package org.simplemes.mes.assy.application
+package org.simplemes.mes.system
 
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.custom.domain.FlexType
@@ -6,7 +6,6 @@ import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.system.controller.DemoDataController
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.MockPrincipal
-import org.simplemes.mes.assy.product.domain.ProductComponent
 import org.simplemes.mes.product.domain.Product
 
 /*
@@ -21,7 +20,7 @@ import org.simplemes.mes.product.domain.Product
 class DemoDataLoaderSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static dirtyDomains = [ProductComponent, Product, FlexType, DashboardConfig]
+  static dirtyDomains = [DashboardConfig]
 
   DemoDataController controller
 
@@ -36,33 +35,25 @@ class DemoDataLoaderSpec extends BaseSpecification {
     def res = controller.index(new MockPrincipal())
 
     then: 'the records are loaded'
-    def flexType = FlexType.findByFlexType('LOT')
-    flexType
-
-    and: 'the components are correct'
-    def seat = Product.findByProduct('SEAT')
-    seat
-    seat.assemblyDataType == flexType
-
-    def wheel = Product.findByProduct('WHEEL-27')
-    wheel
-    wheel.assemblyDataType == flexType
-
-    and: 'the main product is correct'
-    def bike = Product.findByProduct('BIKE-27')
-    bike
-    bike.components.size() == 2
-    bike.components[0].component == seat
-    bike.components[0].qty == 1.0
-    bike.components[1].component == wheel
-    bike.components[1].qty == 2.0
+    DashboardConfig.findByDashboard('TRADITIONAL')
+    DashboardConfig.findByDashboard('SCAN')
 
     and: 'the model is correct'
     def model = res.model.get()
     def list = model.list
-    list.find {it.name == FlexType.simpleName}
-    list.find {it.name == Product.simpleName}
-    list.find {it.name.contains('Scan Assembly')}
+    list.size() == 2
+
+    def map1 = list[0]
+    map1.name.contains(DashboardConfig.simpleName)
+    map1.uri == '/dashboard'
+    map1.count == 1
+    map1.possible == 1
+
+    def map2 = list[1]
+    map2.name.contains(DashboardConfig.simpleName)
+    map2.uri == '/dashboard'
+    map2.count == 1
+    map2.possible == 1
   }
 
 }

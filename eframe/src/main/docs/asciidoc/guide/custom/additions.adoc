@@ -117,7 +117,7 @@ So, you have decided to implement a portion of your application in a module.  Ho
 The basic steps are:
 
 * <<Design and Name Your Module>>
-* Create a Micronaut Module.  See the <<{mes-core-path}/guide.adoc#,SimpleMES>> application for an example.
+* <<Create a Micronaut Module>>.  See the <<{mes-core-path}/guide.adoc#,MES Core Module>> for an example.
 * Create an <<Addition>>.
 * Add any beans to execute addition code at <<Extension Points>>.
 
@@ -131,6 +131,62 @@ This means a simple package scheme and class naming approach.
 
 You will also need to decide how you will extend the core (and other) modules with additional
 fields and behavior.
+
+===== Create a Micronaut Module
+
+Create a new module involves a number of steps.  Some are automatic and others require manual
+adjustments to many files.  The basic steps are:
+
+* Create the module:
++
+----
+mn create-app module1 -l groovy
+----
++
+This just creates an empty application, which we will adjust below.  You an include other features,
+but the _build.gradle_ will be changed to include the appropriate dependencies.
+
+* Create a 'New Project from Existing Sources' in your IDE.
+* Import/Refresh the Gradle settings.
+* Edit _build.gradle_ to match the
+  link:https://github.com/simplemes/simplemes-core/blob/master/mes-core/build.gradle[MES-Core build.gradle].
+  This includes updating the dependencies as needed:
++
+----
+compile ("org.simplemes:mes-assy:0.5") <1>
+mainClassName = "org.whatever.Application"  <2>
+
+jar {
+  exclude "logback.xml"
+  exclude "application-test.yml"
+  exclude "/org/whatever/Application.class" <2>
+}
+----
+<1> You will need to include the modules you depend on.  Most of our provided modules depend on
+    _eframe_ and _mes-core_, so you don't need those modules in your _build.gradle_.
+<2> Your application name.
++
+
+* Update
+  link:https://github.com/simplemes/simplemes-core/blob/master/mes-core/src/main/resources/application.yml[application.yml].
+  as needed.  Create _application-test.yml_ (for test mode).
+  Create _application-dev.yml_ (for development mode, if needed).
+
+* For Intellij IDEA, create a 'Run Application' for the _Application.class_ you created.  This will
+  need an environment variable: _MICRONAUT_ENVIRONMENTS=dev_.
+
+* Create a JUnit template in Intellij to make testing easier.  Set the VM Options to:
++
+----
+-Dgeb.env=firefox -Dgeb.lang=en-US -Dnashorn.args="--no-deprecation-warning"
+----
++
+This makes it easier to quick-run a test using Spock/JUnit (Ctrl+Shift+F10 in Intellij on Windows).
+
+
+After creation, you can add logic and tests for your module.  Later, you will need to use the
+_publishToMavenLocal_ Gradle target to publish your module for use by an application.
+
 
 ==== Addition
 

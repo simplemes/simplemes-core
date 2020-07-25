@@ -26,7 +26,7 @@ import spock.lang.IgnoreIf
 /**
  * Tests for the assembly search capabilities in a live server.
  */
-//@IgnoreIf({ !sys['geb.env'] })
+@IgnoreIf({ !sys['geb.env'] })
 class OrderAssySearchGUISpec extends BaseGUISpecification {
 
   @SuppressWarnings("unused")
