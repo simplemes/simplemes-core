@@ -10536,6 +10536,12 @@ filter values.</p>
 <div class="sect4">
 <h5 id="report-guidelines"><a class="link" href="#report-guidelines">Report Guidelines</a></h5>
 <div class="paragraph">
+<p><span class="inline-toc"><a href="#report-parameter-basedir">Report Parameter BaseDir</a></span>
+<span class="inline-toc"><a href="#report-permissions">Report Permissions</a></span>
+<span class="inline-toc"><a href="#report-conventions">Report Conventions</a></span>
+<span class="inline-toc"><a href="#reportutils">ReportUtils</a></span></p>
+</div>
+<div class="paragraph">
 <p>The report engine uses the .jrxml file format for the reports produced by its designer studio.
 There are a few guidelines that you must follow to make some features work.  For example, there
 is a specific way to specify the location of images that will work with reports in HTML and
@@ -10695,6 +10701,18 @@ filter panel.  These values are ignored by the report logic.</p>
 In that case, simple date/time input fields will be used.</p>
 </div>
 </div>
+</div>
+</div>
+<div class="sect5">
+<h6 id="reportutils"><a class="link" href="#reportutils">ReportUtils</a></h6>
+<div class="paragraph">
+<p>Reports will sometimes need to use code in your application to handle complex tasks like
+formatting <a href="#field-extensions">Field Extensions</a>.  This is typically handle by utility classes such as
+<a href="groovydoc/org/simplemes/eframe/reports/ReportUtils.html" target="_blank" rel="noopener">ReportUtils</a>
+<span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>.</p>
+</div>
+<div class="paragraph">
+<p>This requires use of the framework .jar files are described in <a href="#designer-studio-setup">Designer Studio Setup</a>.</p>
 </div>
 </div>
 </div>
@@ -11083,7 +11101,7 @@ on your system. (.JAR files seems to work more reliably).</p>
 </div>
 <div class="imageblock text-center">
 <div class="content">
-<img src="images/guis/ReportStudioClassPath.png" alt="ReportStudioClassPath" width="75%">
+<img src="images/guis/ReportStudioClassPath.png" alt="ReportStudioClassPath" width="750">
 </div>
 <div class="title">Figure 23. ReportStudioClassPath</div>
 </div>
@@ -19032,7 +19050,7 @@ to the repository.  If you use the repository method directly, then this is not 
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-07-27 15:16:28 UTC
+Last updated 2020-07-27 22:58:28 UTC
 </div>
 </div>
 <style>
