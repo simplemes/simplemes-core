@@ -1,0 +1,55 @@
+== Roadmap
+
+What are the medium-term plans for SimpleMES development?  The high-level roadmap is shown
+below.
+
+NOTE: This is subject to change and just a general guide.  We (the development team) welcome
+      suggestions on priorities and directions.
+
+=== Alpha (0.8 - 2018)
+
+The main goals for the alpha release is to demonstrate the technology and key approaches.
+The main deliverable is a public demo server (http://demo.simplemes.org/) that allows
+potential users to work with the system.
+
+The planned features include:
+
+* Order processing (no routing)
+* Simple Assembly
+* Barcode Dashboard
+* Framework
+**  Modular structure
+* Deployment
+**  Manual Docker/WAR deployment
+* Live Demo Server
+* Reports
+** Assembly
+** Production
+
+=== Beta (0.9 - 2019)
+
+The main goals of the beta release is a feature complete implementation of the high-level features.
+This is mainly a functional implementation.
+
+The planned features include:
+
+* Full LSN (lot/Serial Number) Support
+* Defect Tracking
+* Work Center Setup and Assembly from Bins/Feeders
+* Order Archiving (manual and automatic)
+* Full Routing Support in GUIs
+
+
+=== Release 1.0 (?)
+
+This the ready for production release.   From this point, new features and issues fixes will be
+pushed to the images and live servers frequently.
+
+The planned features include:
+
+* Open Customizations
+* Deployment
+** Simple Deployment/Update to a Cloud Service (via Docker, etc).
+* Hosted solution ($)
+** Multi-tenant (via separate DB) support.
+

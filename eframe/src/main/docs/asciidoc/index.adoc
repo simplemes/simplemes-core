@@ -21,6 +21,7 @@ ifndef::demo-server[:demo-server: long:8080]
 :eframe-path: eframe
 :mes-core-path: mes-core
 :mes-assy-path: mes-assy
+:mes-path: mes
 
 //workaround for issue 271 https://github.com/asciidoctor/asciidoctor-pdf/issues/271
 :imagesdir-src: images
@@ -39,7 +40,11 @@ with user guides, reference docs and the Groovy API documents:
 .Documentation
 [cols="1,1,1,1"]
 |===
-|Module|Guide|Reference|GroovyDoc
+|Module|Guide|Others|GroovyDoc
+
+|MES Application|link:{mes-path}/guide.html#[Guide^] icon:share-square[role="link-blue"]|
+link:{mes-path}/tutorial.html#[Tutorials^] icon:share-square[role="link-blue"]|
+
 
 |MES Core|link:{mes-core-path}/guide.html#[Guide^] icon:share-square[role="link-blue"]|
 link:{mes-core-path}/reference.html#[Reference^] icon:share-square[role="link-blue"]|

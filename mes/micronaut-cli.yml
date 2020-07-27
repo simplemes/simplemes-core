@@ -1,0 +1,6 @@
+applicationType: default
+defaultPackage: org.simplemes.mes
+testFramework: spock
+sourceLanguage: groovy
+buildTool: gradle
+features: [app-name, docker, file-watch, gradle, groovy, groovy-application, http-client, logback, netty-server, readme, shade, spock, yaml]

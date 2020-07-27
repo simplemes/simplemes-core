@@ -130,9 +130,10 @@ asciidoctor {
   baseDir "src/main/docs/asciidoc"
   sourceDir "src/main/docs/asciidoc"
   sources {
-    include 'index.adoc'
     include 'guide.adoc'
     include 'reference.adoc'
+    include 'index.adoc'
+    include 'tutorial.adoc'
   }
   outputDir "${project.docsDir}"
   options doctype: 'book', ruby: 'erubis'

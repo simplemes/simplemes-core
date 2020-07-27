@@ -1,0 +1,183 @@
+== Philosophy
+
+Why build an open-source MES?  What is the driving philosophy behind this project?
+
+We want to build a commercial-grade MES with 'ease of use' as the prime directive.
+Traditional MES systems require long implementation phases at each manufacturing site.
+This means the users will not update the MES frequently.  This in turn forces long
+development cycles and slower improvements in the MES.
+
+For SimpleMES, we want to break those cycles and bring the MES application into the modern
+software era.  This includes supporting the hosted application model and supporting
+frequent updates.
+
+The details of how we follow this philosophy in the development of SimpleMES include these key
+points:
+
+* Clarity and Simplicity
+*   Everything is Optional
+*   Minimal Setup
+*   Customization
+*   Grow into more complex features
+*   Open hosting options
+**     Cloud
+**     Self-hosted on Cloud
+**     Deployed internally
+*   Development Process
+**     Document, Write Test, then Code
+**   Fully tested via Automation
+
+
+=== Traditional MES Pain Points
+
+Traditional MES systems are complex and require a lot of setup and configuration.  This frequently
+includes complex integrations with shop floor systems and the corporate ERP systems.
+This complexity means there is a lot of extensive manual testing of the system before
+it is rolled out to the shop floor.  This adds to the cost of MES upgrades and makes the
+manufacturer reluctant to upgrade.  This means the MES system rapidly gets out of date.
+
+In this era of computer security threats, being out of date means being at risk.
+
+The traditional MES pain points include:
+
+* Extensive manual testing.
+* Complex integrations.
+* Reluctance to update the software.
+* Extensive customization.
+
+SimpleMES tries to reduce this by documenting the expected behavior of the MES and using
+automated tests to ensure the correct behavior on each new release.  This allows more frequent
+upgrades and releases.
+
+=== Simplicity and Clarity
+
+Traditional MES systems have many options and configuration settings.  This means there are many
+different ways the MES can operate based on a large number of combinations of these settings.
+The developers and customers have to test each of those combinations.  These settings also force
+you to understand many of these options and decide which setting to use.
+
+This can overwhelm engineers and managers in complex systems.
+
+==== Everything is Optional
+
+To avoid this, SimpleMES tries to reduce these up-front decisions to the minimum.
+We try to make everything optional, where possible.
+For example, in a traditional MES, each order would require a Product (Part Number) for the product to
+be built.  SimpleMES makes this product optional.
+
+This helps in a number of ways:
+
+* You do not need to define the product to begin tracking orders.
+* Less data is accumulated in the database.
+* Customer acceptance testing can be minimized.
+* You can use features as needed.
+
+Of course, this means SimpleMES must be tested by our developers for both scenarios.  This adds to the
+development tasks, but ultimately helps you.  It also provide documented scenarios in
+which the order can be processed without a product.
+
+This philosophy of 'Everything is Optional' is applied throughout SimpleMES, whenever possible.
+The automated tests cover the scenarios where the setting is empty and when a value is provided.
+You can use the more complex features as they are needed.  An example of how a customer
+might start simple and expand is:
+
+* Order without Product (simple start/complete of order).
+* Order with Product.
+* Order with Product and BOM.
+* Order with Product and Routing.
+
+Each progressive level adds complexity, but also allows more control and tracking options.  The
+customer chooses when to take on this complexity as they need it.
+
+NOTE: Some things are actually required, but we try to minimize these cases.
+
+==== Minimal Setup
+
+Along with the 'Everything is Optional' approach, SimpleMES tries to require very little setup
+to run.  This means there are a number of default settings that make sense and can work in
+a wide range of scenarios.
+
+For example, you can customize the dashboards to suite your
+shop floor needs.  But you don't have to understand this when you start working with SimpleMES.
+SimpleMES provides a few default dashboards that work with simple configurations.  You can
+customize these as needed to provide the features important to you.
+
+Another big simplification is to avoid pre-setup of GUI settings and such.  In the case of lists,
+you don't need to configure the order and size of the columns.  You can directly modify those
+in the GUI.  Those settings are saved by user and used the next time the list is displayed.
+This means less setup before you use the MES.
+
+
+
+==== Customization
+
+Customization of an MES is critical.  Most shop floors operate differently.  There is no one right
+way to build all products.  This means you will need to customize the GUI and business logic
+of the MES to suit your needs.
+
+SimpleMES provides a number of ways to customize the MES, using the
+link:{eframe-path}/guide.html#[Enterprise Framework^] icon:share-square[role="link-blue"]
+customization features.
+
+The key areas of customization are:
+
+* Custom Fields
+* Flexible Fields for Data Collection
+* Custom Logic added to Core Methods
+* <<Modules>>
+
+The custom fields allow you to add custom fields to existing core object (e.g. Order).  This
+lets you use custom logic with these fields as needed.
+
+The Flexible Fields support is similar, but targeted at specific data collection points such
+as <<Assembly>> and <<Defect Tracking>>.  This allows you to define what the operator collects
+when assembling components or handling defects.
+
+It is also possible to add logic to most core methods using scripting.  This allows you to handling
+your custom needs without altering the core code.
+
+Finally, the module structure allows you or a system integrator to combine core and custom business
+logic modules together as needed.  This is how the Assembly and Defect Tracking modules
+add features to the main MES module.
+
+
+==== Open hosting options
+
+Modern web-based applications are generally hosted by cloud service providers.  SimpleMES is designed
+to be deployed in a number of ways:
+
+*     Cloud
+*     Self-hosted on Cloud
+*     Deployed internally
+
+The goal is to allow simple cloud hosting for smaller customers.  Then allow more complex systems
+to be hosted by you on your chosen cloud system.  Finally, large customers may prefer to deploy
+SimpleMES on an internal cloud server.
+
+To make this possible, SimpleMES is built as a deployable WAR file or as a Docker image.  These
+images are updated frequently, so you can receive updates as soon as you want them.
+
+
+==== Development Process
+
+The development processes of SimpleMES follow a normal, modern development practice:
+
+. Document the Feature
+. Write the Test for the Feature
+. Code the Feature
+. Repeat
+
+This means each feature is thought out and designed as end-user documentation before coding begins.
+Then automated tests are created before coding begins.  Finally, the code is written until
+the automated tests pass.
+
+This ensures that a feature is designed at a high level before coding.  It also means that all
+supported scenarios have automated tests.  This helps smooth updates to the application in the
+real world.
+
+When issues (bugs) are found, then an automated test is created to reproduce the issue.  Then the
+issue is fixed.  This automated test is now part of the permanent tests used to verify the
+application.  This means a given bug will never be re-introduced into application.
+
+
+

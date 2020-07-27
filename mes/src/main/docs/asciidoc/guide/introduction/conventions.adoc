@@ -1,0 +1,198 @@
+
+=== Document Conventions
+
+This document follows certain conventions as shown below:
+
+* _Literal values_
+* _File/path names_
+* _Class names_
+* `Variables, fields or parameters`
+* `Method names`
+* `Groovy or java code`
+
+==== Terminology
+
+Some common terms and fields are used throughout SimpleMES:
+
+[cols="1,4",width=90%]
+|===
+|Term|Description
+
+|`POGO`| Plain Old Groovy Object - A simple Groovy object with limit methods beyond getters and setters.
+         Similar to a Plain Old Java Object (POJO) or a Javabean.
+|`Domain Object`| A data object that is usually saved to the database.  Objects such as Orders and products are
+                  implemented as domain objects.  These usually have limited business logic in them.
+|`Controller`| Provides access to the business logic in the services.  This the level that enforces security
+               and allows clients to connect to the server using a URL.
+|`Service`| These services are where the bulk of the MES business logic is implemented. Most of these services
+            are exposed to the external clients via a controller.
+|`Module`| These are packages (Grails plugins) where a group of related MES functions are implemented.
+           These modules are combined into an application that provides the specific functions
+           you need in your MES.
+
+|===
+
+
+Most standard objects will have these typical fields:
+
+[cols="1,4",width=90%]
+|===
+|Field|Description
+
+|`id`| The internal database record ID (a long integer).  Usually not visible to the user.
+|`key(s)/name` | One or more primary key fields for the object.  These are usually unique and provided by the user.  The user will typically retrieve the records by these key fields.  The first key field is usually named the same as the object (e.g. _Order_ has a key field of `order`).  Sometimes, the word 'name' is used in place of key field.
+|`title`| The single line title.  This is usually a short description displayed in lists.
+|`description`| A multi-line description.  Typically limited to 255 characters to reduce database size.
+|`status`| Typically used as the status of a top-level domain object (e.g. Product).  Always references a Status domain object.
+           This is used when it is likely that a module or customer may need to add new status entries without
+           code changes.
+|`state`| Typically an enumeration that indicates the state of a given object (may be a POGO or domain object).
+          This is used when is no need need for custom state codes.  The core Enum must be changed to support
+          new states.
+|`dateCreated`| The date/time this record was created.
+|`lastUpdated`| The date/time this record was last updated.
+|===
+
+==== Diagrams
+
+There are a number of diagrams in these documents.  We follow the given conventions for these diagrams.
+Some colors and shapes are used to flag specific types of elements:
+
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-build}
+
+.Color and Shape Conventions
+[ditaa,"colorShapeConventions"]
+----
+        Shapes               Colors
+       (Objects)           (Packages)
+
+    +-------------+     +-------------+
+    | Controllers |     |    GUI      |
+    |   {io}    io|     |         c6D6|6D6
+    +-------------+     +-------------+
+    /-------------\     |    Data     |
+    |   Domains   |     |         c4CF|4CF
+    |             |     +-------------+
+    \-------------/     |   Custom    |
+    +-------------+     |         cF90|F90
+    |  Services   |     +-------------+
+    |             |     |    User     |
+    +-------------+     |         cF88|F88
+                        +-------------+
+                        |   Monitor   |
+                        |         cCCC|CCC
+                        +-------------+
+                        |    Utils    |
+                        |         cEB9|EB9
+                        +-------------+
+
+
+
+
+
+----
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+
+==== Document Layout
+
+Most modules have 3 main sets of documents:
+
+* Guide - General overview and key concepts document.
+* Reference - In depth reference for APIs, Domains, etc.
+* Groovydoc - The generated Groovydoc (Javadoc) from the source code.
+
+The intent of the guide is to give you a general overview of feature, but not overwhelm you with details
+of the implementation.  The reference documentation will explan most key fields, API calls and options.
+The guide generally has many links into the reference documentation.
+
+
+The relationship between the guide and reference is shown below for the
+link:{eframe-path}/guide.html#tags[GUI Tags^] icon:share-square[role="link-blue"]
+such as link:{eframe-path}/reference.html#efshow[<ef:show>^] icon:share-square[role="link-blue"]:
+
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-build}
+
+
+.Guide And Reference Relationship
+[ditaa,"guideAndReferenceRelation"]
+----
+        Guide                Reference
+
+    +-------------+     +-------------+
+    |    GUIs     |     |    GUI      |
+    |         c6D6|     |         cF88|
+    +------+------+     +------+------+
+           |                   |
+      +----+--------+     +----+--------+
+      |    Tags     |     |    Tags     |
+      |         c6D6|     |         cF88|
+      +------+------+     +------+------+
+             |                   |
+        +----+--------+     +----+--------+
+        |  Show Tag   |     |  Show Tag   |
+        |    Intro    |     |    Overview |
+        |    Example  +---->|    API      |
+        |             |     |    Examples |
+        |         c6D6|     |         cF88|
+        +-------------+     +-------------+
+
+
+----
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+
+Dashboards are fairly complex.  To manage this in the documents, we use the guide for concept introduction and
+sometime simple examples. The reference document will explain all of the activities, events and scan actions
+for the dashboard.  Each module will have additional  activities, events and scan actions.  These will be
+documented in a similar way:
+
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-build}
+
+
+.Dashboard Documents - MES Core Example
+[ditaa,"dashboardDocuments"]
+----
+        Guide                Reference
+
+    +-------------+     +-------------+
+    |    GUIs     |     |  Dashboards |
+    |         c6D6|     |         cF88|
+    +------+------+     +-------+-----+
+           |                    |
+      +----+--------+      +----+--------+
+      |  Dashboard  |      | Activities  |
+      |             |      |  URI        |
+      |         c6D6|      |  Events cF88|
+      +------+------+      +----+--------+
+             |                  |
+        +----+---------+   +----+--------+
+        |Scan Dashboard|   |   Events    |
+        |    Intro     +-->|  Properties |
+        |          c6D6|   |  Source cF88|
+        +--------------+   +----+--------+
+                                |
+                           +----+--------+
+                           | Scan Actions|
+                           |  Properties |
+                           |         cF88|
+                           +-------------+
+
+----
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+
+
+

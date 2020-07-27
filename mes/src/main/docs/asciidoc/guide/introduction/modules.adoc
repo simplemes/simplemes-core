@@ -1,0 +1,134 @@
+
+=== Modules
+
+This application is made up of a number of modules (plugins).  Each module is documented separately
+with user guides, reference docs and the Groovy API documents:
+
+
+.Documentation
+[cols="1,1,1,1"]
+|===
+|Module|Guide|Reference|GroovyDoc
+
+|MES Core|link:{mes-core-path}/guide.html#[Guide^] icon:share-square[role="link-blue"]|
+link:{mes-core-path}/reference.html#[Reference^] icon:share-square[role="link-blue"]|
+link:{mes-core-path}/groovydoc/index.html[API^] icon:share-square[role="link-blue"]
+
+|MES Assembly|link:{mes-assy-path}/guide.html#[Guide^] icon:share-square[role="link-blue"]|
+link:{mes-assy-path}/reference.html#[Reference^] icon:share-square[role="link-blue"]|
+link:{mes-assy-path}/groovydoc/index.html[API^] icon:share-square[role="link-blue"]
+
+|Framework|link:{eframe-path}/guide.html#[Guide^] icon:share-square[role="link-blue"]|
+link:{eframe-path}/reference.html#[Reference^] icon:share-square[role="link-blue"]|
+link:{eframe-path}/groovydoc/index.html[API^] icon:share-square[role="link-blue"]
+
+|===
+
+
+==== Planned Modules
+
+link:#core[Core,role="inline-toc"]
+link:#assembly[Assembly,role="inline-toc"]
+link:#defect-tracking[Defect Tracking (0.9),role="inline-toc"]
+link:#complex-assembly[Complex Assembly (TBD),role="inline-toc"]
+
+
+An MES is a complex application.  It has many features that may not be needed by all users.
+For example, defect tracking may not be needed for a high-volume manufacturer, but is indispensable
+for customers who do complex assembly (e.g. aerospace).
+To keep things simple for basic users, SimpleMES can be re-configured with optional modules to
+provide less-used features.
+
+The link:{eframe-path}/guide.html#[Enterprise Framework^] icon:share-square[role="link-blue"]
+ provides a way to break a complex application into multiple modules.
+This allows you to modularize your application into one or more plugins.
+These plugins can work with each other and provide new features to core module (plugin).
+This provides the ability to add fields to core domain objects, extend the functionality of service
+methods, ask questions in core GUIs and to participate in database transactions with core objects.
+
+Why hide features in MES?  Because many features are complex and require extra setup to work properly.
+A simpler user interface is always preferable to a complex interface with many options.  If the user
+does not need a feature, then it is best not to overload the displays with unused options.
+
+One common configuration for SimpleMES is shown below:
+
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-build}
+
+[ditaa,"architectureLayers"]
+----
++---------------------------------+
+|   SimpleMES (Deployable JAR)    |
+|                            cGRE |
++---------------+-----------------+
+|  Assy Module  |  Defect Module  |
+|          cBLU |         cBLU    |
++---------------+-----------------+
+|         MES Core Plugin         |
+|                            cBLU |
++---------------------------------+
+|  Enterprise Framework Plugin    |
+|                                 |
++---------------------------------+
+|             Grails              |
+|                                 |
++---------------------------------+
+
+----
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+This configures the deployed MES with the two most common modules: Assembly and Defect Tracking.
+It is also possible to use industry-specific modules such as the Complex Assembly module when those
+features are needed.
+
+
+
+The specific features of each module are covered in the documentation of the module, but a quick overview
+is useful.
+
+=== Core
+
+This module (core) is documented here, but the key features include:
+
+* link:../../mes-assy/html5/guide.html#product[Product^] - The product to be manufactured.
+* link:../../mes-assy/html5/guide.html#routing[Routing^] - The detailed steps needed to produce the product.
+* link:../../mes-assy/html5/guide.html#work-center[Work Center^] The machine, area or people needed to produce a product.  Includes basic setup.
+* link:../../mes-assy/html5/guide.html#order[Order^] - The order from your customer (e.g. a shop order).
+* link:../../mes-assy/html5/guide.html#lsn[LSN^] - The Lot/Serial Number for specific pieces or lots produced.
+
+image::guis/orders.png[title="Orders",align="center", width=50%]
+
+
+=== Assembly
+
+See link:../../mes-assy/html5/guide.html[Assembly^] for details.  The key features include:
+
+* Ability to scan to assemble components.
+* link:../../mes-assy/html5/guide.html#product-component-guide[BOM^] - The Bill of Materials (product components) needed to build the product.
+* link:../../mes-assy/html5/guide.html#work-center[Work Center^] - The components currently set up on the work center.
+
+image::guis/dashboardAssy.png[title="Assembly Dashboard",align="center", width=50%]
+
+
+=== Defect Tracking
+
+See http://docs.simplemes.org/mes-defect/latest/[Defect Tracking^] for details.  The key features include:
+
+* link:../../mes-defect/html5/guide.html#defect[Defect^] - A basic defect found on product.
+* link:../../mes-defect/html5/guide.html#defect-log[Defect Log^] - The defects found on orders/LSNs.
+
+=== Complex Assembly
+
+See http://docs.simplemes.org/mes-complex/latest/[Complex Assembly^] for details.  The key features include:
+
+* link:../../mes-defect/html5/guide.html#assembly-order[Assembly Order^] - An assembly order.
+
+
+
+
+
+
+

@@ -1,0 +1,230 @@
+
+
+http://docs.simplemes.org/mes/latest/[SimpleMES^] is THE open source Manufacturing Execution System
+(http://www.mesa.org/en/modelstrategicinitiatives/MESAModel.asp[MES^]).  The purpose of an MES is to
+control and track what happens on your shop floor. SimpleMES is designed to simplify the complex and
+time-consuming task of implementing a traditional MES.
+The main features are:
+
+* Minimal setup.
+* Easy configuration.
+* Easy customization.
+* Cloud-ready.
+
+image::guis/dashboard.png[title="Dashboard",align="center", width=50%]
+
+
+
+== Introduction
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<What is an MES?>>#
+[inline-toc]#<<Why Do You Need an MES?>>#
+[inline-toc]#<<What Data can an MES Collect?>>#
+[inline-toc]#<<MES and Other Systems>>#
+[inline-toc]#<<Terminology>>#
+[inline-toc]#<<Tutorials>>#
+[inline-toc]#<<Modules>>#
+[inline-toc]#<<Document Conventions>>#
+
+endif::[]
+
+
+
+
+
+
+=== What is an MES?
+
+A Manufacturing Execution System (MES) helps manufacturers track and control how they build their
+products.  An MES is designed to be used by shop floor personnel such as operators, supervisors and managers.
+These people will use the system to record their actions while building your products.  This recorded
+data is then later used to track down problems and help fix them.  These problems can be a simple
+as a bad lot of components from a vendor to defects found in the inspection process.
+
+The data collected can help you evaluate the performance of your shop.  It can also help you
+locate specific orders/products and provide instance status updates for your customers.
+You can use the MES data to track historical costs and build times for your products. This
+can be very useful when planning new projects.
+
+An MES is typically the primary interface between your shop floor personnel and your systems.
+This gives the operators a simple interface to the key actions they perform dozens of times a day.
+This also reduces the manual paperwork needed to track what took place on the floor.
+
+
+=== Why Do You Need an MES?
+
+The key benefits of using an MES include:
+
+* Reduced paperwork.
+* Better tracking of shop floor actions.
+* Better visibility to shop floor state.
+* Early problem identification.
+* Regulatory compliance.
+
+Most of these benefits center on the data collected by an MES.  SimpleMES can collect a lot of data.
+However, these benefits are not automatic with zero cost to you.
+This cost is mainly due to operating the MES system and the user time spent interacting with the MES.
+SimpleMES tries to minimize the costs while letting you have the benefits.
+
+By letting you choose how much data collection is needed during production, you can choose how much using
+the MES will cost you.  It is very important to only collect the data you need.  Later, you can expand
+your use of the MES for other benefits.
+
+
+=== What Data can an MES Collect?
+
+
+SimpleMES can collect a lot of data.  This includes:
+
+* What was built.
+* Who built it.
+* When it was built and how long it took to build.
+* The work center where it was built.
+* The components used to built it.
+* The defects found and repaired for the product.
+* Configurable data collected at key points (e.g. assembly or defect processing).
+
+This data is stored in the database and can be used in many ways to help you work with your shop floor.
+
+
+==== Reduced Paperwork
+
+Like most aspects of life, manufacturing requires a lot of paperwork to track what you build
+and how you build it.  Most of your customers require inspection data, component usage and other
+production data.  The traditional way to supply this was via paperwork shipped with the product.
+
+Today, most customers require digital data delivered with the product.  An MES will allow easier
+creation of much of this data for your customers.
+
+==== Traceability
+
+Traceability is an important part of manufacturing. When a defective component lot from a supplier is
+used in a product, you need to know which orders or serial numbers used these components.
+This is critical for product recall scenarios.
+
+By using the <<Assembly>> module features, you can decide what to collect when a component is assembled
+by an operator.  This data can be quickly searched using the Component Report to find where a specific
+component lot was used.  You can also review the components used on a specific order/LSN to
+help diagnose the source of component-related problems.
+
+==== Control
+
+Beyond tracking what happens on the shop floor, you can also control the actions that are performed
+on your products.  This is done by defining routings and bills of materials (BOMs) for your products.
+SimpleMES will help guide your operators to perform the steps in the right order and to assemble
+the components needed.
+
+You can also control what actions a given user can perform.  This is controlled by the security roles
+you can assign to you users.
+
+==== Performance
+
+The performance of your shop floor is critical to your success.  It is important to find problems with
+the performance before it reduces you efficiency.  The production log records the actual production
+time/results for the shop floor.  This forms the basis for most reports that let you determine how
+well your shop floor is operating.
+
+==== Regulation Compliance
+
+Many industries are regulated by the government.  These regulations frequently control how you
+build, inspect and repair products. An MES can help you document how you comply with these regulations.
+In particular, the MES can track who and how the product is built.  This is cornerstone of most
+regulations about manufactured products.
+
+An MES can also help control how you build the products.  Many regulations require you to have a
+documented production process.  The MES product definitions such as routings and BOMs can form the core
+of this process documentation.
+
+==== Real-time Status
+
+In almost all shop floors, you need to know exactly what is happening on the floor in real time.
+When using an MES, you can quickly find specific orders and determine their status.  You can also
+monitor real-time performance and help identify performance issues early.
+
+The data in SimpleMES forms the basis for a real-time status reporting.  These are reports that
+give you the current status.
+
+==== Track Costs
+
+Tracking production costs is a key part of knowing if you are profitable or not.  It is also needed to help
+you determine the price you charge your customers.  Without knowing your costs, it is difficult to
+set an accurate price for your products.
+
+SimpleMES does not support a costing module at this time.  Instead, you can use the production
+log history to determine your costs.  These costs come from these key areas:
+
+* Labor time.
+* Component Costs.
+* Losses (time and material).
+* Machine usage.
+* Defect handling.
+
+SimpleMES gives you the data you can use to determine your costs in these areas.  The key data source
+is the production log.  You also can use the component history to determine the component usages
+for your shipped products.
+
+
+
+
+=== MES and Other Systems
+
+An MES usually operates between an Enterprise Resource Planning (ERP) system and the
+shop floor.  Most ERP systems are not designed to be used on the shop floor.  An MES is generally
+more flexible to handle the unique procedures needed on your shop floor.
+
+An MES is not a shop floor automation controller.  Running automated/CNC devices is usually handled
+by specially designed software that knows how to control physical machines such as robots and conveyors.
+An MES will usually interface to those systems, if needed in your shop.
+
+NOTE: An ERP system or shop floor automation system is not required for SimpleMES.  SimpleMES is very
+      useful by itself in most small to medium shops.
+
+
+Some typical system setups include:
+
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-build}
+
+.Other Systems
+[ditaa,"otherSystems"]
+----
+
+    ERP and Automation              ERP                     MES Standalone
+
++----------------------+   +----------------------+   +----------------------+
+|                      |   |                      |   |                      |
+|         ERP     cBLU |   |         ERP     cBLU |   |                      |
+|                      |   |                      |   |                      |
++----------------------+   +----------------------+   +         MES          +
+|                      |   |                      |   |                      |
+|         MES          |   |         MES          |   |                      |
+|                 cGRE |   |                 cGRE |   |                 cGRE |
++----------------------+   +----------------------+   +----------------------+
+|                      |   |                      |   |                      |
+|Automation Controllers|   |                      |   |                      |
+|                 cYEL |   | Machines and People  |   | Machines and People  |
++----------------------+   |                      |   |                      |
+| Machines and People  |   |                      |   |                      |
+|                      |   |                      |   |                      |
+|                      |   |                      |   |                      |
++----------------------+   +----------------------+   +----------------------+
+
+----
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+
+
+
+=== Tutorials
+
+
+
+include::modules.adoc[]
+
+include::conventions.adoc[]
+

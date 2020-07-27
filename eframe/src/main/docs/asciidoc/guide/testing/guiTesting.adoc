@@ -208,7 +208,7 @@ _-DtestOnly_ option:
 [source,groovy]
 .Disabling Test Phases - Command Line
 ----
-  -ea -XX:TieredStopAtLevel=1 -noverify -Dgeb.env=firefox -DtestOnly=show
+   -Dgeb.env=firefox -DtestOnly=show 
 ----
 
 

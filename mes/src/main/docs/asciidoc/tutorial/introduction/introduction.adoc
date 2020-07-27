@@ -1,0 +1,34 @@
+== Introduction
+
+This document describes a number of tutorial exercises to familiarize you with the features
+of the http://docs.simplemes.org/mes/latest/[SimpleMES^] application.
+
+ The goal of these tutorials is to introduce basic features of an MES to you.  These tutorials do
+ not dig deeply into the features.
+
+
+ * Simple Order Processing
+   Create Order for existing product
+   Release
+   Start/Complete
+   Display Production Report?
+ * Assembly
+   Create New Product with components
+   Create Order
+   Release
+   Start
+   Assemble Components
+   Display Assembly Info
+   Display Component Usage
+   Complete
+ * Barcode Dashboard
+   Create Order for existing product with components
+   Release
+   Print Traveller
+   Start in Scan DB
+   Assemble Demo component
+   Display Assembly Info
+   Display Component Usage
+   Complete
+ * Reports
+ 
