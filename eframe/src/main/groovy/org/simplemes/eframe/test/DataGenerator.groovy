@@ -103,7 +103,7 @@ class DataGenerator {
         def gStringParams = [i: i, r: r]
 
         // Fill in the key field and a title
-        def object = _domain.newInstance()
+        def object = _domain.getConstructor().newInstance()
         object[key] = _values[key] ?: "ABC$i"
         if (object.hasProperty('title')) {
           object.title = "abc$r"
@@ -169,6 +169,41 @@ class DataGenerator {
                                          fieldFormat: format,
                                          fieldLabel: label,
                                          sequence: (10 + i * 10))
+      }
+      flexType.save()
+    }
+
+    return flexType
+  }
+
+  /**
+   * Builds a flex type with the given list of fields/formats.  The Type is 'FLEX'.
+   * The list contains Maps with these options:
+   * <h3>Options</h3>
+   * <ul>
+   *   <li><b>fieldName</b> - The field name for the first field in the flex type (<b>Default</b>: 'FIELD1'). </li>
+   *   <li><b>fieldFormat</b> - The field format for the first field in the flex type (<b>Default</b>: StringFieldFormat.instance). </li>
+   *   <li><b>fieldLabel</b> - The field label (<b>Default</b>: null). </li>
+   * </ul>
+   *
+   * <b>Note:</b> This method will create its own transaction, if needed.
+   * @param options The options. See above.  Optional.
+   * @return
+   */
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  static FlexType buildFlexType(List<Map> fields) {
+    def flexType = null
+    FlexType.withTransaction {
+      flexType = new FlexType(flexType: 'FLEX')
+      def count = 0
+      for (field in fields) {
+        def format = field?.fieldFormat ?: StringFieldFormat.instance
+        def label = field?.fieldLabel
+        flexType.fields << new FlexField(fieldName: field?.fieldName ?: "FIELD${count + 1}",
+                                         fieldFormat: format,
+                                         fieldLabel: label,
+                                         sequence: (10 + count * 10))
+        count++
       }
       flexType.save()
     }

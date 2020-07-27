@@ -17,6 +17,17 @@ filter values.
 
 ===== Report Guidelines
 
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Report Parameter BaseDir>>#
+[inline-toc]#<<Report Permissions>>#
+[inline-toc]#<<Report Conventions>>#
+[inline-toc]#<<ReportUtils>>#
+
+endif::[]
+
+
+
 The report engine uses the .jrxml file format for the reports produced by its designer studio.
 There are a few guidelines that you must follow to make some features work.  For example, there
 is a specific way to specify the location of images that will work with reports in HTML and
@@ -128,6 +139,16 @@ Other parameter names may be used, but the special date range drop-downs will no
 In that case, simple date/time input fields will be used.
 
 ====
+
+====== ReportUtils
+
+Reports will sometimes need to use code in your application to handle complex tasks like
+formatting <<Field Extensions>>.  This is typically handle by utility classes such as
+link:groovydoc/org/simplemes/eframe/reports/ReportUtils.html[ReportUtils^]
+icon:share-square-o[role="link-blue"].
+
+This requires use of the framework .jar files are described in <<Designer Studio Setup>>.
+
 
 ===== Built-in Reports
 
@@ -367,7 +388,7 @@ easy to do.
   on your system. (.JAR files seems to work more reliably).
 . Restart the Studio.
   
-image::guis/ReportStudioClassPath.png[title="ReportStudioClassPath",align="center", width=75%]
+image::guis/ReportStudioClassPath.png[title="ReportStudioClassPath",align="center", width=750]
 
 This will make some useful classes available for your reports such as DateOnly and related data
 formatting methods.
