@@ -4,7 +4,7 @@
 
 package org.simplemes.eframe.reports
 
-
+import org.simplemes.eframe.misc.ClassPathScanner
 import org.simplemes.eframe.test.BaseSpecification
 
 /**
@@ -62,6 +62,36 @@ class ReportHelperSpec extends BaseSpecification {
     inputStream.read(bytes)
     def s = new String(bytes)
     s.contains('<jasperReport')
+
+    cleanup:
+    inputStream?.close()
+  }
+
+  def "verify that getInputStream open a stream from a .jar file"() {
+    given: 'the location of a .jar file based resource'
+    def scanner = new ClassPathScanner('io/micronaut/data/jdbc/annotation/*.class')
+    def list = scanner.scan()
+    def url = list.find { it.toString().endsWith('io/micronaut/data/jdbc/annotation/JdbcRepository.class') }
+    def path = url.toString() - "/io/micronaut/data/jdbc/annotation/JdbcRepository.class"
+
+    and: 'a ReportDetails object with faked-out path/file name to simulate a .jar file read'
+    // This is intentionally not a .jrxml file since we have none in .jar files for this module to use.
+    // Instead, we will use a .class file from Micronaut to test opening a stream from a .jar file.
+    def reportDetails = new Report("")
+    reportDetails.reportFolder = path
+    reportDetails.reportName = "io/micronaut/data/jdbc/annotation/JdbcRepository.class"
+
+    when: 'the report can be opened as a input stream'
+    def inputStream = ReportHelper.instance.getInputStream(reportDetails)
+
+    then: 'the input stream is correct'
+    inputStream != null
+
+    and: 'this is the right class file contents'
+    def bytes = new byte[500]
+    inputStream.read(bytes)
+    def s = new String(bytes)
+    s.contains('Repository')
 
     cleanup:
     inputStream?.close()

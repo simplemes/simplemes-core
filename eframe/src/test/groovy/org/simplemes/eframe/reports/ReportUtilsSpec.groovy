@@ -43,4 +43,24 @@ class ReportUtilsSpec extends BaseSpecification {
     [FIELD1: "value1", INT2: 237] | true      | 20  | '<b>Field1</b>: value1 ...'
     [FIELD1: "value1", INT2: 237] | false     | 50  | 'Field1: value1 Int2: 237'
   }
+
+  def "verify that format looks up field labels"() {
+    given: 'a flex type with a field'
+    def flexType = DataGenerator.buildFlexType([[fieldName: 'FIELD1', fieldLabel: 'actions.label', fieldFormat: StringFieldFormat.instance]])
+
+    and: 'the data formatted for JSON'
+    def values = [:]
+    def name = 'assemblyDataType'
+    fields.each { k, v ->
+      values["${name}_$k"] = v
+    }
+    def json = Holders.objectMapper.writeValueAsString(values)
+
+    expect: 'the format works'
+    ReportUtils.formatFields(json, flexType.uuid.toString(), name, highlight, max) == result
+
+    where:
+    fields             | highlight | max | result
+    [FIELD1: "value1"] | true      | 50  | "<b>${lookup('actions.label')}</b>: value1"
+  }
 }

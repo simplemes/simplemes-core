@@ -1,90 +1,91 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<!--
+  ~ Copyright (c) Michael Houston 2020. All rights reserved.
+  -->
+
+<!-- Created with Jaspersoft Studio version 6.13.0.final using JasperReports Library version 6.13.0-46ada4d1be8f3c5985fd0b6146f3ed44caed6f05  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
               name="SampleMaster" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20"
               topMargin="20" bottomMargin="20" resourceBundle="sample_report"
               uuid="c9731cd5-6ded-4b69-8626-0a34e9b6e00f">
-    <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="Eframe"/>
-    <parameter name="BaseDir" class="java.lang.String" isForPrompting="false">
-        <defaultValueExpression><![CDATA["C:\\Users\\mph\\JaspersoftWorkspace\\MyReports"]]></defaultValueExpression>
-    </parameter>
-    <parameter name="SubReport1" class="java.lang.Object" isForPrompting="false">
-        <defaultValueExpression><![CDATA[$P{BaseDir}+"/SampleSubReport.jrxml"]]></defaultValueExpression>
-    </parameter>
-    <queryString language="SQL">
-        <![CDATA[select flex_type,title,id
+  <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+  <property name="com.jaspersoft.studio.data.defaultdataadapter" value="MES_DEV - Localhost"/>
+  <parameter name="BaseDir" class="java.lang.String" isForPrompting="false">
+    <defaultValueExpression>
+      <![CDATA["C:\\Users\\mph\\JaspersoftWorkspace\\MyReports\\simplemes\\eframe\\sample"]]></defaultValueExpression>
+  </parameter>
+  <parameter name="SubReport1" class="java.lang.Object" isForPrompting="false">
+    <defaultValueExpression><![CDATA[$P{BaseDir}+"/SampleSubReport.jrxml"]]></defaultValueExpression>
+  </parameter>
+  <queryString language="SQL">
+    <![CDATA[select flex_type,title,uuid
  from flex_type
  where flex_type='LOT']]>
-    </queryString>
-    <field name="flex_type" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.label" value="flex_type"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="flex_type"/>
-    </field>
-    <field name="title" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.label" value="title"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="flex_type"/>
-    </field>
-    <field name="id" class="java.lang.Long"/>
-    <background>
-        <band splitType="Stretch"/>
-    </background>
-    <title>
-        <band height="79" splitType="Stretch"/>
-    </title>
-    <pageHeader>
-        <band height="35" splitType="Stretch">
-            <staticText>
-                <reportElement x="10" y="2" width="100" height="30" uuid="b7ad66a1-afc2-45a8-8e92-4f35d33531fe">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                              value="2476700d-8fe6-4f21-b5de-32b3fa2439cc"/>
-                </reportElement>
-                <text><![CDATA[flex_type]]></text>
-            </staticText>
-            <textField>
-                <reportElement x="120" y="2" width="100" height="30" uuid="f03f0899-dd1d-4e49-a574-e24b7434616f">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                              value="2476700d-8fe6-4f21-b5de-32b3fa2439cc"/>
-                </reportElement>
-                <textFieldExpression><![CDATA[$F{flex_type}]]></textFieldExpression>
-            </textField>
-            <staticText>
-                <reportElement x="227" y="0" width="100" height="30" uuid="b4f41ef2-3f12-47f5-bdac-45b05dcc933d">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                              value="434c259b-64e1-4a0c-b445-1d6119b937ed"/>
-                </reportElement>
-                <text><![CDATA[title]]></text>
-            </staticText>
-            <textField>
-                <reportElement x="330" y="2" width="100" height="30" uuid="87b6665b-f133-4fd7-8196-24ab15445f03">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                              value="434c259b-64e1-4a0c-b445-1d6119b937ed"/>
-                </reportElement>
-                <textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
-            </textField>
-        </band>
-    </pageHeader>
-    <detail>
-        <band height="226" splitType="Stretch">
-            <subreport>
-                <reportElement x="21" y="26" width="200" height="200" uuid="4e802313-8614-40ea-91c3-dfb7359aa822"/>
-                <subreportParameter name="flex_type_id">
-                    <subreportParameterExpression><![CDATA[$F{id}]]></subreportParameterExpression>
-                </subreportParameter>
-                <subreportParameter name="REPORT_RESOURCE_BUNDLE">
-                    <subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
-                </subreportParameter>
-                <connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
-                <subreportExpression><![CDATA[$P{SubReport1}]]></subreportExpression>
-            </subreport>
-        </band>
-    </detail>
-    <pageFooter>
-        <band height="54" splitType="Stretch"/>
-    </pageFooter>
-    <summary>
-        <band height="42" splitType="Stretch"/>
-    </summary>
+  </queryString>
+  <field name="flex_type" class="java.lang.String">
+    <property name="com.jaspersoft.studio.field.label" value="flex_type"/>
+    <property name="com.jaspersoft.studio.field.tree.path" value="flex_type"/>
+  </field>
+  <field name="title" class="java.lang.String">
+    <property name="com.jaspersoft.studio.field.label" value="title"/>
+    <property name="com.jaspersoft.studio.field.tree.path" value="flex_type"/>
+  </field>
+  <field name="uuid" class="java.lang.String"/>
+  <background>
+    <band splitType="Stretch"/>
+  </background>
+  <title>
+    <band height="79" splitType="Stretch"/>
+  </title>
+  <pageHeader>
+    <band height="35" splitType="Stretch">
+      <staticText>
+        <reportElement x="10" y="2" width="100" height="30" uuid="b7ad66a1-afc2-45a8-8e92-4f35d33531fe">
+          <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2476700d-8fe6-4f21-b5de-32b3fa2439cc"/>
+        </reportElement>
+        <text><![CDATA[flex_type]]></text>
+      </staticText>
+      <textField>
+        <reportElement x="120" y="2" width="100" height="30" uuid="f03f0899-dd1d-4e49-a574-e24b7434616f">
+          <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="2476700d-8fe6-4f21-b5de-32b3fa2439cc"/>
+        </reportElement>
+        <textFieldExpression><![CDATA[$F{flex_type}]]></textFieldExpression>
+      </textField>
+      <staticText>
+        <reportElement x="227" y="0" width="100" height="30" uuid="b4f41ef2-3f12-47f5-bdac-45b05dcc933d">
+          <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="434c259b-64e1-4a0c-b445-1d6119b937ed"/>
+        </reportElement>
+        <text><![CDATA[title]]></text>
+      </staticText>
+      <textField>
+        <reportElement x="330" y="2" width="100" height="30" uuid="87b6665b-f133-4fd7-8196-24ab15445f03">
+          <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="434c259b-64e1-4a0c-b445-1d6119b937ed"/>
+        </reportElement>
+        <textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+      </textField>
+    </band>
+  </pageHeader>
+  <detail>
+    <band height="226" splitType="Stretch">
+      <subreport>
+        <reportElement x="21" y="26" width="200" height="200" uuid="4e802313-8614-40ea-91c3-dfb7359aa822"/>
+        <subreportParameter name="flex_type_id">
+          <subreportParameterExpression><![CDATA[$F{uuid}]]></subreportParameterExpression>
+        </subreportParameter>
+        <subreportParameter name="REPORT_RESOURCE_BUNDLE">
+          <subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+        </subreportParameter>
+        <connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+        <subreportExpression><![CDATA[$P{SubReport1}]]></subreportExpression>
+      </subreport>
+    </band>
+  </detail>
+  <pageFooter>
+    <band height="54" splitType="Stretch"/>
+  </pageFooter>
+  <summary>
+    <band height="42" splitType="Stretch"/>
+  </summary>
 </jasperReport>

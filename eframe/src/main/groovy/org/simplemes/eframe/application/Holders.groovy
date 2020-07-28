@@ -12,9 +12,11 @@ import io.micronaut.context.event.StartupEvent
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.context.ServerRequestContext
 import io.micronaut.runtime.event.annotation.EventListener
+import org.simplemes.eframe.domain.EFrameJdbcRepositoryOperations
 
 import javax.inject.Singleton
 import javax.sql.DataSource
+import java.sql.Connection
 
 /**
  * A place to hold specific global values.  Simplifies access to things like the ApplicationContext.
@@ -66,6 +68,15 @@ class Holders {
    */
   static DataSource getDataSource() {
     return applicationContext?.getBean(DataSource)
+  }
+
+  /**
+   * Returns the a connection for the current transaction.
+   * Will fail if there is not current transaction.
+   * @return The connection.
+   */
+  static Connection getDBConnection() {
+    return EFrameJdbcRepositoryOperations.getDBConnection()
   }
 
   /**

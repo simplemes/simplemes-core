@@ -180,6 +180,19 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
     }
   }
 
+  /**
+   * Ensure that the current SQL is being executed in a transaction - Static version for a single data source.
+   */
+  @SuppressWarnings("unused")
+  static Connection getDBConnection() {
+    try {
+      return localTransactionOperationsStatic.getConnection()
+    } catch (CannotGetJdbcConnectionException e) {
+      def s = "No active transaction for SQL statement.  Use domain.withTransaction or @Transactional for Beans. (This avoids a connection leak)."
+      throw new IllegalStateException(s, e)
+    }
+  }
+
 }
 
 class AlterableUpdateOperation implements UpdateOperation {

@@ -5,7 +5,6 @@
 package org.simplemes.eframe.reports
 
 import groovy.util.logging.Slf4j
-import io.micronaut.transaction.jdbc.DataSourceUtils
 import net.sf.jasperreports.engine.DefaultJasperReportsContext
 import net.sf.jasperreports.engine.JasperCompileManager
 import net.sf.jasperreports.engine.JasperFillManager
@@ -33,8 +32,6 @@ import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.HTMLUtils
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
-
-import javax.sql.DataSource
 
 /**
  * Provides low-level access to the external report engine.  This is designed to be replaced by a mock
@@ -186,8 +183,7 @@ class ReportEngine {
       // Need to get a real DB connection
       // Avoid connection leaks by enforcing use of a txn around this fill() method.
       DomainEntityHelper.instance.checkForTransaction()
-      DataSource dataSource = Holders.applicationContext.getBean(DataSource.class)
-      dataOrConn = DataSourceUtils.getConnection(dataSource)
+      dataOrConn = Holders.getDBConnection()
     }
     JasperPrint jasperPrint = JasperFillManager.fillReport(report.compiledReport, parameters, dataOrConn)
     report.filledReport = jasperPrint

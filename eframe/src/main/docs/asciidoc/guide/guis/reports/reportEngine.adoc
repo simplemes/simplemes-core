@@ -147,7 +147,8 @@ formatting <<Field Extensions>>.  This is typically handle by utility classes su
 link:groovydoc/org/simplemes/eframe/reports/ReportUtils.html[ReportUtils^]
 icon:share-square-o[role="link-blue"].
 
-This requires use of the framework .jar files are described in <<Designer Studio Setup>>.
+This requires use of the framework _java8-supp.jar_ file as described in <<Designer Studio Setup>>.
+This is a special .jar file that works with the Java 8 studio.
 
 
 ===== Built-in Reports
@@ -374,6 +375,21 @@ report to _$P{REPORT_RESOURCE_BUNDLE}_ in the sub-report:
 image::guis/ReportEngineSubReportBundle.png[title="ReportEngine SubReport",align="center", width=50%]
 
 
+====== JRException: Resource not found at (some .jrxml file)
+
+The designer studio is a very flexible tool for creating _.jrxml_ files, but it is complex.
+The goal is to produce a _.jrxml_ file that can be used in the run-time simplemes server.
+This introduces some gotchas to be aware of:
+
+   Resource not found at: C:\Users\mph\JaspersoftWorkspace\MyReports\simplemes\app/_OrderHistoryComponents.jrxml.
+
+This happens because the _.jrxml_ file has not be compiled into a _.jasper_ file.  You need to
+run the 'Build All' (Ctrl+B on Windows) action from the studio toolbar.
+
+The studio uses these_.jasper_ files for sub-reports when using the preview feature.
+
+
+
 ===== Designer Studio Setup
 
 The report engine has an open-source designer studio that you can use to create these reports.
@@ -384,17 +400,20 @@ easy to do.
 . Right-click on the top level element in the Project Explorer (typically _MyReports_).
 . Select _Properties_.
 . In the Properties dialog, select the _Java Build Path_ property.
-. Add a JAR file for the eframe module or add the class directories for the build area
-  on your system. (.JAR files seems to work more reliably).
+. Add a JAR file for the _java8-supp.jar_ module from the project build folder
+  on your system. 
 . Restart the Studio.
   
 image::guis/ReportStudioClassPath.png[title="ReportStudioClassPath",align="center", width=750]
 
-This will make some useful classes available for your reports such as DateOnly and related data
-formatting methods.
+This will make some useful classes available for your reports.  These _java8-supp.jar_ file
+classes are stub classes that simulate the real code's run-time behavior.  In a production
+server, the real classes will be used by the report engine.
 
 
- 
+
+
+
 
   
 

@@ -35,10 +35,11 @@ class ClassPathScannerSpec extends BaseSpecification {
   def "verify that scan works for class files in a .jar file"() {
     when: 'a scan is preformed'
     def scanner = new ClassPathScanner('io/micronaut/data/jdbc/annotation/*.class')
-    def list = scanner.scan()*.toString()
+    def list = scanner.scan()
 
-    then: 'the list contains the core report'
-    list.find { it.toString().endsWith('io/micronaut/data/jdbc/annotation/JdbcRepository.class') }
+    then: 'the list contains the URL from the .jar file and can be opened as a stream'
+    def url = list.find { it.toString().endsWith('io/micronaut/data/jdbc/annotation/JdbcRepository.class') }
+    url.openStream()
   }
 
   def "verify that scanner detects bad search path"() {

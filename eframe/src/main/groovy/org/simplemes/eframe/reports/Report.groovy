@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.reports
 
 import groovy.transform.EqualsAndHashCode
@@ -5,6 +9,7 @@ import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 import io.micronaut.http.MediaType
 import net.sf.jasperreports.engine.JRDataSource
+import net.sf.jasperreports.engine.JRParameter
 import net.sf.jasperreports.engine.data.JRMapCollectionDataSource
 import org.simplemes.eframe.application.EFrameConfiguration
 import org.simplemes.eframe.application.Holders
@@ -17,10 +22,6 @@ import org.simplemes.eframe.preference.SimpleStringPreference
 import org.simplemes.eframe.security.SecurityUtils
 
 import java.security.Principal
-
-/*
- * Copyright (c) 2018 Simple MES, LLC.  All rights reserved.  See license.txt for license terms.
- */
 
 /**
  * Holds the report details needed to generate a report using the third-party report engine.
@@ -201,7 +202,7 @@ class Report {
     if (reportParameters == null) {
       reportParameters = []
       for (parameter in getDefinedReportParameters()) {
-        def reportFieldDefinition = new ReportFieldDefinition(parameter, this)
+        def reportFieldDefinition = new ReportFieldDefinition((JRParameter) parameter, this)
         reportFieldDefinition.sequence = determineParameterSequence(parameter)
         reportParameters << reportFieldDefinition
       }

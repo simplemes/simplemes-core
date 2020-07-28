@@ -48,7 +48,7 @@ class ReportUtils {
 
     flexType?.fields?.sort { a, b -> a.sequence <=> b.sequence }
     for (field in flexType?.fields) {
-      def label = field.fieldLabel ?: GlobalUtils.lookup(field.fieldName)
+      def label = GlobalUtils.lookup(field.fieldLabel ?: field.fieldName)
       def value = ExtensibleFieldHelper.instance.getFieldValue(object, field.fieldName, flexTypeName)
       def valueString = field.fieldFormat.format(value, null, null)
       TextUtils.addFieldForDisplay(sb, label, valueString, options)

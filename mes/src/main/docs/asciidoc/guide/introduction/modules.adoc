@@ -1,5 +1,5 @@
 
-=== Modules
+== Modules
 
 This application is made up of a number of modules (plugins).  Each module is documented separately
 with user guides, reference docs and the Groovy API documents:
@@ -8,7 +8,11 @@ with user guides, reference docs and the Groovy API documents:
 .Documentation
 [cols="1,1,1,1"]
 |===
-|Module|Guide|Reference|GroovyDoc
+|Module|Guide|Otherse|GroovyDoc
+
+|MES Application|(This Guide)|
+link:tutorial.html#[Tutorials^] icon:share-square[role="link-blue"]|
+
 
 |MES Core|link:{mes-core-path}/guide.html#[Guide^] icon:share-square[role="link-blue"]|
 link:{mes-core-path}/reference.html#[Reference^] icon:share-square[role="link-blue"]|
@@ -25,7 +29,7 @@ link:{eframe-path}/groovydoc/index.html[API^] icon:share-square[role="link-blue"
 |===
 
 
-==== Planned Modules
+=== Planned Modules
 
 link:#core[Core,role="inline-toc"]
 link:#assembly[Assembly,role="inline-toc"]
@@ -93,38 +97,37 @@ is useful.
 
 This module (core) is documented here, but the key features include:
 
-* link:../../mes-assy/html5/guide.html#product[Product^] - The product to be manufactured.
-* link:../../mes-assy/html5/guide.html#routing[Routing^] - The detailed steps needed to produce the product.
-* link:../../mes-assy/html5/guide.html#work-center[Work Center^] The machine, area or people needed to produce a product.  Includes basic setup.
-* link:../../mes-assy/html5/guide.html#order[Order^] - The order from your customer (e.g. a shop order).
-* link:../../mes-assy/html5/guide.html#lsn[LSN^] - The Lot/Serial Number for specific pieces or lots produced.
+* link:{mes-core-path}/guide.html#product[Product^] icon:share-square[role="link-blue"] - The product to be manufactured.
+* link:{mes-core-path}/guide.html#routing[Routing^] icon:share-square[role="link-blue"] - The detailed steps needed to produce the product.
+* link:{mes-core-path}/guide.html#work-center[Work Center^] icon:share-square[role="link-blue"] - The machine, area or people needed to produce a product.  Includes basic setup.
+* link:{mes-core-path}/guide.html#order[Order^] icon:share-square[role="link-blue"] - The order from your customer (e.g. a shop order).
+* link:{mes-core-path}/guide.html#lsn[LSN^] icon:share-square[role="link-blue"] - The Lot/Serial Number for specific pieces or lots produced.
 
 image::guis/orders.png[title="Orders",align="center", width=50%]
 
 
 === Assembly
 
-See link:../../mes-assy/html5/guide.html[Assembly^] for details.  The key features include:
+See link:{mes-assy-path}/guide.html[Assembly^] icon:share-square[role="link-blue"] for details.  The key features include:
 
 * Ability to scan to assemble components.
-* link:../../mes-assy/html5/guide.html#product-component-guide[BOM^] - The Bill of Materials (product components) needed to build the product.
-* link:../../mes-assy/html5/guide.html#work-center[Work Center^] - The components currently set up on the work center.
+* link:{mes-assy-path}/guide.html#product-component-guide[BOM^] icon:share-square[role="link-blue"] - The Bill of Materials (product components) needed to build the product.
 
 image::guis/dashboardAssy.png[title="Assembly Dashboard",align="center", width=50%]
 
 
 === Defect Tracking
 
-See http://docs.simplemes.org/mes-defect/latest/[Defect Tracking^] for details.  The key features include:
+See http://docs.simplemes.org/mes-defect/latest/[Defect Tracking^] icon:share-square[role="link-blue"] for details.  The key features include:
 
-* link:../../mes-defect/html5/guide.html#defect[Defect^] - A basic defect found on product.
-* link:../../mes-defect/html5/guide.html#defect-log[Defect Log^] - The defects found on orders/LSNs.
+* link:../../mes-defect/html5/guide.html#defect[Defect^] icon:share-square[role="link-blue"] - A basic defect found on product.
+* link:../../mes-defect/html5/guide.html#defect-log[Defect Log^] icon:share-square[role="link-blue"] - The defects found on orders/LSNs.
 
 === Complex Assembly
 
-See http://docs.simplemes.org/mes-complex/latest/[Complex Assembly^] for details.  The key features include:
+See http://docs.simplemes.org/mes-complex/latest/[Complex Assembly^] icon:share-square[role="link-blue"] for details.  The key features include:
 
-* link:../../mes-defect/html5/guide.html#assembly-order[Assembly Order^] - An assembly order.
+* link:../../mes-defect/html5/guide.html#assembly-order[Assembly Order^] icon:share-square[role="link-blue"] - An assembly order.
 
 
 

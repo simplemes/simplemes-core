@@ -42,7 +42,12 @@ class ReportHelper {
   @SuppressWarnings("JavaIoPackageAccess")
   InputStream getInputStream(Report reportDetails) {
     def resourcePath = "$reportDetails.reportFolder/$reportDetails.reportName"
-    return this.class.getClassLoader().getResourceAsStream(resourcePath)
+    if (resourcePath.contains("jar:")) {
+      def url = new URL(resourcePath)
+      return url.openStream()
+    } else {
+      return this.class.getClassLoader().getResourceAsStream(resourcePath)
+    }
   }
 
   /**

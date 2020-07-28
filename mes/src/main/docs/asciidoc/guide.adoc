@@ -26,8 +26,9 @@ ifndef::demo-server[:demo-server: long:8080]
 //:docinfo:
 
 // Some relative paths to other docs
-:mes-core-path: ../../mes-core/html5
-:eframe-path: ../../eframe/html5
+:mes-core-path: ../mes-core
+:mes-assy-path: ../mes-assy
+:eframe-path: ../eframe
 
 //workaround for issue 271 https://github.com/asciidoctor/asciidoctor-pdf/issues/271
 :imagesdir-src: images

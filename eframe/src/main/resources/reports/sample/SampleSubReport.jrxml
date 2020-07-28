@@ -1,84 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<!--
+  ~ Copyright (c) Michael Houston 2020. All rights reserved.
+  -->
+
+<!-- Created with Jaspersoft Studio version 6.13.0.final using JasperReports Library version 6.13.0-46ada4d1be8f3c5985fd0b6146f3ed44caed6f05  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
               name="SampleSubReport" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20"
               topMargin="20" bottomMargin="20" resourceBundle="sample_report"
               uuid="3bfdf908-1f2f-467e-b119-16009b438faa">
-    <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="Eframe"/>
-    <parameter name="flex_type_id" class="java.lang.Long">
-        <defaultValueExpression><![CDATA[2L]]></defaultValueExpression>
-    </parameter>
-    <queryString language="SQL">
-        <![CDATA[select sequence,field_name, field_format
-from abstract_field 
-where flex_type_id = $P{flex_type_id}]]>
-    </queryString>
-    <field name="sequence" class="java.lang.Integer">
-        <property name="com.jaspersoft.studio.field.label" value="sequence"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="abstract_field"/>
-    </field>
-    <field name="field_name" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.label" value="field_name"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="abstract_field"/>
-    </field>
-    <field name="field_format" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.label" value="field_format"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="abstract_field"/>
-    </field>
-    <background>
-        <band splitType="Stretch"/>
-    </background>
-    <columnHeader>
-        <band height="61" splitType="Stretch">
-            <staticText>
-                <reportElement x="47" y="0" width="100" height="30" uuid="626b3c47-c486-40f9-9110-b8ed69c33ebf">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                              value="7099013b-03f9-4d5c-9849-9fa7a08a14f6"/>
-                </reportElement>
-                <text><![CDATA[sequence]]></text>
-            </staticText>
-            <staticText>
-                <reportElement x="200" y="0" width="100" height="30" uuid="be6d8dac-87c8-412b-a5a9-073d8672c2eb">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                              value="47f2e4c3-52ef-4fd9-90fd-ccd86fe2f43b"/>
-                </reportElement>
-                <text><![CDATA[field_name]]></text>
-            </staticText>
-            <textField>
-                <reportElement x="371" y="0" width="100" height="30" uuid="dadce0d3-4682-46e6-a188-2a21012fcf10">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                              value="41403588-8ed3-49ff-991c-c28f7dc74bcb"/>
-                </reportElement>
-                <textFieldExpression><![CDATA[$R{order.label}]]></textFieldExpression>
-            </textField>
-        </band>
-    </columnHeader>
-    <detail>
-        <band height="55" splitType="Stretch">
-            <textField>
-                <reportElement x="47" y="22" width="100" height="30" uuid="d6e18b5a-c616-4cde-b3bd-2fcf46a4f7e0">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                              value="7099013b-03f9-4d5c-9849-9fa7a08a14f6"/>
-                </reportElement>
-                <textFieldExpression><![CDATA[$F{sequence}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="200" y="22" width="100" height="30" uuid="eb6e2593-9102-40c0-a6f0-312a619aa6e3">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                              value="47f2e4c3-52ef-4fd9-90fd-ccd86fe2f43b"/>
-                </reportElement>
-                <textFieldExpression><![CDATA[$F{field_name}]]></textFieldExpression>
-            </textField>
-            <textField>
-                <reportElement x="371" y="22" width="100" height="30" uuid="a78cef73-9f20-445f-8e2c-36641e3cffbf">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                              value="41403588-8ed3-49ff-991c-c28f7dc74bcb"/>
-                </reportElement>
-                <textFieldExpression><![CDATA[$F{field_format}]]></textFieldExpression>
-            </textField>
-        </band>
-    </detail>
+  <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+  <property name="com.jaspersoft.studio.data.defaultdataadapter" value="MES_DEV - Localhost"/>
+  <parameter name="flex_type_id" class="java.lang.String">
+    <defaultValueExpression><![CDATA["8ddd76d9-6d25-4c34-b952-cd0dfeb2164e"]]></defaultValueExpression>
+  </parameter>
+  <queryString language="SQL">
+    <![CDATA[select sequence,field_name, field_format
+from flex_field 
+where flex_type_id = uuid($P{flex_type_id})]]>
+  </queryString>
+  <field name="sequence" class="java.lang.Integer">
+    <property name="com.jaspersoft.studio.field.label" value="sequence"/>
+    <property name="com.jaspersoft.studio.field.tree.path" value="abstract_field"/>
+  </field>
+  <field name="field_name" class="java.lang.String">
+    <property name="com.jaspersoft.studio.field.label" value="field_name"/>
+    <property name="com.jaspersoft.studio.field.tree.path" value="abstract_field"/>
+  </field>
+  <field name="field_format" class="java.lang.String">
+    <property name="com.jaspersoft.studio.field.label" value="field_format"/>
+    <property name="com.jaspersoft.studio.field.tree.path" value="abstract_field"/>
+  </field>
+  <background>
+    <band splitType="Stretch"/>
+  </background>
+  <columnHeader>
+    <band height="61" splitType="Stretch">
+      <staticText>
+        <reportElement x="47" y="0" width="100" height="30" uuid="626b3c47-c486-40f9-9110-b8ed69c33ebf">
+          <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7099013b-03f9-4d5c-9849-9fa7a08a14f6"/>
+        </reportElement>
+        <text><![CDATA[sequence]]></text>
+      </staticText>
+      <staticText>
+        <reportElement x="200" y="0" width="100" height="30" uuid="be6d8dac-87c8-412b-a5a9-073d8672c2eb">
+          <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="47f2e4c3-52ef-4fd9-90fd-ccd86fe2f43b"/>
+        </reportElement>
+        <text><![CDATA[field_name]]></text>
+      </staticText>
+      <textField>
+        <reportElement x="371" y="0" width="100" height="30" uuid="dadce0d3-4682-46e6-a188-2a21012fcf10">
+          <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="41403588-8ed3-49ff-991c-c28f7dc74bcb"/>
+        </reportElement>
+        <textFieldExpression><![CDATA[$R{order.label}]]></textFieldExpression>
+      </textField>
+    </band>
+  </columnHeader>
+  <detail>
+    <band height="55" splitType="Stretch">
+      <textField>
+        <reportElement x="47" y="22" width="100" height="30" uuid="d6e18b5a-c616-4cde-b3bd-2fcf46a4f7e0">
+          <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7099013b-03f9-4d5c-9849-9fa7a08a14f6"/>
+        </reportElement>
+        <textFieldExpression><![CDATA[$F{sequence}]]></textFieldExpression>
+      </textField>
+      <textField>
+        <reportElement x="200" y="22" width="100" height="30" uuid="eb6e2593-9102-40c0-a6f0-312a619aa6e3">
+          <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="47f2e4c3-52ef-4fd9-90fd-ccd86fe2f43b"/>
+        </reportElement>
+        <textFieldExpression><![CDATA[$F{field_name}]]></textFieldExpression>
+      </textField>
+      <textField>
+        <reportElement x="371" y="22" width="100" height="30" uuid="a78cef73-9f20-445f-8e2c-36641e3cffbf">
+          <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="41403588-8ed3-49ff-991c-c28f7dc74bcb"/>
+        </reportElement>
+        <textFieldExpression><![CDATA[$F{field_format}]]></textFieldExpression>
+      </textField>
+    </band>
+  </detail>
 </jasperReport>
