@@ -231,29 +231,36 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;java.sql.Connection</code></td>
+                            <td class="colLast"><code><strong><a href="#getDBConnection()">getDBConnection</a></strong>()</code><br>Returns the a connection for the current transaction.
+ </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;javax.sql.DataSource</code></td>
                             <td class="colLast"><code><strong><a href="#getDataSource()">getDataSource</a></strong>()</code><br>Returns the current data source. </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;com.fasterxml.jackson.databind.ObjectMapper</code></td>
                             <td class="colLast"><code><strong><a href="#getObjectMapper()">getObjectMapper</a></strong>()</code><br>Returns the object mapper in use for this server. </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
                             <td class="colLast"><code><strong><a href="#isEnvironmentDev()">isEnvironmentDev</a></strong>()</code><br>Returns true if the current environment is dev. </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
                             <td class="colLast"><code><strong><a href="#isEnvironmentTest()">isEnvironmentTest</a></strong>()</code><br>Returns true if the current environment is test.  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#onStartup(io.micronaut.context.event.StartupEvent)">onStartup</a></strong>(io.micronaut.context.event.StartupEvent event)</code><br>Handles application startup events. </td>
@@ -414,6 +421,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                             <li class="blockList">
                                 <h4>static&nbsp;io.micronaut.http.HttpRequest <strong>getCurrentRequest</strong>()</h4>
                                 <p> Returns the current request for this thread. <DL><DT><B>Returns:</B></DT><DD>The request.  Can be null.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getDBConnection()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;java.sql.Connection <strong>getDBConnection</strong>()</h4>
+                                <p> Returns the a connection for the current transaction.
+ Will fail if there is not current transaction. <DL><DT><B>Returns:</B></DT><DD>The connection.</DD></DL></p>
                             </li>
                         </ul>
                     
