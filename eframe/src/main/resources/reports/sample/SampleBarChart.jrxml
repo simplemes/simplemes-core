@@ -1,108 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.6.0.final using JasperReports Library version 6.6.0  -->
+<!--
+  ~ Copyright (c) Michael Houston 2020. All rights reserved.
+  -->
+
+<!-- Created with Jaspersoft Studio version 6.13.0.final using JasperReports Library version 6.13.0-46ada4d1be8f3c5985fd0b6146f3ed44caed6f05  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
-              name="SampleChart" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802"
+              name="SampleBarChart" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802"
               leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20"
               uuid="df013db5-f76e-44d3-b0df-bcbc46d93160">
-    <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="Eframe"/>
-    <style name="Title" fontName="Times New Roman" fontSize="50" isBold="true"/>
-    <style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
-    <style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
-    <style name="Detail" fontName="Arial" fontSize="12"/>
-    <style name="Row" mode="Transparent">
-        <conditionalStyle>
-            <conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
-            <style backcolor="#E6DAC3"/>
-        </conditionalStyle>
-    </style>
-    <parameter name="BaseDir" class="java.lang.String" isForPrompting="false" evaluationTime="Early">
-        <defaultValueExpression><![CDATA["reporty"]]></defaultValueExpression>
-    </parameter>
-    <queryString language="SQL">
-        <![CDATA[SELECT count(*),
-	metric_name,date(start_date) dateTime
-FROM metric_summary 
-	WHERE metric_name like '%'
-group by dateTime, metric_name
-order by dateTime, metric_name]]>
-    </queryString>
-    <field name="count(*)" class="java.lang.Long">
-        <property name="com.jaspersoft.studio.field.label" value="count(*)"/>
-    </field>
-    <field name="metric_name" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.label" value="metric_name"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="metric_summary"/>
-    </field>
-    <field name="dateTime" class="java.lang.String"/>
-    <background>
-        <band splitType="Stretch"/>
-    </background>
-    <title>
-        <band height="136" splitType="Stretch">
-            <staticText>
-                <reportElement style="Title" x="270" y="0" width="390" height="62"
-                               uuid="bc1ce1da-8232-46ea-be55-cec4abb986dd"/>
-                <textElement verticalAlignment="Middle"/>
-                <text><![CDATA[Sample Bar Chart]]></text>
-            </staticText>
-            <componentElement>
-                <reportElement x="350" y="80" width="130" height="50" uuid="481aeadf-5331-4700-953b-66210536a1b4"/>
-                <jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components"
-                             xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd"
-                             type="3of9" drawText="true" checksumRequired="false">
-                    <jr:codeExpression><![CDATA["1234"]]></jr:codeExpression>
-                </jr:barbecue>
-            </componentElement>
-        </band>
-    </title>
-    <pageHeader>
-        <band splitType="Stretch"/>
-    </pageHeader>
-    <columnFooter>
-        <band height="6" splitType="Stretch">
-            <line>
-                <reportElement positionType="FixRelativeToBottom" x="0" y="3" width="802" height="1"
-                               uuid="fa5e88d5-a011-4e32-8f12-ce923f903111"/>
-                <graphicElement>
-                    <pen lineWidth="0.5" lineColor="#999999"/>
-                </graphicElement>
-            </line>
-        </band>
-    </columnFooter>
-    <summary>
-        <band height="400" splitType="Stretch">
-            <barChart>
-                <chart evaluationTime="Report">
-                    <reportElement x="20" y="20" width="720" height="340" uuid="6c82cadc-8568-46fc-ab34-85c2742feabd"/>
-                    <chartTitle/>
-                    <chartSubtitle/>
-                    <chartLegend/>
-                </chart>
-                <categoryDataset>
-                    <categorySeries>
-                        <seriesExpression><![CDATA[$F{metric_name}]]></seriesExpression>
-                        <categoryExpression><![CDATA[$F{dateTime}]]></categoryExpression>
-                        <valueExpression><![CDATA[$F{count(*)}]]></valueExpression>
-                        <itemHyperlink hyperlinkType="Custom">
-                            <hyperlinkReferenceExpression>
-                                <![CDATA["loc="+$P{BaseDir}+"/SampleReportChild.jrxml&metricName="+$F{metric_name}]]></hyperlinkReferenceExpression>
-                        </itemHyperlink>
-                    </categorySeries>
-                </categoryDataset>
-                <barPlot>
-                    <plot/>
-                    <itemLabel/>
-                    <categoryAxisFormat>
-                        <axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
-                    </categoryAxisFormat>
-                    <valueAxisFormat>
-                        <axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
-                    </valueAxisFormat>
-                </barPlot>
-            </barChart>
-        </band>
-    </summary>
+  <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+  <property name="com.jaspersoft.studio.data.defaultdataadapter" value="MES_DEV - Localhost"/>
+  <property name="com.jaspersoft.studio.report.description" value=""/>
+  <style name="Title" fontName="Times New Roman" fontSize="50" isBold="true"/>
+  <style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+  <style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+  <style name="Detail" fontName="Arial" fontSize="12"/>
+  <style name="Row" mode="Transparent">
+    <conditionalStyle>
+      <conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+      <style backcolor="#E6DAC3"/>
+    </conditionalStyle>
+  </style>
+  <parameter name="BaseDir" class="java.lang.String" isForPrompting="false" evaluationTime="Early">
+    <defaultValueExpression><![CDATA["reporty"]]></defaultValueExpression>
+  </parameter>
+  <queryString language="SQL">
+    <![CDATA[SELECT count(*) as COUNT,
+	class_name,date(date_archived) dateTime
+FROM archive_log 
+	WHERE class_name like '%'
+group by dateTime, class_name
+order by dateTime, class_name]]>
+  </queryString>
+  <field name="COUNT" class="java.lang.Long">
+    <property name="com.jaspersoft.studio.field.label" value="count(*)"/>
+  </field>
+  <field name="class_name" class="java.lang.String">
+    <property name="com.jaspersoft.studio.field.label" value="class_name"/>
+    <property name="com.jaspersoft.studio.field.tree.path" value="metric_summary"/>
+  </field>
+  <field name="dateTime" class="java.lang.String"/>
+  <background>
+    <band splitType="Stretch"/>
+  </background>
+  <title>
+    <band height="136" splitType="Stretch">
+      <staticText>
+        <reportElement style="Title" x="270" y="0" width="390" height="62" uuid="bc1ce1da-8232-46ea-be55-cec4abb986dd"/>
+        <textElement verticalAlignment="Middle"/>
+        <text><![CDATA[Sample Bar Chart]]></text>
+      </staticText>
+      <componentElement>
+        <reportElement x="350" y="80" width="130" height="50" uuid="481aeadf-5331-4700-953b-66210536a1b4"/>
+        <jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components"
+                     xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd"
+                     type="3of9" drawText="true" checksumRequired="false">
+          <jr:codeExpression><![CDATA["1234"]]></jr:codeExpression>
+        </jr:barbecue>
+      </componentElement>
+    </band>
+  </title>
+  <pageHeader>
+    <band splitType="Stretch"/>
+  </pageHeader>
+  <columnFooter>
+    <band height="6" splitType="Stretch">
+      <line>
+        <reportElement positionType="FixRelativeToBottom" x="0" y="3" width="802" height="1"
+                       uuid="fa5e88d5-a011-4e32-8f12-ce923f903111"/>
+        <graphicElement>
+          <pen lineWidth="0.5" lineColor="#999999"/>
+        </graphicElement>
+      </line>
+    </band>
+  </columnFooter>
+  <summary>
+    <band height="400" splitType="Stretch">
+      <barChart>
+        <chart evaluationTime="Report">
+          <reportElement x="20" y="20" width="720" height="340" uuid="6c82cadc-8568-46fc-ab34-85c2742feabd"/>
+          <chartTitle/>
+          <chartSubtitle/>
+          <chartLegend/>
+        </chart>
+        <categoryDataset>
+          <dataset resetType="Report"/>
+          <categorySeries>
+            <seriesExpression><![CDATA[$F{class_name}]]></seriesExpression>
+            <categoryExpression><![CDATA[$F{dateTime}]]></categoryExpression>
+            <valueExpression><![CDATA[$F{COUNT}]]></valueExpression>
+            <itemHyperlink hyperlinkType="Custom">
+              <hyperlinkReferenceExpression>
+                <![CDATA["loc="+$P{BaseDir}+"/SampleReportChild.jrxml&className="+$F{class_name}]]></hyperlinkReferenceExpression>
+            </itemHyperlink>
+          </categorySeries>
+        </categoryDataset>
+        <barPlot>
+          <plot/>
+          <itemLabel/>
+          <categoryAxisFormat>
+            <axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+          </categoryAxisFormat>
+          <valueAxisFormat>
+            <axisFormat labelColor="#000000" tickLabelColor="#000000" axisLineColor="#000000"/>
+          </valueAxisFormat>
+        </barPlot>
+      </barChart>
+    </band>
+  </summary>
 </jasperReport>

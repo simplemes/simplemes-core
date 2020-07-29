@@ -72,73 +72,82 @@ This will allow any user with the ADMIN and SUPERVISOR to view the report.
 To enable some of the framework features such as filter criteria, you should follow some simple
 conventions in your report in the designer:
 
-====
-.Report Name Starts with Domain Name
 
-The report name should start with the core domain object that the report
+* *Reports Folders must be simple text.*
++
+The folders should not have hyphen (-) or underscore (-).  For example:
++
+----
+reports/
+  eframe/
+  core/
+  assy/
+  app/
+----
+
+* *Report Name Starts with Domain Name.*
++
+When possible, the report name should start with the core domain object that the report
 displays.  This is used in the optional <<Report Filter Panel>> created at the top of the report.
 This also helps identify which domain object forms the core of the report.
-====
 
-
-====
-.Report Name for Task Menu Lookup
-
+* *Report Name for Task Menu Define in _messages.properties_*.
++
 The report name is also used in building the entry for the main <<Task Menu>>.
 This allows you to define locale-specific menus/tooltips in the task menu
 for built-in reports.
-
++
 For example, the report _ArchiveLog.jrxml_ can use these _messages.properties_ entries:
-
-  taskMenu.ArchiveLog.label=Archive Log Report
-  taskMenu.ArchiveLog.tooltip=Archive Log Report
-
++
+----
+taskMenu.ArchiveLog.label=Archive Log Report
+taskMenu.ArchiveLog.tooltip=Archive Log Report
+----
++
 If the labels do not exist in the _messages.properties_ file, then the file name
 (e.g. ArchiveLog) will be used for the menu and tooltip.
-====
 
 
-====
-.Parameter Name Matches Field
-
+* *Parameter Name Matches Field*
++
 <<Report Parameters>> are used with many reports to help filter the report to the specific
 records the user is interested in.  The framework provides a way for the user to change them
 and re-run the report.  The framework can use the standard input fields to be consistent with
 the application.
-
++
 If the parameter name matches a field in the domain object, then the framework will the input widgets
 for that field when needed. This includes use of enumeration drop-downs for filtering and
 date/time fields.
-
++
 For example, the report _ArchiveLog.jrxml_ might use the `className` parameter to provide a
 string input field with the correct labels in the <<Report Filter Panel>>.
-====
 
-====
-.Date Ranges
 
+* *Date Ranges*
++
 Many reports use date ranges to filter their output.  These are implemented as <<Report Parameters>>
 with specific names:
-
-  reportTimeInterval
-  startDate/endDate
-     or
-  startDateTime/endDateTime
-
++
+----
+reportTimeInterval
+startDate/endDate
+   or
+startDateTime/endDateTime
+----
++
 The framework will provide filter fields with drop-downs to help the user select the right date/time
 range.
-
++
 The report will use the `reportTimeInterval` as a enum drop-down to select a generic date/time range
 (e.g. today, this week, etc).  If the interval is _'CUSTOM_RANGE'_, then the date/time range
 logic will let the user select a start and end date in the filter panel.
-
++
 If the `reportTimeInterval` is used, then the start and end date/times will be supressed in the
 filter panel.  These values are ignored by the report logic.
-
++
 Other parameter names may be used, but the special date range drop-downs will not be generated.
 In that case, simple date/time input fields will be used.
 
-====
 
 ====== ReportUtils
 

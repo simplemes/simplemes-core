@@ -20,6 +20,12 @@ import java.util.regex.Pattern
 class ClassPathScanner {
 
   /**
+   * The factory to build a class path scanner.  This allows tests to provide specific results
+   * from the scan() method.
+   */
+  static ClassPathScannerFactory factory = new ClassPathScannerFactory()
+
+  /**
    * The path format to search for.  Supports only the format: 'folder/*.ext'.
    */
   String searchSpec
@@ -53,9 +59,9 @@ class ClassPathScanner {
   /**
    * Scans the classpath for matching resources.
    *
-   * @return The resource URLs.
+   * @return The resource URLs or relative paths.
    */
-  List<URL> scan() {
+  List scan() {
     def res = []
 
     def resources = classLoader.getResources(getRootPath())
@@ -63,7 +69,7 @@ class ClassPathScanner {
       res.addAll(scanResource(r))
     }
 
-
+    log.trace("scan(): res = {}", res)
     return res
   }
 
@@ -81,7 +87,7 @@ class ClassPathScanner {
    * @param url The resource to check.
    * @return Any sub-folder resources found.
    */
-  List<URL> scanResource(URL url) {
+  List scanResource(URL url) {
     def res = []
     log.trace("scanResource(): url = {}", url)
 
@@ -99,7 +105,7 @@ class ClassPathScanner {
    * @param folder The folder to check.
    * @return The matching resources found in the folder.
    */
-  List<URL> scanFileFolder(File folder) {
+  List scanFileFolder(File folder) {
     def res = []
     for (f in folder.listFiles()) {
       if (f.directory) {
@@ -121,7 +127,7 @@ class ClassPathScanner {
    * @param url The URL of the jar file to check.
    * @return The matching resources found in the folder.
    */
-  List<URL> scanJarFolder(File file) {
+  List scanJarFolder(File file) {
     def res = []
     def jarFile = new JarFile(file)
     for (entry in jarFile.entries()) {
@@ -179,6 +185,22 @@ class ClassPathScanner {
       return matches[0]
     }
     return null
+  }
+
+}
+
+/**
+ * A simple factory to build a class path scanner.
+ */
+class ClassPathScannerFactory {
+
+  /**
+   * Builds a scanner.
+   * @param path The path for the scanner.
+   * @return The scanner.
+   */
+  ClassPathScanner buildScanner(String path) {
+    return new ClassPathScanner(path)
   }
 
 }

@@ -18,17 +18,17 @@ class ClassPathScannerSpec extends BaseSpecification {
     def list = scanner.scan()*.toString()
 
     then: 'the list contains the core report'
-    list.contains('reports/ArchiveLog.jrxml')
+    list.contains('reports/eframe/ArchiveLog.jrxml')
     list.contains('reports/sample/SampleReport.jrxml')
   }
 
   def "verify that scan works without wildcard"() {
     when: 'a scan is preformed'
-    def scanner = new ClassPathScanner('reports/ArchiveLog.jrxml')
+    def scanner = new ClassPathScanner('reports/eframe/ArchiveLog.jrxml')
     def list = scanner.scan()*.toString()
 
     then: 'the list contains the core report'
-    list.contains('reports/ArchiveLog.jrxml')
+    list.contains('reports/eframe/ArchiveLog.jrxml')
     !list.contains('reports/sample/SampleReport.jrxml')
   }
 
@@ -39,7 +39,20 @@ class ClassPathScannerSpec extends BaseSpecification {
 
     then: 'the list contains the URL from the .jar file and can be opened as a stream'
     def url = list.find { it.toString().endsWith('io/micronaut/data/jdbc/annotation/JdbcRepository.class') }
-    url.openStream()
+    def stream = url.openStream()
+    stream.close()
+  }
+
+  def "verify that scan works for sub folders in a .jar file"() {
+    when: 'a scan is preformed'
+    def scanner = new ClassPathScanner('io/micronaut/data/*.class')
+    def list = scanner.scan()
+    println "list = $list"
+
+    then: 'the list contains the URL from the .jar file and can be opened as a stream'
+    def url = list.find { it.toString().endsWith('io/micronaut/data/jdbc/annotation/JdbcRepository.class') }
+    def stream = url.openStream()
+    stream.close()
   }
 
   def "verify that scanner detects bad search path"() {
@@ -59,6 +72,37 @@ class ClassPathScannerSpec extends BaseSpecification {
     'gibberish*.jrxml' | _
     ''                 | _
     null               | _
+  }
+
+  def "verify that scanner factory works"() {
+    when: 'a scan is preformed'
+    def scanner = ClassPathScanner.factory.buildScanner('io/micronaut/data/jdbc/annotation/*.class')
+    def list = scanner.scan()
+
+    then: 'the list contains the URL from the .jar file and can be opened as a stream'
+    def url = list.find { it.toString().endsWith('io/micronaut/data/jdbc/annotation/JdbcRepository.class') }
+    def stream = url.openStream()
+    stream.close()
+  }
+
+  def "verify that scanner factory can be replaced with a mock"() {
+    given: 'a mocked scanner'
+    List<URL> results = [new URL('file:abc'), new URL('file:def')]
+    def mockScanner = Mock(ClassPathScanner)
+    def mockFactory = Mock(ClassPathScannerFactory)
+    ClassPathScanner.factory = mockFactory
+    1 * mockScanner.scan() >> results
+    1 * mockFactory.buildScanner(_) >> mockScanner
+
+    when: 'a scan is preformed'
+    def scanner = ClassPathScanner.factory.buildScanner('io/micronaut/data/jdbc/annotation/*.class')
+    def list = scanner.scan()
+
+    then: 'the list contains the URL from the .jar file and can be opened as a stream'
+    list == results
+
+    cleanup:
+    ClassPathScanner.factory = new ClassPathScannerFactory()
   }
 
 }

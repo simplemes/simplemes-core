@@ -5,6 +5,7 @@
 package org.simplemes.eframe.reports
 
 import org.simplemes.eframe.misc.ClassPathScanner
+import org.simplemes.eframe.misc.ClassPathScannerFactory
 import org.simplemes.eframe.test.BaseSpecification
 
 /**
@@ -32,7 +33,7 @@ class ReportHelperSpec extends BaseSpecification {
 
     then: 'the reports list contains the one shipped with the module'
     reports.size() > 0
-    reports.contains('reports/ArchiveLog.jrxml')
+    reports.contains('reports/eframe/ArchiveLog.jrxml')
   }
 
   def "verify that determineReportBaseName extracts the correct report base name"() {
@@ -46,7 +47,28 @@ class ReportHelperSpec extends BaseSpecification {
     '/abc/reports/xyz.jrxml' | 'xyz'
     ''                       | ''
     null                     | ''
+  }
 
+  def "verify that determineBuiltinReports filters out the reports that start with _"() {
+    given: 'a mocked scanner'
+    List results = [new URL('jar:file:/C:/Users/mes-core-0.5.jar!/reports/detail/ProductionForDate.jrxml'),
+                    new URL('jar:file:/C:/Users/mes-core-0.5.jar!/reports/detail/_ProductionSubReport.jrxml'),
+                    'reports/app/_TravellerOperations.jrxml']
+    def mockScanner = Mock(ClassPathScanner)
+    def mockFactory = Mock(ClassPathScannerFactory)
+    ClassPathScanner.factory = mockFactory
+    1 * mockScanner.scan() >> results
+    1 * mockFactory.buildScanner(_) >> mockScanner
+
+    when: 'the reports are found'
+    def reports = ReportHelper.instance.determineBuiltinReports()
+
+    then: 'the reports list contains the one shipped with the module'
+    reports.size() == 1
+    reports.contains('jar:file:/C:/Users/mes-core-0.5.jar!/reports/detail/ProductionForDate.jrxml')
+
+    cleanup:
+    ClassPathScanner.factory = new ClassPathScannerFactory()
   }
 
   def "verify that getInputStream can find the report from the built-in reports folder"() {

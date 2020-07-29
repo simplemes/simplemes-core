@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.reports
 
 import ch.qos.logback.classic.Level
@@ -18,10 +22,6 @@ import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
 import java.sql.Timestamp
-
-/*
- * Copyright (c) 2018 Simple MES, LLC.  All rights reserved.  See license.txt for license terms.
- */
 
 /**
  * Tests report engine access to external report engine.
@@ -505,7 +505,7 @@ class ReportEngineSpec extends BaseSpecification {
   def "verify that the hyperlink extension works"() {
     given: 'a compiled/filled report'
     Report report = ReportEngine.instance.compile(new Report(SAMPLE_PARENT_REPORT))
-    report.data = [[metric_name: 'ABC-XYZ', 'count(*)': 255L, 'avg(average)': 12.37]]
+    report.data = [[ordr: 'ABC-XYZ', 'COUNT': 255L, 'AVERAGE': 12.37]]
     ReportEngine.instance.fill(report)
 
     when: 'the HTML is exported'
@@ -522,7 +522,7 @@ class ReportEngineSpec extends BaseSpecification {
 
     and: 'the hyperlink to the child record is correct'
     def hyperlinkText = TextUtils.findLine(page, 'ABC-XYZ')
-    hyperlinkText.contains('href="/report?loc=reports/sample/SampleReportChild.jrxml&amp;metricName=ABC-XYZ"')
+    hyperlinkText.contains('href="/report?loc=reports/sample/SampleReportChild.jrxml&amp;ordr=ABC-XYZ"')
   }
 
   def "verify that exportToHTML compiles and fills a report with sub-reports correctly"() {

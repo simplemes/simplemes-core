@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.reports
 
 import net.sf.jasperreports.engine.JRExpression
@@ -13,10 +17,6 @@ import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.MockPreferenceHolder
 import org.simplemes.eframe.test.MockPrincipal
 import org.simplemes.eframe.test.UnitTestUtils
-
-/*
- * Copyright (c) 2018 Simple MES, LLC.  All rights reserved.  See license.txt for license terms.
- */
 
 /**
  * Tests.
@@ -271,6 +271,16 @@ class ReportSpec extends BaseSpecification {
     resourceBundle.baseBundleName == "reports/sample/sample_report"
     params.REPORT_LOCALE == GlobalUtils.requestLocale
     params.REPORT_MAX_COUNT == EFrameConfiguration.REPORT_ROW_COUNT
+  }
+
+  def "verify that getBundleRelativePath handles relative bundle location in a jar file format URL"() {
+    given: 'a ReportDetails with the folder and resource names filled in'
+    // Needs to use a report sample report so the resource bundle can be found
+    //jar:file:/C:/Users/mph/.m2/repository/org/simplemes/mes-core/0.5/mes-core-0.5.jar!/reports/mes_labels, locale en_US
+    def reportDetails = new Report("jar:file:/C:/Users/simplemes/mes-core-0.5.jar!/reports/test.jrxml", [resourceBundleName: 'sample_report'])
+
+    expect: 'the getBundleRelativePath builds the parameter values'
+    reportDetails.getBundleRelativePath() == 'reports/sample_report'
   }
 
   def "verify that buildBaseParametersForReport uses the current locale correctly"() {

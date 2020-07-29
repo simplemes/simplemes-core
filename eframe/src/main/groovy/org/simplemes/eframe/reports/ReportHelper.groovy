@@ -28,10 +28,25 @@ class ReportHelper {
 
   /**
    * Finds the list of available built-in reports from the file system and/or the class path.
+   * Ignores .jrxml files that start with underscore (_).
    * @return The list of location strings.
    */
   List<String> determineBuiltinReports() {
-    return new ClassPathScanner('reports/*.jrxml').scan()*.toString()
+    def list = ClassPathScanner.factory.buildScanner('reports/*.jrxml').scan()*.toString()
+
+    // Only use the entries that the basic file name starts with _.
+    def res = []
+    for (String s in list) {
+      def loc = s.lastIndexOf('/')
+      if (loc >= 0) {
+        def fileName = s[(loc + 1)..-1]
+        if (!fileName.startsWith('_')) {
+          res << s
+        }
+      }
+    }
+
+    return res
   }
 
   /**

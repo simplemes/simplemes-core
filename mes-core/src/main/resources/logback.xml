@@ -27,6 +27,7 @@
   <logger name="org.simplemes.eframe.domain" level="warn"/>
   <logger name="org.simplemes.eframe.test" level="warn"/>
   <logger name="org.simplemes.eframe.preference" level="warn"/>
+  <logger name="org.simplemes.eframe.reports" level="warn"/>
   <logger name="org.simplemes.eframe" level="warn"/>
 
   <logger name="org.simplemes.mes.demand" level="warn"/>

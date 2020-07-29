@@ -1,0 +1,303 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.13.0.final using JasperReports Library version 6.13.0-46ada4d1be8f3c5985fd0b6146f3ed44caed6f05  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="OrderHistory" pageWidth="855" pageHeight="592" orientation="Landscape" columnWidth="815" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" resourceBundle="mes_app_labels" uuid="c304f074-9ab6-48d0-a871-1fc85cfa7620">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w1" value="528"/>
+	<property name="com.jaspersoft.studio.property.dataset.dialog.DatasetDialog.sash.w2" value="458"/>
+	<property name="com.jaspersoft.studio.report.description" value=""/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MES_DEV - Localhost"/>
+	<parameter name="BaseDir" class="java.lang.String" isForPrompting="false" evaluationTime="Early">
+		<defaultValueExpression><![CDATA["C:\\Users\\mph\\JaspersoftWorkspace\\MyReports\\simplemes\\app"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="ordr" class="java.lang.String">
+		<defaultValueExpression><![CDATA["M1001"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="lsn" class="java.lang.String">
+		<defaultValueExpression><![CDATA["%"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SubReportComponents" class="java.lang.Object" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{BaseDir}+"/_OrderHistoryComponents.jrxml"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SubReportLSNs" class="java.lang.Object" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{BaseDir}+ "/_OrderHistoryLSNs.jrxml"]]></defaultValueExpression>
+	</parameter>
+	<parameter name="SubReportActions" class="java.lang.Object" isForPrompting="false">
+		<defaultValueExpression><![CDATA[$P{BaseDir}+ "/_OrderHistoryActions.jrxml"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT ordr.ordr,
+	ordr.qty_to_build,
+	product.product,
+	product.title,
+	ordr.uuid,
+	ordr.date_released,
+	ordr.date_completed,
+	ordr.qty_done,
+	ordr.lsn_tracking_option
+FROM ordr
+	LEFT JOIN product ON 
+	 product.uuid = ordr.product_id 
+WHERE 
+	 ordr.ordr = $P{ordr}]]>
+	</queryString>
+	<field name="ordr" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="ordr"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ordr"/>
+	</field>
+	<field name="qty_to_build" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="qty_to_build"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ordr"/>
+	</field>
+	<field name="product" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="product"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="product"/>
+	</field>
+	<field name="title" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="title"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="product"/>
+	</field>
+	<field name="uuid" class="java.util.UUID">
+		<property name="com.jaspersoft.studio.field.label" value="uuid"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ordr"/>
+	</field>
+	<field name="date_released" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="date_released"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ordr"/>
+	</field>
+	<field name="date_completed" class="java.sql.Timestamp">
+		<property name="com.jaspersoft.studio.field.label" value="date_completed"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ordr"/>
+	</field>
+	<field name="qty_done" class="java.math.BigDecimal">
+		<property name="com.jaspersoft.studio.field.label" value="qty_done"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ordr"/>
+	</field>
+	<field name="lsn_tracking_option" class="java.lang.String">
+		<property name="com.jaspersoft.studio.field.label" value="lsn_tracking_option"/>
+		<property name="com.jaspersoft.studio.field.tree.path" value="ordr"/>
+	</field>
+	<background>
+		<band/>
+	</background>
+	<title>
+		<band height="150">
+			<textField>
+				<reportElement x="285" y="33" width="251" height="30" forecolor="#00779B" uuid="7e6b3a6d-d500-443f-9730-b6bc4fe14b73"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="20" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{orderHistory.title}+"X"]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="10" y="17" width="63" height="63" uuid="f51099ba-a2c1-4080-8b53-0aafc1b1086b"/>
+				<imageExpression><![CDATA[$P{BaseDir}+"/logoSmall.png"]]></imageExpression>
+			</image>
+			<textField>
+				<reportElement x="670" y="47" width="140" height="20" uuid="d7f2998f-cfff-496c-ab3f-fba4fba1968b"/>
+				<textElement textAlignment="Left" verticalAlignment="Top">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ordr}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="86" width="824" height="1" uuid="88218708-c54e-42e4-b1c2-bde75e4c7543"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="824" y="4" width="1" height="82" uuid="76a62a4c-e57d-4368-a4bb-6a78775994ea"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="0" y="4" width="1" height="82" uuid="0c7028a4-fc60-44ac-93c7-4b46ca3734fe"/>
+			</line>
+			<line>
+				<reportElement x="0" y="4" width="824" height="1" uuid="efd6ad41-0175-470f-9f1e-bed3dfe5b44f"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="0" y="95" width="1" height="52" uuid="72ae829e-41bc-42cf-a25c-461f5043a793"/>
+			</line>
+			<line>
+				<reportElement positionType="FixRelativeToBottom" x="0" y="146" width="824" height="1" uuid="9de69848-4ee4-477c-ae80-5dbdefb329cc"/>
+			</line>
+			<line>
+				<reportElement positionType="Float" x="824" y="95" width="1" height="52" uuid="71a1efc9-4eef-4e6c-a7c3-74630125c8b9"/>
+			</line>
+			<line>
+				<reportElement x="0" y="95" width="824" height="1" uuid="65bd45f7-1f06-40bc-93e8-dbaa2036e04b"/>
+			</line>
+			<componentElement>
+				<reportElement x="670" y="20" width="140" height="25" uuid="c6ef9f37-3278-47bb-a254-545ff27296f2"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39 (Extended)" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$P{ordr}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+			<textField>
+				<reportElement x="16" y="99" width="92" height="20" uuid="e5d5d169-a093-4f20-b68d-1176c309b5ad"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{product.label}+":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="280" y="99" width="92" height="20" uuid="09f2a042-4d9c-4e3f-b893-6b192d41502a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{quantity.label}+":"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="381" y="99" width="100" height="20" uuid="c3541355-737f-4f0a-9450-c3ffe1cf331a"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qty_to_build}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="117" y="99" width="100" height="20" uuid="439febce-8431-4568-8398-148a896ff849"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{product}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="541" y="99" width="141" height="20" uuid="e19f8d33-bd1b-437c-86f1-57944fa12280"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{dateReleased.label}+":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="691" y="99" width="119" height="20" uuid="d52fea35-53e9-4ce9-8f13-18427e7ef174"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date_released}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="541" y="121" width="141" height="20" uuid="2f32deb3-6c25-4d45-aa56-7bf1959dd957"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{dateCompleted.label}+":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="691" y="121" width="119" height="20" uuid="eb1be8ca-b90b-42b9-9805-2461c43782d7"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{date_completed}!=null ? $F{date_completed} : ""]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="250" y="121" width="122" height="20" uuid="f2df95ef-1e33-481c-b3db-9bc148e8208a"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{quantityDone.label}+":"]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0.00#">
+				<reportElement x="381" y="121" width="100" height="20" uuid="55c80407-8fef-4bbf-9e98-9bf021f72316"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qty_done}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="17" y="121" width="92" height="20" uuid="41dfec64-1921-4ba8-99c5-250074cf49d8"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{title.label}+":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="118" y="121" width="100" height="20" uuid="beb5dc18-0554-4531-a4b2-f0e35ab38588"/>
+				<textElement verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="20">
+			<textField>
+				<reportElement x="350" y="1" width="140" height="16" uuid="c5af2441-8342-48c8-acb6-b220483ee057"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ordr}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band/>
+	</columnHeader>
+	<detail>
+		<band height="26">
+			<subreport>
+				<reportElement x="12" y="4" width="228" height="20" uuid="4555c36f-12ed-4d04-a6a7-cc96892c1f44"/>
+				<subreportParameter name="order_id">
+					<subreportParameterExpression><![CDATA[$F{uuid}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SubReportLSNs}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="26">
+			<subreport>
+				<reportElement x="10" y="6" width="200" height="20" uuid="7500fa61-3d9c-43f9-b4f2-e8b5234e1291"/>
+				<subreportParameter name="order_id">
+					<subreportParameterExpression><![CDATA[$F{uuid}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SubReportComponents}]]></subreportExpression>
+			</subreport>
+		</band>
+		<band height="26">
+			<subreport>
+				<reportElement x="10" y="6" width="200" height="20" uuid="df26b239-c12d-4504-9f9c-99505fb69303"/>
+				<subreportParameter name="order_id">
+					<subreportParameterExpression><![CDATA[$F{uuid}]]></subreportParameterExpression>
+				</subreportParameter>
+				<subreportParameter name="REPORT_RESOURCE_BUNDLE">
+					<subreportParameterExpression><![CDATA[$P{REPORT_RESOURCE_BUNDLE}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA[$P{SubReportActions}]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<columnFooter>
+		<band/>
+	</columnFooter>
+	<pageFooter>
+		<band height="16">
+			<textField>
+				<reportElement mode="Opaque" x="1" y="2" width="779" height="13" backcolor="#E6E6E6" uuid="3b5ef905-6bb2-4c1a-98d2-3381f0e098d8"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$R{page.label}+" "+$V{PAGE_NUMBER}+" "+$R{of.label}]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement mode="Opaque" x="780" y="2" width="40" height="13" backcolor="#E6E6E6" uuid="57ad2da5-d0f1-4c01-88a9-b81f8ff5c5e9"/>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField pattern="EEEEE dd MMMMM yyyy">
+				<reportElement x="2" y="2" width="100" height="13" uuid="fe256852-9ed1-4ef5-b303-dc936ad818e9"/>
+				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="338" y="3" width="158" height="13" uuid="c67b67e4-943d-4645-9a03-3d2a142b12c9"/>
+				<textElement textAlignment="Center" verticalAlignment="Top">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{ordr}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageFooter>
+	<summary>
+		<band/>
+	</summary>
+</jasperReport>

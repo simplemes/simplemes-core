@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Created with Jaspersoft Studio version 6.13.0.final using JasperReports Library version 6.13.0-46ada4d1be8f3c5985fd0b6146f3ed44caed6f05  -->
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="_TravellerComponents" pageWidth="555" pageHeight="200" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" resourceBundle="mes_app_labels" uuid="2e99b2b4-9ae4-474e-96bd-fcea79ac90d0">
+	<property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="267"/>
+	<property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="721"/>
+	<property name="com.jaspersoft.studio.data.defaultdataadapter" value="MES_DEV - Localhost"/>
+	<property name="com.jaspersoft.studio.unit." value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageHeight" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.pageWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.topMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.bottomMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.leftMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.rightMargin" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnWidth" value="pixel"/>
+	<property name="com.jaspersoft.studio.unit.columnSpacing" value="pixel"/>
+	<parameter name="order_id" class="java.lang.String">
+		<defaultValueExpression><![CDATA["dd0eef3f-e11f-4379-aba1-d76493bccd49"]]></defaultValueExpression>
+	</parameter>
+	<queryString language="SQL">
+		<![CDATA[SELECT sequence, qty, component_id, product.product, product.title
+FROM order_bom_component obc
+JOIN ordr ON ordr.uuid=obc.order_id
+JOIN product ON product.uuid=obc.component_id
+WHERE ordr.uuid=  uuid($P{order_id} )
+ORDER BY sequence]]>
+	</queryString>
+	<field name="sequence" class="java.lang.Integer"/>
+	<field name="qty" class="java.math.BigDecimal"/>
+	<field name="component_id" class="java.lang.String"/>
+	<field name="product" class="java.lang.String"/>
+	<field name="title" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band splitType="Stretch"/>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="60" splitType="Stretch">
+			<textField>
+				<reportElement x="25" y="37" width="100" height="17" uuid="ba5b6d0d-ea20-4920-a7ee-a7abd94ec802"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{component.label}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="10" y="56" width="500" height="1" forecolor="#4B88DE" uuid="42d39f66-eb53-4e93-bd3a-5a5669113da8"/>
+				<graphicElement>
+					<pen lineWidth="2.0" lineColor="#00779B"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="130" y="37" width="100" height="17" uuid="f405e8bf-3193-46c9-b28f-29a99b000a64">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4b2d0d58-50cc-434b-8fb1-2df007843c65"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{title.label}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="237" y="37" width="100" height="17" uuid="cca43914-3b9e-4a85-bc1c-3f0e39e774fc">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="045fa477-929f-4aeb-85db-c2170bb84482"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{quantity.label}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="10" y="4" width="200" height="24" forecolor="#00779B" uuid="390e0f58-a68a-4afb-a832-253484327395"/>
+				<textElement textAlignment="Left" verticalAlignment="Middle">
+					<font size="16" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{componentsRequired.label}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="350" y="37" width="100" height="17" uuid="90fad0d9-d9a2-44d2-bb1e-dbd3a2012d23"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{component.label}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="36" splitType="Stretch">
+			<textField>
+				<reportElement x="22" y="4" width="100" height="20" uuid="07d37abb-b3c3-4abd-a37c-617dc99da490">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d41ad5da-ab2a-48ff-86cb-c0f7f6293f6a"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{product}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="130" y="4" width="100" height="20" uuid="b79205e3-b93c-4806-8119-19e30c30448b">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4b2d0d58-50cc-434b-8fb1-2df007843c65"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="237" y="4" width="100" height="20" uuid="cea6c616-856b-4c01-aad5-4cf40c8da6f9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="045fa477-929f-4aeb-85db-c2170bb84482"/>
+				</reportElement>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
+			</textField>
+			<componentElement>
+				<reportElement x="348" y="4" width="140" height="20" uuid="017e842c-0179-4e39-8c29-038adc0fc3bc"/>
+				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39 (Extended)" drawText="false" checksumRequired="false">
+					<jr:codeExpression><![CDATA[$F{product}]]></jr:codeExpression>
+				</jr:barbecue>
+			</componentElement>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

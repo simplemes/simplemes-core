@@ -290,11 +290,30 @@ class Report {
     res.REPORT_LOCALE = GlobalUtils.requestLocale
     res.REPORT_MAX_COUNT = effectiveRowLimit
     if (resourceBundleName) {
-      res.REPORT_RESOURCE_BUNDLE = ResourceBundle.getBundle(FileUtils.resolveRelativePath("$reportFolder/$resourceBundleName"))
+      res.REPORT_RESOURCE_BUNDLE = ResourceBundle.getBundle(getBundleRelativePath())
     }
 
     return res
   }
+
+  /**
+   * Returns the relative path for a bundle reference.  Will adjust the path to a resource classloader relative
+   * path if from a .jar file.
+   * @return The adjusted bundle path to use to load the bundle.
+   */
+  String getBundleRelativePath() {
+    if (reportFolder.startsWith("jar:")) {
+      def s = "$reportFolder/$resourceBundleName"
+      def loc = s.indexOf("!/")
+      if (loc >= 0) {
+        s = s[(loc + 2)..-1]
+      }
+      return FileUtils.resolveRelativePath(s)
+    } else {
+      return FileUtils.resolveRelativePath("$reportFolder/$resourceBundleName")
+    }
+  }
+
 
   /**
    * Determines the effective report parameters to use.  Check the URL (controller) params and the user preferences as a

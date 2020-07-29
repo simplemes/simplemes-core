@@ -1,280 +1,277 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!-- Created with Jaspersoft Studio version 6.10.0.final using JasperReports Library version 6.10.0-unknown  -->
+<!--
+  ~ Copyright (c) Michael Houston 2020. All rights reserved.
+  -->
+
+<!-- Created with Jaspersoft Studio version 6.13.0.final using JasperReports Library version 6.13.0-46ada4d1be8f3c5985fd0b6146f3ed44caed6f05  -->
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
               xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
               xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
               name="SampleReport" pageWidth="595" pageHeight="842" columnWidth="535" leftMargin="20" rightMargin="20"
               topMargin="20" bottomMargin="20" resourceBundle="sample_report"
               uuid="ced95029-b569-4027-895c-af2843a4e088">
-    <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
-    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="Eframe"/>
-    <property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="310"/>
-    <property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="679"/>
-    <property name="org.simplemes.roles" value="ADMIN"/>
-    <style name="Title" fontName="Times New Roman" fontSize="50" isBold="true"/>
-    <style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
-    <style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
-    <style name="Detail" fontName="Arial" fontSize="12"/>
-    <style name="Row" mode="Transparent">
-        <conditionalStyle>
-            <conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
-            <style backcolor="#E6DAC3"/>
-        </conditionalStyle>
-    </style>
-    <parameter name="BaseDir" class="java.lang.String" isForPrompting="false" evaluationTime="Early">
-        <defaultValueExpression><![CDATA["C:/Users/mph/JaspersoftWorkspace/MyReports"]]></defaultValueExpression>
-    </parameter>
-    <parameter name="name" class="java.lang.String">
-        <defaultValueExpression><![CDATA["%"]]></defaultValueExpression>
-    </parameter>
-    <parameter name="startDateTime" class="java.util.Date">
-        <defaultValueExpression><![CDATA[new java.util.Date()]]></defaultValueExpression>
-    </parameter>
-    <parameter name="endDateTime" class="java.util.Date">
-        <defaultValueExpression><![CDATA[new java.util.Date()]]></defaultValueExpression>
-    </parameter>
-    <parameter name="reportTimeInterval" class="java.lang.String">
-        <defaultValueExpression><![CDATA["TODAY"]]></defaultValueExpression>
-    </parameter>
-    <parameter name="reportDate" class="java.util.Date">
-        <property name="sequence" value="1"/>
-        <defaultValueExpression><![CDATA[new java.util.Date()]]></defaultValueExpression>
-    </parameter>
-    <queryString language="SQL">
-        <![CDATA[select * from  all_fields_domain  where name like  $P{name}]]>
-    </queryString>
-    <field name="name" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.label" value="metric_name"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="metric_summary"/>
-    </field>
-    <field name="date_created" class="java.sql.Timestamp">
-        <property name="com.jaspersoft.studio.field.label" value="date_created"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="metric_summary"/>
-    </field>
-    <field name="title" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.label" value="average"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="metric_summary"/>
-    </field>
-    <field name="notes" class="java.lang.String">
-        <property name="com.jaspersoft.studio.field.label" value="sample_count"/>
-        <property name="com.jaspersoft.studio.field.tree.path" value="metric_summary"/>
-    </field>
-    <field name="qty" class="java.math.BigDecimal"/>
-    <field name="count" class="java.lang.Integer"/>
-    <field name="due_date" class="java.util.Date"/>
-    <background>
-        <band splitType="Stretch"/>
-    </background>
-    <title>
-        <band height="146" splitType="Stretch">
-            <property name="com.jaspersoft.studio.unit.height" value="px"/>
-            <image>
-                <reportElement x="0" y="0" width="164" height="126" uuid="ddc15723-2728-421f-b95e-2df9faf64ce1"/>
-                <imageExpression><![CDATA[$P{BaseDir}+"/coffee.jpg"]]></imageExpression>
-            </image>
-            <staticText>
-                <reportElement style="Title" x="170" y="0" width="263" height="62"
-                               uuid="1a652692-054a-40f3-ade5-68d8da36626d"/>
-                <textElement verticalAlignment="Middle">
-                    <font fontName="DejaVu Sans" size="26"/>
-                </textElement>
-                <text><![CDATA[Sample Report]]></text>
-            </staticText>
-            <staticText>
-                <reportElement style="SubTitle" x="219" y="62" width="196" height="22"
-                               uuid="88d4231e-f014-4b0d-b871-1737ba63a1ae"/>
-                <textElement>
-                    <font fontName="DejaVu Sans"/>
-                </textElement>
-                <text><![CDATA[AllFieldsDomain Records]]></text>
-            </staticText>
-            <image>
-                <reportElement x="433" y="-115" width="267" height="209" uuid="5d64e5b3-07bb-48ab-89dc-15c0c46bb19a"/>
-                <imageExpression><![CDATA[$P{BaseDir}+"/coffee_stain.png"]]></imageExpression>
-            </image>
-            <textField>
-                <reportElement x="180" y="90" width="372" height="56" uuid="201398cf-d8bb-4db3-94e0-7766e8722945"/>
-                <textFieldExpression>
-                    <![CDATA["Parameter: "+$P{name}+" Start: "+$P{startDateTime}+" End: "+$P{endDateTime}+" Interval: "+$P{reportTimeInterval}+" reportDate: "+$P{reportDate}+"Lookup:"+$R{report.title}]]></textFieldExpression>
-            </textField>
-        </band>
-    </title>
-    <pageHeader>
-        <band splitType="Stretch"/>
-    </pageHeader>
-    <columnHeader>
-        <band height="20" splitType="Stretch">
-            <line>
-                <reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1"
-                               uuid="1a61a836-d137-48b1-ad67-6ff64600bf93"/>
-                <graphicElement>
-                    <pen lineWidth="0.5" lineColor="#999999"/>
-                </graphicElement>
-            </line>
-            <staticText>
-                <reportElement style="Column header" x="0" y="0" width="138" height="15" forecolor="#736343"
-                               uuid="78be2daa-c9de-4e51-9296-fabdcc137592">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                              value="5d19e823-5013-4cb3-82c6-4662c6e6691e"/>
-                </reportElement>
-                <textElement>
-                    <font fontName="DejaVu Sans"/>
-                </textElement>
-                <text><![CDATA[name]]></text>
-            </staticText>
-            <staticText>
-                <reportElement style="Column header" x="138" y="0" width="60" height="15" forecolor="#736343"
-                               uuid="9865a675-8211-416e-9e39-f95bf30bc7b2">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                              value="c88111b3-9e36-40d1-8169-9a342a120d87"/>
-                </reportElement>
-                <textElement>
-                    <font fontName="DejaVu Sans"/>
-                </textElement>
-                <text><![CDATA[qty]]></text>
-            </staticText>
-            <staticText>
-                <reportElement style="Column header" x="276" y="0" width="138" height="15" forecolor="#736343"
-                               uuid="bf6e8bd6-3cbc-44ad-9ca6-173541c5ad95">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                              value="ee9c77b7-bba2-4c00-9540-2c6bfe659153"/>
-                </reportElement>
-                <textElement>
-                    <font fontName="DejaVu Sans"/>
-                </textElement>
-                <text><![CDATA[title]]></text>
-            </staticText>
-            <staticText>
-                <reportElement style="Column header" x="414" y="0" width="138" height="15" forecolor="#736343"
-                               uuid="7755cc2a-8ddd-480c-953f-b092d9ffba89">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                              value="ed482343-0793-4cb4-a025-97b1c2be4e4c"/>
-                </reportElement>
-                <textElement>
-                    <font fontName="DejaVu Sans"/>
-                </textElement>
-                <text><![CDATA[Due Date]]></text>
-            </staticText>
-            <staticText>
-                <reportElement style="Column header" x="210" y="0" width="60" height="15" forecolor="#736343"
-                               uuid="7c74046d-cce0-4c58-8e02-646016559c0a">
-                    <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                              value="c88111b3-9e36-40d1-8169-9a342a120d87"/>
-                </reportElement>
-                <textElement>
-                    <font fontName="DejaVu Sans"/>
-                </textElement>
-                <text><![CDATA[count]]></text>
-            </staticText>
-        </band>
-    </columnHeader>
-    <detail>
-        <band height="15" splitType="Stretch">
-            <frame>
-                <reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="15"
-                               uuid="a98495d8-3c8d-4fa0-81f5-30c3efc2f766"/>
-                <textField isStretchWithOverflow="true">
-                    <reportElement style="Detail" x="0" y="0" width="138" height="15"
-                                   uuid="def47489-3b6e-44a6-b0d9-114eb14b778d">
-                        <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                                  value="5d19e823-5013-4cb3-82c6-4662c6e6691e"/>
-                    </reportElement>
-                    <textElement>
-                        <font fontName="DejaVu Sans"/>
-                    </textElement>
-                    <textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
-                </textField>
-                <textField isStretchWithOverflow="true">
-                    <reportElement style="Detail" x="138" y="0" width="60" height="15"
-                                   uuid="116c7ce8-5918-47e8-a2ca-50b2107986e6">
-                        <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                                  value="c88111b3-9e36-40d1-8169-9a342a120d87"/>
-                    </reportElement>
-                    <textElement>
-                        <font fontName="DejaVu Sans"/>
-                    </textElement>
-                    <textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
-                </textField>
-                <textField isStretchWithOverflow="true">
-                    <reportElement style="Detail" x="276" y="0" width="138" height="15"
-                                   uuid="9ed5c60c-fbc3-4e93-9265-06bfb04eb0f9">
-                        <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                                  value="ee9c77b7-bba2-4c00-9540-2c6bfe659153"/>
-                    </reportElement>
-                    <textElement>
-                        <font fontName="DejaVu Sans"/>
-                    </textElement>
-                    <textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
-                </textField>
-                <textField isStretchWithOverflow="true">
-                    <reportElement style="Detail" x="414" y="0" width="138" height="15"
-                                   uuid="d75c54c8-d951-41c4-b6d7-31cfb0f2fcc3">
-                        <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                                  value="ed482343-0793-4cb4-a025-97b1c2be4e4c"/>
-                    </reportElement>
-                    <textElement>
-                        <font fontName="DejaVu Sans"/>
-                    </textElement>
-                    <textFieldExpression><![CDATA[$F{due_date}]]></textFieldExpression>
-                </textField>
-                <textField isStretchWithOverflow="true">
-                    <reportElement style="Detail" x="210" y="0" width="60" height="15"
-                                   uuid="9748e5d3-9573-4bfc-aa97-895cb0974352">
-                        <property name="com.jaspersoft.studio.spreadsheet.connectionID"
-                                  value="c88111b3-9e36-40d1-8169-9a342a120d87"/>
-                    </reportElement>
-                    <textElement>
-                        <font fontName="DejaVu Sans"/>
-                    </textElement>
-                    <textFieldExpression><![CDATA[$F{count}]]></textFieldExpression>
-                </textField>
-            </frame>
-        </band>
-    </detail>
-    <columnFooter>
-        <band height="45" splitType="Stretch">
-            <line>
-                <reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1"
-                               uuid="fa45a887-615a-4d84-a2d7-8a2219671b3c"/>
-                <graphicElement>
-                    <pen lineWidth="0.5" lineColor="#999999"/>
-                </graphicElement>
-            </line>
-        </band>
-    </columnFooter>
-    <pageFooter>
-        <band height="25" splitType="Stretch">
-            <frame>
-                <reportElement mode="Opaque" x="-21" y="1" width="597" height="24" forecolor="#D0B48E"
-                               backcolor="#F2EBDF" uuid="183682bc-d976-4756-83e0-6625a3f98ed1"/>
-                <textField evaluationTime="Report">
-                    <reportElement style="Column header" x="533" y="0" width="40" height="20" forecolor="#736343"
-                                   uuid="0193f9b3-1559-491a-8580-b6988863b6a1"/>
-                    <textElement verticalAlignment="Middle">
-                        <font fontName="DejaVu Sans" size="10" isBold="false"/>
-                    </textElement>
-                    <textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
-                </textField>
-                <textField>
-                    <reportElement style="Column header" x="453" y="0" width="80" height="20" forecolor="#736343"
-                                   uuid="d00b105e-494b-418b-8ac9-8b1b4824f4f0"/>
-                    <textElement textAlignment="Right" verticalAlignment="Middle">
-                        <font fontName="DejaVu Sans" size="10" isBold="false"/>
-                    </textElement>
-                    <textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
-                </textField>
-                <textField pattern="EEEEE dd MMMMM yyyy">
-                    <reportElement style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343"
-                                   uuid="0616f3fe-0354-456f-8911-ec30ec51a5ae"/>
-                    <textElement verticalAlignment="Middle">
-                        <font fontName="DejaVu Sans" size="10" isBold="false"/>
-                    </textElement>
-                    <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
-                </textField>
-            </frame>
-        </band>
-    </pageFooter>
-    <summary>
-        <band splitType="Stretch"/>
-    </summary>
+  <property name="com.jaspersoft.studio.data.sql.tables" value=""/>
+  <property name="com.jaspersoft.studio.data.defaultdataadapter" value="Eframe"/>
+  <property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w1" value="310"/>
+  <property name="com.jaspersoft.studio.data.sql.SQLQueryDesigner.sash.w2" value="679"/>
+  <property name="org.simplemes.roles" value="ADMIN"/>
+  <style name="Title" fontName="Times New Roman" fontSize="50" isBold="true"/>
+  <style name="SubTitle" forecolor="#736343" fontName="Arial" fontSize="18"/>
+  <style name="Column header" forecolor="#666666" fontName="Arial" fontSize="12" isBold="true"/>
+  <style name="Detail" fontName="Arial" fontSize="12"/>
+  <style name="Row" mode="Transparent">
+    <conditionalStyle>
+      <conditionExpression><![CDATA[$V{REPORT_COUNT}%2 == 0]]></conditionExpression>
+      <style backcolor="#E6DAC3"/>
+    </conditionalStyle>
+  </style>
+  <parameter name="BaseDir" class="java.lang.String" isForPrompting="false" evaluationTime="Early">
+    <defaultValueExpression><![CDATA["C:/Users/mph/JaspersoftWorkspace/MyReports"]]></defaultValueExpression>
+  </parameter>
+  <parameter name="name" class="java.lang.String">
+    <defaultValueExpression><![CDATA["%"]]></defaultValueExpression>
+  </parameter>
+  <parameter name="startDateTime" class="java.util.Date">
+    <defaultValueExpression><![CDATA[new java.util.Date()]]></defaultValueExpression>
+  </parameter>
+  <parameter name="endDateTime" class="java.util.Date">
+    <defaultValueExpression><![CDATA[new java.util.Date()]]></defaultValueExpression>
+  </parameter>
+  <parameter name="reportTimeInterval" class="java.lang.String">
+    <defaultValueExpression><![CDATA["TODAY"]]></defaultValueExpression>
+  </parameter>
+  <parameter name="reportDate" class="java.util.Date">
+    <property name="sequence" value="1"/>
+    <defaultValueExpression><![CDATA[new java.util.Date()]]></defaultValueExpression>
+  </parameter>
+  <queryString language="SQL">
+    <![CDATA[select * from  all_fields_domain  where name like  $P{name}]]>
+  </queryString>
+  <field name="name" class="java.lang.String">
+    <property name="com.jaspersoft.studio.field.label" value="metric_name"/>
+    <property name="com.jaspersoft.studio.field.tree.path" value="metric_summary"/>
+  </field>
+  <field name="date_created" class="java.sql.Timestamp">
+    <property name="com.jaspersoft.studio.field.label" value="date_created"/>
+    <property name="com.jaspersoft.studio.field.tree.path" value="metric_summary"/>
+  </field>
+  <field name="title" class="java.lang.String">
+    <property name="com.jaspersoft.studio.field.label" value="average"/>
+    <property name="com.jaspersoft.studio.field.tree.path" value="metric_summary"/>
+  </field>
+  <field name="notes" class="java.lang.String">
+    <property name="com.jaspersoft.studio.field.label" value="sample_count"/>
+    <property name="com.jaspersoft.studio.field.tree.path" value="metric_summary"/>
+  </field>
+  <field name="qty" class="java.math.BigDecimal"/>
+  <field name="count" class="java.lang.Integer"/>
+  <field name="due_date" class="java.util.Date"/>
+  <background>
+    <band splitType="Stretch"/>
+  </background>
+  <title>
+    <band height="146" splitType="Stretch">
+      <property name="com.jaspersoft.studio.unit.height" value="px"/>
+      <image>
+        <reportElement x="0" y="0" width="164" height="126" uuid="ddc15723-2728-421f-b95e-2df9faf64ce1"/>
+        <imageExpression><![CDATA[$P{BaseDir}+"/coffee.jpg"]]></imageExpression>
+      </image>
+      <staticText>
+        <reportElement style="Title" x="170" y="0" width="263" height="62" uuid="1a652692-054a-40f3-ade5-68d8da36626d"/>
+        <textElement verticalAlignment="Middle">
+          <font fontName="DejaVu Sans" size="26"/>
+        </textElement>
+        <text><![CDATA[Sample Report]]></text>
+      </staticText>
+      <staticText>
+        <reportElement style="SubTitle" x="219" y="62" width="196" height="22"
+                       uuid="88d4231e-f014-4b0d-b871-1737ba63a1ae"/>
+        <textElement>
+          <font fontName="DejaVu Sans"/>
+        </textElement>
+        <text><![CDATA[AllFieldsDomain Records]]></text>
+      </staticText>
+      <image>
+        <reportElement x="433" y="-115" width="267" height="209" uuid="5d64e5b3-07bb-48ab-89dc-15c0c46bb19a"/>
+        <imageExpression><![CDATA[$P{BaseDir}+"/coffee_stain.png"]]></imageExpression>
+      </image>
+      <textField>
+        <reportElement x="180" y="90" width="372" height="56" uuid="201398cf-d8bb-4db3-94e0-7766e8722945"/>
+        <textFieldExpression>
+          <![CDATA["Parameter: "+$P{name}+" Start: "+$P{startDateTime}+" End: "+$P{endDateTime}+" Interval: "+$P{reportTimeInterval}+" reportDate: "+$P{reportDate}+"Lookup:"+$R{report.title}]]></textFieldExpression>
+      </textField>
+    </band>
+  </title>
+  <pageHeader>
+    <band splitType="Stretch"/>
+  </pageHeader>
+  <columnHeader>
+    <band height="20" splitType="Stretch">
+      <line>
+        <reportElement positionType="FixRelativeToBottom" x="0" y="15" width="555" height="1"
+                       uuid="1a61a836-d137-48b1-ad67-6ff64600bf93"/>
+        <graphicElement>
+          <pen lineWidth="0.5" lineColor="#999999"/>
+        </graphicElement>
+      </line>
+      <staticText>
+        <reportElement style="Column header" x="0" y="0" width="138" height="15" forecolor="#736343"
+                       uuid="78be2daa-c9de-4e51-9296-fabdcc137592">
+          <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="5d19e823-5013-4cb3-82c6-4662c6e6691e"/>
+        </reportElement>
+        <textElement>
+          <font fontName="DejaVu Sans"/>
+        </textElement>
+        <text><![CDATA[name]]></text>
+      </staticText>
+      <staticText>
+        <reportElement style="Column header" x="138" y="0" width="60" height="15" forecolor="#736343"
+                       uuid="9865a675-8211-416e-9e39-f95bf30bc7b2">
+          <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c88111b3-9e36-40d1-8169-9a342a120d87"/>
+        </reportElement>
+        <textElement>
+          <font fontName="DejaVu Sans"/>
+        </textElement>
+        <text><![CDATA[qty]]></text>
+      </staticText>
+      <staticText>
+        <reportElement style="Column header" x="276" y="0" width="138" height="15" forecolor="#736343"
+                       uuid="bf6e8bd6-3cbc-44ad-9ca6-173541c5ad95">
+          <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ee9c77b7-bba2-4c00-9540-2c6bfe659153"/>
+        </reportElement>
+        <textElement>
+          <font fontName="DejaVu Sans"/>
+        </textElement>
+        <text><![CDATA[title]]></text>
+      </staticText>
+      <staticText>
+        <reportElement style="Column header" x="414" y="0" width="138" height="15" forecolor="#736343"
+                       uuid="7755cc2a-8ddd-480c-953f-b092d9ffba89">
+          <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="ed482343-0793-4cb4-a025-97b1c2be4e4c"/>
+        </reportElement>
+        <textElement>
+          <font fontName="DejaVu Sans"/>
+        </textElement>
+        <text><![CDATA[Due Date]]></text>
+      </staticText>
+      <staticText>
+        <reportElement style="Column header" x="210" y="0" width="60" height="15" forecolor="#736343"
+                       uuid="7c74046d-cce0-4c58-8e02-646016559c0a">
+          <property name="com.jaspersoft.studio.spreadsheet.connectionID" value="c88111b3-9e36-40d1-8169-9a342a120d87"/>
+        </reportElement>
+        <textElement>
+          <font fontName="DejaVu Sans"/>
+        </textElement>
+        <text><![CDATA[count]]></text>
+      </staticText>
+    </band>
+  </columnHeader>
+  <detail>
+    <band height="15" splitType="Stretch">
+      <frame>
+        <reportElement style="Row" mode="Opaque" x="0" y="0" width="555" height="15"
+                       uuid="a98495d8-3c8d-4fa0-81f5-30c3efc2f766"/>
+        <textField textAdjust="StretchHeight">
+          <reportElement style="Detail" x="0" y="0" width="138" height="15" uuid="def47489-3b6e-44a6-b0d9-114eb14b778d">
+            <property name="com.jaspersoft.studio.spreadsheet.connectionID"
+                      value="5d19e823-5013-4cb3-82c6-4662c6e6691e"/>
+          </reportElement>
+          <textElement>
+            <font fontName="DejaVu Sans"/>
+          </textElement>
+          <textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+        </textField>
+        <textField textAdjust="StretchHeight">
+          <reportElement style="Detail" x="138" y="0" width="60" height="15"
+                         uuid="116c7ce8-5918-47e8-a2ca-50b2107986e6">
+            <property name="com.jaspersoft.studio.spreadsheet.connectionID"
+                      value="c88111b3-9e36-40d1-8169-9a342a120d87"/>
+          </reportElement>
+          <textElement>
+            <font fontName="DejaVu Sans"/>
+          </textElement>
+          <textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
+        </textField>
+        <textField textAdjust="StretchHeight">
+          <reportElement style="Detail" x="276" y="0" width="138" height="15"
+                         uuid="9ed5c60c-fbc3-4e93-9265-06bfb04eb0f9">
+            <property name="com.jaspersoft.studio.spreadsheet.connectionID"
+                      value="ee9c77b7-bba2-4c00-9540-2c6bfe659153"/>
+          </reportElement>
+          <textElement>
+            <font fontName="DejaVu Sans"/>
+          </textElement>
+          <textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
+        </textField>
+        <textField textAdjust="StretchHeight">
+          <reportElement style="Detail" x="414" y="0" width="138" height="15"
+                         uuid="d75c54c8-d951-41c4-b6d7-31cfb0f2fcc3">
+            <property name="com.jaspersoft.studio.spreadsheet.connectionID"
+                      value="ed482343-0793-4cb4-a025-97b1c2be4e4c"/>
+          </reportElement>
+          <textElement>
+            <font fontName="DejaVu Sans"/>
+          </textElement>
+          <textFieldExpression><![CDATA[$F{due_date}]]></textFieldExpression>
+        </textField>
+        <textField textAdjust="StretchHeight">
+          <reportElement style="Detail" x="210" y="0" width="60" height="15"
+                         uuid="9748e5d3-9573-4bfc-aa97-895cb0974352">
+            <property name="com.jaspersoft.studio.spreadsheet.connectionID"
+                      value="c88111b3-9e36-40d1-8169-9a342a120d87"/>
+          </reportElement>
+          <textElement>
+            <font fontName="DejaVu Sans"/>
+          </textElement>
+          <textFieldExpression><![CDATA[$F{count}]]></textFieldExpression>
+        </textField>
+      </frame>
+    </band>
+  </detail>
+  <columnFooter>
+    <band height="45" splitType="Stretch">
+      <line>
+        <reportElement positionType="FixRelativeToBottom" x="0" y="3" width="555" height="1"
+                       uuid="fa45a887-615a-4d84-a2d7-8a2219671b3c"/>
+        <graphicElement>
+          <pen lineWidth="0.5" lineColor="#999999"/>
+        </graphicElement>
+      </line>
+    </band>
+  </columnFooter>
+  <pageFooter>
+    <band height="25" splitType="Stretch">
+      <frame>
+        <reportElement mode="Opaque" x="-21" y="1" width="597" height="24" forecolor="#D0B48E" backcolor="#F2EBDF"
+                       uuid="183682bc-d976-4756-83e0-6625a3f98ed1"/>
+        <textField evaluationTime="Report">
+          <reportElement style="Column header" x="533" y="0" width="40" height="20" forecolor="#736343"
+                         uuid="0193f9b3-1559-491a-8580-b6988863b6a1"/>
+          <textElement verticalAlignment="Middle">
+            <font fontName="DejaVu Sans" size="10" isBold="false"/>
+          </textElement>
+          <textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+        </textField>
+        <textField>
+          <reportElement style="Column header" x="453" y="0" width="80" height="20" forecolor="#736343"
+                         uuid="d00b105e-494b-418b-8ac9-8b1b4824f4f0"/>
+          <textElement textAlignment="Right" verticalAlignment="Middle">
+            <font fontName="DejaVu Sans" size="10" isBold="false"/>
+          </textElement>
+          <textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+        </textField>
+        <textField pattern="EEEEE dd MMMMM yyyy">
+          <reportElement style="Column header" x="22" y="1" width="197" height="20" forecolor="#736343"
+                         uuid="0616f3fe-0354-456f-8911-ec30ec51a5ae"/>
+          <textElement verticalAlignment="Middle">
+            <font fontName="DejaVu Sans" size="10" isBold="false"/>
+          </textElement>
+          <textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
+        </textField>
+      </frame>
+    </band>
+  </pageFooter>
+  <summary>
+    <band splitType="Stretch"/>
+  </summary>
 </jasperReport>
