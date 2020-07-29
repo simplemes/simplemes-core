@@ -282,54 +282,60 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.lang.String</code></td>
+                            <td class="colLast"><code><strong><a href="#getBundleRelativePath()">getBundleRelativePath</a></strong>()</code><br>Returns the relative path for a bundle reference.  </td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#getCompiledReport()">getCompiledReport</a></strong>()</code><br>Returns the compiled report. </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
                             <td class="colLast"><code><strong><a href="#getDefaultParameters()">getDefaultParameters</a></strong>()</code><br>Finds the default values for the report parameters.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
                             <td class="colLast"><code><strong><a href="#getDefinedReportParameters()">getDefinedReportParameters</a></strong>()</code><br>Finds the defined report parameters. </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Integer</code></td>
                             <td class="colLast"><code><strong><a href="#getEffectiveRowLimit()">getEffectiveRowLimit</a></strong>()</code><br>Determine the effective row limit to use for the report.   </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
                             <td class="colLast"><code><strong><a href="#getReportParameters()">getReportParameters</a></strong>()</code><br>Finds the effective report parameters to use.  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
                             <td class="colLast"><code><strong><a href="#getSubReports()">getSubReports</a></strong>()</code><br>Returns the list of sub-reports that need to be compiled.
  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
                             <td class="colLast"><code><strong><a href="#isPdf()">isPdf</a></strong>()</code><br>Returns true if the report output in PDF is requested. </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#setContentType(java.lang.String)">setContentType</a></strong>(java.lang.String contentType)</code><br>Sets the content type for this report. </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#setData(List)">setData</a></strong>(<a href='../../../../List.html'>List</a> data)</code><br>Sets the report data for the report. </td>
@@ -568,6 +574,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                                 <p> Determines the effective report parameters to use.  Check the URL (controller) params and the user preferences as a
  fall-back.  This uses the controller params and adds any parameters from the user preferences that are not
  in the controller params. <DL><DT><B>Parameters:</B></DT><DD><code>inputParams</code> -  The parameters from the URL.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The effective parameters.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getBundleRelativePath()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.lang.String <strong>getBundleRelativePath</strong>()</h4>
+                                <p> Returns the relative path for a bundle reference.  Will adjust the path to a resource classloader relative
+ path if from a .jar file. <DL><DT><B>Returns:</B></DT><DD>The adjusted bundle path to use to load the bundle.</DD></DL></p>
                             </li>
                         </ul>
                     

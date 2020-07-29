@@ -137,11 +137,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../../../ClassPathScannerFactory.html'>ClassPathScannerFactory</a></strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#factory">factory</a></code><br>The factory to build a class path scanner.  </td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong>private&nbsp;java.util.regex.Pattern</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#searchPattern">searchPattern</a></code><br>The Matching pattern for the given search spec.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong>private&nbsp;java.lang.String</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#searchSpec">searchSpec</a></code><br>The path format to search for.  </td>
                         </tr>
@@ -305,6 +310,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
+                        <a name="factory"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;static&nbsp;<a href='../../../../ClassPathScannerFactory.html'>ClassPathScannerFactory</a> <strong>factory</strong></h4>
+                                <p> The factory to build a class path scanner.  This allows tests to provide specific results
+ from the scan() method.</p>
+                            </li>
+                        </ul>
+                    
                         <a name="searchPattern"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -408,7 +422,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4><a href='../../../../List.html'>List</a> <strong>scan</strong>()</h4>
-                                <p> Scans the classpath for matching resources. <DL><DT><B>Returns:</B></DT><DD>The resource URLs.</DD></DL></p>
+                                <p> Scans the classpath for matching resources. <DL><DT><B>Returns:</B></DT><DD>The resource URLs or relative paths.</DD></DL></p>
                             </li>
                         </ul>
                     

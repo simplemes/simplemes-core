@@ -10615,20 +10615,34 @@ a string property:</p>
 <p>To enable some of the framework features such as filter criteria, you should follow some simple
 conventions in your report in the designer:</p>
 </div>
-<div class="exampleblock">
-<div class="content">
+<div class="ulist">
+<ul>
+<li>
+<p><strong>Reports Folders must be simple text.</strong></p>
 <div class="paragraph">
-<div class="title">Report Name Starts with Domain Name</div>
-<p>The report name should start with the core domain object that the report
+<p>The folders should not have hyphen (-) or underscore (-).  For example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>reports/
+  eframe/
+  core/
+  assy/
+  app/</pre>
+</div>
+</div>
+</li>
+<li>
+<p><strong>Report Name Starts with Domain Name.</strong></p>
+<div class="paragraph">
+<p>When possible, the report name should start with the core domain object that the report
 displays.  This is used in the optional <a href="#report-filter-panel">Report Filter Panel</a> created at the top of the report.
 This also helps identify which domain object forms the core of the report.</p>
 </div>
-</div>
-</div>
-<div class="exampleblock">
-<div class="content">
+</li>
+<li>
+<p><strong>Report Name for Task Menu Define in <em>messages.properties</em></strong>.</p>
 <div class="paragraph">
-<div class="title">Report Name for Task Menu Lookup</div>
 <p>The report name is also used in building the entry for the main <a href="#task-menu">Task Menu</a>.
 This allows you to define locale-specific menus/tooltips in the task menu
 for built-in reports.</p>
@@ -10636,7 +10650,7 @@ for built-in reports.</p>
 <div class="paragraph">
 <p>For example, the report <em>ArchiveLog.jrxml</em> can use these <em>messages.properties</em> entries:</p>
 </div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
 <pre>taskMenu.ArchiveLog.label=Archive Log Report
 taskMenu.ArchiveLog.tooltip=Archive Log Report</pre>
@@ -10646,12 +10660,10 @@ taskMenu.ArchiveLog.tooltip=Archive Log Report</pre>
 <p>If the labels do not exist in the <em>messages.properties</em> file, then the file name
 (e.g. ArchiveLog) will be used for the menu and tooltip.</p>
 </div>
-</div>
-</div>
-<div class="exampleblock">
-<div class="content">
+</li>
+<li>
+<p><strong>Parameter Name Matches Field</strong></p>
 <div class="paragraph">
-<div class="title">Parameter Name Matches Field</div>
 <p><a href="#report-parameters">Report Parameters</a> are used with many reports to help filter the report to the specific
 records the user is interested in.  The framework provides a way for the user to change them
 and re-run the report.  The framework can use the standard input fields to be consistent with
@@ -10666,16 +10678,14 @@ date/time fields.</p>
 <p>For example, the report <em>ArchiveLog.jrxml</em> might use the <code>className</code> parameter to provide a
 string input field with the correct labels in the <a href="#report-filter-panel">Report Filter Panel</a>.</p>
 </div>
-</div>
-</div>
-<div class="exampleblock">
-<div class="content">
+</li>
+<li>
+<p><strong>Date Ranges</strong></p>
 <div class="paragraph">
-<div class="title">Date Ranges</div>
 <p>Many reports use date ranges to filter their output.  These are implemented as <a href="#report-parameters">Report Parameters</a>
 with specific names:</p>
 </div>
-<div class="literalblock">
+<div class="listingblock">
 <div class="content">
 <pre>reportTimeInterval
 startDate/endDate
@@ -10700,7 +10710,8 @@ filter panel.  These values are ignored by the report logic.</p>
 <p>Other parameter names may be used, but the special date range drop-downs will not be generated.
 In that case, simple date/time input fields will be used.</p>
 </div>
-</div>
+</li>
+</ul>
 </div>
 </div>
 <div class="sect5">
@@ -19072,7 +19083,7 @@ to the repository.  If you use the repository method directly, then this is not 
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-07-28 22:42:20 UTC
+Last updated 2020-07-29 21:19:52 UTC
 </div>
 </div>
 <style>
