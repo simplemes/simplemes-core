@@ -47,7 +47,6 @@ class ClassPathScannerSpec extends BaseSpecification {
     when: 'a scan is preformed'
     def scanner = new ClassPathScanner('io/micronaut/data/*.class')
     def list = scanner.scan()
-    println "list = $list"
 
     then: 'the list contains the URL from the .jar file and can be opened as a stream'
     def url = list.find { it.toString().endsWith('io/micronaut/data/jdbc/annotation/JdbcRepository.class') }

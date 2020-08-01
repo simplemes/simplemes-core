@@ -57,6 +57,16 @@ jobs:
       - name: Build and Test
         run: ./gradlew cleanAll testAll -DwriteTests=false
 
+      - name: Archive test artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          name: dist-without-markdown
+          path: |
+            eframe/build/reports
+            mes-core/build/reports
+            mes-assy/build/reports
+            mes/build/reports
+
       - name: Generate Docs
         run: ./gradlew asciidoctorAll groovyDocAll
 

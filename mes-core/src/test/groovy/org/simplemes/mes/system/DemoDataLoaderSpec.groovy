@@ -40,17 +40,12 @@ class DemoDataLoaderSpec extends BaseSpecification {
 
     and: 'the model is correct'
     def model = res.model.get()
-    def list = model.list
-    list.size() == 2
-
-    def map1 = list[0]
-    map1.name.contains(DashboardConfig.simpleName)
+    def map1 = model.list.find { it.name.contains('Traditional') }
     map1.uri == '/dashboard'
     map1.count == 1
     map1.possible == 1
 
-    def map2 = list[1]
-    map2.name.contains(DashboardConfig.simpleName)
+    def map2 = model.list.find { it.name.contains('Scan') }
     map2.uri == '/dashboard'
     map2.count == 1
     map2.possible == 1
