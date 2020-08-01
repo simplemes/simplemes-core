@@ -132,7 +132,7 @@ class DemoDataLoader implements DemoDataLoaderInterface {
                                                      title: 'reverseComplete.title', buttonID: 'REVERSE_COMPLETE')
       dashboardConfig.save()
       count++
-      log.warn("Created Dashboard ${dashboardConfig}.")
+      log.info("Created Dashboard ${dashboardConfig}.")
     }
 
     res << [name: name, uri: uri, count: count, possible: possible]
