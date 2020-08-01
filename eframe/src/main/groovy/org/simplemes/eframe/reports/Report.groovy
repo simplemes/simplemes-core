@@ -328,7 +328,7 @@ class Report {
     PreferenceHolder preference = PreferenceHolder.find {
       page ReportHelper.REPORT_PAGE
       user SecurityUtils.currentUserName
-      element loc
+      element loc ?: '?'
     }
 
     // Copy the params not on the URL to the effective params.

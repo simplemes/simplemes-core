@@ -1,13 +1,10 @@
 Scratch
 =======
 
-Upgrade-marathon (MN, MN-D).
----------------------------
-Support doc generation on github with hosting.   See https://github.com/ts-graphviz/setup-graphviz.
-
-
 Micronaut Data Conversion Tasks
 ===============================
+Report
+  Fix issue with date ranges error by TZ offset?
 Add workaround for update failure: 299.  Remove sop.
   Check for MN-Data issue 404 fix.  Was in 2.0.  Update row count should be returned?
   Check for MN issue 1103 - Using trait in with router/method defined.  Seemed to be fixed in Groovy 3.0.  Consider using Traits in mes-core?
@@ -21,9 +18,6 @@ Support cache in specific use cases:
   FieldExtension/GUI - Already cached at the domainUtils level with FieldGUIExtension via ExtensibleFieldHelper
   Others as needed.
 Fix mess with efForm.dashboard.  Support type='dashboard', 'buttonHolder' and 'dialog'.
-Updated to Micronaut 2. with Groovy 3.0 and JDK 14.
-  ?Need to change @Controller() to specify thread pool.  Use @ExecuteOn() to all methods that are blocking.
-    or set micronaut.server.thread-selection: AUTO
 
 
 Tasks

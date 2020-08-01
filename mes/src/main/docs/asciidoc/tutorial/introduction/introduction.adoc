@@ -21,6 +21,7 @@ of the http://docs.simplemes.org/mes/latest/[SimpleMES^] application.
    Display Assembly Info
    Display Component Usage
    Complete
+   Display Order History Report
  * Barcode Dashboard
    Create Order for existing product with components
    Release
@@ -30,5 +31,5 @@ of the http://docs.simplemes.org/mes/latest/[SimpleMES^] application.
    Display Assembly Info
    Display Component Usage
    Complete
- * Reports
- 
+   Display Action Log Report.
+

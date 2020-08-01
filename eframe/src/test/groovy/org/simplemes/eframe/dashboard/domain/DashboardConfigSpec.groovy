@@ -4,8 +4,7 @@
 
 package org.simplemes.eframe.dashboard.domain
 
-import org.simplemes.eframe.application.EFrameConfiguration
-import org.simplemes.eframe.application.Holders
+
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.misc.FieldSizes
 import org.simplemes.eframe.test.BaseSpecification
@@ -232,19 +231,4 @@ class DashboardConfigSpec extends BaseSpecification {
     s.count('PanelD[5]') == 1
   }
 
-  @Rollback
-  def "verify that initialDataLoad loads sample data when desired"() {
-    given: 'the config indicates samples should be loaded'
-    Holders.configuration.loadSampleData = true
-    assert DashboardConfig.list().size() == 0
-
-    when: 'the data is loaded'
-    DashboardConfig.initialDataLoad()
-
-    then: 'the hierarchy string is correct'
-    DashboardConfig.list().size() > 0
-
-    cleanup:
-    Holders.configuration = new EFrameConfiguration()
-  }
 }

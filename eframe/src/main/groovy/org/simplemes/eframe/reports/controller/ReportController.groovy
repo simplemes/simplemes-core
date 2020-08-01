@@ -26,6 +26,7 @@ import org.simplemes.eframe.controller.StandardModelAndView
 import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.data.format.DateFieldFormat
 import org.simplemes.eframe.misc.ArgumentUtils
+import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.preference.PreferenceHolder
 import org.simplemes.eframe.preference.SimpleStringPreference
 import org.simplemes.eframe.preference.domain.UserPreference
@@ -53,6 +54,12 @@ class ReportController extends BaseController {
    * This method finds all of the report engine files available for display and adds them
    * in the reports folder (sequence 5500-5999).
    */
+
+  /**
+   * The number of buttons per row in the reportActivity (Dashboard activity).
+   */
+  public static final int DEFAULT_BUTTONS_PER_ROW = 5
+
   List<TaskMenuItem> getTaskMenuItems() {
     def res = []
 
@@ -234,6 +241,50 @@ class ReportController extends BaseController {
 
     def uri = ControllerUtils.instance.buildURI('/report', forwardParams)
     return HttpResponse.status(HttpStatus.FOUND).header(HttpHeaders.LOCATION, uri)
+  }
+
+  /**
+   * Displays the report  dashboard activity.
+   * @param request The request.
+   * @param principal The user.
+   * @return The page.
+   */
+  @Get("/reportActivity")
+  @Produces(MediaType.TEXT_HTML)
+  @SuppressWarnings(["unused", "UnnecessaryQualifiedReference"])
+  StandardModelAndView reportActivity(HttpRequest request, @Nullable Principal principal) {
+    def modelAndView = new StandardModelAndView("report/reportActivity", principal, this)
+    def params = modelAndView.model.get().params
+
+    // build the addition to the URI for the passed in parameters
+    def otherParams = new StringBuilder()
+    params.each { k, v ->
+      if (!k.startsWith('_')) {
+        otherParams << "&${k}=${v}"
+      }
+    }
+    modelAndView.model.get().otherParams = otherParams
+    modelAndView.model.get().newWindow = !Holders.environmentTest
+
+    def reports = ReportHelper.instance.determineBuiltinReports()
+    def nRows = NumberUtils.divideRoundingUp(reports.size(), DEFAULT_BUTTONS_PER_ROW)
+
+    def rows = []
+    for (int nRow = 0; nRow < nRows; nRow++) {
+      def list = []
+      for (int i = 0; i < DEFAULT_BUTTONS_PER_ROW; i++) {
+        int index = i + nRow * DEFAULT_BUTTONS_PER_ROW
+        if (index < reports.size()) {
+          def path = reports[index]
+          def name = ReportHelper.instance.determineReportBaseName(path)
+          list << [name: name, uri: "/report?loc=$path"]
+        }
+      }
+      rows << list
+    }
+    modelAndView.model.get().rows = rows
+
+    return modelAndView
   }
 
 }

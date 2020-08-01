@@ -10,6 +10,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Dashboard Configuration>>#
 [inline-toc]#<<Dashboard API>>#
 [inline-toc]#<<Undo>>#
+[inline-toc]#<<Dashboard Reports>>#
 [inline-toc]#<<Dashboard Activity Testing>>#
 
 
@@ -131,3 +132,5 @@ include::configuration.adoc[]
 include::dashboardAPI.adoc[]
 
 include::dashboardUndo.adoc[]
+
+include::dashboardReports.adoc[]

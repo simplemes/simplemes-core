@@ -14,7 +14,6 @@ import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
-import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.misc.FieldSizes
@@ -255,62 +254,6 @@ class DashboardConfig {
       }
     }
     return res
-  }
-
-  /**
-   * Loads sample data for framework module development only. Set the flag to load the sample with this <b>application.yml</b>:
-   * <p>
-   * <pre>
-   *  ---
-   *  eframe:
-   *    loadSampleData: true
-   * </pre>
-   */
-  @SuppressWarnings('UnnecessaryQualifiedReference')
-  static initialDataLoad() {
-    // Load some test dashboard configs, but only for eframe work.
-    if (DashboardConfig.count() == 0 && Holders.configuration.appName == 'EFrame' && Holders.configuration.loadSampleData) {
-      DashboardConfig dashboardConfig
-
-      dashboardConfig = new DashboardConfig(dashboard: 'SUPERVISOR_DEFAULT', category: 'SUPERVISOR', title: 'Supervisor')
-      dashboardConfig.splitterPanels << (new DashboardPanelSplitter(panelIndex: 0, vertical: false))
-      dashboardConfig.dashboardPanels << (new DashboardPanel(panelIndex: 1, defaultURL: '/test/dashboard/page?view=sample/dashboard/wcSelection', parentPanelIndex: 0))
-      dashboardConfig.dashboardPanels << (new DashboardPanel(panelIndex: 2, defaultURL: '/order/orderWorkList', parentPanelIndex: 0))
-      assert dashboardConfig.save()
-
-      dashboardConfig = new DashboardConfig(dashboard: 'OPERATOR_DEFAULT', category: 'OPERATOR', title: 'Operator')
-      dashboardConfig.splitterPanels << (new DashboardPanelSplitter(panelIndex: 0, vertical: false))
-      dashboardConfig.dashboardPanels << (new DashboardPanel(panelIndex: 1, parentPanelIndex: 0,
-                                                             defaultURL: '/test/dashboard/page?view=sample/dashboard/wcSelection'))
-      dashboardConfig.dashboardPanels << (new DashboardPanel(panelIndex: 2, parentPanelIndex: 0,
-                                                             defaultURL: '/test/dashboard/page?view=sample/dashboard/workList'))
-      def button1 = new DashboardButton(label: 'pass.label', url: '/dashSample/display?page=pass', panel: 'A',
-                                        title: 'pass.title', size: 1.5, buttonID: 'PASS')
-      def button2 = new DashboardButton(label: 'Complete', url: '/test/dashboard/page?view=sample/dashboard/complete', panel: 'B',
-                                        buttonID: 'COMPLETE')
-      def button3 = new DashboardButton(label: 'Log Failure', url: '/test/dashboard/page?view=sample/dashboard/logFailure', panel: 'B',
-                                        css: 'caution-button', buttonID: 'FAIL')
-      def button4 = new DashboardButton(label: 'Reports', url: '/dashSample/display?page=fail', panel: 'B',
-                                        buttonID: 'REPORTS')
-      dashboardConfig.buttons << (button1)
-      dashboardConfig.buttons << (button2)
-      dashboardConfig.buttons << (button3)
-      dashboardConfig.buttons << (button4)
-      assert dashboardConfig.save()
-
-      dashboardConfig = new DashboardConfig(dashboard: 'MANAGER_DEFAULT', category: 'MANAGER', title: 'Manager')
-      dashboardConfig.splitterPanels << (new DashboardPanelSplitter(panelIndex: 0, vertical: false))
-      dashboardConfig.dashboardPanels << (new DashboardPanel(panelIndex: 1, defaultURL: '/test/dashboard/page?view=sample/dashboard/wcSelection', parentPanelIndex: 0))
-      dashboardConfig.splitterPanels << (new DashboardPanelSplitter(panelIndex: 2, vertical: true, parentPanelIndex: 0))
-      dashboardConfig.dashboardPanels << (new DashboardPanel(panelIndex: 3, defaultURL: '/test/dashboard/page?view=sample/dashboard/workList', parentPanelIndex: 2))
-      dashboardConfig.dashboardPanels << (new DashboardPanel(panelIndex: 6, defaultURL: '/test/dashboard/page?view=sample/dashboard/workList', parentPanelIndex: 2))
-      dashboardConfig.save()
-
-      //noinspection UnnecessaryQualifiedReference
-      log.warn("Created ${DashboardConfig.count()} default dashboards.")
-    }
-
-    return null // No real initial data loaded, yet.
   }
 
   /**

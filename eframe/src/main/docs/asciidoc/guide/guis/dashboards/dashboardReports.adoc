@@ -1,0 +1,26 @@
+
+==== Dashboard Reports
+
+Dashboards frequently need to display <<Reports>> on demand.  One of the <<Dashboard Activities>>
+provided will let the user display reports in a new browser tab.
+
+
+
+[[dashboard-report-activity]]
+==== Report Activity
+
+*uri:* `/report/reportActivity`
+
+This Report activity is a <<GUI Activity>> that lists all defined reports, each on a button.
+This allows the dashboard user to display any report.  The report is passed all
+parameters as defined in the <<Dashboard API>>.
+
+After the report is displayed, this report dashboard activity will finish and re-display the
+original activity in the panel.
+
+NOTE: This activity will open the report in the original window if the application is
+      run in the Test environment.  Otherwise, the report will be opened in a new window.
+       
+
+
+

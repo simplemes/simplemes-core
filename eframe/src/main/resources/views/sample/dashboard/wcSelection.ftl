@@ -4,9 +4,9 @@
   <#assign variable = "${params._variable}"/>
 
   ${variable}.provideParameters = function() {
-    console.log('called');
     return {
       workCenter: 'WC237',
+      ordr: $$('order').getValue(),
     }
   }
   ${variable}.changed = function(newValue) {

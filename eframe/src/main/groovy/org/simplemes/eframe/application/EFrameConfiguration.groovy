@@ -78,11 +78,6 @@ class EFrameConfiguration {
    */
   Search search = new Search()
 
-  /**
-   * If true, then sample data is loaded.  This includes sample dashboards.
-   */
-  boolean loadSampleData = false
-
   @ToString(includeNames = true, includePackage = false)
   @ConfigurationProperties('archive')
   static class Archive {

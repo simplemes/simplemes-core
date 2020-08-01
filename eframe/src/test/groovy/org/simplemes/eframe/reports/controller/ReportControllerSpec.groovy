@@ -10,6 +10,7 @@ import io.micronaut.http.MediaType
 import net.sf.jasperreports.engine.JRParameter
 import net.sf.jasperreports.engine.JRPropertiesMap
 import net.sf.jasperreports.engine.JasperReport
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.controller.StandardModelAndView
 import org.simplemes.eframe.data.format.DateFieldFormat
 import org.simplemes.eframe.date.ISODate
@@ -39,10 +40,10 @@ class ReportControllerSpec extends BaseSpecification {
   public static final String SAMPLE_REPORT = "reports/sample/SampleReport.jrxml"
 
   @Shared
-  def controller
+  ReportController controller
 
-  def setupSpec() {
-    controller = new ReportController()
+  def setup() {
+    controller = Holders.getBean(ReportController)
   }
 
   void cleanup() {
@@ -76,7 +77,7 @@ class ReportControllerSpec extends BaseSpecification {
     ReportEngine.instance = mock
 
     when: 'the index method is called'
-    def res = new ReportController().index(mockRequest(), new MockPrincipal())
+    def res = controller.index(mockRequest(), new MockPrincipal())
 
     then: 'the engine is called correctly'
     //    def missingRoles = ReportEngine.instance.writeReport(report,out)
@@ -93,7 +94,7 @@ class ReportControllerSpec extends BaseSpecification {
     ReportEngine.instance = mock
 
     when: 'the index method is called'
-    def res = new ReportController().index(mockRequest([format: 'pdf']), new MockPrincipal())
+    def res = controller.index(mockRequest([format: 'pdf']), new MockPrincipal())
 
     then: 'the engine is called correctly'
     1 * mock.writeReport(_ as Report, _ as OutputStream)
@@ -112,7 +113,7 @@ class ReportControllerSpec extends BaseSpecification {
     def mockRenderer = new MockRenderer(this).install()
 
     when: 'the index method is called'
-    def res = new ReportController().index(mockRequest(accept: MediaType.TEXT_HTML), new MockPrincipal())
+    def res = controller.index(mockRequest(accept: MediaType.TEXT_HTML), new MockPrincipal())
 
     then: 'the engine is called correctly'
     1 * mock.writeReport(_ as Report, _ as Writer) >> 'GIBBERISH'
@@ -134,7 +135,7 @@ class ReportControllerSpec extends BaseSpecification {
     handler.handleResource(image, data)
 
     when: 'the image is retrieved for display in the browser with a get'
-    def res = new ReportController().image(mockRequest([image: "/path/reports_${imageGet}"]), new MockPrincipal())
+    def res = controller.image(mockRequest([image: "/path/reports_${imageGet}"]), new MockPrincipal())
 
     then: 'the response is correct'
     if (contentType) {
@@ -201,7 +202,7 @@ class ReportControllerSpec extends BaseSpecification {
 
     when: 'the filter page is triggered'
     def params = [loc: SAMPLE_REPORT, metricName: 'ABC-XYZ']
-    def res = new ReportController().filter(mockRequest(params), new MockPrincipal())
+    def res = controller.filter(mockRequest(params), new MockPrincipal())
     def model = mock.model
 
     then: 'the correct model is used'
@@ -241,7 +242,7 @@ class ReportControllerSpec extends BaseSpecification {
 
     when: 'the filter page is triggered'
     def params = [loc: SAMPLE_REPORT]
-    new ReportController().filter(mockRequest(params), new MockPrincipal())
+    controller.filter(mockRequest(params), new MockPrincipal())
     def model = mock.model
 
     then: 'report time field is detected'
@@ -273,7 +274,7 @@ class ReportControllerSpec extends BaseSpecification {
 
     when: 'the filter page is triggered'
     def params = [loc: SAMPLE_REPORT]
-    new ReportController().filter(mockRequest(params), new MockPrincipal())
+    controller.filter(mockRequest(params), new MockPrincipal())
     def model = mock.model
 
     then: 'report time field is not detected'
@@ -300,7 +301,7 @@ class ReportControllerSpec extends BaseSpecification {
                   startDateTime     : DateFieldFormat.instance.formatForm(date1, locale, null),
                   endDateTime       : DateFieldFormat.instance.formatForm(date2, locale, null),
                   dateTimeParams    : 'startDateTime,endDateTime']
-    def res = new ReportController().filterUpdate(mockRequest(), params, new MockPrincipal())
+    def res = controller.filterUpdate(mockRequest(), params, new MockPrincipal())
 
     then: 'redirect is correct'
     res.status == HttpStatus.FOUND
@@ -331,7 +332,7 @@ class ReportControllerSpec extends BaseSpecification {
     def params = [loc           : SAMPLE_REPORT,
                   endDateTime   : 'gibberish',
                   dateTimeParams: 'endDateTime']
-    new ReportController().filterUpdate(mockRequest(), params, new MockPrincipal())
+    controller.filterUpdate(mockRequest(), params, new MockPrincipal())
 
     then: 'the right exception is thrown'
     def ex = thrown(Exception)
@@ -372,7 +373,7 @@ class ReportControllerSpec extends BaseSpecification {
                   reportTimeInterval: 'THIS_YEAR',
                   endDateTime       : DateFieldFormat.instance.formatForm(date1, locale, null),
                   dateTimeParams    : 'endDateTime']
-    new ReportController().filterUpdate(mockRequest(), params, new MockPrincipal())
+    controller.filterUpdate(mockRequest(), params, new MockPrincipal())
 
 
     then: 'the settings are stored by the holder'
@@ -391,6 +392,41 @@ class ReportControllerSpec extends BaseSpecification {
     locale         | _
     Locale.US      | _
     Locale.GERMANY | _
+  }
+
+  @SuppressWarnings('GroovyAssignabilityCheck')
+  def "verify that reportActivity finds the list with 5 buttons per row"() {
+    given: "a mocked service"
+    def originalHelper = ReportHelper.instance
+    def stub = Stub(ReportHelper)
+    ReportHelper.instance = stub
+    stub.determineBuiltinReports() >> ['reports/Metrics1a.jrxml', 'reports/Metrics1b.jrxml', 'reports/AReport1c.jrxml',
+                                       'reports/Metrics1d.jrxml', 'reports/Metrics1e.jrxml', 'reports/AReport2a.jrxml']
+    stub.determineReportBaseName(_) >> { originalHelper.determineReportBaseName(it[0]) }
+
+    when: "the activity is generated"
+    def res = controller.reportActivity(mockRequest([order: 'M1001', _panel: 'XYZZY']), new MockPrincipal())
+    def model = res.model.get()
+
+    then: "the model has two rows of buttons"
+    model.rows.size() == 2
+    model.rows[0].size() == 5
+    model.rows[0][0].name == 'Metrics1a'
+    model.rows[0][0].uri == '/report?loc=reports/Metrics1a.jrxml'
+    model.rows[0][1].name == 'Metrics1b'
+    model.rows[0][2].name == 'AReport1c'
+    model.rows[0][3].name == 'Metrics1d'
+    model.rows[0][4].name == 'Metrics1e'
+
+    model.rows[1].size() == 1
+    model.rows[1][0].name == 'AReport2a'
+
+    and: 'the other parameters are in the model as a URI string'
+    model.otherParams.contains('&order=M1001')
+
+    and: 'the other parameters do not contain the dashboard internal params'
+    !model.otherParams.contains('_panel')
+    !model.otherParams.contains('XYZZY')
   }
 
 }
