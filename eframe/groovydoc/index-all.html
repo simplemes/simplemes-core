@@ -1348,6 +1348,10 @@ if (location.href.indexOf('is-external=true') == -1) {
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/dashboard/controller/DashboardController.html#DashboardController()" title="Constructor in DashboardController">DashboardController()</a></span> - Constructor in <a href="org/simplemes/eframe/dashboard/controller/DashboardController.html">DashboardController</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/dashboard/DashboardDemoDataLoader.html" title="Class in org.simplemes.eframe.dashboard">DashboardDemoDataLoader</a></span> - Class in <a href="./org/simplemes/eframe/dashboard/package-summary.html">org.simplemes.eframe.dashboard</a>
+</dt><dd><div class="block">Used to test the loading of demo data - Test dashboards using mockup activities.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/dashboard/DashboardDemoDataLoader.html#DashboardDemoDataLoader()" title="Constructor in DashboardDemoDataLoader">DashboardDemoDataLoader()</a></span> - Constructor in <a href="org/simplemes/eframe/dashboard/DashboardDemoDataLoader.html">DashboardDemoDataLoader</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/webix/freemarker/DashboardMarker.html" title="Class in org.simplemes.eframe.web.ui.webix.freemarker">DashboardMarker</a></span> - Class in <a href="./org/simplemes/eframe/web/ui/webix/freemarker/package-summary.html">org.simplemes.eframe.web.ui.webix.freemarker</a>
 </dt><dd><div class="block">Provides the implementation of the &lt;ef:dashboard/&gt; tag.
  </div></dd>
@@ -1475,6 +1479,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Decodes the given string from internal storage into the appropriate type.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/data/format/StringFieldFormat.html#decode(java.lang.String, org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in StringFieldFormat">decode(java.lang.String, org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/data/format/StringFieldFormat.html">StringFieldFormat</a>
 </dt><dd> <div class="block">Decodes the given string from internal storage into the appropriate type.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/reports/controller/ReportController.html#DEFAULT_BUTTONS_PER_ROW" title="Field in ReportController">DEFAULT_BUTTONS_PER_ROW</a></span> - Field in <a href="org/simplemes/eframe/reports/controller/ReportController.html">ReportController</a>
+</dt><dd> <div class="block">The number of buttons per row in the reportActivity (Dashboard activity).</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/dashboard/domain/DashboardConfig.html#DEFAULT_CATEGORY" title="Field in DashboardConfig">DEFAULT_CATEGORY</a></span> - Field in <a href="org/simplemes/eframe/dashboard/domain/DashboardConfig.html">DashboardConfig</a>
 </dt><dd> <div class="block">The default category assigned if none are defined in the dashboard configuration.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/NameUtils.html#DEFAULT_KEY" title="Field in NameUtils">DEFAULT_KEY</a></span> - Field in <a href="org/simplemes/eframe/misc/NameUtils.html">NameUtils</a>
@@ -3122,8 +3128,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Defines the standard end-user task entry points that this controller handles.
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/reports/controller/ReportController.html#getTaskMenuItems()" title="Method in ReportController">getTaskMenuItems()</a></span> - Method in <a href="org/simplemes/eframe/reports/controller/ReportController.html">ReportController</a>
-</dt><dd> <div class="block">Defines the standard end-user task entry points that this controller handles.
- </div></dd>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/page/MessagesModule.html#getText()" title="Method in MessagesModule">getText()</a></span> - Method in <a href="org/simplemes/eframe/test/page/MessagesModule.html">MessagesModule</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/search/SearchEnginePoolExecutor.html#getThreadFactory()" title="Method in SearchEnginePoolExecutor">getThreadFactory()</a></span> - Method in <a href="org/simplemes/eframe/search/SearchEnginePoolExecutor.html">SearchEnginePoolExecutor</a>
@@ -3448,8 +3453,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Indexes a single object, waiting for completion.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/search/SearchHelper.html#indexObject(java.lang.Object)" title="Method in SearchHelper">indexObject(java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/search/SearchHelper.html">SearchHelper</a>
 </dt><dd> <div class="block">Indexes a single object, waiting for completion.  </div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/dashboard/domain/DashboardConfig.html#initialDataLoad()" title="Method in DashboardConfig">initialDataLoad()</a></span> - Method in <a href="org/simplemes/eframe/dashboard/domain/DashboardConfig.html">DashboardConfig</a>
-</dt><dd> <div class="block">Loads sample data for framework module development only. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/security/domain/Role.html#initialDataLoad()" title="Method in Role">initialDataLoad()</a></span> - Method in <a href="org/simplemes/eframe/security/domain/Role.html">Role</a>
 </dt><dd> <div class="block">Load initial Role records.  </div></dd>
 <dt><span class="strong"><a href="sample/domain/SampleChild.html#initialDataLoad()" title="Method in SampleChild">initialDataLoad()</a></span> - Method in <a href="sample/domain/SampleChild.html">SampleChild</a>
@@ -3865,6 +3868,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Forces the load of child records that might have a lazy loader.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/TypeUtils.html#loadClass(java.lang.String)" title="Method in TypeUtils">loadClass(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/misc/TypeUtils.html">TypeUtils</a>
 </dt><dd> <div class="block">Returns the class instance for the name. </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/dashboard/DashboardDemoDataLoader.html#loadDemoData()" title="Method in DashboardDemoDataLoader">loadDemoData()</a></span> - Method in <a href="org/simplemes/eframe/dashboard/DashboardDemoDataLoader.html">DashboardDemoDataLoader</a>
+</dt><dd> <div class="block">Loads the demo data.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/system/DemoDataLoaderInterface.html#loadDemoData()" title="Method in DemoDataLoaderInterface">loadDemoData()</a></span> - Method in <a href="org/simplemes/eframe/system/DemoDataLoaderInterface.html">DemoDataLoaderInterface</a>
 </dt><dd> <div class="block">Loads the demo data.</div></dd>
 <dt><span class="strong"><a href="sample/SampleDemoDataLoader.html#loadDemoData()" title="Method in SampleDemoDataLoader">loadDemoData()</a></span> - Method in <a href="sample/SampleDemoDataLoader.html">SampleDemoDataLoader</a>
@@ -4589,6 +4594,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Writes the screen shot to the reports directory. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/reports/Report.html#Report()" title="Constructor in Report">Report()</a></span> - Constructor in <a href="org/simplemes/eframe/reports/Report.html">Report</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/reports/controller/ReportController.html#reportActivity(io.micronaut.http.HttpRequest, java.security.Principal)" title="Method in ReportController">reportActivity(io.micronaut.http.HttpRequest, java.security.Principal)</a></span> - Method in <a href="org/simplemes/eframe/reports/controller/ReportController.html">ReportController</a>
+</dt><dd> <div class="block">Displays the report  dashboard activity. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/reports/controller/ReportController.html" title="Class in org.simplemes.eframe.reports.controller">ReportController</a></span> - Class in <a href="./org/simplemes/eframe/reports/controller/package-summary.html">org.simplemes.eframe.reports.controller</a>
 </dt><dd><div class="block">Support for report engine-style reports.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/reports/controller/ReportController.html#ReportController()" title="Constructor in ReportController">ReportController()</a></span> - Constructor in <a href="org/simplemes/eframe/reports/controller/ReportController.html">ReportController</a>
