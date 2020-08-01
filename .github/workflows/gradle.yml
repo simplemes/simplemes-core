@@ -61,7 +61,7 @@ jobs:
         if: ${{ failure() }}
         uses: actions/upload-artifact@v2
         with:
-          name: dist-without-markdown
+          name: test-reports
           path: |
             eframe/build/reports
             mes-core/build/reports

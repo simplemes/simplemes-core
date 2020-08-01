@@ -28,6 +28,7 @@ import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.LogUtils
 import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.preference.domain.UserPreference
+import org.simplemes.eframe.search.SearchHelper
 import org.simplemes.eframe.security.SecurityUtils
 
 import javax.sql.DataSource
@@ -242,7 +243,7 @@ class BaseSpecification extends GebSpec {
    * The common utility classes to check for a mocked instance.  Will reset them to their default (non-mocked) instance.
    * This typically includes {@link DomainUtils} and {@link ControllerUtils}.
    */
-  def utilityClassesToCheck = [DomainUtils, ControllerUtils, DomainEntityHelper, ExtensionPointHelper]
+  def utilityClassesToCheck = [DomainUtils, ControllerUtils, DomainEntityHelper, ExtensionPointHelper, SearchHelper]
 
   /**
    * Cleans up any mocked .instance values in the common utility classes.
