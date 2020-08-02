@@ -31,6 +31,7 @@ The main parameters/body supported are:
 |Argument|Description
 
 | *(body)*| The button contents. Only <<efButton>> markers are allowed.
+| *spacerWidth*| The left-hand spacer width (*Default:* "15%").
 
 |===
 

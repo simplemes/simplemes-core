@@ -77,7 +77,7 @@ class ButtonWidget extends BaseWidget {
     }
 
     if (tooltip) {
-      tooltipS = """tooltip: "${tooltip}" """
+      tooltipS = """tooltip: "${tooltip}", """
     }
 
     if (widgetContext.parameters.width) {
@@ -138,7 +138,7 @@ class ButtonWidget extends BaseWidget {
     }
     def cssS = ''
     if (css) {
-      cssS = """,css: "$css" """
+      cssS = """css: "$css", """
     }
 
     // Check for height override.

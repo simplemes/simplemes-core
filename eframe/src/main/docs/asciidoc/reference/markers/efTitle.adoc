@@ -29,8 +29,8 @@ The main parameters/body supported are:
 |*(body)*      | Ignored.
 |*type*        | The type of title to display (*Default:* 'main').  See below for valid types.
 |*label*       | The label key for the main title only.  Only used for `main` type titles.
-|*dashboardCategory* | The dashboard configuration category to use to find the dashboard's title.
-                       (dashboard or dashboardCategory is *Required* for dashboard types).
+|*category* | The dashboard configuration category to use to find the dashboard's title.
+                       (dashboard or category is *Required* for dashboard types).
 |*dashboard* | The dashboard configuration to use to find the dashboard's title.
                        (dashboard or dashboardCategory is *Required* for dashboard types).
 |===

@@ -8,6 +8,8 @@ Report
 Add workaround for update failure: 299.  Remove sop.
   Check for MN-Data issue 404 fix.  Was in 2.0.  Update row count should be returned?
   Check for MN issue 1103 - Using trait in with router/method defined.  Seemed to be fixed in Groovy 3.0.  Consider using Traits in mes-core?
+In MN 2.0.2, check on fix for error routing: https://github.com/micronaut-projects/micronaut-core/issues/3834
+  Shows when error is triggered on url: http://localhost:8080/dashboard?dashboardCategory=OPERATOR
 Investigate timezone issues on findAllByDateTimeLessThan(Date) queries.  Seems to be off by 5 hours?  ProductionLog.archive()?
 Version and opt locking (custom JDBCOperations).
 Cascading updates.  Find some way to prevent? - isDirty or save() option?

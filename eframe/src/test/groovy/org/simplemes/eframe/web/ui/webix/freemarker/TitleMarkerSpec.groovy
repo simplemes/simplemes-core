@@ -122,7 +122,7 @@ class TitleMarkerSpec extends BaseMarkerSpecification {
     dashboardConfig.save()
 
     when: 'the text is generated'
-    def title = execute(source: '<@efTitle type="dashboard" dashboardCategory="MANAGER" dashboard=""/>')
+    def title = execute(source: '<@efTitle type="dashboard" category="MANAGER" dashboard=""/>')
 
     then: 'the generated text is correct'
     title.contains('EFrame')
@@ -139,7 +139,7 @@ class TitleMarkerSpec extends BaseMarkerSpecification {
     }
 
     when: 'the text is generated'
-    def title = execute(source: '<@efTitle type="dashboard"  dashboardCategory="" dashboard="MANAGER"/>')
+    def title = execute(source: '<@efTitle type="dashboard"  category="" dashboard="MANAGER"/>')
 
     then: 'the generated text is correct'
     title.contains('EFrame')
@@ -152,7 +152,7 @@ class TitleMarkerSpec extends BaseMarkerSpecification {
 
     then: 'the exception details are correct'
     def ex = thrown(Exception)
-    UnitTestUtils.assertExceptionIsValid(ex, ['efTitle', 'dashboard', 'requires', 'dashboardCategory'])
+    UnitTestUtils.assertExceptionIsValid(ex, ['efTitle', 'dashboard', 'requires', 'category'])
   }
 
 

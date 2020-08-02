@@ -136,7 +136,7 @@ ORDER BY date_time ASC, action DESC]]>
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d41ad5da-ab2a-48ff-86cb-c0f7f6293f6a"/>
 				</reportElement>
 				<textElement>
-					<font size="12"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{product}]]></textFieldExpression>
 			</textField>
@@ -145,7 +145,7 @@ ORDER BY date_time ASC, action DESC]]>
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="4b2d0d58-50cc-434b-8fb1-2df007843c65"/>
 				</reportElement>
 				<textElement>
-					<font size="12"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{title}]]></textFieldExpression>
 			</textField>
@@ -154,7 +154,7 @@ ORDER BY date_time ASC, action DESC]]>
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="045fa477-929f-4aeb-85db-c2170bb84482"/>
 				</reportElement>
 				<textElement>
-					<font size="12"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{qty}]]></textFieldExpression>
 			</textField>
@@ -172,7 +172,7 @@ ORDER BY date_time ASC, action DESC]]>
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="045fa477-929f-4aeb-85db-c2170bb84482"/>
 				</reportElement>
 				<textElement>
-					<font size="12"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{user_name}]]></textFieldExpression>
 			</textField>
@@ -190,7 +190,7 @@ ORDER BY date_time ASC, action DESC]]>
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d41ad5da-ab2a-48ff-86cb-c0f7f6293f6a"/>
 				</reportElement>
 				<textElement>
-					<font size="12"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{lsn}!=null ? $F{lsn} : ""]]></textFieldExpression>
 			</textField>
@@ -199,7 +199,7 @@ ORDER BY date_time ASC, action DESC]]>
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="d41ad5da-ab2a-48ff-86cb-c0f7f6293f6a"/>
 				</reportElement>
 				<textElement>
-					<font size="12"/>
+					<font size="11"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{work_center}!=null ? $F{work_center} : ""]]></textFieldExpression>
 			</textField>

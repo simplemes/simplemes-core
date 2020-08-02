@@ -20,10 +20,12 @@ class ButtonGroupMarker extends BaseMarker {
   void execute() {
     def content = renderContent()
 
+    def width = parameters.spacerWidth ?: "15%"
+
     def res = """
       {
         cols: [
-          {width: tk.pw("15%")},
+          {width: tk.pw("$width")},
           ${content}
           {}
         ]

@@ -8,6 +8,8 @@ Micronaut-Data Migration
 
 Tasks
 =====
+Bugs
+  wcSelection activity does not restore the order after the Reports Activity finishes.
 Delete of Order should delete action log.
   Need to allow delete() implementation?
 Migrate Start/Complete/UndoStart

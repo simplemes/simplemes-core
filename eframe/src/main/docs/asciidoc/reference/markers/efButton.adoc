@@ -48,7 +48,7 @@ The main parameters/body supported are:
 .Built-in CSS Classes for Buttons
 [cols="1,6"]
 |===
-|Class|Description
+|css|Description
 
 |*caution-button*  | A button with a yellow-ish background.
 |*bigger-text-button*   | A button with larger text size (1.5em).

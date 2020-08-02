@@ -1,17 +1,30 @@
 == Introduction
 
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Simple Order Processing>>#
+[inline-toc]#<<Assembly>>#
+[inline-toc]#<<Scan Dashboard>>#
+
+endif::[]
+
+
+
 This document describes a number of tutorial exercises to familiarize you with the features
 of the http://docs.simplemes.org/mes/latest/[SimpleMES^] application.
 
- The goal of these tutorials is to introduce basic features of an MES to you.  These tutorials do
- not dig deeply into the features.
+The goal of these tutorials is to introduce basic features of an MES to you.  These tutorials do
+not dig deeply into the all features.  The basic purpose of each tutorial is:
+
+ * <<Simple Order Processing>> - Introduction to running applications, define records, using
+   dashboards and reports.
+
+ * <<Assembly>> - Creating products with Bill of Materials, assembling components and displaying
+   component history.
+
+ * <<Scan Dashboard>> - Basic use of the scan barcode dashboard, printing traveller report.
 
 
- * Simple Order Processing
-   Create Order for existing product
-   Release
-   Start/Complete
-   Display Production Report?
  * Assembly
    Create New Product with components
    Create Order

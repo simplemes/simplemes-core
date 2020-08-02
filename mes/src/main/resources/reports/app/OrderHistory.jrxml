@@ -9,7 +9,7 @@
 	<parameter name="BaseDir" class="java.lang.String" isForPrompting="false" evaluationTime="Early">
 		<defaultValueExpression><![CDATA["C:\\Users\\mph\\JaspersoftWorkspace\\MyReports\\simplemes\\app"]]></defaultValueExpression>
 	</parameter>
-	<parameter name="ordr" class="java.lang.String">
+	<parameter name="order" class="java.lang.String">
 		<defaultValueExpression><![CDATA["M1001"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="lsn" class="java.lang.String">
@@ -38,7 +38,7 @@ FROM ordr
 	LEFT JOIN product ON 
 	 product.uuid = ordr.product_id 
 WHERE 
-	 ordr.ordr = $P{ordr}]]>
+	 ordr.ordr = $P{order}]]>
 	</queryString>
 	<field name="ordr" class="java.lang.String">
 		<property name="com.jaspersoft.studio.field.label" value="ordr"/>
@@ -97,7 +97,7 @@ WHERE
 				<textElement textAlignment="Left" verticalAlignment="Top">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{ordr}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{order}]]></textFieldExpression>
 			</textField>
 			<line>
 				<reportElement positionType="FixRelativeToBottom" x="0" y="86" width="824" height="1" uuid="88218708-c54e-42e4-b1c2-bde75e4c7543"/>
@@ -126,7 +126,7 @@ WHERE
 			<componentElement>
 				<reportElement x="670" y="20" width="140" height="25" uuid="c6ef9f37-3278-47bb-a254-545ff27296f2"/>
 				<jr:barbecue xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" type="Code39 (Extended)" drawText="false" checksumRequired="false">
-					<jr:codeExpression><![CDATA[$P{ordr}]]></jr:codeExpression>
+					<jr:codeExpression><![CDATA[$P{order}]]></jr:codeExpression>
 				</jr:barbecue>
 			</componentElement>
 			<textField>
@@ -222,7 +222,7 @@ WHERE
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{ordr}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{order}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -293,7 +293,7 @@ WHERE
 				<textElement textAlignment="Center" verticalAlignment="Top">
 					<font size="10" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$P{ordr}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$P{order}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

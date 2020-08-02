@@ -1,3 +1,7 @@
+<!--
+  ~ Copyright (c) Michael Houston 2020. All rights reserved.
+  -->
+
 <!-- docinfo.html - Provides the Table of contents hide/display logic. -->
 <link rel="shortcut icon" href="images/common/books_favicon.ico" type="image/x-icon">
 <a href="https://github.com/simplemes/simplemes-core" class="github-corner" title="View source on GitHub"
@@ -38,6 +42,7 @@
     animation: octocat-wave 560ms ease-in-out
   }
 }</style>
+
 <script>
   window.onload = _init;
 
@@ -47,22 +52,24 @@
     var link = document.createElement("a");
     link.className = "reference-link";
     link.href = isReference ? "guide.html" : "reference.html";
-    link.appendChild(document.createTextNode(isReference ? "Open guide" : "Open reference"));
+    //link.appendChild(document.createTextNode(isReference ? "Open guide" : "Open reference"));
 
     var tocDiv = document.createElement("span");
     tocDiv.id = "toc-header";
-    tocDiv.innerHTML = isReference ? "Reference - Table of Contents" : "Guide - Table of Contents";
+    tocDiv.innerHTML = isReference ? "Reference - Table of Contents" : "Tutorial - Table of Contents";
 
     var element = document.getElementById("toctitle");
-    element.innerHTML = "";  // Remove original test content
-    element.appendChild(tocDiv);
-    //element.appendChild(link);
+    if (element) {
+      element.innerHTML = "";  // Remove original test content
+      element.appendChild(tocDiv);
+      element.appendChild(link);
 
-    document.getElementById("toc-header").onmouseover = _mouseOver;
-    document.getElementById("toc-header").onmouseout = _mouseOut;
-    document.getElementsByClassName("sectlevel1")[0].onmouseover = _mouseOver;
-    document.getElementsByClassName("sectlevel1")[0].onmouseout = _mouseOut;
-    document.getElementsByClassName("sectlevel1")[0].onclick = _mouseClick;
+      document.getElementById("toc-header").onmouseover = _mouseOver;
+      document.getElementById("toc-header").onmouseout = _mouseOut;
+      document.getElementsByClassName("sectlevel1")[0].onmouseover = _mouseOver;
+      document.getElementsByClassName("sectlevel1")[0].onmouseout = _mouseOut;
+      document.getElementsByClassName("sectlevel1")[0].onclick = _mouseClick;
+    }
   }
 
   function _mouseOver(event) {

@@ -75,7 +75,6 @@ class SearchEngineRequestBulkArchiveIndexSpec extends BaseSpecification {
     and: 'a mock client that simulates the index action'
     def mockSearchEngineClient = new MockSearchEngineClient()
     SearchHelper.instance.searchEngineClient = mockSearchEngineClient
-    println "SearchHelper.instance xyzzy = $SearchHelper.instance"
 
     and: 'a mock appender is used for the error logging'
     def mockAppender = MockAppender.mock(SearchEngineRequestBulkIndex, Level.ERROR)

@@ -1,0 +1,44 @@
+== Simple Order Processing
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<Starting and Logging In>>#
+[inline-toc]#<<Defining a Product>>#
+[inline-toc]#<<Create the Order>>#
+[inline-toc]#<<Release the Order>>#
+[inline-toc]#<<Starting a Dashboard>>#
+[inline-toc]#<<Start/Complete the Order>>#
+[inline-toc]#<<Display Order History>>#
+[inline-toc]#<<Display Production Report>>#
+
+endif::[]
+
+
+
+This tutorial covers using simple order processing. It starts with how to log in and
+run various applications. It demonstrates how you can create an order
+and track how it is processed on ths shop floor.
+
+
+=== Logging In and Displaying Tasks
+
+. Navigate to the home page
+
+
+
+. Click the Login Link
+
+
+=== Defining a Product
+
+=== Create the Order
+
+=== Release the Order
+
+=== Starting a Dashboard
+
+=== Start/Complete the Order
+
+=== Display Order History
+
+=== Display Production Report

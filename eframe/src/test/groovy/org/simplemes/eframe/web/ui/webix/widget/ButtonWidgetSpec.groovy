@@ -47,7 +47,7 @@ class ButtonWidgetSpec extends BaseWidgetSpecification {
     def page = new ButtonWidget(widgetContext).build().toString()
 
     then: 'the javascript is legal'
-    checkPage(page)
+    checkJavascriptFragment(page)
 
     and: 'the basic properties are correct'
     JavascriptTestUtils.extractProperty(page, 'type') == 'htmlbutton'
@@ -98,6 +98,20 @@ class ButtonWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(page, 'tooltip') == lookup('edit.menu.tooltip')
     JavascriptTestUtils.extractProperty(page, 'label') == null
     JavascriptTestUtils.extractProperty(page, 'id') == 'customID'
+  }
+
+  def "verify that apply generates the button correctly - css option"() {
+    given: 'some options the widget'
+    def widgetContext = new WidgetContext(parameters: [css: 'caution-button'])
+
+    when: 'the widget text is built'
+    def page = new ButtonWidget(widgetContext).build().toString()
+
+    then: 'the javascript is legal'
+    checkPage(page)
+
+    and: 'the basic properties are correct'
+    JavascriptTestUtils.extractProperty(page, 'css') == 'caution-button'
   }
 
   def "verify that apply generates the button correctly - width passed in as number"() {

@@ -62,8 +62,5 @@
     });
   </script>
 </div>
-<#if !_loggedIn>
-  <p><a href="/login/auth">Login</a></p>
-</#if>
 
 <@efMessages/>

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 
@@ -5,12 +9,6 @@ import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.TypeUtils
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Provides the implementation of the efTitle/&gt; marker.
@@ -61,10 +59,10 @@ class TitleMarker extends BaseMarker {
       def objectString = escape(TypeUtils.toShortString(domainObject))
       s = GlobalUtils.lookup("${type}.title", null, [objectString, domainLabel, appTitle] as Object[])
     } else if (type == 'dashboard') {
-      def dashboardCategory = parameters.dashboardCategory
+      def dashboardCategory = parameters.category
       def dashboard = parameters.dashboard
       if (!dashboardCategory && !dashboard) {
-        throw new MarkerException("Tag <@efTitle> for dashboard requires dashboardCategory or dashboard value.", this)
+        throw new MarkerException("Tag <@efTitle> for dashboard requires dcategory or dashboard value.", this)
       }
       def t = ''
       DashboardConfig.withTransaction {
