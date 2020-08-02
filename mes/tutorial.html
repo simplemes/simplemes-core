@@ -2111,6 +2111,10 @@ ul.sectlevel1 {
 
 </style>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<!--
+  ~ Copyright (c) Michael Houston 2020. All rights reserved.
+  -->
+
 <!-- docinfo.html - Provides the Table of contents hide/display logic. -->
 <link rel="shortcut icon" href="images/common/books_favicon.ico" type="image/x-icon">
 <a href="https://github.com/simplemes/simplemes-core" class="github-corner" title="View source on GitHub"
@@ -2151,6 +2155,7 @@ ul.sectlevel1 {
     animation: octocat-wave 560ms ease-in-out
   }
 }</style>
+
 <script>
   window.onload = _init;
 
@@ -2160,22 +2165,24 @@ ul.sectlevel1 {
     var link = document.createElement("a");
     link.className = "reference-link";
     link.href = isReference ? "guide.html" : "reference.html";
-    link.appendChild(document.createTextNode(isReference ? "Open guide" : "Open reference"));
+    //link.appendChild(document.createTextNode(isReference ? "Open guide" : "Open reference"));
 
     var tocDiv = document.createElement("span");
     tocDiv.id = "toc-header";
-    tocDiv.innerHTML = isReference ? "Reference - Table of Contents" : "Guide - Table of Contents";
+    tocDiv.innerHTML = isReference ? "Reference - Table of Contents" : "Tutorial - Table of Contents";
 
     var element = document.getElementById("toctitle");
-    element.innerHTML = "";  // Remove original test content
-    element.appendChild(tocDiv);
-    //element.appendChild(link);
+    if (element) {
+      element.innerHTML = "";  // Remove original test content
+      element.appendChild(tocDiv);
+      element.appendChild(link);
 
-    document.getElementById("toc-header").onmouseover = _mouseOver;
-    document.getElementById("toc-header").onmouseout = _mouseOut;
-    document.getElementsByClassName("sectlevel1")[0].onmouseover = _mouseOver;
-    document.getElementsByClassName("sectlevel1")[0].onmouseout = _mouseOut;
-    document.getElementsByClassName("sectlevel1")[0].onclick = _mouseClick;
+      document.getElementById("toc-header").onmouseover = _mouseOver;
+      document.getElementById("toc-header").onmouseout = _mouseOut;
+      document.getElementsByClassName("sectlevel1")[0].onmouseover = _mouseOver;
+      document.getElementsByClassName("sectlevel1")[0].onmouseout = _mouseOut;
+      document.getElementsByClassName("sectlevel1")[0].onclick = _mouseClick;
+    }
   }
 
   function _mouseOver(event) {
@@ -2287,29 +2294,43 @@ ul.sectlevel1 {
 <span id="author" class="author">doc@simplemes.org</span><br>
 <span id="revnumber">version 0.5</span>
 </div>
+<div id="toc" class="toc">
+<div id="toctitle">Table of Contents</div>
+<ul class="sectlevel1">
+<li><a href="#introduction">Introduction</a></li>
+<li><a href="#simple-order-processing">Simple Order Processing</a></li>
+</ul>
+</div>
 </div>
 <div id="content">
 <div class="sect1">
 <h2 id="introduction"><a class="link" href="#introduction">Introduction</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
+<p><span class="inline-toc"><a href="#simple-order-processing">Simple Order Processing</a></span>
+<span class="inline-toc"><a href="#Assembly">[Assembly]</a></span>
+<span class="inline-toc"><a href="#Scan Dashboard">[Scan Dashboard]</a></span></p>
+</div>
+<div class="paragraph">
 <p>This document describes a number of tutorial exercises to familiarize you with the features
 of the <a href="http://docs.simplemes.org/mes/latest/" target="_blank" rel="noopener">SimpleMES</a> application.</p>
 </div>
-<div class="literalblock">
-<div class="content">
-<pre>The goal of these tutorials is to introduce basic features of an MES to you.  These tutorials do
-not dig deeply into the features.</pre>
-</div>
+<div class="paragraph">
+<p>The goal of these tutorials is to introduce basic features of an MES to you.  These tutorials do
+not dig deeply into the all features.  The basic purpose of each tutorial is:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Simple Order Processing
-Create Order for existing product
-Release
-Start/Complete
-Display Production Report?</p>
+<p><a href="#simple-order-processing">Simple Order Processing</a> - Introduction to running applications, define records, using
+dashboards and reports.</p>
+</li>
+<li>
+<p><a href="#Assembly">[Assembly]</a> - Creating products with Bill of Materials, assembling components and displaying
+component history.</p>
+</li>
+<li>
+<p><a href="#Scan Dashboard">[Scan Dashboard]</a> - Basic use of the scan barcode dashboard, printing traveller report.</p>
 </li>
 <li>
 <p>Assembly
@@ -2337,6 +2358,65 @@ Display Action Log Report.</p>
 </li>
 </ul>
 </div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="simple-order-processing"><a class="link" href="#simple-order-processing">Simple Order Processing</a></h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p><span class="inline-toc"><a href="#Starting and Logging In">[Starting and Logging In]</a></span>
+<span class="inline-toc"><a href="#defining-a-product">Defining a Product</a></span>
+<span class="inline-toc"><a href="#create-the-order">Create the Order</a></span>
+<span class="inline-toc"><a href="#release-the-order">Release the Order</a></span>
+<span class="inline-toc"><a href="#starting-a-dashboard">Starting a Dashboard</a></span>
+<span class="inline-toc"><a href="#startcomplete-the-order">Start/Complete the Order</a></span>
+<span class="inline-toc"><a href="#display-order-history">Display Order History</a></span>
+<span class="inline-toc"><a href="#display-production-report">Display Production Report</a></span></p>
+</div>
+<div class="paragraph">
+<p>This tutorial covers using simple order processing. It starts with how to log in and
+run various applications. It demonstrates how you can create an order
+and track how it is processed on ths shop floor.</p>
+</div>
+<div class="sect2">
+<h3 id="logging-in-and-displaying-tasks"><a class="link" href="#logging-in-and-displaying-tasks">Logging In and Displaying Tasks</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Navigate to the home page</p>
+</li>
+<li>
+<p>Click the Login Link</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="defining-a-product"><a class="link" href="#defining-a-product">Defining a Product</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="create-the-order"><a class="link" href="#create-the-order">Create the Order</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="release-the-order"><a class="link" href="#release-the-order">Release the Order</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="starting-a-dashboard"><a class="link" href="#starting-a-dashboard">Starting a Dashboard</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="startcomplete-the-order"><a class="link" href="#startcomplete-the-order">Start/Complete the Order</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="display-order-history"><a class="link" href="#display-order-history">Display Order History</a></h3>
+
+</div>
+<div class="sect2">
+<h3 id="display-production-report"><a class="link" href="#display-production-report">Display Production Report</a></h3>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Attributes</caption>
 <colgroup>
@@ -2381,10 +2461,11 @@ Display Action Log Report.</p>
 </div>
 </div>
 </div>
+</div>
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-08-01 17:14:04 UTC
+Last updated 2020-08-02 18:43:51 UTC
 </div>
 </div>
 </body>
