@@ -2299,6 +2299,8 @@ ul.sectlevel1 {
 <ul class="sectlevel1">
 <li><a href="#introduction">Introduction</a></li>
 <li><a href="#simple-order-processing">Simple Order Processing</a></li>
+<li><a href="#assembly">Assembly</a></li>
+<li><a href="#scan-dashboard">Scan Dashboard</a></li>
 </ul>
 </div>
 </div>
@@ -2308,8 +2310,8 @@ ul.sectlevel1 {
 <div class="sectionbody">
 <div class="paragraph">
 <p><span class="inline-toc"><a href="#simple-order-processing">Simple Order Processing</a></span>
-<span class="inline-toc"><a href="#Assembly">[Assembly]</a></span>
-<span class="inline-toc"><a href="#Scan Dashboard">[Scan Dashboard]</a></span></p>
+<span class="inline-toc"><a href="#assembly">Assembly</a></span>
+<span class="inline-toc"><a href="#scan-dashboard">Scan Dashboard</a></span></p>
 </div>
 <div class="paragraph">
 <p>This document describes a number of tutorial exercises to familiarize you with the features
@@ -2326,11 +2328,11 @@ not dig deeply into the all features.  The basic purpose of each tutorial is:</p
 dashboards and reports.</p>
 </li>
 <li>
-<p><a href="#Assembly">[Assembly]</a> - Creating products with Bill of Materials, assembling components and displaying
+<p><a href="#assembly">Assembly</a> - Creating products with Bill of Materials, assembling components and displaying
 component history.</p>
 </li>
 <li>
-<p><a href="#Scan Dashboard">[Scan Dashboard]</a> - Basic use of the scan barcode dashboard, printing traveller report.</p>
+<p><a href="#scan-dashboard">Scan Dashboard</a> - Basic use of the scan barcode dashboard, printing traveller report.</p>
 </li>
 <li>
 <p>Assembly
@@ -2364,11 +2366,12 @@ Display Action Log Report.</p>
 <h2 id="simple-order-processing"><a class="link" href="#simple-order-processing">Simple Order Processing</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><span class="inline-toc"><a href="#Starting and Logging In">[Starting and Logging In]</a></span>
-<span class="inline-toc"><a href="#defining-a-product">Defining a Product</a></span>
+<p><span class="inline-toc"><a href="#logging-in">Logging In</a></span>
+<span class="inline-toc"><a href="#define-a-product">Define a Product</a></span>
 <span class="inline-toc"><a href="#create-the-order">Create the Order</a></span>
 <span class="inline-toc"><a href="#release-the-order">Release the Order</a></span>
-<span class="inline-toc"><a href="#starting-a-dashboard">Starting a Dashboard</a></span>
+<span class="inline-toc"><a href="#create-a-dashboard">Create a Dashboard</a></span>
+<span class="inline-toc"><a href="#display-the-dashboard">Display the Dashboard</a></span>
 <span class="inline-toc"><a href="#startcomplete-the-order">Start/Complete the Order</a></span>
 <span class="inline-toc"><a href="#display-order-history">Display Order History</a></span>
 <span class="inline-toc"><a href="#display-production-report">Display Production Report</a></span></p>
@@ -2379,44 +2382,310 @@ run various applications. It demonstrates how you can create an order
 and track how it is processed on ths shop floor.</p>
 </div>
 <div class="sect2">
-<h3 id="logging-in-and-displaying-tasks"><a class="link" href="#logging-in-and-displaying-tasks">Logging In and Displaying Tasks</a></h3>
+<h3 id="logging-in"><a class="link" href="#logging-in">Logging In</a></h3>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p>Navigate to the home page</p>
+<p>Navigate to the home page ("<em><a href="https://demo.simplemes.org:8080/" class="bare">https://demo.simplemes.org:8080/</a></em>" for the public demo server):</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/home.png" alt="home" width="750">
+</div>
+<div class="title">Figure 1. Home Page</div>
+</div>
 </li>
 <li>
-<p>Click the Login Link</p>
+<p>Click the <em>Login</em> button.  Enter user/password (<em>admin/admin</em> on demo server will work).</p>
 </li>
 </ol>
 </div>
 </div>
 <div class="sect2">
-<h3 id="defining-a-product"><a class="link" href="#defining-a-product">Defining a Product</a></h3>
-
+<h3 id="define-a-product"><a class="link" href="#define-a-product">Define a Product</a></h3>
+<div class="paragraph">
+<p>First you need to define a product to be built.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Click on the <em>Products</em> button to display the Product Definition page:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/productList.png" alt="productList" width="650">
+</div>
+<div class="title">Figure 2. Product List</div>
+</div>
+<div class="paragraph">
+<p>This displays the list of all products currently defined.</p>
+</div>
+</li>
+<li>
+<p>To create a new product, press the <span class="image"><img src="images/guis/productCreateButton.png" alt="productCreateButton" width="100" title="Create"></span>
+button. This displays the Create Product page:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/productCreate.png" alt="productCreate" width="750">
+</div>
+<div class="title">Figure 3. Create Product</div>
+</div>
+</li>
+<li>
+<p>Fill in the required fields (marked with "*") and enter the <code>Title</code>.  Then press the
+<span class="image"><img src="images/guis/createButton.png" alt="createButton" width="80" title="Create"></span> button.
+This displays the product in the Show Product page:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/productShow.png" alt="productShow" width="750">
+</div>
+<div class="title">Figure 4. Show Product</div>
+</div>
+</li>
+</ol>
+</div>
 </div>
 <div class="sect2">
 <h3 id="create-the-order"><a class="link" href="#create-the-order">Create the Order</a></h3>
-
+<div class="paragraph">
+<p>Now, you need to create an Order.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>You will need to open the Order List page using the
+<a href="../eframe/guide.html#task-menu" target="_blank" rel="noopener">Task Menu</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>.
+Click on the <span class="image"><img src="images/guis/taskMenuButton.png" alt="taskMenuButton" width="30" title="Task Menu Button"></span> button
+in the upper left of the current page.  You can also press <kbd>F9</kbd> to display the task menu.
+This displays the Task Menu popup:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/taskMenu.png" alt="taskMenu" width="250">
+</div>
+<div class="title">Figure 5. Task Menu</div>
+</div>
+</li>
+<li>
+<p>Select the <em>Demand &#8594; Order</em> from the Task Menu to display the Order List page:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/orderList.png" alt="orderList" width="750">
+</div>
+<div class="title">Figure 6. Order List</div>
+</div>
+</li>
+<li>
+<p>To create a new order, press the <span class="image"><img src="images/guis/orderCreateButton.png" alt="orderCreateButton" width="100" title="Create"></span>
+button. This displays the Create Order page:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/orderCreate.png" alt="orderCreate" width="750">
+</div>
+<div class="title">Figure 7. Create Order</div>
+</div>
+</li>
+<li>
+<p>Fill in the required fields (marked with "*") and select the <code>Product</code> you created above
+(<em>BIKE-27</em>).  Make sure the <code>Overall Status</code> is set to <em>Ready</em>.</p>
+</li>
+<li>
+<p>Press the <span class="image"><img src="images/guis/createButton.png" alt="createButton" width="80" title="Create"></span> button.
+This displays the order in the Show Order page:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/orderShow.png" alt="orderShow" width="750">
+</div>
+<div class="title">Figure 8. Show Order</div>
+</div>
+</li>
+</ol>
+</div>
 </div>
 <div class="sect2">
 <h3 id="release-the-order"><a class="link" href="#release-the-order">Release the Order</a></h3>
-
+<div class="paragraph">
+<p>The order has been created, but is not yet released to production.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>If not on the Show Order page, navigate to it.</p>
+</li>
+<li>
+<p>Press the <span class="image"><img src="images/guis/releaseButton.png" alt="releaseButton" width="45" title="Release Order"></span> button
+(on the far right side of the toolbar).
+This displays confirmation message:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/orderReleased.png" alt="orderReleased" width="750">
+</div>
+<div class="title">Figure 9. Order Released</div>
+</div>
+</li>
+<li>
+<p>Click on the <span class="image"><img src="images/guis/orderStateTab.png" alt="orderStateTab" width="200" title="Order State Tab"></span>
+tab to see that the quantity to build has been placed in queue.</p>
+</li>
+</ol>
+</div>
 </div>
 <div class="sect2">
-<h3 id="starting-a-dashboard"><a class="link" href="#starting-a-dashboard">Starting a Dashboard</a></h3>
-
+<h3 id="create-a-dashboard"><a class="link" href="#create-a-dashboard">Create a Dashboard</a></h3>
+<div class="paragraph">
+<p><a href="../mes-core/guide.html#dashboards" target="_blank" rel="noopener">Dashboards</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>
+are the main interface used by shop floor operators to tell us what they are working on, what
+actions they are making and to display the order status.</p>
+</div>
+<div class="paragraph">
+<p>These dashboards are created in a number of ways, but the easiest is to load the demo data.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the browser, browse to the URL ("<em><a href="https://demo.simplemes.org:8080/demoData" class="bare">https://demo.simplemes.org:8080/demoData</a></em>" for the
+public demo server).  This will display the demo data loaded:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/demoData.png" alt="demoData" width="400">
+</div>
+<div class="title">Figure 10. Demo Data Loader</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="display-the-dashboard"><a class="link" href="#display-the-dashboard">Display the Dashboard</a></h3>
+<div class="paragraph">
+<p>You can start a dashboard in a number ways, but the easiest is to select <em>Manager Dashboard</em>
+from the home page.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>In the browser, browse to the home page ("<em><a href="https://demo.simplemes.org:8080/" class="bare">https://demo.simplemes.org:8080/</a></em>" for the
+public demo server).</p>
+</li>
+<li>
+<p>Select <em>Manager Dashboard</em> from home page. This will display the <em>Traditional</em> manager
+dashboard:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/dashboardTraditional.png" alt="dashboardTraditional" width="750">
+</div>
+<div class="title">Figure 11. Traditional Manager Dashboard</div>
+</div>
+<div class="paragraph">
+<p>This dashboard is designed for keyboard input of values and actions.  Typically, it has
+<em>Start/Complete</em> buttons and buttons to reverse those actions.
+The lower panel displays the work list, which shows the orders with a quantity in queue or
+in work.</p>
+</div>
+</li>
+</ol>
+</div>
 </div>
 <div class="sect2">
 <h3 id="startcomplete-the-order"><a class="link" href="#startcomplete-the-order">Start/Complete the Order</a></h3>
-
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Display the dashboard (see <a href="#display-the-dashboard">Display the Dashboard</a>).</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/dashboardTraditional.png" alt="dashboardTraditional" width="750">
+</div>
+<div class="title">Figure 12. Traditional Manager Dashboard</div>
+</div>
+</li>
+<li>
+<p>Select the order to <em>Start</em>.</p>
+</li>
+<li>
+<p>Press the <em>Start</em> button. The started message will be displayed:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/orderStarted.png" alt="orderStarted" width="750">
+</div>
+<div class="title">Figure 13. Order Started</div>
+</div>
+</li>
+<li>
+<p>Press the <em>Complete</em> button.  The completed message will be displayed:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/orderCompleted.png" alt="orderCompleted" width="750">
+</div>
+<div class="title">Figure 14. Order Completed</div>
+</div>
+</li>
+</ol>
+</div>
 </div>
 <div class="sect2">
 <h3 id="display-order-history"><a class="link" href="#display-order-history">Display Order History</a></h3>
-
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Display the dashboard (see <a href="#display-the-dashboard">Display the Dashboard</a>).</p>
+</li>
+<li>
+<p>Select the order.</p>
+</li>
+<li>
+<p>Press the <em>Reports</em> button.</p>
+</li>
+<li>
+<p>Press the <em>OrderHistory</em> report button.  This displays the Order History Report.</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/orderHistory.png" alt="orderHistory" width="750">
+</div>
+<div class="title">Figure 15. Order History Report</div>
+</div>
+<div class="paragraph">
+<p>This <em>Order History Report</em> will also show component <a href="#assembly">Assembly</a> history details, if defined.</p>
+</div>
+</li>
+</ol>
+</div>
 </div>
 <div class="sect2">
 <h3 id="display-production-report"><a class="link" href="#display-production-report">Display Production Report</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Display the dashboard (see <a href="#display-the-dashboard">Display the Dashboard</a>).</p>
+</li>
+<li>
+<p>Press the <em>Reports</em> button.</p>
+</li>
+<li>
+<p>Press the <em>ProductionChart</em> report button.
+dashboard:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/productionChart.png" alt="productionChart" width="750">
+</div>
+<div class="title">Figure 16. Production Chart</div>
+</div>
+<div class="paragraph">
+<p>This chart shows the production for a period of time.  The default time period is this calendar year.
+The report filters can be changed with the <em>Change Filter(s)</em> link.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="assembly"><a class="link" href="#assembly">Assembly</a></h2>
+<div class="sectionbody">
+
+</div>
+</div>
+<div class="sect1">
+<h2 id="scan-dashboard"><a class="link" href="#scan-dashboard">Scan Dashboard</a></h2>
+<div class="sectionbody">
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Attributes</caption>
 <colgroup>
@@ -2461,11 +2730,10 @@ and track how it is processed on ths shop floor.</p>
 </div>
 </div>
 </div>
-</div>
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-08-02 18:43:51 UTC
+Last updated 2020-08-04 20:17:54 UTC
 </div>
 </div>
 </body>
