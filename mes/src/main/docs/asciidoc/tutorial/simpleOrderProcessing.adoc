@@ -2,11 +2,12 @@
 
 ifeval::["{backend}" != "pdf"]
 
-[inline-toc]#<<Starting and Logging In>>#
-[inline-toc]#<<Defining a Product>>#
+[inline-toc]#<<Logging In>>#
+[inline-toc]#<<Define a Product>>#
 [inline-toc]#<<Create the Order>>#
 [inline-toc]#<<Release the Order>>#
-[inline-toc]#<<Starting a Dashboard>>#
+[inline-toc]#<<Create a Dashboard>>#
+[inline-toc]#<<Display the Dashboard>>#
 [inline-toc]#<<Start/Complete the Order>>#
 [inline-toc]#<<Display Order History>>#
 [inline-toc]#<<Display Production Report>>#
@@ -20,25 +21,162 @@ run various applications. It demonstrates how you can create an order
 and track how it is processed on ths shop floor.
 
 
-=== Logging In and Displaying Tasks
+=== Logging In
 
-. Navigate to the home page
-
-
-
-. Click the Login Link
+. Navigate to the home page ("_https://demo.simplemes.org:8080/_" for the public demo server):
++
+image::guis/home.png[title="Home Page",align="center", width="750"]
 
 
-=== Defining a Product
+. Click the _Login_ button.  Enter user/password (_admin/admin_ on demo server will work).
+
+
+=== Define a Product
+
+First you need to define a product to be built.
+
+. Click on the _Products_ button to display the Product Definition page:
++
+image::guis/productList.png[title="Product List",align="center", width="650"]
++
+This displays the list of all products currently defined.
+
+
+. To create a new product, press the image:guis/productCreateButton.png[width="100",title="Create"]
+ button. This displays the Create Product page:
++
+image::guis/productCreate.png[title="Create Product", align="center", width="750"]
+
+
+. Fill in the required fields (marked with "*") and enter the `Title`.  Then press the
+  image:guis/createButton.png[width="80",title="Create"] button.
+  This displays the product in the Show Product page:
++
+image::guis/productShow.png[title="Show Product", align="center", width="750"]
+
 
 === Create the Order
 
+Now, you need to create an Order.
+
+. You will need to open the Order List page using the
+  link:{eframe-path}/guide.html#task-menu[Task Menu^] icon:share-square-o[role="link-blue"].
+  Click on the image:guis/taskMenuButton.png[width="30",title="Task Menu Button"] button
+  in the upper left of the current page.  You can also press kbd:[F9] to display the task menu.
+  This displays the Task Menu popup:
++
+image::guis/taskMenu.png[title="Task Menu", align="center", width="250"]
+
+. Select the _Demand -> Order_ from the Task Menu to display the Order List page:
++
+image::guis/orderList.png[title="Order List", align="center", width="750"]
+
+. To create a new order, press the image:guis/orderCreateButton.png[width="100",title="Create"]
+ button. This displays the Create Order page:
++
+image::guis/orderCreate.png[title="Create Order", align="center", width="750"]
+
+
+. Fill in the required fields (marked with "*") and select the `Product` you created above
+  (_BIKE-27_).  Make sure the `Overall Status` is set to _Ready_.
+
+. Press the image:guis/createButton.png[width="80",title="Create"] button.
+  This displays the order in the Show Order page:
++
+image::guis/orderShow.png[title="Show Order", align="center", width="750"]
+
+
 === Release the Order
 
-=== Starting a Dashboard
+The order has been created, but is not yet released to production.
+
+. If not on the Show Order page, navigate to it.
+
+. Press the image:guis/releaseButton.png[width="45",title="Release Order"] button
+  (on the far right side of the toolbar).
+  This displays confirmation message:
++
+image::guis/orderReleased.png[title="Order Released", align="center", width="750"]
+
+. Click on the image:guis/orderStateTab.png[width="200",title="Order State Tab"]
+  tab to see that the quantity to build has been placed in queue.
+
+
+=== Create a Dashboard
+
+link:{mes-core-path}/guide.html#dashboards[Dashboards^] icon:share-square-o[role="link-blue"]
+are the main interface used by shop floor operators to tell us what they are working on, what
+actions they are making and to display the order status.
+
+These dashboards are created in a number of ways, but the easiest is to load the demo data.
+
+. In the browser, browse to the URL ("_https://demo.simplemes.org:8080/demoData_" for the
+  public demo server).  This will display the demo data loaded:
++
+image::guis/demoData.png[title="Demo Data Loader", align="center", width="400"]
+
+
+=== Display the Dashboard
+
+You can start a dashboard in a number ways, but the easiest is to select _Manager Dashboard_
+from the home page.
+
+. In the browser, browse to the home page ("_https://demo.simplemes.org:8080/_" for the
+  public demo server).
+
+. Select _Manager Dashboard_ from home page. This will display the _Traditional_ manager
+  dashboard:
++
+image::guis/dashboardTraditional.png[title="Traditional Manager Dashboard", align="center", width="750"]
++
+This dashboard is designed for keyboard input of values and actions.  Typically, it has
+_Start/Complete_ buttons and buttons to reverse those actions.
+The lower panel displays the work list, which shows the orders with a quantity in queue or
+in work.
 
 === Start/Complete the Order
 
+
+. Display the dashboard (see <<Display the Dashboard>>).
++
+image::guis/dashboardTraditional.png[title="Traditional Manager Dashboard", align="center", width="750"]
++
+. Select the order to _Start_.
+. Press the _Start_ button. The started message will be displayed:
++
+image::guis/orderStarted.png[title="Order Started", align="center", width="750"]
++
+
+. Press the _Complete_ button.  The completed message will be displayed:
++
+image::guis/orderCompleted.png[title="Order Completed", align="center", width="750"]
++
+
+
 === Display Order History
 
+. Display the dashboard (see <<Display the Dashboard>>).
+. Select the order.
+. Press the _Reports_ button.
+. Press the _OrderHistory_ report button.  This displays the Order History Report.
++
+image::guis/orderHistory.png[title="Order History Report", align="center", width="750"]
++
+This _Order History Report_ will also show component <<Assembly>> history details, if defined.
+
+
+
 === Display Production Report
+
+. Display the dashboard (see <<Display the Dashboard>>).
+. Press the _Reports_ button.
+
+. Press the _ProductionChart_ report button.
+  dashboard:
++
+image::guis/productionChart.png[title="Production Chart", align="center", width="750"]
++
+This chart shows the production for a period of time.  The default time period is this calendar year.
+The report filters can be changed with the _Change Filter(s)_ link.
+
+

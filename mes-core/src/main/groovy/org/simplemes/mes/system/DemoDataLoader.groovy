@@ -73,6 +73,8 @@ class DemoDataLoader implements DemoDataLoaderInterface {
                                                      title: 'reverseStart.title', buttonID: 'REVERSE_START')
       dashboardConfig.buttons << new DashboardButton(label: 'reverseComplete.label', url: '/work/reverseCompleteActivity', panel: 'A',
                                                      title: 'reverseComplete.title', buttonID: 'REVERSE_COMPLETE')
+      dashboardConfig.buttons << new DashboardButton(label: 'reports.label', url: '/report/reportActivity', panel: 'A',
+                                                     buttonID: 'REPORTS')
       dashboardConfig.save()
       count++
       log.warn("Created Dashboard ${dashboardConfig}.")
@@ -106,6 +108,8 @@ class DemoDataLoader implements DemoDataLoaderInterface {
                                                      title: 'complete.title', css: 'caution-button', buttonID: 'COMPLETE')
       dashboardConfig.buttons << new DashboardButton(label: 'reverseComplete.label', url: '/work/reverseCompleteActivity', panel: 'A',
                                                      title: 'reverseComplete.title', buttonID: 'REVERSE_COMPLETE')
+      dashboardConfig.buttons << new DashboardButton(label: 'reports.label', url: '/report/reportActivity', panel: 'A',
+                                                     buttonID: 'REPORTS')
       dashboardConfig.save()
       count++
       log.warn("Created Dashboard ${dashboardConfig}.")

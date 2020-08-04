@@ -43,7 +43,8 @@ class DashboardDemoDataLoader implements DemoDataLoaderInterface {
     def name = DashboardConfig.simpleName
     def uri = '/dashboard'
     if (Holders.configuration.appName == 'EFrame') {
-      if (!DashboardConfig.findByDashboard('SUPERVISOR_DEFAULT')) {
+      def dashboardCount = DashboardConfig.count()
+      if (!DashboardConfig.findByDashboard('SUPERVISOR_DEFAULT') && dashboardCount ==0) {
         DashboardConfig dashboardConfig
         dashboardConfig = new DashboardConfig(dashboard: 'SUPERVISOR_DEFAULT', category: 'SUPERVISOR', title: 'Supervisor')
         dashboardConfig.splitterPanels << (new DashboardPanelSplitter(panelIndex: 0, vertical: false))
@@ -54,7 +55,7 @@ class DashboardDemoDataLoader implements DemoDataLoaderInterface {
         count++
         log.info("loadDemoData(): Loaded {}", dashboardConfig)
       }
-      if (!DashboardConfig.findByDashboard('OPERATOR_DEFAULT')) {
+      if (!DashboardConfig.findByDashboard('OPERATOR_DEFAULT') && dashboardCount ==0) {
         DashboardConfig dashboardConfig
         dashboardConfig = new DashboardConfig(dashboard: 'OPERATOR_DEFAULT', category: 'OPERATOR', title: 'Operator')
         dashboardConfig.splitterPanels << (new DashboardPanelSplitter(panelIndex: 0, vertical: false))
@@ -79,7 +80,7 @@ class DashboardDemoDataLoader implements DemoDataLoaderInterface {
         count++
         log.info("loadDemoData(): Loaded {}", dashboardConfig)
       }
-      if (!DashboardConfig.findByDashboard('MANAGER_DEFAULT')) {
+      if (!DashboardConfig.findByDashboard('MANAGER_DEFAULT')  && dashboardCount ==0) {
         DashboardConfig dashboardConfig
         dashboardConfig = new DashboardConfig(dashboard: 'MANAGER_DEFAULT', category: 'MANAGER', title: 'Manager')
         dashboardConfig.splitterPanels << (new DashboardPanelSplitter(panelIndex: 0, vertical: false))

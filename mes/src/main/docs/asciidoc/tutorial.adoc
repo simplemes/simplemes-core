@@ -20,9 +20,9 @@ endif::[]
 // Include document specific content files:
 //:docinfo:
 // Some relative paths to other docs
-:eframe-path: ../../eframe/html5
-:mes-core-path: ../../mes-core/html5
-:mes-assy-path: ../../mes-assy/html5
+:eframe-path: ../eframe
+:mes-core-path: ../mes-core
+:mes-assy-path: ../mes-assy
 
 //workaround for issue 271 https://github.com/asciidoctor/asciidoctor-pdf/issues/271
 :imagesdir-src: images
@@ -36,6 +36,10 @@ ifndef::sourcedir[:sourcedir: ../java]
 include::tutorial/introduction/introduction.adoc[]
 
 include::tutorial/simpleOrderProcessing.adoc[]
+
+include::tutorial/assembly.adoc[]
+
+include::tutorial/scanDashboard.adoc[]
 
 
 
