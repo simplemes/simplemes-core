@@ -80,6 +80,7 @@ assets:
 
 ---
 eframe:
+  appName: SimpleMES
   maxRowLimit: 200
   archive:
   #  factory: org.simplemes.eframe.archive.ArchiverFactory

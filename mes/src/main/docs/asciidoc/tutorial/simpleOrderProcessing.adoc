@@ -172,11 +172,11 @@ This _Order History Report_ will also show component <<Assembly>> history detail
 . Press the _Reports_ button.
 
 . Press the _ProductionChart_ report button.
-  dashboard:
 +
 image::guis/productionChart.png[title="Production Chart", align="center", width="750"]
 +
 This chart shows the production for a period of time.  The default time period is this calendar year.
 The report filters can be changed with the _Change Filter(s)_ link.
+You can click on the bars in the chart for details on that date/product.
 
 

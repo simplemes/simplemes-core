@@ -82,12 +82,13 @@ WHERE
 	<title>
 		<band height="150">
 			<textField>
-				<reportElement x="285" y="33" width="251" height="30" forecolor="#00779B" uuid="7e6b3a6d-d500-443f-9730-b6bc4fe14b73"/>
-				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font size="20" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$R{orderHistory.title}+"X"]]></textFieldExpression>
-			</textField>
+        <reportElement x="285" y="33" width="251" height="30" forecolor="#00779B"
+                       uuid="7e6b3a6d-d500-443f-9730-b6bc4fe14b73"/>
+        <textElement textAlignment="Center" verticalAlignment="Middle">
+          <font size="20" isBold="true"/>
+        </textElement>
+        <textFieldExpression><![CDATA[$R{orderHistory.title}]]></textFieldExpression>
+      </textField>
 			<image>
 				<reportElement x="10" y="17" width="63" height="63" uuid="f51099ba-a2c1-4080-8b53-0aafc1b1086b"/>
 				<imageExpression><![CDATA[$P{BaseDir}+"/logoSmall.png"]]></imageExpression>

@@ -46,6 +46,7 @@ class DemoDataLoader implements DemoDataLoaderInterface {
 
     res.addAll(loadProductDemoData())
     res.addAll(loadScanAssyDashboard())
+    res.addAll(loadManagerAssyDashboard())
 
     return res
   }
@@ -117,12 +118,12 @@ class DemoDataLoader implements DemoDataLoaderInterface {
 
     def possible = 1
     def count = 0
-    def name = "$DashboardConfig.simpleName - Scan Assembly"
+    def name = "$DashboardConfig.simpleName - Operator Assembly"
     def uri = '/dashboard'
 
-    if (!DashboardConfig.findByDashboard('SCAN_ASSY')) {
+    if (!DashboardConfig.findByDashboard('OPERATOR_ASSY')) {
       DashboardConfig dashboardConfig
-      dashboardConfig = new DashboardConfig(dashboard: 'SCAN_ASSY', category: 'OPERATOR', title: 'Scan Assembly')
+      dashboardConfig = new DashboardConfig(dashboard: 'OPERATOR_ASSY', category: 'OPERATOR_ASSY', title: 'Operator Assembly')
       dashboardConfig.splitterPanels << new DashboardPanelSplitter(panelIndex: 0, vertical: false)
       dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 1, defaultURL: '/scan/scanActivity', parentPanelIndex: 0)
       dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 2, defaultURL: '/orderAssy/assemblyActivity', parentPanelIndex: 0)
@@ -133,6 +134,47 @@ class DemoDataLoader implements DemoDataLoaderInterface {
       dashboardConfig.save()
       count++
       log.info("Created Dashboard ${dashboardConfig}.")
+    }
+
+    res << [name: name, uri: uri, count: count, possible: possible]
+
+    return res
+  }
+
+  /**
+   * Loads the a manager assembly dashboard with default activities.
+   *
+   * @return A list of Maps with the elements defined above.
+   */
+  List<Map<String, Object>> loadManagerAssyDashboard() {
+    def res = []
+
+    def possible = 1
+    def count = 0
+    def name = "$DashboardConfig.simpleName - Manager Assembly"
+    def uri = '/dashboard'
+
+    if (!DashboardConfig.findByDashboard('MANAGER_ASSY')) {
+      DashboardConfig dashboardConfig
+      dashboardConfig = new DashboardConfig(dashboard: 'MANAGER_ASSY', category: 'MANAGER_ASSY', title: 'Manager Assembly')
+
+      dashboardConfig.splitterPanels << new DashboardPanelSplitter(panelIndex: 0, vertical: false)
+      dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 1, defaultURL: '/selection/workCenterSelection', parentPanelIndex: 0)
+      dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 2, defaultURL: '/orderAssy/assemblyActivity', parentPanelIndex: 0)
+      dashboardConfig.buttons << new DashboardButton(label: 'start.label', url: '/work/startActivity', panel: 'A',
+                                                     title: 'start.title', buttonID: 'START')
+      dashboardConfig.buttons << new DashboardButton(label: 'complete.label', url: '/work/completeActivity', panel: 'A',
+                                                     title: 'complete.title', buttonID: 'COMPLETE',
+                                                     css: 'caution-button')
+      dashboardConfig.buttons << new DashboardButton(label: 'reverseStart.label', url: '/work/reverseStartActivity', panel: 'A',
+                                                     title: 'reverseStart.title', buttonID: 'REVERSE_START')
+      dashboardConfig.buttons << new DashboardButton(label: 'reverseComplete.label', url: '/work/reverseCompleteActivity', panel: 'A',
+                                                     title: 'reverseComplete.title', buttonID: 'REVERSE_COMPLETE')
+      dashboardConfig.buttons << new DashboardButton(label: 'reports.label', url: '/report/reportActivity', panel: 'A',
+                                                     buttonID: 'REPORTS')
+      dashboardConfig.save()
+      count++
+      log.warn("Created Dashboard ${dashboardConfig}.")
     }
 
     res << [name: name, uri: uri, count: count, possible: possible]

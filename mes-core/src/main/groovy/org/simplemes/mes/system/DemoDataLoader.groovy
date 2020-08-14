@@ -57,11 +57,11 @@ class DemoDataLoader implements DemoDataLoaderInterface {
 
     def possible = 1
     def count = 0
-    def name = "$DashboardConfig.simpleName - Traditional"
+    def name = "$DashboardConfig.simpleName - Manager"
     def uri = '/dashboard'
 
     if (!DashboardConfig.findByDashboard('TRADITIONAL')) {
-      def dashboardConfig = new DashboardConfig(dashboard: 'TRADITIONAL', category: 'MANAGER', title: 'Traditional')
+      def dashboardConfig = new DashboardConfig(dashboard: 'MANAGER_STD', category: 'MANAGER', title: 'Manager')
       dashboardConfig.splitterPanels << new DashboardPanelSplitter(panelIndex: 0, vertical: false)
       dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 1, defaultURL: '/selection/workCenterSelection', parentPanelIndex: 0)
       dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 2, defaultURL: '/workList/workListActivity', parentPanelIndex: 0)
@@ -95,19 +95,17 @@ class DemoDataLoader implements DemoDataLoaderInterface {
 
     def possible = 1
     def count = 0
-    def name = "$DashboardConfig.simpleName - Scan"
+    def name = "$DashboardConfig.simpleName - Operator"
     def uri = '/dashboard'
 
-    if (!DashboardConfig.findByDashboard('SCAN')) {
+    if (!DashboardConfig.findByDashboard('OPERATOR_STD')) {
       DashboardConfig dashboardConfig
-      dashboardConfig = new DashboardConfig(dashboard: 'SCAN', category: 'OPERATOR', title: 'Scan Dashboard')
+      dashboardConfig = new DashboardConfig(dashboard: 'OPERATOR_STD', category: 'OPERATOR', title: 'Operator')
       dashboardConfig.splitterPanels << new DashboardPanelSplitter(panelIndex: 0, vertical: false)
       dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 1, defaultURL: '/scan/scanActivity', parentPanelIndex: 0)
       dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 2, defaultURL: '/workList/workListActivity', parentPanelIndex: 0)
       dashboardConfig.buttons << new DashboardButton(label: 'complete.label', url: '/work/completeActivity', panel: 'A',
                                                      title: 'complete.title', css: 'caution-button', buttonID: 'COMPLETE')
-      dashboardConfig.buttons << new DashboardButton(label: 'reverseComplete.label', url: '/work/reverseCompleteActivity', panel: 'A',
-                                                     title: 'reverseComplete.title', buttonID: 'REVERSE_COMPLETE')
       dashboardConfig.buttons << new DashboardButton(label: 'reports.label', url: '/report/reportActivity', panel: 'A',
                                                      buttonID: 'REPORTS')
       dashboardConfig.save()

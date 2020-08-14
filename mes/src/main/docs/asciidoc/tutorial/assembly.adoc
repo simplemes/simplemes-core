@@ -1,1 +1,10 @@
 == Assembly
+
+This tutorial covers basic processing and assembly using the normal, manual dashboard.
+See <<Scan Dashboard>> for details on how to assemble using a barcode-scanner and the
+scan dashboard.
+
+=== Assembly - Setup
+
+Some setup is needed for this tutorial.  Please see these
+See <<Logging In>>

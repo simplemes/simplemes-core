@@ -18,14 +18,13 @@ import org.simplemes.mes.product.domain.Product
 /**
  * Tests.
  */
+@SuppressWarnings("unused")
 class DemoDataLoaderSpec extends BaseSpecification {
 
-  @SuppressWarnings("unused")
   static dirtyDomains = [ProductComponent, Product, FlexType, DashboardConfig]
 
   DemoDataController controller
 
-  @SuppressWarnings('unused')
   def setup() {
     controller = Holders.getBean(DemoDataController)
   }
@@ -62,7 +61,8 @@ class DemoDataLoaderSpec extends BaseSpecification {
     def list = model.list
     list.find {it.name == FlexType.simpleName}
     list.find {it.name == Product.simpleName}
-    list.find {it.name.contains('Scan Assembly')}
+    list.find {it.name.contains('Operator Assembly')}
+    list.find {it.name.contains('Manager Assembly')}
   }
 
 }

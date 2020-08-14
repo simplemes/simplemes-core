@@ -1,6 +1,15 @@
 Scratch
 -------
 
+Dashboards Needed
+  Module     Cat             Dashboard
+  ------     ---             ----------
+  Core/All   OPERATOR        Operator Scan - Scan/WorkList - Start/Complete/Reports
+  Core/All   MANAGER         Manager - WC/WorkList - Start/Complete/ReverseStart/ReverseComplete/Reports
+  Assy/All   OPERATOR_ASSY   Operator Assy Scan - Scan/ComponentList - Start/Complete/Reports
+  Assy/All   MANAGER_ASSY    Manager Assy - WC/ComponentList - Start/Complete/ReverseStart/ReverseComplete/Reports
+
+
 Micronaut-Data Migration
 ========================
 

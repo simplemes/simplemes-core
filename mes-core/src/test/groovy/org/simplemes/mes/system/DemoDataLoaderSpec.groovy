@@ -35,17 +35,17 @@ class DemoDataLoaderSpec extends BaseSpecification {
     def res = controller.index(new MockPrincipal())
 
     then: 'the records are loaded'
-    DashboardConfig.findByDashboard('TRADITIONAL')
-    DashboardConfig.findByDashboard('SCAN')
+    DashboardConfig.findByDashboard('MANAGER_STD')
+    DashboardConfig.findByDashboard('OPERATOR_STD')
 
     and: 'the model is correct'
     def model = res.model.get()
-    def map1 = model.list.find { it.name.contains('Traditional') }
+    def map1 = model.list.find { it.name.contains('Manager') }
     map1.uri == '/dashboard'
     map1.count == 1
     map1.possible == 1
 
-    def map2 = model.list.find { it.name.contains('Scan') }
+    def map2 = model.list.find { it.name.contains('Operator') }
     map2.uri == '/dashboard'
     map2.count == 1
     map2.possible == 1
