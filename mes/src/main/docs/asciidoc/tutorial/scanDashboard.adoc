@@ -1,1 +1,181 @@
 == Scan Dashboard
+
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<scan-setup, Setup>>#
+[inline-toc]#<<scan-define-product, Define a Product>>#
+[inline-toc]#<<scan-create-release-order, Create and Release the Order>>#
+[inline-toc]#<<scan-print-traveller,Print Traveller for Barcode Scanner>>#
+[inline-toc]#<<scan-start-order,Start the Order>>#
+[inline-toc]#<<scan-assemble-components,Assemble Components>>#
+[inline-toc]#<<scan-complete-order,Complete the Order>>#
+[inline-toc]#<<scan-display-order-history,Display Order History>>#
+
+endif::[]
+
+This tutorial covers assembly of components into an order using the barcode-scan oriented
+dashboard.  See <<Assembly>> for details on how to assemble with just
+keyboard input.
+
+[[scan-setup]]
+=== Setup
+
+Some setup is needed for this tutorial.  You will need to follow these steps:
+
+. <<Logging In>>.
+. <<Create a Dashboard>> (Operator Assembly).
+. Configure your barcode scanner to send the data to the browser as keyboard input.
+. Configure your barcode scanner to send a TAB character as the suffix after the data is sent.
+
+If you don't have a barcode scanner, then you can simulate the scanner's behavior by typing
+in the values using a keyboard, followed bya TAB key.  The dashboard will display the
+text as you type.
+
+
+[[scan-define-product]]
+=== Define product
+
+Next, you will need to define a product with some components. If you followed the
+<<Create a Dashboard>> steps above, then these products will be created by the demo data loading
+step:
+
+image::guis/productList.png[title="Product List",align="center", width="650"]
+
+The Bill of Material for the product _BIKE-27_ will require two components:
+
+. _SEAT_ - *Quantity 1* - Data Collected on Assembly: _LOT_.
+. _WHEEL-27_ - *Quantity 2* - Data Collected on Assembly: _LOT_.
+
+You can create your own product structure for this demo if you like, but the screenshots
+below will use the above structure.
+
+[[scan-create-release-order]]
+=== Create and Release the Order
+
+Now, you need to create an Order.
+
+. You will need to open the Order List page using the
+  link:{eframe-path}/guide.html#task-menu[Task Menu^] icon:share-square-o[role="link-blue"].
+
+. To create a new order, press the image:guis/orderCreateButton.png[width="100",title="Create"]
+ button. This displays the Create Order page:
++
+image::guis/orderCreate.png[title="Create Order", align="center", width="750"]
+
+
+. Fill in the required fields (marked with "*") and select the `Product` you created above
+  (_BIKE-27_).  Make sure the `Overall Status` is set to _Ready_.
+
+. Press the image:guis/createButton.png[width="80",title="Create"] button.
+  This displays the order in the Show Order page:
++
+image::guis/orderShow.png[title="Show Order", align="center", width="750"]
++
+The order has been created, but is not yet released to production.
+
+. Press the image:guis/releaseButton.png[width="45"] button
+  (on the far right side of the toolbar).
+  This displays confirmation message:
++
+image::guis/orderReleased.png[title="Order Released", align="center", width="750"]
+
+
+[[scan-print-traveller]]
+=== Print Traveller for Barcode Scanner
+
+Now, you can optionally print a traveller document for easy barcode-scanning.
+For this, we will use the _Manager Assembly_ dashboard:
+
+. Open the _Manager_ dashboard using the
+  link:{eframe-path}/guide.html#task-menu[Task Menu^] icon:share-square-o[role="link-blue"]:
++
+image::guis/dashboard.png[title="Manager Dashboard", align="center", width="750"]
++
+This dashboard provides access to the Reports.
+
+. Select the order.
+. Press the _Reports_ button.
+. Press the _Traveller_ report button.  This displays the Traveller Report:
++
+image::guis/traveller.png[title="Traveller Report", align="center", width="750"]
++
+This _Traveller_ report shows the components required with a barcode for the component.
+On the second page of the traveller, some sample barcodes are printed to demonstrate the
+supported
+link:{mes-core-path}/guide.html#barcode-formats[Barcode Formats^] icon:share-square-o[role="link-blue"].
+You can create your own barcodes using online sites such as
+link:https://www.onlinelabels.com/label-generator-tools/barcode-generator.aspx[www.onlinelabels.com].
+The sample components look like this:
++
+image::guis/travellerSampleComponents.png[title="Traveller - Sample Components", align="center", width="550"]
++
+. Print this from the web-page or as a PDF.
+
+
+
+[[scan-start-order]]
+=== Start the Order
+
+Next, you will switch to the _Operator Assembly_ dashboard, which is a barcode scanner oriented
+dashboard:
+
+. Open the _Operator Assembly_ dashboard using the
+  link:{eframe-path}/guide.html#task-menu[Task Menu^] icon:share-square-o[role="link-blue"]:
++
+image::guis/dashboardScanAssy.png[title="Operator Assembly Dashboard", align="center", width="750"]
++
+
+. Scan the order ID (e.g. _M1005_ in the example below) to start work on the order.
+  The status is changed to _In Work_ and the component list is displayed:
++
+image::guis/dashboardScanAssyStarted.png[title="Operator Assembly Dashboard - Started", align="center", width="750"]
++
+
+
+[[scan-assemble-components]]
+=== Assemble Components
+
+Now, you will assemble some components using the sample components from the traveller:
+
+. Scan the first sample component (_SEAT_) from the traveller's second page:
++
+image::guis/travellerSampleComponents.png[title="Traveller - Sample Components", align="center", width="550"]
++
+. Scan the second sample component (_WHEEL-27_) from the traveller's second page:
+This will assemble the components with the dummy lot: _ACME14327_.  (Both components have the
+same dummy lot in the traveller report).
++
+image::guis/dashboardScanAssembled.png[title="Scan Dashboard - Assembled Components", align="center", width="750"]
++
+
+. *Alternative*: You could also just scan the component (e.g. _SEAT_) and then enter the lot
+in the dialog:
++
+image::guis/dashboardAssembleComponent.png[title="Add Component Dialog", align="center", width="450"]
++
+
+
+
+[[scan-complete-order]]
+=== Complete the Order
+
+Next, you will complete work on the order by just scanning the order a second time:
+
+. Scan the order ID (e.g. _M1005_ in the example below) to complete work on the order.
+  The status is changed to _..._:
++
+image::guis/dashboardScanAssyCompleted.png[title="Operator Assembly Dashboard - Completed", align="center", width="750"]
+
+[[scan-display-order-history]]
+=== Display Order History
+
+. Display the Manager dashboard (see <<scan-print-traveller,Print Traveller for Barcode Scanner>>).
+. Select the order.
+. Press the _Reports_ button.
+. Press the _OrderHistory_ report button.  This displays the Order History Report.
++
+image::guis/orderHistoryComponents.png[title="Order History Report - Components", align="center", width="750"]
++
+This _Order History Report_ shows the component history details. Note the LOT information
+entered during assembly.

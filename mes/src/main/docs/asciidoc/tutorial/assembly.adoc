@@ -1,10 +1,152 @@
 == Assembly
 
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc]#<<assembly-setup, Setup>>#
+[inline-toc]#<<assembly-define-product, Define a Product>>#
+[inline-toc]#<<assembly-create-release-order, Create and Release the Order>>#
+[inline-toc]#<<assembly-display-dashboard,Display the Dashboard>>#
+[inline-toc]#<<assembly-start-order,Start the Order>>#
+[inline-toc]#<<assembly-components,Assemble Components>>#
+[inline-toc]#<<assembly-display-order-history,Display Order History>>#
+[inline-toc]#<<assembly-search-component>>#
+
+endif::[]
+
 This tutorial covers basic processing and assembly using the normal, manual dashboard.
 See <<Scan Dashboard>> for details on how to assemble using a barcode-scanner and the
 scan dashboard.
 
-=== Assembly - Setup
+[[assembly-setup]]
+=== Setup
 
-Some setup is needed for this tutorial.  Please see these
-See <<Logging In>>
+Some setup is needed for this tutorial.  You will need to follow these steps:
+
+. <<Logging In>>.
+. <<Create a Dashboard>> (Manager Assembly).
+
+
+[[assembly-define-product]]
+=== Define product
+
+Next, you will need to define a product with some components. If you followed the
+<<Create a Dashboard>> steps above, then these products will be created:
+
+image::guis/productList.png[title="Product List",align="center", width="650"]
+
+The Bill of Material for the product _BIKE-27_ will require two components:
+
+. _SEAT_ - *Quantity 1* - Data Collected on Assembly: _LOT_.
+. _WHEEL-27_ - *Quantity 2* - Data Collected on Assembly: _LOT_.
+
+You can create your own product structure for this demo if you like, but the screenshots
+below will use the above structure.
+
+[[assembly-create-release-order]]
+=== Create and Release the Order
+
+Now, you need to create an Order.
+
+. You will need to open the Order List page using the
+  link:{eframe-path}/guide.html#task-menu[Task Menu^] icon:share-square-o[role="link-blue"].
+
+. To create a new order, press the image:guis/orderCreateButton.png[width="100",title="Create"]
+ button. This displays the Create Order page:
++
+image::guis/orderCreate.png[title="Create Order", align="center", width="750"]
+
+
+. Fill in the required fields (marked with "*") and select the `Product` you created above
+  (_BIKE-27_).  Make sure the `Overall Status` is set to _Ready_.
+
+. Press the image:guis/createButton.png[width="80",title="Create"] button.
+  This displays the order in the Show Order page:
++
+image::guis/orderShow.png[title="Show Order", align="center", width="750"]
++
+The order has been created, but is not yet released to production.
+
+. Press the image:guis/releaseButton.png[width="45"] button
+  (on the far right side of the toolbar).
+  This displays confirmation message:
++
+image::guis/orderReleased.png[title="Order Released", align="center", width="750"]
+
+
+[[assembly-display-dashboard]]
+=== Display the Dashboard
+
+
+. Open the _Manager Assembly_ dashboard using the
+  link:{eframe-path}/guide.html#task-menu[Task Menu^] icon:share-square-o[role="link-blue"]:
++
+image::guis/dashboardManagerAssy.png[title="Manager Assembly Dashboard", align="center", width="750"]
++
+This dashboard provides the assembly activity in the second panel.  This allows you to
+see and alter the components assembled on the order.
+
+[[assembly-start-order]]
+=== Start the Order
+
+
+. Enter your order in the dashboard.
+
+. Press the _Start_ button. The started message will be displayed:
++
+image::guis/orderStarted.png[title="Order Started", align="center", width="750"]
+
+
+[[assembly-components]]
+=== Assemble Components
+
+Next, you will assemble two components into your bike assembly.
+
+. Press the image:guis/addButton.png[width="35"] button
+  on the _SEAT_ component.  This displays the _Add Component_ dialog:
++
+image::guis/dashboardAssembleComponent.png[title="Add Component Dialog", align="center", width="450"]
++
+
+. Enter a lot (e.g. _'LOT869375534'_) and press the _Assemble_ button.
+  This will update the component list on the dashboard with the new status.
+. Repeat this assembly process for the _WHEEL-27_ component.
+  This will show the order as fully assembled:
++
+image::guis/dashboardManagerAssyDone.png[title="Add Component Dialog", align="center", width="450"]
++
+This displays all components as assembled.  From this list, you can also remove components
+as needed.
+
+[[assembly-display-order-history]]
+=== Display Order History
+
+. Display the dashboard (see <<assembly-display-dashboard>>).
+. Select the order.
+. Press the _Reports_ button.
+. Press the _OrderHistory_ report button.  This displays the Order History Report.
++
+image::guis/orderHistoryComponents.png[title="Order History Report - Components", align="center", width="750"]
++
+This _Order History Report_ shows the component history details. Note the LOT information
+entered during assembly.
+
+
+[[assembly-search-component]]
+=== Search for Component Usage
+
+. Display the _Global Search_ page from the _Search_
+  link:{eframe-path}/guide.html#task-menu[Task Menu^] icon:share-square-o[role="link-blue"].
+. Enter the LOT you used above in  <<assembly-components>> and press _Search_.
+  This displays the order you used:
++
+image::guis/searchComponent.png[title="Search Component", align="center", width="450"]
++
+Clicking on this link will take you to the order show page:
++
+image::guis/orderShowComponents.png[title="Show Order - Components", align="center", width="750"]
+
+. Click on the _Components_ tab to see the component(s) assembled.
+
+
+
