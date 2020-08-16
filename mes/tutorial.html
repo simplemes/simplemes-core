@@ -2681,15 +2681,256 @@ You can click on the bars in the chart for details on that date/product.</p>
 <h2 id="assembly"><a class="link" href="#assembly">Assembly</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
+<p><span class="inline-toc"><a href="#assembly-setup">Setup</a></span>
+<span class="inline-toc"><a href="#assembly-define-product">Define a Product</a></span>
+<span class="inline-toc"><a href="#assembly-create-release-order">Create and Release the Order</a></span>
+<span class="inline-toc"><a href="#assembly-display-dashboard">Display the Dashboard</a></span>
+<span class="inline-toc"><a href="#assembly-start-order">Start the Order</a></span>
+<span class="inline-toc"><a href="#assembly-components">Assemble Components</a></span>
+<span class="inline-toc"><a href="#assembly-display-order-history">Display Order History</a></span>
+<span class="inline-toc"><a href="#assembly-search-component">Search for Component Usage</a></span></p>
+</div>
+<div class="paragraph">
 <p>This tutorial covers basic processing and assembly using the normal, manual dashboard.
 See <a href="#scan-dashboard">Scan Dashboard</a> for details on how to assemble using a barcode-scanner and the
 scan dashboard.</p>
 </div>
 <div class="sect2">
-<h3 id="assembly-setup"><a class="link" href="#assembly-setup">Assembly - Setup</a></h3>
+<h3 id="assembly-setup"><a class="link" href="#assembly-setup">Setup</a></h3>
 <div class="paragraph">
-<p>Some setup is needed for this tutorial.  Please see these
-See <a href="#logging-in">Logging In</a></p>
+<p>Some setup is needed for this tutorial.  You will need to follow these steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="#logging-in">Logging In</a>.</p>
+</li>
+<li>
+<p><a href="#create-a-dashboard">Create a Dashboard</a> (Manager Assembly).</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="assembly-define-product"><a class="link" href="#assembly-define-product">Define product</a></h3>
+<div class="paragraph">
+<p>Next, you will need to define a product with some components. If you followed the
+<a href="#create-a-dashboard">Create a Dashboard</a> steps above, then these products will be created:</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/productList.png" alt="productList" width="650">
+</div>
+<div class="title">Figure 17. Product List</div>
+</div>
+<div class="paragraph">
+<p>The Bill of Material for the product <em>BIKE-27</em> will require two components:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><em>SEAT</em> - <strong>Quantity 1</strong> - Data Collected on Assembly: <em>LOT</em>.</p>
+</li>
+<li>
+<p><em>WHEEL-27</em> - <strong>Quantity 2</strong> - Data Collected on Assembly: <em>LOT</em>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You can create your own product structure for this demo if you like, but the screenshots
+below will use the above structure.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="assembly-create-release-order"><a class="link" href="#assembly-create-release-order">Create and Release the Order</a></h3>
+<div class="paragraph">
+<p>Now, you need to create an Order.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>You will need to open the Order List page using the
+<a href="../eframe/guide.html#task-menu" target="_blank" rel="noopener">Task Menu</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>.</p>
+</li>
+<li>
+<p>To create a new order, press the <span class="image"><img src="images/guis/orderCreateButton.png" alt="orderCreateButton" width="100" title="Create"></span>
+button. This displays the Create Order page:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/orderCreate.png" alt="orderCreate" width="750">
+</div>
+<div class="title">Figure 18. Create Order</div>
+</div>
+</li>
+<li>
+<p>Fill in the required fields (marked with "*") and select the <code>Product</code> you created above
+(<em>BIKE-27</em>).  Make sure the <code>Overall Status</code> is set to <em>Ready</em>.</p>
+</li>
+<li>
+<p>Press the <span class="image"><img src="images/guis/createButton.png" alt="createButton" width="80" title="Create"></span> button.
+This displays the order in the Show Order page:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/orderShow.png" alt="orderShow" width="750">
+</div>
+<div class="title">Figure 19. Show Order</div>
+</div>
+<div class="paragraph">
+<p>The order has been created, but is not yet released to production.</p>
+</div>
+</li>
+<li>
+<p>Press the <span class="image"><img src="images/guis/releaseButton.png" alt="releaseButton" width="45"></span> button
+(on the far right side of the toolbar).
+This displays confirmation message:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/orderReleased.png" alt="orderReleased" width="750">
+</div>
+<div class="title">Figure 20. Order Released</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="assembly-display-dashboard"><a class="link" href="#assembly-display-dashboard">Display the Dashboard</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the <em>Manager Assembly</em> dashboard using the
+<a href="../eframe/guide.html#task-menu" target="_blank" rel="noopener">Task Menu</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/dashboardManagerAssy.png" alt="dashboardManagerAssy" width="750">
+</div>
+<div class="title">Figure 21. Manager Assembly Dashboard</div>
+</div>
+<div class="paragraph">
+<p>This dashboard provides the assembly activity in the second panel.  This allows you to
+see and alter the components assembled on the order.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="assembly-start-order"><a class="link" href="#assembly-start-order">Start the Order</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Enter your order in the dashboard.</p>
+</li>
+<li>
+<p>Press the <em>Start</em> button. The started message will be displayed:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/orderStarted.png" alt="orderStarted" width="750">
+</div>
+<div class="title">Figure 22. Order Started</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="assembly-components"><a class="link" href="#assembly-components">Assemble Components</a></h3>
+<div class="paragraph">
+<p>Next, you will assemble two components into your bike assembly.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Press the <span class="image"><img src="images/guis/addButton.png" alt="addButton" width="35"></span> button
+on the <em>SEAT</em> component.  This displays the <em>Add Component</em> dialog:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/dashboardAssembleComponent.png" alt="dashboardAssembleComponent" width="450">
+</div>
+<div class="title">Figure 23. Add Component Dialog</div>
+</div>
+</li>
+<li>
+<p>Enter a lot (e.g. <em>'LOT869375534'</em>) and press the <em>Assemble</em> button.
+This will update the component list on the dashboard with the new status.</p>
+</li>
+<li>
+<p>Repeat this assembly process for the <em>WHEEL-27</em> component.
+This will show the order as fully assembled:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/dashboardManagerAssyDone.png" alt="dashboardManagerAssyDone" width="450">
+</div>
+<div class="title">Figure 24. Add Component Dialog</div>
+</div>
+<div class="paragraph">
+<p>This displays all components as assembled.  From this list, you can also remove components
+as needed.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="assembly-display-order-history"><a class="link" href="#assembly-display-order-history">Display Order History</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Display the dashboard (see <a href="#assembly-display-dashboard">Display the Dashboard</a>).</p>
+</li>
+<li>
+<p>Select the order.</p>
+</li>
+<li>
+<p>Press the <em>Reports</em> button.</p>
+</li>
+<li>
+<p>Press the <em>OrderHistory</em> report button.  This displays the Order History Report.</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/orderHistoryComponents.png" alt="orderHistoryComponents" width="750">
+</div>
+<div class="title">Figure 25. Order History Report - Components</div>
+</div>
+<div class="paragraph">
+<p>This <em>Order History Report</em> shows the component history details. Note the LOT information
+entered during assembly.</p>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="assembly-search-component"><a class="link" href="#assembly-search-component">Search for Component Usage</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Display the <em>Global Search</em> page from the <em>Search</em>
+<a href="../eframe/guide.html#task-menu" target="_blank" rel="noopener">Task Menu</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>.</p>
+</li>
+<li>
+<p>Enter the LOT you used above in  <a href="#assembly-components">Assemble Components</a> and press <em>Search</em>.
+This displays the order you used:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/searchComponent.png" alt="searchComponent" width="450">
+</div>
+<div class="title">Figure 26. Search Component</div>
+</div>
+<div class="paragraph">
+<p>Clicking on this link will take you to the order show page:</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/orderShowComponents.png" alt="orderShowComponents" width="750">
+</div>
+<div class="title">Figure 27. Show Order - Components</div>
+</div>
+</li>
+<li>
+<p>Click on the <em>Components</em> tab to see the component(s) assembled.</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
@@ -2697,6 +2938,307 @@ See <a href="#logging-in">Logging In</a></p>
 <div class="sect1">
 <h2 id="scan-dashboard"><a class="link" href="#scan-dashboard">Scan Dashboard</a></h2>
 <div class="sectionbody">
+<div class="paragraph">
+<p><span class="inline-toc"><a href="#scan-setup">Setup</a></span>
+<span class="inline-toc"><a href="#scan-define-product">Define a Product</a></span>
+<span class="inline-toc"><a href="#scan-create-release-order">Create and Release the Order</a></span>
+<span class="inline-toc"><a href="#scan-print-traveller">Print Traveller for Barcode Scanner</a></span>
+<span class="inline-toc"><a href="#scan-start-order">Start the Order</a></span>
+<span class="inline-toc"><a href="#scan-assemble-components">Assemble Components</a></span>
+<span class="inline-toc"><a href="#scan-complete-order">Complete the Order</a></span>
+<span class="inline-toc"><a href="#scan-display-order-history">Display Order History</a></span></p>
+</div>
+<div class="paragraph">
+<p>This tutorial covers assembly of components into an order using the barcode-scan oriented
+dashboard.  See <a href="#assembly">Assembly</a> for details on how to assemble with just
+keyboard input.</p>
+</div>
+<div class="sect2">
+<h3 id="scan-setup"><a class="link" href="#scan-setup">Setup</a></h3>
+<div class="paragraph">
+<p>Some setup is needed for this tutorial.  You will need to follow these steps:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><a href="#logging-in">Logging In</a>.</p>
+</li>
+<li>
+<p><a href="#create-a-dashboard">Create a Dashboard</a> (Operator Assembly).</p>
+</li>
+<li>
+<p>Configure your barcode scanner to send the data to the browser as keyboard input.</p>
+</li>
+<li>
+<p>Configure your barcode scanner to send a TAB character as the suffix after the data is sent.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>If you don&#8217;t have a barcode scanner, then you can simulate the scanner&#8217;s behavior by typing
+in the values using a keyboard, followed bya TAB key.  The dashboard will display the
+text as you type.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="scan-define-product"><a class="link" href="#scan-define-product">Define product</a></h3>
+<div class="paragraph">
+<p>Next, you will need to define a product with some components. If you followed the
+<a href="#create-a-dashboard">Create a Dashboard</a> steps above, then these products will be created by the demo data loading
+step:</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/productList.png" alt="productList" width="650">
+</div>
+<div class="title">Figure 28. Product List</div>
+</div>
+<div class="paragraph">
+<p>The Bill of Material for the product <em>BIKE-27</em> will require two components:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><em>SEAT</em> - <strong>Quantity 1</strong> - Data Collected on Assembly: <em>LOT</em>.</p>
+</li>
+<li>
+<p><em>WHEEL-27</em> - <strong>Quantity 2</strong> - Data Collected on Assembly: <em>LOT</em>.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>You can create your own product structure for this demo if you like, but the screenshots
+below will use the above structure.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="scan-create-release-order"><a class="link" href="#scan-create-release-order">Create and Release the Order</a></h3>
+<div class="paragraph">
+<p>Now, you need to create an Order.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>You will need to open the Order List page using the
+<a href="../eframe/guide.html#task-menu" target="_blank" rel="noopener">Task Menu</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>.</p>
+</li>
+<li>
+<p>To create a new order, press the <span class="image"><img src="images/guis/orderCreateButton.png" alt="orderCreateButton" width="100" title="Create"></span>
+button. This displays the Create Order page:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/orderCreate.png" alt="orderCreate" width="750">
+</div>
+<div class="title">Figure 29. Create Order</div>
+</div>
+</li>
+<li>
+<p>Fill in the required fields (marked with "*") and select the <code>Product</code> you created above
+(<em>BIKE-27</em>).  Make sure the <code>Overall Status</code> is set to <em>Ready</em>.</p>
+</li>
+<li>
+<p>Press the <span class="image"><img src="images/guis/createButton.png" alt="createButton" width="80" title="Create"></span> button.
+This displays the order in the Show Order page:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/orderShow.png" alt="orderShow" width="750">
+</div>
+<div class="title">Figure 30. Show Order</div>
+</div>
+<div class="paragraph">
+<p>The order has been created, but is not yet released to production.</p>
+</div>
+</li>
+<li>
+<p>Press the <span class="image"><img src="images/guis/releaseButton.png" alt="releaseButton" width="45"></span> button
+(on the far right side of the toolbar).
+This displays confirmation message:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/orderReleased.png" alt="orderReleased" width="750">
+</div>
+<div class="title">Figure 31. Order Released</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="scan-print-traveller"><a class="link" href="#scan-print-traveller">Print Traveller for Barcode Scanner</a></h3>
+<div class="paragraph">
+<p>Now, you can optionally print a traveller document for easy barcode-scanning.
+For this, we will use the <em>Manager Assembly</em> dashboard:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the <em>Manager</em> dashboard using the
+<a href="../eframe/guide.html#task-menu" target="_blank" rel="noopener">Task Menu</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/dashboard.png" alt="dashboard" width="750">
+</div>
+<div class="title">Figure 32. Manager Dashboard</div>
+</div>
+<div class="paragraph">
+<p>This dashboard provides access to the Reports.</p>
+</div>
+</li>
+<li>
+<p>Select the order.</p>
+</li>
+<li>
+<p>Press the <em>Reports</em> button.</p>
+</li>
+<li>
+<p>Press the <em>Traveller</em> report button.  This displays the Traveller Report:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/traveller.png" alt="traveller" width="750">
+</div>
+<div class="title">Figure 33. Traveller Report</div>
+</div>
+<div class="paragraph">
+<p>This <em>Traveller</em> report shows the components required with a barcode for the component.
+On the second page of the traveller, some sample barcodes are printed to demonstrate the
+supported
+<a href="../mes-core/guide.html#barcode-formats" target="_blank" rel="noopener">Barcode Formats</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>.
+You can create your own barcodes using online sites such as
+<a href="https://www.onlinelabels.com/label-generator-tools/barcode-generator.aspx">www.onlinelabels.com</a>.
+The sample components look like this:</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/travellerSampleComponents.png" alt="travellerSampleComponents" width="550">
+</div>
+<div class="title">Figure 34. Traveller - Sample Components</div>
+</div>
+</li>
+<li>
+<p>Print this from the web-page or as a PDF.</p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="scan-start-order"><a class="link" href="#scan-start-order">Start the Order</a></h3>
+<div class="paragraph">
+<p>Next, you will switch to the <em>Operator Assembly</em> dashboard, which is a barcode scanner oriented
+dashboard:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Open the <em>Operator Assembly</em> dashboard using the
+<a href="../eframe/guide.html#task-menu" target="_blank" rel="noopener">Task Menu</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/dashboardScanAssy.png" alt="dashboardScanAssy" width="750">
+</div>
+<div class="title">Figure 35. Operator Assembly Dashboard</div>
+</div>
+</li>
+<li>
+<p>Scan the order ID (e.g. <em>M1005</em> in the example below) to start work on the order.
+The status is changed to <em>In Work</em> and the component list is displayed:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/dashboardScanAssyStarted.png" alt="dashboardScanAssyStarted" width="750">
+</div>
+<div class="title">Figure 36. Operator Assembly Dashboard - Started</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="scan-assemble-components"><a class="link" href="#scan-assemble-components">Assemble Components</a></h3>
+<div class="paragraph">
+<p>Now, you will assemble some components using the sample components from the traveller:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Scan the first sample component (<em>SEAT</em>) from the traveller&#8217;s second page:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/travellerSampleComponents.png" alt="travellerSampleComponents" width="550">
+</div>
+<div class="title">Figure 37. Traveller - Sample Components</div>
+</div>
+</li>
+<li>
+<p>Scan the second sample component (<em>WHEEL-27</em>) from the traveller&#8217;s second page:
+This will assemble the components with the dummy lot: <em>ACME14327</em>.  (Both components have the
+same dummy lot in the traveller report).</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/dashboardScanAssembled.png" alt="dashboardScanAssembled" width="750">
+</div>
+<div class="title">Figure 38. Scan Dashboard - Assembled Components</div>
+</div>
+</li>
+<li>
+<p><strong>Alternative</strong>: You could also just scan the component (e.g. <em>SEAT</em>) and then enter the lot
+in the dialog:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/dashboardAssembleComponent.png" alt="dashboardAssembleComponent" width="450">
+</div>
+<div class="title">Figure 39. Add Component Dialog</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="scan-complete-order"><a class="link" href="#scan-complete-order">Complete the Order</a></h3>
+<div class="paragraph">
+<p>Next, you will complete work on the order by just scanning the order a second time:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Scan the order ID (e.g. <em>M1005</em> in the example below) to complete work on the order.
+The status is changed to <em>&#8230;&#8203;</em>:</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/dashboardScanAssyCompleted.png" alt="dashboardScanAssyCompleted" width="750">
+</div>
+<div class="title">Figure 40. Operator Assembly Dashboard - Completed</div>
+</div>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect2">
+<h3 id="scan-display-order-history"><a class="link" href="#scan-display-order-history">Display Order History</a></h3>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Display the Manager dashboard (see <a href="#scan-print-traveller">Print Traveller for Barcode Scanner</a>).</p>
+</li>
+<li>
+<p>Select the order.</p>
+</li>
+<li>
+<p>Press the <em>Reports</em> button.</p>
+</li>
+<li>
+<p>Press the <em>OrderHistory</em> report button.  This displays the Order History Report.</p>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/orderHistoryComponents.png" alt="orderHistoryComponents" width="750">
+</div>
+<div class="title">Figure 41. Order History Report - Components</div>
+</div>
+<div class="paragraph">
+<p>This <em>Order History Report</em> shows the component history details. Note the LOT information
+entered during assembly.</p>
+</div>
+</li>
+</ol>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 1. Attributes</caption>
 <colgroup>
@@ -2741,10 +3283,11 @@ See <a href="#logging-in">Logging In</a></p>
 </div>
 </div>
 </div>
+</div>
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-08-14 16:20:41 UTC
+Last updated 2020-08-16 17:01:58 UTC
 </div>
 </div>
 </body>
