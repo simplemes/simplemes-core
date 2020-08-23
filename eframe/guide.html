@@ -3101,23 +3101,27 @@ To avoid issues with the framework, you should use these settings:</p>
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="head"><span class="head">---</span></span>
 <span class="key">micronaut</span>:
   <span class="key">application</span>:
-    <span class="key">name</span>: <span class="string"><span class="content">eframe</span></span>
+    <span class="key">name</span>: <span class="string"><span class="content">???</span></span>
   <span class="key">session</span>:
     <span class="key">http</span>:
       <span class="key">cookiePath</span>: <span class="string"><span class="content">/</span></span>
   <span class="key">security</span>:
+    <span class="key">authentication</span>: <span class="string"><span class="content">cookie</span></span>
     <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
     <span class="key">endpoints</span>:
       <span class="key">login</span>:
         <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
       <span class="key">logout</span>:
         <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
-    <span class="key">session</span>:
-      <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
-      <span class="key">login-success-target-url</span>: <span class="string"><span class="content">/</span></span>
-      <span class="key">login-failure-target-url</span>: <span class="string"><span class="content">/login/authFailed</span></span>
-      <span class="comment">#unauthorized-target-url: /login/auth</span>
-      <span class="comment">#forbidden-target-url: /login/denied</span>
+    <span class="key">reject-not-found</span>: <span class="string"><span class="content">false</span></span>
+    <span class="key">redirect</span>:
+      <span class="key">forbidden</span>:
+        <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
+        <span class="key">url</span>: <span class="string"><span class="content">/login/auth</span></span>
+      <span class="key">prior-to-login</span>: <span class="string"><span class="content">true</span></span>
+      <span class="key">unauthorized</span>:
+        <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
+        <span class="key">url</span>: <span class="string"><span class="content">/login/auth</span></span>
     <span class="key">token</span>:
       <span class="key">jwt</span>:
         <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
@@ -3125,13 +3129,13 @@ To avoid issues with the framework, you should use these settings:</p>
           <span class="key">enabled</span>: <span class="string"><span class="content">false</span></span>
         <span class="key">cookie</span>:
           <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
-          <span class="key">loginFailureTargetUrl</span>: <span class="string"><span class="content">/login/authFailed</span></span>
+          <span class="key">loginFailureTargetUrl</span>: <span class="string"><span class="content">/login/auth?failed=true</span></span>
         <span class="key">signatures</span>:
           <span class="key">secret</span>:
             <span class="key">generator</span>:
-              <span class="key">secret</span>: <span class="string"><span class="content">${eframe.key}</span></span>
+              <span class="key">secret</span>: <span class="string"><span class="content">${eframe_key}    </span></span><i class="conum" data-value="1"></i><b>(1)</b>
         <span class="key">generator</span>:
-          <span class="key">access-token-expiration</span>: <span class="string"><span class="content">1800</span></span>  <span class="comment"># 1800 seconds = 30 minutes</span>
+          <span class="key">access-token-expiration</span>: <span class="string"><span class="content">1800</span></span>  <span class="comment"># 30 minutes</span>
     <span class="key">interceptUrlMap</span>:
       - <span class="string"><span class="content">pattern: /assets/**</span></span>
         <span class="key">httpMethod</span>: <span class="string"><span class="content">GET</span></span>
@@ -3142,6 +3146,7 @@ To avoid issues with the framework, you should use these settings:</p>
         <span class="key">access</span>:
           - <span class="string"><span class="content">isAnonymous()</span></span>
   <span class="key">server.netty.logLevel</span>: <span class="string"><span class="content">DEBUG</span></span>
+  <span class="key">server.thread-selection</span>: <span class="string"><span class="content">AUTO</span></span>
 
 <span class="head"><span class="head">---</span></span>
 <span class="key">datasources</span>:
@@ -3151,6 +3156,15 @@ To avoid issues with the framework, you should use these settings:</p>
     <span class="key">username</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">mph</span><span class="delimiter">&quot;</span></span>
     <span class="key">password</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">mh1234</span><span class="delimiter">&quot;</span></span>
     <span class="key">dialect</span>: <span class="string"><span class="content">POSTGRES</span></span>
+
+<span class="head"><span class="head">---</span></span>
+
+<span class="key">flyway</span>:
+  <span class="key">datasources</span>:
+    <span class="key">default</span>:
+      <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
+      <span class="key">locations</span>:
+        - <span class="string"><span class="content">classpath:db/migration</span></span>
 
 <span class="head"><span class="head">---</span></span>
 <span class="key">jackson</span>:
@@ -4438,17 +4452,29 @@ You should make sure there is at least one user with the <em>ADMIN</em> role in 
 </div>
 <div class="listingblock">
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="yaml">  <span class="key">security</span>:
+<pre class="CodeRay highlight"><code data-lang="yaml"><span class="key">micronaut</span>:
+  <span class="key">application</span>:
+    <span class="key">name</span>: <span class="string"><span class="content">???</span></span>
+  <span class="key">session</span>:
+    <span class="key">http</span>:
+      <span class="key">cookiePath</span>: <span class="string"><span class="content">/</span></span>
+  <span class="key">security</span>:
+    <span class="key">authentication</span>: <span class="string"><span class="content">cookie</span></span>
     <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
     <span class="key">endpoints</span>:
       <span class="key">login</span>:
         <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
       <span class="key">logout</span>:
         <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
-    <span class="key">session</span>:
-      <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
-      <span class="key">login-success-target-url</span>: <span class="string"><span class="content">/</span></span>
-      <span class="key">login-failure-target-url</span>: <span class="string"><span class="content">/login/authFailed</span></span>
+    <span class="key">reject-not-found</span>: <span class="string"><span class="content">false</span></span>
+    <span class="key">redirect</span>:
+      <span class="key">forbidden</span>:
+        <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
+        <span class="key">url</span>: <span class="string"><span class="content">/login/auth</span></span>
+      <span class="key">prior-to-login</span>: <span class="string"><span class="content">true</span></span>
+      <span class="key">unauthorized</span>:
+        <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
+        <span class="key">url</span>: <span class="string"><span class="content">/login/auth</span></span>
     <span class="key">token</span>:
       <span class="key">jwt</span>:
         <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
@@ -4456,7 +4482,7 @@ You should make sure there is at least one user with the <em>ADMIN</em> role in 
           <span class="key">enabled</span>: <span class="string"><span class="content">false</span></span>
         <span class="key">cookie</span>:
           <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
-          <span class="key">loginFailureTargetUrl</span>: <span class="string"><span class="content">/login/authFailed</span></span>
+          <span class="key">loginFailureTargetUrl</span>: <span class="string"><span class="content">/login/auth?failed=true</span></span>
         <span class="key">signatures</span>:
           <span class="key">secret</span>:
             <span class="key">generator</span>:
@@ -4471,7 +4497,9 @@ You should make sure there is at least one user with the <em>ADMIN</em> role in 
       - <span class="string"><span class="content">pattern: /favicon.ico</span></span>
         <span class="key">httpMethod</span>: <span class="string"><span class="content">GET</span></span>
         <span class="key">access</span>:
-          - <span class="string"><span class="content">isAnonymous()</span></span></code></pre>
+          - <span class="string"><span class="content">isAnonymous()</span></span>
+  <span class="key">server.netty.logLevel</span>: <span class="string"><span class="content">DEBUG</span></span>
+  <span class="key">server.thread-selection</span>: <span class="string"><span class="content">AUTO</span></span></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -7370,7 +7398,7 @@ Most service methods should be designed to take domain objects as inputs, when p
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The fields can be domain objects.  This means teh caller will populate this POGO
+<td>The fields can be domain objects.  This means the caller will populate this POGO
 within its own transaction.</td>
 </tr>
 </table>
@@ -10927,7 +10955,7 @@ change them.</p>
 <div class="sect5">
 <h6 id="parameter-default-values"><a class="link" href="#parameter-default-values">Parameter Default Values</a></h6>
 <div class="paragraph">
-<p>It is best to define default values for the parameters in teh report designer.  This allows the
+<p>It is best to define default values for the parameters in the report designer.  This allows the
 framework to automatically fill in the data and display the report.  The framework will remember
 the user&#8217;s last filter/search parameter values.  This will reduce the number of clicks needed
 for common/repeated reports.</p>
@@ -19119,7 +19147,7 @@ to the repository.  If you use the repository method directly, then this is not 
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-08-16 17:01:58 UTC
+Last updated 2020-08-23 18:28:21 UTC
 </div>
 </div>
 <style>

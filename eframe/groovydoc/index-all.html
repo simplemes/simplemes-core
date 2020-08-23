@@ -337,7 +337,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/simplemes/eframe/test/UnitTestUtils.html#assertExceptionIsValid(java.lang.Throwable, List, java.lang.Integer)" title="Method in UnitTestUtils">assertExceptionIsValid(java.lang.Throwable, List, java.lang.Integer)</a></span> - Method in <a href="org/simplemes/eframe/test/UnitTestUtils.html">UnitTestUtils</a>
 </dt><dd> <div class="block">A convenience method to make sure the given exception has the right values. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/MockAppender.html#assertFirstFoundMessageIsValid(java.lang.String, List)" title="Method in MockAppender">assertFirstFoundMessageIsValid(java.lang.String, List)</a></span> - Method in <a href="org/simplemes/eframe/test/MockAppender.html">MockAppender</a>
-</dt><dd> <div class="block">Finds the first log message that contains teh given search string.  </div></dd>
+</dt><dd> <div class="block">Finds the first log message that contains the given search string.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/CRUDGUITester.html#assertLocalized(java.lang.String, java.lang.String, java.lang.String)" title="Method in CRUDGUITester">assertLocalized(java.lang.String, java.lang.String, java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/test/CRUDGUITester.html">CRUDGUITester</a>
 </dt><dd> <div class="block">Verifies that the given text has been localized and the text was found in the properties file. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/MockAppender.html#assertMessageIsValid(List, int)" title="Method in MockAppender">assertMessageIsValid(List, int)</a></span> - Method in <a href="org/simplemes/eframe/test/MockAppender.html">MockAppender</a>
@@ -361,12 +361,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/simplemes/eframe/ast/ASTUtils.html" title="Class in org.simplemes.eframe.ast">ASTUtils</a></span> - Class in <a href="./org/simplemes/eframe/ast/package-summary.html">org.simplemes.eframe.ast</a>
 </dt><dd><div class="block">Common utilities used by most AST (annotation) transformations.
  </div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/security/controller/LoginAuthController.html#auth(java.lang.String)" title="Method in LoginAuthController">auth(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/security/controller/LoginAuthController.html">LoginAuthController</a>
-</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/security/DBAuthenticationProvider.html#authenticate(io.micronaut.http.HttpRequest, io.micronaut.security.authentication.AuthenticationRequest)" title="Method in DBAuthenticationProvider">authenticate(io.micronaut.http.HttpRequest, io.micronaut.security.authentication.AuthenticationRequest)</a></span> - Method in <a href="org/simplemes/eframe/security/DBAuthenticationProvider.html">DBAuthenticationProvider</a>
 </dt><dd> <div class="block">Authenticates a user with the given request. </div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/security/controller/LoginAuthController.html#authFailed()" title="Method in LoginAuthController">authFailed()</a></span> - Method in <a href="org/simplemes/eframe/security/controller/LoginAuthController.html">LoginAuthController</a>
-</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/AutoCleanupMockInterface.html" title="Interface in org.simplemes.eframe.test">AutoCleanupMockInterface</a></span> - Interface in <a href="./org/simplemes/eframe/test/package-summary.html">org.simplemes.eframe.test</a>
 </dt><dd><div class="block">Defines the methods need by a mock object that handles its own cleanup.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/AutoCleanupMockInterface.html#AutoCleanupMockInterface()" title="Constructor in AutoCleanupMockInterface">AutoCleanupMockInterface()</a></span> - Constructor in <a href="org/simplemes/eframe/test/AutoCleanupMockInterface.html">AutoCleanupMockInterface</a>
@@ -689,6 +685,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Builds the fields for the given panel (optional). </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/webix/freemarker/GUISetupMarker.html#buildLoggerSetup()" title="Method in GUISetupMarker">buildLoggerSetup()</a></span> - Method in <a href="org/simplemes/eframe/web/ui/webix/freemarker/GUISetupMarker.html">GUISetupMarker</a>
 </dt><dd> <div class="block">Builds the javascript logger setup for this page.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/application/controller/GlobalErrorController.html#buildLoginRedirect(io.micronaut.http.HttpRequest)" title="Method in GlobalErrorController">buildLoginRedirect(io.micronaut.http.HttpRequest)</a></span> - Method in <a href="org/simplemes/eframe/application/controller/GlobalErrorController.html">GlobalErrorController</a>
+</dt><dd> <div class="block">Builds a redirect (303) to the login page or the access denied response. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/system/controller/LoggingController.html#buildMapForOneTopLevel(java.lang.String, List, List, boolean)" title="Method in LoggingController">buildMapForOneTopLevel(java.lang.String, List, List, boolean)</a></span> - Method in <a href="org/simplemes/eframe/system/controller/LoggingController.html">LoggingController</a>
 </dt><dd> <div class="block">Builds one top level node of loggers for the given list.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/webix/widget/GridWidget.html#buildMarkSorting()" title="Method in GridWidget">buildMarkSorting()</a></span> - Method in <a href="org/simplemes/eframe/web/ui/webix/widget/GridWidget.html">GridWidget</a>
@@ -2334,7 +2332,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/simplemes/eframe/preference/service/UserPreferenceService.html#findPreferences(java.lang.String, java.lang.String, java.lang.String)" title="Method in UserPreferenceService">findPreferences(java.lang.String, java.lang.String, java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/preference/service/UserPreferenceService.html">UserPreferenceService</a>
 </dt><dd> <div class="block">Finds the given preference(s).  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/CRUDGUITester.html#findRecord(Map)" title="Method in CRUDGUITester">findRecord(Map)</a></span> - Method in <a href="org/simplemes/eframe/test/CRUDGUITester.html">CRUDGUITester</a>
-</dt><dd> <div class="block">Finds teh domain record in the DB for the given parameter set.  </div></dd>
+</dt><dd> <div class="block">Finds the domain record in the DB for the given parameter set.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/search/SearchEngineRequestBulkIndex.html#findRecords()" title="Method in SearchEngineRequestBulkIndex">findRecords()</a></span> - Method in <a href="org/simplemes/eframe/search/SearchEngineRequestBulkIndex.html">SearchEngineRequestBulkIndex</a>
 </dt><dd> <div class="block">Returns the domain objects using their IDs stored in domainIDs. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/DomainUtils.html#findRelatedRecords(java.lang.Object)" title="Method in DomainUtils">findRelatedRecords(java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/domain/DomainUtils.html">DomainUtils</a>
@@ -2403,6 +2401,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd><div class="block">The FlexType repository base interface.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/domain/FlexTypeRepository.html#FlexTypeRepository()" title="Constructor in FlexTypeRepository">FlexTypeRepository()</a></span> - Constructor in <a href="org/simplemes/eframe/custom/domain/FlexTypeRepository.html">FlexTypeRepository</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/application/controller/GlobalErrorController.html#forbidden(io.micronaut.http.HttpRequest)" title="Method in GlobalErrorController">forbidden(io.micronaut.http.HttpRequest)</a></span> - Method in <a href="org/simplemes/eframe/application/controller/GlobalErrorController.html">GlobalErrorController</a>
+</dt><dd> <div class="block">Handles the FORBIDDEN response from the security logic.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/json/ForeignReferenceSerializer.html" title="Class in org.simplemes.eframe.json">ForeignReferenceSerializer</a></span> - Class in <a href="./org/simplemes/eframe/json/package-summary.html">org.simplemes.eframe.json</a>
 </dt><dd><div class="block">A serializer for writing foreign domain references with a simple format: just the key field(s) and an ID.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/json/ForeignReferenceSerializer.html#ForeignReferenceSerializer()" title="Constructor in ForeignReferenceSerializer">ForeignReferenceSerializer()</a></span> - Constructor in <a href="org/simplemes/eframe/json/ForeignReferenceSerializer.html">ForeignReferenceSerializer</a>
@@ -3068,7 +3068,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Finds all of the user roles this user has assigned and returns it as a comma-delimited list of roles (titles).
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/controller/BaseCrudController.html#getRootPath()" title="Method in BaseCrudController">getRootPath()</a></span> - Method in <a href="org/simplemes/eframe/controller/BaseCrudController.html">BaseCrudController</a>
-</dt><dd> <div class="block">Returns teh Root URI path for this controller. </div></dd>
+</dt><dd> <div class="block">Returns the Root URI path for this controller. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/ClassPathScanner.html#getRootPath()" title="Method in ClassPathScanner">getRootPath()</a></span> - Method in <a href="org/simplemes/eframe/misc/ClassPathScanner.html">ClassPathScanner</a>
 </dt><dd> <div class="block">Returns the root path for the desired resources. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/controller/ControllerUtils.html#getRootPath(java.lang.Class)" title="Method in ControllerUtils">getRootPath(java.lang.Class)</a></span> - Method in <a href="org/simplemes/eframe/controller/ControllerUtils.html">ControllerUtils</a>
@@ -3247,6 +3247,10 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/simplemes/eframe/test/page/JavascriptTesterPage.html#getWaitForAjaxOnLoad()" title="Method in JavascriptTesterPage">getWaitForAjaxOnLoad()</a></span> - Method in <a href="org/simplemes/eframe/test/page/JavascriptTesterPage.html">JavascriptTesterPage</a>
 </dt><dd> <div class="block">If true, then the page will wait on load until the Ajax queries are completed.
  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/application/controller/GlobalErrorController.html" title="Class in org.simplemes.eframe.application.controller">GlobalErrorController</a></span> - Class in <a href="./org/simplemes/eframe/application/controller/package-summary.html">org.simplemes.eframe.application.controller</a>
+</dt><dd><div class="block">The global error handler.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/application/controller/GlobalErrorController.html#GlobalErrorController()" title="Constructor in GlobalErrorController">GlobalErrorController()</a></span> - Constructor in <a href="org/simplemes/eframe/application/controller/GlobalErrorController.html">GlobalErrorController</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/application/Globals.html" title="Class in org.simplemes.eframe.application">Globals</a></span> - Class in <a href="./org/simplemes/eframe/application/package-summary.html">org.simplemes.eframe.application</a>
 </dt><dd><div class="block">Global settings for the entire app server.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/application/Globals.html#Globals()" title="Constructor in Globals">Globals()</a></span> - Constructor in <a href="org/simplemes/eframe/application/Globals.html">Globals</a>
@@ -3436,6 +3440,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Displays the index page. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/system/controller/LoggingController.html#index(java.security.Principal)" title="Method in LoggingController">index(java.security.Principal)</a></span> - Method in <a href="org/simplemes/eframe/system/controller/LoggingController.html">LoggingController</a>
 </dt><dd> <div class="block">Displays the index page.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/controller/LoginAuthController.html#index(io.micronaut.http.HttpRequest, java.security.Principal)" title="Method in LoginAuthController">index(io.micronaut.http.HttpRequest, java.security.Principal)</a></span> - Method in <a href="org/simplemes/eframe/security/controller/LoginAuthController.html">LoginAuthController</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="sample/controller/pageTesterController.html#index(io.micronaut.http.HttpRequest, java.security.Principal)" title="Method in pageTesterController">index(io.micronaut.http.HttpRequest, java.security.Principal)</a></span> - Method in <a href="sample/controller/pageTesterController.html">pageTesterController</a>
 </dt><dd> <div class="block">Displays the given page (by default the index.hbs). </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/reports/controller/ReportController.html#index(io.micronaut.http.HttpRequest, java.security.Principal)" title="Method in ReportController">index(io.micronaut.http.HttpRequest, java.security.Principal)</a></span> - Method in <a href="org/simplemes/eframe/reports/controller/ReportController.html">ReportController</a>
@@ -4229,6 +4235,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseGUISpecification.html#nonZeroRecordCount(java.lang.Class)" title="Method in BaseGUISpecification">nonZeroRecordCount(java.lang.Class)</a></span> - Method in <a href="org/simplemes/eframe/test/BaseGUISpecification.html">BaseGUISpecification</a>
 </dt><dd> <div class="block">Returns true if the given domain has non-zero record count. </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/application/controller/GlobalErrorController.html#notFound(io.micronaut.http.HttpRequest)" title="Method in GlobalErrorController">notFound(io.micronaut.http.HttpRequest)</a></span> - Method in <a href="org/simplemes/eframe/application/controller/GlobalErrorController.html">GlobalErrorController</a>
+</dt><dd> <div class="block">Standard page not found display. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/DomainTester.html#notInFieldOrder(List)" title="Method in DomainTester">notInFieldOrder(List)</a></span> - Method in <a href="org/simplemes/eframe/test/DomainTester.html">DomainTester</a>
 </dt><dd> <div class="block">Verifies that the given fields are not in the Domain's field order.
  </div></dd>
