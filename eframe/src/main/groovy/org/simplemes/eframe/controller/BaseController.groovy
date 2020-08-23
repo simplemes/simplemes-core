@@ -12,8 +12,10 @@ import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Error
+import io.micronaut.security.authentication.AuthorizationException
 import io.micronaut.views.ViewsRenderer
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.application.controller.GlobalErrorController
 import org.simplemes.eframe.exception.MessageHolder
 import org.simplemes.eframe.misc.HTMLUtils
 import org.simplemes.eframe.misc.LogUtils
@@ -54,6 +56,10 @@ abstract class BaseController {
   @Error
   HttpResponse error(HttpRequest request, Throwable throwable) {
     try {
+      if (throwable instanceof AuthorizationException) {
+        // Use the standard login re-direct.
+        return GlobalErrorController.buildLoginRedirect(request)
+      }
       if (throwable.cause) {
         throwable = throwable.cause
       }
@@ -138,7 +144,7 @@ abstract class BaseController {
    * @param principal The user making the request.
    * @return The response (FORBIDDEN or OK with the denied view rendered).
    */
-  HttpResponse buildDeniedResponse(HttpRequest request, String msg, Principal principal) {
+  static HttpResponse buildDeniedResponse(HttpRequest request, String msg, Principal principal) {
     def accept = request.headers?.get(HttpHeaders.ACCEPT)
     if (accept.contains(MediaType.TEXT_HTML)) {
       def modelAndView = new StandardModelAndView('home/denied', principal, this)

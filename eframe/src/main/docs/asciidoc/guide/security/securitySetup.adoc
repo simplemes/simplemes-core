@@ -14,17 +14,29 @@ Your application's _application.yml_ needs a few entries for security to work as
 
 [source,yaml]
 ----
+micronaut:
+  application:
+    name: ???
+  session:
+    http:
+      cookiePath: /
   security:
+    authentication: cookie
     enabled: true
     endpoints:
       login:
         enabled: true
       logout:
         enabled: true
-    session:
-      enabled: true
-      login-success-target-url: /
-      login-failure-target-url: /login/authFailed
+    reject-not-found: false
+    redirect:
+      forbidden:
+        enabled: true
+        url: /login/auth
+      prior-to-login: true
+      unauthorized:
+        enabled: true
+        url: /login/auth
     token:
       jwt:
         enabled: true
@@ -32,7 +44,7 @@ Your application's _application.yml_ needs a few entries for security to work as
           enabled: false
         cookie:
           enabled: true
-          loginFailureTargetUrl: /login/authFailed
+          loginFailureTargetUrl: /login/auth?failed=true
         signatures:
           secret:
             generator:
@@ -48,6 +60,8 @@ Your application's _application.yml_ needs a few entries for security to work as
         httpMethod: GET
         access:
           - isAnonymous()
+  server.netty.logLevel: DEBUG
+  server.thread-selection: AUTO
 
 ----
 <.> This value comes from the environment variable 'eframe_key'.  The JWT encryption

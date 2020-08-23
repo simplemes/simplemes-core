@@ -104,7 +104,7 @@ class MockAppender extends AppenderBase {
   }
 
   /**
-   * Finds the first log message that contains teh given search string.  Then verifies that it is valid.
+   * Finds the first log message that contains the given search string.  Then verifies that it is valid.
    * @param searchString Used to find the right message to test.
    * @param values The list of strings to look for.
    * @return true - To support use in a Spock then/expect section.

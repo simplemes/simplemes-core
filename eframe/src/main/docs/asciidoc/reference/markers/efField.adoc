@@ -71,6 +71,8 @@ The main parameters/body supported are:
                 (*Default:* false).
 |*css* | The css class(es) to add to the field.  Multiple classes are supported, using space as
          a delimiter.
+|*attributes* | Any additional HTML attributes to add to the text field element.  Formatted as
+                standard Javascript object elements (e.g. 'autocomplete:"username",type:"text"')
 
 |===
 

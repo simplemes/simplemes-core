@@ -147,7 +147,7 @@ public class DomainEntityTransformation implements ASTTransformation {
         //System.out.println(fieldNode.getName()+" ann:" + annotationNode+" "+annotationNode.getClassNode()+" mappedBy:"+annotationNode.getMembers());
         String mappedByFieldName = annotationNode.getMember("mappedBy").getText();
 
-        // Figure out the target class for this OneToMany.  From teh List<T> or from the targetEntity element.
+        // Figure out the target class for this OneToMany.  From the List<T> or from the targetEntity element.
         ClassNode childDomainTypeNode;
         Expression targetEntityExpression = annotationNode.getMember("targetEntity");
         if (targetEntityExpression != null) {

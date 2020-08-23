@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.widget
 
 import org.simplemes.eframe.misc.JavascriptUtils
@@ -6,12 +10,6 @@ import org.simplemes.eframe.test.BaseWidgetSpecification
 import org.simplemes.eframe.test.JavascriptTestUtils
 import org.simplemes.eframe.web.ui.JSPageOptions
 import org.simplemes.eframe.web.ui.UIDefaults
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -145,6 +143,10 @@ class TextFieldWidgetSpec extends BaseWidgetSpecification {
     and: 'the field type is used'
     def fieldLine = TextUtils.findLine(page, 'id: "aField"')
     JavascriptTestUtils.extractProperty(fieldLine, 'type') == "password"
+
+    and: 'the auto complete attribute is set'
+    def attributesBlock = JavascriptTestUtils.extractBlock(fieldLine, 'attributes: {')
+    JavascriptTestUtils.extractProperty(attributesBlock, 'autocomplete').contains('current-password')
   }
 
   def "verify that the type password-no-auto can be passed in"() {
@@ -159,6 +161,21 @@ class TextFieldWidgetSpec extends BaseWidgetSpecification {
     def fieldLine = TextUtils.findLine(page, 'id: "aField"')
     def attributesBlock = JavascriptTestUtils.extractBlock(fieldLine, 'attributes: {')
     JavascriptTestUtils.extractProperty(attributesBlock, 'autocomplete').contains('new-password')
+  }
+
+  def "verify that generic HTML attributes can be passed in"() {
+    when: 'the UI element is built'
+    def widgetContext = buildWidgetContext(parameters: [attributes: 'autocomplete:"username",type:"ABC"'])
+    def page = new TextFieldWidget(widgetContext).build().toString()
+
+    then: 'the page is valid'
+    JavascriptTestUtils.checkScriptFragment(page)
+
+    and: 'the attributes field is correct'
+    def fieldLine = TextUtils.findLine(page, 'id: "aField"')
+    def attributesBlock = JavascriptTestUtils.extractBlock(fieldLine, 'attributes: {')
+    JavascriptTestUtils.extractProperty(attributesBlock, 'autocomplete') == 'username'
+    JavascriptTestUtils.extractProperty(attributesBlock, 'type') == 'ABC'
   }
 
   def "verify that the width can be passed in using no units "() {

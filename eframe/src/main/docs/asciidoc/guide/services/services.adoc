@@ -79,7 +79,7 @@ class AddComponentRequest {
 }
 ----
 <.> A POGO is passed in and a domain object is returned.
-<.> The fields can be domain objects.  This means teh caller will populate this POGO
+<.> The fields can be domain objects.  This means the caller will populate this POGO
     within its own transaction.
 
 The above example uses POGO to receive a large number of arguments.  It then returns a domain object

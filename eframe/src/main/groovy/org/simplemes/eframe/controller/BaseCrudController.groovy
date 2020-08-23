@@ -422,7 +422,7 @@ abstract class BaseCrudController extends BaseController {
   }
 
   /**
-   * Returns teh Root URI path for this controller. This comes directly from the
+   * Returns the Root URI path for this controller. This comes directly from the
    * @Controller annotation.* @return The path.
    */
   String getRootPath() {

@@ -207,6 +207,33 @@ class FieldMarkerSpec extends BaseMarkerSpecification {
     and: 'the field type is correct'
     def titleFieldLine = TextUtils.findLine(page, 'id: "title"')
     JavascriptTestUtils.extractProperty(titleFieldLine, 'type') == 'password'
+
+    and: 'the auto complete attribute is set'
+    def attributesBlock = JavascriptTestUtils.extractBlock(titleFieldLine, 'attributes: {')
+    JavascriptTestUtils.extractProperty(attributesBlock, 'autocomplete').contains('current-password')
+  }
+
+  def "verify that the marker supports the attributes option for text fields"() {
+    given: 'a mocked domain'
+    new MockDomainUtils(this, [SampleParent]).install()
+
+    when: 'the marker is built'
+    def src = """
+      <@efForm id="edit">
+        <@efField field="SampleParent.title" attributes='autocomplete:"username",type:"ABC"'/>
+      </@efForm>
+    """
+
+    def page = execute(source: src, controllerClass: SampleParentController)
+
+    then: 'the javascript is legal'
+    checkPage(page)
+
+    and: 'the attributes are passed in'
+    def titleFieldLine = TextUtils.findLine(page, 'id: "title"')
+    def attributesBlock = JavascriptTestUtils.extractBlock(titleFieldLine, 'attributes: {')
+    JavascriptTestUtils.extractProperty(attributesBlock, 'autocomplete') == 'username'
+    JavascriptTestUtils.extractProperty(attributesBlock, 'type') == 'ABC'
   }
 
   def "verify that the marker generates the field - width specified"() {

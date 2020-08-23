@@ -1,9 +1,10 @@
 Scratch
 =======
 
-Micronaut Data Conversion Tasks
-===============================
-Report
+
+Tasks
+=====
+Reports
   Fix issue with date ranges error by TZ offset?
 Add workaround for update failure: 299.  Remove sop.
   Check for MN-Data issue 404 fix.  Was in 2.0.  Update row count should be returned?
@@ -21,10 +22,6 @@ Support cache in specific use cases:
   Others as needed.
 Fix mess with efForm.dashboard.  Support type='dashboard', 'buttonHolder' and 'dialog'.
 
-
-Tasks
-=====
-Tasks left out
   Support for MPE?
   Check Search in CrudGUITester and add to definition list logic/controller.
   CrudGUITester - combobox - Enum, Domain Ref, Option objects.
@@ -53,83 +50,30 @@ Tasks left out
 
 MES Demo Release Requirements
 -----------------------------
-  OrderStatus
-  Order/Product/Routing/Release
-  LSNStatus
-  LSN
-  Barcode Dashboard
-  Assembly
-    Custom Fields via FlexType
-    Barcode Support
-    Where Used Report (Elastic Search and Jasper?)
-  Elastic Global/List Search
   Reports
     WIP
-    As-built Report
-    Traveler
 
 
 MES Core First Pass Predecessors
   
 
-Freemarker Conversion?     https://freemarker.apache.org/docs/pgui_datamodel_directive.html
-
-Custom Fields
-  CustomFieldMapType - Encoded as JSON.  Store Type in JSON or rely on current defn?:
-    {vendor: 'ACME', _vendorFormat: 'R', _vendorType: Product}
-  Annotation for fields? plus FlexType support>
-  LSNAssy
-    LSN
-    Order
-    CustomFieldMapType custom
-  lsnAssy.custom['vendor'] = . . .
-
-
-
 Task Before MES work
   Dashboards/Questions from nested code
   Addition modules
-    Fields - Single CLOB column with multiple Flex Field ID stored in a comma-delimited list.
-           - Holds custom and flex field values.
-           - Copy C:\Users\mph\Documents\git\mes\mes-core\src\main\docs\asciidoc\guide\dataModel ==== Custom Field Extensions to eframe custom docs and config areas.
-    Methods after/before core method.
     Global Toggles?
-  custom fields
-    UI
-  Security
-    Login/Auth pages.
-    Access Denied re-direct for JWT Cookies.
   Searchable
   Report Engine
   Task Menu
   Themes - Including fixes to 'TBD: Needs different value for theme.' notes.
   Periodic Archiving
-  Markers
-   efdashboard
-   efjavascriptStub
-   efpanel
 
 
 UI
-Custom Fields
-  Adds static fieldDef to class?
-    static fieldDef
-    storage
-  Works with Flex Fields too?
 
-Search
-
-Postgres Setup
-==============
-Create new DB
-  Create from template0, owner mph.
-
-Jenkins Setup
-==============
-URL: mphouston@s.attlocal.net:/opt/git/smes/eframe.git
-
+Old Notes
+==========
 Setup
-=========
+----------
 GIT server
   cd /opt/git/smes
   mkdir eframe.git

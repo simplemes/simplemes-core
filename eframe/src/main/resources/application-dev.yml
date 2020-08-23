@@ -12,6 +12,8 @@ micronaut:
             generator:
               secret: testKey890123456789012345678901234567890
               # Never used in production.
+        generator:
+          access-token.expiration: 43200 # 12 hours  # 1209600 for 14 days for dev.  Never use in production.
 ---
 datasources:
   default:

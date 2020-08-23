@@ -1,33 +1,34 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <#if errors??>
-      <title>Login Failed</title>
-    <#else>
-      <title>Login ${errors!''}</title>
-    </#if>
-</head>
-<body>
-<#if errors??>
+<#--@formatter:off-->
+<#assign title><@efTitle type='main' label='login.title'/></#assign>
+<#include "../includes/header.ftl" />
+<#if params.failed??>
   <div id="errors" class="login-message">
-    <span>Login Failed</span>
+    <span><@efLookup key="login.failed.message"/></span>
   </div>
 </#if>
-<form action="/login" method="POST">
-  <ol>
-    <li>
-      <label for="username">Username</label>
-      <input type="text" name="username" id="username"/>
-    </li>
-    <li>
-      <label for="password">Password</label>
-      <input type="password" name="password" id="password"/>
-    </li>
-    <li>
-      <input type="submit" value="Login" id="submit"/>
-    </li>
-  </ol>
-  <input id="target" name="target" type="hidden" value="${target!''}"/>
+<form id="dummy" action="/login" method="POST">
+  <@efForm id="loginForm">
+    <@efField field="User.userName" id="username" label="user.label" attributes='autocomplete:"username"'/>
+    <@efField field="User.password" id="password" label="password.label" type="password"/>
+      <@efButtonGroup spacerWidth="25%">
+        <@efButton id="login" label='login.label' click="submitLogin()"/>
+      </@efButtonGroup>
+</@efForm>
 </form>
-</body>
-</html>
+<script>
+  ef.focus("username");
+  function submitLogin() {
+    ef.submitForm('loginForm','/login')
+  }
+  // Attach the key handler to the whole page support the enter key
+  document.onkeydown = function keyEventHandler(event) {
+    if (event.key == "Enter") {
+      submitLogin();
+      event.stopPropagation();
+      return false;
+    }
+  };
+
+</script>
+
+<#include "../includes/footer.ftl" />

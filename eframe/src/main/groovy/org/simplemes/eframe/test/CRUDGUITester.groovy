@@ -1084,7 +1084,7 @@ class CRUDGUITester {
   }
 
   /**
-   * Finds teh domain record in the DB for the given parameter set.  Searches by key field.
+   * Finds the domain record in the DB for the given parameter set.  Searches by key field.
    * @param params The parameters for the record to be found.
    */
   protected Object findRecord(Map params) {

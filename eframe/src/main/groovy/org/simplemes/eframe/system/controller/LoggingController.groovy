@@ -18,6 +18,7 @@ import io.micronaut.http.annotation.Produces
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.controller.BaseController
 import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.controller.StandardModelAndView
 import org.simplemes.eframe.domain.DomainUtils
@@ -41,7 +42,7 @@ import java.security.Principal
 @Slf4j
 @Secured("ADMIN")
 @Controller("/logging")
-class LoggingController {
+class LoggingController extends BaseController {
 
   /**
    * Defines the entry(s) in the main Task Menu.

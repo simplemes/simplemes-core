@@ -267,7 +267,7 @@ change them.
 
 ====== Parameter Default Values
 
-It is best to define default values for the parameters in teh report designer.  This allows the
+It is best to define default values for the parameters in the report designer.  This allows the
 framework to automatically fill in the data and display the report.  The framework will remember
 the user's last filter/search parameter values.  This will reduce the number of clicks needed
 for common/repeated reports.

@@ -17,6 +17,8 @@ import org.simplemes.eframe.i18n.GlobalUtils
  *   <li><b>type</b> - The field type.  Supported values: 'password'. </li>
  *   <li><b>readOnly</b> - If true, then the text field is not editable (<b>default</b>: false). </li>
  *   <li><b>onChange</b> - The javascript to execute when the field is changed (one field exit). </li>
+ *   <li><b>attributes</b> - The list of attributes to assign to the HTML field.
+ *       Formatted as standard Javascript object element (e.g.'autocomplete:"username"'. </li>
  * </ul>
  */
 class TextFieldWidget extends BaseLabeledFieldWidget {
@@ -93,6 +95,8 @@ class TextFieldWidget extends BaseLabeledFieldWidget {
     def sb = new StringBuilder()
     if (type == 'password-no-auto') {
       sb << 'autocomplete:"new-password"'
+    } else if (type == 'password') {
+      sb << 'autocomplete:"current-password"'
     }
 
     def maxLength = getMaxLength()
@@ -108,6 +112,13 @@ class TextFieldWidget extends BaseLabeledFieldWidget {
         sb << ','
       }
       sb << """id: "$id" """
+    }
+    def attrs = (String) widgetContext.parameters.attributes ?: ''
+    if (attrs) {
+      if (sb.size()) {
+        sb << ','
+      }
+      sb << attrs
     }
 
     if (sb.size()) {

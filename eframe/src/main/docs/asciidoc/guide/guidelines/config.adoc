@@ -26,23 +26,27 @@ To avoid issues with the framework, you should use these settings:
 ---
 micronaut:
   application:
-    name: eframe
+    name: ???
   session:
     http:
       cookiePath: /
   security:
+    authentication: cookie
     enabled: true
     endpoints:
       login:
         enabled: true
       logout:
         enabled: true
-    session:
-      enabled: true
-      login-success-target-url: /
-      login-failure-target-url: /login/authFailed
-      #unauthorized-target-url: /login/auth
-      #forbidden-target-url: /login/denied
+    reject-not-found: false
+    redirect:
+      forbidden:
+        enabled: true
+        url: /login/auth
+      prior-to-login: true
+      unauthorized:
+        enabled: true
+        url: /login/auth
     token:
       jwt:
         enabled: true
@@ -50,13 +54,13 @@ micronaut:
           enabled: false
         cookie:
           enabled: true
-          loginFailureTargetUrl: /login/authFailed
+          loginFailureTargetUrl: /login/auth?failed=true
         signatures:
           secret:
             generator:
-              secret: ${eframe.key}
+              secret: ${eframe_key}    // <.>
         generator:
-          access-token-expiration: 1800  # 1800 seconds = 30 minutes
+          access-token-expiration: 1800  # 30 minutes
     interceptUrlMap:
       - pattern: /assets/**
         httpMethod: GET
@@ -67,6 +71,7 @@ micronaut:
         access:
           - isAnonymous()
   server.netty.logLevel: DEBUG
+  server.thread-selection: AUTO
 
 ---
 datasources:
@@ -76,6 +81,15 @@ datasources:
     username: "mph"
     password: "mh1234"
     dialect: POSTGRES
+
+---
+
+flyway:
+  datasources:
+    default:
+      enabled: true
+      locations:
+        - classpath:db/migration
 
 ---
 jackson:

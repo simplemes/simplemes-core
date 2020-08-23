@@ -13,12 +13,15 @@ micronaut:
         enabled: true
       logout:
         enabled: true
-    session:
-      enabled: true
-      login-success-target-url: /
-      login-failure-target-url: /login/authFailed
-      #unauthorized-target-url: /login/auth
-      #forbidden-target-url: /login/denied
+    reject-not-found: false
+    redirect:
+      forbidden:
+        enabled: true
+        url: /login/auth
+      prior-to-login: true
+      unauthorized:
+        enabled: true
+        url: /login/auth
     token:
       jwt:
         enabled: true
@@ -26,13 +29,13 @@ micronaut:
           enabled: false
         cookie:
           enabled: true
-          loginFailureTargetUrl: /login/authFailed
+          loginFailureTargetUrl: /login/auth?failed=true
         signatures:
           secret:
             generator:
               secret: ${eframe.key}
         generator:
-          access-token.expiration: 1209600  # TODO: 14 days, 1.0.1 Check fix when RedirectRejectionHandler released (https://github.com/micronaut-projects/micronaut-core/pull/893)
+          access-token.expiration: 1800  # 30 minues
     interceptUrlMap:
       - pattern: /assets/**
         httpMethod: GET

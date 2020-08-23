@@ -25,6 +25,7 @@ import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.controller.StandardModelAndView
 import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.data.format.DateFieldFormat
+import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.preference.PreferenceHolder
@@ -111,7 +112,9 @@ class ReportController extends BaseController {
       missingRoles = ReportEngine.instance.writeReport(report, out)
     }
     if (missingRoles) {
-      return buildDeniedResponse(request, "Missing role $missingRoles for ${params.loc}", principal)
+      // roleMissing.message=Missing role(s) {0} for {1}
+      def msg = GlobalUtils.lookup("roleMissing.message", missingRoles, params.loc)
+      return buildDeniedResponse(request, msg, principal)
     } else {
       // Ok for display
       def body = report.pdf ? out.toByteArray() : out.toString()
