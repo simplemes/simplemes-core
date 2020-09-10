@@ -70,11 +70,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Nested&nbsp;&nbsp;&nbsp;<li><a href="#field_summary">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>
-            Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
+            <li><a href="#field_detail">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
     </div>
     <a name="skip-navbar_top">
@@ -115,6 +115,54 @@ if (location.href.indexOf('is-external=true') == -1) {
         
         <!-- =========== FIELD SUMMARY =========== -->
         
+            <ul class="blockList">
+                <li class="blockList"><a name="field_summary"><!--   --></a>
+                    <h3>Field Summary</h3>
+                    <ul class="blockList">
+                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Enum constants summary table">
+                        <caption><span>Fields</span><span class="tabEnd">&nbsp;</span></caption>
+                        <tr>
+                            <th class="colFirst" scope="col">Modifiers</th>
+                            <th class="colLast" scope="col">Name</th>
+                            <th class="colLast" scope="col">Description</th>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>protected&nbsp;io.micronaut.security.token.jwt.generator.AccessRefreshTokenGenerator</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#accessRefreshTokenGenerator">accessRefreshTokenGenerator</a></code></td>
+                            <td class="colLast"></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>protected&nbsp;io.micronaut.security.handlers.LoginHandler</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#loginHandler">loginHandler</a></code></td>
+                            <td class="colLast"></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>protected&nbsp;io.micronaut.security.token.generator.RefreshTokenGenerator</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#refreshTokenGenerator">refreshTokenGenerator</a></code></td>
+                            <td class="colLast"></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>protected&nbsp;io.micronaut.security.token.refresh.RefreshTokenPersistence</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#refreshTokenPersistence">refreshTokenPersistence</a></code></td>
+                            <td class="colLast"></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>protected&nbsp;io.micronaut.security.token.validator.RefreshTokenValidator</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#refreshTokenValidator">refreshTokenValidator</a></code></td>
+                            <td class="colLast"></td>
+                        </tr>
+                        
+                    </table>
+                   </ul>
+                </li>
+                
+            </ul>
+        
 
         <!-- =========== PROPERTY SUMMARY =========== -->
         
@@ -135,6 +183,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
+                            <td class="colFirst">
+                                <code><a href="#LoginAuthController(io.micronaut.security.token.refresh.RefreshTokenPersistence, io.micronaut.security.token.validator.RefreshTokenValidator, io.micronaut.security.token.jwt.generator.AccessRefreshTokenGenerator, io.micronaut.security.token.generator.RefreshTokenGenerator, io.micronaut.security.handlers.LoginHandler)">LoginAuthController</a>
+                                (io.micronaut.security.token.refresh.RefreshTokenPersistence refreshTokenPersistence, io.micronaut.security.token.validator.RefreshTokenValidator refreshTokenValidator, io.micronaut.security.token.jwt.generator.AccessRefreshTokenGenerator accessRefreshTokenGenerator, io.micronaut.security.token.generator.RefreshTokenGenerator refreshTokenGenerator, io.micronaut.security.handlers.LoginHandler loginHandler)</code><br> <DL><DT><B>Parameters:</B></DT><DD><code>refreshTokenPersistence</code> -  The persistence mechanism for the refresh token</DD></DL></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
                             <td class="colFirst">
                                 <code><a href="#LoginAuthController()">LoginAuthController</a>
                                 ()</code><br></td>
@@ -163,8 +217,21 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>io.reactivex.Single</code></td>
+                            <td class="colLast"><code><strong><a href="#accessToken(io.micronaut.http.HttpRequest, java.lang.String)">accessToken</a></strong>(io.micronaut.http.HttpRequest request, java.lang.String cookieRefreshToken)</code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>io.micronaut.http.HttpResponse</code></td>
-                            <td class="colLast"><code><strong><a href="#index(io.micronaut.http.HttpRequest, java.security.Principal)">index</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#auth(io.micronaut.http.HttpRequest, java.security.Principal)">auth</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>io.micronaut.http.MutableHttpResponse</code></td>
+                            <td class="colLast"><code><strong><a href="#createSuccessResponse(io.micronaut.security.authentication.UserDetails, java.lang.String, io.micronaut.http.HttpRequest)">createSuccessResponse</a></strong>(io.micronaut.security.authentication.UserDetails userDetails, java.lang.String refreshToken, io.micronaut.http.HttpRequest request)</code><br>Creates a simple page for the response (suitable for iframe use).
+ </td>
                         </tr>
                         
                     </table>
@@ -201,6 +268,56 @@ if (location.href.indexOf('is-external=true') == -1) {
            
 
             
+            <!-- =========== FIELD DETAIL =========== -->
+            <ul class="blockList">
+                <li class="blockList"><a name="field_detail">
+                    <!--   -->
+                </a>
+                    <h3>Field Detail</h3>
+                    
+                        <a name="accessRefreshTokenGenerator"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;final&nbsp;io.micronaut.security.token.jwt.generator.AccessRefreshTokenGenerator <strong>accessRefreshTokenGenerator</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="loginHandler"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;final&nbsp;io.micronaut.security.handlers.LoginHandler <strong>loginHandler</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="refreshTokenGenerator"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;final&nbsp;io.micronaut.security.token.generator.RefreshTokenGenerator <strong>refreshTokenGenerator</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="refreshTokenPersistence"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;final&nbsp;io.micronaut.security.token.refresh.RefreshTokenPersistence <strong>refreshTokenPersistence</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="refreshTokenValidator"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;final&nbsp;io.micronaut.security.token.validator.RefreshTokenValidator <strong>refreshTokenValidator</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                </li>
+            </ul>
+            
 
             
 
@@ -213,6 +330,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                     <!--   -->
                 </a>
                     <h3>Constructor Detail</h3>
+                    
+                        <a name="LoginAuthController(io.micronaut.security.token.refresh.RefreshTokenPersistence, io.micronaut.security.token.validator.RefreshTokenValidator, io.micronaut.security.token.jwt.generator.AccessRefreshTokenGenerator, io.micronaut.security.token.generator.RefreshTokenGenerator, io.micronaut.security.handlers.LoginHandler)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4><strong>LoginAuthController</strong>(io.micronaut.security.token.refresh.RefreshTokenPersistence refreshTokenPersistence, io.micronaut.security.token.validator.RefreshTokenValidator refreshTokenValidator, io.micronaut.security.token.jwt.generator.AccessRefreshTokenGenerator accessRefreshTokenGenerator, io.micronaut.security.token.generator.RefreshTokenGenerator refreshTokenGenerator, io.micronaut.security.handlers.LoginHandler loginHandler)</h4>
+                                <p> <DL><DT><B>Parameters:</B></DT><DD><code>refreshTokenPersistence</code> -  The persistence mechanism for the refresh token</DD><DD><code>refreshTokenValidator</code> -  The refresh token validator</DD></DL></p>
+                            </li>
+                        </ul>
                     
                         <a name="LoginAuthController()"><!-- --></a>
                         <ul class="blockListLast">
@@ -235,13 +360,32 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="index(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
+                        <a name="accessToken(io.micronaut.http.HttpRequest, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>@io.micronaut.http.annotation.ProducesProduces
 @io.micronaut.http.annotation.GetGet
-io.micronaut.http.HttpResponse <strong>index</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+io.reactivex.Single <strong>accessToken</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable @io.micronaut.http.annotation.CookieValueCookieValue java.lang.String cookieRefreshToken)</h4>
                                 <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="auth(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@io.micronaut.http.annotation.ProducesProduces
+@io.micronaut.http.annotation.GetGet
+io.micronaut.http.HttpResponse <strong>auth</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="createSuccessResponse(io.micronaut.security.authentication.UserDetails, java.lang.String, io.micronaut.http.HttpRequest)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>io.micronaut.http.MutableHttpResponse <strong>createSuccessResponse</strong>(io.micronaut.security.authentication.UserDetails userDetails, java.lang.String refreshToken, io.micronaut.http.HttpRequest request)</h4>
+                                <p> Creates a simple page for the response (suitable for iframe use).
+ Contains the cookies needed for access and refresh tokens. <DL><DT><B>Parameters:</B></DT><DD><code>userDetails</code> -  Authenticated user's representation.</DD><DD><code>refreshToken</code> -  The refresh token</DD><DD><code>request</code> -  The HttpRequest being executed</DD></DL><DL><DT><B>Returns:</B></DT><DD>An HTTP Response. Eg. a redirect or an JWT token rendered to the response</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -279,11 +423,11 @@ io.micronaut.http.HttpResponse <strong>index</strong>(io.micronaut.http.HttpRequ
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Nested&nbsp;&nbsp;&nbsp;<li><a href="#field_summary">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>
-            Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
+            <li><a href="#field_detail">Field</a></li>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
     </div>
     <p>Groovy Documentation</p>

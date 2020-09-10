@@ -4422,17 +4422,95 @@ class.</p>
 <h2 id="security"><a class="link" href="#security">Security</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><span class="inline-toc"><a href="#security-setup">Security Setup</a></span>
+<p><span class="inline-toc"><a href="#security-design">Security Design</a></span>
+<span class="inline-toc"><a href="#security-setup">Security Setup</a></span>
 <span class="inline-toc"><a href="#roles">Roles</a></span>
 <span class="inline-toc"><a href="#security-guis">Security GUIs</a></span></p>
 </div>
 <div class="paragraph">
 <p>Security is critical in enterprise applications.  This framework depends on
-<a href="http://guides.micronaut.io/micronaut-security-jwt-cookie-groovy/guide/index.html" target="_blank" rel="noopener">Micronaut Security - JWT Cookies</a>
+<a href="https://micronaut-projects.github.io/micronaut-security/latest/guide/" target="_blank" rel="noopener">Micronaut Security - JWT Cookies</a>
 for the bulk of the security features.</p>
 </div>
 <div class="paragraph">
 <p>If you need to know the current user, see <a href="#current-user">Current User</a>.</p>
+</div>
+<div class="sect2">
+<h3 id="security-design"><a class="link" href="#security-design">Security Design</a></h3>
+<div class="paragraph">
+<p>Flow</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Login sends access token and refresh token cookies (15min and 6 hours).</p>
+</li>
+<li>
+<p>All pages have a silent refresh mechanism every 15 minutes.  Gets a new access
+token cookie, consumes the single use refresh token and gets a new refresh token.</p>
+</li>
+<li>
+<p>To avoid multiple refresh requests on multiple browser tabs, each tab will wait a random
+amount of time before requesting the new access token.  Once that a single refresh is done,
+it will store a flag (timestamp) that will indicate the old token is consumed.
+All other tabs will skip that request update.  They will just schedule a new update at the
+next 15min mark.</p>
+</li>
+<li>
+<p>Each check will prune any old 'still refreshing' flags after 60 seconds to allo the
+next cycle&#8217;s time.</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="refresh-token-flow"><a class="link" href="#refresh-token-flow">Refresh Token Flow</a></h4>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This section assumes the access token timeout is set to the default 15 minutes and
+      the refresh token timeout is set to the default 24 hours.  These numbers will
+      used below without noting that they are the configurable values.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The client-side (in <em>eframe.js</em>) is somewhat complex.  It must support these scenarios:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Single browser tab opened and left idle for 15+ minutes.  User should not have to log in
+again.</p>
+</li>
+<li>
+<p>Multiple browser tabs are opened and left idle for 15+ minutes. User should not have to log in
+again.  This should also not trigger any warnings.</p>
+</li>
+<li>
+<p>A crash in the silent refresh tab should not prevent other tabs from handling the refresh later.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>This is the flow that the client-side logic uses:</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/RefreshTokenFlow.png" alt="RefreshTokenFlow" width="478" height="397">
+</div>
+</div>
+<div class="paragraph">
+<p>To support multiple browser tabs, the client-side logic will use local storage
+in the browser to store the time the refresh was triggered.  If the time
+is less than 15 minutes ago, then other tabs will skip the current refresh.
+This insures that only one tab will request the refresh.</p>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="security-setup"><a class="link" href="#security-setup">Security Setup</a></h3>
@@ -19147,7 +19225,7 @@ to the repository.  If you use the repository method directly, then this is not 
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-08-23 18:28:21 UTC
+Last updated 2020-09-10 15:25:34 UTC
 </div>
 </div>
 <style>
