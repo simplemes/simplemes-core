@@ -6,6 +6,7 @@ package org.simplemes.eframe.application
 
 import groovy.transform.ToString
 import io.micronaut.context.annotation.ConfigurationProperties
+import org.simplemes.eframe.security.WorkAround333CookieLoginHandler
 
 /**
  * Defines the main, global framework configuration values.  This is normally accessed from the Holders utility
@@ -77,6 +78,11 @@ class EFrameConfiguration {
    * Search-related configurations.
    */
   Search search = new Search()
+
+  /**
+   * Security-related configurations.
+   */
+  Security security = new Security()
 
   @ToString(includeNames = true, includePackage = false)
   @ConfigurationProperties('archive')
@@ -164,6 +170,21 @@ class EFrameConfiguration {
      * The search engine server (host) that will provide the search functions.
      */
     List hosts = []
+
+  }
+
+  /**
+   * The config properties used for the framework-specific security settings.
+   */
+  @ToString(includeNames = true, includePackage = false)
+  @ConfigurationProperties('security')
+  static class Security {
+
+    /**
+     * The default max age for the workaround JWT Refresh Cookie (seconds).  Set in EFrameConfiguration.jwtRefreshMaxAge.
+     * This should be set in the micronaut-security configuration when issue 333 is fixed.
+     */
+    Integer jwtRefreshMaxAge = WorkAround333CookieLoginHandler.DEFAULT_MAX_AGE
 
   }
 

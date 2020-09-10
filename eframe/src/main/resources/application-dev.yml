@@ -10,10 +10,11 @@ micronaut:
         signatures:
           secret:
             generator:
-              secret: testKey890123456789012345678901234567890
-              # Never used in production.
+              secret: testKey8901234567890123456789012345678901234567890
         generator:
-          access-token.expiration: 43200 # 12 hours  # 1209600 for 14 days for dev.  Never use in production.
+          access-token.expiration: 901 #  15 minutes # 1209600 for 14 days for dev.  Never use in production.
+          refresh-token:
+            secret: testKey8901234567890123456789012345678901234567890 # Never used in production.
 ---
 datasources:
   default:

@@ -4,6 +4,8 @@ Scratch
 
 Tasks
 =====
+JWT Refresh Token support before 1.0?
+  Consider moving to use of status UNAUTHORIZED vs. FORBIDDEN.
 Reports
   Fix issue with date ranges error by TZ offset?
 Add workaround for update failure: 299.  Remove sop.
@@ -45,7 +47,6 @@ Fix mess with efForm.dashboard.  Support type='dashboard', 'buttonHolder' and 'd
     Edit/Create? page save failures.  Fixing problem and re-saving value gives error (Invalid UUID string: null)
   Look at using https://github.com/apps/whitesource-bolt-for-github for CVE library scanning.
     Others: https://dzone.com/articles/8-free-security-tools-every-developer-should-know
-  JWT Refresh Toekn support before 1.0?
 
 
 MES Demo Release Requirements

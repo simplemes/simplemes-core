@@ -14,6 +14,12 @@ SimpleMES (Manufacturing Execution System) Core Modules.  The supported modules 
 * [MES Assembly Module](mes-assy)
 * [Webix Assets](webix)
 
+# Design Decisions
+
+Key design/architecture decisions are briefly documented in the various modules. 
+
+* [Enterprise Framework Decisions](eframe/src/main/docs/adr/DesignDecisions.md)
+
 # Build Instructions
 
 Some common build options for the entire project includes:

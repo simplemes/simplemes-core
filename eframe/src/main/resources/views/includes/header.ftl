@@ -24,14 +24,14 @@
 </head>
 <body>
 <form action="logout" method="POST" id="logoutForm" name="logoutForm"></form>
-<div id="h">
+<div id="_header">
   <script>
     function home() {
       window.location = "/";
     }
 
     webix.ui({
-      container: 'h',
+      container: '_header',
       type: "space", margin: 0, paddingY: -8, css: 'header-bar', id: "headerToolbar", rows: [
         {
           view: "toolbar",
@@ -60,7 +60,9 @@
           ]
         }]
     });
+    ef._startSilentRefreshTimer();
   </script>
+  <div id="_refreshDiv"></div>
 </div>
 
 <@efMessages/>

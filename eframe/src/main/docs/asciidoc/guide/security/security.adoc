@@ -4,6 +4,7 @@
 
 ifeval::["{backend}" != "pdf"]
 
+[inline-toc]#<<Security Design>>#
 [inline-toc]#<<Security Setup>>#
 [inline-toc]#<<Roles>>#
 [inline-toc]#<<Security GUIs>>#
@@ -13,10 +14,12 @@ endif::[]
 
 
 Security is critical in enterprise applications.  This framework depends on
-http://guides.micronaut.io/micronaut-security-jwt-cookie-groovy/guide/index.html[Micronaut Security - JWT Cookies^]
+https://micronaut-projects.github.io/micronaut-security/latest/guide/[Micronaut Security - JWT Cookies^]
 for the bulk of the security features.
 
 If you need to know the current user, see <<Current User>>.
+
+include::securityDesign.adoc[]
 
 include::securitySetup.adoc[]
 

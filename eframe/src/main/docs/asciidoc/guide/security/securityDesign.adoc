@@ -1,0 +1,66 @@
+
+=== Security Design
+
+Flow
+
+* Login sends access token and refresh token cookies (15min and 6 hours).
+* All pages have a silent refresh mechanism every 15 minutes.  Gets a new access
+  token cookie, consumes the single use refresh token and gets a new refresh token.
+* To avoid multiple refresh requests on multiple browser tabs, each tab will wait a random
+  amount of time before requesting the new access token.  Once that a single refresh is done,
+  it will store a flag (timestamp) that will indicate the old token is consumed.
+  All other tabs will skip that request update.  They will just schedule a new update at the
+  next 15min mark.
+* Each check will prune any old 'still refreshing' flags after 60 seconds to allo the
+  next cycle's time.
+
+
+==== Refresh Token Flow
+
+NOTE: This section assumes the access token timeout is set to the default 15 minutes and
+      the refresh token timeout is set to the default 24 hours.  These numbers will
+      used below without noting that they are the configurable values.
+
+
+
+The client-side (in _eframe.js_) is somewhat complex.  It must support these scenarios:
+
+* Single browser tab opened and left idle for 15+ minutes.  User should not have to log in
+  again.
+* Multiple browser tabs are opened and left idle for 15+ minutes. User should not have to log in
+  again.  This should also not trigger any warnings.
+* A crash in the silent refresh tab should not prevent other tabs from handling the refresh later.
+
+This is the flow that the client-side logic uses:
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-build}
+
+[plantuml,"RefreshTokenFlow",align="center"]
+----
+@startuml
+actor browser #red
+browser -> Login: login
+browser <-- Login: tokens (2)
+
+browser -> GUIs: actions+cookies
+note right: GUI Interactions
+browser <-- GUIs: page content
+
+
+browser -> Refresh: /login/access_token
+note right: 15 Minute Repeat Timer
+browser <-- Refresh: tokens (2)
+note right: Refeshed via invisible iframe
+
+@enduml
+----
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+
+To support multiple browser tabs, the client-side logic will use local storage
+in the browser to store the time the refresh was triggered.  If the time
+is less than 15 minutes ago, then other tabs will skip the current refresh.
+This insures that only one tab will request the refresh.

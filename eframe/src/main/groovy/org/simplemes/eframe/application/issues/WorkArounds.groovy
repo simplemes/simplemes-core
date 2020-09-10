@@ -44,6 +44,14 @@ class WorkArounds {
   static boolean workAround672 = true
 
   /**
+   * Works around Micronaut Security issue that uses the access cookie maxAge for the refresh cookie.
+   *
+   * See issue https://github.com/micronaut-projects/micronaut-security/issues/333
+   *
+   */
+  static boolean workAround333 = true
+
+  /**
    * Lists the current work arounds enabled.
    * @return
    */

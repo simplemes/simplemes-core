@@ -35,7 +35,13 @@ micronaut:
             generator:
               secret: ${eframe.key}
         generator:
-          access-token.expiration: 1800  # 30 minues
+          access-token.expiration: 937  # 
+          refresh-token:
+            enabled: true
+            base64: true
+            secret: ${eframe.key}
+            #refresh-token:
+            #  secret: ${eframe.key}
     interceptUrlMap:
       - pattern: /assets/**
         httpMethod: GET
