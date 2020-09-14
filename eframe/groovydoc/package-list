@@ -38,6 +38,7 @@ org.simplemes.eframe.search.service
 org.simplemes.eframe.security
 org.simplemes.eframe.security.controller
 org.simplemes.eframe.security.domain
+org.simplemes.eframe.security.service
 org.simplemes.eframe.service
 org.simplemes.eframe.system
 org.simplemes.eframe.system.controller

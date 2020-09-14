@@ -1008,6 +1008,8 @@ if (location.href.indexOf('is-external=true') == -1) {
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/ClassPathScanner.html#ClassPathScanner()" title="Constructor in ClassPathScanner">ClassPathScanner()</a></span> - Constructor in <a href="org/simplemes/eframe/misc/ClassPathScanner.html">ClassPathScanner</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html#CLEANUP_AGE_DAYS" title="Field in RefreshTokenService">CLEANUP_AGE_DAYS</a></span> - Field in <a href="org/simplemes/eframe/security/service/RefreshTokenService.html">RefreshTokenService</a>
+</dt><dd> <div class="block">Tokens that expired more than this many days ago are eligble for cleanup.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseDashboardSpecification.html#cleanup()" title="Method in BaseDashboardSpecification">cleanup()</a></span> - Method in <a href="org/simplemes/eframe/test/BaseDashboardSpecification.html">BaseDashboardSpecification</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseSpecification.html#cleanup()" title="Method in BaseSpecification">cleanup()</a></span> - Method in <a href="org/simplemes/eframe/test/BaseSpecification.html">BaseSpecification</a>
@@ -1024,6 +1026,8 @@ if (location.href.indexOf('is-external=true') == -1) {
  array. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseSpecification.html#cleanupMockedUtilityClasses()" title="Method in BaseSpecification">cleanupMockedUtilityClasses()</a></span> - Method in <a href="org/simplemes/eframe/test/BaseSpecification.html">BaseSpecification</a>
 </dt><dd> <div class="block">Cleans up any mocked .instance values in the common utility classes.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html#cleanupOldUserTokens(java.lang.String)" title="Method in RefreshTokenService">cleanupOldUserTokens(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/security/service/RefreshTokenService.html">RefreshTokenService</a>
+</dt><dd> <div class="block">Deletes any old, normal tokens.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/i18n/MessageSource.html#clearCacheOnFileChanged" title="Field in MessageSource">clearCacheOnFileChanged</a></span> - Field in <a href="org/simplemes/eframe/i18n/MessageSource.html">MessageSource</a>
 </dt><dd> <div class="block">A dev/test mode option to clear the caches when the i18n/messages.properties changes.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/annotation/DomainEntityHelper.html#clearCaches()" title="Method in DomainEntityHelper">clearCaches()</a></span> - Method in <a href="org/simplemes/eframe/domain/annotation/DomainEntityHelper.html">DomainEntityHelper</a>
@@ -1266,8 +1270,6 @@ if (location.href.indexOf('is-external=true') == -1) {
  with the given options. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/DataGenerator.html#count(java.lang.Integer)" title="Method in DataGenerator">count(java.lang.Integer)</a></span> - Method in <a href="org/simplemes/eframe/test/DataGenerator.html">DataGenerator</a>
 </dt><dd> <div class="block">Sets the number of records to generate (<b>Default:</b> 1). </div></dd>
-<dt><span class="strong"><a href="sample/domain/SampleParentRepository.html#count()" title="Method in SampleParentRepository">count()</a></span> - Method in <a href="sample/domain/SampleParentRepository.html">SampleParentRepository</a>
-</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/controller/BaseCrudController.html#create(java.security.Principal)" title="Method in BaseCrudController">create(java.security.Principal)</a></span> - Method in <a href="org/simplemes/eframe/controller/BaseCrudController.html">BaseCrudController</a>
 </dt><dd> <div class="block">Displays the create page.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/FileUtils.html#createArchiveDirsIfNeeded(java.lang.String)" title="Method in FileUtils">createArchiveDirsIfNeeded(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/misc/FileUtils.html">FileUtils</a>
@@ -2248,6 +2250,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="sample/domain/SampleChildRepository.html#findAllBySampleParent(sample.domain.SampleParent)" title="Method in SampleChildRepository">findAllBySampleParent(sample.domain.SampleParent)</a></span> - Method in <a href="sample/domain/SampleChildRepository.html">SampleChildRepository</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/domain/RefreshTokenRepository.html#findAllByUserName(java.lang.String)" title="Method in RefreshTokenRepository">findAllByUserName(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/security/domain/RefreshTokenRepository.html">RefreshTokenRepository</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/webix/freemarker/LookupMarker.html#findArgs()" title="Method in LookupMarker">findArgs()</a></span> - Method in <a href="org/simplemes/eframe/web/ui/webix/freemarker/LookupMarker.html">LookupMarker</a>
 </dt><dd> <div class="block">Finds the args passed as arg1, arg2... parameters for the marker. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/security/domain/RoleRepository.html#findByAuthority(java.lang.String)" title="Method in RoleRepository">findByAuthority(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/security/domain/RoleRepository.html">RoleRepository</a>
@@ -2275,6 +2279,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="sample/domain/SampleParentRepository.html#findByName(java.lang.String)" title="Method in SampleParentRepository">findByName(java.lang.String)</a></span> - Method in <a href="sample/domain/SampleParentRepository.html">SampleParentRepository</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="sample/domain/OrderRepository.html#findByOrder(java.lang.String)" title="Method in OrderRepository">findByOrder(java.lang.String)</a></span> - Method in <a href="sample/domain/OrderRepository.html">OrderRepository</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/domain/RefreshTokenRepository.html#findByRefreshToken(java.lang.String)" title="Method in RefreshTokenRepository">findByRefreshToken(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/security/domain/RefreshTokenRepository.html">RefreshTokenRepository</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="sample/domain/RMARepository.html#findByRma(java.lang.String)" title="Method in RMARepository">findByRma(java.lang.String)</a></span> - Method in <a href="sample/domain/RMARepository.html">RMARepository</a>
 </dt><dd> <div class="block"></div></dd>
@@ -2313,6 +2319,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="sample/domain/OrderLineRepository.html#findByUuid(UUID)" title="Method in OrderLineRepository">findByUuid(UUID)</a></span> - Method in <a href="sample/domain/OrderLineRepository.html">OrderLineRepository</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="sample/domain/OrderRepository.html#findByUuid(UUID)" title="Method in OrderRepository">findByUuid(UUID)</a></span> - Method in <a href="sample/domain/OrderRepository.html">OrderRepository</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/domain/RefreshTokenRepository.html#findByUuid(UUID)" title="Method in RefreshTokenRepository">findByUuid(UUID)</a></span> - Method in <a href="org/simplemes/eframe/security/domain/RefreshTokenRepository.html">RefreshTokenRepository</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="sample/domain/RMARepository.html#findByUuid(UUID)" title="Method in RMARepository">findByUuid(UUID)</a></span> - Method in <a href="sample/domain/RMARepository.html">RMARepository</a>
 </dt><dd> <div class="block"></div></dd>
@@ -3203,8 +3211,12 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/DomainUtils.html#getURIRoot(java.lang.Class)" title="Method in DomainUtils">getURIRoot(java.lang.Class)</a></span> - Method in <a href="org/simplemes/eframe/domain/DomainUtils.html">DomainUtils</a>
 </dt><dd> <div class="block">Determines the root URI for the controller associated with the given domain.
  </div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/security/UserRefreshTokenPersistence.html#getUserDetails(java.lang.String)" title="Method in UserRefreshTokenPersistence">getUserDetails(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/security/UserRefreshTokenPersistence.html">UserRefreshTokenPersistence</a>
-</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html#getUserDetails(java.lang.String)" title="Method in RefreshTokenService">getUserDetails(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/security/service/RefreshTokenService.html">RefreshTokenService</a>
+</dt><dd> <div class="block">Gets the refresh token's user details.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html#getUserDetailsAndNewToken(java.lang.String)" title="Method in RefreshTokenService">getUserDetailsAndNewToken(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/security/service/RefreshTokenService.html">RefreshTokenService</a>
+</dt><dd> <div class="block">Gets the refresh token's user details and creates a replacement token.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html#getUserDetailsForUserName(java.lang.String)" title="Method in RefreshTokenService">getUserDetailsForUserName(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/security/service/RefreshTokenService.html">RefreshTokenService</a>
+</dt><dd> <div class="block">Returns the user details for the given user name. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/annotation/DomainEntityInterface.html#getUuid()" title="Method in DomainEntityInterface">getUuid()</a></span> - Method in <a href="org/simplemes/eframe/domain/annotation/DomainEntityInterface.html">DomainEntityInterface</a>
 </dt><dd> <div class="block">Returns the record UUID.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/domain/FieldInterface.html#getUuid()" title="Method in FieldInterface">getUuid()</a></span> - Method in <a href="org/simplemes/eframe/custom/domain/FieldInterface.html">FieldInterface</a>
@@ -3842,6 +3854,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="sample/domain/OrderRepository.html#list()" title="Method in OrderRepository">list()</a></span> - Method in <a href="sample/domain/OrderRepository.html">OrderRepository</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/domain/RefreshTokenRepository.html#list()" title="Method in RefreshTokenRepository">list()</a></span> - Method in <a href="org/simplemes/eframe/security/domain/RefreshTokenRepository.html">RefreshTokenRepository</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="sample/domain/RMARepository.html#list()" title="Method in RMARepository">list()</a></span> - Method in <a href="sample/domain/RMARepository.html">RMARepository</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/security/domain/RoleRepository.html#list()" title="Method in RoleRepository">list()</a></span> - Method in <a href="org/simplemes/eframe/security/domain/RoleRepository.html">RoleRepository</a>
@@ -4446,8 +4460,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">The Field constructor.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/preference/domain/UserPreference.html#persistPreferencesInText()" title="Method in UserPreference">persistPreferencesInText()</a></span> - Method in <a href="org/simplemes/eframe/preference/domain/UserPreference.html">UserPreference</a>
 </dt><dd> <div class="block">Persist the transient preferences Map into the JSON for storage in the DB.</div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/security/UserRefreshTokenPersistence.html#persistToken(io.micronaut.security.token.event.RefreshTokenGeneratedEvent)" title="Method in UserRefreshTokenPersistence">persistToken(io.micronaut.security.token.event.RefreshTokenGeneratedEvent)</a></span> - Method in <a href="org/simplemes/eframe/security/UserRefreshTokenPersistence.html">UserRefreshTokenPersistence</a>
-</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html#persistToken(io.micronaut.security.token.event.RefreshTokenGeneratedEvent)" title="Method in RefreshTokenService">persistToken(io.micronaut.security.token.event.RefreshTokenGeneratedEvent)</a></span> - Method in <a href="org/simplemes/eframe/security/service/RefreshTokenService.html">RefreshTokenService</a>
+</dt><dd> <div class="block">Persists the refresh token. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/CRUDGUITester.html#possibleBadLabelSuffixes" title="Field in CRUDGUITester">possibleBadLabelSuffixes</a></span> - Field in <a href="org/simplemes/eframe/test/CRUDGUITester.html">CRUDGUITester</a>
 </dt><dd> <div class="block">A list of string that indicate a piece of text might not be properly internationalized.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/search/AdjustQueryInterface.html#postAdjustQuery(java.lang.String, java.lang.String, java.lang.Class)" title="Method in AdjustQueryInterface">postAdjustQuery(java.lang.String, java.lang.String, java.lang.Class)</a></span> - Method in <a href="org/simplemes/eframe/search/AdjustQueryInterface.html">AdjustQueryInterface</a>
@@ -4584,11 +4598,27 @@ if (location.href.indexOf('is-external=true') == -1) {
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/PersistentProperty.html#referenceType" title="Field in PersistentProperty">referenceType</a></span> - Field in <a href="org/simplemes/eframe/domain/PersistentProperty.html">PersistentProperty</a>
 </dt><dd> <div class="block">Defines the ultimate object this property references.  </div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/security/controller/LoginAuthController.html#refreshTokenGenerator" title="Field in LoginAuthController">refreshTokenGenerator</a></span> - Field in <a href="org/simplemes/eframe/security/controller/LoginAuthController.html">LoginAuthController</a>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/domain/RefreshToken.html" title="Class in org.simplemes.eframe.security.domain">RefreshToken</a></span> - Class in <a href="./org/simplemes/eframe/security/domain/package-summary.html">org.simplemes.eframe.security.domain</a>
+</dt><dd><div class="block">The domain object for refresh token persistence.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/domain/RefreshToken.html#RefreshToken()" title="Constructor in RefreshToken">RefreshToken()</a></span> - Constructor in <a href="org/simplemes/eframe/security/domain/RefreshToken.html">RefreshToken</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html#refreshTokenGenerator" title="Field in RefreshTokenService">refreshTokenGenerator</a></span> - Field in <a href="org/simplemes/eframe/security/service/RefreshTokenService.html">RefreshTokenService</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/security/controller/LoginAuthController.html#refreshTokenPersistence" title="Field in LoginAuthController">refreshTokenPersistence</a></span> - Field in <a href="org/simplemes/eframe/security/controller/LoginAuthController.html">LoginAuthController</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/domain/RefreshTokenRepository.html" title="Interface in org.simplemes.eframe.security.domain">RefreshTokenRepository</a></span> - Interface in <a href="./org/simplemes/eframe/security/domain/package-summary.html">org.simplemes.eframe.security.domain</a>
+</dt><dd><div class="block">The RefreshToken repository base interface.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/domain/RefreshTokenRepository.html#RefreshTokenRepository()" title="Constructor in RefreshTokenRepository">RefreshTokenRepository()</a></span> - Constructor in <a href="org/simplemes/eframe/security/domain/RefreshTokenRepository.html">RefreshTokenRepository</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html" title="Class in org.simplemes.eframe.security.service">RefreshTokenService</a></span> - Class in <a href="./org/simplemes/eframe/security/service/package-summary.html">org.simplemes.eframe.security.service</a>
+</dt><dd><div class="block">Provides services for the JWT refresh tokens.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/controller/LoginAuthController.html#refreshTokenService" title="Field in LoginAuthController">refreshTokenService</a></span> - Field in <a href="org/simplemes/eframe/security/controller/LoginAuthController.html">LoginAuthController</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html#RefreshTokenService()" title="Constructor in RefreshTokenService">RefreshTokenService()</a></span> - Constructor in <a href="org/simplemes/eframe/security/service/RefreshTokenService.html">RefreshTokenService</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/security/controller/LoginAuthController.html#refreshTokenValidator" title="Field in LoginAuthController">refreshTokenValidator</a></span> - Field in <a href="org/simplemes/eframe/security/controller/LoginAuthController.html">LoginAuthController</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html#refreshTokenValidator" title="Field in RefreshTokenService">refreshTokenValidator</a></span> - Field in <a href="org/simplemes/eframe/security/service/RefreshTokenService.html">RefreshTokenService</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/InitialDataRecords.html#register(Map, java.lang.Class)" title="Method in InitialDataRecords">register(Map, java.lang.Class)</a></span> - Method in <a href="org/simplemes/eframe/test/InitialDataRecords.html">InitialDataRecords</a>
 </dt><dd> <div class="block">Register any possible new records.  </div></dd>
@@ -4627,6 +4657,13 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Renders the rendered content. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#renderContent()" title="Method in BaseMarker">renderContent()</a></span> - Method in <a href="org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html">BaseMarker</a>
 </dt><dd> <div class="block">Generate the body content so we can access any variables set by the markers in the body. </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/ReplacementTokenResponse.html" title="Class in org.simplemes.eframe.security">ReplacementTokenResponse</a></span> - Class in <a href="./org/simplemes/eframe/security/package-summary.html">org.simplemes.eframe.security</a>
+</dt><dd><div class="block">Defines the replacement refresh token and user details for a replacement request.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/ReplacementTokenResponse.html#ReplacementTokenResponse()" title="Constructor in ReplacementTokenResponse">ReplacementTokenResponse()</a></span> - Constructor in <a href="org/simplemes/eframe/security/ReplacementTokenResponse.html">ReplacementTokenResponse</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html#replaceRefreshToken(java.lang.String, io.micronaut.http.HttpRequest)" title="Method in RefreshTokenService">replaceRefreshToken(java.lang.String, io.micronaut.http.HttpRequest)</a></span> - Method in <a href="org/simplemes/eframe/security/service/RefreshTokenService.html">RefreshTokenService</a>
+</dt><dd> <div class="block">Replaces the given refresh token with a new single use token.
+ </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/reports/Report.html" title="Class in org.simplemes.eframe.reports">Report</a></span> - Class in <a href="./org/simplemes/eframe/reports/package-summary.html">org.simplemes.eframe.reports</a>
 </dt><dd><div class="block">Holds the report details needed to generate a report using the third-party report engine.
  </div></dd>
@@ -4717,6 +4754,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Creates a single top-level domain object.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/controller/BaseCrudRestController.html#restPut(java.lang.String, io.micronaut.http.HttpRequest, java.security.Principal)" title="Method in BaseCrudRestController">restPut(java.lang.String, io.micronaut.http.HttpRequest, java.security.Principal)</a></span> - Method in <a href="org/simplemes/eframe/controller/BaseCrudRestController.html">BaseCrudRestController</a>
 </dt><dd> <div class="block">Updates a single top-level domain object.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html#revokeAllUserTokens(java.lang.String)" title="Method in RefreshTokenService">revokeAllUserTokens(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/security/service/RefreshTokenService.html">RefreshTokenService</a>
+</dt><dd> <div class="block">Revokes all user's tokens. </div></dd>
 <dt><span class="strong"><a href="sample/domain/RMA.html" title="Class in sample.domain">RMA</a></span> - Class in <a href="./sample/domain/package-summary.html">sample.domain</a>
 </dt><dd><div class="block">A sample domain class that simulates an RMA approval.
  </div></dd>
@@ -5675,10 +5714,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd><div class="block">Provides access to the user preferences that are used to save GUI settings and related objects.
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/preference/service/UserPreferenceService.html#UserPreferenceService()" title="Constructor in UserPreferenceService">UserPreferenceService()</a></span> - Constructor in <a href="org/simplemes/eframe/preference/service/UserPreferenceService.html">UserPreferenceService</a>
-</dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/security/UserRefreshTokenPersistence.html" title="Class in org.simplemes.eframe.security">UserRefreshTokenPersistence</a></span> - Class in <a href="./org/simplemes/eframe/security/package-summary.html">org.simplemes.eframe.security</a>
-</dt><dd><div class="block"></div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/security/UserRefreshTokenPersistence.html#UserRefreshTokenPersistence()" title="Constructor in UserRefreshTokenPersistence">UserRefreshTokenPersistence()</a></span> - Constructor in <a href="org/simplemes/eframe/security/UserRefreshTokenPersistence.html">UserRefreshTokenPersistence</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/security/domain/UserRepository.html" title="Interface in org.simplemes.eframe.security.domain">UserRepository</a></span> - Interface in <a href="./org/simplemes/eframe/security/domain/package-summary.html">org.simplemes.eframe.security.domain</a>
 </dt><dd><div class="block">The User repository base interface.  </div></dd>
