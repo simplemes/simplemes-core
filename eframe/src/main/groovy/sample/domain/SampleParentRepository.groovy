@@ -26,5 +26,4 @@ interface SampleParentRepository extends BaseRepository, CrudRepository<SamplePa
 
   List<SampleParent> list()
 
-  long count()
 }

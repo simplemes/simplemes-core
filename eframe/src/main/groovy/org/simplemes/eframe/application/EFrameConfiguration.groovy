@@ -184,7 +184,7 @@ class EFrameConfiguration {
      * The default max age for the workaround JWT Refresh Cookie (seconds).  Set in EFrameConfiguration.jwtRefreshMaxAge.
      * This should be set in the micronaut-security configuration when issue 333 is fixed.
      */
-    Integer jwtRefreshMaxAge = WorkAround333CookieLoginHandler.DEFAULT_MAX_AGE
+    Long jwtRefreshMaxAge = WorkAround333CookieLoginHandler.DEFAULT_MAX_AGE
 
   }
 

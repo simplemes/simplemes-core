@@ -25,16 +25,15 @@ import io.micronaut.security.errors.IssuingAnAccessTokenErrorCode
 import io.micronaut.security.errors.OauthErrorResponseException
 import io.micronaut.security.handlers.LoginHandler
 import io.micronaut.security.rules.SecurityRule
-import io.micronaut.security.token.generator.RefreshTokenGenerator
 import io.micronaut.security.token.jwt.endpoints.TokenRefreshRequest
 import io.micronaut.security.token.jwt.generator.AccessRefreshTokenGenerator
 import io.micronaut.security.token.refresh.RefreshTokenPersistence
 import io.micronaut.security.token.validator.RefreshTokenValidator
 import io.micronaut.views.ViewsRenderer
-import io.reactivex.Single
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.controller.StandardModelAndView
+import org.simplemes.eframe.security.service.RefreshTokenService
 
 import javax.annotation.Nullable
 import java.security.Principal
@@ -50,7 +49,7 @@ class LoginAuthController {
   protected final RefreshTokenPersistence refreshTokenPersistence
   protected final RefreshTokenValidator refreshTokenValidator
   protected final AccessRefreshTokenGenerator accessRefreshTokenGenerator
-  protected final RefreshTokenGenerator refreshTokenGenerator
+  protected final RefreshTokenService refreshTokenService
   protected final LoginHandler loginHandler
 
 
@@ -61,12 +60,12 @@ class LoginAuthController {
   LoginAuthController(RefreshTokenPersistence refreshTokenPersistence,
                       RefreshTokenValidator refreshTokenValidator,
                       AccessRefreshTokenGenerator accessRefreshTokenGenerator,
-                      RefreshTokenGenerator refreshTokenGenerator,
+                      RefreshTokenService refreshTokenService,
                       LoginHandler loginHandler) {
     this.refreshTokenPersistence = refreshTokenPersistence
     this.refreshTokenValidator = refreshTokenValidator
     this.accessRefreshTokenGenerator = accessRefreshTokenGenerator
-    this.refreshTokenGenerator = refreshTokenGenerator
+    this.refreshTokenService = refreshTokenService
     this.loginHandler = loginHandler
   }
 
@@ -104,26 +103,27 @@ class LoginAuthController {
     return response
   }
 
-  // This section is cloned somewhat from the io.micronaut.security.token.jwt.endpoints.OauthController
+  // This section is cloned from the io.micronaut.security.token.jwt.endpoints.OauthController
 
 
   @Produces(MediaType.TEXT_HTML)
   @Get("/access_token")
-  Single<MutableHttpResponse<?>> accessToken(HttpRequest<?> request,
-                                             @Nullable @CookieValue("JWT_REFRESH_TOKEN") String cookieRefreshToken) {
+  MutableHttpResponse<?> accessToken(HttpRequest<?> request,
+                                     @Nullable @CookieValue("JWT_REFRESH_TOKEN") String cookieRefreshToken) {
     String refreshToken = resolveRefreshToken(null, cookieRefreshToken)
-    return createResponse(request, refreshToken)
-  }
 
-
-  private Single<MutableHttpResponse<?>> createResponse(HttpRequest<?> request, String refreshToken) {
     Optional<String> validRefreshToken = refreshTokenValidator.validate(refreshToken)
     if (!validRefreshToken.isPresent()) {
       throw new OauthErrorResponseException(IssuingAnAccessTokenErrorCode.INVALID_GRANT, "Refresh token is invalid", null)
     }
-    return Single.fromPublisher(refreshTokenPersistence.getUserDetails(validRefreshToken.get()))
-      .map(userDetails -> createSuccessResponse(userDetails, refreshToken, request))
+    def replacementTokenResponse = refreshTokenService.replaceRefreshToken(refreshToken, request)
+    if (!replacementTokenResponse) {
+      throw new OauthErrorResponseException(IssuingAnAccessTokenErrorCode.INVALID_GRANT, "Refresh token is invalid", null)
+    }
+
+    return createSuccessResponse(replacementTokenResponse.userDetails, replacementTokenResponse.refreshToken, request)
   }
+
 
   /**
    * Creates a simple page for the response (suitable for iframe use).

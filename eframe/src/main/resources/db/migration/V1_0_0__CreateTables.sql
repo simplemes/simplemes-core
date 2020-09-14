@@ -10,6 +10,10 @@
  * Copyright (c) Michael Houston 2020. All rights reserved.
  */
 
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 
 CREATE TABLE public.archive_log (
     uuid uuid PRIMARY KEY,
@@ -120,6 +124,20 @@ CREATE TABLE public.flex_field (
 );
 CREATE INDEX IF NOT EXISTS fki_flex_field_flex_type_id_fkey
     ON public.flex_field(flex_type_id);
+
+CREATE TABLE IF NOT EXISTS public.refresh_token (
+    uuid uuid PRIMARY KEY,
+    refresh_token text NOT NULL,
+    user_name varchar(30) NOT NULL,
+    enabled boolean NOT NULL,
+    expiration_date timestamp with time zone,
+    use_attempt_count integer NOT NULL,
+    request_source text,
+    UNIQUE (refresh_token)
+);
+
+CREATE INDEX IF NOT EXISTS fki_refresh_token_user_name
+    ON public.refresh_token(user_name);
 
 CREATE TABLE IF NOT EXISTS public.role (
     uuid uuid PRIMARY KEY,

@@ -1,9 +1,15 @@
 
 === Security Design
 
-Flow
+==== Refresh Token Flow
 
-* Login sends access token and refresh token cookies (15min and 6 hours).
+NOTE: This section assumes the access token timeout is set to the default 15 minutes and
+      the refresh token timeout is set to the default 24 hours.  These numbers will
+      used below without noting that they are the configurable values.
+
+The basic refresh flow is:
+
+* Login sends access token and refresh token cookies (15min and 24 hours).
 * All pages have a silent refresh mechanism every 15 minutes.  Gets a new access
   token cookie, consumes the single use refresh token and gets a new refresh token.
 * To avoid multiple refresh requests on multiple browser tabs, each tab will wait a random
@@ -11,16 +17,10 @@ Flow
   it will store a flag (timestamp) that will indicate the old token is consumed.
   All other tabs will skip that request update.  They will just schedule a new update at the
   next 15min mark.
-* Each check will prune any old 'still refreshing' flags after 60 seconds to allo the
-  next cycle's time.
-
-
-==== Refresh Token Flow
-
-NOTE: This section assumes the access token timeout is set to the default 15 minutes and
-      the refresh token timeout is set to the default 24 hours.  These numbers will
-      used below without noting that they are the configurable values.
-
+* Each check will prune any old 'still refreshing' flags after 60 seconds to allow the
+  next cycle's time.  This will help with hung/failed requests.
+* If any of these refreshes fail, then the user will be forced to login at the next
+  user request to the sever (e.g. on the nest page load or save).
 
 
 The client-side (in _eframe.js_) is somewhat complex.  It must support these scenarios:
@@ -29,7 +29,7 @@ The client-side (in _eframe.js_) is somewhat complex.  It must support these sce
   again.
 * Multiple browser tabs are opened and left idle for 15+ minutes. User should not have to log in
   again.  This should also not trigger any warnings.
-* A crash in the silent refresh tab should not prevent other tabs from handling the refresh later.
+* A crash in the silent refresh logic should not prevent other tabs from handling the refresh later.
 
 This is the flow that the client-side logic uses:
 
@@ -64,3 +64,17 @@ To support multiple browser tabs, the client-side logic will use local storage
 in the browser to store the time the refresh was triggered.  If the time
 is less than 15 minutes ago, then other tabs will skip the current refresh.
 This insures that only one tab will request the refresh.
+
+==== OAuth /oauth/access_token Endpoint Use
+
+This endpoint is intentionally broken.  The replacement _/login/access_token_
+provides a single-use replacement refresh token cookie when used.  The
+_RefreshTokenService.getUserDetails()_ RefreshTokenPersistence implementation
+intentionally prevents use of the tokens via the OAuth _/oauth/access_token_ endpoint.
+
+If this OAuth mechanism was left as-is, then the client might refresh the access token
+without getting a new replacement refresh token.
+
+Since most of the core logic uses the cookies and _/login/access_token_, this should not
+be a big problem.
+

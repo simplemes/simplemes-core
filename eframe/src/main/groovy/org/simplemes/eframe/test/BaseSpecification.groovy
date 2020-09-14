@@ -30,6 +30,7 @@ import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.search.SearchHelper
 import org.simplemes.eframe.security.SecurityUtils
+import org.simplemes.eframe.security.domain.RefreshToken
 
 import javax.sql.DataSource
 import java.sql.Connection
@@ -347,6 +348,7 @@ class BaseSpecification extends GebSpec {
    *   <li><b>body</b> - The request body text (string). </li>
    *   <li><b>uri</b> - The URI of this request (string). </li>
    *   <li><b>accept</b> - The Accept header for this request. </li>
+   *   <li><b>remoteAddress</b> - The InetSocketAddress simulated for this mock request. </li>
    * </ul>
    *
    * @param params The parameters (optional).  Special parameters ('uri') are stored in the request itself in the special fields.
@@ -362,6 +364,13 @@ class BaseSpecification extends GebSpec {
       //noinspection GroovyAssignabilityCheck
       request.getBody(*_) >> Optional.of(body)
       params.remove('body')
+    }
+
+    def remoteAddress = params?.remoteAddress
+    if (remoteAddress) {
+      //noinspection GroovyAssignabilityCheck
+      request.getRemoteAddress() >> remoteAddress
+      params.remove('remoteAddress')
     }
 
     params?.each { k, v -> parameters.add(k as String, v as String) }
@@ -426,6 +435,7 @@ class BaseSpecification extends GebSpec {
     }
     if (embeddedServer) {
       deleteAllRecords(UserPreference)
+      deleteAllRecords(RefreshToken)
       deleteAllRecords(FieldGUIExtension)
       deleteAllRecords(FieldExtension)
     }

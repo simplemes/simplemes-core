@@ -397,7 +397,6 @@ interface OrderRepository extends BaseRepository, CrudRepository<Order, UUID> {
   Optional<Order> findByUuid(UUID uuid)  // <.>
 
   List<Order> list(Pageable pageable) // <.>
-  long count() // <.>
 
   Optional<Order> findByOrder(String name) // <.>
   List<Order> list()  // <.>
@@ -405,8 +404,6 @@ interface OrderRepository extends BaseRepository, CrudRepository<Order, UUID> {
 ----
 <.> Reads a single record for the given ID. Used by many framework functions to find related records.
 <.> Finds all records (with paging/sorting support).  Used by <<BaseCrudController>> to find records
-    for the List <<Definition Pages>>.
-<.> Counts all records.  Used by <<BaseCrudController>> to determine the paging limits
     for the List <<Definition Pages>>.
 <.> Find by primary key.  Not used in framework, but useful for some application logic.
 <.> Lists all records. Not used in framework, but useful for some application logic and debugging.

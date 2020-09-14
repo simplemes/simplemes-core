@@ -43,12 +43,18 @@ access the server over HTTP.
 REST API clients will need to use explicitly request the new access cookie as needed.
 
 Part of the security protocol makes use of a _SingleUseRefreshToken_ instead of the normal re-usable tokens.  This
-reduces the chance of a refresh token being leaked to un-authorized users.  This dooes complicate the client-side
+reduces the chance of a refresh token being leaked to un-authorized users.  This does complicate the client-side
 refresh logic.  The browser page logic (_eframe.js_) uses some local storage settings top reduce the chance of two 
 legitimate browser pages from requesting a refresh from the same token.  
 
 If a second attempt is made to re-use a token, then a warning is logged and all tokens for the user are revoked.
  
+### OAuth /oauth/access_token Endpoint Use
+
+This endpoint is intentionally broken.  The replacement _/login/access_token_ provides a single-use replacement
+refresh token cookie when used.  The RefreshTokenService.getUserDetails() RefreshTokenPersistence implementation 
+intentionally prevents use of the tokens via the OAuth _/oauth/access_token_ endpoint.     
+
  
 
 ### Base Class BaseCruController and Secure Annotations
