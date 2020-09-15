@@ -15,6 +15,7 @@ import io.micronaut.security.token.validator.RefreshTokenValidator
 import io.reactivex.Single
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.security.domain.User
+import org.simplemes.eframe.security.service.RefreshTokenService
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.annotation.Rollback
 
@@ -74,7 +75,7 @@ class LoginAuthControllerSpec extends BaseSpecification {
       .map(auth -> auth).toFlowable().singleElement().blockingGet()
     auth.name == 'admin'
 
-    def refreshCookie = cookies.find { it.startsWith('JWT_REFRESH_TOKEN=') }
+    def refreshCookie = cookies.find { it.startsWith(RefreshTokenService.JWT_REFRESH_TOKEN) }
     def refreshTokens = refreshCookie.tokenize("=;")
 
     and: 'the new refresh token is different from the original'

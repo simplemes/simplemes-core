@@ -299,5 +299,30 @@ final class DashboardTestController extends BaseController {
 */
   }
 
+  /**
+   * Displays the cookies submitted to the server (for testing purposes).
+   * @param request The request.
+   * @return The cookies (in a page).
+   */
+  @Produces(MediaType.TEXT_HTML)
+  @Get("/cookies")
+  HttpResponse cookies(HttpRequest request) {
+    def content = new StringBuilder()
+
+    for (cookie in request.cookies) {
+      if (content) {
+        content << ", "
+      }
+      content << cookie.key
+    }
+    if (!content) {
+      content << "No Cookies"
+    }
+
+    def body = "<html><body><div id='cookies'>$content</div></body></html>"
+
+    return HttpResponse.status(HttpStatus.OK).body(body)
+  }
+
 
 }

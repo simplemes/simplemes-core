@@ -19,6 +19,7 @@ import io.micronaut.security.token.jwt.generator.AccessTokenConfiguration
 import io.micronaut.security.token.jwt.render.AccessRefreshToken
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.application.issues.WorkArounds
+import org.simplemes.eframe.security.service.RefreshTokenService
 
 import javax.inject.Singleton
 
@@ -61,10 +62,10 @@ class WorkAround333CookieLoginHandler extends JwtCookieLoginHandler {
     def res = []
     if (WorkArounds.workAround333) {
       for (cookie in cookies) {
-        if (cookie.name == 'JWT_REFRESH_TOKEN') {
+        if (cookie.name == RefreshTokenService.JWT_REFRESH_TOKEN) {
           String refreshToken = accessRefreshToken.getRefreshToken()
           if (StringUtils.isNotEmpty(refreshToken)) {
-            Cookie refreshCookie = Cookie.of("JWT_REFRESH_TOKEN", refreshToken)
+            Cookie refreshCookie = Cookie.of(RefreshTokenService.JWT_REFRESH_TOKEN, refreshToken)
             refreshCookie.configure(jwtCookieConfiguration, request.isSecure())
             refreshCookie.maxAge(Holders.configuration.security.jwtRefreshMaxAge)
             res << refreshCookie

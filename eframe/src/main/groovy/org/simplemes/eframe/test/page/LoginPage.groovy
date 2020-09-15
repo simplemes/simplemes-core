@@ -1,10 +1,8 @@
-package org.simplemes.eframe.test.page
-
 /*
- * Copyright Michael Houston. All rights reserved.
- * Original Author: mph
- *
-*/
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
+package org.simplemes.eframe.test.page
 
 /**
  * Defines the standard login GEB page elements for testing.
@@ -22,11 +20,11 @@ package org.simplemes.eframe.test.page
 class LoginPage extends AbstractPage {
 
   static url = "/login/auth"
-  static at = { title == "Login" }
+  static at = { title.contains("Login") }
   static content = {
     userName { $('input', id: 'username') }
     password { $('input', id: 'password') }
-    loginButton { $('input#submit') }
+    loginButton { module(new ButtonModule(id: 'login')) }
     message { $('div.login_message').text() }
     //searchButton(to: GoogleResultsPage) { $("input[value='Google Search']") }
   }

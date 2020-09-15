@@ -109,7 +109,7 @@ class LoginAuthController {
   @Produces(MediaType.TEXT_HTML)
   @Get("/access_token")
   MutableHttpResponse<?> accessToken(HttpRequest<?> request,
-                                     @Nullable @CookieValue("JWT_REFRESH_TOKEN") String cookieRefreshToken) {
+                                     @Nullable @CookieValue(RefreshTokenService.JWT_REFRESH_TOKEN) String cookieRefreshToken) {
     String refreshToken = resolveRefreshToken(null, cookieRefreshToken)
 
     Optional<String> validRefreshToken = refreshTokenValidator.validate(refreshToken)

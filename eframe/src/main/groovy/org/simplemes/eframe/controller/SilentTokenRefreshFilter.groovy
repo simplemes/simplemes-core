@@ -10,6 +10,7 @@ import io.micronaut.http.HttpRequest
 import io.micronaut.http.MediaType
 import io.micronaut.http.MutableHttpResponse
 import io.micronaut.http.annotation.Filter
+import io.micronaut.http.cookie.Cookie
 import io.micronaut.http.filter.FilterChain
 import io.micronaut.http.filter.HttpServerFilter
 import io.micronaut.http.filter.ServerFilterChain
@@ -19,6 +20,7 @@ import io.reactivex.Flowable
 import io.reactivex.schedulers.Schedulers
 import org.reactivestreams.Publisher
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.security.service.RefreshTokenService
 
 /**
  *
@@ -43,21 +45,28 @@ class SilentTokenRefreshFilter implements HttpServerFilter {
       .doOnNext({ res ->
         def accept = request.headers.get(HttpHeaders.ACCEPT) ?: ''
         def value = request.cookies?.get('JWT')?.getValue()
-        if (value && accept.contains(MediaType.TEXT_HTML)) {
-          // Find the access token timeout
-          AccessTokenConfiguration config = Holders.getBean(AccessTokenConfiguration)
+        if (accept.contains(MediaType.TEXT_HTML)) {
+          if (value) {
+            // Find the access token timeout
+            AccessTokenConfiguration config = Holders.getBean(AccessTokenConfiguration)
 
-          def jwt = JWTParser.parse(value)
-          def payload = (String) jwt.payload
-          if (payload) {
-            def json = Holders.objectMapper.readValue(payload, Map)
-            def exp = Long.valueOf((String) json.exp)
-            def delta = exp - System.currentTimeSeconds() - 60  // Refresh one minute early.
-            if (delta > 0) {
-              def cookie = new NettyCookie("JWT_SILENT_REFRESH", "${delta.toString()},$config.expiration")
-              cookie.path("/")
-              res.cookie(cookie)
+            def jwt = JWTParser.parse(value)
+            def payload = (String) jwt.payload
+            if (payload) {
+              def json = Holders.objectMapper.readValue(payload, Map)
+              def exp = Long.valueOf((String) json.exp)
+              def delta = exp - System.currentTimeSeconds() - 60  // Refresh one minute early.
+              if (delta > 0) {
+                def cookie = new NettyCookie(RefreshTokenService.JWT_SILENT_REFRESH, "${delta.toString()},$config.expiration")
+                cookie.path("/")
+                res.cookie(cookie)
+              }
             }
+          } else {
+            // No JWT access cookie, so user must be logged out.  Clear the  silent refresh handler.
+            Cookie cookie = Cookie.of(RefreshTokenService.JWT_SILENT_REFRESH, "")
+            cookie.maxAge(0).path("/")
+            res.cookie(cookie)
           }
         }
       })

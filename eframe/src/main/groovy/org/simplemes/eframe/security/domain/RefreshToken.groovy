@@ -8,6 +8,8 @@ import groovy.transform.EqualsAndHashCode
 import groovy.transform.ToString
 import groovy.util.logging.Slf4j
 import io.micronaut.data.annotation.AutoPopulated
+import io.micronaut.data.annotation.DateCreated
+import io.micronaut.data.annotation.DateUpdated
 import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
@@ -60,6 +62,16 @@ class RefreshToken {
 
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   Date expirationDate
+
+  @DateCreated
+  @SuppressWarnings('unused')
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateCreated
+
+  @DateUpdated
+  @SuppressWarnings('unused')
+  @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
+  Date dateUpdated
 
   /**
    * The internal unique ID for this record.

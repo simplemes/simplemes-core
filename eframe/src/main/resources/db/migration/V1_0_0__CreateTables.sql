@@ -14,6 +14,10 @@
  * Copyright (c) Michael Houston 2020. All rights reserved.
  */
 
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 
 CREATE TABLE public.archive_log (
     uuid uuid PRIMARY KEY,
@@ -133,6 +137,8 @@ CREATE TABLE IF NOT EXISTS public.refresh_token (
     expiration_date timestamp with time zone,
     use_attempt_count integer NOT NULL,
     request_source text,
+    date_created timestamp with time zone,
+    date_updated timestamp with time zone,
     UNIQUE (refresh_token)
 );
 

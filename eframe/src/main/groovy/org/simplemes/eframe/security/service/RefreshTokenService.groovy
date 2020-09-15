@@ -19,6 +19,7 @@ import org.reactivestreams.Publisher
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.security.ReplacementTokenResponse
+import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.security.domain.RefreshToken
 import org.simplemes.eframe.security.domain.User
 
@@ -33,10 +34,20 @@ import javax.transaction.Transactional
 class RefreshTokenService implements RefreshTokenPersistence {
 
   /**
-   * Tokens that expired more than this many days ago are eligble for cleanup.  Tokens used more than once
+   * Tokens that expired more than this many days ago are eligible for cleanup.  Tokens used more than once
    * are not cleaned up this way.
    */
-  public static final Long CLEANUP_AGE_DAYS = 30
+  public static final Long CLEANUP_AGE_DAYS = 1
+
+  /**
+   * The name of the cookie for the refresh token.
+   */
+  public static final String JWT_REFRESH_TOKEN = "JWT_REFRESH_TOKEN"
+
+  /**
+   * The name of the cookie for the silent refresh data.
+   */
+  public static final String JWT_SILENT_REFRESH = "JWT_SILENT_REFRESH"
 
   protected final RefreshTokenGenerator refreshTokenGenerator
   protected final RefreshTokenValidator refreshTokenValidator
@@ -89,8 +100,11 @@ class RefreshTokenService implements RefreshTokenPersistence {
    */
   @Transactional
   ReplacementTokenResponse replaceRefreshToken(String currentEncodedToken, HttpRequest<?> request) {
+    def requestSource = request.remoteAddress?.toString() ?: 'no IP'
     def opt = refreshTokenValidator.validate(currentEncodedToken)
     if (!opt.present) {
+      log.debug("replaceRefreshToken(): No valid refresh token for user '{}' from '{}'.",
+                SecurityUtils.currentUserName, requestSource)
       return null
     }
     def currentToken = opt.get()
@@ -99,9 +113,11 @@ class RefreshTokenService implements RefreshTokenPersistence {
       if (currentRefreshToken.enabled) {
         currentRefreshToken.useAttemptCount++
         currentRefreshToken.enabled = false
-        currentRefreshToken.requestSource = request.remoteAddress?.toString() ?: 'no IP'
+        currentRefreshToken.requestSource = requestSource
         currentRefreshToken.save()
         if (currentRefreshToken.expirationDate < new Date()) {
+          log.debug("replaceRefreshToken(): Refresh token {} expired for user '{}' from '{}'.",
+                    currentRefreshToken.uuid, currentRefreshToken.userName, requestSource)
           return null
         }
 
@@ -110,6 +126,7 @@ class RefreshTokenService implements RefreshTokenPersistence {
 
         def userDetails = getUserDetailsForUserName(currentRefreshToken.userName)
         if (!userDetails) {
+          log.debug("replaceRefreshToken(): No user details for user '{}' from '{}'.", currentRefreshToken.userName, requestSource)
           return null
         }
         def newRefreshUUID = refreshTokenGenerator.createKey(userDetails)
@@ -121,21 +138,23 @@ class RefreshTokenService implements RefreshTokenPersistence {
         refreshToken.userName = currentRefreshToken.userName
         refreshToken.enabled = true
         refreshToken.expirationDate = currentRefreshToken.expirationDate
-        refreshToken.requestSource = currentRefreshToken.requestSource
+        refreshToken.requestSource = requestSource
         refreshToken.save()
 
+        log.debug("replaceRefreshToken(): Issued new refresh token {} for user '{}' from '{}'.", newRefreshUUID, currentRefreshToken.userName, requestSource)
         return new ReplacementTokenResponse(refreshToken: newRefreshToken, userDetails: userDetails)
       } else {
         // Already used, so fail with an error logged
         revokeAllUserTokens(currentRefreshToken.userName)
         currentRefreshToken.useAttemptCount++
         log.error("replaceRefreshToken(): Attempt to use refresh token more than once for user '{}' from '{}'.  All refresh tokens revoked.  Attempt count {}.",
-                  currentRefreshToken.userName, currentRefreshToken.requestSource, currentRefreshToken.useAttemptCount)
+                  currentRefreshToken.userName, requestSource, currentRefreshToken.useAttemptCount)
         currentRefreshToken.save()
 
         return null
       }
     }
+    log.debug("replaceRefreshToken(): No user refresh token {} for user '{}' from '{}'.", currentToken, SecurityUtils.currentUserName, requestSource)
     return null
   }
 

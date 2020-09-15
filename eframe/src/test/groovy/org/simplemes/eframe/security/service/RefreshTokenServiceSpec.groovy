@@ -232,6 +232,7 @@ class RefreshTokenServiceSpec extends BaseSpecification {
     def currentToken = createToken('admin')
     def expiredTokenStillEnabled = createToken('admin')
     def expiredTokenUsedOnce = createToken('admin')
+    def expiredTokenUsedOnceOld = createToken('admin')
     def expiredTokenUsedMultipleTimes = createToken('admin')
 
     and: 'one token is expired but still enabled'
@@ -240,8 +241,15 @@ class RefreshTokenServiceSpec extends BaseSpecification {
     record.expirationDate = new Date(System.currentTimeMillis() - 100 * DateUtils.MILLIS_PER_DAY - Holders.configuration.security.jwtRefreshMaxAge * 1000)
     record.save()
 
-    and: 'one token is expired and used once'
+    and: 'one token is expired and used once - recently'
     record = RefreshToken.findByRefreshToken(getUUID(expiredTokenUsedOnce))
+    record.expirationDate = new Date(System.currentTimeMillis() - 3600000L)
+    record.enabled = false
+    record.useAttemptCount = 1
+    record.save()
+
+    and: 'one token is expired and used once - old'
+    record = RefreshToken.findByRefreshToken(getUUID(expiredTokenUsedOnceOld))
     record.expirationDate = new Date(System.currentTimeMillis() - 100 * DateUtils.MILLIS_PER_DAY - Holders.configuration.security.jwtRefreshMaxAge * 1000)
     record.enabled = false
     record.useAttemptCount = 1
@@ -259,16 +267,15 @@ class RefreshTokenServiceSpec extends BaseSpecification {
     def replacementToken = replacementTokenResponse.refreshToken
 
     then: 'the right tokens are delete as old and uninteresting'
-    RefreshToken.findAllByUserName('admin').size() == 3
+    RefreshToken.findAllByUserName('admin').size() == 4
     !RefreshToken.findByRefreshToken(getUUID(expiredTokenStillEnabled))
-    !RefreshToken.findByRefreshToken(getUUID(expiredTokenUsedOnce))
+    !RefreshToken.findByRefreshToken(getUUID(expiredTokenUsedOnceOld))
 
     and: 'the current or tokens with security are still in the DB'
     RefreshToken.findByRefreshToken(getUUID(replacementToken))
     RefreshToken.findByRefreshToken(getUUID(currentToken))
+    RefreshToken.findByRefreshToken(getUUID(expiredTokenUsedOnce))
     RefreshToken.findByRefreshToken(getUUID(expiredTokenUsedMultipleTimes))
-
   }
-
 
 }
