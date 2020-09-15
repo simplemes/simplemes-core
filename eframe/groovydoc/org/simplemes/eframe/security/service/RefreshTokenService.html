@@ -144,7 +144,19 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code><strong>static&nbsp;java.lang.Long</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#CLEANUP_AGE_DAYS">CLEANUP_AGE_DAYS</a></code></td>
-                            <td class="colLast">Tokens that expired more than this many days ago are eligble for cleanup.  </td>
+                            <td class="colLast">Tokens that expired more than this many days ago are eligible for cleanup.  </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>static&nbsp;java.lang.String</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#JWT_REFRESH_TOKEN">JWT_REFRESH_TOKEN</a></code></td>
+                            <td class="colLast">The name of the cookie for the refresh token.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>static&nbsp;java.lang.String</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#JWT_SILENT_REFRESH">JWT_SILENT_REFRESH</a></code></td>
+                            <td class="colLast">The name of the cookie for the silent refresh data.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -305,8 +317,24 @@ extends java.lang.Object
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>public&nbsp;static&nbsp;final&nbsp;java.lang.Long <strong>CLEANUP_AGE_DAYS</strong></h4>
-                                <p> Tokens that expired more than this many days ago are eligble for cleanup.  Tokens used more than once
+                                <p> Tokens that expired more than this many days ago are eligible for cleanup.  Tokens used more than once
  are not cleaned up this way.</p>
+                            </li>
+                        </ul>
+                    
+                        <a name="JWT_REFRESH_TOKEN"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;static&nbsp;final&nbsp;java.lang.String <strong>JWT_REFRESH_TOKEN</strong></h4>
+                                <p> The name of the cookie for the refresh token.</p>
+                            </li>
+                        </ul>
+                    
+                        <a name="JWT_SILENT_REFRESH"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;static&nbsp;final&nbsp;java.lang.String <strong>JWT_SILENT_REFRESH</strong></h4>
+                                <p> The name of the cookie for the silent refresh data.</p>
                             </li>
                         </ul>
                     

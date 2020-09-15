@@ -1009,7 +1009,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/ClassPathScanner.html#ClassPathScanner()" title="Constructor in ClassPathScanner">ClassPathScanner()</a></span> - Constructor in <a href="org/simplemes/eframe/misc/ClassPathScanner.html">ClassPathScanner</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html#CLEANUP_AGE_DAYS" title="Field in RefreshTokenService">CLEANUP_AGE_DAYS</a></span> - Field in <a href="org/simplemes/eframe/security/service/RefreshTokenService.html">RefreshTokenService</a>
-</dt><dd> <div class="block">Tokens that expired more than this many days ago are eligble for cleanup.  </div></dd>
+</dt><dd> <div class="block">Tokens that expired more than this many days ago are eligible for cleanup.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseDashboardSpecification.html#cleanup()" title="Method in BaseDashboardSpecification">cleanup()</a></span> - Method in <a href="org/simplemes/eframe/test/BaseDashboardSpecification.html">BaseDashboardSpecification</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseSpecification.html#cleanup()" title="Method in BaseSpecification">cleanup()</a></span> - Method in <a href="org/simplemes/eframe/test/BaseSpecification.html">BaseSpecification</a>
@@ -1259,6 +1259,12 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Converts a possible object (string) to a UUID.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/DomainBinder.html#convertUIChildParamsToAPIForm(Map)" title="Method in DomainBinder">convertUIChildParamsToAPIForm(Map)</a></span> - Method in <a href="org/simplemes/eframe/domain/DomainBinder.html">DomainBinder</a>
 </dt><dd> <div class="block">Converts any child elements from the UI format to API format.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/CookieClearingLogoutHandler.html" title="Class in org.simplemes.eframe.security">CookieClearingLogoutHandler</a></span> - Class in <a href="./org/simplemes/eframe/security/package-summary.html">org.simplemes.eframe.security</a>
+</dt><dd><div class="block">A logout handler that clears the JWT and Access cookies upon logout.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/CookieClearingLogoutHandler.html#CookieClearingLogoutHandler()" title="Constructor in CookieClearingLogoutHandler">CookieClearingLogoutHandler()</a></span> - Constructor in <a href="org/simplemes/eframe/security/CookieClearingLogoutHandler.html">CookieClearingLogoutHandler</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/dashboard/controller/DashboardTestController.html#cookies(io.micronaut.http.HttpRequest)" title="Method in DashboardTestController">cookies(io.micronaut.http.HttpRequest)</a></span> - Method in <a href="org/simplemes/eframe/dashboard/controller/DashboardTestController.html">DashboardTestController</a>
+</dt><dd> <div class="block">Displays the cookies submitted to the server (for testing purposes). </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/webix/freemarker/FormMarker.html#COORDINATOR_SNIPPET_MODE" title="Field in FormMarker">COORDINATOR_SNIPPET_MODE</a></span> - Field in <a href="org/simplemes/eframe/web/ui/webix/freemarker/FormMarker.html">FormMarker</a>
 </dt><dd> <div class="block">The name of the element in the markerContext.markerCoordinator.others that holds a Boolean flag indicating
  this set of markers is working in snippet (or dashboard) mode.
@@ -3745,6 +3751,10 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd><div class="block">Defines the page options for javascript client pages.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/JSPageOptions.html#JSPageOptions()" title="Constructor in JSPageOptions">JSPageOptions()</a></span> - Constructor in <a href="org/simplemes/eframe/web/ui/JSPageOptions.html">JSPageOptions</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html#JWT_REFRESH_TOKEN" title="Field in RefreshTokenService">JWT_REFRESH_TOKEN</a></span> - Field in <a href="org/simplemes/eframe/security/service/RefreshTokenService.html">RefreshTokenService</a>
+</dt><dd> <div class="block">The name of the cookie for the refresh token.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html#JWT_SILENT_REFRESH" title="Field in RefreshTokenService">JWT_SILENT_REFRESH</a></span> - Field in <a href="org/simplemes/eframe/security/service/RefreshTokenService.html">RefreshTokenService</a>
+</dt><dd> <div class="block">The name of the cookie for the silent refresh data.</div></dd>
 </dl>
 
     
@@ -3953,6 +3963,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Logs out the current test user.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseGUISpecification.html#logout()" title="Method in BaseGUISpecification">logout()</a></span> - Method in <a href="org/simplemes/eframe/test/BaseGUISpecification.html">BaseGUISpecification</a>
 </dt><dd> <div class="block">Logs the user out.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/CookieClearingLogoutHandler.html#logout(io.micronaut.http.HttpRequest)" title="Method in CookieClearingLogoutHandler">logout(io.micronaut.http.HttpRequest)</a></span> - Method in <a href="org/simplemes/eframe/security/CookieClearingLogoutHandler.html">CookieClearingLogoutHandler</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/LogUtils.html#logStackTrace(org.slf4j.Logger, java.lang.Throwable, java.lang.Object)" title="Method in LogUtils">logStackTrace(org.slf4j.Logger, java.lang.Throwable, java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/misc/LogUtils.html">LogUtils</a>
 </dt><dd> <div class="block">Logs a given stack trace for safety.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/LogUtils.html" title="Class in org.simplemes.eframe.misc">LogUtils</a></span> - Class in <a href="./org/simplemes/eframe/misc/package-summary.html">org.simplemes.eframe.misc</a>
