@@ -59,11 +59,6 @@ task groovydocAll {
   }
 }
 
-task assembleAll {
-  includedBuilds.tokenize(',').each { buildName ->
-    dependsOn gradle.includedBuild(buildName).task(':assemble')
-  }
-}
 
 task publishAll {
   includedBuilds.tokenize(',').each { buildName ->
@@ -81,5 +76,13 @@ task bintrayUploadAll {
   includedBuilds.tokenize(',').each { buildName ->
     dependsOn gradle.includedBuild(buildName).task(':bintrayUpload')
   }
+}
+
+task distZip {
+  dependsOn gradle.includedBuild('mes').task(':distZip')
+}
+
+task shadowJar {
+  dependsOn gradle.includedBuild('mes').task(':shadowJar')
 }
 

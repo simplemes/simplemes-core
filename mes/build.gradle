@@ -13,6 +13,7 @@ plugins {
   id "com.bertramlabs.asset-pipeline" version "3.0.10"
   id "org.owasp.dependencycheck" version "4.0.0.1"
   id 'org.asciidoctor.jvm.convert' version '3.1.0'
+  id "com.github.johnrengelman.shadow" version "6.0.0"
 }
 
 repositories {

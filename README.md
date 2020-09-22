@@ -26,10 +26,13 @@ Some common build options for the entire project includes:
 
 * **./gradlew buildAll** - Build and test for all sub-projects (modules). 
 * **./gradlew testAll** -  Run non-GUI tests for all sub-projects (modules).
-* **./gradlew assembleAll** - Assemble .jar files for all sub-projects (modules).
 * **./gradlew asciidoctorAll** - Build HTML docs for all sub-projects (modules).
 * **./gradlew groovydocAll** - Build Groovy/Javadoc for all sub-projects (modules).
 * **./gradlew cleanAll** - Cleans output directories for all sub-projects (modules).
+* cd eframe; **./gradlew clean publishToMavenLocal generateExtensionDoc** - In a module's directory, 
+  publishes the module's .jar file to local maven repository.  Works in _webix, eframe, mes-core_ 
+  and _mes-assy_ modules.
+* **./gradlew shadowJar** - Creates the distribution .jar file under the _mes\build\libs_.
 
 Each module has similar actions (e.g. build, test. etc).  
 This project currently supports OpenJDK 14.0.
