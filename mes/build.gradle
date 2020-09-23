@@ -54,7 +54,7 @@ dependencies {
 
 }
 
-mainClassName = "org.simplemes.mes.app.application.Application"
+mainClassName = "org.simplemes.mes.app.Application"
 
 // Local Tasks
 // Remove some sample/test files from the published jar.
@@ -64,4 +64,14 @@ jar {
   exclude "/sample/**"
   exclude "/reports/sample/**"
 }
+
+
+// Force the META-INF/services from each micronaut module to be used in the Fat Jar and combine common .properties
+// from all modules.
+shadowJar {
+  append 'assets/manifest.properties'
+  append 'i18n/messages.properties'
+  mergeServiceFiles()
+}
+
 

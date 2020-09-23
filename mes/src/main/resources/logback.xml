@@ -20,6 +20,7 @@
   <logger name="io.micronaut" level="warn"/>
   <!--<logger name="asset.pipeline" level="trace"/>-->
   <logger name="io.netty.handler.logging" level="WARN"/>
+  <logger name="asset.pipeline" level="WARN"/>
 
   <logger name="sample" level="warn"/>
   <!--<logger name="org.simplemes.eframe.web.ui" level="trace"/>-->
