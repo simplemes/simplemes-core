@@ -3,6 +3,7 @@
 ifeval::["{backend}" != "pdf"]
 
 [inline-toc-header]#GUI Elements#
+[inline-toc]#<<closeDialog>>#
 [inline-toc]#<<displayDialog>>#
 [inline-toc]#<<displayTextFieldDialog>>#
 [inline-toc]#<<displayQuestionDialog>>#
@@ -21,6 +22,7 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc-header]#Server Interaction#
 [inline-toc]#<<eframe-add-arg-to-uri>>#
+[inline-toc]#<<eframe-ajax>>#
 [inline-toc]#<<eframe-get>>#
 [inline-toc]#<<eframe-post>>#
 [inline-toc]#<<postAjaxForm>>#
@@ -41,11 +43,15 @@ NOTE: Any methods that start with an underscore (e.g. __checkMissing_) are inter
 === Functions
 
 
-include::alert.adoc[]
-
 include::addArgToURI.adoc[]
 
+include::alert.adoc[]
+
+include::ajax.adoc[]
+
 include::clearMessages.adoc[]
+
+include::closeDialog.adoc[]
 
 include::displayDialog.adoc[]
 

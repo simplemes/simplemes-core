@@ -14,18 +14,6 @@
 // Allows access to the dashboard as: 'dashboard.finished()' or 'ef.dashboard.finished()'
 var ef = ef || {};
 ef.dashboard = function () {
-  // TODO: DashboardJS GUI Specs (6 Dashboard, 4 editor)
-  /*
-   Button - Done
-   Event - Done
-   Finished - Done
-   Form - Done
-   Undo - Done
-   EditorButton
-   Editor
-   EditorPanel
-   EditorUnsaved
-   */
 
   var panels;               // An array of maps, one for each panel. Map elements: defaultURL.  The key is the panel (name).
   var pendingPages;        // A map of arrays of maps that define pages pending for each panel (map elements: url).  The key is the panel (name).
@@ -307,22 +295,26 @@ ef.dashboard = function () {
     // Internal API functions. Not to be use by dashboard activities in most cases.
     // *******************************************************************************
     //
-    // Adds the buttons to the given div, if the page has the right ID in it.
-    // if buttonsToDisplay is undefined, then use the current config.
-    // clickScript - The script to handle the click. Default is the dashboard._clickButton().  If provided, then uses this as the onClick handler.
-    // doubleClickScript - Optional double-click script handler.
+    // Adds the buttons to the given panel (if any are defined on the dashboard configuration).
     _addButtonsIfNeeded: function (panelName) {
-      var parentViewName = 'Buttons' + panelName;
-      var contentViewName = 'ButtonsContent' + panelName;
+      dashboard._addButtonsIfNeededInternal(panelName, buttons)
+    },
+    // Adds the buttons to the given panel, internal version. Used by dashboard and editor.
+    _addButtonsIfNeededInternal: function (panelName, allButtons, suffix) {
+      if (!suffix) {
+        suffix = '';
+      }
+      var parentViewName = 'Buttons' + suffix + panelName;
+      var contentViewName = 'ButtonsContent' + suffix + panelName;
       var $element = $$(contentViewName);
       if ($element == undefined) {
         return;
       }
 
-      if (buttons) {
+      if (allButtons) {
         var buttonViews = [];
-        for (var i = 0; i < buttons.length; i++) {
-          var button = buttons[i];
+        for (var i = 0; i < allButtons.length; i++) {
+          var button = allButtons[i];
           buttonViews[0] = {width: tk.pw("20%")};
           var size = button.size || 1.0;
           var css = button.css || '';
@@ -331,7 +323,7 @@ ef.dashboard = function () {
             align: "center,middle", width: tk.pw(button.label.length + "em"), body: {
               view: "button", id: button.id, type: 'form', value: button.label, autowidth: false,
               inputHeight: tk.ph(size + "em"), height: tk.ph(size + "em"), css: css,
-              click: 'dashboard._clickButton(' + i + ')', tooltip: title
+              click: 'dashboard' + suffix + '._clickButton(' + i + ')', tooltip: title
             }
           };
 
@@ -342,8 +334,9 @@ ef.dashboard = function () {
         //console.log(buttonViews);
         // Remove current content.
         $$(parentViewName).removeView(contentViewName);
-        $$(parentViewName).addView({cols: buttonViews}, 0);
+        $$(parentViewName).addView({cols: buttonViews, id: contentViewName}, 0);
       }
+
     },
     // Adds one more parameter to the params to be sent to each activity when it is loaded.
     _addActivityParameter: function (name, value) {

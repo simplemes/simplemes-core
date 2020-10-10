@@ -17,6 +17,10 @@ NOTE: Any methods that start with an underscore (eg. `tk._alert()`) are internal
       and are subject to change.
 
 
+These functions generally use the
+link:guide.html#gui-toolkit[GUI Toolkit^] icon:share-square-o[role="link-blue"]
+to handle the display-related functions in the browser.
+
 === Functions
 
 

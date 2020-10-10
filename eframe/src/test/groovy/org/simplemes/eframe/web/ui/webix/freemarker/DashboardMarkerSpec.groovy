@@ -26,7 +26,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
 
 
   @Rollback
-  def "verify that the tag can handle a two panel vertical dashboard"() {
+  def "verify that the marker can handle a two panel vertical dashboard"() {
     given: 'a dashboard config'
     DashboardUnitTestUtils.buildDashboardConfig('TEST', ['vertical0', '/page0', '/page1'])
 
@@ -67,7 +67,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
   }
 
   @Rollback
-  def "verify that the tag can handle a two panel horizontal dashboard"() {
+  def "verify that the marker can handle a two panel horizontal dashboard"() {
     given: 'a dashboard config'
     DashboardUnitTestUtils.buildDashboardConfig('TEST', ['horizontal0', 'page0', 'page1'])
 
@@ -85,7 +85,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
   }
 
   @Rollback
-  def "verify that the tag detects no configuration correctly - by category"() {
+  def "verify that the marker detects no configuration correctly - by category"() {
     when: 'the HTML is generated'
     def page = execute(source: '<@efDashboard category="TEST"/>', uri: '/dashboard?arg=value')
 
@@ -101,7 +101,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
   }
 
   @Rollback
-  def "verify that the tag detects no configuration correctly - dashboard name"() {
+  def "verify that the marker detects no configuration correctly - dashboard name"() {
     when: 'the HTML is generated'
     def page = execute(source: '<@efDashboard dashboard="TEST"/>', uri: '/dashboard?arg=value')
 
@@ -117,7 +117,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
   }
 
   @Rollback
-  def "verify that the tag can handle a one dashboard panel"() {
+  def "verify that the marker can handle a one dashboard panel"() {
     given: 'a dashboard config'
     DashboardUnitTestUtils.buildDashboardConfig('TEST', ['/page0'])
 
@@ -141,7 +141,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
   }
 
   @Rollback
-  def "verify that the tag can handle loading a specific dashboard"() {
+  def "verify that the marker can handle loading a specific dashboard"() {
     given: 'a non-default dashboard config'
     def dashboardConfig = DashboardUnitTestUtils.buildDashboardConfig('TEST', ['/page0'])
     dashboardConfig.defaultConfig = false
@@ -159,7 +159,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
   }
 
   @Rollback
-  def "verify that the tag can handle three panel vertical"() {
+  def "verify that the marker can handle three panel vertical"() {
     given: 'a dashboard config'
     DashboardUnitTestUtils.buildDashboardConfig('TEST', ['vertical0', 'page0', 'horizontal1', 'page1', 'page2'])
 
@@ -187,7 +187,25 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
   }
 
   @Rollback
-  def "verify that the tag can use splitter sizes from the user preferences"() {
+  def "verify that the marker can use default size from the panel definition"() {
+    given: 'a dashboard config with a panel size'
+    def cfg = DashboardUnitTestUtils.buildDashboardConfig('DASHBOARD', ['vertical0', 'page0', 'horizontal1', 'page1', 'page2'])
+    cfg.dashboardPanels[0].defaultSize = 23.7
+    cfg.dashboardPanels[0].save()
+
+    when: 'the HTML is generated'
+    def page = execute(source: '<@efDashboard category="NONE"/>', uri: '/dashboard?arg=value')
+
+    then: 'the HTML is valid'
+    checkPage(page)
+
+    and: 'right splitter size is used'
+    def panelAText = TextUtils.findLine(page, 'id: "PanelA"')
+    JavascriptTestUtils.extractProperty(panelAText, 'width') == 'tk.pw("23.7%")'
+  }
+
+  @Rollback
+  def "verify that the marker can use splitter sizes from the user preferences"() {
     given: 'a dashboard config'
     DashboardUnitTestUtils.buildDashboardConfig('DASHBOARD', ['vertical0', 'page0', 'horizontal1', 'page1', 'page2'])
 
@@ -219,7 +237,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
   }
 
   @Rollback
-  def "verify that the tag can handle all of the supported button fields"() {
+  def "verify that the marker can handle all of the supported button fields"() {
     given: 'a dashboard config'
     def buttons = [[label: 'b10', url: '/page10', panel: 'A', title: 'title10', css: 'caution-button', size: 1.2, buttonID: 'B10']]
     DashboardUnitTestUtils.buildDashboardConfig('DASHBOARD', ['vertical0', 'page0', 'page1'], buttons)
@@ -242,7 +260,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
   }
 
   @Rollback
-  def "verify that the tag can handle multiple buttons"() {
+  def "verify that the marker can handle multiple buttons"() {
     given: 'a dashboard config'
     def button1a = [label: 'b10', url: '/page11', panel: 'A', buttonID: 'ID10']
     def button1b = [label: 'b10', url: '/page12', panel: 'B', buttonID: 'ID102']
@@ -276,7 +294,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
   }
 
   @Rollback
-  def "verify that the tag can handle supported URLs formats"() {
+  def "verify that the marker can handle supported URLs formats"() {
     given: 'a dashboard config'
     DashboardUnitTestUtils.buildDashboardConfig('TEST', ['vertical0', '/page0', 'vertical1', 'Page1',
                                                          'vertical2', 'http://server:80/page2', 'https://server:81/page3'])
@@ -331,7 +349,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
   }
 
   @Rollback
-  def "verify that the tag logs the hierarchy with trace logging"() {
+  def "verify that the marker logs the hierarchy with trace logging"() {
     given: 'a dashboard config'
     DashboardUnitTestUtils.buildDashboardConfig('TEST', ['horizontal0', 'page0', 'page1'])
 

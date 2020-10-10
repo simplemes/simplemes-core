@@ -15,6 +15,7 @@ _ef.eframe = function () {
    */
   var preloadedMessages = {};
   var _messageDiv = 'messages';          // The ID of the DIV to display standard messages in.
+  var _dialogMessagesDiv = 'dialogMessages'; // The ID of the DIV to display messages within a dialog.
   var _silentRefreshCookieName = 'JWT_SILENT_REFRESH'; // The name of the cookie used to get the silent refresh times for each page.
   var _silentRefreshLocalName = 'lastSilentRefresh';   // The name of the local storage element that contains the last silent refresh time.
   var _silentRefreshDelay = 900000;      // The delay for the next silent refresh (after the first).  Normally comes from server.
@@ -43,9 +44,59 @@ _ef.eframe = function () {
     alert: function (msg) {
       tk._alert(msg);
     },
+    // Sends an AJAX request to the server as a JSON body.
+    ajax: function (method, url, data, success, options) {
+      var body = data;
+      if (ef._isPlainObject(data)) {
+        body = JSON.stringify(data);
+      }
+
+      var xhr = new XMLHttpRequest();
+      xhr.open(method, url, true);
+
+      xhr.onload = function () {
+        if (ef._isStatusOk(xhr.status)) {
+          if (success) {
+            success(xhr.responseText);
+          }
+        } else {
+          // Bad status, so log it to GUI.
+          var msg = "Server (" + method + ": '" + url + "') failed with status " + xhr.statusText + " (" + xhr.status + ")";
+          if (xhr.responseText != undefined) {
+            var errorText = ef._extractErrorMsg(xhr.responseText);
+            if (errorText) {
+              // Has a standard message format content, so use it.
+              msg = errorText + ". " + msg + '.';
+            }
+          }
+          var msgOptions = {error: msg};
+          if (options) {
+            if (options.divID) {
+              msgOptions.divID = options.divID;
+            }
+          }
+          ef.displayMessage(msgOptions);
+        }
+      };
+      xhr.onerror = function () {
+        var msg = "Server Request (" + method + ") to '" + url + "' failed with a network error. See browser console for details. ";
+        ef.displayMessage({error: msg});
+      };
+      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
+      xhr.setRequestHeader('Content-Type', 'application/json');
+      xhr.setRequestHeader('Accept', 'application/json');
+      xhr.send(body);
+      console.log(method + ' to ' + url + ': ' + body);
+      return xhr;
+    },
+    // Clears the message area for the div ID or an HTML element.
     clearMessages: function (divID) {
       var id = divID || _messageDiv;
-      eframe._getElement(id).innerHTML = '';
+      if (id instanceof Element) {
+        id.innerHTML = '';
+      } else {
+        eframe._getElement(id).innerHTML = '';
+      }
     },
     // Closes a dialog.  See toolkit for details.
     closeDialog: function (dialogID) {
@@ -82,18 +133,28 @@ _ef.eframe = function () {
       if (ef._isPlainObject(msgs[0])) {
         options = msgs[0]
       }
-      //console.log(options);
-      var divID = options.divID || msg.divID || _messageDiv;
-      //console.log(divID+":"+msg.divID);
+      var messageView = ef._findMessageView();
+      var msgElement;
 
-      var msgElement = ef._getElement(divID);
-      if (msgElement == undefined) {
-        // Fallback to the console if not message area found.
-        console.log(msg);
-        return;
+
+      if (messageView) {
+        msgElement = messageView.getNode().firstChild;
+      } else {
+        var divID = options.divID || msg.divID || _messageDiv;
+        msgElement = ef._getElement(divID);
+        if (msgElement == undefined) {
+          // Fallback to the console if not message area found.
+          console.log(msg);
+          return;
+        }
       }
+
       if (options.clear) {
-        eframe.clearMessages(divID)
+        eframe.clearMessages(msgElement)
+      }
+
+      if (messageView) {
+        messageView.show();
       }
 
       // Dump each message
@@ -122,6 +183,11 @@ _ef.eframe = function () {
           }
         }
       }
+      // Now, add some space after last message due to autoheight issues with the toolkit.
+      if (messageView) {
+        msgElement.insertAdjacentHTML("beforeend", '<div>&nbsp; </div>');
+      }
+
     },
     // Simplified dialog for question dialogs.
     displayQuestionDialog: function (dialogMap) {
@@ -252,48 +318,7 @@ _ef.eframe = function () {
     },
     // Sends an AJAX POST request to the server as a JSON body.
     post: function (url, data, success, options) {
-      var body = data;
-      if (ef._isPlainObject(data)) {
-        body = JSON.stringify(data);
-      }
-
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', url, true);
-
-      xhr.onload = function () {
-        if (ef._isStatusOk(xhr.status)) {
-          if (success) {
-            success(xhr.responseText);
-          }
-        } else {
-          // Bad status, so log it to GUI.
-          var msg = "Server (POST: '" + url + "') failed with status " + xhr.statusText + " (" + xhr.status + ")";
-          if (xhr.responseText != undefined) {
-            var errorText = ef._extractErrorMsg(xhr.responseText);
-            if (errorText) {
-              // Has a standard message format content, so use it.
-              msg = errorText + ". " + msg + '.';
-            }
-          }
-          var msgOptions = {error: msg};
-          if (options) {
-            if (options.divID) {
-              msgOptions.divID = options.divID;
-            }
-          }
-          ef.displayMessage(msgOptions);
-        }
-      };
-      xhr.onerror = function () {
-        var msg = "Server Request (POST) to '" + url + "' failed with a network error. See browser console for details. ";
-        ef.displayMessage({error: msg});
-      };
-      xhr.setRequestHeader('X-Requested-With', 'XMLHttpRequest');
-      xhr.setRequestHeader('Content-Type', 'application/json');
-      xhr.setRequestHeader('Accept', 'application/json');
-      xhr.send(body);
-      console.log('POST to ' + url + ': ' + body);
-      return xhr;
+      return ef.ajax('POST', url, data, success, options);
     },
     // Sends an AJAX POST request to the server as a JSON body.  Uses the fields from the given form.
     postAjaxForm: function (formOrData, url, otherData, success, options) {
@@ -396,6 +421,17 @@ _ef.eframe = function () {
           }
         } catch (e) {
           // Ignore any parse/etc errors
+        }
+      }
+      return undefined;
+    },
+    // Finds the toolkit view in the top dialog with a message div defined.
+    _findMessageView: function () {
+      var dialogID = tk._getTopDialogID();
+      if (dialogID) {
+        var childView = tk._findChildView($$(dialogID), _dialogMessagesDiv)
+        if (childView) {
+          return childView;
         }
       }
       return undefined;
@@ -562,7 +598,7 @@ _ef.eframe = function () {
         // Use _/+ 5 seconds on the first refresh to avoid multiple browsers windows sending in a refresh request at the same time.
         var firstRefresh = (Number(tokens[0]) - 5 + Math.trunc(10 * Math.random())) * 1000;
         _silentRefreshDelay = Number(tokens[1]) * 1000;
-        setTimeout(ef._silentRefresh, 5000);
+        setTimeout(ef._silentRefresh, firstRefresh);
       }
     },
     // Stores a given value in local storage for the current page.

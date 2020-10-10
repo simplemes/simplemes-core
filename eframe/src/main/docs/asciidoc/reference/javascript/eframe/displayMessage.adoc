@@ -32,6 +32,7 @@ The `msg` can be a javascript object (map) or array of maps with these elements 
 * `divID` - The HTML ID of the <div> to display the error messages in.  This area is not auto-cleared.
             (*Default*: the _messages_ div).
 * `clear` - If true, then clears the given message div before displaying this message.
+* _Other Dialog Options_ - This supports most other options from the <<displayDialog>> function.
 
 
 [source,javascript]
@@ -53,3 +54,4 @@ eframe.displayMessage({
 <.> Displays multiple info messages
 <.> Displays multiple info and error messages
 <.> Displays an error in your activity's message area.
+

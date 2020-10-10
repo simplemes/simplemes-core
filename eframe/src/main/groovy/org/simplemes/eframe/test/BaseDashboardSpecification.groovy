@@ -84,10 +84,10 @@ class BaseDashboardSpecification extends BaseGUISpecification {
    *
    * <b>Note:</b> If the URL's (defaults or buttons values) start with a '/', then it assumed to be a URL, not the activity content.
    * @param options The options.
-   * @return The dashboard name.
+   * @return The dashboard configuration object.
    */
   @SuppressWarnings("GroovyAssignabilityCheck")
-  String buildDashboard(Map options) {
+  DashboardConfig buildDashboard(Map options) {
     // Build the default pages needed.
     def defaults = []
     ArgumentUtils.checkMissing(options.defaults, 'options.defaults')
@@ -123,11 +123,12 @@ class BaseDashboardSpecification extends BaseGUISpecification {
       }
     }
 
+    def cfg = null
     DashboardConfig.withTransaction {
-      def cfg = DashboardUnitTestUtils.buildDashboardConfig('_TEST', defaults, buttons)
+      cfg = DashboardUnitTestUtils.buildDashboardConfig('_TEST', defaults, buttons)
       log.trace('buildDashboard() cfg: {}', cfg)
     }
-    return '_TEST'
+    return cfg
   }
 
   /**

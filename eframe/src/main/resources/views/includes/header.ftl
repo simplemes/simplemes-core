@@ -44,17 +44,18 @@
             {
               view: "button", id: 'configButton', width: 40, type: "icon", icon: "fas fa-cogs",
               click: 'ef._triggerConfigAction();',
-              tooltip: 'i18n: Enable Configuration Buttons'
+              tooltip: '<@efLookup key="configurePage.label"/>'
             },
             <#if _loggedIn>
             {
               view: "button", width: 40, type: "icon", icon: "fas fa-power-off",
-              click: 'javascript:logoutForm.submit()', tooltip: 'i18n: Logout',
+              click: 'javascript:logoutForm.submit()', tooltip: '<@efLookup key="logout.label"/>',
               id: "logoutButton"
             },
             </#if>
             {
-              view: "button", width: 40, type: "htmlbutton", click: 'home();', tooltip: 'i18n: old3', css: "no-border",
+              view: "button", width: 40, type: "htmlbutton", click: 'home();', tooltip: '<@efLookup key="home.label"/>',
+              css: "no-border",
               label: '<a href="/" class="toolbar-link" tabindex="-1"><span class="webix_icon fas fa-home" style="font-size: 20px;"></span></a>'
             }
           ]

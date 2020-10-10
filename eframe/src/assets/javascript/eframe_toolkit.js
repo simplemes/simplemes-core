@@ -380,9 +380,16 @@ _ef_tk.toolkit = function () {
       }
 
       var rows = [];
-      rows[0] = body;
+
+      if (options.messageArea) {
+        rows[rows.length] = {
+          type: "clean", id: "dialogMessages", autoheight: true, hidden: true, template: "<div id='dialogMessagesDiv'></div>"
+        };
+      }
+
+      rows[rows.length] = body;
       if (buttons != undefined) {
-        rows[1] = {
+        rows[rows.length] = {
           type: "clean",
           padding: 10,
           margin: 6,
@@ -437,8 +444,9 @@ _ef_tk.toolkit = function () {
               {view: "label", label: title},
               {
                 view: "icon", icon: "wxi-close", click: function () {
-                  preCloseFunction(dialogID, 'cancel');
-                  $$(dialogID).close();
+                  if (preCloseFunction(dialogID, 'cancel') != false) {
+                    $$(dialogID).close();
+                  }
                 }
               }
             ]
@@ -495,18 +503,23 @@ _ef_tk.toolkit = function () {
       return dialogID;
     },
     // Displays a dialog with a single text field.  Calls the ok function when done, passing the text field value.
-    // options contains: value, id, label, options from the displayDialog function.
+    // options contains: value, id, label, messageArea, options from the displayDialog function.
     _displayTextFieldDialog: function (options) {
       var textFieldID = options.fieldID || 'dialogTextField';
 
-      options.body = {
+      var rows = [];
+
+      rows[rows.length] = {
         cols: [
           {template: "", width: tk.pw('5%')},
           {
             view: "text", value: options.value, id: textFieldID, required: true, label: ef.lookup(options.label),
             labelAlign: 'right', inputWidth: tk.pw('40%')
-          }
-        ]
+          }]
+      };
+
+      options.body = {
+        rows: rows
       };
       options.focus = textFieldID;
       options.buttons = options.buttons || ['ok', 'cancel'];
@@ -519,6 +532,7 @@ _ef_tk.toolkit = function () {
           return options.textOk(value);
         }
       };
+      console.log(options);
       tk._displayDialog(options);
     },
     // Replacement for the webix.template.escape function that allows bold tags.
@@ -527,6 +541,23 @@ _ef_tk.toolkit = function () {
       s = s.replace(/&lt;b&gt;/g, '<b>');
       s = s.replace(/&lt;\/b&gt;/g, '</b>');
       return s;
+    },
+    // Finds the first child in the given parent view that has the given ID.
+    // Checks grand-children recursively.
+    _findChildView: function (parentView, childViewID) {
+      var children = parentView.getChildViews();
+      for (var i = 0; i < children.length; i++) {
+        var child = children[i];
+        if (child.config.id == childViewID) {
+          return child;
+        }
+        // Check any grandchildren
+        var grandChild = tk._findChildView(child, childViewID);
+        if (grandChild) {
+          return grandChild;
+        }
+      }
+      return undefined;
     },
     // Finds the index in the given formData array that has the given field defined.  -1 if not found.
     _findFormRow: function (array, fieldName) {
@@ -596,6 +627,13 @@ _ef_tk.toolkit = function () {
       }
 
       return undefined;
+    },
+    // Gets the title for the first dialog on top.
+    _getTopDialogTitle: function () {
+      var id = this._getTopDialogID();
+      var $dialog = $$(id);
+      let label = $dialog.getHead().getChildViews()[0];
+      return label.config.label;
     },
     // Handles click on an action button in a grid row.
     _gridActionButtonHandler: function (event, listID, rowID, script) {
@@ -831,6 +869,14 @@ _ef_tk.toolkit = function () {
     _setTaskMenuString: function (s) {
       _taskMenuString = s;
       //console.log(JSON.parse(s));
+    },
+    // Updates the title for the first dialog on top.
+    _setTopDialogTitle: function (title) {
+      var id = this._getTopDialogID();
+      var $dialog = $$(id);
+      let label = $dialog.getHead().getChildViews()[0];
+      label.config.label = title;
+      label.refresh();
     },
     // Sets the string form of the task menu.
     _splitterResizeHandler: function (id) {

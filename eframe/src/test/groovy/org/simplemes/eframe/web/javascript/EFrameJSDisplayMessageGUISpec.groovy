@@ -114,4 +114,38 @@ class EFrameJSDisplayMessageGUISpec extends BaseJSSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(messages.text(), ['<script>', '</script>', '<b>', '</b>'])
   }
 
+  /**
+   * A simple script to open a dialog with a message area and ok handler.
+   */
+  private static final String DIALOG_SCRIPT = """
+      holder.logger = 'original';
+      ef._addPreloadedMessages([ // Simulate localized labels for the dialog
+        {"ok.label": "Ok"},
+        {"cancel.label": "Cancel"}
+      ]);
+      ef.displayTextFieldDialog({
+        title: "addLogger.title", value: holder.logger, label: 'logger.label',
+        textOk: function (value) { holder.logger = value; },
+        left: 100,
+        messageArea: true
+      });
+      ef.displayTextFieldDialog({
+        title: "nested title", value: holder.logger, label: 'nested label',
+        textOk: function (value) { holder.logger = value; },
+        left: 500,
+        messageArea: true
+      });
+      ef.displayMessage({error: 'the error'});
+    """
+
+  def "verify that displayMessage works with a toolkit view in a nested dialog"() {
+    when: 'the JS is executed'
+    execute(DIALOG_SCRIPT)
+
+    then: 'the dialog is displayed'
+    waitFor { dialog1.exists }
+
+    and: 'the error is displayed in the right dialog'
+    $('div', view_id: 'dialog1').$('div', view_id: 'dialogMessages').find('.message').text() == 'the error'
+  }
 }

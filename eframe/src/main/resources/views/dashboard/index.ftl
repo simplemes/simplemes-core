@@ -5,6 +5,7 @@
 
 <#include "../includes/header.ftl" />
 <#include "../includes/definition.ftl" />
+<#include "../includes/dashboard_editor.ftl" />
 
 
 <@efDashboard category="${params.category!'OPERATOR'}" dashboard="${params.dashboard!}" />

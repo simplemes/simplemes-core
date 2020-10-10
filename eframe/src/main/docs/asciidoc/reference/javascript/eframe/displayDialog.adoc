@@ -37,13 +37,15 @@ The `dialogMap` parameter is a javascript object (map) with these elements:
                   This function CAN prevent the closure by returning false.
                   See <<displayDialog Buttons>> for details on event handler for specific buttons.
 | *postScript* | Some javascript to be executed after the dialog is displayed (with a delay of 1ms).
+| *messageArea* | If true, then a dialog message area will be displayed (*Default*: false).
+                  See <<Messages in Dialogs>> for details on how this works.
 
 |===
 
 
 
 
-*Returns*: The ID for the dialog.  This can be used to close the dialog.
+*Returns*: The ID for the dialog.  This can be used to close the dialog.  See <<close-dialog>>
 
 NOTE: The default focus is on the last button, if defined.
 
@@ -129,6 +131,37 @@ For an example controller, see
 link:groovydoc/org/simplemes/eframe/custom/controller/ExtensionController.html[ExtensionController^]
 icon:share-square-o[role="link-blue"].
 
+
+==== Messages in Dialogs
+
+This javascript function also supports a message area in dialogs.  It is a standard
+option  (`messageArea`) for all dialogs.  See Parameters above for details.
+
+If you need to define a message in your own dialog content/location, you can
+create a link:guide.html#gui-toolkit[GUI Toolkit^] icon:share-square-o[role="link-blue"]
+view as below.  After the dialog is displayed, then the top dialog will
+show messages intended for the default message area.
+
+[source,html]
+.displayMessage - Use in a Dialog
+----
+
+<script>
+
+  <@efForm id="addPanel" dashboard="true">
+    {type: "clean", id: "dialogMessages",autoheight: true, hidden: true,  <.>
+     template: "<div id='dialogMessagesDiv'></div>"},
+
+    . . .
+  </@efForm>
+
+</script>
+
+
+----
+<.> Defines a hidden view with the given `<div>` to hold any messages.
+
+NOTE: This is not needed if your dialog can use the normal `messageArea` parameter.
 
 
 

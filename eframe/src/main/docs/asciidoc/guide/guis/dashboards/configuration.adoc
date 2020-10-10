@@ -65,6 +65,8 @@ activity page that is displayed at the top of the dashboard that looks like this
 NOTE: These configurable buttons are optional.  You can have no buttons or create your
       own controls as needed.
 
+WARNING:  You should only have *ONE* activity at a time with a _buttonHolder_.
+
 
 The buttons are stored as child
 link:groovydoc/org/simplemes/eframe/dashboard/domain/DashboardButton.html[DashboardButton^]

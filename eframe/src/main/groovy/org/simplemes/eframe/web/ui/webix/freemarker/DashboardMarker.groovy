@@ -346,6 +346,10 @@ class DashboardMarker extends BaseMarker {
       if (panelSize) {
         def size = vertical ? "width: tk.pw(" : "height: tk.ph("
         sizeText = """,${size}"${panelSize}%")"""
+      } else if (panel.defaultSize) {
+        // Try the default size for the panel
+        def size = vertical ? "width: tk.pw(" : "height: tk.ph("
+        sizeText = """,${size}"${panel.defaultSize}%")"""
       }
       resizeHandlerText = """
             on: {

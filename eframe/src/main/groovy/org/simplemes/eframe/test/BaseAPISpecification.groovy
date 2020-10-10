@@ -157,7 +157,6 @@ class BaseAPISpecification extends BaseSpecification {
    * @return The response as a string
    */
   String sendRequest(Map options) {
-    // TODO: Support PUT/DELETE and maybe expected type support.
     def uri = (String) options.uri
     ArgumentUtils.checkMissing(uri, 'uri')
     def method = options.method ?: 'get'

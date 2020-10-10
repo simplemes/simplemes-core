@@ -89,27 +89,4 @@ class DashboardController extends BaseController {
     return modelAndView
   }
 
-  /**
-   * Contains the editor page.
-   */
-  def editor() {}
-
-  /**
-   * Contains the details dialog for a single dashboard.
-   */
-  def detailsDialog() {
-  }
-
-  /**
-   * Contains the panel details dialog for a panel
-   */
-  def panelDetailsDialog() {
-  }
-
-  /**
-   * Contains the button details dialog for a button.
-   */
-  def buttonDetailsDialog() {
-  }
-
 }

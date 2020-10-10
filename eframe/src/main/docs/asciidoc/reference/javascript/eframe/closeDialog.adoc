@@ -1,0 +1,10 @@
+
+[[close-dialog]]
+=== closeDialog
+
+.closeDialog(dialogID)
+
+This Javascript function closes a popup 'dialog' with the given ID.
+The dialog ID is returned by the <<displayDialog>> method.
+
+

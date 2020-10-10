@@ -92,6 +92,9 @@ class StatusController {
 
 These messages will be displayed by the <<efMessages>> marker in the <<Standard Header>>.
 
+NOTE:  Dialogs can also be configured to display messages if needed.
+       See link:reference.html#display-dialog[displayDialog^] icon:share-square-o[role="link-blue"]
+       for details.
 
 
 ==== Message Access from .ftl Files

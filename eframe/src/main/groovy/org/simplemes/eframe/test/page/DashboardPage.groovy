@@ -28,6 +28,12 @@ class DashboardPage extends AbstractPage {
     panel { id -> $('div.webix_form', view_id: "Content$id") }
     undoButton { $('#undoButton') }
     undoButtonEnabled { !$('#undoButton').classes().contains('undo-button-disabled') }
+
+    // Editor Dialog elements.
+    editorResizer { id -> $('div.webix_resizer', view_id: "EditorResizer$id") }
+
+    editorSaveButton { module(new ButtonModule(id: 'save')) }
+    editorCancelButton { module(new ButtonModule(id: 'cancel')) }
   }
 
   /**
