@@ -5652,6 +5652,7 @@ internationalization.</p>
 <div class="sectionbody">
 <div class="paragraph">
 <p><span class="inline-toc-header">GUI Elements</span>
+<span class="inline-toc"><a href="#close-dialog">closeDialog</a></span>
 <span class="inline-toc"><a href="#display-dialog">displayDialog</a></span>
 <span class="inline-toc"><a href="#displaytextfielddialog">displayTextFieldDialog</a></span>
 <span class="inline-toc"><a href="#display-question-dialog">displayQuestionDialog</a></span>
@@ -5673,6 +5674,7 @@ internationalization.</p>
 <div class="paragraph">
 <p><span class="inline-toc-header">Server Interaction</span>
 <span class="inline-toc"><a href="#eframe-add-arg-to-uri">addArgToURI</a></span>
+<span class="inline-toc"><a href="#eframe-ajax">ajax</a></span>
 <span class="inline-toc"><a href="#eframe-get">get</a></span>
 <span class="inline-toc"><a href="#eframe-post">post</a></span>
 <span class="inline-toc"><a href="#postajaxform">postAjaxForm</a></span>
@@ -5702,46 +5704,6 @@ Any methods that start with an underscore (e.g. <em>_checkMissing</em>) are inte
 
 </div>
 <div class="sect2">
-<h3 id="eframe-alert"><a class="link" href="#eframe-alert">alert</a></h3>
-<div class="paragraph">
-<div class="title">alert(msg)</div>
-<p>This Javascript function displays a simple pop-up message that will disappear after a short time.
-This is intended for diagnostics and testing.  See <a href="#eframe-display-message">displayMessage</a> for production
-message display.</p>
-</div>
-<div class="paragraph">
-<p>This function is part of the <a href="#eframe-js">eframe.js</a> library.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 23. Parameters</caption>
-<colgroup>
-<col style="width: 14.2857%;">
-<col style="width: 14.2857%;">
-<col style="width: 71.4286%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-middle">Parameter</th>
-<th class="tableblock halign-left valign-top">Type</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-middle"><p class="tableblock">msg</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The message to display. This text can contain HTML tags for formatting.</p></td>
-</tr>
-</tbody>
-</table>
-<div class="listingblock">
-<div class="title">Examples</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="javascript">ef.alert(<span class="string"><span class="delimiter">'</span><span class="content">&lt;pre&gt;Something Happened&lt;/pre&gt;</span><span class="delimiter">'</span></span>);</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
 <h3 id="eframe-add-arg-to-uri"><a class="link" href="#eframe-add-arg-to-uri">addArgToURI</a></h3>
 <div class="paragraph">
 <div class="title">addArgToURI(uri, argumentName, argumentValue)</div>
@@ -5750,7 +5712,7 @@ This function adds the argument using the '?' or '&amp;' separator as needed.
 This function is part of the <a href="#eframe-js">eframe.js</a> library.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 24. Parameters</caption>
+<caption class="title">Table 23. Parameters</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 14.2857%;">
@@ -5801,6 +5763,144 @@ uri = eframe.addArgToURI(uri,<span class="string"><span class="delimiter">'</spa
 </div>
 </div>
 <div class="sect2">
+<h3 id="eframe-alert"><a class="link" href="#eframe-alert">alert</a></h3>
+<div class="paragraph">
+<div class="title">alert(msg)</div>
+<p>This Javascript function displays a simple pop-up message that will disappear after a short time.
+This is intended for diagnostics and testing.  See <a href="#eframe-display-message">displayMessage</a> for production
+message display.</p>
+</div>
+<div class="paragraph">
+<p>This function is part of the <a href="#eframe-js">eframe.js</a> library.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 24. Parameters</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Parameter</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">msg</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The message to display. This text can contain HTML tags for formatting.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="title">Examples</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">ef.alert(<span class="string"><span class="delimiter">'</span><span class="content">&lt;pre&gt;Something Happened&lt;/pre&gt;</span><span class="delimiter">'</span></span>);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="eframe-ajax"><a class="link" href="#eframe-ajax">ajax</a></h3>
+<div class="paragraph">
+<div class="title">ajax(method,uri, ajaxData, success)</div>
+<p>This Javascript function sends an Ajax request to the server at the given <code>uri</code>.
+The results are passed to the <code>success</code> function you provide. The <code>ajaxData</code>
+are converted to JSON and sent as the body of the request.
+This function is part of the <a href="#eframe-js">eframe.js</a> library.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 25. Parameters</caption>
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Parameter</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>method</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The method for the request ('GET', 'POST', 'PUT' or 'DELETE') (<strong>Required</strong>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>uri</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">string</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The URI to send the request to (<strong>Required</strong>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>ajaxData</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">map or String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The body of the request (as JSON) sent to the server (<strong>Optional</strong>).
+                                Can be a JSON string or a javascript object.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>success</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">function</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is called when the request succeeds (<strong>Optional</strong>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>options</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">object</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Additional objects for the request (<strong>Optional</strong>).</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<p>The <code>options</code> is a Javascript object that can contain these options:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>divID</strong> - The Message div ID to display any error messages.</p>
+</li>
+</ul>
+</div>
+<div class="listingblock">
+<div class="title">Example</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="keyword">var</span> ajaxData = {};                 <i class="conum" data-value="1"></i><b>(1)</b>
+ajaxData.event = <span class="string"><span class="delimiter">&quot;</span><span class="content">ColumnResized</span><span class="delimiter">&quot;</span></span>;
+ajaxData.pageURI = <span class="string"><span class="delimiter">'</span><span class="content">/the/page</span><span class="delimiter">'</span></span>;
+ajaxData.element = <span class="string"><span class="delimiter">'</span><span class="content">aGrid</span><span class="delimiter">'</span></span>;
+ajaxData.column = <span class="string"><span class="delimiter">'</span><span class="content">userName</span><span class="delimiter">'</span></span>;
+ajaxData.newSize = <span class="float">12.5</span>;
+
+ef.ajax(<span class="string"><span class="delimiter">&quot;</span><span class="content">POST</span><span class="delimiter">&quot;</span></span>, <span class="string"><span class="delimiter">&quot;</span><span class="content">/userPreference/guiStateChanged</span><span class="delimiter">&quot;</span></span>, ajaxData,
+  <span class="keyword">function</span> (responseText) {  <i class="conum" data-value="2"></i><b>(2)</b>
+     <span class="keyword">var</span> data = JSON.parse(responseText);
+     console.log(data);
+     . . .
+  }
+);</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The body of the Ajax request is a javascript plain object (a map).</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Function called when the Ajax succeeds, passing the HTTP response body to the function as a string.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Server-side errors are displayed in the standard error
+<a href="guide.html#message-display" target="_blank" rel="noopener">location</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>.</p>
+</div>
+</div>
+<div class="sect2">
 <h3 id="eframe-clear-messages"><a class="link" href="#eframe-clear-messages">clearMessages</a></h3>
 <div class="paragraph">
 <div class="title">clearMessages(div)</div>
@@ -5846,6 +5946,14 @@ ef.clearMessagea();</code></pre>
 </div>
 </div>
 <div class="sect2">
+<h3 id="close-dialog"><a class="link" href="#close-dialog">closeDialog</a></h3>
+<div class="paragraph">
+<div class="title">closeDialog(dialogID)</div>
+<p>This Javascript function closes a popup 'dialog' with the given ID.
+The dialog ID is returned by the <a href="#display-dialog">displayDialog</a> method.</p>
+</div>
+</div>
+<div class="sect2">
 <h3 id="display-dialog"><a class="link" href="#display-dialog">displayDialog</a></h3>
 <div class="paragraph">
 <div class="title">displayDialog(dialogMap)</div>
@@ -5857,7 +5965,7 @@ This function is part of the <a href="#eframe-js">eframe.js</a> library.</p>
 <p>The <code>dialogMap</code> parameter is a javascript object (map) with these elements:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 25. Parameters</caption>
+<caption class="title">Table 26. Parameters</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 85.7143%;">
@@ -5923,10 +6031,15 @@ This function is part of the <a href="#eframe-js">eframe.js</a> library.</p>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>postScript</strong></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Some javascript to be executed after the dialog is displayed (with a delay of 1ms).</p></td>
 </tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>messageArea</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">If true, then a dialog message area will be displayed (<strong>Default</strong>: false).
+                  See <a href="#messages-in-dialogs">Messages in Dialogs</a> for details on how this works.</p></td>
+</tr>
 </tbody>
 </table>
 <div class="paragraph">
-<p><strong>Returns</strong>: The ID for the dialog.  This can be used to close the dialog.</p>
+<p><strong>Returns</strong>: The ID for the dialog.  This can be used to close the dialog.  See <a href="#close-dialog">closeDialog</a></p>
 </div>
 <div class="admonitionblock note">
 <table>
@@ -6056,6 +6169,54 @@ The variable to use is passed in as a URL parameter.</td>
 </div>
 </div>
 <div class="sect3">
+<h4 id="messages-in-dialogs"><a class="link" href="#messages-in-dialogs">Messages in Dialogs</a></h4>
+<div class="paragraph">
+<p>This javascript function also supports a message area in dialogs.  It is a standard
+option  (<code>messageArea</code>) for all dialogs.  See Parameters above for details.</p>
+</div>
+<div class="paragraph">
+<p>If you need to define a message in your own dialog content/location, you can
+create a <a href="guide.html#gui-toolkit" target="_blank" rel="noopener">GUI Toolkit</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>
+view as below.  After the dialog is displayed, then the top dialog will
+show messages intended for the default message area.</p>
+</div>
+<div class="listingblock">
+<div class="title">displayMessage - Use in a Dialog</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span class="tag">&lt;script&gt;</span>
+<span class="inline">
+  &lt;<span class="error">@</span>efForm id=<span class="string"><span class="delimiter">&quot;</span><span class="content">addPanel</span><span class="delimiter">&quot;</span></span> dashboard=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span>&gt;
+    {<span class="key">type</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">clean</span><span class="delimiter">&quot;</span></span>, <span class="key">id</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">dialogMessages</span><span class="delimiter">&quot;</span></span>,<span class="key">autoheight</span>: <span class="predefined-constant">true</span>, <span class="key">hidden</span>: <span class="predefined-constant">true</span>,  <i class="conum" data-value="1"></i><b>(1)</b>
+     <span class="key">template</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">&lt;div id='dialogMessagesDiv'&gt;&lt;/div&gt;</span><span class="delimiter">&quot;</span></span>},
+
+    . . .
+  &lt;<span class="regexp"><span class="delimiter">/</span><span class="content">@efForm&gt;</span></span></span>
+
+<span class="tag">&lt;/script&gt;</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Defines a hidden view with the given <code>&lt;div&gt;</code> to hold any messages.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This is not needed if your dialog can use the normal <code>messageArea</code> parameter.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
 <h4 id="examples-5"><a class="link" href="#examples-5">Examples</a></h4>
 <div class="paragraph">
 <p>This example displays some simple text.</p>
@@ -6083,7 +6244,7 @@ when you need to.</p>
 <p>This function is part of the <a href="#eframe-js">eframe.js</a> library. See also <a href="#eframe-clear-messages">clearMessages</a>.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 26. Parameters</caption>
+<caption class="title">Table 27. Parameters</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 14.2857%;">
@@ -6133,6 +6294,9 @@ when you need to.</p>
 </li>
 <li>
 <p><code>clear</code> - If true, then clears the given message div before displaying this message.</p>
+</li>
+<li>
+<p><em>Other Dialog Options</em> - This supports most other options from the <a href="#display-dialog">displayDialog</a> function.</p>
 </li>
 </ul>
 </div>
@@ -6191,7 +6355,7 @@ so some of that function&#8217;s options are also supported (e.g. width, height,
 <p>The <code>dialogMap</code> parameter is a javascript object (map) with these elements:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 27. Parameters</caption>
+<caption class="title">Table 28. Parameters</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 85.7143%;">
@@ -6314,7 +6478,7 @@ This function is part of the <a href="#eframe-js">eframe.js</a> library.</p>
 <p>The <code>dialogMap</code> parameter is a javascript object (map) with these elements:</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 28. Parameters</caption>
+<caption class="title">Table 29. Parameters</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 85.7143%;">
@@ -6451,7 +6615,7 @@ This get call sets the <code>'Cache-Control'</code> on the request to <em>'no-ca
 </table>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 29. Parameters</caption>
+<caption class="title">Table 30. Parameters</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 14.2857%;">
@@ -6524,7 +6688,7 @@ previously set by the <a href="#setpageoption">setPageOption</a> function.</p>
 <p>This function is part of the <a href="#eframe-js">eframe.js</a> library.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 30. Parameters</caption>
+<caption class="title">Table 31. Parameters</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 14.2857%;">
@@ -6662,7 +6826,7 @@ This function depends on <a href="#efpreloadmessages">efPreloadMessages</a> usag
 </table>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 31. Parameters</caption>
+<caption class="title">Table 32. Parameters</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 85.7143%;">
@@ -6741,7 +6905,7 @@ to JSON and sent as the body of the request.
 This function is part of the <a href="#eframe-js">eframe.js</a> library.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 32. Parameters</caption>
+<caption class="title">Table 33. Parameters</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 14.2857%;">
@@ -6848,7 +7012,7 @@ This function submits the request in a background HTTP request to the server.
 </table>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 33. Parameters</caption>
+<caption class="title">Table 34. Parameters</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 14.2857%;">
@@ -6965,7 +7129,7 @@ This function submits the request in the foreground and the response
 </table>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 34. Parameters</caption>
+<caption class="title">Table 35. Parameters</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 14.2857%;">
@@ -7034,7 +7198,7 @@ for use later by the <a href="#getpageoption">getPageOption</a> function.</p>
 <p>This function is part of the <a href="#eframe-js">eframe.js</a> library.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 35. Parameters</caption>
+<caption class="title">Table 36. Parameters</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 14.2857%;">
@@ -7100,6 +7264,11 @@ Any methods that start with an underscore (eg. <code>tk._alert()</code>) are int
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>These functions generally use the
+<a href="guide.html#gui-toolkit" target="_blank" rel="noopener">GUI Toolkit</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>
+to handle the display-related functions in the browser.</p>
+</div>
 <div class="sect2">
 <h3 id="functions-2"><a class="link" href="#functions-2">Functions</a></h3>
 
@@ -7116,7 +7285,7 @@ window content height.</p>
 <p>This function is part of the <a href="#eframe_toolkit-js">eframe_toolkit.js</a> library.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 36. Parameters</caption>
+<caption class="title">Table 37. Parameters</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 14.2857%;">
@@ -7171,7 +7340,7 @@ window content width.</p>
 <p>This function is part of the <a href="#eframe_toolkit-js">eframe_toolkit.js</a> library.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 37. Parameters</caption>
+<caption class="title">Table 38. Parameters</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 14.2857%;">
@@ -7557,7 +7726,7 @@ the button. This does not visually click the button, but just executes the logic
 This function is part of the <a href="#dashboard-js">Dashboard JS</a> library.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 38. Parameters</caption>
+<caption class="title">Table 39. Parameters</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 14.2857%;">
@@ -7808,7 +7977,7 @@ This function uses the <a href="#postajaxform">postAjaxForm</a> method from the 
 </table>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 39. Parameters</caption>
+<caption class="title">Table 40. Parameters</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 14.2857%;">
@@ -7848,7 +8017,7 @@ This function uses the <a href="#postajaxform">postAjaxForm</a> method from the 
 </tbody>
 </table>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 40. Options</caption>
+<caption class="title">Table 41. Options</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 14.2857%;">
@@ -7951,7 +8120,7 @@ This function is part of the <a href="#dashboard-js">Dashboard JS</a> library.</
 details on the dashboard event system.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 41. Parameters</caption>
+<caption class="title">Table 42. Parameters</caption>
 <colgroup>
 <col style="width: 14.2857%;">
 <col style="width: 14.2857%;">
@@ -8007,7 +8176,7 @@ You will normally not need to call this directly.  The dashboard will usually ca
 </table>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 42. Attributes</caption>
+<caption class="title">Table 43. Attributes</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -8054,7 +8223,7 @@ You will normally not need to call this directly.  The dashboard will usually ca
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-09-23 14:13:45 UTC
+Last updated 2020-10-10 16:00:02 UTC
 </div>
 </div>
 <style>
