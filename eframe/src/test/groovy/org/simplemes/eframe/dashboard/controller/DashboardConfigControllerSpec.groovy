@@ -10,6 +10,7 @@ import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.dashboard.domain.DashboardPanel
 import org.simplemes.eframe.test.BaseAPISpecification
 import org.simplemes.eframe.test.ControllerTester
+import org.simplemes.eframe.test.MockPrincipal
 
 /**
  * Tests.
@@ -20,7 +21,7 @@ class DashboardConfigControllerSpec extends BaseAPISpecification {
   static dirtyDomains = [DashboardConfig]
 
   def "verify that controller follows standards - security etc"() {
-    expect: 'the tester is run'
+    expect: 'the tester is run  '
     ControllerTester.test {
       controller DashboardConfigController
       role 'DESIGNER'
@@ -45,4 +46,14 @@ class DashboardConfigControllerSpec extends BaseAPISpecification {
     def json = new JsonSlurper().parseText(s)
     json.dashboard == 'ABC'
   }
+
+  def "verify that the details dialog method works"() {
+    when: 'the dialog method is called'
+    def modelAndView = new DashboardConfigController().detailsDialog(new MockPrincipal('joe'))
+
+    then: 'the model returned contains the params'
+    modelAndView.view.get() == 'dashboard/detailsDialog'
+  }
+
+
 }

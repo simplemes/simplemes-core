@@ -340,6 +340,29 @@ class BaseGUISpecification extends BaseSpecification {
   }
 
   /**
+   * Checks and sets the given field value.  Supports text field and checkbox fields.
+   * @param fieldName The field name.
+   * @param expectedValue The expected value.
+   * @param newValue The new value.
+   */
+  void setFieldValue(String fieldName, Object expectedValue, Object newValue) {
+    if (newValue instanceof Boolean) {
+      def field = $('div.webix_el_checkbox', view_id: "${fieldName}").find('button')
+      def currentValue = field.@'aria-checked' == 'true'
+      assert currentValue == expectedValue, "Field Value for '$fieldName' is not correct. Found $currentValue, expected $expectedValue"
+      if (currentValue != newValue) {
+        // Needs to be changed, so just click it to toggle the value.
+        field.click()
+      }
+    } else {
+      // Default to text field.
+      def field = $('div.webix_el_text', view_id: "${fieldName}").find('input')
+      assert field.value() == expectedValue, "Field Value for '$fieldName' is not correct. Found ${field.value()}, expected $expectedValue"
+      field.value(newValue)
+    }
+  }
+
+  /**
    * Calculates the display offsets between a given pair of GEB (HTML) elements.
    * This is the distance to move from element1 to element2.
    *

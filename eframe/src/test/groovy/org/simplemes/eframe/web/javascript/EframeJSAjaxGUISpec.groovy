@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.javascript
 
 
@@ -7,12 +11,6 @@ import org.simplemes.eframe.test.BaseJSSpecification
 import org.simplemes.eframe.test.UnitTestUtils
 import sample.domain.AllFieldsDomain
 import spock.lang.IgnoreIf
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests of the eframe.js methods related to Ajax request to the server.
@@ -60,7 +58,7 @@ class EframeJSAjaxGUISpec extends BaseJSSpecification {
     waitFor {
       messages.text() != ''
     }
-    UnitTestUtils.assertContainsAllIgnoreCase(messages.text(), ['/gibberish', 'get', 'failed', 'forbidden', '403'])
+    UnitTestUtils.assertContainsAllIgnoreCase(messages.text(), ['/gibberish', 'get', 'failed'])
   }
 
   def "verify that get fails gracefully with a bad url and displays a message"() {
@@ -141,7 +139,7 @@ class EframeJSAjaxGUISpec extends BaseJSSpecification {
     waitFor {
       messages.text() != ''
     }
-    UnitTestUtils.assertContainsAllIgnoreCase(messages.text(), ['/gibberish', 'post', 'failed', 'forbidden', '403'])
+    UnitTestUtils.assertContainsAllIgnoreCase(messages.text(), ['/gibberish', 'post', 'failed'])
   }
 
   def "verify that post fails gracefully with a bad url and displays a message"() {

@@ -47,6 +47,19 @@ class DashboardConfigController extends BaseCrudRestController {
   }
 
   /**
+   * Displays the main details dialog page.
+   * @param principal The user logged in.
+   * @return The model/view to display.
+   */
+  @Produces(MediaType.TEXT_HTML)
+  @Get("/detailsDialog")
+  StandardModelAndView detailsDialog(@Nullable Principal principal) {
+    def modelAndView = new StandardModelAndView("dashboard/detailsDialog", principal, this)
+    log.trace('detailsDialog(): {}', modelAndView)
+    return modelAndView
+  }
+
+  /**
    * Contains the details dialog for a single dashboard.
    */
   def detailsDialog() {

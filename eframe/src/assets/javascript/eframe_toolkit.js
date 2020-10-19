@@ -323,12 +323,27 @@ _ef_tk.toolkit = function () {
     // Internal Toolkit version of displayDialog.  Displays a dialog with the given options.
     // See other types of simple, common dialogs.
     _displayDialog: function (options) {
+      // Determine the next dialog # needed
+      var dialogID = 'dialog0';
+      var topDialogID = tk._getTopDialogID();
+      if (topDialogID) {
+        var n = Number(topDialogID.substr(6));
+        dialogID = 'dialog' + (n + 1);
+      }
+      options.dialogID = dialogID;
       if (options.bodyURL) {
         // Must get the body from the server.
         tk._getPage(options.bodyURL, __dialogContentName, function (content) {
           options.body = content;
           options.bodyURL = undefined;
-          options.postScript = window[__dialogContentName].postScript;
+          if (window[__dialogContentName].postScript) {
+            if (options.postScript) {
+              // Both post scripts are defined, so conbime them.
+              options.postScript = window[__dialogContentName].postScript + ";" + options.postScript;
+            } else {
+              options.postScript = window[__dialogContentName].postScript;
+            }
+          }
           tk._displayDialogSuccess(options);
         });
 
@@ -336,9 +351,11 @@ _ef_tk.toolkit = function () {
         // Can show it immediately.
         tk._displayDialogSuccess(options);
       }
+      return dialogID;
     },
     // Callback function for displaying a dialog.  Used by the AJAX Get success handler when a bodyURL is used.
     _displayDialogSuccess: function (options) {
+      var dialogID = options.dialogID;
       if (options.body == undefined && options.bodyURL == undefined) {
         var optionsString = 'unknown options';
         if (options) {
@@ -350,13 +367,6 @@ _ef_tk.toolkit = function () {
       var body = options.body;
       if (typeof options.body === 'string') {
         body = {template: options.body};
-      }
-      // Determine the next dialog # needed
-      var dialogID = 'dialog0';
-      var topDialogID = tk._getTopDialogID();
-      if (topDialogID) {
-        var n = Number(topDialogID.substr(6));
-        dialogID = 'dialog' + (n + 1);
       }
 
       var title = options.title || 'Dialog';
@@ -532,7 +542,7 @@ _ef_tk.toolkit = function () {
           return options.textOk(value);
         }
       };
-      console.log(options);
+      //console.log(options);
       tk._displayDialog(options);
     },
     // Replacement for the webix.template.escape function that allows bold tags.
@@ -871,12 +881,16 @@ _ef_tk.toolkit = function () {
       //console.log(JSON.parse(s));
     },
     // Updates the title for the first dialog on top.
-    _setTopDialogTitle: function (title) {
-      var id = this._getTopDialogID();
-      var $dialog = $$(id);
+    _setDialogTitle: function (dialogID, title) {
+      var $dialog = $$(dialogID);
       let label = $dialog.getHead().getChildViews()[0];
       label.config.label = title;
       label.refresh();
+    },
+    // Updates the title for the first dialog on top.
+    _setTopDialogTitle: function (title) {
+      var id = this._getTopDialogID();
+      tk._setDialogTitle(id, title)
     },
     // Sets the string form of the task menu.
     _splitterResizeHandler: function (id) {

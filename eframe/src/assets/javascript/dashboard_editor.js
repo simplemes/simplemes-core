@@ -394,13 +394,12 @@ efe.dashboardEditor = function () {
     },
     closeDetailsDialog: function (ok) {
       if (ok) {
-        dashboardConfig.dashboard = dashboardEditor.checkForChanges(dashboardConfig.dashboard, $('#dashboard').val());
-        dashboardConfig.category = dashboardEditor.checkForChanges(dashboardConfig.category, $('#category').val());
-        dashboardConfig.title = dashboardEditor.checkForChanges(dashboardConfig.title, $('#title').val());
-        dashboardConfig.defaultConfig = dashboardEditor.checkForChanges(dashboardConfig.defaultConfig, $('#defaultConfig').prop('checked'));
+        dashboardConfig.dashboard = dashboardEditor.checkForChanges(dashboardConfig.dashboard, $$('dashboard').getInputNode().value);
+        dashboardConfig.category = dashboardEditor.checkForChanges(dashboardConfig.category, $$('category').getInputNode().value);
+        dashboardConfig.title = dashboardEditor.checkForChanges(dashboardConfig.title, $$('title').getInputNode().value);
+        dashboardConfig.defaultConfig = dashboardEditor.checkForChanges(dashboardConfig.defaultConfig, $$('defaultConfig').getValue() == '1');
         dashboardEditor.updateDialogTitle();
       }
-      eframe.closeDialog(detailsDialog);
     },
     closePanelDetailsDialog: function (ok) {
       if (ok) {
@@ -700,13 +699,12 @@ efe.dashboardEditor = function () {
     },
     // Loads the dashboard config into the details dialog fields.
     loadDetailDialogValues: function () {
-      $('#dashboard').val(dashboardConfig.dashboard);
-      $('#category').val(dashboardConfig.category);
-      $('#title').val(dashboardConfig.title);
-      $('#defaultConfig').prop('checked', dashboardConfig.defaultConfig);
-      //$('#dashboard').focus();
-      // Must delay focus since the dialog may not be fully visible here.
-      window.setTimeout("$('#dashboard').focus()", 200);
+      $$('dashboard').getInputNode().value = dashboardConfig.dashboard;
+      $$('category').getInputNode().value = dashboardConfig.category;
+      $$('title').getInputNode().value = dashboardConfig.title;
+      $$('defaultConfig').setValue(dashboardConfig.defaultConfig);
+
+      tk.focus('dashboard');
     },
     loadPanelDetailDialogValues: function () {
       var selectedPanelIndex = parseInt(selectedElement.attr('panel-index'));
@@ -824,20 +822,22 @@ efe.dashboardEditor = function () {
     },
     // Opens the details dialog
     openDetailsDialog: function () {
-      //console.log(msg);
       var url = '/dashboardConfig/detailsDialog';
 
-      var dlgMap;
-      dlgMap = {
-        contentsURL: url,
-        name: 'DashboardEditorDetailsDialog',
+      detailsDialog = ef.displayDialog({
+        bodyURL: url,
+        title: 'dashboard.editor.detailsDialog.title',
         width: '80%',
         height: '80%',
-        displayed: function () {
-          dashboardEditor.loadDetailDialogValues();
+        messageArea: true,
+        buttons: ['ok', 'cancel'],
+        postScript: "dashboardEditor.loadDetailDialogValues()",
+        ok: function (dialogID, button) {
+          dashboardEditor.closeDetailsDialog(true);
+          return true;
         }
-      };
-      detailsDialog = eframe.displayDialog(dlgMap);
+      });
+
     },
     openPanelDetailsDialog: function () {
       if (!selectedElement || !dashboardEditor.isPanel(selectedElement)) {
@@ -1037,7 +1037,7 @@ efe.dashboardEditor = function () {
     updateDialogTitle: function () {
       var title = unsavedChanges ? '*' : '';
       title += dashboardConfig.dashboard + ' - ' + eframe.lookup('dashboard.editor.title');
-      tk._setTopDialogTitle(title);
+      tk._setDialogTitle(editorDialog, title);
     },
     // Performs client-side validates of the current dashboard and returns an error.
     // Most validations are server-side, but some must be performed here.

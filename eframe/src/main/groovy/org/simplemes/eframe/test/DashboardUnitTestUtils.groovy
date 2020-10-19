@@ -27,7 +27,7 @@ class DashboardUnitTestUtils {
    * @return The configuration.
    */
   static DashboardConfig buildDashboardConfig(String dashboardName, List<String> defaultPages, List<Map> buttons = null) {
-    DashboardConfig dashboardConfig = new DashboardConfig(dashboard: dashboardName)
+    DashboardConfig dashboardConfig = new DashboardConfig(dashboard: dashboardName, title: "title-$dashboardName")
     int index = 0
     int splitterIndex = 0
     int lastSplitterIndex = -1

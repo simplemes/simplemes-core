@@ -23,7 +23,7 @@
   <@efAddition assets=true/>
 </head>
 <body>
-<form action="logout" method="POST" id="logoutForm" name="logoutForm"></form>
+<form action="/logout" method="POST" id="logoutForm" name="logoutForm"></form>
 <div id="_header">
   <script>
     function home() {
