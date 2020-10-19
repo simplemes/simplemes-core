@@ -330,34 +330,40 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setMultiCombobox(java.lang.Object, List)">setMultiCombobox</a></strong>(java.lang.Object combobox, <a href='../../../../List.html'>List</a> values)</code><br>Sets a multi-select combobox to the given list of IDs. </td>
+                            <td class="colLast"><code><strong><a href="#setFieldValue(java.lang.String, java.lang.Object, java.lang.Object)">setFieldValue</a></strong>(java.lang.String fieldName, java.lang.Object expectedValue, java.lang.Object newValue)</code><br>Checks and sets the given field value.  </td>
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#setMultiCombobox(java.lang.Object, List)">setMultiCombobox</a></strong>(java.lang.Object combobox, <a href='../../../../List.html'>List</a> values)</code><br>Sets a multi-select combobox to the given list of IDs. </td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#setMultiCombobox(java.lang.String, List)">setMultiCombobox</a></strong>(java.lang.String view, <a href='../../../../List.html'>List</a> values)</code><br>Sets a multi-select combobox to the given list of IDs. </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#setup()">setup</a></strong>()</code><br>Initializes the GUI, if needed.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#standardGUISleep(int)">standardGUISleep</a></strong>(int multiplier)</code><br>Convenience method to wait a standard delay time (approx 100ms) for the GUI to react.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#waitForGridComboboxInputValue(java.lang.String)">waitForGridComboboxInputValue</a></strong>(java.lang.String value)</code><br>Waits for the combobox in a grid to display the input value.  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#waitForNonZeroRecordCount(java.lang.Class)">waitForNonZeroRecordCount</a></strong>(java.lang.Class domainClass)</code><br>Wait for a record to to be created in the database. </td>
@@ -662,6 +668,14 @@ java.lang.String <strong>lookupRequired</strong>(java.lang.String key, <a href='
                             <li class="blockList">
                                 <h4>void <strong>setCombobox</strong>(java.lang.String view, java.lang.String id)</h4>
                                 <p> Sets a combobox to the given ID setting. Does not use the drop-down. <DL><DT><B>Parameters:</B></DT><DD><code>view</code> -  The combobox view.</DD><DD><code>id</code> -  The ID of the combobox element to select.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="setFieldValue(java.lang.String, java.lang.Object, java.lang.Object)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>void <strong>setFieldValue</strong>(java.lang.String fieldName, java.lang.Object expectedValue, java.lang.Object newValue)</h4>
+                                <p> Checks and sets the given field value.  Supports text field and checkbox fields. <DL><DT><B>Parameters:</B></DT><DD><code>fieldName</code> -  The field name.</DD><DD><code>expectedValue</code> -  The expected value.</DD><DD><code>newValue</code> -  The new value.</DD></DL></p>
                             </li>
                         </ul>
                     
