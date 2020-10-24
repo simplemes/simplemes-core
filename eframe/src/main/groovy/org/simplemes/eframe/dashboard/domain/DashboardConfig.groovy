@@ -198,12 +198,26 @@ class DashboardConfig {
    */
   List<ValidationError> validatePanels() {
     def res = []
-    List<String> panelNames = getDashboardPanels().collect { it instanceof DashboardPanel ? it.panel : '' }
+
+    // Check for unique panel names.
+    List<String> panelNames = getDashboardPanels().collect { it.panel }
     for (s in panelNames) {
       if (s != '') {
         if (panelNames.count(s) != 1) {
           //error.203.message=The panel must be unique for each panel.  Panel {1} is used on {2} panels
           res << new ValidationError(203, 'dashboardPanels', s, panelNames.count(s))
+        }
+      }
+    }
+
+    // Check for duplicate panel indexes.
+    List<Integer> panelIndexes = getDashboardPanels().collect { it.panelIndex }
+    panelIndexes.addAll(getSplitterPanels().collect { it.panelIndex })
+    for (index in panelIndexes) {
+      if (index != -1) {
+        if (panelIndexes.count(index) != 1) {
+          //error.208.message=The panel index must be unique for each panel and splitter.  PanelIndex {1} is used on {2} panels/splitters.
+          res << new ValidationError(208, 'dashboardPanels', index, panelIndexes.count(index))
         }
       }
     }

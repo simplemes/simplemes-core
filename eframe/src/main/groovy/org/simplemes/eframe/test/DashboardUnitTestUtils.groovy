@@ -29,15 +29,14 @@ class DashboardUnitTestUtils {
   static DashboardConfig buildDashboardConfig(String dashboardName, List<String> defaultPages, List<Map> buttons = null) {
     DashboardConfig dashboardConfig = new DashboardConfig(dashboard: dashboardName, title: "title-$dashboardName")
     int index = 0
-    int splitterIndex = 0
     int lastSplitterIndex = -1
     for (page in defaultPages) {
       if (page.startsWith('vertical') || page.startsWith('horizontal')) {
         boolean vertical = page.startsWith('vertical')
-        def splitter = new DashboardPanelSplitter(panelIndex: splitterIndex, vertical: vertical, parentPanelIndex: lastSplitterIndex)
-        lastSplitterIndex = splitterIndex
+        def splitter = new DashboardPanelSplitter(panelIndex: index, vertical: vertical, parentPanelIndex: lastSplitterIndex)
+        lastSplitterIndex = index
         dashboardConfig.splitterPanels << splitter
-        splitterIndex++
+        index++
       } else {
         if (page == '') {
           page = null

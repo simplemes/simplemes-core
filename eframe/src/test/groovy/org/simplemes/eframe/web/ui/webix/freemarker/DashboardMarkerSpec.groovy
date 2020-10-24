@@ -181,8 +181,8 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
     //    panelB
     //    panelC
     page.indexOf('PanelA') < page.indexOf('resizer0')
-    page.indexOf('PanelA') < page.indexOf('resizer1')
-    page.indexOf('PanelB') < page.indexOf('resizer1')
+    page.indexOf('PanelA') < page.indexOf('resizer2')
+    page.indexOf('PanelB') < page.indexOf('resizer2')
     page.indexOf('PanelB') < page.indexOf('PanelC')
   }
 
@@ -219,7 +219,7 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
       element '_dDASHBOARD'
     }
     preferenceHolder.setPreference(new SplitterPreference(resizer: 'resizer0', size: 23.4))
-    preferenceHolder.setPreference(new SplitterPreference(resizer: 'resizer1', size: 24.5))
+    preferenceHolder.setPreference(new SplitterPreference(resizer: 'resizer2', size: 24.5))
     preferenceHolder.save()
 
     when: 'the HTML is generated'

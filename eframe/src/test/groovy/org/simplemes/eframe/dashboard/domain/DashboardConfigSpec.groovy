@@ -55,6 +55,19 @@ class DashboardConfigSpec extends BaseSpecification {
     UnitTestUtils.assertContainsError(errors, 203, 'dashboardPanels', ['panel', 'abc', 'unique'])
   }
 
+  def "verify that unique panelIndex constraint error is detected"() {
+    when: 'a dashboard with invalid setting is validated'
+    def dashboard = new DashboardConfig(dashboard: 'XYZ')
+    dashboard.splitterPanels << new DashboardPanelSplitter(panelIndex: 237)
+    dashboard.dashboardPanels << new DashboardPanel(panel: 'ABC', panelIndex: 237)
+    dashboard.dashboardPanels << new DashboardPanel(panel: 'X', panelIndex: 1)
+
+    then: 'there are errors'
+    def errors = DomainUtils.instance.validate(dashboard)
+    //error.208.message=The panel index must be unique for each panel and splitter.  PanelIndex {1} is used on {2} panels/splitters.
+    UnitTestUtils.assertContainsError(errors, 208, 'dashboardPanels', ['panel', '237', 'unique'])
+  }
+
   def "verify that invalid panel for a button is detected"() {
     when: 'a dashboard with invalid setting is validated'
     def dashboard = new DashboardConfig(dashboard: 'XYZ')

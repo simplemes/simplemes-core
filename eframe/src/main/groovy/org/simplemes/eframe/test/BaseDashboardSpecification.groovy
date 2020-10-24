@@ -308,5 +308,24 @@ class BaseDashboardSpecification extends BaseGUISpecification {
     return new JsonSlurper().parseText(s)
   }
 
+  /**
+   * Opens the editor dialog.
+   */
+  void openEditor() {
+    configButton.click()
+    waitFor { dialog0.exists }
+  }
+
+  /**
+   * Opens the editor dialog and waits for the dialog to close and the record to be updated in the DB.
+   *
+   * @param dashboard The dashboard record to wait for the record update to be committed.
+   */
+  void saveEditorChanges(DashboardConfig dashboard) {
+    editorSaveButton.click()
+    waitFor { !dialog0.exists }
+    waitForRecordChange(dashboard)
+  }
+
 
 }

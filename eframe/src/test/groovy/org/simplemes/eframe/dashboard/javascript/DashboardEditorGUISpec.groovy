@@ -2,7 +2,7 @@
  * Copyright (c) Michael Houston 2020. All rights reserved.
  */
 
-package org.simplemes.eframe.dashboard
+package org.simplemes.eframe.dashboard.javascript
 
 import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.test.BaseDashboardSpecification
@@ -15,22 +15,19 @@ import spock.lang.IgnoreIf
 class DashboardEditorGUISpec extends BaseDashboardSpecification {
 
   /**
-   * Opens the editor dialog.
+   * Utility method to resize a panel.
+   * @param resizerID The Resizer,
+   * @param deltaX The X adjustments.
+   * @param deltaY The Y adjustments.
    */
-  void openEditor() {
-    configButton.click()
-    waitFor { dialog0.exists }
-  }
+  void resizePanel(String resizerID, int deltaX, int deltaY) {
+    interact {
+      moveToElement(editorResizer(resizerID))
+      clickAndHold()
+      moveByOffset(deltaX, deltaY)
+      release()
+    }
 
-  /**
-   * Opens the editor dialog and waits for the dialog to close and the record to be updated in the DB.
-   *
-   * @param dashboard The dashboard record to wait for the record update to be committed.
-   */
-  void saveChanges(DashboardConfig dashboard) {
-    editorSaveButton.click()
-    waitFor { !dialog0.exists }
-    waitForRecordChange(dashboard)
   }
 
   def "verify that editor can save changes"() {
@@ -44,18 +41,13 @@ class DashboardEditorGUISpec extends BaseDashboardSpecification {
     openEditor()
 
     and: 'the resizer is moved for the main splitter panel'
-    interact {
-      moveToElement(editorResizer('0'))
-      clickAndHold()
-      moveByOffset(0, -50)
-      release()
-    }
+    resizePanel('0', 0, -50)
 
     then: 'the title indicates the dashboard has been changed'
     dialog0.title.startsWith('*')
 
     when: 'the changes are saved'
-    saveChanges(dashboard)
+    saveEditorChanges(dashboard)
 
     then: 'the response is displayed'
     def msg = lookup('default.updated.message', lookup('dashboard.label'), dashboard.dashboard)
@@ -91,7 +83,7 @@ class DashboardEditorGUISpec extends BaseDashboardSpecification {
     dialog0.title.startsWith('*')
 
     when: 'the changes are saved'
-    saveChanges(dashboard)
+    saveEditorChanges(dashboard)
 
     then: 'the record in the DB is correct'
     def dashboard2 = DashboardConfig.findByUuid(dashboard.uuid)
@@ -130,23 +122,102 @@ class DashboardEditorGUISpec extends BaseDashboardSpecification {
     !dialog0.title.startsWith('*')
 
     when: 'the changes are saved'
-    saveChanges(dashboard)
+    saveEditorChanges(dashboard)
 
     then: 'the record in the DB is correct'
     def dashboard2 = DashboardConfig.findByUuid(dashboard.uuid)
     dashboard2.dashboard == dashboard.dashboard
   }
 
+  def "verify that the unsaved changes dialog works - cancel button scenario"() {
+    given: 'a dashboard with a single splitter'
+    def dashboard = buildDashboard(defaults: ['Content A', 'Content C'])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the editor is opened'
+    openEditor()
+
+    and: 'the resizer is moved for the main splitter panel'
+    resizePanel('0', 0, -50)
+
+    and: 'the dialog is closed'
+    editorCancelButton.click()
+    waitFor() { dialog1.exists }
+
+    then: 'the dialog content is valid'
+    dialog1.title == lookup('unsavedChanges.title')
+    dialog1.templateContent.text() == lookup('unsavedChanges.message', dashboard.dashboard)
+    editorCloseSaveConfirmButton.button.text() == lookup('save.label')
+    editorCloseNoSaveButton.button.text() == lookup('noSave.label')
+    editorCloseCancelButton.button.text() == lookup('cancel.label')
+
+    when: 'the cancel button is triggered'
+    editorCloseCancelButton.click()
+    waitFor() { !dialog1.exists }
+
+    then: 'the dialog is closed'
+    !dialog1.exists
+
+    when: 'the dialog is closed again'
+    editorCancelButton.click()
+    waitFor() { dialog1.exists }
+
+    and: 'the do not save button is clicked'
+    editorCloseNoSaveButton.click()
+    waitFor() { !dialog0.exists }
+
+    then: 'no save message on original dashboard'
+    messages.text() == ''
+
+    when: 'the editor is opened again'
+    openEditor()
+
+    and: 'the resizer is moved for the main splitter panel'
+    resizePanel('0', 0, -50)
+
+    and: 'the dialog is closed'
+    editorCancelButton.click()
+    waitFor() { dialog1.exists }
+
+    and: 'the save button is triggered'
+    editorCloseSaveConfirmButton.click()
+    waitFor() { !dialog0.exists }
+
+    then: 'the response is displayed'
+    def msg = lookup('default.updated.message', lookup('dashboard.label'), dashboard.dashboard)
+    messages.text().contains(msg)
+  }
+
+  def "verify that the unsaved changes dialog works - window close scenario"() {
+    given: 'a dashboard with a single splitter'
+    def dashboard = buildDashboard(defaults: ['Content A', 'Content C'])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the editor is opened'
+    openEditor()
+
+    and: 'the resizer is moved for the main splitter panel'
+    resizePanel('0', 0, -50)
+
+    and: 'the dialog is closed'
+    dialog0.closeButton.click()
+    waitFor() { dialog1.exists }
+
+    then: 'the dialog is the correct dialog'
+    dialog1.title == lookup('unsavedChanges.title')
+    dialog1.templateContent.text() == lookup('unsavedChanges.message', dashboard.dashboard)
+  }
 
   // TODO: DashboardJS GUI Specs (X 6 Dashboard, 4 editor)
   /*
-  // single panel
-  // nested panels
-   EditorButton
-   Editor
-   EditorPanel
-   EditorUnsaved
+   EditorButton - click, context menu, double-click.
+   EditorUnsaved - unsaved/save, unsaved/dontSave, unsaved/Cancel
    Editor Fails Save - Displays message in dialog
+   Editor.duplicate - leaves panels/splitters/buttons/config records unchanged.
    */
 
 

@@ -1,15 +1,14 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 
 import org.simplemes.eframe.controller.StandardModelAndView
 import org.simplemes.eframe.exception.MessageHolder
 import org.simplemes.eframe.test.BaseMarkerSpecification
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
+import org.simplemes.eframe.test.HTMLTestUtils
 
 /**
  * Tests.
@@ -21,7 +20,7 @@ class MessagesMarkerSpec extends BaseMarkerSpecification {
     def page = execute(source: '<@efMessages/>')
 
     then: 'the correct div is created'
-    checkPage(page)
+    HTMLTestUtils.checkHTML(page)
     page.contains('<div id="messages"></div>')
   }
 
@@ -34,7 +33,7 @@ class MessagesMarkerSpec extends BaseMarkerSpecification {
     def page = execute(source: '<@efMessages/>', dataModel: params, uri: '/logging/dummy?arg=value')
 
     then: 'the correct div is created'
-    checkPage(page)
+    HTMLTestUtils.checkHTML(page)
     page.contains('<div id="messages">')
     page.contains('<div class="message error-message">an error message</div>')
   }
@@ -51,7 +50,7 @@ class MessagesMarkerSpec extends BaseMarkerSpecification {
     def page = execute(source: '<@efMessages/>', dataModel: params, uri: '/logging/dummy?arg=value')
 
     then: 'the correct div is created'
-    checkPage(page)
+    HTMLTestUtils.checkHTML(page)
     page.contains('<div class="message error-message">an error message</div>')
     page.contains('<div class="message error-message">another error message</div>')
     page.contains('<div class="message warning-message">a warning message</div>')
@@ -67,10 +66,31 @@ class MessagesMarkerSpec extends BaseMarkerSpecification {
     def page = execute(source: '<@efMessages/>', dataModel: params, uri: '/logging/dummy?arg=value')
 
     then: 'the correct div is created'
-    checkPage(page)
+    HTMLTestUtils.checkHTML(page)
     page.contains('<div class="message error-message">an error message&lt;script&gt;&lt;/script&gt;</div>')
     !page.contains('<script>')
   }
 
+  def "verify that the marker handles a message on the URL"() {
+    given: 'the data model with a message as a parameter'
+    def params = [:]
+    def paramName = "_$type"
+    params[paramName] = message
+    def dataModel = [params: params]
+
+    when: 'the marker is applied'
+    def page = execute(source: '<@efMessages/>', dataModel: dataModel)
+
+    then: 'the correct div is created'
+    HTMLTestUtils.checkHTML(page)
+    page.contains('<div id="messages">')
+    page.contains("""<div class="message $type-message">$message</div>""")
+
+    where:
+    type      | message
+    'info'    | 'ABC Message'
+    'error'   | 'ABC Message'
+    'warning' | 'ABC Message'
+  }
 
 }

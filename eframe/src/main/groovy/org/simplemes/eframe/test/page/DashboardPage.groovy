@@ -25,15 +25,20 @@ class DashboardPage extends AbstractPage {
    * The page content available for this page.  See above.
    */
   static content = {
-    panel { id -> $('div.webix_form', view_id: "Content$id") }
+    panel { id -> $('div.webix_form', view_id: "Panel$id") }
     undoButton { $('#undoButton') }
     undoButtonEnabled { !$('#undoButton').classes().contains('undo-button-disabled') }
 
     // Editor Dialog elements.
     editorResizer { id -> $('div.webix_resizer', view_id: "EditorResizer$id") }
+    editorPanel { panelName -> $('div.webix_form', view_id: "EditorPanel$panelName") }
 
     editorSaveButton { module(new ButtonModule(id: 'save')) }
     editorCancelButton { module(new ButtonModule(id: 'cancel')) }
+
+    editorCloseSaveConfirmButton { module(new ButtonModule(id: 'dialog1-save')) }
+    editorCloseNoSaveButton { module(new ButtonModule(id: 'dialog1-noSave')) }
+    editorCloseCancelButton { module(new ButtonModule(id: 'dialog1-cancel')) }
   }
 
   /**

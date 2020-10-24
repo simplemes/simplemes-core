@@ -179,9 +179,6 @@ ef.dashboard = function () {
         }
       }
 
-      // Clear the messages before we start the first activities
-      ef.clearMessages();
-
       //console.log(pending);
       pendingExtraParams = undefined;
       // Now, start the first activities in each panel.
@@ -319,14 +316,17 @@ ef.dashboard = function () {
           var size = button.size || 1.0;
           var css = button.css || '';
           var title = button.title ? button.title : '';
+          var id = button.id ? button.id : button.buttonID;
+          if (suffix) {
+            id = id + suffix;
+          }
           buttonViews[buttonViews.length] = {
             align: "center,middle", width: tk.pw(button.label.length + "em"), body: {
-              view: "button", id: button.id, type: 'form', value: button.label, autowidth: false,
+              view: "button", id: id, type: 'form', value: button.label, autowidth: false,
               inputHeight: tk.ph(size + "em"), height: tk.ph(size + "em"), css: css,
               click: 'dashboard' + suffix + '._clickButton(' + i + ')', tooltip: title
             }
           };
-
         }
 
         // Add spacer before and after the button list.
@@ -348,6 +348,9 @@ ef.dashboard = function () {
       var extraParams = dashboard._getExtraParamsFromActivities('provideParameters');
       //console.log(extraParams);
       var button = buttons[buttonIndex];
+      // Clear the messages before we start the first activities
+      ef.clearMessages();
+
       dashboard.load(button.activities, extraParams);
 
       dashboard.sendEvent({type: 'BUTTON_PRESSED', button: button});
@@ -557,7 +560,7 @@ ef.dashboard = function () {
       }
     },
     _resetToDefaults: function () {
-      ef.clearMessages();
+      //ef.clearMessages();
       for (var p in panels) {
         this._load(p, panels[p].defaultURL);
       }

@@ -256,3 +256,8 @@ div.warning-message {
   color: #1789D6;
 }
 
+
+/* Editor styles */
+.editor-selected-state div {
+  background-color: #d3e7f4 !important;
+}

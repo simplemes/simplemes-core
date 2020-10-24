@@ -1,13 +1,11 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import org.simplemes.eframe.controller.StandardModelAndView
 import org.simplemes.eframe.exception.MessageHolder
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Provides the efMessages Freemarker marker implementation.
@@ -32,6 +30,10 @@ class MessagesMarker extends BaseMarker {
         sb << buildMessage(message)
       }
     }
+    def params = getModelValue('params') as Map
+    sb << buildMessageFromParams('info', params)
+    sb << buildMessageFromParams('error', params)
+    sb << buildMessageFromParams('warning', params)
 
     def s = """<div id="messages">${sb}</div>\n"""
 
@@ -46,6 +48,23 @@ class MessagesMarker extends BaseMarker {
   String buildMessage(MessageHolder messageHolder) {
     def level = messageHolder.levelText
     return """<div class="message $level-message">${escape(messageHolder.text)}</div>\n"""
+  }
+
+  /**
+   * Builds a single message HTML text from a URI parameter of the given type.
+   * @param params The URI parameters.
+   * @return The HTML for the div to display the message correctly.
+   */
+  String buildMessageFromParams(String type, Map params) {
+    if (params) {
+      def paramName = "_$type"
+      def text = params[paramName] as String
+      if (text) {
+        return """<div class="message $type-message">${escape(text)}</div>\n"""
+
+      }
+    }
+    return ''
   }
 
 }

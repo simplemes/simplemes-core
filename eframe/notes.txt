@@ -1,8 +1,43 @@
 Scratch
 =======
 
-ef.displayMessage() - fallback to 'div#messages'
-  looks at topDialog for descendant view with ID: dialogMessages and uses that.
+
+  dashboardEditor.panelsAndSplittersCombine()
+  dashboardEditor.panelsAndSplittersSeparate()
+
+
+
+      // The new splitter will replace the selected panel and the panel will become the first child of the new splitter.
+      // New splitter takes the place of the selected panel.
+      // Move the selected panel to end so it is the first child of new splitter.
+
+      // The new splitter moves into the original panel's index location.
+
+      // Move the selected panel to the end of the panel array so we can put the splitter
+      // in its old place.
+
+      // Now, make sure the selected panel has the splitter as it's new parent.
+      // Remove the old entry
+
+      // Fill in the new splitter details, using the original parent.
+
+      // Now, add the new panel at the end.
+
+
+
+
+Options:
+  convert index to sequence
+  Use index as sequence without renaming.  Drop all use of index as index.
+
+
+Convert DashboardConfig issues
+  dashboardPanels -> panels
+  splitterPanels -> splitters
+  index -> sequence
+    panelIndex -> sequence
+    parentPanelIndex -> parentSplitterSequence
+
 
 
 Tasks
