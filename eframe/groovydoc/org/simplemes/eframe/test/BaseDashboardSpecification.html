@@ -299,6 +299,18 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#openEditor()">openEditor</a></strong>()</code><br>Opens the editor dialog.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#saveEditorChanges(org.simplemes.eframe.dashboard.domain.DashboardConfig)">saveEditorChanges</a></strong>(<a href='../../../../org/simplemes/eframe/dashboard/domain/DashboardConfig.html'>DashboardConfig</a> dashboard)</code><br>Opens the editor dialog and waits for the dialog to close and the record to be updated in the DB. </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#waitForDashboardEvent(java.lang.String)">waitForDashboardEvent</a></strong>(java.lang.String event)</code><br>Waits for the given event to be displayed in the standard test activity
  DashboardTestController.DISPLAY_EVENT_ACTIVITY. </td>
                         </tr>
@@ -527,6 +539,22 @@ void <strong>cleanup</strong>()</h4>
                             <li class="blockList">
                                 <h4>boolean <strong>isButtonPanelDisplayed</strong>()</h4>
                                 <p> Returns true if the test BUTTON_PANEL is displayed (somewhere). <DL><DT><B>Returns:</B></DT><DD>True if displayed.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="openEditor()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>void <strong>openEditor</strong>()</h4>
+                                <p> Opens the editor dialog.</p>
+                            </li>
+                        </ul>
+                    
+                        <a name="saveEditorChanges(org.simplemes.eframe.dashboard.domain.DashboardConfig)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>void <strong>saveEditorChanges</strong>(<a href='../../../../org/simplemes/eframe/dashboard/domain/DashboardConfig.html'>DashboardConfig</a> dashboard)</h4>
+                                <p> Opens the editor dialog and waits for the dialog to close and the record to be updated in the DB. <DL><DT><B>Parameters:</B></DT><DD><code>dashboard</code> -  The dashboard record to wait for the record update to be committed.</DD></DL></p>
                             </li>
                         </ul>
                     
