@@ -766,6 +766,14 @@ _ef_tk.toolkit = function () {
         });
       }
     },
+    // Returns the type of view (e.g. 'form', 'button', etc).
+    _getViewType: function (viewID) {
+      var $element = $$(viewID);
+      if ($element) {
+        return $element.config.view;
+      }
+      return undefined;
+    },
     // The global mouse click handler.  Mostly closes an open task menu.
     _globalClickHandler: function (event) {
       if ($$('_taskMenuButton').getNode().contains(event.target)) {

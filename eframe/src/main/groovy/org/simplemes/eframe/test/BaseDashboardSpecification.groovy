@@ -76,7 +76,7 @@ class BaseDashboardSpecification extends BaseGUISpecification {
    * Supports buttons to display additional dynamic activities in the last panel.
    * <h3>Options</h3>
    * <ul>
-   *   <li><b>defaults</b> - The default activity content for the panels. (<b>Required</b>: Array of Strings - 1, 3 or 3 elements).
+   *   <li><b>defaults</b> - The default activity content for the panels. (<b>Required</b>: Array of Strings - 1, 2 or 3 elements).
    *    </li>
    *   <li><b>buttons</b> - The buttons activity content for the dashboard.
    *     (<b>Optional</b>). Array of Strings or Maps with DashboardButton fields (label, url, panel, title, css, size, buttonID). </li>

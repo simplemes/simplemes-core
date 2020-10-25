@@ -16,6 +16,7 @@
                            dashboardEditorMenu.details.label,
 
                            error.114.message,
+                           error.116.message,
                            "/>
 <script>
 
@@ -29,7 +30,7 @@
       <@efMenu id="panels" label="dashboardEditorMenu.panel.label">
         <@efMenuItem key="removePanel" onClick="dashboardEditor.removePanel();"/>
         <@efMenuItem/>
-        <@efMenuItem key="details" onClick="dashboardEditor.openPanelDetailsDialog();"/>
+        <@efMenuItem key="panelDetails" label="details.label" onClick="dashboardEditor.openPanelDetailsDialog();"/>
       </@efMenu>
       <@efMenu id="buttons" label="dashboardEditorMenu.button.label">
         <@efMenuItem key="addButtonBefore" onClick="dashboardEditor.addButtonBefore();"/>
@@ -39,16 +40,16 @@
         <@efMenuItem/>
         <@efMenuItem key="removeButton" onClick="dashboardEditor.removeButton();"/>
         <@efMenuItem/>
-        <@efMenuItem key="details" onClick="dashboardEditor.openButtonDetailsDialog();"/>
+        <@efMenuItem key="buttonDetails" label="details.label" onClick="dashboardEditor.openButtonDetailsDialog();"/>
       </@efMenu>
-      <@efMenu key="more.menu">
+      <@efMenu id="more.menu" label="more.menu.label">
         <@efMenuItem key="create.menu" onClick="dashboardEditor.createNew();"/>
         <@efMenuItem/>
         <@efMenuItem key="duplicate.menu" onClick="dashboardEditor.duplicate();"/>
         <@efMenuItem/>
         <@efMenuItem key="delete.menu" onClick="dashboardEditor.openDeleteDialog();"/>
       </@efMenu>
-      <@efMenuItem label="save.menu" rightMenu="true" onClick="dashboardEditor.save();"/>
+      <@efMenuItem id="save" label="save.menu" rightMenu="true" onClick="dashboardEditor.save();"/>
       </@efMenu>
 
       {height: tk.ph("0.2em")},

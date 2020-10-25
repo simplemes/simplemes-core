@@ -105,11 +105,109 @@ class DashboardEditorPanelGUISpec extends BaseDashboardSpecification {
     true     | _
   }
 
+  def "verify that a panel can be removed via menu - 1 and 2 splitters"() {
+    given: 'a dashboard with the right number of panels'
+    def defaults = []
+    for (i in (1..nPanels)) {
+      defaults << "Content $i"
+    }
+    def dashboard = buildDashboard(defaults: defaults)
+    def originalPanelCount = dashboard.dashboardPanels.size()
+    def originalSplitterCount = dashboard.splitterPanels.size()
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the editor is opened'
+    openEditor()
+
+    and: 'the panel is selected'
+    editorPanel(targetPanel).click()
+
+    and: 'the panel is removed'
+    clickMenu('panels', "removePanel")
+    waitFor() {
+      dialog0.title.startsWith('*')
+    }
+
+    and: 'the changes are saved'
+    saveEditorChanges(dashboard)
+
+    then: 'the panel is removed from the original dashboard page after refresh'
+    waitFor() {
+      messages.text()
+    }
+
+    then: 'the record in the DB is correct'
+    def dashboard2 = DashboardConfig.findByUuid(dashboard.uuid)
+    dashboard2.dashboardPanels.size() == originalPanelCount - 1
+    dashboard2.splitterPanels.size() == originalSplitterCount - 1
+
+    dashboard2.dashboardPanels.find { it.panel == 'B' }
+    !dashboard2.dashboardPanels.find { it.panel == 'A' }
+
+    where:
+    nPanels | targetPanel | remainingPanel
+    2       | 'A'         | 'B'
+    3       | 'A'         | 'B'
+  }
+
+  def "verify that a panel can be removed via context menu - right mouse click"() {
+    given: 'a dashboard with the right number of panels'
+    def dashboard = buildDashboard(defaults: ['Content 1', 'Content 2'])
+    def originalPanelCount = dashboard.dashboardPanels.size()
+    def originalSplitterCount = dashboard.splitterPanels.size()
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the editor is opened'
+    openEditor()
+
+    and: 'the panel is selected'
+    editorPanel('A').click()
+
+    and: 'the context menu is displayed'
+    interact {
+      contextClick editorPanel('A')
+    }
+    waitFor { menu("removePanelContext").displayed }
+
+    then: 'the context menu label is correct'
+    menu("removePanelContext").text() == lookup('dashboardEditorMenu.removePanel.label')
+
+    when: 'the panel is removed'
+    menu("removePanelContext").click()
+
+    and: 'the changes are saved'
+    saveEditorChanges(dashboard)
+
+    then: 'the panel is removed from the original dashboard page after refresh'
+    waitFor() {
+      messages.text()
+    }
+
+    then: 'the record in the DB is correct'
+    def dashboard2 = DashboardConfig.findByUuid(dashboard.uuid)
+    dashboard2.dashboardPanels.size() == originalPanelCount - 1
+    dashboard2.splitterPanels.size() == originalSplitterCount - 1
+
+    dashboard2.dashboardPanels.find { it.panel == 'B' }
+    !dashboard2.dashboardPanels.find { it.panel == 'A' }
+  }
 
   /*
-   menu Remove, Details
-   context menu Remove, Details
-   double-click
+  Remove
+    No panel selected
+    Can't remove last panel
+    Menu label is Ok
+  Panel Details
+    Double-click
+    Cancel changes
+    Save changes
+  menu Remove, Details
+  context menu Remove, Details
+  double-click
 
    */
 

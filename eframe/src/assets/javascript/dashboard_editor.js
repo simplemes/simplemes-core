@@ -25,7 +25,6 @@ efe.dashboardEditor = function () {
   var jsonPanelClass = 'org.simplemes.eframe.web.dashboard.DashboardPanel';  // The class name for a splitter, as needed for the JSON interface.
   var defaultCategory;        // The default category for a new dashboard.
 
-  var DIV_MESSAGES = 'editorMessages';     // The ID of the div to display messages in.
   var editorDialog;           // The editor's dialog.
   var detailsDialog;          // The details dialog, if seen.
   var buttonDetailsDialog;    // The button details dialog, if seen.
@@ -149,20 +148,22 @@ efe.dashboardEditor = function () {
             {id: "addHorizontalSplitter", panel: panelName, value: ef.lookup("dashboardEditorMenu.addHorizontalSplitter.label")},
             {id: "addVerticalSplitter", panel: panelName, value: ef.lookup("dashboardEditorMenu.addVerticalSplitter.label")},
             {$template: "Separator"},
-            {id: "removePanel", panel: panelName, value: ef.lookup("dashboardEditorMenu.removePanel.label")},
+            {id: "removePanelContext", panel: panelName, value: ef.lookup("dashboardEditorMenu.removePanel.label")},
             {$template: "Separator"},
             {id: "panelDetails", panel: panelName, value: ef.lookup("dashboardEditorMenu.details.label")},
           ],
           on: {
             onItemClick: function (id, x) {
               var eventPanel = this.getItem(id).panel;
-              webix.message(id + ": " + eventPanel);
               switch (id) {
                 case 'addHorizontalSplitter' :
                   dashboardEditor.addHSplitter(eventPanel)
                   break;
                 case 'addVerticalSplitter' :
                   dashboardEditor.addVSplitter(eventPanel)
+                  break;
+                case 'removePanelContext' :
+                  dashboardEditor.removePanelByName(eventPanel)
                   break;
               }
             }
@@ -191,9 +192,9 @@ efe.dashboardEditor = function () {
       this.addSplitter(eventPanel, vertical);
     },
     addSplitter: function (eventPanel, vertical) {
-      dashboardEditor.clearMessages();
+      ef.clearMessages();
       if (!eventPanel) {
-        ef.displayMessage({warn: eframe.lookup('error.114.message'), divID: DIV_MESSAGES});
+        ef.displayMessage({warn: eframe.lookup('error.114.message')});
         return;
       }
 
@@ -243,11 +244,7 @@ efe.dashboardEditor = function () {
 
       // Now, separate out the combined array again for saving in the model.
       // NOTE: The 'panelIndex' values are array indices for this combined array only.
-      var s = [];
-      var p = [];
-      dashboardEditor.separatePanelsAndSplitters(panels, s, p);
-      dashboardConfig.dashboardPanels = p;
-      dashboardConfig.splitterPanels = s;
+      dashboardEditor.separatePanelsAndSplitters(panels, dashboardConfig);
 
       // Clear selection and re-display the dashboard.
       dashboardEditor.display(dashboardConfig);
@@ -669,7 +666,7 @@ efe.dashboardEditor = function () {
       var s = dashboardEditor.validate();
       //console.log(s);
       if (s) {
-        dashboard.displayMessage({error: s, divID: DIV_MESSAGES});
+        ef.displayMessage({error: s});
         return;
       }
       // Make sure old child records won't cause trouble on the update.
@@ -723,7 +720,7 @@ efe.dashboardEditor = function () {
             dashboard._addButtonsIfNeeded(jqDashboardEditorContent, dashboardButtons, script, doubleClickScript);
       */
 
-      selectedElement = null;
+      selectedElement = undefined;
     },
     // Handles button double clicks by selecting the button, then opening the details dialog.
     doubleClickedButton: function ($element, event) {
@@ -782,6 +779,14 @@ efe.dashboardEditor = function () {
       }
       return undefined;
     },
+    // Finds the index for the given view ID (e.g. 'EditorPanelA').
+    findPanelIndexByID: function (viewID) {
+      if (viewID && viewID.startsWith('EditorPanel')) {
+        var panelName = viewID.substr(11, viewID.length);
+        return this.findPanelIndex(panelName);
+      }
+      return undefined;
+    },
     // Finds the two panels/splitters in the given splitter for the current dashboardConfig.
     findChildrenForSplitter: function (splitter) {
       var res = [];
@@ -829,17 +834,13 @@ efe.dashboardEditor = function () {
         }
       }
     },
-    // Determines if the jquery element is a dashboard button.
-    isButton: function ($element) {
+    // Determines if the toolkit ID is a dashboard button.
+    isButton: function (viewID) {
       return ($element != null && $element.length && $element[0].nodeName == 'A');
     },
-    // Determines if the jquery element is a dashboard panel.
-    isPanel: function ($element) {
-      return ($element[0].nodeName == 'DIV');
-    },
-    // Determines if the given panel is a splitter.
-    isSplitter: function (panel) {
-      return (panel.class == jsonSplitterClass);
+    // Determines if the toolkit ID is a dashboard panel.
+    isPanel: function (viewID) {
+      return tk._getViewType(viewID) == 'form';
     },
     // Loads the dashboard config.
     load: function (dashboardName) {
@@ -974,7 +975,7 @@ efe.dashboardEditor = function () {
     // Opens the buttons details dialog
     openButtonDetailsDialog: function () {
       if (!selectedElement || !dashboardEditor.isButton(selectedElement)) {
-        dashboard.displayMessage({warn: eframe.lookup('error.118.message'), divID: DIV_MESSAGES});
+        ef.displayMessage({warn: eframe.lookup('error.118.message')});
         return;
       }
       //console.log(msg);
@@ -1031,7 +1032,7 @@ efe.dashboardEditor = function () {
     },
     openPanelDetailsDialog: function () {
       if (!selectedElement || !dashboardEditor.isPanel(selectedElement)) {
-        dashboard.displayMessage({warn: eframe.lookup('error.114.message'), divID: DIV_MESSAGES});
+        ef.displayMessage({warn: eframe.lookup('error.114.message')});
         return;
       }
 
@@ -1060,7 +1061,7 @@ efe.dashboardEditor = function () {
     removeButton: function () {
       dashboardEditor.clearMessages();
       if (!selectedElement || !dashboardEditor.isButton(selectedElement)) {
-        dashboard.displayMessage({warn: eframe.lookup('error.118.message'), divID: DIV_MESSAGES});
+        ef.displayMessage({warn: eframe.lookup('error.118.message')});
         return;
       }
       var selectedButtonIndex = parseInt(selectedElement.attr('button-index'));
@@ -1077,33 +1078,39 @@ efe.dashboardEditor = function () {
       dashboardButtons.splice(buttonIndex, 1);
       dashboardConfig.buttons = dashboardEditor.convertButtonsFromHierarchy(dashboardButtons);
     },
-    // Removes the selected panel.
+    // Removes the currently selected panel.
     removePanel: function () {
-      dashboardEditor.clearMessages();
+      ef.clearMessages();
+      console.log(selectedElement);
+      /*
+            if (!eventPanel) {
+              ef.displayMessage({warn: eframe.lookup('error.114.message')});
+              return;
+            }
+      */
       if (!selectedElement || !dashboardEditor.isPanel(selectedElement)) {
-        dashboard.displayMessage({warn: eframe.lookup('error.114.message'), divID: DIV_MESSAGES});
+        ef.displayMessage({warn: eframe.lookup('error.114.message')});
         return;
       }
-      if (dashboardConfig.dashboardPanels.length <= 1) {
-        //error.116.message=Cannot delete last panel.
-        dashboard.displayMessage({warn: eframe.lookup('error.116.message'), divID: DIV_MESSAGES});
-        return;
-      }
-      var selectedPanelIndex = parseInt(selectedElement.attr('panel-index'));
+      var selectedPanelIndex = dashboardEditor.findPanelIndexByID(selectedElement);
+      console.log('selectedPanelIndex: ' + selectedPanelIndex);
       dashboardEditor.removePanelByIndex(selectedPanelIndex);
-
-      //console.log(selectedPanelIndex);
-      //console.log(dashboardConfig);
-      dashboardEditor.logModel(dashboardConfig);
-
-      // Now, rebuild the editor display completely.
-      dashboardEditor.display(dashboardConfig);
-      dashboardEditor.setUnsavedChanges(true);
     },
     // Removes the selected panel, recursively deleting the parent if it only has one child.
     removePanelByIndex: function (panelIndex) {
+      if (dashboardConfig.dashboardPanels.length <= 1) {
+        //error.116.message=Cannot delete last panel.
+        ef.displayMessage({warn: eframe.lookup('error.116.message')});
+        return;
+      }
+
+      // We will use a combined splitter/panel array to make sure the 'index' (sequence) values are unique and
+      // assigned correctly.  The insert/remove logic is simpler with a single array to maintain since the array
+      // indexes are only valid for the combined array.
+      // NOTE: The 'panelIndex' values are array indices for this combined array only.
+
+      var panels = dashboardEditor.combinePanelsAndSplitters(dashboardConfig.splitterPanels, dashboardConfig.dashboardPanels);
       var i;
-      var panels = dashboardConfig.dashboardPanels;
       var oldParentPanelIndex = panels[panelIndex].parentPanelIndex;
       var newParentPanelIndex = panels[oldParentPanelIndex].parentPanelIndex;
 
@@ -1128,6 +1135,19 @@ efe.dashboardEditor = function () {
           }
         }
       }
+
+      // Now, separate out the combined array again for saving in the model.
+      // NOTE: The 'panelIndex' values are array indices for this combined array only.
+      dashboardEditor.separatePanelsAndSplitters(panels, dashboardConfig);
+
+      // Now, rebuild the editor display completely.
+      dashboardEditor.display(dashboardConfig);
+      dashboardEditor.setUnsavedChanges(true);
+    },
+    // Removes the given panel (by panel name).
+    removePanelByName: function (panelName) {
+      console.log('Removing: ' + panelName + ', index: ' + this.findPanelIndex(panelName));
+      this.removePanelByIndex(this.findPanelIndex(panelName));
     },
     // Renumbers the sequences for all buttons.
     renumberSequences: function () {
@@ -1155,7 +1175,7 @@ efe.dashboardEditor = function () {
       var s = dashboardEditor.validate();
       //console.log(s);
       if (s) {
-        dashboard.displayMessage({error: s, divID: DIV_MESSAGES});
+        ef.displayMessage({error: s});
         return;
       }
       var create = (dashboardConfig.uuid == undefined);
@@ -1176,7 +1196,7 @@ efe.dashboardEditor = function () {
           // No callback, so assume the dialog needs to be refreshed.
           var msg = eframe.lookup(create ? 'default.created.message' : 'default.updated.message',
             [eframe.lookup('dashboard.label'), dashboardConfig.dashboard]);
-          dashboard.displayMessage({info: msg, divID: DIV_MESSAGES});
+          ef.displayMessage({info: msg});
           // Finally, re-load the mode so we can have proper object IDs for a save.
           dashboardEditor.load(dashboardConfig.dashboard);
         }
@@ -1192,9 +1212,10 @@ efe.dashboardEditor = function () {
     },
     // Separates the single array of panels/splitters into separate dashboardConfig's panels and splitters arrays.
     // Used to insert/remove panels with unique index values.
-    separatePanelsAndSplitters: function (combinedArray, splitters, panels) {
-      splitters.length = 0;
-      panels.length = 0;
+    separatePanelsAndSplitters: function (combinedArray, config) {
+      var splitters = [];
+      var panels = [];
+
       for (var i = 0; i < combinedArray.length; i++) {
         if (combinedArray[i].vertical == undefined) {
           panels[panels.length] = combinedArray[i];
@@ -1209,6 +1230,8 @@ efe.dashboardEditor = function () {
           break;
         }
       }
+      config.dashboardPanels = panels;
+      config.splitterPanels = splitters;
     },
     setDefaultCategory: function (defaultCat) {
       defaultCategory = defaultCat;
@@ -1238,7 +1261,7 @@ efe.dashboardEditor = function () {
       if (id == selectedElement) {
         // Toggle selection on current element.
         $$(id).getNode().classList.remove(selectedStateClass);
-        selectedElement = null;
+        selectedElement = undefined;
       } else {
         // New element selected, so de-select current.
         if (selectedElement) {

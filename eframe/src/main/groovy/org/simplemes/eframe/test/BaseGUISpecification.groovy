@@ -388,6 +388,30 @@ class BaseGUISpecification extends BaseSpecification {
   }
 
   /**
+   * Check a menu from a toolbar-style menu with some sub menus.
+   * @param menuName The top-level menu.
+   * @param menuLabel The top-level menu lookup key.
+   * @param subMenus The list of menus to check (element 0 = menu ID, element 1 = lookup key for label.
+   *
+   * @return Always returns true.
+   */
+  boolean checkMenuLabels(String menuName, String menuLabel, List<List<String>> subMenus) {
+    assert page.menu(menuName).text() == lookup(menuLabel)
+    page.menu(menuName).click()
+    def waitForMenu = subMenus[0][0].replaceAll('\\.', '_')
+    //println "menu = ${page.menu(menuName).text()} ${waitForMenu}"
+    waitFor { page.menu(waitForMenu).displayed }
+    //sleep(1000)
+
+    for (sub in subMenus) {
+      //println "sub $sub menu = ${page.menu(sub[0]).text()}"
+      assert page.menu(sub[0].replaceAll('\\.', '_')).text() == lookup(sub[1])
+    }
+
+    return true
+  }
+
+  /**
    * Returns true if the GUI test is running in firefox.
    * <p>
    *  <b>Note:</b> Use this sparingly.

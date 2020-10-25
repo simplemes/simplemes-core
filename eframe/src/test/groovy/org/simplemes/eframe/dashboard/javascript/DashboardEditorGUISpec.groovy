@@ -58,6 +58,40 @@ class DashboardEditorGUISpec extends BaseDashboardSpecification {
     dashboard2.dashboardPanels[0].defaultSize != null
   }
 
+  def "verify that editor menus are correct"() {
+    given: 'a dashboard'
+    buildDashboard(defaults: ['Content A'])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the editor is opened'
+    openEditor()
+
+    then: 'the top-level menus on the toolbar are correct'
+    menu('details').text() == lookup('details.label')
+    menu('save').text() == lookup('save.label')
+
+    and: 'the splitters menu is displayed'
+    checkMenuLabels('splitters', 'dashboardEditorMenu.splitter.label',
+                    [['addHorizontalSplitter', 'addHorizontalSplitter.label'],
+                     ['addVerticalSplitter', 'addVerticalSplitter.label']])
+    checkMenuLabels('panels', 'dashboardEditorMenu.panel.label',
+                    [['removePanel', 'removePanel.label'],
+                     ['panelDetails', 'details.label']])
+    checkMenuLabels('buttons', 'dashboardEditorMenu.button.label',
+                    [['addButtonBefore', 'addButtonBefore.label'],
+                     ['addButtonAfter', 'addButtonAfter.label'],
+                     ['renumberButtons', 'renumberButtons.label'],
+                     ['removeButton', 'removeButton.label'],
+                     ['buttonDetails', 'details.label'],])
+    checkMenuLabels('more.menu', 'more.menu.label',
+                    [['create.menu', 'create.menu.label'],
+                     ['duplicate.menu', 'duplicate.menu.label'],
+                     ['delete.menu', 'delete.menu.label']])
+
+  }
+
   def "verify that details dialog works - basic field changes"() {
     given: 'a dashboard with a single splitter'
     def dashboard = buildDashboard(defaults: ['Content A', 'Content C'])
