@@ -60,21 +60,29 @@ class DashboardConfigController extends BaseCrudRestController {
   }
 
   /**
-   * Contains the details dialog for a single dashboard.
+   * Displays the panel details dialog page.
+   * @param principal The user logged in.
+   * @return The model/view to display.
    */
-  def detailsDialog() {
+  @Produces(MediaType.TEXT_HTML)
+  @Get("/panelDetailsDialog")
+  StandardModelAndView panelDetailsDialog(@Nullable Principal principal) {
+    def modelAndView = new StandardModelAndView("dashboard/panelDetailsDialog", principal, this)
+    log.trace('panelDetailsDialog(): {}', modelAndView)
+    return modelAndView
   }
 
   /**
-   * Contains the panel details dialog for a panel
+   * Displays the button details dialog page.
+   * @param principal The user logged in.
+   * @return The model/view to display.
    */
-  def panelDetailsDialog() {
-  }
-
-  /**
-   * Contains the button details dialog for a button.
-   */
-  def buttonDetailsDialog() {
+  @Produces(MediaType.TEXT_HTML)
+  @Get("/buttonDetailsDialog")
+  StandardModelAndView buttonDetailsDialog(@Nullable Principal principal) {
+    def modelAndView = new StandardModelAndView("dashboard/buttonDetailsDialog", principal, this)
+    log.trace('buttonDetailsDialog(): {}', modelAndView)
+    return modelAndView
   }
 
 }

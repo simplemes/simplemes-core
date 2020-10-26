@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.javascript
 
 import geb.navigator.Navigator
@@ -7,12 +11,6 @@ import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.test.BaseJSSpecification
 import org.simplemes.eframe.test.UnitTestUtils
 import spock.lang.IgnoreIf
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests of the eframe_toolkit.js methods related to dialogs.
@@ -196,7 +194,7 @@ class ToolkitJSDialogGUISpec extends BaseJSSpecification {
     dialog0.title == 'Add Other Logger'
 
     and: 'the Ok button text is correct'
-    dialog0.okButton.text() == 'Ok'
+    dialog0.okButton.text() == lookup('ok.label')
 
     and: 'the cancel button text is correct'
     dialog0.cancelButton.text() == 'Cancel'

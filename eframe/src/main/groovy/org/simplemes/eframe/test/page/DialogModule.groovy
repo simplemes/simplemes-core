@@ -56,6 +56,7 @@ class DialogModule extends Module {
     closeButton { $('div.webix_window', view_id: "dialog${index}").find('button').find('span.wxi-close') }
     resizeHandle { $('div.webix_window', view_id: "dialog${index}").find('div.webix_resize_handle') }
 
+    messages { $('div.webix_window', view_id: "dialog${index}").find('div.webix_view', view_id: 'dialogMessages') }
     templateContent { $('div.webix_window', view_id: "dialog${index}").find('div.webix_template') }
 
     body { $('div.webix_win_body', view_id: "dialog${index}") }

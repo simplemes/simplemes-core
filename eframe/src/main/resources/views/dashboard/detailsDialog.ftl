@@ -5,7 +5,7 @@
 <script>
 
   <@efForm id="detailsDialog" dashboard="true">
-    <@efField field="DashboardConfig.dashboard" />
+    <@efField field="DashboardConfig.dashboard" required=true/>
     <@efField field="DashboardConfig.category" />
     <@efField field="DashboardConfig.title" />
     <@efField field="DashboardConfig.defaultConfig" />

@@ -106,7 +106,15 @@ class DashboardEditorGUISpec extends BaseDashboardSpecification {
     clickMenu('details')
     waitFor { dialog1.exists }
 
-    and: 'the field value is changed'
+    then: 'the dialog labels are correct'
+    getFieldLabel('dashboard') == lookupRequired('dashboard.label')
+    getFieldLabel('category') == lookup('category.label')
+    getFieldLabel('title') == lookup('title.label')
+    dialog1.okButton.text() == lookup('ok.label')
+    dialog1.cancelButton.text() == lookup('cancel.label')
+    dialog1.title == lookup('dashboard.editor.detailsDialog.title')
+
+    when: 'the field value is changed'
     setFieldValue(fieldName, expectedValue, newValue)
 
     and: 'the dialog is closed'
@@ -120,6 +128,7 @@ class DashboardEditorGUISpec extends BaseDashboardSpecification {
     saveEditorChanges(dashboard)
 
     then: 'the record in the DB is correct'
+    waitForRecordChange(dashboard)
     def dashboard2 = DashboardConfig.findByUuid(dashboard.uuid)
     dashboard2[fieldName] == newValue
 
@@ -252,6 +261,8 @@ class DashboardEditorGUISpec extends BaseDashboardSpecification {
    EditorUnsaved - unsaved/save, unsaved/dontSave, unsaved/Cancel
    Editor Fails Save - Displays message in dialog
    Editor.duplicate - leaves panels/splitters/buttons/config records unchanged.
+   Editor.clear works
+   Editor.delete
    */
 
 

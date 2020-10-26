@@ -29,7 +29,10 @@ efe.dashboardEditor = function () {
   var detailsDialog;          // The details dialog, if seen.
   var buttonDetailsDialog;    // The button details dialog, if seen.
   var panelDetailsDialog;     // The panel details dialog, if seen.
+  var panelForDetailsDialog;  // The panel name for the details dialog, if seen.
   var unsavedChanges = false;   // Set to true if the editor has any unsaved changes.
+
+  var lastClickTime;          // The time for the last click.
 
   //noinspection JSUnusedGlobalSymbols
   return {
@@ -150,11 +153,12 @@ efe.dashboardEditor = function () {
             {$template: "Separator"},
             {id: "removePanelContext", panel: panelName, value: ef.lookup("dashboardEditorMenu.removePanel.label")},
             {$template: "Separator"},
-            {id: "panelDetails", panel: panelName, value: ef.lookup("dashboardEditorMenu.details.label")},
+            {id: "panelDetailsContext", panel: panelName, value: ef.lookup("dashboardEditorMenu.details.label")},
           ],
           on: {
             onItemClick: function (id, x) {
               var eventPanel = this.getItem(id).panel;
+              console.log('EventPanel: ' + eventPanel + ", find() = " + dashboardEditor.findPanelByID(eventPanel));
               switch (id) {
                 case 'addHorizontalSplitter' :
                   dashboardEditor.addHSplitter(eventPanel)
@@ -164,6 +168,9 @@ efe.dashboardEditor = function () {
                   break;
                 case 'removePanelContext' :
                   dashboardEditor.removePanelByName(eventPanel)
+                  break;
+                case 'panelDetailsContext' :
+                  dashboardEditor.openPanelDetailsDialog(eventPanel)
                   break;
               }
             }
@@ -180,15 +187,9 @@ efe.dashboardEditor = function () {
       dashboardEditor.addSplitter(eventPanel, true);
     },
     addSplitterFromMenu: function (vertical) {
-      dashboardEditor.clearMessages();
-      var eventPanel = selectedElement;
-      if (eventPanel) {
-        if (eventPanel.startsWith('EditorPanel')) {
-          eventPanel = eventPanel.substr(11, eventPanel.length);
-        } else {
-          eventPanel = undefined;
-        }
-      }
+      ef.clearMessages();
+      var eventPanel = dashboardEditor.findPanelByID(selectedElement);
+      ;
       this.addSplitter(eventPanel, vertical);
     },
     addSplitter: function (eventPanel, vertical) {
@@ -436,6 +437,15 @@ efe.dashboardEditor = function () {
     clickedButton: function (event, id) {
       dashboardEditor.toggleSelection(id);
     },
+    // Gets the panel object fron the dashboardConfig for the given panelName (e.g. 'A').
+    getPanel: function (panelName) {
+      for (var i = 0; i < dashboardConfig.dashboardPanels.length; i++) {
+        if (dashboardConfig.dashboardPanels[i].panel == panelName) {
+          return dashboardConfig.dashboardPanels[i];
+        }
+      }
+      return undefined;
+    },
     // Finds the panel or button ID for the given mouse event.
     findPanelOrButtonForClick: function (event) {
       return this.findPanelOrButtonForClickParent(event.target);
@@ -469,13 +479,31 @@ efe.dashboardEditor = function () {
     },
     // Handles the click on the dialog.
     clickHandler: function (event) {
+      var doubleClick = false;
+      var clickTime = new Date().getTime();
+      if (lastClickTime) {
+        // See if this is a double click.
+        if ((clickTime - lastClickTime) < 300) {
+          doubleClick = true;
+        }
+      }
+
+      lastClickTime = clickTime;
       var panelOrButton = this.findPanelOrButtonForClick(event);
       if (panelOrButton) {
         event.stopPropagation();
         if (panelOrButton.startsWith('EditorPanel')) {
-          this.clickedPanel(event, panelOrButton);
+          if (doubleClick) {
+            this.doubleClickedPanel(event, panelOrButton);
+          } else {
+            this.clickedPanel(event, panelOrButton);
+          }
         } else {
-          this.clickedButton(event, panelOrButton);
+          if (doubleClick) {
+            this.doubleClickedButton(event, panelOrButton);
+          } else {
+            this.clickedButton(event, panelOrButton);
+          }
 
         }
       }
@@ -538,15 +566,14 @@ efe.dashboardEditor = function () {
     },
     closePanelDetailsDialog: function (ok) {
       if (ok) {
-        var selectedPanelIndex = parseInt(selectedElement.attr('panel-index'));
-        var panel = dashboardConfig.dashboardPanels[selectedPanelIndex];
-        panel.panel = dashboardEditor.checkForChanges(panel.panel, $('#panel').val());
-        panel.defaultURL = dashboardEditor.checkForChanges(panel.defaultURL, $('#defaultURL').val());
-        dashboardConfig.buttons = dashboardEditor.convertButtonsFromHierarchy(dashboardButtons);
-      }
+        var panel = this.getPanel(panelForDetailsDialog);
+        panel.panel = dashboardEditor.checkForChanges(panel.panel, $$('panel').getInputNode().value);
+        panel.defaultURL = dashboardEditor.checkForChanges(panel.defaultURL, $$('defaultURL').getInputNode().value);
 
-      eframe.closeDialog(panelDetailsDialog);
-      dashboardEditor.display(dashboardConfig);
+        // Re-display the dashboard.
+        dashboardEditor.updateDialogTitle();
+        dashboardEditor.display(dashboardConfig);
+      }
     },
     // Combines the dashboardConfig's panels and splitters into one array.
     // Used to insert/remove panels with unique index values.
@@ -732,13 +759,10 @@ efe.dashboardEditor = function () {
       }
     },
     // Handles panel double clicks by selecting the panel, then opening the details dialog.
-    doubleClickedPanel: function ($element, event) {
-      //event.stopPropagation();
-      if (!$element.is(selectedElement)) {
-        // Use normal panel click logic to select this panel.
-        dashboardEditor.clickedPanel($element, event);
-        dashboardEditor.openPanelDetailsDialog();
-      }
+    doubleClickedPanel: function (event, id) {
+      console.log(id);
+      var eventPanel = this.findPanelByID(id);
+      dashboardEditor.openPanelDetailsDialog(eventPanel)
     },
     // Creates a new unsaved entry using the current config.
     duplicate: function () {
@@ -776,6 +800,13 @@ efe.dashboardEditor = function () {
         if (dashboardConfig.dashboardPanels[i].panel == panelName) {
           return dashboardConfig.dashboardPanels[i].panelIndex;
         }
+      }
+      return undefined;
+    },
+    // Finds the panel name for the given view ID (e.g. 'EditorPanelA' returns 'A").
+    findPanelByID: function (viewID) {
+      if (viewID && viewID.startsWith('EditorPanel')) {
+        return viewID.substr(11, viewID.length);
       }
       return undefined;
     },
@@ -890,14 +921,15 @@ efe.dashboardEditor = function () {
 
       tk.focus('dashboard');
     },
-    loadPanelDetailDialogValues: function () {
-      var selectedPanelIndex = parseInt(selectedElement.attr('panel-index'));
-      var panel = dashboardConfig.dashboardPanels[selectedPanelIndex];
-      $('#panel').val(panel.panel);
-      $('#defaultURL').val(panel.defaultURL);
+    // Loads the given panel's values into the panel detals dialog.
+    loadPanelDetailsDialogValues: function (panelName) {
+      var panel = this.getPanel(panelName);
+      if (panel) {
+        $$('panel').getInputNode().value = panel.panel;
+        $$('defaultURL').getInputNode().value = panel.defaultURL;
 
-      // Must delay focus since the dialog may not be fully visible here.
-      window.setTimeout("$('#panel').focus()", 200);
+        tk.focus('panel');
+      }
     },
     // Logs the current model.
     logModel: function (cfg) {
@@ -1030,25 +1062,31 @@ efe.dashboardEditor = function () {
       });
 
     },
-    openPanelDetailsDialog: function () {
-      if (!selectedElement || !dashboardEditor.isPanel(selectedElement)) {
-        ef.displayMessage({warn: eframe.lookup('error.114.message')});
-        return;
+    openPanelDetailsDialog: function (panelName) {
+      if (!panelName) {
+        if (!selectedElement || !dashboardEditor.isPanel(selectedElement)) {
+          ef.displayMessage({warn: eframe.lookup('error.114.message')});
+          return;
+        }
+        panelName = this.findPanelByID(selectedElement);
       }
+      panelForDetailsDialog = panelName;
 
       var url = '/dashboardConfig/panelDetailsDialog';
 
-      var dlgMap;
-      dlgMap = {
-        contentsURL: url,
-        name: 'DashboardEditorPanelDialog',
+      panelDetailsDialog = ef.displayDialog({
+        bodyURL: url,
+        title: 'dashboard.editor.panelDetailsDialog.title',
         width: '80%',
         height: '80%',
-        displayed: function () {
-          dashboardEditor.loadPanelDetailDialogValues();
+        messageArea: true,
+        buttons: ['ok', 'cancel'],
+        postScript: "dashboardEditor.loadPanelDetailsDialogValues('" + panelName + "')",
+        ok: function (dialogID, button) {
+          dashboardEditor.closePanelDetailsDialog(true);
+          return true;
         }
-      };
-      panelDetailsDialog = eframe.displayDialog(dlgMap);
+      });
     },
     // Refreshes the dashboard with an info message.
     refreshDashboard: function () {

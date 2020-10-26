@@ -12,6 +12,7 @@ import spock.lang.IgnoreIf
  * Tests of the dashboard_editor.js editor methods - panel-related
  */
 @IgnoreIf({ !sys['geb.env'] })
+@SuppressWarnings('GroovyAssignabilityCheck')
 class DashboardEditorPanelGUISpec extends BaseDashboardSpecification {
 
   def "verify that a splitter can be added to panels"() {
@@ -196,20 +197,163 @@ class DashboardEditorPanelGUISpec extends BaseDashboardSpecification {
     !dashboard2.dashboardPanels.find { it.panel == 'A' }
   }
 
-  /*
-  Remove
-    No panel selected
-    Can't remove last panel
-    Menu label is Ok
-  Panel Details
-    Double-click
-    Cancel changes
-    Save changes
-  menu Remove, Details
-  context menu Remove, Details
-  double-click
+  def "verify that remove detects no selected panel case"() {
+    given: 'a dashboard with the right number of panels'
+    buildDashboard(defaults: ['Content 1', 'Content 2'])
 
-   */
+    when: 'the dashboard is displayed'
+    displayDashboard()
 
+    and: 'the editor is opened'
+    openEditor()
+
+    and: 'the menu is triggered'
+    clickMenu('panels', "removePanel")
+    waitFor { dialog0.messages.text() }
+
+    then: 'the message is correct'
+    dialog0.messages.text().contains(lookup('error.114.message'))
+  }
+
+  def "verify that context menu remove detects attempt to remove last panel"() {
+    given: 'a dashboard with the right number of panels'
+    buildDashboard(defaults: ['Content 1'])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the editor is opened'
+    openEditor()
+
+    and: 'the context-right-click is triggered on the panel'
+    interact {
+      contextClick editorPanel('A')
+    }
+    waitFor { menu("removePanelContext").displayed }
+    menu("removePanelContext").click()
+    waitFor { dialog0.messages.text() }
+
+    then: 'the message is correct'
+    dialog0.messages.text().contains(lookup('error.116.message'))
+  }
+
+  def "verify that panel context menu is correct"() {
+    given: 'a dashboard with the right number of panels'
+    buildDashboard(defaults: ['Content 1'])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the editor is opened'
+    openEditor()
+
+    and: 'the context-right-click is triggered on the panel'
+    interact {
+      contextClick editorPanel('A')
+    }
+    waitFor { menu("removePanelContext").displayed }
+
+    then: 'the menus are correct'
+    menu("addHorizontalSplitter").text() == lookup('dashboardEditorMenu.addHorizontalSplitter.label')
+    menu("addVerticalSplitter").text() == lookup('dashboardEditorMenu.addVerticalSplitter.label')
+    menu("removePanelContext").text() == lookup('dashboardEditorMenu.removePanel.label')
+    menu("panelDetailsContext").text() == lookup('dashboardEditorMenu.details.label')
+  }
+
+  static private final String defaultPanelURL = '/test/dashboard/page?view=sample/dashboard/workList'
+
+  def "verify that the details dialog works - triggered by context menu"() {
+    given: 'a dashboard with the right number of panels'
+    def dashboard = buildDashboard(defaults: [defaultPanelURL, 'Content 2'])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the editor is opened'
+    openEditor()
+
+    and: 'the context menu is displayed'
+    interact {
+      contextClick editorPanel('A')
+    }
+    waitFor { menu("panelDetailsContext").displayed }
+
+    and: 'the details menu item is clicked'
+    menu("panelDetailsContext").click()
+    waitFor { dialog1.exists }
+
+    then: 'the dialog labels are correct'
+    getFieldLabel('panel') == lookup('panel.label')
+    getFieldLabel('defaultURL') == lookup('defaultURL.label')
+    dialog1.okButton.text() == lookup('ok.label')
+    dialog1.cancelButton.text() == lookup('cancel.label')
+    dialog1.title == lookup('dashboard.editor.panelDetailsDialog.title')
+
+    when: 'the field value is changed'
+    setFieldValue(fieldName, expectedValue, newValue)
+
+    and: 'the dialog is closed'
+    dialog1.okButton.click()
+    waitFor { !dialog1.exists }
+
+    then: 'the title indicates the dashboard has been changed'
+    dialog0.title.startsWith('*')
+
+    and: 'the contents of the panel in the editor dialog is updated'
+    def expectedContents = (fieldName == 'panel') ? lookup('panel.label') + ' D:' : '/test/dashboard/page?view=sample/dashboard/wcSelection'
+    def panelName = (fieldName == 'panel') ? 'D' : 'A'
+    $('div.webix_view', view_id: "EditorContent$panelName").text().contains(expectedContents)
+
+    when: 'the changes are saved'
+    saveEditorChanges(dashboard)
+
+    then: 'the record in the DB is correct'
+    waitForRecordChange(dashboard)
+    def dashboard2 = DashboardConfig.findByUuid(dashboard.uuid)
+    def panel = dashboard2.dashboardPanels[0]
+    panel[fieldName] == newValue
+
+    where:
+    fieldName    | expectedValue   | newValue
+    'panel'      | 'A'             | 'D'
+    'defaultURL' | defaultPanelURL | '/test/dashboard/page?view=sample/dashboard/wcSelection'
+  }
+
+  def "verify that the details dialog works - triggered by 2 methods and cancelled"() {
+    given: 'a dashboard with the right number of panels'
+    buildDashboard(defaults: ['Content 1', 'Content 2'])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the editor is opened'
+    openEditor()
+
+    and: 'the dialog is triggered'
+    if (mechanism == 'toolbar') {
+      editorPanel('A').click()
+      clickMenu('panels', 'panelDetails')
+    } else if (mechanism == 'double') {
+      interact {
+        doubleClick editorPanel('A')
+      }
+    }
+    waitFor { dialog1.exists }
+
+    and: 'the field value is changed'
+    setFieldValue('panel', 'A', 'D')
+
+    and: 'the dialog is cancelled'
+    dialog1.cancelButton.click()
+    waitFor { !dialog1.exists }
+
+    then: 'the title indicates the dashboard has not been changed'
+    !dialog0.title.startsWith('*')
+
+    where:
+    mechanism | _
+    'toolbar' | _
+    'double'  | _
+  }
 
 }
