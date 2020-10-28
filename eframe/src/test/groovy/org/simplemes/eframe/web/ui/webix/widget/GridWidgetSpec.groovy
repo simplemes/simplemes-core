@@ -389,7 +389,7 @@ class GridWidgetSpec extends BaseWidgetSpecification {
     when: 'the UI element is built'
     def widgetContext = buildWidgetContext(value: [], format: ChildListFieldFormat.instance, referenceType: SampleChild)
     def page = new GridWidget(widgetContext).build().toString() + widgetContext.markerCoordinator.postscript
-    //println "page = $page"
+    println "page = $page"
 
     then: 'the page is valid'
     checkPage(page)
@@ -438,6 +438,28 @@ class GridWidgetSpec extends BaseWidgetSpecification {
     def addRowText = JavascriptTestUtils.extractBlock(page, 'function aFieldAddRow(')
     def addRowText2 = JavascriptTestUtils.extractBlock(addRowText, 'function sequenceDefault(')
     addRowText2.contains('{return customizedMethod()')
+  }
+
+  def "verify that widget has prefix for custom addRow prefix"() {
+    when: 'the UI element is built'
+    def widgetContext = buildWidgetContext(value: [], parameters: ['addRowPrefix': '_dialogContentY.'],
+                                           format: ChildListFieldFormat.instance, referenceType: SampleChild)
+    def page = new GridWidget(widgetContext).build().toString() + widgetContext.markerCoordinator.postscript
+    //println "page = $page"
+
+    then: 'the page is valid'
+    checkPage(page)
+
+    and: 'the hotkey reference is correct'
+    def hotKeyText = TextUtils.findLine(page, ".addHotKey('alt+a'")
+    hotKeyText.contains('_dialogContentY.aFieldAddRow')
+
+    and: 'the add row button click reference is correct'
+    def addText = JavascriptTestUtils.extractBlock(page, '{ id: "aFieldAdd"')
+    JavascriptTestUtils.extractProperty(addText, 'click') == '_dialogContentY.aFieldAddRow()'
+
+    and: 'the add row function definition is correct'
+    page.contains('_dialogContentY.aFieldAddRow = function () {')
   }
 
   def "verify that widget fails when the column list is not specified and no fieldOrder on domain"() {

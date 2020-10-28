@@ -33,12 +33,16 @@ class DashboardPage extends AbstractPage {
     editorResizer { id -> $('div.webix_resizer', view_id: "EditorResizer$id") }
     editorPanel { panelName -> $('div.webix_form', view_id: "EditorPanel$panelName") }
 
+    editorSaveToolbarButton { $('a.webix_list_item', webix_l_id: 'save') }
+
     editorSaveButton { module(new ButtonModule(id: 'save')) }
     editorCancelButton { module(new ButtonModule(id: 'cancel')) }
 
     editorCloseSaveConfirmButton { module(new ButtonModule(id: 'dialog1-save')) }
     editorCloseNoSaveButton { module(new ButtonModule(id: 'dialog1-noSave')) }
     editorCloseCancelButton { module(new ButtonModule(id: 'dialog1-cancel')) }
+    editorDeleteConfirmButton { module(new ButtonModule(id: 'dialog1-delete')) }
+    editorDeleteCancelButton { module(new ButtonModule(id: 'dialog1-cancel')) }
   }
 
   /**

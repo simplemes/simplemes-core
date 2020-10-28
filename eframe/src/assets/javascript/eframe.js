@@ -91,11 +91,18 @@ _ef.eframe = function () {
     },
     // Clears the message area for the div ID or an HTML element.
     clearMessages: function (divID) {
-      var id = divID || _messageDiv;
-      if (id instanceof Element) {
-        id.innerHTML = '';
+      var messageView = ef._findMessageView();
+
+      if (messageView) {
+        var msgElement = messageView.getNode().firstChild;
+        msgElement.innerHTML = '';
       } else {
-        eframe._getElement(id).innerHTML = '';
+        var id = divID || _messageDiv;
+        if (id instanceof Element) {
+          id.innerHTML = '';
+        } else {
+          eframe._getElement(id).innerHTML = '';
+        }
       }
     },
     // Closes a dialog.  See toolkit for details.

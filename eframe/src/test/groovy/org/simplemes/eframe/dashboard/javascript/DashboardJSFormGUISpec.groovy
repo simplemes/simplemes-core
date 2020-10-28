@@ -100,5 +100,5 @@ class DashboardJSFormGUISpec extends BaseDashboardSpecification {
     UnitTestUtils.assertContainsAllIgnoreCase(messages.text(), ['fail', 'gibberish'])
   }
 
-  // TODO: test MPE
+  // TODO: test MPE  - See Legacy DashboardSetupAjaxFormGUISpec.groovy
 }

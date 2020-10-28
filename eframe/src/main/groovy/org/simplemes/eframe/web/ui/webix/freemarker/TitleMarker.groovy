@@ -67,10 +67,10 @@ class TitleMarker extends BaseMarker {
       def t = ''
       DashboardConfig.withTransaction {
         def dashboardConfig
-        if (dashboardCategory) {
-          dashboardConfig = DashboardConfig.findByCategoryAndDefaultConfig((String) dashboardCategory, true)
-        } else {
+        if (dashboard) {
           dashboardConfig = DashboardConfig.findByDashboard(dashboard)
+        } else {
+          dashboardConfig = DashboardConfig.findByCategoryAndDefaultConfig((String) dashboardCategory, true)
         }
         t = dashboardConfig?.title ?: dashboard ?: dashboardCategory
       }

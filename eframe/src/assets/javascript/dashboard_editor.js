@@ -31,19 +31,32 @@ efe.dashboardEditor = function () {
   var panelDetailsDialog;     // The panel details dialog, if seen.
   var panelForDetailsDialog;  // The panel name for the details dialog, if seen.
   var unsavedChanges = false;   // Set to true if the editor has any unsaved changes.
+  var buttonForDetailsDialog;   // The buttonID currently display in the buttons dialog.
 
   var lastClickTime;          // The time for the last click.
 
   //noinspection JSUnusedGlobalSymbols
   return {
     // Adds a new button (before or after selected button)
-    addButton: function (after) {
+    addButton: function (buttonID, after) {
       var selectedButtonIndex = -1;
       var newIndex = 0;
       var newSequence = 10;
-      if (dashboardEditor.isButton(selectedElement)) {
-        selectedButtonIndex = parseInt(selectedElement.attr('button-index'));
-      } else {
+      if (!buttonID) {
+        // Not passed in, so use the selected element.
+        if (dashboardEditor.isButton(selectedElement)) {
+          buttonID = this.getButtonIDFromView(selectedElement);
+        }
+      }
+      if (buttonID) {
+        for (var i = 0; i < dashboardConfig.buttons.length; i++) {
+          if (dashboardConfig.buttons[i].buttonID == buttonID) {
+            selectedButtonIndex = i;
+            break;
+          }
+        }
+      }
+      if (selectedButtonIndex < 0) {
         if (dashboardButtons.length > 0) {
           // Place before or after all buttons.
           selectedButtonIndex = after ? dashboardButtons.length - 1 : 0
@@ -54,9 +67,11 @@ efe.dashboardEditor = function () {
         newIndex = after ? selectedButtonIndex + 1 : selectedButtonIndex;
         newSequence = dashboardButtons[selectedButtonIndex].pages[0].sequence + (after ? 1 : -1);
       }
-      //console.log('Adding '+selectedButtonIndex);
+      //console.log('buttonID:'+buttonID+', selectedElement:'+selectedElement);
+      //console.log('Adding ('+after+') newIndex:'+newIndex+', seq:'+newSequence+" for selectedButtonIndex:"+selectedButtonIndex);
       dashboardButtons.splice(newIndex, 0, {});
       dashboardButtons[newIndex].label = 'label' + newSequence;
+      dashboardButtons[newIndex].buttonID = 'button' + newSequence;
       // Add a page to the list of child pages.
       var pages = [];
       dashboardButtons[newIndex].pages = pages;
@@ -73,65 +88,54 @@ efe.dashboardEditor = function () {
     },
     // Adds a new button after the selected button
     addButtonAfter: function () {
-      dashboardEditor.addButton(true);
+      dashboardEditor.addButton(undefined, true);
     },
     // Adds a new button before the selected button
     addButtonBefore: function () {
-      dashboardEditor.addButton(false);
+      dashboardEditor.addButton(undefined, false);
     },
     // Adds the context menus to each button.
     addButtonContextMenus: function () {
       if (!dashboardConfig.buttons) {
         return;
       }
-      for (var i = 0; i < dashboardConfig.buttons.length; i++) {
-        var buttonName = dashboardConfig.buttons[i].buttonID;
+      for (var i = 0; i < dashboardButtons.length; i++) {
+        var buttonName = dashboardButtons[i].buttonID;
+        console.log("buttonName: " + buttonName);
+
         webix.ui({
           view: "contextmenu", id: 'cm' + buttonName,
+          width: tk.pw('15em'),
           master: $$(buttonName + 'Editor').$view,
           data: [
             {id: "addButtonBefore", button: buttonName, value: ef.lookup("dashboardEditorMenu.addButtonBefore.label")},
             {id: "addButtonAfter", button: buttonName, value: ef.lookup("dashboardEditorMenu.addButtonAfter.label")},
             {$template: "Separator"},
-            {id: "removeButton", button: buttonName, value: ef.lookup("dashboardEditorMenu.removeButton.label")},
+            {id: "removeButtonContext", button: buttonName, value: ef.lookup("dashboardEditorMenu.removeButton.label")},
             {$template: "Separator"},
-            {id: "details", button: buttonName, value: ef.lookup("dashboardEditorMenu.details.label")},
+            {id: "buttonDetailsContext", button: buttonName, value: ef.lookup("dashboardEditorMenu.details.label")},
           ],
           on: {
             onItemClick: function (id) {
-              webix.message(id + ": " + this.getItem(id).button);
+              var buttonID = this.getItem(id).button;
+              switch (id) {
+                case 'addButtonBefore' :
+                  dashboardEditor.addButton(buttonID, false)
+                  break;
+                case 'addButtonAfter' :
+                  dashboardEditor.addButton(buttonID, true)
+                  break;
+                case 'removeButtonContext' :
+                  dashboardEditor.removeButton(buttonID)
+                  break;
+                case 'buttonDetailsContext' :
+                  dashboardEditor.openButtonDetailsDialog(buttonID)
+                  break;
+              }
             }
           }
         });
       }
-
-
-      /*
-            var menus;
-            menus = [{
-              label: eframe.lookup('dashboardEditorMenu.addButtonBefore.label'),
-              select: dashboardEditor.addButtonBefore
-            },
-              {
-                label: eframe.lookup('dashboardEditorMenu.addButtonAfter.label'),
-                select: dashboardEditor.addButtonAfter
-              },
-              {label: ""},
-              {
-                label: eframe.lookup('dashboardEditorMenu.removeButton.label'),
-                select: dashboardEditor.removeButton
-              },
-              {label: ""},
-              {
-                label: eframe.lookup('dashboardEditorMenu.details.label'),
-                select: dashboardEditor.openButtonDetailsDialog
-              }];
-            var buttonContextMenu;
-            buttonContextMenu = {clickHandler: dashboardEditor.contextClickedButton, menus: menus};
-
-            // Build a context menu handler for each button in the panel.
-            eframe.defineContextMenu($("#editorDashboardButtons").find("a"), buttonContextMenu);
-      */
     },
     // Adds a click handler for the main dialog.
     addClickHandler: function () {
@@ -158,7 +162,7 @@ efe.dashboardEditor = function () {
           on: {
             onItemClick: function (id, x) {
               var eventPanel = this.getItem(id).panel;
-              console.log('EventPanel: ' + eventPanel + ", find() = " + dashboardEditor.findPanelByID(eventPanel));
+              //console.log('EventPanel: ' + eventPanel + ", find() = " + dashboardEditor.findPanelByID(eventPanel));
               switch (id) {
                 case 'addHorizontalSplitter' :
                   dashboardEditor.addHSplitter(eventPanel)
@@ -189,7 +193,6 @@ efe.dashboardEditor = function () {
     addSplitterFromMenu: function (vertical) {
       ef.clearMessages();
       var eventPanel = dashboardEditor.findPanelByID(selectedElement);
-      ;
       this.addSplitter(eventPanel, vertical);
     },
     addSplitter: function (eventPanel, vertical) {
@@ -372,7 +375,7 @@ efe.dashboardEditor = function () {
       });
     },
     // Checks for changes to a simple field and returns the value for use in an assignment.
-    // e.g. button.label=dashboardEditor.checkForChanges(button.label,$('#label').val());
+    // e.g. button.label=dashboardEditor.checkForChanges(button.label,$$('panel').getInputNode().value));
     checkForChanges: function (originalValue, newValue) {
       if (originalValue == undefined) {
         originalValue = '';
@@ -402,7 +405,7 @@ efe.dashboardEditor = function () {
           save: function (dialogID, action) {
             dashboardEditor.save(function () {
               done();
-              dashboardEditor.refreshDashboard();
+              dashboardEditor.refreshDashboard(false);
             });
           },
           noSave: function (dialogID, action) {
@@ -437,7 +440,14 @@ efe.dashboardEditor = function () {
     clickedButton: function (event, id) {
       dashboardEditor.toggleSelection(id);
     },
-    // Gets the panel object fron the dashboardConfig for the given panelName (e.g. 'A').
+    // Gets the button from the button view name.
+    getButtonIDFromView: function (viewName) {
+      var index = viewName.indexOf('Editor');
+      if (index > 0) {
+        return viewName.substr(0, index);
+      }
+    },
+    // Gets the panel object from the dashboardConfig for the given panelName (e.g. 'A').
     getPanel: function (panelName) {
       for (var i = 0; i < dashboardConfig.dashboardPanels.length; i++) {
         if (dashboardConfig.dashboardPanels[i].panel == panelName) {
@@ -514,14 +524,22 @@ efe.dashboardEditor = function () {
     },
     closeButtonDetailsDialog: function (ok) {
       if (ok) {
-        var selectedButtonIndex = parseInt(selectedElement.attr('button-index'));
-        var button = dashboardButtons[selectedButtonIndex];
-        button.label = dashboardEditor.checkForChanges(button.label, $('#label').val());
-        button.title = dashboardEditor.checkForChanges(button.title, $('#title').val());
-        button.style = dashboardEditor.checkForChanges(button.style, $('#style').val());
-        button.buttonID = dashboardEditor.checkForChanges(button.buttonID, $('#buttonID').val());
+        var button = this.findButtonByID(buttonForDetailsDialog);
+        if (!button) {
+          return;
+        }
 
-        var p = toolkit.getGridData('buttonsList');
+        button.buttonID = dashboardEditor.checkForChanges(button.buttonID, $$('buttonID').getInputNode().value);
+        button.label = dashboardEditor.checkForChanges(button.label, $$('label').getInputNode().value);
+        button.title = dashboardEditor.checkForChanges(button.title, $$('title').getInputNode().value);
+        button.css = dashboardEditor.checkForChanges(button.css, $$('css').getInputNode().value);
+        var s = $$('size').getInputNode().value;
+        var n = parseFloat(s);
+        if (!Number.isNaN(n)) {
+          button.size = dashboardEditor.checkForChanges(button.size, n);
+        }
+
+        var p = toolkit.getGridData('buttons');
 
         // Check for changes in the button activities.
         var origPages = button.pages;
@@ -549,10 +567,13 @@ efe.dashboardEditor = function () {
         dashboardButtons.sort(function (a, b) {
           return a.pages[0].sequence - b.pages[0].sequence
         });
+        console.log(dashboardButtons);
         dashboardConfig.buttons = dashboardEditor.convertButtonsFromHierarchy(dashboardButtons);
+        console.log(dashboardConfig.buttons);
       }
 
-      eframe.closeDialog(buttonDetailsDialog);
+      // Re-display the dashboard.
+      dashboardEditor.updateDialogTitle();
       dashboardEditor.display(dashboardConfig);
     },
     closeDetailsDialog: function (ok) {
@@ -622,7 +643,8 @@ efe.dashboardEditor = function () {
         b[buttonIndex] = {};
         b[buttonIndex].label = button.label;
         b[buttonIndex].title = button.title;
-        b[buttonIndex].style = button.style;
+        b[buttonIndex].css = button.css;
+        b[buttonIndex].size = button.size;
         b[buttonIndex].buttonID = button.buttonID;
         b[buttonIndex].sequence = button.pages[0].sequence;
         // Use the first page for this initial DashboardButton row.
@@ -634,8 +656,10 @@ efe.dashboardEditor = function () {
           buttonIndex++;
           b[buttonIndex] = {};
           b[buttonIndex].label = b[buttonIndex - 1].label;
+          b[buttonIndex].buttonID = b[buttonIndex - 1].buttonID;
           b[buttonIndex].title = b[buttonIndex - 1].title;
-          b[buttonIndex].style = b[buttonIndex - 1].style;
+          b[buttonIndex].css = b[buttonIndex - 1].css;
+          b[buttonIndex].size = b[buttonIndex - 1].size;
           b[buttonIndex].sequence = button.pages[i].sequence;
           b[buttonIndex].url = button.pages[i].url;
           b[buttonIndex].panel = button.pages[i].panel;
@@ -673,7 +697,8 @@ efe.dashboardEditor = function () {
           b[buttonIndex] = {};
           b[buttonIndex].label = button.label;
           b[buttonIndex].title = button.title;
-          b[buttonIndex].style = button.style;
+          b[buttonIndex].css = button.css;
+          b[buttonIndex].size = button.size;
           b[buttonIndex].buttonID = button.buttonID;
           b[buttonIndex].sequence = button.sequence;
           b[buttonIndex].pages = [];
@@ -735,32 +760,25 @@ efe.dashboardEditor = function () {
       var contentViewName = 'EditorContent';
       $$(parentViewName).removeView($$(contentViewName));
       $$(parentViewName).addView({view: 'form', type: "clean", borderless: true, id: contentViewName, margin: 0, rows: [content]}, 0);
-      dashboard._addButtonsIfNeededInternal('A', dashboardConfig.buttons, 'Editor');
+
+      // sort on button sequence
+      dashboardConfig.buttons.sort(function (a, b) {
+        return a.sequence - b.sequence
+      });
+      dashboardButtons = dashboardEditor.convertButtonsToHierarchy(dashboardConfig.buttons);
+      dashboard._addButtonsIfNeededInternal('A', dashboardButtons, 'Editor', true);
       dashboardEditor.addPanelContextMenus();
       dashboardEditor.addButtonContextMenus();
-
-      // TODO: Support double-click.
-      /*
-            var script='dashboardEditor.clickedButton($(this), event)';
-            var doubleClickScript='dashboardEditor.doubleClickedButton($(this), event)';
-            dashboardButtons=dashboardEditor.convertButtonsToHierarchy(configIn.buttons);
-            dashboard._addButtonsIfNeeded(jqDashboardEditorContent, dashboardButtons, script, doubleClickScript);
-      */
 
       selectedElement = undefined;
     },
     // Handles button double clicks by selecting the button, then opening the details dialog.
-    doubleClickedButton: function ($element, event) {
-      //event.stopPropagation();
-      if (!$element.is(selectedElement)) {
-        // Use normal button click logic to select this button.
-        dashboardEditor.clickedButton($element, event);
-        dashboardEditor.openButtonDetailsDialog();
-      }
+    doubleClickedButton: function (event, id) {
+      var buttonID = this.getButtonIDFromView(id);
+      dashboardEditor.openButtonDetailsDialog(buttonID);
     },
     // Handles panel double clicks by selecting the panel, then opening the details dialog.
     doubleClickedPanel: function (event, id) {
-      console.log(id);
       var eventPanel = this.findPanelByID(id);
       dashboardEditor.openPanelDetailsDialog(eventPanel)
     },
@@ -784,6 +802,16 @@ efe.dashboardEditor = function () {
       dashboardConfig.title = 'COPY ' + dashboardConfig.title;
       dashboardEditor.updateDialogTitle();
       dashboardEditor.setUnsavedChanges(true);
+    },
+    // Finds the panel name for the given button ID.
+    findButtonByID: function (buttonID) {
+      var button;
+      for (var i = 0; i < dashboardButtons.length; i++) {
+        if (dashboardButtons[i].buttonID == buttonID) {
+          return dashboardButtons[i];
+        }
+      }
+      return undefined;
     },
     // Finds the panel element for the given panel index.
     findPanelByIndex: function (index) {
@@ -867,7 +895,7 @@ efe.dashboardEditor = function () {
     },
     // Determines if the toolkit ID is a dashboard button.
     isButton: function (viewID) {
-      return ($element != null && $element.length && $element[0].nodeName == 'A');
+      return tk._getViewType(viewID) == 'button';
     },
     // Determines if the toolkit ID is a dashboard panel.
     isPanel: function (viewID) {
@@ -880,7 +908,6 @@ efe.dashboardEditor = function () {
         var uri = '/dashboardConfig/crud/' + dashboardName;
         ef.get(uri, {}, function (responseText) {
           var data = JSON.parse(responseText);
-          dashboardButtons = dashboardEditor.convertButtonsToHierarchy(data.buttons);
           dashboardEditor.display(data);
           dashboardEditor.setUnsavedChanges(false);
           dashboardEditor.updateDialogTitle();
@@ -891,26 +918,30 @@ efe.dashboardEditor = function () {
       }
     },
     // Loads the button into the details dialog fields.
-    loadButtonDetailDialogValues: function () {
-      var selectedButtonIndex = parseInt(selectedElement.attr('button-index'));
-      var button = dashboardButtons[selectedButtonIndex];
-      //$('#sequence').val(button.sequence);
-      $('#label').val(button.label);
-      $('#title').val(button.title);
-      $('#style').val(button.style);
-      $('#buttonID').val(button.buttonID);
+    loadButtonDetailsDialogValues: function (buttonID) {
+      var button = this.findButtonByID(buttonID);
+      if (!button) {
+        return;
+      }
 
-      for (var i = 0; i < button.pages.length; i++) {
+      console.log(button);
+      $$('buttonID').getInputNode().value = button.buttonID ? button.buttonID : '';
+      $$('label').getInputNode().value = button.label ? button.label : '';
+      $$('title').getInputNode().value = button.title ? button.title : '';
+      $$('css').getInputNode().value = button.css ? button.css : '';
+      $$('size').getInputNode().value = button.size ? button.size : '';
+
+      for (i = 0; i < button.pages.length; i++) {
         var value;
         value = {};
         value.sequence = button.pages[i].sequence;
         value.url = button.pages[i].url;
         value.panel = button.pages[i].panel;
         //grid.dataSource.add(value);
-        eframe.addGridRow('buttonsList', value);
+        tk._gridAddRow($$("buttons"), value, true)
       }
-      // Must delay focus since the dialog may not be fully visible here.
-      window.setTimeout("$('#label').focus()", 200);
+
+      tk.focus('buttonID');
     },
     // Loads the dashboard config into the details dialog fields.
     loadDetailDialogValues: function () {
@@ -995,6 +1026,7 @@ efe.dashboardEditor = function () {
         buttons: [],
         postScript: 'dashboardEditor.addClickHandler()',
         beforeClose: function (dialogID, action) {
+          // noinspection JSDeprecatedSymbols
           dashboardEditor.checkForUnsavedChanges(function () {
             eframe.closeDialog(dialogID)
           }, event);
@@ -1005,41 +1037,44 @@ efe.dashboardEditor = function () {
 
     },
     // Opens the buttons details dialog
-    openButtonDetailsDialog: function () {
-      if (!selectedElement || !dashboardEditor.isButton(selectedElement)) {
-        ef.displayMessage({warn: eframe.lookup('error.118.message')});
-        return;
+    openButtonDetailsDialog: function (buttonID) {
+      if (!buttonID) {
+        if (!selectedElement || !dashboardEditor.isButton(selectedElement)) {
+          ef.displayMessage({warn: eframe.lookup('error.118.message')});
+          return;
+        }
+        buttonID = this.getButtonIDFromView(selectedElement);
       }
-      //console.log(msg);
+      buttonForDetailsDialog = buttonID;
+
       var url = '/dashboardConfig/buttonDetailsDialog';
 
-      var dlgMap;
-      dlgMap = {
-        contentsURL: url,
-        name: 'DashboardEditorButtonsDialog',
+      buttonDetailsDialog = ef.displayDialog({
+        bodyURL: url,
+        title: 'dashboard.editor.buttonDetailsDialog.title',
         width: '80%',
-        height: '80%',
-        displayed: function () {
-          dashboardEditor.loadButtonDetailDialogValues();
+        height: '90%',
+        messageArea: true,
+        buttons: ['ok', 'cancel'],
+        postScript: "dashboardEditor.loadButtonDetailsDialogValues('" + buttonID + "')",
+        ok: function (dialogID, button) {
+          dashboardEditor.closeButtonDetailsDialog(true);
+          return true;
         }
-      };
-      buttonDetailsDialog = eframe.displayDialog(dlgMap);
+      });
+
+
     },
     // Opens the delete dialog
     openDeleteDialog: function () {
-      /*
-       delete.confirm.cancel.label=Cancel
-       delete.confirm.delete.label=Delete
-       delete.confirm.dialog.title=Confirm Delete
-       delete.confirm.message=Ok to delete {0} {1}?
-       */
-
       ef.displayQuestionDialog({
         title: eframe.lookup('delete.confirm.title'),
         question: eframe.lookup('delete.confirm.message', eframe.lookup('dashboard.label'), dashboardConfig.dashboard),
         buttons: ['delete', 'cancel'],
         delete: function () {
-          dashboardEditor.deleteDashboard()
+          ef.closeDialog(editorDialog);
+          dashboardEditor.deleteDashboard();
+          dashboardEditor.refreshDashboard(true);
         }
       });
     },
@@ -1088,21 +1123,42 @@ efe.dashboardEditor = function () {
         }
       });
     },
-    // Refreshes the dashboard with an info message.
-    refreshDashboard: function () {
-      var create = (dashboardConfig.uuid == undefined);
-      var msg = eframe.lookup(create ? 'default.created.message' : 'default.updated.message',
-        [eframe.lookup('dashboard.label'), dashboardConfig.dashboard]);
+    // Refreshes the dashboard with an info message.  If deleteFlag is true, then use the delete message.
+    refreshDashboard: function (deleteFlag) {
+      var msg;
+      if (deleteFlag) {
+        msg = eframe.lookup('default.deleted.message', [eframe.lookup('dashboard.label'), dashboardConfig.dashboard]);
+      } else {
+        var create = (dashboardConfig.uuid == undefined);
+        msg = eframe.lookup(create ? 'default.created.message' : 'default.updated.message',
+          [eframe.lookup('dashboard.label'), dashboardConfig.dashboard]);
+      }
       window.location = ef.addArgToURI(window.location.href, '_info', msg);
     },
-    // Removes the selected button.
-    removeButton: function () {
-      dashboardEditor.clearMessages();
-      if (!selectedElement || !dashboardEditor.isButton(selectedElement)) {
+    // Removes the given button.
+    removeButton: function (buttonID) {
+      ef.clearMessages();
+      var selectedButtonIndex = -1;
+
+      if (!buttonID) {
+        // Not passed in, so use the selected element.
+        if (dashboardEditor.isButton(selectedElement)) {
+          buttonID = this.getButtonIDFromView(selectedElement);
+        }
+      }
+      if (buttonID) {
+        for (var i = 0; i < dashboardConfig.buttons.length; i++) {
+          if (dashboardConfig.buttons[i].buttonID == buttonID) {
+            selectedButtonIndex = i;
+            break;
+          }
+        }
+      }
+
+      if (selectedButtonIndex < 0) {
         ef.displayMessage({warn: eframe.lookup('error.118.message')});
         return;
       }
-      var selectedButtonIndex = parseInt(selectedElement.attr('button-index'));
       dashboardEditor.removeButtonByIndex(selectedButtonIndex);
 
       // Now, rebuild the editor display completely.
@@ -1119,7 +1175,7 @@ efe.dashboardEditor = function () {
     // Removes the currently selected panel.
     removePanel: function () {
       ef.clearMessages();
-      console.log(selectedElement);
+      //console.log(selectedElement);
       /*
             if (!eventPanel) {
               ef.displayMessage({warn: eframe.lookup('error.114.message')});
@@ -1131,7 +1187,7 @@ efe.dashboardEditor = function () {
         return;
       }
       var selectedPanelIndex = dashboardEditor.findPanelIndexByID(selectedElement);
-      console.log('selectedPanelIndex: ' + selectedPanelIndex);
+      //console.log('selectedPanelIndex: ' + selectedPanelIndex);
       dashboardEditor.removePanelByIndex(selectedPanelIndex);
     },
     // Removes the selected panel, recursively deleting the parent if it only has one child.
@@ -1184,7 +1240,7 @@ efe.dashboardEditor = function () {
     },
     // Removes the given panel (by panel name).
     removePanelByName: function (panelName) {
-      console.log('Removing: ' + panelName + ', index: ' + this.findPanelIndex(panelName));
+      //console.log('Removing: ' + panelName + ', index: ' + this.findPanelIndex(panelName));
       this.removePanelByIndex(this.findPanelIndex(panelName));
     },
     // Renumbers the sequences for all buttons.
@@ -1198,8 +1254,10 @@ efe.dashboardEditor = function () {
         }
       }
 
-      // Keep the JSON model up to date with the display model.
+      // Push out to the persistence model.
       dashboardConfig.buttons = dashboardEditor.convertButtonsFromHierarchy(dashboardButtons);
+      // Clear selection and re-display the dashboard.
+      dashboardEditor.display(dashboardConfig);
       dashboardEditor.setUnsavedChanges(true);
     },
     // Saves the current dashboard config (if possible).
@@ -1245,7 +1303,7 @@ efe.dashboardEditor = function () {
     saveAndClose: function () {
       dashboardEditor.save(function () {
         ef.closeDialog(editorDialog);
-        dashboardEditor.refreshDashboard();
+        dashboardEditor.refreshDashboard(false);
       });
     },
     // Separates the single array of panels/splitters into separate dashboardConfig's panels and splitters arrays.

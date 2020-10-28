@@ -212,6 +212,9 @@ class DashboardMarker extends BaseMarker {
     def sb = new StringBuilder()
     sb << """dashboard._defineButtons(["""
 
+    // Sort the buttons in the right order (by lowest sequence)
+    dashboardConfig.buttons.sort { it.sequence }
+
     // Group the buttons with the same labels together.
     List<Map> buttons = []
     for (button in dashboardConfig.buttons) {

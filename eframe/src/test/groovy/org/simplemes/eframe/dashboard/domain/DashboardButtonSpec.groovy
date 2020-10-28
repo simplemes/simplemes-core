@@ -28,6 +28,7 @@ class DashboardButtonSpec extends BaseSpecification {
       maxSize 'url', FieldSizes.MAX_URL_LENGTH
       maxSize 'panel', FieldSizes.MAX_CODE_LENGTH
       maxSize 'css', FieldSizes.MAX_SINGLE_LINE_LENGTH
+      notNullCheck 'buttonID'
       notNullCheck 'label'
       notNullCheck 'sequence'
       notNullCheck 'url'

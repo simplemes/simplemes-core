@@ -179,3 +179,28 @@ The built-in variables include:
 
 |===
 
+===== Inline Grid in Dialogs
+
+It is possible to use a field in a dialog with an inline grid for inline editing of
+values.  This adds some complications, but that can be handled with the `addRowPrefix`
+option.  For example, in the source for a popup dialog, you might have this
+.ftl file:
+
+[source,html]
+.Inline Grid - addRowPrefix Option in Dialogs
+----
+<script>
+
+  <@efForm id="buttonDetailsDialog" dashboard="true">
+    <@efField field="DashboardButton.buttonID" required=true/>
+    <@efField field="DashboardConfig.buttons"  // <.>
+              addRowPrefix="_dialogContent." />  // <.>
+  </@efForm>
+
+</script>
+
+----
+<.> Defines a field based on the list of `buttons` from the _DashboardConfig_ domain object.
+<.> Required to make sure the `addRow()` function is defined in the right object for
+    the elements in a dialog.
+

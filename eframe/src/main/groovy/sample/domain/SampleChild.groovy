@@ -14,6 +14,7 @@ import io.micronaut.data.model.DataType
 import org.simplemes.eframe.data.format.BasicFieldFormat
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.annotation.DomainEntity
+import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
 import javax.annotation.Nullable
@@ -85,6 +86,15 @@ class SampleChild implements Comparable {
    * Load initial records.  Does nothing.
    */
   static initialDataLoad() {
+    return null
+  }
+
+  def validate() {
+    if (key == 'xyzzy') {
+      // Test validation
+      //error.98.message=Invalid Value {0}. {1} should be {2}.
+      return new ValidationError(98, 'key', 'key', "!=xyzzy")
+    }
     return null
   }
 

@@ -211,8 +211,8 @@ class DashboardConfigSpec extends BaseSpecification {
     when: 'a dashboard is saved'
     def dashboard = new DashboardConfig(dashboard: 'XYZ')
     dashboard.dashboardPanels << new DashboardPanel(panel: 'A')
-    dashboard.buttons << new DashboardButton(label: 'b1', url: 'page1', panel: 'A')
-    dashboard.buttons << new DashboardButton(label: 'b2', url: 'page1', panel: 'A')
+    dashboard.buttons << new DashboardButton(label: 'b1', url: 'page1', panel: 'A', buttonID: 'b1')
+    dashboard.buttons << new DashboardButton(label: 'b2', url: 'page1', panel: 'A', buttonID: 'b2')
     dashboard.save()
 
     then: 'the button sequences are correct'

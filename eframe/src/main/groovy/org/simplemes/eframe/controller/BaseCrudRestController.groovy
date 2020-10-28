@@ -19,6 +19,7 @@ import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.domain.DomainUtils
+import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.exception.MessageHolder
 import org.simplemes.eframe.exception.ValidationException
 import org.simplemes.eframe.security.SecurityUtils
@@ -145,7 +146,7 @@ abstract class BaseCrudRestController extends BaseCrudController {
     }
 
     HttpResponse res = null
-    _domain.withTransaction {
+    _domain.withTransaction { status ->
       def record = Holders.objectMapper.readValue(body, _domain)
       // Force a null UUID to make sure the record is created.
       record.uuid = null
@@ -154,9 +155,10 @@ abstract class BaseCrudRestController extends BaseCrudController {
         def s = Holders.objectMapper.writeValueAsString(record)
         res = HttpResponse.status(HttpStatus.OK).body(s)
       } catch (ValidationException e) {
-        def msg = new MessageHolder(e.errors)
+        def msg = new MessageHolder(e.errors as List<ValidationError>)
         def s = Holders.objectMapper.writeValueAsString(msg)
         res = HttpResponse.status(HttpStatus.BAD_REQUEST).body(s)
+        status.setRollbackOnly()
       }
     }
     log.debug('restPost() res = {}', res)
@@ -193,7 +195,7 @@ abstract class BaseCrudRestController extends BaseCrudController {
       return HttpResponse.status(HttpStatus.BAD_REQUEST).body(Holders.objectMapper.writeValueAsString(msg))
     }
 
-    _domain.withTransaction {
+    _domain.withTransaction { status ->
       def record = DomainUtils.instance.findDomainRecord(_domain, x)
       DomainUtils.instance.loadChildRecords(record)  // Force the child records to be loaded for updates.
       def originalUUID = record?.uuid
@@ -206,9 +208,10 @@ abstract class BaseCrudRestController extends BaseCrudController {
           def s = Holders.objectMapper.writeValueAsString(record)
           res = HttpResponse.status(HttpStatus.OK).body(s)
         } catch (ValidationException e) {
-          def msg = new MessageHolder(e.errors)
+          def msg = new MessageHolder(e.errors as List<ValidationError>)
           def s = Holders.objectMapper.writeValueAsString(msg)
           res = HttpResponse.status(HttpStatus.BAD_REQUEST).body(s)
+          status.setRollbackOnly()
         }
       }
     }

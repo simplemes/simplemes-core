@@ -6,6 +6,7 @@ package org.simplemes.eframe.dashboard.javascript
 
 import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.test.BaseDashboardSpecification
+import org.simplemes.eframe.test.page.ButtonModule
 import spock.lang.IgnoreIf
 
 /**
@@ -30,7 +31,7 @@ class DashboardEditorGUISpec extends BaseDashboardSpecification {
 
   }
 
-  def "verify that editor can save changes"() {
+  def "verify that editor can save changes - dialog button"() {
     given: 'a dashboard with a single splitter'
     def dashboard = buildDashboard(defaults: ['Content A', 'Content C'])
 
@@ -52,6 +53,35 @@ class DashboardEditorGUISpec extends BaseDashboardSpecification {
     then: 'the response is displayed'
     def msg = lookup('default.updated.message', lookup('dashboard.label'), dashboard.dashboard)
     messages.text().contains(msg)
+
+    and: 'the record in the DB is correct'
+    def dashboard2 = DashboardConfig.findByUuid(dashboard.uuid)
+    dashboard2.dashboardPanels[0].defaultSize != null
+  }
+
+  def "verify that editor can save changes - toolbar save button"() {
+    given: 'a dashboard with a single splitter'
+    def dashboard = buildDashboard(defaults: ['Content A', 'Content C'])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the editor is opened'
+    openEditor()
+
+    and: 'the resizer is moved for the main splitter panel'
+    resizePanel('0', 0, -50)
+
+    then: 'the title indicates the dashboard has been changed'
+    dialog0.title.startsWith('*')
+
+    when: 'the changes are saved'
+    editorSaveToolbarButton.click()
+    waitFor() { dialog0.messages.text() }
+
+    then: 'the response is displayed in the dialog'
+    def msg = lookup('default.updated.message', lookup('dashboard.label'), dashboard.dashboard)
+    dialog0.messages.text().contains(msg)
 
     and: 'the record in the DB is correct'
     def dashboard2 = DashboardConfig.findByUuid(dashboard.uuid)
@@ -255,14 +285,206 @@ class DashboardEditorGUISpec extends BaseDashboardSpecification {
     dialog1.templateContent.text() == lookup('unsavedChanges.message', dashboard.dashboard)
   }
 
-  // TODO: DashboardJS GUI Specs (X 6 Dashboard, 4 editor)
+  def "verify that save failures are detected and displayed correctly"() {
+    // TODO: Add bad button.panel reference to test multiple error messages from server.
+    given: 'a dashboard'
+    def dashboard = buildDashboard(defaults: ['Content A'])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the editor is opened'
+    openEditor()
+
+    and: 'the details dialog is displayed'
+    clickMenu('details')
+    waitFor { dialog1.exists }
+
+    and: 'the panel is cleared'
+    setFieldValue('dashboard', dashboard.dashboard, '')
+
+    and: 'the dialog is closed'
+    dialog1.okButton.click()
+    waitFor { !dialog1.exists }
+
+    and: 'the save is attempted'
+    editorSaveButton.click()
+    waitFor() { dialog0.messages.text() }
+
+    then: 'an error is displayed in the dialog'
+    dialog0.messages.text() != ''
+
+    and: 'the record in the DB is unchanged'
+    def dashboard2 = DashboardConfig.findByUuid(dashboard.uuid)
+    dashboard2.version == dashboard.version
+  }
+
+  def "verify that delete works"() {
+    given: 'a dashboard with a single splitter'
+    def dashboard = buildDashboard(defaults: ['Content A', 'Content C'])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the editor is opened'
+    openEditor()
+
+    and: 'the details dialog is displayed'
+    clickMenu('more.menu', 'delete_menu')
+
+    then: 'the dialog labels are correct'
+    dialog1.title == lookup('delete.confirm.title')
+    dialog1.templateContent.text() == lookup('delete.confirm.message', lookup('dashboard.label'), dashboard.dashboard)
+    editorCloseCancelButton.button.text() == lookup('cancel.label')
+    editorDeleteConfirmButton.button.text() == lookup('delete.label')
+
+    when: 'the delete is cancelled'
+    editorDeleteCancelButton.button.click()
+    waitFor { !dialog1.exists }
+
+    then: 'the editor dialog is still displayed'
+    dialog0.exists
+
+    when: 'the delete is confirmed'
+    and: 'the details dialog is displayed'
+    clickMenu('more.menu', 'delete_menu')
+    editorDeleteConfirmButton.button.click()
+    waitFor { !dialog0.exists }
+
+    then: 'the page is refreshed with a message'
+    waitFor() { messages.text() }
+
+    and: 'the message is correct'
+    def msg = lookup('default.deleted.message', lookup('dashboard.label'), dashboard.dashboard)
+    messages.text().contains(msg)
+
+    and: 'the record has been deleted'
+    !DashboardConfig.findByUuid(dashboard.uuid)
+  }
+
+  def "verify that create works"() {
+    given: 'a dashboard with a single splitter'
+    def createdDashboardName = 'NEW'
+    def dashboard = buildDashboard(defaults: ['Content A', 'Content C'], buttons: ['PASS', 'FAIL'])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the editor is opened'
+    openEditor()
+
+    and: 'the actions is triggered'
+    clickMenu('more.menu', 'create_menu')
+
+    then: 'the dialog title has the correct title'
+    dialog0.title.contains(createdDashboardName)
+
+    when: 'the new record is saved'
+    editorSaveButton.click()
+    waitFor { !dialog0.exists }
+
+    then: 'the page is refreshed with a message'
+    waitFor() { messages.text() }
+
+    and: 'the message is correct'
+    def msg = lookup('default.created.message', lookup('dashboard.label'), createdDashboardName)
+    messages.text().contains(msg)
+
+    and: 'the original record has not been affected'
+    def dashboard2 = DashboardConfig.findByUuid(dashboard.uuid)
+    dashboard2.dashboardPanels.size() == 2
+    dashboard2.splitterPanels.size() == 1
+    dashboard2.buttons.size() == 2
+
+    and: 'the new record has been created'
+    def dashboardNew = DashboardConfig.findByDashboard(createdDashboardName)
+    dashboardNew.dashboardPanels.size() == 1
+    dashboardNew.splitterPanels.size() == 0
+    dashboardNew.buttons.size() == 0
+  }
+
+  def "verify that duplicate works"() {
+    given: 'a dashboard with a single splitter'
+    def createdDashboardName = 'COPY _TEST'
+    def dashboard = buildDashboard(defaults: ['Content A', 'Content C'], buttons: ['PASS', 'FAIL'])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the editor is opened'
+    openEditor()
+
+    and: 'the actions is triggered'
+    clickMenu('more.menu', 'duplicate_menu')
+
+    then: 'the dialog title has the correct title'
+    dialog0.title.contains(createdDashboardName)
+
+    when: 'the new record is saved'
+    editorSaveButton.click()
+    waitFor { !dialog0.exists }
+
+    then: 'the page is refreshed with a message'
+    waitFor() { messages.text() }
+
+    and: 'the message is correct'
+    def msg = lookup('default.created.message', lookup('dashboard.label'), createdDashboardName)
+    messages.text().contains(msg)
+
+    and: 'the original record has not been affected'
+    def dashboard2 = DashboardConfig.findByUuid(dashboard.uuid)
+    dashboard2.dashboardPanels.size() == 2
+    dashboard2.splitterPanels.size() == 1
+    dashboard2.buttons.size() == 2
+
+    and: 'the new record has been created'
+    def dashboardNew = DashboardConfig.findByDashboard(createdDashboardName)
+    dashboardNew.dashboardPanels.size() == 2
+    dashboardNew.splitterPanels.size() == 1
+    dashboardNew.buttons.size() == 2
+
+    and: 'the panel was copied correctly'
+    dashboardNew.dashboardPanels[1].panel == dashboard.dashboardPanels[1].panel
+    dashboardNew.dashboardPanels[1].defaultURL == dashboardNew.dashboardPanels[1].defaultURL
+
+    and: 'the button was copied correctly'
+    dashboardNew.buttons[1].buttonID == dashboardNew.buttons[1].buttonID
+    dashboardNew.buttons[1].title == dashboardNew.buttons[1].title
+    dashboardNew.buttons[1].label == dashboardNew.buttons[1].label
+    dashboardNew.buttons[1].url == dashboardNew.buttons[1].url
+    dashboardNew.buttons[1].panel == dashboardNew.buttons[1].panel
+    dashboardNew.buttons[1].size == dashboardNew.buttons[1].size
+    dashboardNew.buttons[1].css == dashboardNew.buttons[1].css
+
+  }
+
+  def "verify that editor displays buttons in sorted order"() {
+    given: 'a dashboard with buttons saved in non-sorted order'
+    def buttons = [[label: 'pass.label', url: 'PASS Content', panel: 'A', title: 'pass.title', buttonID: 'PASS'],
+                   [label: 'fail.label', url: 'FAIL Content', panel: 'A', buttonID: 'FAIL']]
+    def dashboard = buildDashboard(defaults: [BUTTON_PANEL], buttons: buttons)
+    DashboardConfig.withTransaction {
+      dashboard.buttons[0].sequence = 100
+      dashboard.buttons[0].save()
+    }
+    println "dashboard = ${dashboard.buttons}"
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'the editor is opened'
+    openEditor()
+
+    then: 'the buttons are in the correct order - FAIL first due to sequence change above'
+    $("body").module(new ButtonModule(id: 'FAILEditor')).button.x < $("body").module(new ButtonModule(id: 'PASSEditor')).button.x
+  }
+
+
+  // TODO: DashboardJS GUI Specs
   /*
-   EditorButton - click, context menu, double-click.
-   EditorUnsaved - unsaved/save, unsaved/dontSave, unsaved/Cancel
-   Editor Fails Save - Displays message in dialog
-   Editor.duplicate - leaves panels/splitters/buttons/config records unchanged.
-   Editor.clear works
-   Editor.delete
+   EditorButton - click, context menu, double-click. See legacy DashboardEditorButtonGUISpec
+     remove button - unsaved indicator on each fields changed.  Change to grid.
+
    */
 
 

@@ -297,7 +297,7 @@ ef.dashboard = function () {
       dashboard._addButtonsIfNeededInternal(panelName, buttons)
     },
     // Adds the buttons to the given panel, internal version. Used by dashboard and editor.
-    _addButtonsIfNeededInternal: function (panelName, allButtons, suffix) {
+    _addButtonsIfNeededInternal: function (panelName, allButtons, suffix, detailTitle) {
       if (!suffix) {
         suffix = '';
       }
@@ -316,6 +316,9 @@ ef.dashboard = function () {
           var size = button.size || 1.0;
           var css = button.css || '';
           var title = button.title ? button.title : '';
+          if (detailTitle) {
+            title = button.buttonID + "(" + button.panel + "): " + button.sequence + ", url: " + button.url;
+          }
           var id = button.id ? button.id : button.buttonID;
           if (suffix) {
             id = id + suffix;

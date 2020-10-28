@@ -38,6 +38,22 @@ _ef_tk.toolkit = function () {
 
       return reason;
     },
+    getGridData: function (gridName) {
+      var view = $$(gridName);
+      var ed = view.getEditor();
+      if (ed) {
+        // Finish any editing.
+        view.editStop();
+      }
+
+      // Convert to simple objects so no iterator is needed.
+      var data = view.data;
+      var res = [];
+      data.each(function (obj) {
+        res[res.length] = obj;
+      });
+      return res;
+    },
     findMaxGridValue: function (gridName, columnName) {
       // Find the highest numeric value in the given grid for the given column.
       // If not a numeric column, then returns 0.
@@ -336,14 +352,7 @@ _ef_tk.toolkit = function () {
         tk._getPage(options.bodyURL, __dialogContentName, function (content) {
           options.body = content;
           options.bodyURL = undefined;
-          if (window[__dialogContentName].postScript) {
-            if (options.postScript) {
-              // Both post scripts are defined, so conbime them.
-              options.postScript = window[__dialogContentName].postScript + ";" + options.postScript;
-            } else {
-              options.postScript = window[__dialogContentName].postScript;
-            }
-          }
+          options.postScriptB = window[__dialogContentName].postScript;
           tk._displayDialogSuccess(options);
         });
 
@@ -501,12 +510,23 @@ _ef_tk.toolkit = function () {
       topDialog.insertBefore(theDiv, topDialog.children[0]);
 
       // Call any script to done after the dialog content is rendered
-      if (options.postScript) {
+      if (options.postScript || options.postScriptB) {
         webix.delay(function () {
-          if (ef._isString(options.postScript)) {
-            eval(options.postScript);
-          } else {
-            options.postScript();
+          //console.log(options);
+          if (options.postScript) {
+            if (ef._isString(options.postScript)) {
+              eval(options.postScript);
+            } else {
+              options.postScript();
+            }
+          }
+          if (options.postScriptB) {
+            if (ef._isString(options.postScriptB)) {
+              //console.log('B: '+options.postScriptB);
+              eval(options.postScriptB);
+            } else {
+              options.postScriptB();
+            }
           }
         })
       }
@@ -650,7 +670,7 @@ _ef_tk.toolkit = function () {
       var rowData = $$(listID).getItem(rowID);
       eval(script);
     },
-    _gridAddRow: function (view, rowData) {
+    _gridAddRow: function (view, rowData, disableStartEditing) {
       var ed = view.getEditor();
       if (ed) {
         // Finish any editing.
@@ -668,7 +688,9 @@ _ef_tk.toolkit = function () {
       view.add(rowData);
       view.select(id);
       view.showItem(id);
-      tk._gridStartEditing(view);
+      if (!disableStartEditing) {
+        tk._gridStartEditing(view);
+      }
     },
     _gridRemoveRow: function (view, rowData) {
       var ed = view.getEditor();

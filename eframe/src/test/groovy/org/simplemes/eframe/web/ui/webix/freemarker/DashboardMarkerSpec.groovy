@@ -262,12 +262,17 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
   @Rollback
   def "verify that the marker can handle multiple buttons"() {
     given: 'a dashboard config'
-    def button1a = [label: 'b10', url: '/page11', panel: 'A', buttonID: 'ID10']
-    def button1b = [label: 'b10', url: '/page12', panel: 'B', buttonID: 'ID102']
-    def button1c = [label: 'b10', url: '/page13', panel: 'A', buttonID: 'ID103']
-    def button2 = [label: 'b20', url: '/page14', panel: 'B', buttonID: 'ID20']
-    def buttons = [button1a, button1b, button1c, button2]
-    DashboardUnitTestUtils.buildDashboardConfig('DASHBOARD', ['vertical0', 'page0', 'page1'], buttons)
+    def button1a = [sequence: 10, label: 'b10', url: '/page11', panel: 'A', buttonID: 'ID10']
+    def button1b = [sequence: 11, label: 'b10', url: '/page12', panel: 'B', buttonID: 'ID102']
+    def button1c = [sequence: 12, label: 'b10', url: '/page13', panel: 'A', buttonID: 'ID103']
+    def button2 = [sequence: 20, label: 'b20', url: '/page14', panel: 'B', buttonID: 'ID20']
+    def button3 = [sequence: 1, label: 'b00', url: '/page14', panel: 'B', buttonID: 'ID3']
+    def buttons = [button1a, button1b, button1c, button2, button3]
+    def dashboard = DashboardUnitTestUtils.buildDashboardConfig('DASHBOARD', ['vertical0', 'page0', 'page1'], buttons)
+
+    // Now, change the sequence on button3 to force read from the DB in un-sorted order.
+    dashboard.buttons[0].sequence = 100
+    dashboard.buttons[0].save()
 
     when: 'the HTML is generated'
     def page = execute(source: '<@efDashboard category="NONE"/>', uri: '/dashboard?arg=value')
@@ -291,6 +296,10 @@ class DashboardMarkerSpec extends BaseMarkerSpecification {
     button2Text.contains('panel: "B"')
     button2Text.contains('url: "/page14"')
     button2Text.contains('id: "ID20"')
+
+    and: 'the button order is by lowest sequence number'
+    buttonsText.indexOf('b10') < buttonsText.indexOf('b20')
+    buttonsText.indexOf('b10') < buttonsText.indexOf('b00')
   }
 
   @Rollback

@@ -61,6 +61,11 @@ class GridWidget extends BaseLabeledFieldWidget {
   static final BigDecimal DEFAULT_TOTAL_WIDTH = 60.0
 
   /**
+   * Some prefix text to add to the calls to the addRow function calls and definition.
+   */
+  String addRowPrefix = ''
+
+  /**
    * Basic constructor.
    * @param widgetContext The widget context this widget is operating in.  Includes URI, parameters, marker etc.
    */
@@ -70,6 +75,7 @@ class GridWidget extends BaseLabeledFieldWidget {
       // Make sure the marker parameter readOnly is used for the widget.
       widgetContext.readOnly = ArgumentUtils.convertToBoolean(widgetContext?.parameters?.readOnly)
     }
+    addRowPrefix = widgetContext?.parameters?.addRowPrefix ?: ''
   }
 
   /**
@@ -282,7 +288,7 @@ class GridWidget extends BaseLabeledFieldWidget {
       webix.UIManager.addHotKey('shift-tab', tk._gridBackwardTabHandler, table$id);
       webix.UIManager.addHotKey('space', tk._gridStartEditing, table$id);
       webix.UIManager.addHotKey('enter', tk._gridStartEditing, table$id);
-      webix.UIManager.addHotKey('alt+a', ${id}AddRow, table$id);
+      webix.UIManager.addHotKey('alt+a', ${addRowPrefix}${id}AddRow, table$id);
     """
   }
 
@@ -346,7 +352,7 @@ class GridWidget extends BaseLabeledFieldWidget {
       def deleteTip = GlobalUtils.lookup('deleteRow.tooltip')
       return """
       { margin: 0, rows: [
-        { id: "${id}Add", view: "button", click: '${id}AddRow()', tooltip: "$addTip", width: 40, height: 40, type: "icon", icon: "fas fa-plus-square", align: "top" },
+        { id: "${id}Add", view: "button", click: '${addRowPrefix}${id}AddRow()', tooltip: "$addTip", width: 40, height: 40, type: "icon", icon: "fas fa-plus-square", align: "top" },
         { id: "${id}Remove", view: "button", click: 'tk._gridRemoveRow(${$$}("$id"))', tooltip: "$deleteTip", width: 40, height: 40, type: "icon", icon: "fas fa-minus-square", align: "top" }]
       },
       """
@@ -361,7 +367,7 @@ class GridWidget extends BaseLabeledFieldWidget {
   String buildAddButtonHandler(List<String> columns) {
     // Build a default row.
     def referenceClass = widgetContext.fieldDefinition.referenceType
-    def row = referenceClass.newInstance()
+    def row = referenceClass.getDeclaredConstructor().newInstance()
     def defaultRow = Holders.objectMapper.writeValueAsString(row)
 
     /**
@@ -386,12 +392,20 @@ class GridWidget extends BaseLabeledFieldWidget {
 
     }
 
-    return """function ${id}AddRow() {
+    def start = "function ${id}AddRow() {"
+    def end = "}"
+    if (addRowPrefix) {
+      // Must be in dialog/dashboard mode, so use the 'function on a variable-style'.
+      start = "${addRowPrefix}${id}AddRow = function () {"
+      end = "};"
+    }
+
+    return """$start
       var rowData = $defaultRow;
       var gridName = "$id";
       ${logic}
       tk._gridAddRow(${$$}("$id"),rowData)
-    }
+    $end
     """
   }
 

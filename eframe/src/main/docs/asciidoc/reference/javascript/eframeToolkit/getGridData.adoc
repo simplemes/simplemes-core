@@ -1,0 +1,33 @@
+
+=== getGridData
+
+.getGridData(gridName)
+
+This Javascript function returns the data rows for the given grid.
+
+
+This function is part of the <<eframe_toolkit-js>> library.
+
+The arguments are:
+
+[cols=".^1,1,5"]
+|===
+|Parameter|Type|Description
+
+|gridName|String| The grid's name (HTML ID for a toolkit Grid object).  Defined by the <<efEdit>> marker.  (*Required*).
+|===
+
+
+[source,javascript]
+----
+var data = toolkit.getGridData('buttons');
+
+for (var j = 0; j < data.length; j++) {
+  var row = data[j];
+}
+----
+
+
+
+
+

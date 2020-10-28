@@ -352,6 +352,38 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     record.uuid != uuid
   }
 
+  def "verify that post rolls back transaction on a child failure in a live server"() {
+    given: 'a record to update'
+    SampleParent record1 = null
+    SampleParent.withTransaction {
+      record1 = new SampleParent(name: 'ABC1', title: 'abc')
+      record1.sampleChildren << new SampleChild(key: 'key1')
+      record1.sampleChildren << new SampleChild(key: 'key2')
+      record1.sampleChildren << new SampleChild(key: 'xyzzy')
+      record1.sampleChildren << new SampleChild(key: 'key4')
+    }
+
+    and: 'the update JSON with invalid value'
+    record1.sampleChildren[2].key = 'xyzzy'
+    def src = Holders.objectMapper.writeValueAsString(record1)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(src)}"
+
+    when:
+    login()
+    def s = sendRequest(uri: "/sampleParent/crud", method: 'post', content: src, status: HttpStatus.BAD_REQUEST)
+
+    then: 'the record is not in the DB'
+    SampleParent record = null
+    SampleParent.withTransaction {
+      record = SampleParent.findByName('ABC1')
+      true
+    }
+    record == null
+
+    and: 'the error is for the child value'
+    s.contains('xyzzy')
+  }
+
   @Rollback
   def "verify restPost can create a record with child records"() {
     given: 'a controller for the base class for a domain'
@@ -630,6 +662,42 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     and: 'the JSON is valid'
     def json = new JsonSlurper().parseText((String) res.getBody().get())
     json.uuid == record.uuid.toString()
+  }
+
+  def "verify that put rolls back transaction on a child failure in a live server"() {
+    given: 'a record to update'
+    SampleParent record1 = null
+    SampleParent.withTransaction {
+      record1 = new SampleParent(name: 'ABC1', title: 'abc')
+      record1.sampleChildren << new SampleChild(key: 'key1')
+      record1.sampleChildren << new SampleChild(key: 'key2')
+      record1.sampleChildren << new SampleChild(key: 'OK')
+      record1.sampleChildren << new SampleChild(key: 'key4')
+      record1.save()
+    }
+
+    and: 'the update JSON with invalid value'
+    record1.sampleChildren[2].key = 'xyzzy'
+    def src = Holders.objectMapper.writeValueAsString(record1)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(src)}"
+
+    when:
+    login()
+    def s = sendRequest(uri: "/sampleParent/crud/${record1.uuid}", method: 'put', content: src, status: HttpStatus.BAD_REQUEST)
+
+    then: 'the record is not changed in the DB'
+    SampleParent record = null
+    SampleParent.withTransaction {
+      record = SampleParent.findByName('ABC1')
+      true
+    }
+    record != null
+    record.version == record1.version
+    record.sampleChildren.size() == 4
+    record.sampleChildren.find { it.key == 'OK' }
+
+    and: 'the error is for the child value'
+    s.contains('xyzzy')
   }
 
   @Rollback
@@ -1155,4 +1223,5 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     }
     record == null
   }
+
 }

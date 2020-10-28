@@ -46,7 +46,7 @@ class DashboardButton {
   /**
    * The HTML element ID used for the button.  This can be used to access the button within the page.
    */
-  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = true)
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = false)
   String buttonID
 
   /**

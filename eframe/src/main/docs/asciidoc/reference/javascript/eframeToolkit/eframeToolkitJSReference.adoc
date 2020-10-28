@@ -4,6 +4,7 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<eframe-toolkit-ph>>#
 [inline-toc]#<<eframe-toolkit-pw>>#
+[inline-toc]#<<getGridData>>#
 [inline-toc]#<<findMaxGridValue>>#
 [inline-toc]#<<refreshList>>#
 
@@ -26,6 +27,8 @@ to handle the display-related functions in the browser.
 
 include::pw_and_ph.adoc[]
 
+
+include::getGridData.adoc[]
 
 include::findMaxGridValue.adoc[]
 

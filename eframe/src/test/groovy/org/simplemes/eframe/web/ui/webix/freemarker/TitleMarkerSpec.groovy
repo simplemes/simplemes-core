@@ -146,6 +146,24 @@ class TitleMarkerSpec extends BaseMarkerSpecification {
     title.contains('Manager')
   }
 
+  def "verify that marker works for the dashboard type - dashboard and category scenario"() {
+    given: 'two dashboards, one is teh default for the category'
+    DashboardConfig.withTransaction {
+      DashboardConfig dashboardConfig = new DashboardConfig(category: 'A', dashboard: 'MGR_A', title: 'DefManager', defaultConfig: true)
+      dashboardConfig.dashboardPanels << new DashboardPanel(panelIndex: 0)
+      dashboardConfig.save()
+      DashboardConfig dashboardConfig2 = new DashboardConfig(category: 'A', dashboard: 'MGR_B', title: 'NotManager', defaultConfig: false)
+      dashboardConfig2.dashboardPanels << new DashboardPanel(panelIndex: 0)
+      dashboardConfig2.save()
+    }
+
+    when: 'the text is generated'
+    def title = execute(source: '<@efTitle type="dashboard" category="A" dashboard="MGR_B"/>')
+
+    then: 'the dashboard specified is used'
+    title.contains('NotManager')
+  }
+
   def "verify that missing dashboard and category throws exception"() {
     when: 'the text is generated'
     execute(source: "<@efTitle type='dashboard'/>")
