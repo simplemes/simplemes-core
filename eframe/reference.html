@@ -3660,6 +3660,42 @@ A <em>return</em> statement is not needed for one line scripts.  The <em>return<
 </tbody>
 </table>
 </div>
+<div class="sect4">
+<h5 id="inline-grid-in-dialogs"><a class="link" href="#inline-grid-in-dialogs">Inline Grid in Dialogs</a></h5>
+<div class="paragraph">
+<p>It is possible to use a field in a dialog with an inline grid for inline editing of
+values.  This adds some complications, but that can be handled with the <code>addRowPrefix</code>
+option.  For example, in the source for a popup dialog, you might have this
+.ftl file:</p>
+</div>
+<div class="listingblock">
+<div class="title">Inline Grid - addRowPrefix Option in Dialogs</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span class="tag">&lt;script&gt;</span>
+<span class="inline">
+  &lt;<span class="error">@</span>efForm id=<span class="string"><span class="delimiter">&quot;</span><span class="content">buttonDetailsDialog</span><span class="delimiter">&quot;</span></span> dashboard=<span class="string"><span class="delimiter">&quot;</span><span class="content">true</span><span class="delimiter">&quot;</span></span>&gt;
+    &lt;<span class="error">@</span>efField field=<span class="string"><span class="delimiter">&quot;</span><span class="content">DashboardButton.buttonID</span><span class="delimiter">&quot;</span></span> required=<span class="predefined-constant">true</span>/&gt;
+    &lt;<span class="error">@</span>efField field=<span class="string"><span class="delimiter">&quot;</span><span class="content">DashboardConfig.buttons</span><span class="delimiter">&quot;</span></span>  <i class="conum" data-value="1"></i><b>(1)</b>
+              addRowPrefix=<span class="string"><span class="delimiter">&quot;</span><span class="content">_dialogContent.</span><span class="delimiter">&quot;</span></span> /&gt;  <i class="conum" data-value="2"></i><b>(2)</b>
+  &lt;<span class="regexp"><span class="delimiter">/</span><span class="content">@efForm&gt;</span></span></span>
+
+<span class="tag">&lt;/script&gt;</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Defines a field based on the list of <code>buttons</code> from the <em>DashboardConfig</em> domain object.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Required to make sure the <code>addRow()</code> function is defined in the right object for
+the elements in a dialog.</td>
+</tr>
+</table>
+</div>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -7243,6 +7279,7 @@ level.</p>
 <div class="paragraph">
 <p><span class="inline-toc"><a href="#eframe-toolkit-ph">ph</a></span>
 <span class="inline-toc"><a href="#eframe-toolkit-pw">pw</a></span>
+<span class="inline-toc"><a href="#getgriddata">getGridData</a></span>
 <span class="inline-toc"><a href="#findmaxgridvalue">findMaxGridValue</a></span>
 <span class="inline-toc"><a href="#refreshlist">refreshList</a></span></p>
 </div>
@@ -7380,6 +7417,49 @@ Using 'em' units means using the font-size.
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="javascript"><span class="keyword">var</span> width1 = tk.pw(<span class="string"><span class="delimiter">'</span><span class="content">20%</span><span class="delimiter">'</span></span>);
 <span class="keyword">var</span> width2 = tk.pw(<span class="string"><span class="delimiter">'</span><span class="content">10em</span><span class="delimiter">'</span></span>);</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="getgriddata"><a class="link" href="#getgriddata">getGridData</a></h3>
+<div class="paragraph">
+<div class="title">getGridData(gridName)</div>
+<p>This Javascript function returns the data rows for the given grid.</p>
+</div>
+<div class="paragraph">
+<p>This function is part of the <a href="#eframe_toolkit-js">eframe_toolkit.js</a> library.</p>
+</div>
+<div class="paragraph">
+<p>The arguments are:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Parameter</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">gridName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The grid&#8217;s name (HTML ID for a toolkit Grid object).  Defined by the <a href="#efedit">efEdit</a> marker.  (<strong>Required</strong>).</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="keyword">var</span> data = toolkit.getGridData(<span class="string"><span class="delimiter">'</span><span class="content">buttons</span><span class="delimiter">'</span></span>);
+
+<span class="keyword">for</span> (<span class="keyword">var</span> j = <span class="integer">0</span>; j &lt; data.length; j++) {
+  <span class="keyword">var</span> row = data[j];
+}</code></pre>
 </div>
 </div>
 </div>
@@ -8223,7 +8303,7 @@ You will normally not need to call this directly.  The dashboard will usually ca
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-10-26 13:19:37 UTC
+Last updated 2020-10-28 14:20:31 UTC
 </div>
 </div>
 <style>
