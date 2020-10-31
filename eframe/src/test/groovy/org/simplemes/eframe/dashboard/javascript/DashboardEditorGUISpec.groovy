@@ -286,7 +286,6 @@ class DashboardEditorGUISpec extends BaseDashboardSpecification {
   }
 
   def "verify that save failures are detected and displayed correctly"() {
-    // TODO: Add bad button.panel reference to test multiple error messages from server.
     given: 'a dashboard'
     def dashboard = buildDashboard(defaults: ['Content A'])
 
@@ -478,14 +477,6 @@ class DashboardEditorGUISpec extends BaseDashboardSpecification {
     then: 'the buttons are in the correct order - FAIL first due to sequence change above'
     $("body").module(new ButtonModule(id: 'FAILEditor')).button.x < $("body").module(new ButtonModule(id: 'PASSEditor')).button.x
   }
-
-
-  // TODO: DashboardJS GUI Specs
-  /*
-   EditorButton - click, context menu, double-click. See legacy DashboardEditorButtonGUISpec
-     remove button - unsaved indicator on each fields changed.  Change to grid.
-
-   */
 
 
 }

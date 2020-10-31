@@ -78,8 +78,8 @@ class BaseDashboardSpecification extends BaseGUISpecification {
    * <ul>
    *   <li><b>defaults</b> - The default activity content for the panels. (<b>Required</b>: Array of Strings - 1, 2 or 3 elements).
    *    </li>
-   *   <li><b>buttons</b> - The buttons activity content for the dashboard.
-   *     (<b>Optional</b>). Array of Strings or Maps with DashboardButton fields (label, url, panel, title, css, size, buttonID). </li>
+   *   <li><b>buttons</b> - The buttons activity content for the dashboard. Generates buttons B0, B1, B2....
+   *     (<b>Optional</b>). List of List of Strings or Maps with DashboardButton fields (label, url, panel, title, css, size, buttonID). </li>
    * </ul>
    *
    * <b>Note:</b> If the URL's (defaults or buttons values) start with a '/', then it assumed to be a URL, not the activity content.

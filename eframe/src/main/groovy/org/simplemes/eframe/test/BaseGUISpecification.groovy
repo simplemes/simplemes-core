@@ -346,6 +346,10 @@ class BaseGUISpecification extends BaseSpecification {
    * @param newValue The new value.
    */
   void setFieldValue(String fieldName, Object expectedValue, Object newValue) {
+    if (newValue instanceof Integer) {
+      newValue = newValue.toString()
+      expectedValue = expectedValue.toString()
+    }
     if (newValue instanceof Boolean) {
       def field = $('div.webix_el_checkbox', view_id: "${fieldName}").find('button')
       def currentValue = field.@'aria-checked' == 'true'

@@ -68,7 +68,7 @@ efe.dashboardEditor = function () {
         newSequence = dashboardButtons[selectedButtonIndex].pages[0].sequence + (after ? 1 : -1);
       }
       //console.log('buttonID:'+buttonID+', selectedElement:'+selectedElement);
-      //console.log('Adding ('+after+') newIndex:'+newIndex+', seq:'+newSequence+" for selectedButtonIndex:"+selectedButtonIndex);
+      console.log('Adding (' + after + ') newIndex:' + newIndex + ', seq:' + newSequence + " for selectedButtonIndex:" + selectedButtonIndex);
       dashboardButtons.splice(newIndex, 0, {});
       dashboardButtons[newIndex].label = 'label' + newSequence;
       dashboardButtons[newIndex].buttonID = 'button' + newSequence;
@@ -79,6 +79,7 @@ efe.dashboardEditor = function () {
       pages[0].url = 'change';
       pages[0].panel = 'A';
       pages[0].sequence = newSequence;
+      console.log(dashboardButtons);
 
       // Push out to the persistence model.
       dashboardConfig.buttons = dashboardEditor.convertButtonsFromHierarchy(dashboardButtons);
@@ -101,15 +102,15 @@ efe.dashboardEditor = function () {
       }
       for (var i = 0; i < dashboardButtons.length; i++) {
         var buttonName = dashboardButtons[i].buttonID;
-        console.log("buttonName: " + buttonName);
+        //console.log("buttonName: " + buttonName);
 
         webix.ui({
           view: "contextmenu", id: 'cm' + buttonName,
           width: tk.pw('15em'),
           master: $$(buttonName + 'Editor').$view,
           data: [
-            {id: "addButtonBefore", button: buttonName, value: ef.lookup("dashboardEditorMenu.addButtonBefore.label")},
-            {id: "addButtonAfter", button: buttonName, value: ef.lookup("dashboardEditorMenu.addButtonAfter.label")},
+            {id: "addButtonBeforeContext", button: buttonName, value: ef.lookup("dashboardEditorMenu.addButtonBefore.label")},
+            {id: "addButtonAfterContext", button: buttonName, value: ef.lookup("dashboardEditorMenu.addButtonAfter.label")},
             {$template: "Separator"},
             {id: "removeButtonContext", button: buttonName, value: ef.lookup("dashboardEditorMenu.removeButton.label")},
             {$template: "Separator"},
@@ -119,10 +120,10 @@ efe.dashboardEditor = function () {
             onItemClick: function (id) {
               var buttonID = this.getItem(id).button;
               switch (id) {
-                case 'addButtonBefore' :
+                case 'addButtonBeforeContext' :
                   dashboardEditor.addButton(buttonID, false)
                   break;
-                case 'addButtonAfter' :
+                case 'addButtonAfterContext' :
                   dashboardEditor.addButton(buttonID, true)
                   break;
                 case 'removeButtonContext' :
@@ -762,9 +763,11 @@ efe.dashboardEditor = function () {
       $$(parentViewName).addView({view: 'form', type: "clean", borderless: true, id: contentViewName, margin: 0, rows: [content]}, 0);
 
       // sort on button sequence
-      dashboardConfig.buttons.sort(function (a, b) {
-        return a.sequence - b.sequence
-      });
+      if (dashboardConfig.buttons) {
+        dashboardConfig.buttons.sort(function (a, b) {
+          return a.sequence - b.sequence
+        });
+      }
       dashboardButtons = dashboardEditor.convertButtonsToHierarchy(dashboardConfig.buttons);
       dashboard._addButtonsIfNeededInternal('A', dashboardButtons, 'Editor', true);
       dashboardEditor.addPanelContextMenus();
