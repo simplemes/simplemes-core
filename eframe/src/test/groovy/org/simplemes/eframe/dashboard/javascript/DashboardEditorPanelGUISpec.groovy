@@ -144,13 +144,14 @@ class DashboardEditorPanelGUISpec extends BaseDashboardSpecification {
     dashboard2.dashboardPanels.size() == originalPanelCount - 1
     dashboard2.splitterPanels.size() == originalSplitterCount - 1
 
-    dashboard2.dashboardPanels.find { it.panel == 'B' }
-    !dashboard2.dashboardPanels.find { it.panel == 'A' }
+    dashboard2.dashboardPanels.find { it.panel == remainingPanel }
+    !dashboard2.dashboardPanels.find { it.panel == targetPanel }
 
     where:
     nPanels | targetPanel | remainingPanel
     2       | 'A'         | 'B'
     3       | 'A'         | 'B'
+    3       | 'C'         | 'A'
   }
 
   def "verify that a panel can be removed via context menu - right mouse click"() {

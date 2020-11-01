@@ -927,7 +927,6 @@ efe.dashboardEditor = function () {
         return;
       }
 
-      console.log(button);
       $$('buttonID').getInputNode().value = button.buttonID ? button.buttonID : '';
       $$('label').getInputNode().value = button.label ? button.label : '';
       $$('title').getInputNode().value = button.title ? button.title : '';

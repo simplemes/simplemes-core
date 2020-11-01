@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 // Define the eframe_definition 'module' for the enterprise framework API.
 // This provides functions for definition pages.
 // It provides common routines for things like GUI Customization, deleting records, etc.
@@ -42,22 +46,6 @@ _efd.eframe_definition = function () {
           }
           row++;
         });
-      }
-    },
-    // Checks for definition page URL messages to display.  These are params such as _error or _msg.
-    _checkURLMessages: function () {
-      try {
-        var url = new URL(window.location);
-        var _info = url.searchParams.get("_info");
-        if (_info) {
-          ef.displayMessage(_info);
-        }
-        var _error = url.searchParams.get("_error");
-        if (_error) {
-          ef.displayMessage({error: _error});
-        }
-      } catch (e) {
-        // Ignore for IE.  This means the messages won't be display.
       }
     },
     // Confirms the delete of a record.  Used in conjunction with the standard definition toolbar for show pages.
