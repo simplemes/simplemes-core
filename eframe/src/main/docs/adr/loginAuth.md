@@ -29,26 +29,18 @@ time.  If a token is used twice, then all refresh tokens for that user will be i
 Authentication of most requests is via JWT Cookies submitted with the HTTP request.  This simplifies the 
 browser-based page interactions and only mildly complicates the REST API usage.
 
-Along with this JWT cookie use for authentication, we also support the use of JWT Refresh tokens using
-the a refresh controller _'/login/refresh'_.  This is used in the background to refresh 
-the JWT cookie shortly before it is due to expire.  Each request returns a cookie 
-(_Silent-JWT-Refresh_) to tell the browser page logic (_eframe.js_) to request a token refresh after this amount
-of time.
+Along with this JWT cookie use for authentication, we also support the use of Auto Refresh Refresh tokens using
+for all non-asset requests.  A request with an expired JWT and a valid JWT_REFRESH_TOKEN will automatically
+generate a new JWT token cookie in the response.  
 
-This mechanism uses an iframe refresh to update the JWT access cookie when it is about to timeout.  
-This refreshes the access token and updates to a new refresh token. 
-This approach allows a user to have multiple tabs open in a single browser or to use multiple browsers/clients to 
-access the server over HTTP. 
-
-REST API clients will need to use explicitly request the new access cookie as needed.
-
-Part of the security protocol makes use of a _SingleUseRefreshToken_ instead of the normal re-usable tokens.  This
-reduces the chance of a refresh token being leaked to un-authorized users.  This does complicate the client-side
-refresh logic.  The browser page logic (_eframe.js_) uses some local storage settings top reduce the chance of two 
-legitimate browser pages from requesting a refresh from the same token.  
+Part of the security protocol makes use of a _Single Use Refresh Token_ instead of the normal refresh tokens.  This
+reduces the chance of a refresh token being leaked to un-authorized users.  This should give a good
+user experience without a big compromise of the security.  
 
 If a second attempt is made to re-use a token, then a warning is logged and all tokens for the user are revoked.
  
+REST API clients will need to use explicitly request the new access cookie as needed.
+
 ### OAuth /oauth/access_token Endpoint Use
 
 This endpoint is intentionally broken.  The replacement _/login/access_token_ provides a single-use replacement

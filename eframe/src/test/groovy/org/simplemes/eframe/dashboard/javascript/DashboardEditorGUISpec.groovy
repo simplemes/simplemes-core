@@ -466,7 +466,6 @@ class DashboardEditorGUISpec extends BaseDashboardSpecification {
       dashboard.buttons[0].sequence = 100
       dashboard.buttons[0].save()
     }
-    println "dashboard = ${dashboard.buttons}"
 
     when: 'the dashboard is displayed'
     displayDashboard()

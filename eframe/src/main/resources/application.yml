@@ -91,3 +91,6 @@ eframe:
   #  factory: org.simplemes.eframe.archive.ArchiverFactory
   #  topFolder: '../archives'
   #  folderName: '#{year}-#{month}-#{day}'
+  security:
+    jwtRefreshMaxAge: 2592000
+

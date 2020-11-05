@@ -44,8 +44,6 @@ Tasks
 =====
 JWT Refresh Token support before 1.0?
   Consider moving to use of status UNAUTHORIZED vs. FORBIDDEN.
-Bug forces re-login after 15 minutes without a page displayed (auto-refresh on first attempt).
-  Change SilentTokenRefreshFilter to add JWT filter if refresh token is present and no JWT in response.
 Bug - Expired password needs to re-direct to change password page.
 Bug - Jasper Reports fails from shadowJar on Debian, JDK 14.
 Reports

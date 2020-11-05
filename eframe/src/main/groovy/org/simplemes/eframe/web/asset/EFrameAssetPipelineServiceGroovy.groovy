@@ -4,9 +4,11 @@
 
 package org.simplemes.eframe.web.asset
 
+import asset.pipeline.AssetPipelineConfigHolder
 import asset.pipeline.micronaut.AssetPipelineService
 import io.micronaut.context.annotation.Primary
 import io.micronaut.context.annotation.Replaces
+import org.simplemes.eframe.application.Holders
 
 import javax.inject.Singleton
 
@@ -21,5 +23,11 @@ import javax.inject.Singleton
 @Singleton
 @Replaces(AssetPipelineService)
 class EFrameAssetPipelineServiceGroovy extends EFrameAssetPipelineService {
-
+  EFrameAssetPipelineServiceGroovy() {
+    super()
+    // Force the .asscache file to the build/ folder in dev mode.
+    if (Holders.environmentDev) {
+      AssetPipelineConfigHolder.config.put("cacheLocation", "build/.asscache")
+    }
+  }
 }

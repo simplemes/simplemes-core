@@ -48,6 +48,15 @@ class BaseAPISpecification extends BaseSpecification {
    */
   static String jwtCookie
 
+  /**
+   * The JWT refresh cookie string to send with all non-login requests.
+   */
+  static String jwtRefreshCookie
+
+  /**
+   * The most recent Http client response.
+   */
+  def lastHttpResponse
 
   /**
    * Tracks the current user logged in.
@@ -112,10 +121,10 @@ class BaseAPISpecification extends BaseSpecification {
     for (cookie in cookies) {
       //println "cookie (${cookie.getClass()}) = $cookie, "
       if (cookie.startsWith('JWT=')) {
-        def end = cookie.indexOf(';')
-        if (end > 0) {
-          jwtCookie = cookie[0..(end - 1)]
-        }
+        jwtCookie = extractCookieValueFromHeader(cookie)
+      }
+      if (cookie.startsWith('JWT_REFRESH_TOKEN=')) {
+        jwtRefreshCookie = extractCookieValueFromHeader(cookie)
       }
     }
 
@@ -130,6 +139,24 @@ class BaseAPISpecification extends BaseSpecification {
     loggedInUser = _userName
   }
 
+
+  /**
+   * Extracts the cookie name/value from the given set-cookie header string.  Strips off
+   * trailing details after the first ';'.
+   * @param setCookieHeader The header.
+   * @return The value (e.g. 'JWT=ABC...').
+   */
+  String extractCookieValueFromHeader(String setCookieHeader) {
+    if (setCookieHeader) {
+      def end = setCookieHeader.indexOf(';')
+      if (end > 0) {
+        return setCookieHeader[0..(end - 1)]
+      }
+    }
+    return null
+  }
+
+
   /**
    * Logs out the current test user.
    */
@@ -138,6 +165,8 @@ class BaseAPISpecification extends BaseSpecification {
       sendRequest(uri: "/logout", method: 'post', content: '{}', status: HttpStatus.SEE_OTHER)
       loggedInUser = null
     }
+    jwtCookie == null
+    jwtRefreshCookie == null
   }
 
   /**
@@ -182,6 +211,9 @@ class BaseAPISpecification extends BaseSpecification {
     if (jwtCookie) {
       request.header(HttpHeaders.COOKIE, jwtCookie)
     }
+    if (jwtRefreshCookie) {
+      request.header(HttpHeaders.COOKIE, jwtRefreshCookie)
+    }
     if (options.locale) {
       request.header(HttpHeaders.ACCEPT_LANGUAGE, (String) options.locale.toLanguageTag())
     }
@@ -194,6 +226,7 @@ class BaseAPISpecification extends BaseSpecification {
     //String resp = client.toBlocking().retrieve(request)
     def response
     try {
+      //println "uri = $uri"
       response = client.toBlocking().exchange(request, String)
     } catch (HttpClientResponseException e) {
       if (options.status) {
@@ -205,6 +238,7 @@ class BaseAPISpecification extends BaseSpecification {
     }
 
     def expectedStatus = options.status ?: HttpStatus.OK
+    lastHttpResponse = response
 
     // Make sure the response status is expected.
     assert response.status == expectedStatus

@@ -389,7 +389,7 @@ class GridWidgetSpec extends BaseWidgetSpecification {
     when: 'the UI element is built'
     def widgetContext = buildWidgetContext(value: [], format: ChildListFieldFormat.instance, referenceType: SampleChild)
     def page = new GridWidget(widgetContext).build().toString() + widgetContext.markerCoordinator.postscript
-    println "page = $page"
+    //println "page = $page"
 
     then: 'the page is valid'
     checkPage(page)

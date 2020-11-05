@@ -48,9 +48,9 @@ micronaut:
         signatures:
           secret:
             generator:
-              secret: ${eframe_key}    // <.>
+              secret: ${eframe_key}    <.>
         generator:
-          access-token-expiration: 1800  # 30 minutes
+          access-token-expiration: 1800  # 30 minutes  <.>
     interceptUrlMap:
       - pattern: /assets/**
         httpMethod: GET
@@ -63,11 +63,23 @@ micronaut:
   server.netty.logLevel: DEBUG
   server.thread-selection: AUTO
 
+---
+eframe:
+  security:
+    jwtRefreshMaxAge: 1209600  <.>
+
 ----
 <.> This value comes from the environment variable 'eframe_key'.  The JWT encryption
     provider requires a 256 bit or longer key (32+ characters).
     See https://docs.micronaut.io/latest/guide/index.html#_included_propertysource_loaders[Micronaut Configuration]
     for more details.
+<.> The access token timeout.  Suggest value between 15-30 minutes.  Too small, and the
+    token refresh mechanism will be invoked too often.  Too large and the
+    JWT token will be valid for too long.  This means disabling a user account will not
+    take effect until the JWT token has expired.  See <<Security Design>> for details
+    on these trade-offs.
+<.> The expiration time for the refresh token (seconds).  Defaults to 30 days (2592000 seconds).
+
 
 This configures JWT Security to force all controller requests to be authenticated.
 It also allows access to some pages/assets without a login.

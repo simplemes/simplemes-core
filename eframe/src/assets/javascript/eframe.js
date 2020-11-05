@@ -16,9 +16,6 @@ _ef.eframe = function () {
   var preloadedMessages = {};
   var _messageDiv = 'messages';          // The ID of the DIV to display standard messages in.
   var _dialogMessagesDiv = 'dialogMessages'; // The ID of the DIV to display messages within a dialog.
-  var _silentRefreshCookieName = 'JWT_SILENT_REFRESH'; // The name of the cookie used to get the silent refresh times for each page.
-  var _silentRefreshLocalName = 'lastSilentRefresh';   // The name of the local storage element that contains the last silent refresh time.
-  var _silentRefreshDelay = 900000;      // The delay for the next silent refresh (after the first).  Normally comes from server.
   var _pageOptions = {};                 // A map containing the current page options for get/setPageOption().
   var _configActions = [];               // An array of configuration actions for the current page.
 
@@ -564,49 +561,6 @@ _ef.eframe = function () {
     _setInnerHTML: function (id, text) {
       var element = document.getElementById(id);
       element.innerHTML = text;
-    },
-    // The JWT access token silent refresh.
-    _silentRefresh: function () {
-      var okToRefresh = true;
-      var now = Date.now();
-      var storageValue = ef._retrieveLocal(_silentRefreshLocalName, "/");
-      if (storageValue != null) {
-        if (Math.abs(now - storageValue.refreshTime) < 60000) {
-          // If another window/tab did the refresh recently, then skip this refresh.
-          JL().trace("_silentRefresh(): Refresh already performed by another tab at " + storageValue.refreshTime);
-          okToRefresh = false;
-        }
-      }
-
-      if (okToRefresh) {
-        // Store the time we started this refresh
-        ef._storeLocal(_silentRefreshLocalName, {refreshTime: Date.now()}, "/");
-
-        var refreshElement = document.getElementById('_refresh')
-        if (refreshElement == null) {
-          var div = document.getElementById('_refreshDiv');
-          refreshElement = document.createElement('iframe');
-          refreshElement.id = '_refresh';
-          refreshElement.src = '/login/access_token';
-          refreshElement.style.display = "none";
-          div.appendChild(refreshElement);
-        } else {
-          refreshElement.contentWindow.location.reload(true);
-        }
-      }
-      // Wait until a new access token is needed again.
-      setTimeout(ef._silentRefresh, _silentRefreshDelay);
-    },
-    // Starts a time for the JWT access token silent refresh.
-    _startSilentRefreshTimer: function () {
-      var s = ef._getCookie(_silentRefreshCookieName)
-      if (s) {
-        var tokens = s.split(",");
-        // Use _/+ 5 seconds on the first refresh to avoid multiple browsers windows sending in a refresh request at the same time.
-        var firstRefresh = (Number(tokens[0]) - 5 + Math.trunc(10 * Math.random())) * 1000;
-        _silentRefreshDelay = Number(tokens[1]) * 1000;
-        setTimeout(ef._silentRefresh, firstRefresh);
-      }
     },
     // Stores a given value in local storage for the current page.
     // The internal storage key is made of the current page with the key appended.

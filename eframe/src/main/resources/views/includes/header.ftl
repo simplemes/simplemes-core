@@ -61,9 +61,7 @@
           ]
         }]
     });
-    ef._startSilentRefreshTimer();
   </script>
-  <div id="_refreshDiv"></div>
 </div>
 
 <@efMessages/>

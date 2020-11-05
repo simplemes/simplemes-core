@@ -10,6 +10,8 @@ import groovy.util.logging.Slf4j
 import io.micronaut.context.ApplicationContext
 import io.micronaut.core.convert.ConversionService
 import io.micronaut.http.HttpRequest
+import io.micronaut.http.cookie.Cookies
+import io.micronaut.http.netty.cookies.NettyCookie
 import io.micronaut.http.simple.SimpleHttpHeaders
 import io.micronaut.http.simple.SimpleHttpParameters
 import io.micronaut.runtime.server.EmbeddedServer
@@ -349,6 +351,7 @@ class BaseSpecification extends GebSpec {
    *   <li><b>uri</b> - The URI of this request (string). </li>
    *   <li><b>accept</b> - The Accept header for this request. </li>
    *   <li><b>remoteAddress</b> - The InetSocketAddress simulated for this mock request. </li>
+   *   <li><b>cookies</b> - A list of cookies simulated for this mock request.  Array of strings in format: ['JWT=abc...','JWT_REFRESH=abc...'] </li>
    * </ul>
    *
    * @param params The parameters (optional).  Special parameters ('uri') are stored in the request itself in the special fields.
@@ -381,11 +384,26 @@ class BaseSpecification extends GebSpec {
     def uri = params?.uri
     if (uri) {
       request.getUri() >> new URI((String) uri)
+      request.getPath() >> uri
     }
 
     def accept = params?.accept
     if (accept) {
       request.getHeaders() >> new SimpleHttpHeaders((Map) [Accept: accept], null)
+    }
+
+    if (params?.cookies) {
+      def cookies = Mock(Cookies)
+      for (String s in params.cookies) {
+        def start = s.indexOf('=')
+        if (start < 0) {
+          throw new IllegalArgumentException("Mock cookie string must be in the form: NAME=value.  Missing '='.")
+        }
+        def value = s[(start + 1)..-1]
+        def name = s[0..(start - 1)]
+        cookies.get(name) >> new NettyCookie(name, value)
+      }
+      request.getCookies() >> cookies
     }
 
     Holders.mockRequest = request

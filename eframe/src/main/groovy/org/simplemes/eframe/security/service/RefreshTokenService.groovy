@@ -44,10 +44,6 @@ class RefreshTokenService implements RefreshTokenPersistence {
    */
   public static final String JWT_REFRESH_TOKEN = "JWT_REFRESH_TOKEN"
 
-  /**
-   * The name of the cookie for the silent refresh data.
-   */
-  public static final String JWT_SILENT_REFRESH = "JWT_SILENT_REFRESH"
 
   protected final RefreshTokenGenerator refreshTokenGenerator
   protected final RefreshTokenValidator refreshTokenValidator
@@ -147,8 +143,8 @@ class RefreshTokenService implements RefreshTokenPersistence {
         // Already used, so fail with an error logged
         revokeAllUserTokens(currentRefreshToken.userName)
         currentRefreshToken.useAttemptCount++
-        log.error("replaceRefreshToken(): Attempt to use refresh token more than once for user '{}' from '{}'.  All refresh tokens revoked.  Attempt count {}.",
-                  currentRefreshToken.userName, requestSource, currentRefreshToken.useAttemptCount)
+        log.error("replaceRefreshToken(): Attempt to use refresh token on {} more than once for user '{}' from '{}'.  All refresh tokens revoked.  Attempt count {}.",
+                  request.path, currentRefreshToken.userName, requestSource, currentRefreshToken.useAttemptCount)
         currentRefreshToken.save()
 
         return null
