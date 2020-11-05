@@ -151,6 +151,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.lang.String</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#jwtRefreshCookie">jwtRefreshCookie</a></code><br>The JWT refresh cookie string to send with all non-login requests.</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>private&nbsp;java.lang.Object</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#lastHttpResponse">lastHttpResponse</a></code><br>The most recent Http client response.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.lang.String</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#loggedInUser">loggedInUser</a></code><br>Tracks the current user logged in.</td>
                         </tr>
                         
@@ -209,25 +219,31 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>io.micronaut.http.client.HttpClient</code></td>
-                            <td class="colLast"><code><strong><a href="#getClient()">getClient</a></strong>()</code><br>Gets the current (static) client for requests sent to the embedded server.
- </td>
+                            <td class="colLast"><code>java.lang.String</code></td>
+                            <td class="colLast"><code><strong><a href="#extractCookieValueFromHeader(java.lang.String)">extractCookieValueFromHeader</a></strong>(java.lang.String setCookieHeader)</code><br>Extracts the cookie name/value from the given set-cookie header string.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#login(java.lang.String, java.lang.String)">login</a></strong>(java.lang.String _userName, java.lang.String passwordInput)</code><br>Logs the user in as the given user, if not already logged in.
+                            <td class="colLast"><code>io.micronaut.http.client.HttpClient</code></td>
+                            <td class="colLast"><code><strong><a href="#getClient()">getClient</a></strong>()</code><br>Gets the current (static) client for requests sent to the embedded server.
  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#logout()">logout</a></strong>()</code><br>Logs out the current test user.</td>
+                            <td class="colLast"><code><strong><a href="#login(java.lang.String, java.lang.String)">login</a></strong>(java.lang.String _userName, java.lang.String passwordInput)</code><br>Logs the user in as the given user, if not already logged in.
+ </td>
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#logout()">logout</a></strong>()</code><br>Logs out the current test user.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#sendRequest(Map)">sendRequest</a></strong>(<a href='../../../../Map.html'>Map</a> options)</code><br>Sends an HTTP request to the embedded server using the internal client.
@@ -293,6 +309,22 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
+                        <a name="jwtRefreshCookie"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;static&nbsp;java.lang.String <strong>jwtRefreshCookie</strong></h4>
+                                <p> The JWT refresh cookie string to send with all non-login requests.</p>
+                            </li>
+                        </ul>
+                    
+                        <a name="lastHttpResponse"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;java.lang.Object <strong>lastHttpResponse</strong></h4>
+                                <p> The most recent Http client response.</p>
+                            </li>
+                        </ul>
+                    
                         <a name="loggedInUser"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -343,6 +375,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                     <!--   -->
                 </a>
                     <h3>Method Detail</h3>
+                    
+                        <a name="extractCookieValueFromHeader(java.lang.String)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.lang.String <strong>extractCookieValueFromHeader</strong>(java.lang.String setCookieHeader)</h4>
+                                <p> Extracts the cookie name/value from the given set-cookie header string.  Strips off
+ trailing details after the first ';'. <DL><DT><B>Parameters:</B></DT><DD><code>setCookieHeader</code> -  The header.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The value (e.g. 'JWT=ABC...').</DD></DL></p>
+                            </li>
+                        </ul>
                     
                         <a name="getClient()"><!-- --></a>
                         <ul class="blockListLast">

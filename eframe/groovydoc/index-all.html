@@ -373,6 +373,16 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd><div class="block">Defines the methods need by a mock object that handles its own cleanup.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/AutoCleanupMockInterface.html#AutoCleanupMockInterface()" title="Constructor in AutoCleanupMockInterface">AutoCleanupMockInterface()</a></span> - Constructor in <a href="org/simplemes/eframe/test/AutoCleanupMockInterface.html">AutoCleanupMockInterface</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html" title="Class in org.simplemes.eframe.security">AutoRefreshAuthenticationFetcher</a></span> - Class in <a href="./org/simplemes/eframe/security/package-summary.html">org.simplemes.eframe.security</a>
+</dt><dd><div class="block">Authentication fetcher that will trigger a JWT refresh if possible on all requests.
+ </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html#AutoRefreshAuthenticationFetcher()" title="Constructor in AutoRefreshAuthenticationFetcher">AutoRefreshAuthenticationFetcher()</a></span> - Constructor in <a href="org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html">AutoRefreshAuthenticationFetcher</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/AutoRefreshTokenFilter.html" title="Class in org.simplemes.eframe.security">AutoRefreshTokenFilter</a></span> - Class in <a href="./org/simplemes/eframe/security/package-summary.html">org.simplemes.eframe.security</a>
+</dt><dd><div class="block">Checks all incoming requests and will trigger an auto-refresh of the access token if needed.
+ </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/AutoRefreshTokenFilter.html#AutoRefreshTokenFilter()" title="Constructor in AutoRefreshTokenFilter">AutoRefreshTokenFilter()</a></span> - Constructor in <a href="org/simplemes/eframe/security/AutoRefreshTokenFilter.html">AutoRefreshTokenFilter</a>
+</dt><dd> <div class="block"></div></dd>
 </dl>
 
     
@@ -1685,8 +1695,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Performs the cleanup action. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/TypeUtils.html#doesClassHaveStaticMethod(java.lang.Class, java.lang.String)" title="Method in TypeUtils">doesClassHaveStaticMethod(java.lang.Class, java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/misc/TypeUtils.html">TypeUtils</a>
 </dt><dd> <div class="block">Determines if the given class has the given static method (no arguments). </div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/controller/SilentTokenRefreshFilter.html#doFilter(io.micronaut.http.HttpRequest, io.micronaut.http.filter.ServerFilterChain)" title="Method in SilentTokenRefreshFilter">doFilter(io.micronaut.http.HttpRequest, io.micronaut.http.filter.ServerFilterChain)</a></span> - Method in <a href="org/simplemes/eframe/controller/SilentTokenRefreshFilter.html">SilentTokenRefreshFilter</a>
-</dt><dd> <div class="block">Variation of the <a href='#doFilter(io.micronaut.http.HttpRequest, io.micronaut.http.filter.FilterChain)'>doFilter(HttpRequest, FilterChain)</a> method that accepts a ServerFilterChain
+<dt><span class="strong"><a href="org/simplemes/eframe/security/AutoRefreshTokenFilter.html#doFilter(io.micronaut.http.HttpRequest, io.micronaut.http.filter.ServerFilterChain)" title="Method in AutoRefreshTokenFilter">doFilter(io.micronaut.http.HttpRequest, io.micronaut.http.filter.ServerFilterChain)</a></span> - Method in <a href="org/simplemes/eframe/security/AutoRefreshTokenFilter.html">AutoRefreshTokenFilter</a>
+</dt><dd> <div class="block">Variation of the <a href='#doFilter(io.micronaut.http.HttpRequest, io.micronaut.http.filter.FilterChain)'>doFilter(HttpRequest, io.micronaut.http.filter.FilterChain)</a> method that accepts a ServerFilterChain
  which allows to mutate the outgoing HTTP response. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/DataGenerator.html#doGenerate()" title="Method in DataGenerator">doGenerate()</a></span> - Method in <a href="org/simplemes/eframe/test/DataGenerator.html">DataGenerator</a>
 </dt><dd> <div class="block">Generates the data. </div></dd>
@@ -2095,6 +2105,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/JavascriptTestUtils.html#extractBlock(java.lang.String, java.lang.String)" title="Method in JavascriptTestUtils">extractBlock(java.lang.String, java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/test/JavascriptTestUtils.html">JavascriptTestUtils</a>
 </dt><dd> <div class="block">Extract a single block of javascript that starts with the given text.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/test/BaseAPISpecification.html#extractCookieValueFromHeader(java.lang.String)" title="Method in BaseAPISpecification">extractCookieValueFromHeader(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/test/BaseAPISpecification.html">BaseAPISpecification</a>
+</dt><dd> <div class="block">Extracts the cookie name/value from the given set-cookie header string.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/LogUtils.html#extractImportantMethodsFromStackTrace()" title="Method in LogUtils">extractImportantMethodsFromStackTrace()</a></span> - Method in <a href="org/simplemes/eframe/misc/LogUtils.html">LogUtils</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/JavascriptTestUtils.html#extractProperty(java.lang.String, java.lang.String)" title="Method in JavascriptTestUtils">extractProperty(java.lang.String, java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/test/JavascriptTestUtils.html">JavascriptTestUtils</a>
@@ -2111,6 +2123,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 <h2 class="title">F</h2>
 <dl>
 
+<dt><span class="strong"><a href="org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html#fetchAuthentication(io.micronaut.http.HttpRequest)" title="Method in AutoRefreshAuthenticationFetcher">fetchAuthentication(io.micronaut.http.HttpRequest)</a></span> - Method in <a href="org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html">AutoRefreshAuthenticationFetcher</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#FIELD_SPECIFIC_PARAMETER_DELIMITER" title="Field in BaseMarker">FIELD_SPECIFIC_PARAMETER_DELIMITER</a></span> - Field in <a href="org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html">BaseMarker</a>
 </dt><dd> <div class="block">The delimiter to use for the field-specific parameter names. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/gui/FieldAdjuster.html" title="Class in org.simplemes.eframe.custom.gui">FieldAdjuster</a></span> - Class in <a href="./org/simplemes/eframe/custom/gui/package-summary.html">org.simplemes.eframe.custom.gui</a>
@@ -3040,6 +3054,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Returns the object wrapper for accessing the raw objects in a freemarker data model.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/system/controller/LoggingController.html#getOpenLevels(java.lang.String)" title="Method in LoggingController">getOpenLevels(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/system/controller/LoggingController.html">LoggingController</a>
 </dt><dd> <div class="block">Determines the 'open' top-level entries in the tree from the user preferences. </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/AutoRefreshTokenFilter.html#getOrder()" title="Method in AutoRefreshTokenFilter">getOrder()</a></span> - Method in <a href="org/simplemes/eframe/security/AutoRefreshTokenFilter.html">AutoRefreshTokenFilter</a>
+</dt><dd> <div class="block"><DL><DT><B>Returns:</B></DT><DD>The order of the object. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/system/controller/LoggingController.html#getOtherLevels(java.lang.String)" title="Method in LoggingController">getOtherLevels(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/system/controller/LoggingController.html">LoggingController</a>
 </dt><dd> <div class="block">Determines the 'other' logger levels the user cares about. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/webix/widget/ListWidget.html#getPageSize()" title="Method in ListWidget">getPageSize()</a></span> - Method in <a href="org/simplemes/eframe/web/ui/webix/widget/ListWidget.html">ListWidget</a>
@@ -3761,8 +3777,12 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html#JWT_REFRESH_TOKEN" title="Field in RefreshTokenService">JWT_REFRESH_TOKEN</a></span> - Field in <a href="org/simplemes/eframe/security/service/RefreshTokenService.html">RefreshTokenService</a>
 </dt><dd> <div class="block">The name of the cookie for the refresh token.</div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html#JWT_SILENT_REFRESH" title="Field in RefreshTokenService">JWT_SILENT_REFRESH</a></span> - Field in <a href="org/simplemes/eframe/security/service/RefreshTokenService.html">RefreshTokenService</a>
-</dt><dd> <div class="block">The name of the cookie for the silent refresh data.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html#jwtCookieConfiguration" title="Field in AutoRefreshAuthenticationFetcher">jwtCookieConfiguration</a></span> - Field in <a href="org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html">AutoRefreshAuthenticationFetcher</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html#jwtTokenValidator" title="Field in AutoRefreshAuthenticationFetcher">jwtTokenValidator</a></span> - Field in <a href="org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html">AutoRefreshAuthenticationFetcher</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html#jwtValidator" title="Field in AutoRefreshAuthenticationFetcher">jwtValidator</a></span> - Field in <a href="org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html">AutoRefreshAuthenticationFetcher</a>
+</dt><dd> <div class="block"></div></dd>
 </dl>
 
     
@@ -3959,6 +3979,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/simplemes/eframe/security/controller/LoginAuthController.html" title="Class in org.simplemes.eframe.security.controller">LoginAuthController</a></span> - Class in <a href="./org/simplemes/eframe/security/controller/package-summary.html">org.simplemes.eframe.security.controller</a>
 </dt><dd><div class="block">Handles the login authentication view pages.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/security/controller/LoginAuthController.html#LoginAuthController()" title="Constructor in LoginAuthController">LoginAuthController()</a></span> - Constructor in <a href="org/simplemes/eframe/security/controller/LoginAuthController.html">LoginAuthController</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/AutoRefreshTokenFilter.html#loginHandler" title="Field in AutoRefreshTokenFilter">loginHandler</a></span> - Field in <a href="org/simplemes/eframe/security/AutoRefreshTokenFilter.html">AutoRefreshTokenFilter</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/security/controller/LoginAuthController.html#loginHandler" title="Field in LoginAuthController">loginHandler</a></span> - Field in <a href="org/simplemes/eframe/security/controller/LoginAuthController.html">LoginAuthController</a>
 </dt><dd> <div class="block"></div></dd>
@@ -4566,8 +4588,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/simplemes/eframe/application/ExtensionPointDocumentExtractor.html#processClasses(File, File)" title="Method in ExtensionPointDocumentExtractor">processClasses(File, File)</a></span> - Method in <a href="org/simplemes/eframe/application/ExtensionPointDocumentExtractor.html">ExtensionPointDocumentExtractor</a>
 </dt><dd> <div class="block">Processes the given folder for .classes that provide the ExtensionPoint and writes them to the given doc
  output file. </div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/controller/SilentTokenRefreshFilter.html#processRequest(io.micronaut.http.HttpRequest)" title="Method in SilentTokenRefreshFilter">processRequest(io.micronaut.http.HttpRequest)</a></span> - Method in <a href="org/simplemes/eframe/controller/SilentTokenRefreshFilter.html">SilentTokenRefreshFilter</a>
-</dt><dd> <div class="block">Creates the Flowable to process the HTTP request for the silent token refresh cookie. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/EFEnvironments.html#PRODUCTION" title="Field in EFEnvironments">PRODUCTION</a></span> - Field in <a href="org/simplemes/eframe/misc/EFEnvironments.html">EFEnvironments</a>
 </dt><dd> <div class="block">The production (runtime) environment.</div></dd>
 <dt><span class="strong"><a href="sample/ProductionInterface.html" title="Interface in sample">ProductionInterface</a></span> - Interface in <a href="./sample/package-summary.html">sample</a>
@@ -4634,6 +4654,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html" title="Class in org.simplemes.eframe.security.service">RefreshTokenService</a></span> - Class in <a href="./org/simplemes/eframe/security/service/package-summary.html">org.simplemes.eframe.security.service</a>
 </dt><dd><div class="block">Provides services for the JWT refresh tokens.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html#refreshTokenService" title="Field in AutoRefreshAuthenticationFetcher">refreshTokenService</a></span> - Field in <a href="org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html">AutoRefreshAuthenticationFetcher</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/security/controller/LoginAuthController.html#refreshTokenService" title="Field in LoginAuthController">refreshTokenService</a></span> - Field in <a href="org/simplemes/eframe/security/controller/LoginAuthController.html">LoginAuthController</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/security/service/RefreshTokenService.html#RefreshTokenService()" title="Constructor in RefreshTokenService">RefreshTokenService()</a></span> - Constructor in <a href="org/simplemes/eframe/security/service/RefreshTokenService.html">RefreshTokenService</a>
@@ -5266,10 +5288,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/search/SearchEnginePoolExecutor.html#shutdownPool()" title="Method in SearchEnginePoolExecutor">shutdownPool()</a></span> - Method in <a href="org/simplemes/eframe/search/SearchEnginePoolExecutor.html">SearchEnginePoolExecutor</a>
 </dt><dd> <div class="block">Shuts down the pool. </div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/controller/SilentTokenRefreshFilter.html" title="Class in org.simplemes.eframe.controller">SilentTokenRefreshFilter</a></span> - Class in <a href="./org/simplemes/eframe/controller/package-summary.html">org.simplemes.eframe.controller</a>
-</dt><dd><div class="block"></div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/controller/SilentTokenRefreshFilter.html#SilentTokenRefreshFilter()" title="Constructor in SilentTokenRefreshFilter">SilentTokenRefreshFilter()</a></span> - Constructor in <a href="org/simplemes/eframe/controller/SilentTokenRefreshFilter.html">SilentTokenRefreshFilter</a>
-</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/data/SimpleChoiceListItem.html" title="Class in org.simplemes.eframe.data">SimpleChoiceListItem</a></span> - Class in <a href="./org/simplemes/eframe/data/package-summary.html">org.simplemes.eframe.data</a>
 </dt><dd><div class="block">A generic entry of the ChoiceListItemInterface element.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/data/SimpleChoiceListItem.html#SimpleChoiceListItem()" title="Constructor in SimpleChoiceListItem">SimpleChoiceListItem()</a></span> - Constructor in <a href="org/simplemes/eframe/data/SimpleChoiceListItem.html">SimpleChoiceListItem</a>
@@ -5506,6 +5524,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Build human readable version of this object's full contents.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/task/TaskMenuFolder.html#toFullString(java.lang.Integer)" title="Method in TaskMenuFolder">toFullString(java.lang.Integer)</a></span> - Method in <a href="org/simplemes/eframe/web/task/TaskMenuFolder.html">TaskMenuFolder</a>
 </dt><dd> <div class="block">Build human readable version of this object's full contents.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html#tokenConfiguration" title="Field in AutoRefreshAuthenticationFetcher">tokenConfiguration</a></span> - Field in <a href="org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html">AutoRefreshAuthenticationFetcher</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/NameUtils.html#toLegalIdentifier(java.lang.String)" title="Method in NameUtils">toLegalIdentifier(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/misc/NameUtils.html">NameUtils</a>
 </dt><dd> <div class="block">Converts the given text to a legal Java identifier.
  </div></dd>

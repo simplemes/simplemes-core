@@ -4451,6 +4451,113 @@ for the bulk of the security features.</p>
 </div>
 <div class="sect2">
 <h3 id="security-design"><a class="link" href="#security-design">Security Design</a></h3>
+<div class="paragraph">
+<p>This enterprise framework needs to support a few key configurable scenarios:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>User browser session timeout of short duration (e.g 30 minutes or less).</p>
+</li>
+<li>
+<p>Longer user browser session timeout (14+ days).</p>
+</li>
+<li>
+<p>JWT support for security on the <a href="#api">API</a> calls.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>To support all of these cases, we chose to use JWT (Json Web Tokens) via browser cookies.
+This allows a short JWT lifetime, with a long (configurable) automatic refresh mechanism for
+browser-based clients.</p>
+</div>
+<div class="paragraph">
+<p>One other important point:  Most requests should be authenticated with a stateless
+mechanism.  This means the JWT is used to authenticate most requests since
+it does not use the DB or a session state to authenticate the request.  Instead, it
+simply checks for validity.</p>
+</div>
+<div class="paragraph">
+<p>Once the JWT expires (e.g. after 15 minutes), the token refresh is triggered that
+checks for a valid refresh token (in the DB) from the original login.  It also checks the
+User record in the DB for the user&#8217;s status.</p>
+</div>
+<div class="sect3">
+<h4 id="token-timeouts"><a class="link" href="#token-timeouts">Token Timeouts</a></h4>
+<div class="paragraph">
+<p>With this approach, the timeouts for the JWT and JWT_REFRESH_TOKEN are important.
+If the values are too small or too large, then performance may suffer or your exposure
+to security lapses may be too large.</p>
+</div>
+<div class="sect4">
+<h5 id="access-token-expiration-micronaut-security"><a class="link" href="#access-token-expiration-micronaut-security">access-token-expiration (micronaut.security&#8230;&#8203;)</a></h5>
+<div class="paragraph">
+<p>Suggested value: 1800 (30 minutes).</p>
+</div>
+<div class="paragraph">
+<p>This setting defines the number of seconds for the JWT token will live after it is
+created.  This means that any request with this token during that lifetime will
+be allowed.  There will be no check for the User&#8217;s status or for any other validations.</p>
+</div>
+<div class="paragraph">
+<p>Making this value larger than 30 minutes means your exposure to security lapses will
+last 30+ minutes.  If someone compromises your network and gets the JWT token,
+they can make requests on the system.  If your JWT tokens expire quickly, then
+the exposure is short.</p>
+</div>
+<div class="paragraph">
+<p>Making this value less than 5 minutes will force too many expensive refresh requests
+that access the database.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If your network or devices are badly compromised, then there is little that
+      the framework can do to prevent issues.  We can detect certain issues such as
+      two users using the same refresh token.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="eframe-security-jwtrefreshmaxage"><a class="link" href="#eframe-security-jwtrefreshmaxage">eframe.security.jwtRefreshMaxAge</a></h5>
+<div class="paragraph">
+<p>Suggested value: 1-14 days.</p>
+</div>
+<div class="paragraph">
+<p>This age defines how long a refresh token can be used.  This is similar to the
+traditional session timeout used by older web applications.  This is the time
+when the framework will force the user to login again.</p>
+</div>
+<div class="paragraph">
+<p>Every time a JWT token expires, the refresh mechanism will usually be triggered.
+This refresh checks the database for the token.  It must be enabled, un-expired
+and never used before.
+The User&#8217;s setting in the database is also checked.</p>
+</div>
+<div class="paragraph">
+<p>Setting this value too large means the refresh token can be used a long time.  If
+the refresh token is leaked, then it can be used to provide access to the system for
+longer period of time.</p>
+</div>
+<div class="paragraph">
+<p>This is mitigated by the fact that the token can only be used once.  The second attempt
+to use the refresh token will disable all tokens for the user.
+This will force the user to re-authenticate by logging in again.
+A message is logged indicating a re-use was attempted.</p>
+</div>
+<div class="paragraph">
+<p>Setting this value too small means your users will have to login more frequently.
+There is no real downside to this beyond user expectations.</p>
+</div>
+</div>
+</div>
 <div class="sect3">
 <h4 id="refresh-token-flow"><a class="link" href="#refresh-token-flow">Refresh Token Flow</a></h4>
 <div class="admonitionblock note">
@@ -4463,6 +4570,7 @@ for the bulk of the security features.</p>
 This section assumes the access token timeout is set to the default 15 minutes and
       the refresh token timeout is set to the default 24 hours.  These numbers will
       used below without noting that they are the configurable values.
+      See <a href="#security-setup">Security Setup</a> for example settings.
 </td>
 </tr>
 </table>
@@ -4473,22 +4581,12 @@ This section assumes the access token timeout is set to the default 15 minutes a
 <div class="ulist">
 <ul>
 <li>
-<p>Login sends access token and refresh token cookies (15min and 24 hours).</p>
+<p>Successful login sends access token (<em>JWT</em>) and refresh token (<em>JWT_REFRESH_TOKEN</em>)
+cookies (15min and 24 hours).</p>
 </li>
 <li>
-<p>All pages have a silent refresh mechanism every 15 minutes.  Gets a new access
-token cookie, consumes the single use refresh token and gets a new refresh token.</p>
-</li>
-<li>
-<p>To avoid multiple refresh requests on multiple browser tabs, each tab will wait a random
-amount of time before requesting the new access token.  Once that a single refresh is done,
-it will store a flag (timestamp) that will indicate the old token is consumed.
-All other tabs will skip that request update.  They will just schedule a new update at the
-next 15min mark.</p>
-</li>
-<li>
-<p>Each check will prune any old 'still refreshing' flags after 60 seconds to allow the
-next cycle&#8217;s time.  This will help with hung/failed requests.</p>
+<p>All requests are checked for expired JWT.  If the JWT is expired, then the
+auto refresh of the token is attempted. The response will include the new JWT.</p>
 </li>
 <li>
 <p>If any of these refreshes fail, then the user will be forced to login at the next
@@ -4497,53 +4595,41 @@ user request to the sever (e.g. on the nest page load or save).</p>
 </ul>
 </div>
 <div class="paragraph">
-<p>The client-side (in <em>eframe.js</em>) is somewhat complex.  It must support these scenarios:</p>
+<p>The browser client-side logic requires no changes.  The normal browser cookie
+handling logic should cover mode cases.</p>
+</div>
+<div class="paragraph">
+<p>Any non-browser clients can request a refresh using a process similar to
+<a href="#oauth-refresh">OAuth /oauth/access_token Endpoint Use</a> mechanism.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="refresh-token-details"><a class="link" href="#refresh-token-details">Refresh Token Details</a></h4>
+<div class="paragraph">
+<p>Internally, the logic is a little more complex.  There are two Micronaut beans involved
+in this:</p>
 </div>
 <div class="ulist">
 <ul>
 <li>
-<p>Single browser tab opened and left idle for 15+ minutes.  User should not have to log in
-again.</p>
+<p><em>AutoRefreshAuthenticationFetcher</em> - This detects the expired JWT and triggers
+an auto token refresh for the request.  This class stores the new cookies in
+a request attribute for use by the other object.</p>
 </li>
 <li>
-<p>Multiple browser tabs are opened and left idle for 15+ minutes. User should not have to log in
-again.  This should also not trigger any warnings.</p>
-</li>
-<li>
-<p>A crash in the silent refresh logic should not prevent other tabs from handling the refresh later.</p>
+<p><em>AutoRefreshTokenFilter</em> - This gets the cookies from the request and puts them
+in the response.</p>
 </li>
 </ul>
 </div>
-<div class="paragraph">
-<p>This is the flow that the client-side logic uses:</p>
-</div>
-<div class="imageblock text-center">
-<div class="content">
-<img src="images/RefreshTokenFlow.png" alt="RefreshTokenFlow" width="478" height="397">
-</div>
-</div>
-<div class="paragraph">
-<p>To support multiple browser tabs, the client-side logic will use local storage
-in the browser to store the time the refresh was triggered.  If the time
-is less than 15 minutes ago, then other tabs will skip the current refresh.
-This insures that only one tab will request the refresh.</p>
-</div>
 </div>
 <div class="sect3">
-<h4 id="oauth-oauthaccess_token-endpoint-use"><a class="link" href="#oauth-oauthaccess_token-endpoint-use">OAuth /oauth/access_token Endpoint Use</a></h4>
+<h4 id="oauth-refresh"><a class="link" href="#oauth-refresh">OAuth /oauth/access_token Endpoint Use</a></h4>
 <div class="paragraph">
 <p>This endpoint is intentionally broken.  The replacement <em>/login/access_token</em>
 provides a single-use replacement refresh token cookie when used.  The
 <em>RefreshTokenService.getUserDetails()</em> RefreshTokenPersistence implementation
 intentionally prevents use of the tokens via the OAuth <em>/oauth/access_token</em> endpoint.</p>
-</div>
-<div class="paragraph">
-<p>If this OAuth mechanism was left as-is, then the client might refresh the access token
-without getting a new replacement refresh token.</p>
-</div>
-<div class="paragraph">
-<p>Since most of the core logic uses the cookies and <em>/login/access_token</em>, this should not
-be a big problem.</p>
 </div>
 </div>
 </div>
@@ -4601,7 +4687,7 @@ You should make sure there is at least one user with the <em>ADMIN</em> role in 
             <span class="key">generator</span>:
               <span class="key">secret</span>: <span class="string"><span class="content">${eframe_key}    </span></span><i class="conum" data-value="1"></i><b>(1)</b>
         <span class="key">generator</span>:
-          <span class="key">access-token-expiration</span>: <span class="string"><span class="content">1800</span></span>  <span class="comment"># 30 minutes</span>
+          <span class="key">access-token-expiration</span>: <span class="string"><span class="content">1800</span></span>  <span class="comment"># 30 minutes  </span><i class="conum" data-value="2"></i><b>(2)</b>
     <span class="key">interceptUrlMap</span>:
       - <span class="string"><span class="content">pattern: /assets/**</span></span>
         <span class="key">httpMethod</span>: <span class="string"><span class="content">GET</span></span>
@@ -4612,7 +4698,12 @@ You should make sure there is at least one user with the <em>ADMIN</em> role in 
         <span class="key">access</span>:
           - <span class="string"><span class="content">isAnonymous()</span></span>
   <span class="key">server.netty.logLevel</span>: <span class="string"><span class="content">DEBUG</span></span>
-  <span class="key">server.thread-selection</span>: <span class="string"><span class="content">AUTO</span></span></code></pre>
+  <span class="key">server.thread-selection</span>: <span class="string"><span class="content">AUTO</span></span>
+
+<span class="head"><span class="head">---</span></span>
+<span class="key">eframe</span>:
+  <span class="key">security</span>:
+    <span class="key">jwtRefreshMaxAge</span>: <span class="string"><span class="content">1209600  </span></span><i class="conum" data-value="3"></i><b>(3)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -4623,6 +4714,18 @@ You should make sure there is at least one user with the <em>ADMIN</em> role in 
 provider requires a 256 bit or longer key (32+ characters).
 See <a href="https://docs.micronaut.io/latest/guide/index.html#_included_propertysource_loaders">Micronaut Configuration</a>
 for more details.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The access token timeout.  Suggest value between 15-30 minutes.  Too small, and the
+token refresh mechanism will be invoked too often.  Too large and the
+JWT token will be valid for too long.  This means disabling a user account will not
+take effect until the JWT token has expired.  See <a href="#security-design">Security Design</a> for details
+on these trade-offs.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The expiration time for the refresh token (seconds).  Defaults to 30 days (2592000 seconds).</td>
 </tr>
 </table>
 </div>
@@ -19270,7 +19373,7 @@ to the repository.  If you use the repository method directly, then this is not 
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-11-01 13:49:27 UTC
+Last updated 2020-11-05 17:41:22 UTC
 </div>
 </div>
 <style>
