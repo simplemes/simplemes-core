@@ -6,8 +6,12 @@ micronaut:
         signatures:
           secret:
             generator:
-              secret: testKey890123456789012345678901234567890
-              # Never used in production.
+              secret: testKey890123456789012345678901234567890 # Never used in production.
+          refresh-token:
+            secret: testKey890123456789012345678901234567890 # Never used in production.
+        generator:
+          refresh-token:
+            secret: testKey8901234567890123456789012345678901234567890 # Never used in production.
 ---
 datasources:
   default:

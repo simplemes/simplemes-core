@@ -39,7 +39,7 @@ class AutoRefreshAuthenticationFetcherSpec extends BaseAPISpecification {
 
     and: 'the JWT cookie is removed'
     jwtCookie = null
-    jwtCookie = 'JWT=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsIm5iZiI6MTYwNDQ5NjMwMCwicm9sZXMiOlsiQURNSU4iLCJDVVNUT01JWkVSIiwiTUFOQUdFUiIsIkRFU0lHTkVSIl0sImlzcyI6InNlZnJhbWUiLCJleHAiOjE2MDQ0OTcyMDEsImlhdCI6MTYwNDQ5NjMwMH0.v0ixPD5zn3zKVpest3TGWccoaOZ7izALd3DZK68GITw'
+    //jwtCookie = 'JWT=eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsIm5iZiI6MTYwNDQ5NjMwMCwicm9sZXMiOlsiQURNSU4iLCJDVVNUT01JWkVSIiwiTUFOQUdFUiIsIkRFU0lHTkVSIl0sImlzcyI6InNlZnJhbWUiLCJleHAiOjE2MDQ0OTcyMDEsImlhdCI6MTYwNDQ5NjMwMH0.v0ixPD5zn3zKVpest3TGWccoaOZ7izALd3DZK68GITw'
 
     def originalRefreshCookie = jwtRefreshCookie
 

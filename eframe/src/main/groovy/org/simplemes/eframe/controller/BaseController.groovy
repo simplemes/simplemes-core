@@ -146,7 +146,7 @@ abstract class BaseController {
    */
   static HttpResponse buildDeniedResponse(HttpRequest request, String msg, Principal principal) {
     def accept = request.headers?.get(HttpHeaders.ACCEPT)
-    if (accept.contains(MediaType.TEXT_HTML)) {
+    if (accept?.contains(MediaType.TEXT_HTML)) {
       def modelAndView = new StandardModelAndView('home/denied', principal, this)
       modelAndView[StandardModelAndView.FLASH] = msg
       def renderer = Holders.applicationContext.getBean(ViewsRenderer)

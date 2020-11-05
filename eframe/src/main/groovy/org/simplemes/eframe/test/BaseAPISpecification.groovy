@@ -208,11 +208,16 @@ class BaseAPISpecification extends BaseSpecification {
         throw new IllegalArgumentException("Invalid HTTP method ${method}.")
     }
 
-    if (jwtCookie) {
-      request.header(HttpHeaders.COOKIE, jwtCookie)
-    }
-    if (jwtRefreshCookie) {
-      request.header(HttpHeaders.COOKIE, jwtRefreshCookie)
+    if (jwtCookie || jwtRefreshCookie) {
+      def sb = new StringBuilder()
+      if (jwtCookie) {
+        sb << jwtCookie
+        sb << ';'
+      }
+      if (jwtRefreshCookie) {
+        sb << jwtRefreshCookie
+      }
+      request.header(HttpHeaders.COOKIE, sb.toString())
     }
     if (options.locale) {
       request.header(HttpHeaders.ACCEPT_LANGUAGE, (String) options.locale.toLanguageTag())

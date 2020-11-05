@@ -409,7 +409,7 @@ void setup() {
 
     when: 'the request is made with a forbidden error'
     login('TEST', 'TEST')
-    sendRequest(uri: "/order/x", method: 'get', status: HttpStatus.FORBIDDEN)
+    sendRequest(uri: "/order/release", method: 'post', content: '{}', status: HttpStatus.FORBIDDEN)
 
     then: 'no exception is thrown'
     notThrown(Throwable)
