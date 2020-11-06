@@ -4612,22 +4612,31 @@ in this:</p>
 <div class="ulist">
 <ul>
 <li>
-<p><em>AutoRefreshAuthenticationFetcher</em> - This detects the expired JWT and triggers
-an auto token refresh for the request.  This class stores the new cookies in
-a request attribute for use by the other object.</p>
+<p><a href="groovydoc/org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html" target="_blank" rel="noopener">AutoRefreshAuthenticationFetcher</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>
+This detects the expired JWT and triggers
+ an auto token refresh for the request.  This class stores the new cookies in
+ a request attribute for use by the other object.</p>
 </li>
 <li>
-<p><em>AutoRefreshTokenFilter</em> - This gets the cookies from the request and puts them
-in the response.</p>
+<p><a href="groovydoc/org/simplemes/eframe/security/AutoRefreshTokenFilter.html" target="_blank" rel="noopener">AutoRefreshTokenFilter</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>
+This gets the cookies from the request and puts them
+ in the response.</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>These two beans, along with the
+<a href="groovydoc/org/simplemes/eframe/security/service/RefreshTokenService.html" target="_blank" rel="noopener">RefreshTokenService</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>
+will only allow the refresh token to be used from the same IP address it was issued to.
+If any mis-matches are detected (IP address or jwtRefreshUseMax violations), then the
+existing refresh tokens for the user will be disabled and force a new login.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="oauth-refresh"><a class="link" href="#oauth-refresh">OAuth /oauth/access_token Endpoint Use</a></h4>
 <div class="paragraph">
 <p>This endpoint is intentionally broken.  The replacement <em>/login/access_token</em>
-provides a single-use replacement refresh token cookie when used.  The
+provides a limited-use replacement refresh token cookie when used.  The
 <em>RefreshTokenService.getUserDetails()</em> RefreshTokenPersistence implementation
 intentionally prevents use of the tokens via the OAuth <em>/oauth/access_token</em> endpoint.</p>
 </div>
@@ -4703,7 +4712,8 @@ You should make sure there is at least one user with the <em>ADMIN</em> role in 
 <span class="head"><span class="head">---</span></span>
 <span class="key">eframe</span>:
   <span class="key">security</span>:
-    <span class="key">jwtRefreshMaxAge</span>: <span class="string"><span class="content">1209600  </span></span><i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+    <span class="key">jwtRefreshMaxAge</span>: <span class="string"><span class="content">2592000  </span></span><i class="conum" data-value="3"></i><b>(3)</b>
+    <span class="key">jwtRefreshUseMax</span>: <span class="string"><span class="content">100  </span></span><i class="conum" data-value="4"></i><b>(4)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -4726,6 +4736,13 @@ on these trade-offs.</td>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
 <td>The expiration time for the refresh token (seconds).  Defaults to 30 days (2592000 seconds).</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The number of times a refresh token can be used by the same IP address.  (Default: 100).
+Set this to 1 for strictest security.  1 means that each refresh token can only
+be used once.  This will generate a large number of <em>REFRESH_TOKEN</em> database records.
+This might be useful in detecting IP address forgery in your network.</td>
 </tr>
 </table>
 </div>
@@ -19373,7 +19390,7 @@ to the repository.  If you use the repository method directly, then this is not 
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-11-05 17:41:22 UTC
+Last updated 2020-11-06 13:11:46 UTC
 </div>
 </div>
 <style>

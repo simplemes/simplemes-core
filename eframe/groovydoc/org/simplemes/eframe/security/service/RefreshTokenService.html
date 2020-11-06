@@ -231,36 +231,54 @@ extends java.lang.Object
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.lang.String</code></td>
+                            <td class="colLast"><code><strong><a href="#getRequestSource(io.micronaut.http.HttpRequest)">getRequestSource</a></strong>(io.micronaut.http.HttpRequest request)</code><br>Returns the request source IP address (as string). </td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>org.reactivestreams.Publisher</code></td>
                             <td class="colLast"><code><strong><a href="#getUserDetails(java.lang.String)">getUserDetails</a></strong>(java.lang.String refreshTokenString)</code><br>Gets the refresh token's user details.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>org.reactivestreams.Publisher</code></td>
                             <td class="colLast"><code><strong><a href="#getUserDetailsAndNewToken(java.lang.String)">getUserDetailsAndNewToken</a></strong>(java.lang.String refreshTokenString)</code><br>Gets the refresh token's user details and creates a replacement token.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;io.micronaut.security.authentication.UserDetails</code></td>
                             <td class="colLast"><code><strong><a href="#getUserDetailsForUserName(java.lang.String)">getUserDetailsForUserName</a></strong>(java.lang.String userName)</code><br>Returns the user details for the given user name. </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#persistToken(io.micronaut.security.token.event.RefreshTokenGeneratedEvent)">persistToken</a></strong>(io.micronaut.security.token.event.RefreshTokenGeneratedEvent event)</code><br>Persists the refresh token. </td>
                         </tr>
                         
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../org/simplemes/eframe/security/ReplacementTokenResponse.html'>ReplacementTokenResponse</a></code></td>
+                            <td class="colLast"><code><strong><a href="#replaceBothToken(org.simplemes.eframe.security.domain.RefreshToken, java.lang.String)">replaceBothToken</a></strong>(<a href='../../../../../org/simplemes/eframe/security/domain/RefreshToken.html'>RefreshToken</a> currentRefreshToken, java.lang.String requestSource)</code><br>Replaces the current token with a new one and return the correct cookies for the client. </td>
+                        </tr>
+                        
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/security/ReplacementTokenResponse.html'>ReplacementTokenResponse</a></code></td>
-                            <td class="colLast"><code><strong><a href="#replaceRefreshToken(java.lang.String, io.micronaut.http.HttpRequest)">replaceRefreshToken</a></strong>(java.lang.String currentEncodedToken, io.micronaut.http.HttpRequest request)</code><br>Replaces the given refresh token with a new single use token.
- </td>
+                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../org/simplemes/eframe/security/ReplacementTokenResponse.html'>ReplacementTokenResponse</a></code></td>
+                            <td class="colLast"><code><strong><a href="#replaceJwtToken(org.simplemes.eframe.security.domain.RefreshToken, java.lang.String)">replaceJwtToken</a></strong>(<a href='../../../../../org/simplemes/eframe/security/domain/RefreshToken.html'>RefreshToken</a> currentRefreshToken, java.lang.String requestSource)</code><br>Replaces the current JWT token (only) with a new one and return the correct cookie for the client. </td>
                         </tr>
                         
                         <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/security/ReplacementTokenResponse.html'>ReplacementTokenResponse</a></code></td>
+                            <td class="colLast"><code><strong><a href="#replaceRefreshToken(java.lang.String, io.micronaut.http.HttpRequest, java.lang.Boolean)">replaceRefreshToken</a></strong>(java.lang.String currentEncodedToken, io.micronaut.http.HttpRequest request, java.lang.Boolean forceReplace)</code><br>Replaces the given refresh token with a new single use token.
+ </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#revokeAllUserTokens(java.lang.String)">revokeAllUserTokens</a></strong>(java.lang.String userName)</code><br>Revokes all user's tokens. </td>
@@ -394,6 +412,14 @@ protected&nbsp;void <strong>cleanupOldUserTokens</strong>(java.lang.String userN
                             </li>
                         </ul>
                     
+                        <a name="getRequestSource(io.micronaut.http.HttpRequest)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.lang.String <strong>getRequestSource</strong>(io.micronaut.http.HttpRequest request)</h4>
+                                <p> Returns the request source IP address (as string). <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.  If null, uses the Holders.currentRequest.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The source address.  May be null.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
                         <a name="getUserDetails(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -434,13 +460,29 @@ void <strong>persistToken</strong>(io.micronaut.security.token.event.RefreshToke
                             </li>
                         </ul>
                     
-                        <a name="replaceRefreshToken(java.lang.String, io.micronaut.http.HttpRequest)"><!-- --></a>
+                        <a name="replaceBothToken(org.simplemes.eframe.security.domain.RefreshToken, java.lang.String)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;<a href='../../../../../org/simplemes/eframe/security/ReplacementTokenResponse.html'>ReplacementTokenResponse</a> <strong>replaceBothToken</strong>(<a href='../../../../../org/simplemes/eframe/security/domain/RefreshToken.html'>RefreshToken</a> currentRefreshToken, java.lang.String requestSource)</h4>
+                                <p> Replaces the current token with a new one and return the correct cookies for the client. <DL><DT><B>Parameters:</B></DT><DD><code>currentRefreshToken</code> -  Current token record.</DD><DD><code>requestSource</code> -  The source of the request.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The replacement tokens.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="replaceJwtToken(org.simplemes.eframe.security.domain.RefreshToken, java.lang.String)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;<a href='../../../../../org/simplemes/eframe/security/ReplacementTokenResponse.html'>ReplacementTokenResponse</a> <strong>replaceJwtToken</strong>(<a href='../../../../../org/simplemes/eframe/security/domain/RefreshToken.html'>RefreshToken</a> currentRefreshToken, java.lang.String requestSource)</h4>
+                                <p> Replaces the current JWT token (only) with a new one and return the correct cookie for the client. <DL><DT><B>Parameters:</B></DT><DD><code>currentRefreshToken</code> -  Current token record.</DD><DD><code>requestSource</code> -  The source of the request.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The replacement token.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="replaceRefreshToken(java.lang.String, io.micronaut.http.HttpRequest, java.lang.Boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>@javax.transaction.TransactionalTransactional
-<a href='../../../../../org/simplemes/eframe/security/ReplacementTokenResponse.html'>ReplacementTokenResponse</a> <strong>replaceRefreshToken</strong>(java.lang.String currentEncodedToken, io.micronaut.http.HttpRequest request)</h4>
+<a href='../../../../../org/simplemes/eframe/security/ReplacementTokenResponse.html'>ReplacementTokenResponse</a> <strong>replaceRefreshToken</strong>(java.lang.String currentEncodedToken, io.micronaut.http.HttpRequest request, java.lang.Boolean forceReplace)</h4>
                                 <p> Replaces the given refresh token with a new single use token.
- Will log an ERROR if a token is used 2+ times and revoke all of the user's current tokens. <DL><DT><B>Parameters:</B></DT><DD><code>currentEncodedToken</code> -  The current token (encoded).</DD><DD><code>request</code> -  The request.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The token and user details.  Null if token is not valid or has already been used.</DD></DL></p>
+ Will log an ERROR if a token is used 2+ times and revoke all of the user's current tokens. <DL><DT><B>Parameters:</B></DT><DD><code>currentEncodedToken</code> -  The current token (encoded).</DD><DD><code>request</code> -  The request.</DD><DD><code>forceReplace</code> -  If true, then force the replacement,.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The token and user details.  Null if token is not valid or has already been used.</DD></DL></p>
                             </li>
                         </ul>
                     

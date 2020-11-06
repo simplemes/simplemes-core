@@ -134,6 +134,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                             <td class="colLast"><code><a href="#jwtRefreshMaxAge">jwtRefreshMaxAge</a></code><br>The default max age for the workaround JWT Refresh Cookie (seconds).  </td>
                         </tr>
                         
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>private&nbsp;java.lang.Integer</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#jwtRefreshUseMax">jwtRefreshUseMax</a></code><br>The maximum number of re-uses for a refresh token.  </td>
+                        </tr>
+                        
                     </table>
                    </ul>
                 </li>
@@ -216,6 +221,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                                 <h4>private&nbsp;java.lang.Long <strong>jwtRefreshMaxAge</strong></h4>
                                 <p> The default max age for the workaround JWT Refresh Cookie (seconds).  Set in EFrameConfiguration.jwtRefreshMaxAge.
  This should be set in the micronaut-security configuration when issue 333 is fixed.</p>
+                            </li>
+                        </ul>
+                    
+                        <a name="jwtRefreshUseMax"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;java.lang.Integer <strong>jwtRefreshUseMax</strong></h4>
+                                <p> The maximum number of re-uses for a refresh token.  Default: 100.</p>
                             </li>
                         </ul>
                     
