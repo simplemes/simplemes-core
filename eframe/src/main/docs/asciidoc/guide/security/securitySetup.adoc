@@ -66,7 +66,8 @@ micronaut:
 ---
 eframe:
   security:
-    jwtRefreshMaxAge: 1209600  <.>
+    jwtRefreshMaxAge: 2592000  <.>
+    jwtRefreshUseMax: 100  <.>
 
 ----
 <.> This value comes from the environment variable 'eframe_key'.  The JWT encryption
@@ -79,6 +80,10 @@ eframe:
     take effect until the JWT token has expired.  See <<Security Design>> for details
     on these trade-offs.
 <.> The expiration time for the refresh token (seconds).  Defaults to 30 days (2592000 seconds).
+<.> The number of times a refresh token can be used by the same IP address.  (Default: 100).
+    Set this to 1 for strictest security.  1 means that each refresh token can only
+    be used once.  This will generate a large number of _REFRESH_TOKEN_ database records.
+    This might be useful in detecting IP address forgery in your network.
 
 
 This configures JWT Security to force all controller requests to be authenticated.

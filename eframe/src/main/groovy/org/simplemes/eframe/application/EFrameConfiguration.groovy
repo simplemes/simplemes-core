@@ -186,6 +186,11 @@ class EFrameConfiguration {
      */
     Long jwtRefreshMaxAge = WorkAround333CookieLoginHandler.DEFAULT_MAX_AGE
 
+    /**
+     * The maximum number of re-uses for a refresh token.  Default: 100.
+     */
+    Integer jwtRefreshUseMax = 100
+
   }
 
 }

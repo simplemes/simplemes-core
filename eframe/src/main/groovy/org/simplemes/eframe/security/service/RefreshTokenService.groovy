@@ -66,11 +66,22 @@ class RefreshTokenService implements RefreshTokenPersistence {
   void persistToken(RefreshTokenGeneratedEvent event) {
     def refreshToken = new RefreshToken()
     refreshToken.refreshToken = event.getRefreshToken()
+    refreshToken.requestSource = getRequestSource(null)
     refreshToken.userName = event.getUserDetails().username
     refreshToken.enabled = true
     refreshToken.expirationDate = new Date(System.currentTimeMillis() + Holders.configuration.security.jwtRefreshMaxAge * 1000)
 
     refreshToken.save()
+  }
+
+  /**
+   * Returns the request source IP address (as string).
+   * @param request The request.  If null, uses the Holders.currentRequest.
+   * @return The source address.  May be null.
+   */
+  String getRequestSource(HttpRequest request) {
+    request = request ?: Holders.currentRequest
+    return request?.remoteAddress?.address?.toString() ?: 'no IP'
   }
 
   /**
@@ -92,11 +103,12 @@ class RefreshTokenService implements RefreshTokenPersistence {
    * Will log an ERROR if a token is used 2+ times and revoke all of the user's current tokens.
    * @param currentEncodedToken The current token (encoded).
    * @param request The request.
+   * @param forceReplace If true, then force the replacement,.
    * @return The token and user details.  Null if token is not valid or has already been used.
    */
   @Transactional
-  ReplacementTokenResponse replaceRefreshToken(String currentEncodedToken, HttpRequest<?> request) {
-    def requestSource = request.remoteAddress?.toString() ?: 'no IP'
+  ReplacementTokenResponse replaceRefreshToken(String currentEncodedToken, HttpRequest<?> request, Boolean forceReplace) {
+    def requestSource = getRequestSource(request)
     def opt = refreshTokenValidator.validate(currentEncodedToken)
     if (!opt.present) {
       log.debug("replaceRefreshToken(): No valid refresh token for user '{}' from '{}'.",
@@ -106,52 +118,98 @@ class RefreshTokenService implements RefreshTokenPersistence {
     def currentToken = opt.get()
     def currentRefreshToken = RefreshToken.findByRefreshToken(currentToken)
     if (currentRefreshToken) {
-      if (currentRefreshToken.enabled) {
+      def maxUsages = Holders.configuration.security.jwtRefreshUseMax ?: 100
+      def failureReason = null
+      if (!currentRefreshToken.enabled) {
+        failureReason = 'disabled token'
+      } else if (currentRefreshToken.useAttemptCount > maxUsages) {
+        failureReason = "useCount(${currentRefreshToken.useAttemptCount}) > $maxUsages"
+      } else if (currentRefreshToken.requestSource != requestSource) {
+        failureReason = "requestSource mis-match ${currentRefreshToken.requestSource} vs. $requestSource"
+      }
+      if (currentRefreshToken.expirationDate < new Date()) {
+        log.debug("replaceRefreshToken(): Refresh token {} expired for user '{}' from '{}'.",
+                  currentRefreshToken.uuid, currentRefreshToken.userName, requestSource)
+        return null
+      }
+
+      if (failureReason) {
+        // Not Ok to use, so fail with an error logged
         currentRefreshToken.useAttemptCount++
-        currentRefreshToken.enabled = false
-        currentRefreshToken.requestSource = requestSource
         currentRefreshToken.save()
-        if (currentRefreshToken.expirationDate < new Date()) {
-          log.debug("replaceRefreshToken(): Refresh token {} expired for user '{}' from '{}'.",
-                    currentRefreshToken.uuid, currentRefreshToken.userName, requestSource)
-          return null
-        }
-
-        // Clean up any old records for this user.
-        cleanupOldUserTokens(currentRefreshToken.userName)
-
-        def userDetails = getUserDetailsForUserName(currentRefreshToken.userName)
-        if (!userDetails) {
-          log.debug("replaceRefreshToken(): No user details for user '{}' from '{}'.", currentRefreshToken.userName, requestSource)
-          return null
-        }
-        def newRefreshUUID = refreshTokenGenerator.createKey(userDetails)
-        def newRefreshToken = refreshTokenGenerator.generate(userDetails, newRefreshUUID).get()
-
-        // Now, create a new one
-        def refreshToken = new RefreshToken()
-        refreshToken.refreshToken = newRefreshUUID
-        refreshToken.userName = currentRefreshToken.userName
-        refreshToken.enabled = true
-        refreshToken.expirationDate = currentRefreshToken.expirationDate
-        refreshToken.requestSource = requestSource
-        refreshToken.save()
-
-        log.debug("replaceRefreshToken(): Issued new refresh token {} for user '{}' from '{}'.", newRefreshUUID, currentRefreshToken.userName, requestSource)
-        return new ReplacementTokenResponse(refreshToken: newRefreshToken, userDetails: userDetails)
-      } else {
-        // Already used, so fail with an error logged
         revokeAllUserTokens(currentRefreshToken.userName)
-        currentRefreshToken.useAttemptCount++
-        log.error("replaceRefreshToken(): Attempt to use refresh token on {} more than once for user '{}' from '{}'.  All refresh tokens revoked.  Attempt count {}.",
-                  request.path, currentRefreshToken.userName, requestSource, currentRefreshToken.useAttemptCount)
-        currentRefreshToken.save()
+        log.error("replaceRefreshToken(): Attempt to use refresh token on {} failed for user '{}' from '{}'. Reason: {}.  All refresh tokens revoked.",
+                  request.path, currentRefreshToken.userName, requestSource, failureReason)
 
         return null
+      } else {
+        // Refresh token can be used or replaced.
+        if (currentRefreshToken.useAttemptCount >= (maxUsages - 1) || forceReplace) {
+          // Time to replace token with a new token.
+          return replaceBothToken(currentRefreshToken, requestSource)
+        } else {
+          // Re-use it again.
+          return replaceJwtToken(currentRefreshToken, requestSource)
+        }
       }
     }
     log.debug("replaceRefreshToken(): No user refresh token {} for user '{}' from '{}'.", currentToken, SecurityUtils.currentUserName, requestSource)
     return null
+  }
+
+  /**
+   * Replaces the current token with a new one and return the correct cookies for the client.
+   * @param currentRefreshToken Current token record.
+   * @param requestSource The source of the request.
+   * @return The replacement tokens.
+   */
+  protected ReplacementTokenResponse replaceBothToken(RefreshToken currentRefreshToken, String requestSource) {
+    currentRefreshToken.useAttemptCount++
+    currentRefreshToken.enabled = false
+    currentRefreshToken.requestSource = requestSource
+    currentRefreshToken.save()
+
+    // Clean up any old records for this user.
+    cleanupOldUserTokens(currentRefreshToken.userName)
+
+    def userDetails = getUserDetailsForUserName(currentRefreshToken.userName)
+    if (!userDetails) {
+      log.debug("replaceRefreshToken(): No user details for user '{}' from '{}'.", currentRefreshToken.userName, requestSource)
+      return null
+    }
+    def newRefreshUUID = refreshTokenGenerator.createKey(userDetails)
+    def newRefreshToken = refreshTokenGenerator.generate(userDetails, newRefreshUUID).get()
+
+    // Now, create a new one
+    def refreshToken = new RefreshToken()
+    refreshToken.refreshToken = newRefreshUUID
+    refreshToken.userName = currentRefreshToken.userName
+    refreshToken.enabled = true
+    refreshToken.expirationDate = currentRefreshToken.expirationDate
+    refreshToken.requestSource = requestSource
+    refreshToken.save()
+
+    log.debug("replaceRefreshToken(): Issued new refresh token {} for user '{}' from '{}'.", newRefreshUUID, currentRefreshToken.userName, requestSource)
+    return new ReplacementTokenResponse(refreshToken: newRefreshToken, userDetails: userDetails)
+  }
+
+  /**
+   * Replaces the current JWT token (only) with a new one and return the correct cookie for the client.
+   * @param currentRefreshToken Current token record.
+   * @param requestSource The source of the request.
+   * @return The replacement token.
+   */
+  protected ReplacementTokenResponse replaceJwtToken(RefreshToken currentRefreshToken, String requestSource) {
+    currentRefreshToken.useAttemptCount++
+    currentRefreshToken.save()
+
+    def userDetails = getUserDetailsForUserName(currentRefreshToken.userName)
+    if (!userDetails) {
+      log.debug("replaceRefreshToken(): No user details for user '{}' from '{}'.", currentRefreshToken.userName, requestSource)
+      return null
+    }
+    log.trace("replaceRefreshToken(): Issued new JWT token only for user '{}' from '{}'.", currentRefreshToken.userName, requestSource)
+    return new ReplacementTokenResponse(userDetails: userDetails)
   }
 
   /**

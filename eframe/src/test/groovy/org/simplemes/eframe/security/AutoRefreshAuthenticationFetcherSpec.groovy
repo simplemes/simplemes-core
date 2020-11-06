@@ -6,6 +6,7 @@ package org.simplemes.eframe.security
 
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpStatus
+import org.simplemes.eframe.application.EFrameConfiguration
 import org.simplemes.eframe.security.domain.RefreshToken
 import org.simplemes.eframe.test.BaseAPISpecification
 
@@ -93,6 +94,16 @@ class AutoRefreshAuthenticationFetcherSpec extends BaseAPISpecification {
       }
     }
 
+    if (countOver) {
+      // Adjust the use count to force a new refresh token
+      def tokens = RefreshToken.list()
+      assert tokens.size() == 1  // No extra tokens in the DB
+      RefreshToken.withTransaction {
+        tokens[0].useAttemptCount = new EFrameConfiguration().security.jwtRefreshUseMax - 1
+        tokens[0].save()
+      }
+    }
+
     and: 'a simple request is made'
     def method = (uri == '/logout') ? 'post' : 'get'
     def content = (uri == '/logout') ? '{}' : null
@@ -103,23 +114,27 @@ class AutoRefreshAuthenticationFetcherSpec extends BaseAPISpecification {
     def newJwtRefreshCookie = extractCookieValueFromHeader(cookies.find { it.startsWith(JWT_REFRESH_PREFIX) } as String)
     def newJwtCookie = extractCookieValueFromHeader(cookies.find { it.startsWith(JWT_PREFIX) } as String)
 
-    if (expectNewRefresh) {
+    if (newJwt) {
       newJwtCookie
       newJwtCookie != originalJwtCookie
+    }
+    if (newRefresh) {
       newJwtRefreshCookie
       newJwtRefreshCookie != originalRefreshCookie
     }
 
     where:
-    sendJwtCookie | sendRefreshCookie | uri                  | expectNewRefresh | status
-    'no'          | 'yes'             | '/logging'           | true             | HttpStatus.OK
-    'expired'     | 'yes'             | '/logging'           | true             | HttpStatus.OK
-    'yes'         | 'yes'             | '/logging'           | false            | HttpStatus.OK
-    'yes'         | 'no'              | '/logging'           | false            | HttpStatus.OK
-    'no'          | 'yes'             | '/logout'            | false            | HttpStatus.SEE_OTHER
-    'no'          | 'yes'             | '/assets/eframe.css' | false            | HttpStatus.OK
-    'no'          | 'no'              | '/logging'           | false            | HttpStatus.SEE_OTHER
-    'no'          | 'expired'         | '/logging'           | false            | HttpStatus.SEE_OTHER
+    sendJwtCookie | sendRefreshCookie | uri                  | countOver | newJwt | newRefresh | status
+    'no'          | 'yes'             | '/logging'           | false     | true   | false      | HttpStatus.OK
+    'no'          | 'yes'             | '/logging'           | true      | true   | true       | HttpStatus.OK
+    'expired'     | 'yes'             | '/logging'           | false     | true   | false      | HttpStatus.OK
+    'yes'         | 'yes'             | '/logging'           | false     | false  | false      | HttpStatus.OK
+    'yes'         | 'no'              | '/logging'           | false     | false  | false      | HttpStatus.OK
+    'no'          | 'yes'             | '/logout'            | false     | false  | true       | HttpStatus.SEE_OTHER
+    'no'          | 'yes'             | '/assets/eframe.css' | false     | false  | false      | HttpStatus.OK
+    'no'          | 'no'              | '/logging'           | false     | false  | false      | HttpStatus.SEE_OTHER
+    'no'          | 'expired'         | '/logging'           | false     | false  | false      | HttpStatus.SEE_OTHER
   }
+
 
 }

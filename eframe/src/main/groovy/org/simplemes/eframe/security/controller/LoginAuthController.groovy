@@ -116,7 +116,7 @@ class LoginAuthController {
     if (!validRefreshToken.isPresent()) {
       throw new OauthErrorResponseException(IssuingAnAccessTokenErrorCode.INVALID_GRANT, "Refresh token is invalid", null)
     }
-    def replacementTokenResponse = refreshTokenService.replaceRefreshToken(refreshToken, request)
+    def replacementTokenResponse = refreshTokenService.replaceRefreshToken(refreshToken, request, true)
     if (!replacementTokenResponse) {
       throw new OauthErrorResponseException(IssuingAnAccessTokenErrorCode.INVALID_GRANT, "Refresh token is invalid", null)
     }

@@ -92,7 +92,7 @@ class AutoRefreshAuthenticationFetcher implements AuthenticationFetcher {
 
       if (refreshTokenValue) {
         log.debug('fetchAuthentication(): refreshTokenValue {}', refreshTokenValue)
-        def replacementTokenResponse = refreshTokenService.replaceRefreshToken(refreshTokenValue, request)
+        def replacementTokenResponse = refreshTokenService.replaceRefreshToken(refreshTokenValue, request, false)
         if (replacementTokenResponse) {
           request.setAttribute(AUTO_REFRESH_ATTRIBUTE, replacementTokenResponse)
           log.debug('fetchAuthentication(): Forced Auth on {} set request attribute {} to {}', request, AUTO_REFRESH_ATTRIBUTE, replacementTokenResponse)

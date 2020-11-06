@@ -20,11 +20,11 @@ One other key criteria is that the session mechanism is stateful.  Some server-s
 We wanted to avoid a stateful server-side session.  We chose to store this state on the client and provide ways to 
 extend access without the user re-logging in before the 'session' timeout. 
 
-One other key risk reduction is to use single use JWT Refresh Token cookies.  
+One other key risk reduction is to use a limited-use JWT Refresh Token cookies.  
 Each refresh token is replaced after each use.  This prevents two clients from using the same refresh token at the same 
 time.  If a token is used twice, then all refresh tokens for that user will be invalidated and a message will be logged. 
 
-### JWT Token/Refresh Token Use - SingleUseRefreshToken
+### JWT Token/Refresh Token Use - Limited Use Refresh Token
 
 Authentication of most requests is via JWT Cookies submitted with the HTTP request.  This simplifies the 
 browser-based page interactions and only mildly complicates the REST API usage.
@@ -33,17 +33,18 @@ Along with this JWT cookie use for authentication, we also support the use of Au
 for all non-asset requests.  A request with an expired JWT and a valid JWT_REFRESH_TOKEN will automatically
 generate a new JWT token cookie in the response.  
 
-Part of the security protocol makes use of a _Single Use Refresh Token_ instead of the normal refresh tokens.  This
+Part of the security protocol makes use of a _Limited Use Refresh Token_ instead of the normal refresh tokens.  This
 reduces the chance of a refresh token being leaked to un-authorized users.  This should give a good
 user experience without a big compromise of the security.  
 
-If a second attempt is made to re-use a token, then a warning is logged and all tokens for the user are revoked.
+If a later attempt is made to re-use a token from a different IP address, then a warning is logged and all tokens for 
+the user are revoked.  
  
 REST API clients will need to use explicitly request the new access cookie as needed.
 
 ### OAuth /oauth/access_token Endpoint Use
 
-This endpoint is intentionally broken.  The replacement _/login/access_token_ provides a single-use replacement
+This endpoint is intentionally broken.  The replacement _/login/access_token_ provides a limited-use replacement
 refresh token cookie when used.  The RefreshTokenService.getUserDetails() RefreshTokenPersistence implementation 
 intentionally prevents use of the tokens via the OAuth _/oauth/access_token_ endpoint.     
 

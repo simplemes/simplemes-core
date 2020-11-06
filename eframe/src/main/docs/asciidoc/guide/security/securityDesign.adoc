@@ -102,12 +102,20 @@ Any non-browser clients can request a refresh using a process similar to
 Internally, the logic is a little more complex.  There are two Micronaut beans involved
 in this:
 
-* _AutoRefreshAuthenticationFetcher_ - This detects the expired JWT and triggers
+* link:groovydoc/org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html[AutoRefreshAuthenticationFetcher^] icon:share-square-o[role="link-blue"]
+ This detects the expired JWT and triggers
   an auto token refresh for the request.  This class stores the new cookies in
   a request attribute for use by the other object.
 
-* _AutoRefreshTokenFilter_ - This gets the cookies from the request and puts them
+* link:groovydoc/org/simplemes/eframe/security/AutoRefreshTokenFilter.html[AutoRefreshTokenFilter^] icon:share-square-o[role="link-blue"]
+ This gets the cookies from the request and puts them
   in the response.
+
+These two beans, along with the
+link:groovydoc/org/simplemes/eframe/security/service/RefreshTokenService.html[RefreshTokenService^] icon:share-square-o[role="link-blue"]
+will only allow the refresh token to be used from the same IP address it was issued to.
+If any mis-matches are detected (IP address or jwtRefreshUseMax violations), then the
+existing refresh tokens for the user will be disabled and force a new login.
 
 
 
@@ -115,7 +123,7 @@ in this:
 ==== OAuth /oauth/access_token Endpoint Use
 
 This endpoint is intentionally broken.  The replacement _/login/access_token_
-provides a single-use replacement refresh token cookie when used.  The
+provides a limited-use replacement refresh token cookie when used.  The
 _RefreshTokenService.getUserDetails()_ RefreshTokenPersistence implementation
 intentionally prevents use of the tokens via the OAuth _/oauth/access_token_ endpoint.
 
