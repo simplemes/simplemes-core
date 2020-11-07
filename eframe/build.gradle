@@ -57,7 +57,7 @@ dependencies {
   compile "ch.qos.logback:logback-classic:$logbackVersion"
 
   compile "org.codehaus.groovy:groovy-templates" // Added for Groovydoc and TextUtils.
-  compile "org.codehaus.groovy:groovy-xml"
+  compile "org.codehaus.groovy:groovy-xml:$groovyVersion"
   compile "org.codehaus.groovy:groovy-dateutil"
   compile "io.micronaut.security:micronaut-security-jwt"
   compile ( "com.bertramlabs.plugins:asset-pipeline-micronaut:$assetPipelineVersion") {
