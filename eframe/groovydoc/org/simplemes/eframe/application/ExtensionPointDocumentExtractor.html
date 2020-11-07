@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class ExtensionPointDocumentExtractor
+extends java.lang.Object</pre>
 
     <p> A utility application that will extract the ExtensionPoints defined in the current application's
  build/classes/main/groovy directory.  Used to generate the  'build/generated/extensions.adoc' file
@@ -201,14 +207,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#checkClass(java.lang.Class)">checkClass</a></strong>(java.lang.Class clazz)</code><br>Finds all extension points for this class. </td>
+                            <td class="colLast"><code>static&nbsp;java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#checkClass(java.lang.Class)">checkClass</a></strong>(java.lang.Class clazz)</code><br>Finds all extension points for this class.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getClassName(File)">getClassName</a></strong>(<a href='../../../../File.html'>File</a> file)</code><br>Converts the given file name into a class package/name. </td>
+                            <td class="colLast"><code><strong><a href="#getClassName(java.io.File)">getClassName</a></strong>(java.io.File file)</code><br>Converts the given file name into a class package/name.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -220,8 +226,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#processClasses(File, File)">processClasses</a></strong>(<a href='../../../../File.html'>File</a> folder, <a href='../../../../File.html'>File</a> outputFile)</code><br>Processes the given folder for .classes that provide the ExtensionPoint and writes them to the given doc
- output file. </td>
+                            <td class="colLast"><code><strong><a href="#processClasses(java.io.File, java.io.File)">processClasses</a></strong>(java.io.File folder, java.io.File outputFile)</code><br>Processes the given folder for .classes that provide the ExtensionPoint and writes them to the given doc
+ output file.</td>
                         </tr>
                         
                     </table>
@@ -322,22 +328,23 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>static&nbsp;java.lang.String <strong>buildDocText</strong>(java.lang.reflect.Method method, <a href='../../../../org/simplemes/eframe/custom/annotation/ExtensionPoint.html'>ExtensionPoint</a> annotation)</h4>
-                                <p> Builds the adoc line for a given method. <DL><DT><B>Returns:</B></DT><DD><DL><DT><B>Parameters:</B></DT><DD>method</DD><DD>annotation</DD></DL></DD></DL></p>
+                                <p> Builds the adoc line for a given method.
+ @return <DL><DT><B>Parameters:</B></DT><DD>method</DD><DD>annotation</DD></DL></p>
                             </li>
                         </ul>
                     
                         <a name="checkClass(java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../List.html'>List</a> <strong>checkClass</strong>(java.lang.Class clazz)</h4>
+                                <h4>static&nbsp;java.util.List&lt;java.lang.String&gt; <strong>checkClass</strong>(java.lang.Class clazz)</h4>
                                 <p> Finds all extension points for this class. <DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The clazz.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of outputs found.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="getClassName(File)"><!-- --></a>
+                        <a name="getClassName(java.io.File)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>getClassName</strong>(<a href='../../../../File.html'>File</a> file)</h4>
+                                <h4>static&nbsp;java.lang.String <strong>getClassName</strong>(java.io.File file)</h4>
                                 <p> Converts the given file name into a class package/name. <DL><DT><B>Parameters:</B></DT><DD><code>file</code> -  The file</DD></DL><DL><DT><B>Returns:</B></DT><DD>The package/name for the class.</DD></DL></p>
                             </li>
                         </ul>
@@ -350,10 +357,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="processClasses(File, File)"><!-- --></a>
+                        <a name="processClasses(java.io.File, java.io.File)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;void <strong>processClasses</strong>(<a href='../../../../File.html'>File</a> folder, <a href='../../../../File.html'>File</a> outputFile)</h4>
+                                <h4>static&nbsp;void <strong>processClasses</strong>(java.io.File folder, java.io.File outputFile)</h4>
                                 <p> Processes the given folder for .classes that provide the ExtensionPoint and writes them to the given doc
  output file. <DL><DT><B>Parameters:</B></DT><DD><code>folder</code> -  The .class folder.</DD><DD><code>outputFile</code> -  The output file.</DD></DL></p>
                             </li>

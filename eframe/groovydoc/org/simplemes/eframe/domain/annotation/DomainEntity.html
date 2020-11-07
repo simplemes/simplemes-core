@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@java.lang.annotation.Retention(RetentionPolicy.RUNTIME)
+@java.lang.annotation.Target({ElementType.TYPE})
+@org.codehaus.groovy.transform.GroovyASTTransformationClass("org.simplemes.eframe.domain.annotation.DomainEntityTransformation")
+public&nbsp;@interface DomainEntity</pre>
 
     <p> This annotation allows the application developer to mark a domain object as allowing extension fields (custom fields).
  This marks the domain class as extensible with custom fields and allows the developer to store these extensible fields

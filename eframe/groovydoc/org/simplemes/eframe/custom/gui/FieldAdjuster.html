@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class FieldAdjuster
+extends java.lang.Object</pre>
 
     <p> This class gathers the field customizations for a domain and manipulates the field ordering as needed
  to deal with the user's customizations.
@@ -165,21 +171,21 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#applyUserAdjustments(java.lang.Class, List)">applyUserAdjustments</a></strong>(java.lang.Class domainClass, <a href='../../../../../List.html'>List</a> fieldOrder)</code><br>Finds and applies any field order adjustments to the core field order. </td>
+                            <td class="colLast"><code>static&nbsp;java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#applyUserAdjustments(java.lang.Class, List)">applyUserAdjustments</a></strong>(java.lang.Class domainClass, java.util.List&lt;java.lang.String&gt; fieldOrder)</code><br>Finds and applies any field order adjustments to the core field order. </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#determineDifferences(List, List)">determineDifferences</a></strong>(<a href='../../../../../List.html'>List</a> listA, <a href='../../../../../List.html'>List</a> listB)</code><br>Compares the two display order lists and generates a list of field adjustments needed to make the fields display
+                            <td class="colLast"><code>static&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/custom/gui/FieldAdjustmentInterface.html' title='FieldAdjustmentInterface'>FieldAdjustmentInterface</a>&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#determineDifferences(List, List)">determineDifferences</a></strong>(java.util.List&lt;java.lang.String&gt; listA, java.util.List&lt;java.lang.String&gt; listB)</code><br>Compares the two display order lists and generates a list of field adjustments needed to make the fields display
  in the listB order.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#findPredecessor(List, java.lang.String)">findPredecessor</a></strong>(<a href='../../../../../List.html'>List</a> list, java.lang.String value)</code><br>Finds the predecessor string for a given element. </td>
+                            <td class="colLast"><code><strong><a href="#findPredecessor(List, java.lang.String)">findPredecessor</a></strong>(java.util.List&lt;java.lang.String&gt; list, java.lang.String value)</code><br>Finds the predecessor string for a given element.</td>
                         </tr>
                         
                     </table>
@@ -253,7 +259,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="applyUserAdjustments(java.lang.Class, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../../List.html'>List</a> <strong>applyUserAdjustments</strong>(java.lang.Class domainClass, <a href='../../../../../List.html'>List</a> fieldOrder)</h4>
+                                <h4>static&nbsp;java.util.List&lt;java.lang.String&gt; <strong>applyUserAdjustments</strong>(java.lang.Class domainClass, java.util.List&lt;java.lang.String&gt; fieldOrder)</h4>
                                 <p> Finds and applies any field order adjustments to the core field order. Will check the given domain class and
  any super classes.
  <p> <DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The domain class.</DD><DD><code>fieldOrder</code> -  The current field order array. This modifies the list passed in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The effective field order list.  This is a single flattened list of field names.</DD></DL></p>
@@ -263,7 +269,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="determineDifferences(List, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../../List.html'>List</a> <strong>determineDifferences</strong>(<a href='../../../../../List.html'>List</a> listA, <a href='../../../../../List.html'>List</a> listB)</h4>
+                                <h4>static&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/custom/gui/FieldAdjustmentInterface.html' title='FieldAdjustmentInterface'>FieldAdjustmentInterface</a>&gt; <strong>determineDifferences</strong>(java.util.List&lt;java.lang.String&gt; listA, java.util.List&lt;java.lang.String&gt; listB)</h4>
                                 <p> Compares the two display order lists and generates a list of field adjustments needed to make the fields display
  in the listB order.  Tries to use a limited add/remove/move list of changes.  Will fall back to a replace all
  approach if the result does not work. <DL><DT><B>Parameters:</B></DT><DD><code>listA</code> -  The original list.</DD><DD><code>listB</code> -  The desired list order.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The differences needed to achieve the listB ordering.</DD></DL></p>
@@ -273,7 +279,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="findPredecessor(List, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;static&nbsp;java.lang.String <strong>findPredecessor</strong>(<a href='../../../../../List.html'>List</a> list, java.lang.String value)</h4>
+                                <h4>protected&nbsp;static&nbsp;java.lang.String <strong>findPredecessor</strong>(java.util.List&lt;java.lang.String&gt; list, java.lang.String value)</h4>
                                 <p> Finds the predecessor string for a given element. <DL><DT><B>Parameters:</B></DT><DD><code>list</code> -  The list of strings to check.</DD><DD><code>value</code> -  The value.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The predecessor ('-' if none).</DD></DL></p>
                             </li>
                         </ul>

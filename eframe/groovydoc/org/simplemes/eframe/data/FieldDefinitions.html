@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class FieldDefinitions
+extends java.util.HashMap&lt;java.lang.String, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html' title='FieldDefinitionInterface'>FieldDefinitionInterface</a>&gt;</pre>
 
     <p> Contains all of the fields defined for domain/POGO object.  This has map and list access methods.  The list is
  not sorted in any specific order.</p>
@@ -176,7 +182,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Iterator.html'>Iterator</a></code></td>
+                            <td class="colLast"><code>java.util.Iterator</code></td>
                             <td class="colLast"><code><strong><a href="#iterator()">iterator</a></strong>()</code><br>Returns an iterator for all fields in the this definition.
  </td>
                         </tr>
@@ -184,7 +190,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#leftShift(org.simplemes.eframe.data.FieldDefinitionInterface)">leftShift</a></strong>(<a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</code><br>Add a new entry to the the field definition. </td>
+                            <td class="colLast"><code><strong><a href="#leftShift(org.simplemes.eframe.data.FieldDefinitionInterface)">leftShift</a></strong>(<a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</code><br>Add a new entry to the the field definition.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -255,7 +261,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="clone()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.Object <strong>clone</strong>()</h4>
                                 <p> Returns a shallow copy of this instance.  The field list is cloned. <DL><DT><B>Returns:</B></DT><DD>a shallow copy of this map</DD></DL></p>
                             </li>
@@ -264,7 +270,7 @@ java.lang.Object <strong>clone</strong>()</h4>
                         <a name="iterator()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Iterator.html'>Iterator</a> <strong>iterator</strong>()</h4>
+                                <h4>java.util.Iterator <strong>iterator</strong>()</h4>
                                 <p> Returns an iterator for all fields in the this definition.
  @return</p>
                             </li>
@@ -281,7 +287,7 @@ java.lang.Object <strong>clone</strong>()</h4>
                         <a name="toString()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>toString</strong>()</h4>
                                 <p> Build human-readable form.
  @return</p>

@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@java.lang.SuppressWarnings("unused")
+public&nbsp;class EFrameAssetPipelineService
+extends asset.pipeline.micronaut.AssetPipelineService</pre>
 
     <p> Development mode asset pipeline service.  Works in dev mode for local (file system) assets, but
  allows production mode assets from the .jar files (via the asset pipeline manifest).
@@ -187,19 +194,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>io.reactivex.Flowable&lt;io.micronaut.http.MutableHttpResponse&lt;?&gt;&gt;</code></td>
-                            <td class="colLast"><code><strong><a href="#handleAsset(java.lang.String, io.micronaut.http.MediaType, java.lang.String, HttpRequest<?>, io.micronaut.http.filter.ServerFilterChain)">handleAsset</a></strong>(java.lang.String filename, io.micronaut.http.MediaType contentType, java.lang.String encoding, io.micronaut.http.HttpRequest&lt;?&gt; request, io.micronaut.http.filter.ServerFilterChain chain)</code><br>Handles the asset request, but falls back to dev mode if the asset is no in the manifest.</td>
+                            <td class="colLast"><code><strong><a href="#handleAsset(java.lang.String, io.micronaut.http.MediaType, java.lang.String, HttpRequest, io.micronaut.http.filter.ServerFilterChain)">handleAsset</a></strong>(java.lang.String filename, io.micronaut.http.MediaType contentType, java.lang.String encoding, io.micronaut.http.HttpRequest&lt;?&gt; request, io.micronaut.http.filter.ServerFilterChain chain)</code><br>Handles the asset request, but falls back to dev mode if the asset is no in the manifest.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>io.reactivex.Flowable&lt;io.micronaut.http.MutableHttpResponse&lt;?&gt;&gt;</code></td>
-                            <td class="colLast"><code><strong><a href="#handleAssetWorkAround(java.lang.String, io.micronaut.http.MediaType, java.lang.String, HttpRequest<?>, io.micronaut.http.filter.ServerFilterChain)">handleAssetWorkAround</a></strong>(java.lang.String filename, io.micronaut.http.MediaType contentType, java.lang.String encoding, io.micronaut.http.HttpRequest&lt;?&gt; request, io.micronaut.http.filter.ServerFilterChain chain)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#handleAssetWorkAround(java.lang.String, io.micronaut.http.MediaType, java.lang.String, HttpRequest, io.micronaut.http.filter.ServerFilterChain)">handleAssetWorkAround</a></strong>(java.lang.String filename, io.micronaut.http.MediaType contentType, java.lang.String encoding, io.micronaut.http.HttpRequest&lt;?&gt; request, io.micronaut.http.filter.ServerFilterChain chain)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#shouldForceDevMode(java.lang.String, HttpRequest<?>)">shouldForceDevMode</a></strong>(java.lang.String fileName, io.micronaut.http.HttpRequest&lt;?&gt; request)</code><br>Determines if the we should force dev mode on the given asset.  </td>
+                            <td class="colLast"><code><strong><a href="#shouldForceDevMode(java.lang.String, HttpRequest)">shouldForceDevMode</a></strong>(java.lang.String fileName, io.micronaut.http.HttpRequest&lt;?&gt; request)</code><br>Determines if the we should force dev mode on the given asset.  </td>
                         </tr>
                         
                     </table>
@@ -270,18 +277,18 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="handleAsset(java.lang.String, io.micronaut.http.MediaType, java.lang.String, HttpRequest<?>, io.micronaut.http.filter.ServerFilterChain)"><!-- --></a>
+                        <a name="handleAsset(java.lang.String, io.micronaut.http.MediaType, java.lang.String, HttpRequest, io.micronaut.http.filter.ServerFilterChain)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
-@com.github.javaparser.ast.expr.MarkerAnnotationExprOverride
+                                <h4>@java.lang.SuppressWarnings("OptionalGetWithoutIsPresent")
+@java.lang.Override
 public&nbsp;io.reactivex.Flowable&lt;io.micronaut.http.MutableHttpResponse&lt;?&gt;&gt; <strong>handleAsset</strong>(java.lang.String filename, io.micronaut.http.MediaType contentType, java.lang.String encoding, io.micronaut.http.HttpRequest&lt;?&gt; request, io.micronaut.http.filter.ServerFilterChain chain)</h4>
                                 <p> Handles the asset request, but falls back to dev mode if the asset is no in the manifest.
    </p>
                             </li>
                         </ul>
                     
-                        <a name="handleAssetWorkAround(java.lang.String, io.micronaut.http.MediaType, java.lang.String, HttpRequest<?>, io.micronaut.http.filter.ServerFilterChain)"><!-- --></a>
+                        <a name="handleAssetWorkAround(java.lang.String, io.micronaut.http.MediaType, java.lang.String, HttpRequest, io.micronaut.http.filter.ServerFilterChain)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>public&nbsp;io.reactivex.Flowable&lt;io.micronaut.http.MutableHttpResponse&lt;?&gt;&gt; <strong>handleAssetWorkAround</strong>(java.lang.String filename, io.micronaut.http.MediaType contentType, java.lang.String encoding, io.micronaut.http.HttpRequest&lt;?&gt; request, io.micronaut.http.filter.ServerFilterChain chain)</h4>
@@ -289,7 +296,7 @@ public&nbsp;io.reactivex.Flowable&lt;io.micronaut.http.MutableHttpResponse&lt;?&
                             </li>
                         </ul>
                     
-                        <a name="shouldForceDevMode(java.lang.String, HttpRequest<?>)"><!-- --></a>
+                        <a name="shouldForceDevMode(java.lang.String, HttpRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>protected&nbsp;boolean <strong>shouldForceDevMode</strong>(java.lang.String fileName, io.micronaut.http.HttpRequest&lt;?&gt; request)</h4>

@@ -97,6 +97,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <ul class="blockList">
         <li class="blockList">
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>interface FieldAdjustmentInterface</pre>
 
     <p> This interface defines a adjustment to the fields/order defined for a domain class.
  The implementations of this interface provides the logic to add/move/remove fields from
@@ -165,14 +170,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#apply(List)">apply</a></strong>(<a href='../../../../../List.html'>List</a> fieldOrder)</code><br>Applies the field adjustment to the given list of fields. </td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#apply(List)">apply</a></strong>(java.util.List&lt;java.lang.String&gt; fieldOrder)</code><br>Applies the field adjustment to the given list of fields. </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#removeField(java.lang.String)">removeField</a></strong>(java.lang.String fieldName)</code><br>Removes the given field name from this adjustment. </td>
+                            <td class="colLast"><code><strong><a href="#removeField(java.lang.String)">removeField</a></strong>(java.lang.String fieldName)</code><br>Removes the given field name from this adjustment.</td>
                         </tr>
                         
                     </table>
@@ -228,7 +233,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="apply(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>apply</strong>(<a href='../../../../../List.html'>List</a> fieldOrder)</h4>
+                                <h4>java.util.List&lt;java.lang.String&gt; <strong>apply</strong>(java.util.List&lt;java.lang.String&gt; fieldOrder)</h4>
                                 <p> Applies the field adjustment to the given list of fields. Modifies the list in place. <DL><DT><B>Parameters:</B></DT><DD><code>fieldOrder</code> -  The original field order (modified).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The original fieldOrder list (modified).</DD></DL></p>
                             </li>
                         </ul>

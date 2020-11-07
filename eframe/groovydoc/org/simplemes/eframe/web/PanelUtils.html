@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class PanelUtils
+extends java.lang.Object</pre>
 
     <p> Utilities to work with display panels.</p>
 
@@ -176,8 +182,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#organizeFieldsIntoPanels(List)">organizeFieldsIntoPanels</a></strong>(<a href='../../../../List.html'>List</a> fields)</code><br>Takes the given list of fields an organizes the fields into a map for each panel. </td>
+                            <td class="colLast"><code>static&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#organizeFieldsIntoPanels(List)">organizeFieldsIntoPanels</a></strong>(java.util.List&lt;java.lang.String&gt; fields)</code><br>Takes the given list of fields an organizes the fields into a map for each panel.</td>
                         </tr>
                         
                     </table>
@@ -268,7 +274,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="organizeFieldsIntoPanels(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../Map.html'>Map</a> <strong>organizeFieldsIntoPanels</strong>(<a href='../../../../List.html'>List</a> fields)</h4>
+                                <h4>static&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt; <strong>organizeFieldsIntoPanels</strong>(java.util.List&lt;java.lang.String&gt; fields)</h4>
                                 <p> Takes the given list of fields an organizes the fields into a map for each panel. <DL><DT><B>Parameters:</B></DT><DD><code>fields</code> -  The fields.  If a field is in the format: 'group:details', then it is a group.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The Map with an entry for each panel.  Each entry is a list of fields in the panel.
          If no panels are found, then an empty map is returned.
          This relies on the Java rule for LinkedHashMap's that keySet() returns the list in the order

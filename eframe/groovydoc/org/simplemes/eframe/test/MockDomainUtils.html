@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../org/simplemes/eframe/test/AutoCleanupMockInterface.html'>AutoCleanupMockInterface</a>, org.spockframework.mock.IDefaultResponse</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.transform.ToStringToString
+
+<pre>@groovy.transform.ToString(includePackage: false, includeNames: true)
 class MockDomainUtils
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../org/simplemes/eframe/test/AutoCleanupMockInterface.html'>AutoCleanupMockInterface</a>, org.spockframework.mock.IDefaultResponse</pre>
 
     <p> Builds a very simple mock/stub version of DomainUtils that returns the given domain(s) classes as possible domains.
  <p>
@@ -164,12 +164,12 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#delegateToOriginal">delegateToOriginal</a></code><br>A list of methods that work just fine without mocking.  </td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.Class&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#domainClassList">domainClassList</a></code><br>The list of classes to pretend are domain classes.</td>
                         </tr>
                         
@@ -190,7 +190,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;Field&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#persistentProperties">persistentProperties</a></code><br>The persistent entities for the simulated domain.</td>
                         </tr>
                         
@@ -235,13 +235,13 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst">
                                 <code><a href="#MockDomainUtils(org.simplemes.eframe.test.BaseSpecification, List)">MockDomainUtils</a>
-                                (<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, <a href='../../../../List.html'>List</a> classes)</code><br>Basic constructor.  </td>
+                                (<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, java.util.List&lt;java.lang.Class&gt; classes)</code><br>Basic constructor.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst">
                                 <code><a href="#MockDomainUtils(org.simplemes.eframe.test.BaseSpecification, List, org.simplemes.eframe.data.FieldDefinitions)">MockDomainUtils</a>
-                                (<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, <a href='../../../../List.html'>List</a> classes, <a href='../../../../org/simplemes/eframe/data/FieldDefinitions.html'>FieldDefinitions</a> fieldDefinitions)</code><br>Basic constructor.  </td>
+                                (<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, java.util.List&lt;java.lang.Class&gt; classes, <a href='../../../../org/simplemes/eframe/data/FieldDefinitions.html'>FieldDefinitions</a> fieldDefinitions)</code><br>Basic constructor.  </td>
                         </tr>
                         
                         <tr class="altColor">
@@ -274,12 +274,12 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#doCleanup(org.simplemes.eframe.test.BaseSpecification)">doCleanup</a></strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> testSpec)</code><br>Performs the cleanup action. </td>
+                            <td class="colLast"><code><strong><a href="#doCleanup(org.simplemes.eframe.test.BaseSpecification)">doCleanup</a></strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> testSpec)</code><br>Performs the cleanup action.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;Field&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getPersistentFields()">getPersistentFields</a></strong>()</code><br>Returns the list of mocked properties for this object.  </td>
                         </tr>
                         
@@ -349,7 +349,7 @@ extends java.lang.Object
                         <a name="delegateToOriginal"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;<a href='../../../../List.html'>List</a> <strong>delegateToOriginal</strong></h4>
+                                <h4>private&nbsp;static&nbsp;java.util.List&lt;java.lang.String&gt; <strong>delegateToOriginal</strong></h4>
                                 <p> A list of methods that work just fine without mocking.  We will just let the real
  DomainUtils handle them.</p>
                             </li>
@@ -358,7 +358,7 @@ extends java.lang.Object
                         <a name="domainClassList"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>domainClassList</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.Class&gt; <strong>domainClassList</strong></h4>
                                 <p> The list of classes to pretend are domain classes.</p>
                             </li>
                         </ul>
@@ -391,7 +391,7 @@ extends java.lang.Object
                         <a name="persistentProperties"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>persistentProperties</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;Field&gt; <strong>persistentProperties</strong></h4>
                                 <p> The persistent entities for the simulated domain.</p>
                             </li>
                         </ul>
@@ -437,7 +437,7 @@ extends java.lang.Object
                         <a name="MockDomainUtils(org.simplemes.eframe.test.BaseSpecification, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>MockDomainUtils</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, <a href='../../../../List.html'>List</a> classes)</h4>
+                                <h4><strong>MockDomainUtils</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, java.util.List&lt;java.lang.Class&gt; classes)</h4>
                                 <p> Basic constructor.  You must call install() to make this mock active. <DL><DT><B>Parameters:</B></DT><DD><code>baseSpec</code> -  The test specification that needs the mock (usually this).</DD><DD><code>classes</code> -  The classes to  pretend they are domain classes.</DD></DL></p>
                             </li>
                         </ul>
@@ -445,7 +445,7 @@ extends java.lang.Object
                         <a name="MockDomainUtils(org.simplemes.eframe.test.BaseSpecification, List, org.simplemes.eframe.data.FieldDefinitions)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>MockDomainUtils</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, <a href='../../../../List.html'>List</a> classes, <a href='../../../../org/simplemes/eframe/data/FieldDefinitions.html'>FieldDefinitions</a> fieldDefinitions)</h4>
+                                <h4><strong>MockDomainUtils</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, java.util.List&lt;java.lang.Class&gt; classes, <a href='../../../../org/simplemes/eframe/data/FieldDefinitions.html'>FieldDefinitions</a> fieldDefinitions)</h4>
                                 <p> Basic constructor.  You must call install() to make this mock active. <DL><DT><B>Parameters:</B></DT><DD><code>baseSpec</code> -  The test specification that needs the mock (usually this).</DD><DD><code>classes</code> -  The classes to  pretend they are domain classes.</DD><DD><code>fieldDefinitions</code> -  The field definitions to return for all request to getFieldDefinitions.</DD></DL></p>
                             </li>
                         </ul>
@@ -474,7 +474,7 @@ extends java.lang.Object
                         <a name="doCleanup(org.simplemes.eframe.test.BaseSpecification)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>doCleanup</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> testSpec)</h4>
                                 <p> Performs the cleanup action. <DL><DT><B>Parameters:</B></DT><DD><code>testSpec</code> -  The test that requests the cleanup.</DD></DL></p>
                             </li>
@@ -483,7 +483,7 @@ void <strong>doCleanup</strong>(<a href='../../../../org/simplemes/eframe/test/B
                         <a name="getPersistentFields()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getPersistentFields</strong>()</h4>
+                                <h4>java.util.List&lt;Field&gt; <strong>getPersistentFields</strong>()</h4>
                                 <p> Returns the list of mocked properties for this object.  Simulates a mocked property from the
  list in fieldOrder. <DL><DT><B>Returns:</B></DT><DD>The list of persistent fields.</DD></DL></p>
                             </li>
@@ -501,7 +501,7 @@ void <strong>doCleanup</strong>(<a href='../../../../org/simplemes/eframe/test/B
                         <a name="respond(org.spockframework.mock.IMockInvocation)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.Object <strong>respond</strong>(org.spockframework.mock.IMockInvocation invocation)</h4>
                                 <p></p>
                             </li>

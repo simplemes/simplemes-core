@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.security.annotation.Secured(value: [ADMIN, DESIGNER])
+@io.micronaut.http.annotation.Controller(value: /dashboardConfig)
+class DashboardConfigController
+extends <a href='../../../../../org/simplemes/eframe/controller/BaseCrudRestController.html'>BaseCrudRestController</a></pre>
 
     <p> Provides definition-time access to a dashboard configuration.  Mainly used for CRUD/REST access.  No GUI access.</p>
 
@@ -205,25 +214,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buttonDetailsDialog(java.security.Principal)">buttonDetailsDialog</a></strong>(java.security.Principal principal)</code><br>Displays the button details dialog page. </td>
+                            <td class="colLast"><code><strong><a href="#buttonDetailsDialog(java.security.Principal)">buttonDetailsDialog</a></strong>(java.security.Principal principal)</code><br>Displays the button details dialog page.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a></code></td>
-                            <td class="colLast"><code><strong><a href="#detailsDialog(java.security.Principal)">detailsDialog</a></strong>(java.security.Principal principal)</code><br>Displays the main details dialog page. </td>
+                            <td class="colLast"><code><strong><a href="#detailsDialog(java.security.Principal)">detailsDialog</a></strong>(java.security.Principal principal)</code><br>Displays the main details dialog page.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a></code></td>
-                            <td class="colLast"><code><strong><a href="#editor(io.micronaut.http.HttpRequest, java.security.Principal)">editor</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Displays the editor dialog page. </td>
+                            <td class="colLast"><code><strong><a href="#editor(io.micronaut.http.HttpRequest, java.security.Principal)">editor</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Displays the editor dialog page.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a></code></td>
-                            <td class="colLast"><code><strong><a href="#panelDetailsDialog(java.security.Principal)">panelDetailsDialog</a></strong>(java.security.Principal principal)</code><br>Displays the panel details dialog page. </td>
+                            <td class="colLast"><code><strong><a href="#panelDetailsDialog(java.security.Principal)">panelDetailsDialog</a></strong>(java.security.Principal principal)</code><br>Displays the panel details dialog page.</td>
                         </tr>
                         
                     </table>
@@ -323,9 +332,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="buttonDetailsDialog(java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>buttonDetailsDialog</strong>(@javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /buttonDetailsDialog)
+<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>buttonDetailsDialog</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the button details dialog page. <DL><DT><B>Parameters:</B></DT><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The model/view to display.</DD></DL></p>
                             </li>
                         </ul>
@@ -333,9 +342,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="detailsDialog(java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>detailsDialog</strong>(@javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /detailsDialog)
+<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>detailsDialog</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the main details dialog page. <DL><DT><B>Parameters:</B></DT><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The model/view to display.</DD></DL></p>
                             </li>
                         </ul>
@@ -343,9 +352,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="editor(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>editor</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /editor)
+<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>editor</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the editor dialog page. <DL><DT><B>Parameters:</B></DT><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The model/view to display.</DD></DL></p>
                             </li>
                         </ul>
@@ -353,9 +362,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="panelDetailsDialog(java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>panelDetailsDialog</strong>(@javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /panelDetailsDialog)
+<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>panelDetailsDialog</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the panel details dialog page. <DL><DT><B>Parameters:</B></DT><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The model/view to display.</DD></DL></p>
                             </li>
                         </ul>

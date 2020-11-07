@@ -101,20 +101,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../../org/simplemes/eframe/data/ChoiceListItemInterface.html'>ChoiceListItemInterface</a>, <a href='../../../../../org/simplemes/eframe/data/ConfigurableTypeInterface.html'>ConfigurableTypeInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@io.micronaut.data.annotation.MappedEntityMappedEntity
-@<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntity.html' title='DomainEntity'>DomainEntity</a>DomainEntity
-@groovy.transform.EqualsAndHashCodeEqualsAndHashCode
-@com.fasterxml.jackson.annotation.JsonIgnorePropertiesJsonIgnoreProperties
-@groovy.transform.ToStringToString
+
+<pre>@io.micronaut.data.annotation.MappedEntity
+@<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntity.html' title='DomainEntity'>DomainEntity</a>
+@groovy.transform.EqualsAndHashCode(includes: [flexType])
+@com.fasterxml.jackson.annotation.JsonIgnoreProperties(value: [value])
+@groovy.transform.ToString(includePackage: false, includeNames: true, excludes: [flexType])
 class FlexType
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../../org/simplemes/eframe/data/ChoiceListItemInterface.html'>ChoiceListItemInterface</a>, <a href='../../../../../org/simplemes/eframe/data/ConfigurableTypeInterface.html'>ConfigurableTypeInterface</a></pre>
 
     <p> Defines the basic user-defined data types.
  The category can be extended in sub-classes at the application level.
@@ -179,12 +179,12 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateCreated">dateCreated</a></code><br></td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateUpdated">dateUpdated</a></code><br></td>
                         </tr>
                         
@@ -204,7 +204,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/custom/domain/FlexField.html' title='FlexField'>FlexField</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#fields">fields</a></code><br>A list of data entry fields for this flex type.</td>
                         </tr>
                         
@@ -220,7 +220,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -285,7 +285,7 @@ extends java.lang.Object
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;FieldDefinitionInterface&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#determineInputFields(java.lang.String)">determineInputFields</a></strong>(java.lang.String configurableTypeFieldName)</code><br>Builds the fields needed to configure this type.  </td>
                         </tr>
                         
@@ -299,19 +299,19 @@ extends java.lang.Object
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#getId()">getId</a></strong>()</code><br>Returns internal ID for this choice. </td>
+                            <td class="colLast"><code><strong><a href="#getId()">getId</a></strong>()</code><br>Returns internal ID for this choice.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#getValue()">getValue</a></strong>()</code><br>Returns the value for the choice list (e.g. a domain record or enum element). </td>
+                            <td class="colLast"><code><strong><a href="#getValue()">getValue</a></strong>()</code><br>Returns the value for the choice list (e.g. a domain record or enum element).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isDefaultChoice()">isDefaultChoice</a></strong>()</code><br>Returns true if this choice is the default choice in the list. </td>
+                            <td class="colLast"><code><strong><a href="#isDefaultChoice()">isDefaultChoice</a></strong>()</code><br>Returns true if this choice is the default choice in the list.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -324,13 +324,13 @@ extends java.lang.Object
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toStringLocalized(Locale)">toStringLocalized</a></strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</code><br>Gets the localized display name for this type of configurable object.  </td>
+                            <td class="colLast"><code><strong><a href="#toStringLocalized(java.util.Locale)">toStringLocalized</a></strong>(java.util.Locale locale)</code><br>Gets the localized display name for this type of configurable object.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toStringLocalized()">toStringLocalized</a></strong>()</code><br>Returns the localized display value for the choice (uses the default locale). </td>
+                            <td class="colLast"><code><strong><a href="#toStringLocalized()">toStringLocalized</a></strong>()</code><br>Returns the localized display value for the choice (uses the default locale).</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -414,7 +414,7 @@ extends java.lang.Object
                         <a name="dateCreated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateCreated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateCreated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -422,7 +422,7 @@ extends java.lang.Object
                         <a name="dateUpdated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateUpdated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateUpdated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -454,7 +454,7 @@ extends java.lang.Object
                         <a name="fields"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../List.html'>List</a> <strong>fields</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/custom/domain/FlexField.html' title='FlexField'>FlexField</a>&gt; <strong>fields</strong></h4>
                                 <p> A list of data entry fields for this flex type.<p/>
  <b>Required.</b></p>
                             </li>
@@ -480,7 +480,7 @@ extends java.lang.Object
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -531,7 +531,7 @@ extends java.lang.Object
                         <a name="beforeSave()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: unused)
 java.lang.Object <strong>beforeSave</strong>()</h4>
                                 <p> Called before validate happens.</p>
                             </li>
@@ -540,8 +540,8 @@ java.lang.Object <strong>beforeSave</strong>()</h4>
                         <a name="determineInputFields(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-<a href='../../../../../List.html'>List</a> <strong>determineInputFields</strong>(java.lang.String configurableTypeFieldName)</h4>
+                                <h4>@java.lang.Override
+java.util.List&lt;FieldDefinitionInterface&gt; <strong>determineInputFields</strong>(java.lang.String configurableTypeFieldName)</h4>
                                 <p> Builds the fields needed to configure this type.  This will be used to build the GUI field HTML elements. <DL><DT><B>Parameters:</B></DT><DD><code>configurableTypeFieldName</code> -  The name of the Configurable Type field that the caller wants the fields for.
                                   This is used to specify the prefix for the values in the custom field holder.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of fields needed to configure this type.  These fields should match the names and types of the
          related flex type.</DD></DL></p>
@@ -561,8 +561,8 @@ java.lang.Object <strong>beforeSave</strong>()</h4>
                         <a name="getId()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-@io.micronaut.data.annotation.TransientTransient
+                                <h4>@java.lang.Override
+@io.micronaut.data.annotation.Transient
 java.lang.Object <strong>getId</strong>()</h4>
                                 <p> Returns internal ID for this choice. <DL><DT><B>Returns:</B></DT><DD>The ID.</DD></DL></p>
                             </li>
@@ -571,8 +571,8 @@ java.lang.Object <strong>getId</strong>()</h4>
                         <a name="getValue()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-@io.micronaut.data.annotation.TransientTransient
+                                <h4>@java.lang.Override
+@io.micronaut.data.annotation.Transient
 java.lang.Object <strong>getValue</strong>()</h4>
                                 <p> Returns the value for the choice list (e.g. a domain record or enum element). <DL><DT><B>Returns:</B></DT><DD>The value.</DD></DL></p>
                             </li>
@@ -581,7 +581,7 @@ java.lang.Object <strong>getValue</strong>()</h4>
                         <a name="isDefaultChoice()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 boolean <strong>isDefaultChoice</strong>()</h4>
                                 <p> Returns true if this choice is the default choice in the list. <DL><DT><B>Returns:</B></DT><DD>True if it is the default.</DD></DL></p>
                             </li>
@@ -590,18 +590,18 @@ boolean <strong>isDefaultChoice</strong>()</h4>
                         <a name="toString()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>toString</strong>()</h4>
                                 <p> Build human readable version of this object.
  @return</p>
                             </li>
                         </ul>
                     
-                        <a name="toStringLocalized(Locale)"><!-- --></a>
+                        <a name="toStringLocalized(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-java.lang.String <strong>toStringLocalized</strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>@java.lang.Override
+java.lang.String <strong>toStringLocalized</strong>(java.util.Locale locale)</h4>
                                 <p> Gets the localized display name for this type of configurable object.  This is typically displayed in drop-down lists
  and other display locations. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale to display the name from (if null, defaults to the request locale).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The display name.</DD></DL></p>
                             </li>
@@ -610,7 +610,7 @@ java.lang.String <strong>toStringLocalized</strong>(<a href='../../../../../Loca
                         <a name="toStringLocalized()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>toStringLocalized</strong>()</h4>
                                 <p> Returns the localized display value for the choice (uses the default locale). <DL><DT><B>Returns:</B></DT><DD>The display value.</DD></DL></p>
                             </li>

@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../org/simplemes/eframe/test/AutoCleanupMockInterface.html'>AutoCleanupMockInterface</a>, org.spockframework.mock.IDefaultResponse</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.transform.ToStringToString
+
+<pre>@groovy.transform.ToString(includePackage: false, includeNames: true)
 class MockFieldExtension
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../org/simplemes/eframe/test/AutoCleanupMockInterface.html'>AutoCleanupMockInterface</a>, org.spockframework.mock.IDefaultResponse</pre>
 
     <p> Builds a very simple mock/stub version of ExtensibleFieldHelper that returns the given custom fields.
  <p>
@@ -179,7 +179,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.util.Map&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#options">options</a></code><br>The input options for the custom field(s) to mock.</td>
                         </tr>
                         
@@ -218,14 +218,14 @@ extends java.lang.Object
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#MockFieldExtension(org.simplemes.eframe.test.BaseSpecification, Map)">MockFieldExtension</a>
-                                (<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, <a href='../../../../Map.html'>Map</a> options)</code><br>Basic constructor.  </td>
+                                <code><a href="#MockFieldExtension(org.simplemes.eframe.test.BaseSpecification, java.util.Map)">MockFieldExtension</a>
+                                (<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, java.util.Map options)</code><br>Basic constructor.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst">
                                 <code><a href="#MockFieldExtension(org.simplemes.eframe.test.BaseSpecification, List)">MockFieldExtension</a>
-                                (<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, <a href='../../../../List.html'>List</a> options)</code><br>Basic constructor.  </td>
+                                (<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, java.util.List&lt;java.util.Map&gt; options)</code><br>Basic constructor.  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -258,7 +258,7 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#doCleanup(org.simplemes.eframe.test.BaseSpecification)">doCleanup</a></strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> testSpec)</code><br>Performs the cleanup action. </td>
+                            <td class="colLast"><code><strong><a href="#doCleanup(org.simplemes.eframe.test.BaseSpecification)">doCleanup</a></strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> testSpec)</code><br>Performs the cleanup action.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -270,9 +270,9 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getEffectiveFieldOrder(java.lang.Class, List)">getEffectiveFieldOrder</a></strong>(java.lang.Class domainClass, <a href='../../../../List.html'>List</a> fieldOrder)</code><br>Mock for: Determines the effective field order after applying the addition (extension) modules to the domain and then
- the user's adjustments to the static fieldOrder from the domain class. </td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getEffectiveFieldOrder(java.lang.Class, List)">getEffectiveFieldOrder</a></strong>(java.lang.Class domainClass, java.util.List&lt;java.lang.String&gt; fieldOrder)</code><br>Mock for: Determines the effective field order after applying the addition (extension) modules to the domain and then
+ the user's adjustments to the static fieldOrder from the domain class.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -349,7 +349,7 @@ extends java.lang.Object
                         <a name="options"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>options</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.util.Map&gt; <strong>options</strong></h4>
                                 <p> The input options for the custom field(s) to mock.</p>
                             </li>
                         </ul>
@@ -385,10 +385,10 @@ extends java.lang.Object
                             </li>
                         </ul>
                     
-                        <a name="MockFieldExtension(org.simplemes.eframe.test.BaseSpecification, Map)"><!-- --></a>
+                        <a name="MockFieldExtension(org.simplemes.eframe.test.BaseSpecification, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>MockFieldExtension</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, <a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4><strong>MockFieldExtension</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, java.util.Map options)</h4>
                                 <p> Basic constructor.  You must call install() to make this mock active. <DL><DT><B>Parameters:</B></DT><DD><code>baseSpec</code> -  The test specification that needs the mock (usually this).</DD><DD><code>options</code> -  The options for a single mocked custom field.</DD></DL></p>
                             </li>
                         </ul>
@@ -396,7 +396,7 @@ extends java.lang.Object
                         <a name="MockFieldExtension(org.simplemes.eframe.test.BaseSpecification, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>MockFieldExtension</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, <a href='../../../../List.html'>List</a> options)</h4>
+                                <h4><strong>MockFieldExtension</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, java.util.List&lt;java.util.Map&gt; options)</h4>
                                 <p> Basic constructor.  You must call install() to make this mock active. <DL><DT><B>Parameters:</B></DT><DD><code>baseSpec</code> -  The test specification that needs the mock (usually this).</DD><DD><code>options</code> -  The options for 1+ mocked custom field.</DD></DL></p>
                             </li>
                         </ul>
@@ -425,7 +425,7 @@ extends java.lang.Object
                         <a name="doCleanup(org.simplemes.eframe.test.BaseSpecification)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>doCleanup</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> testSpec)</h4>
                                 <p> Performs the cleanup action. <DL><DT><B>Parameters:</B></DT><DD><code>testSpec</code> -  The test that requests the cleanup.</DD></DL></p>
                             </li>
@@ -443,7 +443,7 @@ void <strong>doCleanup</strong>(<a href='../../../../org/simplemes/eframe/test/B
                         <a name="getEffectiveFieldOrder(java.lang.Class, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getEffectiveFieldOrder</strong>(java.lang.Class domainClass, <a href='../../../../List.html'>List</a> fieldOrder)</h4>
+                                <h4>java.util.List&lt;java.lang.String&gt; <strong>getEffectiveFieldOrder</strong>(java.lang.Class domainClass, java.util.List&lt;java.lang.String&gt; fieldOrder)</h4>
                                 <p> Mock for: Determines the effective field order after applying the addition (extension) modules to the domain and then
  the user's adjustments to the static fieldOrder from the domain class. <DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The domain class to determine the field order for.</DD><DD><code>fieldOrder</code> -  The field order to adjust.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The effective field order list.  This is a single flattened list of field names.</DD></DL></p>
                             </li>
@@ -461,7 +461,7 @@ void <strong>doCleanup</strong>(<a href='../../../../org/simplemes/eframe/test/B
                         <a name="respond(org.spockframework.mock.IMockInvocation)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.Object <strong>respond</strong>(org.spockframework.mock.IMockInvocation invocation)</h4>
                                 <p></p>
                             </li>

@@ -101,20 +101,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>io.micronaut.http.filter.HttpServerFilter</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.util.logging.Slf4jSlf4j
-@io.micronaut.http.annotation.FilterFilter
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.http.annotation.Filter(value: /**)
 class AutoRefreshTokenFilter
 extends java.lang.Object
-
-</pre>
-
-
+implements io.micronaut.http.filter.HttpServerFilter</pre>
 
     <p> Checks all incoming requests and will trigger an auto-refresh of the access token if needed.
- Works with AutoRefreshAuthenticationFetcher to update the JWT cookies on browser for this response.
+ Works with <a href='../../../../org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html' title='AutoRefreshAuthenticationFetcher'>AutoRefreshAuthenticationFetcher</a> to update the JWT cookies on browser for this response.
 </p>
 
           </li>
@@ -209,15 +209,15 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>org.reactivestreams.Publisher</code></td>
-                            <td class="colLast"><code><strong><a href="#doFilter(io.micronaut.http.HttpRequest, io.micronaut.http.filter.ServerFilterChain)">doFilter</a></strong>(io.micronaut.http.HttpRequest request, io.micronaut.http.filter.ServerFilterChain chain)</code><br>Variation of the <a href='#doFilter(io.micronaut.http.HttpRequest, io.micronaut.http.filter.FilterChain)'>doFilter(HttpRequest, io.micronaut.http.filter.FilterChain)</a> method that accepts a ServerFilterChain
- which allows to mutate the outgoing HTTP response. </td>
+                            <td class="colLast"><code>Publisher&lt;MutableHttpResponse&lt;?&gt;&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#doFilter(HttpRequest, io.micronaut.http.filter.ServerFilterChain)">doFilter</a></strong>(HttpRequest&lt;?&gt; request, io.micronaut.http.filter.ServerFilterChain chain)</code><br>Variation of the <a href='#doFilter(io.micronaut.http.HttpRequest, io.micronaut.http.filter.FilterChain)'>doFilter(HttpRequest, io.micronaut.http.filter.FilterChain)</a> method that accepts a ServerFilterChain
+ which allows to mutate the outgoing HTTP response.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>int</code></td>
-                            <td class="colLast"><code><strong><a href="#getOrder()">getOrder</a></strong>()</code><br><DL><DT><B>Returns:</B></DT><DD>The order of the object. </td>
+                            <td class="colLast"><code><strong><a href="#getOrder()">getOrder</a></strong>()</code><br>  <DL><DT><B>Returns:</B></DT><DD>The order of the object.</DD></DL></td>
                         </tr>
                         
                     </table>
@@ -314,11 +314,11 @@ extends java.lang.Object
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="doFilter(io.micronaut.http.HttpRequest, io.micronaut.http.filter.ServerFilterChain)"><!-- --></a>
+                        <a name="doFilter(HttpRequest, io.micronaut.http.filter.ServerFilterChain)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-org.reactivestreams.Publisher <strong>doFilter</strong>(io.micronaut.http.HttpRequest request, io.micronaut.http.filter.ServerFilterChain chain)</h4>
+                                <h4>@java.lang.Override
+Publisher&lt;MutableHttpResponse&lt;?&gt;&gt; <strong>doFilter</strong>(HttpRequest&lt;?&gt; request, io.micronaut.http.filter.ServerFilterChain chain)</h4>
                                 <p> Variation of the <a href='#doFilter(io.micronaut.http.HttpRequest, io.micronaut.http.filter.FilterChain)'>doFilter(HttpRequest, io.micronaut.http.filter.FilterChain)</a> method that accepts a ServerFilterChain
  which allows to mutate the outgoing HTTP response. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request</DD><DD><code>chain</code> -  The chain</DD></DL><DL><DT><B>Returns:</B></DT><DD>APublisher that emits a MutableHttpResponse</DD></DL><DL><DT><B>See Also:</B></DT><DD><a href='#doFilter(io.micronaut.http.HttpRequest, io.micronaut.http.filter.FilterChain)'>doFilter(HttpRequest, io.micronaut.http.filter.FilterChain)</a></DD></DL></p>
                             </li>
@@ -327,7 +327,7 @@ org.reactivestreams.Publisher <strong>doFilter</strong>(io.micronaut.http.HttpRe
                         <a name="getOrder()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 int <strong>getOrder</strong>()</h4>
                                 <p> <DL><DT><B>Returns:</B></DT><DD>The order of the object. Defaults to zero (no order).</DD></DL></p>
                             </li>

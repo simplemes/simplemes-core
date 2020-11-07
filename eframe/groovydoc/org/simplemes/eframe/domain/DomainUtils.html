@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class DomainUtils
+extends java.lang.Object</pre>
 
     <p> Domain Object manipulation utilities.
  These class provide common domain class utilities that simplify
@@ -193,49 +199,49 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#addChildToDomain(java.lang.Object, java.lang.Object, java.lang.String)">addChildToDomain</a></strong>(java.lang.Object domainObject, java.lang.Object child, java.lang.String collectionName)</code><br>Adds a single child to the given element using the dynamic addToXYZ method. </td>
+                            <td class="colLast"><code><strong><a href="#addChildToDomain(java.lang.Object, java.lang.Object, java.lang.String)">addChildToDomain</a></strong>(java.lang.Object domainObject, java.lang.Object child, java.lang.String collectionName)</code><br>Adds a single child to the given element using the dynamic addToXYZ method.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#findDomainRecord(java.lang.Class, java.lang.Object)">findDomainRecord</a></strong>(java.lang.Class domainClass, java.lang.Object keyOrUuid)</code><br>Returns the domain record that matches the given uuid or primary key. </td>
+                            <td class="colLast"><code><strong><a href="#findDomainRecord(java.lang.Class, java.lang.Object)">findDomainRecord</a></strong>(java.lang.Class domainClass, java.lang.Object keyOrUuid)</code><br>Returns the domain record that matches the given uuid or primary key.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List</code></td>
                             <td class="colLast"><code><strong><a href="#findRelatedRecords(java.lang.Object)">findRelatedRecords</a></strong>(java.lang.Object record)</code><br>Calls the domain object's findRelatedRecords() method for the given object.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.Class&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getAllDomains()">getAllDomains</a></strong>()</code><br>Returns all of the domain classes defined in the system.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Class</code></td>
-                            <td class="colLast"><code><strong><a href="#getDomain(java.lang.String)">getDomain</a></strong>(java.lang.String domainName)</code><br>Returns a domain class, using the simple name for the class (case insensitive). </td>
+                            <td class="colLast"><code><strong><a href="#getDomain(java.lang.String)">getDomain</a></strong>(java.lang.String domainName)</code><br>Returns a domain class, using the simple name for the class (case insensitive).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/data/FieldDefinitions.html'>FieldDefinitions</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getFieldDefinitions(java.lang.Class)">getFieldDefinitions</a></strong>(java.lang.Class c)</code><br>Find the FieldDefinitions for the given domain/POGO class. </td>
+                            <td class="colLast"><code><strong><a href="#getFieldDefinitions(java.lang.Class)">getFieldDefinitions</a></strong>(java.lang.Class c)</code><br>Find the FieldDefinitions for the given domain/POGO class.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Class</code></td>
-                            <td class="colLast"><code><strong><a href="#getFieldType(java.lang.Class, java.lang.String)">getFieldType</a></strong>(java.lang.Class clazz, java.lang.String fieldName)</code><br>Finds the class for the given field name. </td>
+                            <td class="colLast"><code><strong><a href="#getFieldType(java.lang.Class, java.lang.String)">getFieldType</a></strong>(java.lang.Class clazz, java.lang.String fieldName)</code><br>Finds the class for the given field name.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getKeyFields(java.lang.Class)">getKeyFields</a></strong>(java.lang.Class clazz)</code><br>Finds the key field(s) for a given domain class.
  </td>
                         </tr>
@@ -243,7 +249,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getParentFieldName(java.lang.Class)">getParentFieldName</a></strong>(java.lang.Class clazz)</code><br>Finds the field name for the parent reference field name on the given domain class. </td>
+                            <td class="colLast"><code><strong><a href="#getParentFieldName(java.lang.Class)">getParentFieldName</a></strong>(java.lang.Class clazz)</code><br>Finds the field name for the parent reference field name on the given domain class.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -254,8 +260,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getPersistentFields(java.lang.Class)">getPersistentFields</a></strong>(java.lang.Class domainClass)</code><br>Gets the persistent fields for the given Domain entity class. </td>
+                            <td class="colLast"><code>java.util.List&lt;<a href='../../../../org/simplemes/eframe/domain/PersistentProperty.html' title='PersistentProperty'>PersistentProperty</a>&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getPersistentFields(java.lang.Class)">getPersistentFields</a></strong>(java.lang.Class domainClass)</code><br>Gets the persistent fields for the given Domain entity class.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -266,14 +272,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getStaticFieldOrder(java.lang.Class)">getStaticFieldOrder</a></strong>(java.lang.Class c)</code><br>Find static field order from the class (and super classes). </td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getStaticFieldOrder(java.lang.Class)">getStaticFieldOrder</a></strong>(java.lang.Class c)</code><br>Find static field order from the class (and super classes).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getTransientFields(java.lang.Class)">getTransientFields</a></strong>(java.lang.Class domainClass)</code><br>Gets the transient fields for the given domain entity class. </td>
+                            <td class="colLast"><code>java.util.List&lt;Field&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getTransientFields(java.lang.Class)">getTransientFields</a></strong>(java.lang.Class domainClass)</code><br>Gets the transient fields for the given domain entity class.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -293,7 +299,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isDomainEntity(java.lang.Class)">isDomainEntity</a></strong>(java.lang.Class c)</code><br>Returns true if this is a domain entity. </td>
+                            <td class="colLast"><code><strong><a href="#isDomainEntity(java.lang.Class)">isDomainEntity</a></strong>(java.lang.Class c)</code><br>Returns true if this is a domain entity.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -311,8 +317,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#validate(java.lang.Object)">validate</a></strong>(java.lang.Object domainObject)</code><br>Validates the given domain object. </td>
+                            <td class="colLast"><code>java.util.List&lt;<a href='../../../../org/simplemes/eframe/domain/validate/ValidationErrorInterface.html' title='ValidationErrorInterface'>ValidationErrorInterface</a>&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#validate(java.lang.Object)">validate</a></strong>(java.lang.Object domainObject)</code><br>Validates the given domain object.</td>
                         </tr>
                         
                     </table>
@@ -428,7 +434,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="findRelatedRecords(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>findRelatedRecords</strong>(java.lang.Object record)</h4>
+                                <h4>java.util.List <strong>findRelatedRecords</strong>(java.lang.Object record)</h4>
                                 <p> Calls the domain object's findRelatedRecords() method for the given object.
  If implemented, this will return the list of related records.   Commonly used
  for archiving and deleting records. <DL><DT><B>Parameters:</B></DT><DD><code>record</code> -  The domain object(record) to find related records for.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of related records.</DD></DL></p>
@@ -438,7 +444,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getAllDomains()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getAllDomains</strong>()</h4>
+                                <h4>java.util.List&lt;java.lang.Class&gt; <strong>getAllDomains</strong>()</h4>
                                 <p> Returns all of the domain classes defined in the system.
  <p>
  @return</p>
@@ -472,7 +478,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getKeyFields(java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getKeyFields</strong>(java.lang.Class clazz)</h4>
+                                <h4>java.util.List&lt;java.lang.String&gt; <strong>getKeyFields</strong>(java.lang.Class clazz)</h4>
                                 <p> Finds the key field(s) for a given domain class.
  If no static 'keys' list is defined in the domain class, then key field is assumed to be first field in the
  fieldOrder list. <DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The Domain class.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of key field name(s).  Empty if none found.</DD></DL></p>
@@ -501,7 +507,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getPersistentFields(java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getPersistentFields</strong>(java.lang.Class domainClass)</h4>
+                                <h4>java.util.List&lt;<a href='../../../../org/simplemes/eframe/domain/PersistentProperty.html' title='PersistentProperty'>PersistentProperty</a>&gt; <strong>getPersistentFields</strong>(java.lang.Class domainClass)</h4>
                                 <p> Gets the persistent fields for the given Domain entity class. <DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The class to find the fields in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>A list of field, which includes a name and a type (class).</DD></DL></p>
                             </li>
                         </ul>
@@ -517,7 +523,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getStaticFieldOrder(java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getStaticFieldOrder</strong>(java.lang.Class c)</h4>
+                                <h4>java.util.List&lt;java.lang.String&gt; <strong>getStaticFieldOrder</strong>(java.lang.Class c)</h4>
                                 <p> Find static field order from the class (and super classes). <DL><DT><B>Parameters:</B></DT><DD><code>c</code> -  The class to find the field order in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>A list of field names, in the display field order.</DD></DL></p>
                             </li>
                         </ul>
@@ -525,7 +531,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getTransientFields(java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getTransientFields</strong>(java.lang.Class domainClass)</h4>
+                                <h4>java.util.List&lt;Field&gt; <strong>getTransientFields</strong>(java.lang.Class domainClass)</h4>
                                 <p> Gets the transient fields for the given domain entity class. <DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The class to find the fields in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>A list of transient fields.</DD></DL></p>
                             </li>
                         </ul>
@@ -544,7 +550,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                             <li class="blockList">
                                 <h4><a href='../../../../org/simplemes/eframe/exception/MessageHolder.html'>MessageHolder</a> <strong>getValidationMessages</strong>(java.lang.Object domainObject)</h4>
                                 <p> Converts the domain object's errors into readable messages and stores them in a MessageHolder,
- as errors. <DL><DT><B>Returns:</B></DT><DD><DL><DT><B>Parameters:</B></DT><DD><code>domainObject</code> -  The domain object with errors.  This assumes the object has validate() called previously.</DD></DL></DD></DL></p>
+ as errors.
+ @return <DL><DT><B>Parameters:</B></DT><DD><code>domainObject</code> -  The domain object with errors.  This assumes the object has validate() called previously.</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -559,7 +566,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="isPropertySpecial(java.lang.Class, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: unused)
 boolean <strong>isPropertySpecial</strong>(java.lang.Class c, java.lang.String propertyName)</h4>
                                 <p> Determine if the given property is a special field that we want to ignore in GUIs and such.
  This is used to filter out framework fields such as 'id', 'version', 'dateCreated', 'dateUpdated' or '_customField'. <DL><DT><B>Parameters:</B></DT><DD><code>c</code> -  The class this property is in (Also checks the custom field definition for parent classes).</DD><DD><code>propertyName</code> -  The name of the property to check.</DD></DL><DL><DT><B>Returns:</B></DT><DD>True if property is a special property.</DD></DL></p>
@@ -577,7 +584,7 @@ boolean <strong>isPropertySpecial</strong>(java.lang.Class c, java.lang.String p
                         <a name="validate(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>validate</strong>(java.lang.Object domainObject)</h4>
+                                <h4>java.util.List&lt;<a href='../../../../org/simplemes/eframe/domain/validate/ValidationErrorInterface.html' title='ValidationErrorInterface'>ValidationErrorInterface</a>&gt; <strong>validate</strong>(java.lang.Object domainObject)</h4>
                                 <p> Validates the given domain object. <DL><DT><B>Parameters:</B></DT><DD><code>domainObject</code> -  The domain object to validate.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of validation errors.  Never null.</DD></DL></p>
                             </li>
                         </ul>

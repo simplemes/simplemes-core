@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@io.micronaut.data.annotation.TypeDef(type: DataType.DATE)
+@groovy.transform.EqualsAndHashCode(includes: [time])
+class DateOnly
+extends java.lang.Object</pre>
 
     <p> Date only class.  Provides basic date-related functions.</p>
 
@@ -169,8 +177,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#DateOnly(Date)">DateOnly</a>
-                                (<a href='../../../../Date.html'>Date</a> date)</code><br>Constructs a dateOnly object from a given date/time.</td>
+                                <code><a href="#DateOnly(java.util.Date)">DateOnly</a>
+                                (java.util.Date date)</code><br>Constructs a dateOnly object from a given date/time.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -204,7 +212,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>long</code></td>
                             <td class="colLast"><code><strong><a href="#getTime()">getTime</a></strong>()</code><br>Returns the number of milliseconds since January 1, 1970, 00:00:00 GMT
- represented by this <tt>Date</tt> object. </td>
+ represented by this <tt>Date</tt> object.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -300,10 +308,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="DateOnly(Date)"><!-- --></a>
+                        <a name="DateOnly(java.util.Date)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>DateOnly</strong>(<a href='../../../../Date.html'>Date</a> date)</h4>
+                                <h4><strong>DateOnly</strong>(java.util.Date date)</h4>
                                 <p> Constructs a dateOnly object from a given date/time. <DL><DT><B>Parameters:</B></DT><DD><code>date</code> -  The date.</DD></DL></p>
                             </li>
                         </ul>
@@ -350,7 +358,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="toString()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>toString</strong>()</h4>
                                 <p> Returns the human readable format.  This is the ISO format.
  @return</p>

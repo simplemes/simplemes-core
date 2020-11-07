@@ -98,6 +98,17 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.data.annotation.MappedEntity(value: usr)
+@<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntity.html' title='DomainEntity'>DomainEntity</a>
+@groovy.transform.EqualsAndHashCode(includes: [userName])
+@groovy.transform.ToString(includePackage: false, includeNames: true, excludes: [authoritySummary, password, encodedPassword])
+class User
+extends java.lang.Object</pre>
 
     <p> The framework/security User definition.</p>
 
@@ -146,12 +157,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateCreated">dateCreated</a></code><br></td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateUpdated">dateUpdated</a></code><br></td>
                         </tr>
                         
@@ -207,12 +218,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/security/domain/Role.html' title='Role'>Role</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#userRoles">userRoles</a></code><br></td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br>The internal unique ID for this record.</td>
                         </tr>
                         
@@ -296,14 +307,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>static&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#initialDataLoad()">initialDataLoad</a></strong>()</code><br>Load initial user records, only if there are no user records in the DB.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#passwordMatches(java.lang.String)">passwordMatches</a></strong>(java.lang.String secret)</code><br>Determines if the given password matches the user's current password. </td>
+                            <td class="colLast"><code><strong><a href="#passwordMatches(java.lang.String)">passwordMatches</a></strong>(java.lang.String secret)</code><br>Determines if the given password matches the user's current password.</td>
                         </tr>
                         
                     </table>
@@ -377,7 +388,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateCreated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateCreated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateCreated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -385,7 +396,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateUpdated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateUpdated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateUpdated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -475,7 +486,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="userRoles"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../List.html'>List</a> <strong>userRoles</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/security/domain/Role.html' title='Role'>Role</a>&gt; <strong>userRoles</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -483,7 +494,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p> The internal unique ID for this record.</p>
                             </li>
                         </ul>
@@ -534,7 +545,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="beforeValidate()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: unused)
 java.lang.Object <strong>beforeValidate</strong>()</h4>
                                 <p> Called before new records are created.</p>
                             </li>
@@ -568,7 +579,7 @@ java.lang.Object <strong>beforeValidate</strong>()</h4>
                         <a name="initialDataLoad()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../../Map.html'>Map</a> <strong>initialDataLoad</strong>()</h4>
+                                <h4>static&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt; <strong>initialDataLoad</strong>()</h4>
                                 <p> Load initial user records, only if there are no user records in the DB.</p>
                             </li>
                         </ul>

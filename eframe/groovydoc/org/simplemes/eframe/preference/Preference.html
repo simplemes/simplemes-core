@@ -98,6 +98,16 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includePackage: false, includeNames: true)
+@groovy.transform.EqualsAndHashCode
+@com.fasterxml.jackson.databind.annotation.JsonSerialize(using: PreferenceSerializer)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using: PreferenceDeserializer.class)
+class Preference
+extends java.lang.Object</pre>
 
     <p> A generic holder for a single user Preference.  This is a set of values for a given HTML element
  with one or more settings held in a map.
@@ -142,7 +152,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../../../org/simplemes/eframe/preference/PreferenceSettingInterface.html' title='PreferenceSettingInterface'>PreferenceSettingInterface</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#settings">settings</a></code><br>This List holds specific details used by the element.  </td>
                         </tr>
                         
@@ -243,7 +253,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="settings"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>settings</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../../../org/simplemes/eframe/preference/PreferenceSettingInterface.html' title='PreferenceSettingInterface'>PreferenceSettingInterface</a>&gt; <strong>settings</strong></h4>
                                 <p> This List holds specific details used by the element.  For example, an <code>OrderList</code> element
  will have a series of ColumnPreference entries in the list.</p>
                             </li>

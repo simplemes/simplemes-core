@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>public&nbsp;class DomainEntityHelper
+extends java.lang.Object</pre>
 
     <p> Support methods for the<DL><DT><B>DomainEntity:</B></DT><DD>annotation.  Provides much of the logic injected into the domain
  class.  This includes support for methods like list(), findById(), save(), etc.</DD></DL>
@@ -181,19 +187,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#lastLazyChildParentLoaded">lastLazyChildParentLoaded</a></code></td>
                             <td class="colLast">Records the last parent loaded for a lazy child loader (in test mode only).  </td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#lastLazyRefLoaded">lastLazyRefLoaded</a></code></td>
                             <td class="colLast">Records the last lazy reference loaded (in test mode only).  </td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#lastLazyRefParentLoaded">lastLazyRefParentLoaded</a></code></td>
                             <td class="colLast">Records the last parent loaded for a lazy reference list loader (in test mode only).  </td>
                         </tr>
@@ -257,13 +263,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#executeWriteClosure(java.lang.Class, Closure<Object>)">executeWriteClosure</a></strong>(java.lang.Class delegate, groovy.lang.Closure&lt;java.lang.Object&gt; closure)</code><br>Start a transaction and rollback when finished.</td>
+                            <td class="colLast"><code><strong><a href="#executeWriteClosure(java.lang.Class, Closure)">executeWriteClosure</a></strong>(java.lang.Class delegate, groovy.lang.Closure&lt;java.lang.Object&gt; closure)</code><br>Start a transaction and rollback when finished.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a></code></td>
-                            <td class="colLast"><code><strong><a href="#findByUuid(java.lang.Class, UUID)">findByUuid</a></strong>(java.lang.Class clazz, <a href='../../../../../UUID.html'>UUID</a> uuid)</code><br>Reads the given record from the database.</td>
+                            <td class="colLast"><code><strong><a href="#findByUuid(java.lang.Class, java.util.UUID)">findByUuid</a></strong>(java.lang.Class clazz, java.util.UUID uuid)</code><br>Reads the given record from the database.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -347,14 +353,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List</code></td>
                             <td class="colLast"><code><strong><a href="#lazyChildLoad(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String, java.lang.String, java.lang.Class)">lazyChildLoad</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.lang.String fieldName, java.lang.String mappedByFieldName, java.lang.Class childDomainClazz)</code><br>Performs the lazy load of the given field from the child domain class using the given mapped by
  field name.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List</code></td>
                             <td class="colLast"><code><strong><a href="#lazyRefListLoad(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String, java.lang.String, java.lang.Class)">lazyRefListLoad</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.lang.String fieldName, java.lang.String mappedBy, java.lang.Class childDomainClazz)</code><br>Performs the lazy load of the given field from the mapping table.
  </td>
                         </tr>
@@ -380,7 +386,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#saveChildList(org.simplemes.eframe.domain.annotation.DomainEntityInterface, List, java.lang.String, java.lang.Class, java.lang.String)">saveChildList</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, <a href='../../../../../List.html'>List</a> list, java.lang.String fieldName, java.lang.Class childClass, java.lang.String parentFieldName)</code><br>Saves the given child list of records.  </td>
+                            <td class="colLast"><code><strong><a href="#saveChildList(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.util.List, java.lang.String, java.lang.Class, java.lang.String)">saveChildList</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.util.List list, java.lang.String fieldName, java.lang.Class childClass, java.lang.String parentFieldName)</code><br>Saves the given child list of records.  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -404,7 +410,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#storeIdsLoadedForChildList(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String, List)">storeIdsLoadedForChildList</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.lang.String fieldName, <a href='../../../../../List.html'>List</a> list)</code><br>Stores the list of uuid's loaded for a child list.  </td>
+                            <td class="colLast"><code><strong><a href="#storeIdsLoadedForChildList(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String, java.util.List)">storeIdsLoadedForChildList</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.lang.String fieldName, java.util.List list)</code><br>Stores the list of uuid's loaded for a child list.  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -509,7 +515,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="lastLazyChildParentLoaded"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>lastLazyChildParentLoaded</strong></h4>
+                                <h4>protected&nbsp;java.util.UUID <strong>lastLazyChildParentLoaded</strong></h4>
                                 <p> Records the last parent loaded for a lazy child loader (in test mode only).  Used to testing to verify that
  the lazy records are loaded at the right time and not re-read over and over.
    </p>
@@ -519,7 +525,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="lastLazyRefLoaded"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>lastLazyRefLoaded</strong></h4>
+                                <h4>protected&nbsp;java.util.UUID <strong>lastLazyRefLoaded</strong></h4>
                                 <p> Records the last lazy reference loaded (in test mode only).  Used to testing to verify that
  the lazy records are loaded at the right time.
    </p>
@@ -529,7 +535,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="lastLazyRefParentLoaded"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>lastLazyRefParentLoaded</strong></h4>
+                                <h4>protected&nbsp;java.util.UUID <strong>lastLazyRefParentLoaded</strong></h4>
                                 <p> Records the last parent loaded for a lazy reference list loader (in test mode only).  Used to testing to verify that
  the lazy records are loaded at the right time and not re-read over and over.
    </p>
@@ -587,27 +593,27 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="executeWrite(io.micronaut.transaction.TransactionCallback)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings({"unchecked", "unused"})
 public&nbsp;java.lang.Object <strong>executeWrite</strong>(io.micronaut.transaction.TransactionCallback closure)</h4>
                                 <p> Start a transaction and rollback when finished.
    </p>
                             </li>
                         </ul>
                     
-                        <a name="executeWriteClosure(java.lang.Class, Closure<Object>)"><!-- --></a>
+                        <a name="executeWriteClosure(java.lang.Class, Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings({"unchecked", "unused"})
 public&nbsp;java.lang.Object <strong>executeWriteClosure</strong>(java.lang.Class delegate, groovy.lang.Closure&lt;java.lang.Object&gt; closure)</h4>
                                 <p> Start a transaction and rollback when finished.
    </p>
                             </li>
                         </ul>
                     
-                        <a name="findByUuid(java.lang.Class, UUID)"><!-- --></a>
+                        <a name="findByUuid(java.lang.Class, java.util.UUID)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> <strong>findByUuid</strong>(java.lang.Class clazz, <a href='../../../../../UUID.html'>UUID</a> uuid)</h4>
+                                <h4>protected&nbsp;<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> <strong>findByUuid</strong>(java.lang.Class clazz, java.util.UUID uuid)</h4>
                                 <p> Reads the given record from the database.
     <DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The domain class for the record to be read.</DD><DD><code>uuid</code> -   The record's uuid.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The read value.  Can be null.</DD></DL></p>
                             </li>
@@ -634,7 +640,7 @@ public&nbsp;java.lang.Object <strong>executeWriteClosure</strong>(java.lang.Clas
                         <a name="getComplexHolder(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings({"unchecked"})
 public&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt; <strong>getComplexHolder</strong>(java.lang.Object object)</h4>
                                 <p> Finds the complex custom fields holder for given domain object.
     <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The domain object.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The complex fields holder.</DD></DL></p>
@@ -698,7 +704,7 @@ public&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt; <strong>getC
                         <a name="getTransactionManager()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings("unchecked")
 public&nbsp;io.micronaut.transaction.SynchronousTransactionManager&lt;java.sql.Connection&gt; <strong>getTransactionManager</strong>()</h4>
                                 <p> Get the current transaction manager.
     <DL><DT><B>Returns:</B></DT><DD>The transaction manager.</DD></DL></p>
@@ -718,7 +724,7 @@ public&nbsp;io.micronaut.transaction.SynchronousTransactionManager&lt;java.sql.C
                         <a name="isEnvironmentDev()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings("unused")
 public&nbsp;static&nbsp;boolean <strong>isEnvironmentDev</strong>()</h4>
                                 <p> Determines if the current run environment is the test environment.
     <DL><DT><B>Returns:</B></DT><DD>True if in test mode.</DD></DL></p>
@@ -737,8 +743,8 @@ public&nbsp;static&nbsp;boolean <strong>isEnvironmentDev</strong>()</h4>
                         <a name="lazyChildLoad(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String, java.lang.String, java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
-public&nbsp;<a href='../../../../../List.html'>List</a> <strong>lazyChildLoad</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.lang.String fieldName, java.lang.String mappedByFieldName, java.lang.Class childDomainClazz)</h4>
+                                <h4>@java.lang.SuppressWarnings("unchecked")
+public&nbsp;java.util.List <strong>lazyChildLoad</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.lang.String fieldName, java.lang.String mappedByFieldName, java.lang.Class childDomainClazz)</h4>
                                 <p> Performs the lazy load of the given field from the child domain class using the given mapped by
  field name.  Calls the findAllByXYZ() method on the child repository.
  After the list is first read, it will be saved in the field and re-used on later calls to the loader.
@@ -749,8 +755,8 @@ public&nbsp;<a href='../../../../../List.html'>List</a> <strong>lazyChildLoad</s
                         <a name="lazyRefListLoad(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String, java.lang.String, java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
-public&nbsp;<a href='../../../../../List.html'>List</a> <strong>lazyRefListLoad</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.lang.String fieldName, java.lang.String mappedBy, java.lang.Class childDomainClazz)</h4>
+                                <h4>@java.lang.SuppressWarnings("unchecked")
+public&nbsp;java.util.List <strong>lazyRefListLoad</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.lang.String fieldName, java.lang.String mappedBy, java.lang.Class childDomainClazz)</h4>
                                 <p> Performs the lazy load of the given field from the mapping table.
  After the list is first read, it will be saved in the field and re-used on later calls to the loader.
  <p>
@@ -763,7 +769,7 @@ public&nbsp;<a href='../../../../../List.html'>List</a> <strong>lazyRefListLoad<
                         <a name="lazyReferenceLoad(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String, org.simplemes.eframe.domain.annotation.DomainEntityInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings("ConstantConditions")
 public&nbsp;<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> <strong>lazyReferenceLoad</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> parentObject, java.lang.String fieldName, <a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> referencedObject)</h4>
                                 <p> Performs the lazy read of the given domain object, if it has not already been loaded.
     <DL><DT><B>Parameters:</B></DT><DD><code>parentObject</code> -      The parent domain object that the simple reference is part of.</DD><DD><code>fieldName</code> -         The field to store the list in.  Used by later calls.</DD><DD><code>referencedObject</code> -  The domain object to read, if not already populated.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The referencedObject.</DD></DL></p>
@@ -782,18 +788,18 @@ public&nbsp;<a href='../../../../../org/simplemes/eframe/domain/annotation/Domai
                         <a name="loadChildRecords(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.Class, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings("unchecked")
 public&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html' title='DomainEntityInterface'>DomainEntityInterface</a>&gt; <strong>loadChildRecords</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> parentObject, java.lang.Class childClass, java.lang.String parentFieldName)</h4>
                                 <p> Loads a list of child records for the given parent domain object.
     <DL><DT><B>Parameters:</B></DT><DD><code>parentObject</code> -     The parent domain object.</DD><DD><code>childClass</code> -       The class to read.</DD><DD><code>parentFieldName</code> -  The field in the child class to search on.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="saveChildList(org.simplemes.eframe.domain.annotation.DomainEntityInterface, List, java.lang.String, java.lang.Class, java.lang.String)"><!-- --></a>
+                        <a name="saveChildList(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.util.List, java.lang.String, java.lang.Class, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
-public&nbsp;void <strong>saveChildList</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, <a href='../../../../../List.html'>List</a> list, java.lang.String fieldName, java.lang.Class childClass, java.lang.String parentFieldName)</h4>
+                                <h4>@java.lang.SuppressWarnings("unchecked")
+public&nbsp;void <strong>saveChildList</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.util.List list, java.lang.String fieldName, java.lang.Class childClass, java.lang.String parentFieldName)</h4>
                                 <p> Saves the given child list of records.  Handles deleted, new and updated records.
     <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -           The parent domain object.</DD><DD><code>list</code> -             The list of children.</DD><DD><code>fieldName</code> -        The name of the field list is stored in.</DD><DD><code>childClass</code> -       The child record class.</DD><DD><code>parentFieldName</code> -  The name of the parent reference in the child class.</DD></DL></p>
                             </li>
@@ -802,7 +808,7 @@ public&nbsp;void <strong>saveChildList</strong>(<a href='../../../../../org/simp
                         <a name="setDomainSettingValue(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings("unchecked")
 public&nbsp;void <strong>setDomainSettingValue</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.lang.String settingName, java.lang.Object value)</h4>
                                 <p> Sets a value in the domain settings in the given object.   Provides access to object-specific values to other modules
  (e.g. search, etc).
@@ -821,18 +827,18 @@ public&nbsp;void <strong>setDomainSettingValue</strong>(<a href='../../../../../
                         <a name="staticMethodMissingHandler(java.lang.Class, java.lang.String, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings("unused")
 public&nbsp;java.lang.Object <strong>staticMethodMissingHandler</strong>(java.lang.Class domainClazz, java.lang.String methodName, java.lang.Object[] args)</h4>
                                 <p> Handles missing static methods in a<DL><DT><B>DomainEntity.:</B></DT><DD>Provides a link to the repository's findByXYZ() methods.</DD></DL>
     <DL><DT><B>Parameters:</B></DT><DD><code>domainClazz</code> -  The domain class the static method is called from.</DD><DD><code>methodName</code> -   The method name.</DD><DD><code>args</code> -         The arguments for the method.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The results of the method call, or throws an exception if missing.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="storeIdsLoadedForChildList(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String, List)"><!-- --></a>
+                        <a name="storeIdsLoadedForChildList(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String, java.util.List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
-public&nbsp;void <strong>storeIdsLoadedForChildList</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.lang.String fieldName, <a href='../../../../../List.html'>List</a> list)</h4>
+                                <h4>@java.lang.SuppressWarnings({"unchecked", "ConstantConditions"})
+public&nbsp;void <strong>storeIdsLoadedForChildList</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.lang.String fieldName, java.util.List list)</h4>
                                 <p> Stores the list of uuid's loaded for a child list.  Used to detect deleted child records.
     <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -     The domain object.</DD><DD><code>fieldName</code> -  The child list field name.</DD><DD><code>list</code> -       The list.</DD></DL></p>
                             </li>

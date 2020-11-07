@@ -101,18 +101,17 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>java.lang.annotation.Annotation</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@java.lang.annotation.RetentionRetention
-@com.fasterxml.jackson.annotation.JacksonAnnotationsInsideJacksonAnnotationsInside
-@com.fasterxml.jackson.databind.annotation.JsonSerializeJsonSerialize
-@com.fasterxml.jackson.databind.annotation.JsonDeserializeJsonDeserialize
-@interface JSONByKey
 
-</pre>
-
-
+<pre>@java.lang.annotation.Retention(value: RetentionPolicy.RUNTIME)
+@com.fasterxml.jackson.annotation.JacksonAnnotationsInside
+@com.fasterxml.jackson.databind.annotation.JsonSerialize(using: JSONByKeySerializer)
+@com.fasterxml.jackson.databind.annotation.JsonDeserialize(using: JSONByKeyDeserializer)
+@interface JSONByKey</pre>
 
     <p> Defines a field that will serialized to JSON using just the domain record's primary key field (first string key field).
 </p>

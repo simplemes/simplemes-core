@@ -101,14 +101,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>io.micronaut.transaction.TransactionCallback</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>protected&nbsp;static&nbsp;class DomainEntityHelper.TransactionCallbackWrapper
 
-</pre>
-
-
+<pre>protected&nbsp;static&nbsp;class DomainEntityHelper.TransactionCallbackWrapper</pre>
 
     <p> Local class used to call the closure from the as a TransactionCallback.
    </p>
@@ -148,7 +147,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#TransactionCallbackWrapper(Closure<Object>)">TransactionCallbackWrapper</a>
+                                <code><a href="#TransactionCallbackWrapper(Closure)">TransactionCallbackWrapper</a>
                                 (groovy.lang.Closure&lt;java.lang.Object&gt; closure)</code><br></td>
                         </tr>
                         
@@ -232,7 +231,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Constructor Detail</h3>
                     
-                        <a name="TransactionCallbackWrapper(Closure<Object>)"><!-- --></a>
+                        <a name="TransactionCallbackWrapper(Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>public&nbsp;<strong>TransactionCallbackWrapper</strong>(groovy.lang.Closure&lt;java.lang.Object&gt; closure)</h4>
@@ -256,7 +255,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="apply(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.MarkerAnnotationExprOverride
+                                <h4>@java.lang.Override
 public&nbsp;java.lang.Object <strong>apply</strong>(java.lang.Object o)</h4>
                                 <p> Applies this function to the given argument.
       <DL><DT><B>Parameters:</B></DT><DD><code>o</code> -  the function argument</DD></DL><DL><DT><B>Returns:</B></DT><DD>the function result</DD></DL></p>
@@ -266,9 +265,9 @@ public&nbsp;java.lang.Object <strong>apply</strong>(java.lang.Object o)</h4>
                         <a name="call(io.micronaut.transaction.TransactionStatus)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.MarkerAnnotationExpredu.umd.cs.findbugs.annotations.Nullable
-@com.github.javaparser.ast.expr.MarkerAnnotationExprOverride
-public&nbsp;java.lang.Object <strong>call</strong>(@com.github.javaparser.ast.expr.MarkerAnnotationExpredu.umd.cs.findbugs.annotations.NonNull io.micronaut.transaction.TransactionStatus status)</h4>
+                                <h4>@edu.umd.cs.findbugs.annotations.Nullable
+@java.lang.Override
+public&nbsp;java.lang.Object <strong>call</strong>(@edu.umd.cs.findbugs.annotations.NonNull io.micronaut.transaction.TransactionStatus status)</h4>
                                 <p> Code that runs within the context of a transaction will implement this method.
       <DL><DT><B>Parameters:</B></DT><DD><code>status</code> -  The transaction status.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The return value</DD></DL></p>
                             </li>

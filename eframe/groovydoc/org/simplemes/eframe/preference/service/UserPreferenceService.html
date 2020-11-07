@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
+class UserPreferenceService
+extends java.lang.Object</pre>
 
     <p> Provides access to the user preferences that are used to save GUI settings and related objects.
  This is the main business logic for the preference handling.
@@ -165,7 +173,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#findPreferences(java.lang.String, java.lang.String, java.lang.String)">findPreferences</a></strong>(java.lang.String pageURI, java.lang.String desiredElement, java.lang.String preferenceType)</code><br>Finds the given preference(s).  </td>
                         </tr>
                         
@@ -179,7 +187,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#guiStateChanged(Map)">guiStateChanged</a></strong>(<a href='../../../../../Map.html'>Map</a> params)</code><br>Handles the gui state change event.  </td>
+                            <td class="colLast"><code><strong><a href="#guiStateChanged(java.util.Map)">guiStateChanged</a></strong>(java.util.Map params)</code><br>Handles the gui state change event.  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -260,8 +268,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="findPreferences(java.lang.String, java.lang.String, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.transaction.TransactionalTransactional
-<a href='../../../../../Map.html'>Map</a> <strong>findPreferences</strong>(java.lang.String pageURI, java.lang.String desiredElement, java.lang.String preferenceType)</h4>
+                                <h4>@javax.transaction.Transactional
+java.util.Map <strong>findPreferences</strong>(java.lang.String pageURI, java.lang.String desiredElement, java.lang.String preferenceType)</h4>
                                 <p> Finds the given preference(s).  This is designed for use in the browser for dynamic preferences such as dialog
  sizes.<p>
  <b>Note:</b> Reads via the second level cache. <DL><DT><B>Parameters:</B></DT><DD><code>pageURI</code> -  The URI for the page these settings are to be found for (<b>Required</b>).</DD><DD><code>desiredElement</code> -  The ID of the element for the preference (<b>Optional</b>).</DD><DD><code>preferenceType</code> -  The preference type to return.  For example, 'DialogPreference' (<b>Optional</b>).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of matching preference(s).</DD></DL></p>
@@ -271,7 +279,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="findSimplePreference(java.lang.String, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.transaction.TransactionalTransactional
+                                <h4>@javax.transaction.Transactional
 java.lang.Object <strong>findSimplePreference</strong>(java.lang.String pageParam, java.lang.String elementParam)</h4>
                                 <p> Saves the given preference value into the user's preferences for the give element.
  This is a simplified view of preferences that just supports a simple name/value setting.<p>
@@ -279,11 +287,11 @@ java.lang.Object <strong>findSimplePreference</strong>(java.lang.String pagePara
                             </li>
                         </ul>
                     
-                        <a name="guiStateChanged(Map)"><!-- --></a>
+                        <a name="guiStateChanged(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.transaction.TransactionalTransactional
-void <strong>guiStateChanged</strong>(<a href='../../../../../Map.html'>Map</a> params)</h4>
+                                <h4>@javax.transaction.Transactional
+void <strong>guiStateChanged</strong>(java.util.Map params)</h4>
                                 <p> Handles the gui state change event.  This processes the event and delegates to an event handler to
  store the preferences for the state change.
  Contents of the <code>params</code> Map are:
@@ -297,8 +305,8 @@ void <strong>guiStateChanged</strong>(<a href='../../../../../Map.html'>Map</a> 
                         <a name="saveSimplePreference(java.lang.String, java.lang.String, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@javax.transaction.TransactionalTransactional
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+@javax.transaction.Transactional
 void <strong>saveSimplePreference</strong>(java.lang.String pageParam, java.lang.String elementParam, java.lang.Object value)</h4>
                                 <p> Saves the given preference value into the user's preferences for the give element.
  This is a simplified view of preferences that just supports a simple name/value setting. <DL><DT><B>Parameters:</B></DT><DD><code>pageParam</code> -  The page (URI) the preference applies to.</DD><DD><code>elementParam</code> -  The page element (or preference name).</DD><DD><code>value</code> -  The value.  Can be a POGO or a simple element.</DD></DL></p>

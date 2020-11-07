@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+@groovy.transform.EqualsAndHashCode(includes: [id])
+class SampleBasicStatus
+extends <a href='../org/simplemes/eframe/system/BasicStatus.html'>BasicStatus</a></pre>
 
     <p> A test class that can be added to the list of basic samples.</p>
 
@@ -190,7 +198,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isEnabled()">isEnabled</a></strong>()</code><br>Returns true if this status means that the object is enabled. </td>
+                            <td class="colLast"><code><strong><a href="#isEnabled()">isEnabled</a></strong>()</code><br>Returns true if this status means that the object is enabled.</td>
                         </tr>
                         
                     </table>
@@ -209,7 +217,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../org/simplemes/eframe/system/BasicStatus.html'>BasicStatus</a></code></td>
-                            <td class="colLast"><code><a href='../org/simplemes/eframe/system/BasicStatus.html#getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)'>getValidValues</a>, <a href='../org/simplemes/eframe/system/BasicStatus.html#getValue()'>getValue</a>, <a href='../org/simplemes/eframe/system/BasicStatus.html#isDefaultChoice()'>isDefaultChoice</a>, <a href='../org/simplemes/eframe/system/BasicStatus.html#isEnabled()'>isEnabled</a>, <a href='../org/simplemes/eframe/system/BasicStatus.html#toStringLocalized(Locale)'>toStringLocalized</a>, <a href='../org/simplemes/eframe/system/BasicStatus.html#valueOf(java.lang.String)'>valueOf</a></code></td>
+                            <td class="colLast"><code><a href='../org/simplemes/eframe/system/BasicStatus.html#getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)'>getValidValues</a>, <a href='../org/simplemes/eframe/system/BasicStatus.html#getValue()'>getValue</a>, <a href='../org/simplemes/eframe/system/BasicStatus.html#isDefaultChoice()'>isDefaultChoice</a>, <a href='../org/simplemes/eframe/system/BasicStatus.html#isEnabled()'>isEnabled</a>, <a href='../org/simplemes/eframe/system/BasicStatus.html#toStringLocalized(java.util.Locale)'>toStringLocalized</a>, <a href='../org/simplemes/eframe/system/BasicStatus.html#valueOf(java.lang.String)'>valueOf</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -290,7 +298,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="isEnabled()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 boolean <strong>isEnabled</strong>()</h4>
                                 <p> Returns true if this status means that the object is enabled. <DL><DT><B>Returns:</B></DT><DD>True if enabled.</DD></DL></p>
                             </li>

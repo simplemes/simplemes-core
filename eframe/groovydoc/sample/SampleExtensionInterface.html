@@ -97,6 +97,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <ul class="blockList">
         <li class="blockList">
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>interface SampleExtensionInterface</pre>
 
     <p> The interface to many sample ExtensionPoint tests.  Simple argument types.</p>
 
@@ -162,14 +167,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#postCoreMethod(Map, java.lang.String, java.lang.Integer)">postCoreMethod</a></strong>(<a href='../Map.html'>Map</a> originalResponse, java.lang.String argument1, java.lang.Integer argument2)</code><br>The extension method executed after the core method. </td>
+                            <td class="colLast"><code>java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#postCoreMethod(java.util.Map, java.lang.String, java.lang.Integer)">postCoreMethod</a></strong>(java.util.Map originalResponse, java.lang.String argument1, java.lang.Integer argument2)</code><br>The extension method executed after the core method.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#preCoreMethod(java.lang.String, java.lang.Integer)">preCoreMethod</a></strong>(java.lang.String argument1, java.lang.Integer argument2)</code><br>The extension method executed before the core method. </td>
+                            <td class="colLast"><code><strong><a href="#preCoreMethod(java.lang.String, java.lang.Integer)">preCoreMethod</a></strong>(java.lang.String argument1, java.lang.Integer argument2)</code><br>The extension method executed before the core method.</td>
                         </tr>
                         
                     </table>
@@ -222,10 +227,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="postCoreMethod(Map, java.lang.String, java.lang.Integer)"><!-- --></a>
+                        <a name="postCoreMethod(java.util.Map, java.lang.String, java.lang.Integer)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../Map.html'>Map</a> <strong>postCoreMethod</strong>(<a href='../Map.html'>Map</a> originalResponse, java.lang.String argument1, java.lang.Integer argument2)</h4>
+                                <h4>java.util.Map <strong>postCoreMethod</strong>(java.util.Map originalResponse, java.lang.String argument1, java.lang.Integer argument2)</h4>
                                 <p> The extension method executed after the core method. <DL><DT><B>Parameters:</B></DT><DD><code>originalResponse</code> -  The returned value from the core method.</DD><DD><code>argument1</code> -  The argument(s) passed to the core method.</DD><DD><code>argument2</code> -  The argument(s) passed to the core method.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The new response (if not null).</DD></DL></p>
                             </li>
                         </ul>

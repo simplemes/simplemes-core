@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+class InitialDataRecords
+extends java.lang.Object</pre>
 
     <p> A holder that records the initial data records that are normally loaded by all initial data loaders.
  This is primarily used by tests that need the initial data records and that should leave the records
@@ -144,7 +151,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#records">records</a></code><br>A list of allowed left-over records.  </td>
                         </tr>
                         
@@ -199,7 +206,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#register(Map, java.lang.Class)">register</a></strong>(<a href='../../../../Map.html'>Map</a> newRecords, java.lang.Class clazz)</code><br>Register any possible new records.  </td>
+                            <td class="colLast"><code><strong><a href="#register(Map, java.lang.Class)">register</a></strong>(java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt; newRecords, java.lang.Class clazz)</code><br>Register any possible new records.  </td>
                         </tr>
                         
                     </table>
@@ -264,7 +271,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="records"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>records</strong></h4>
+                                <h4>private&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt; <strong>records</strong></h4>
                                 <p> A list of allowed left-over records.  These will not be deleted automatically on exit.</p>
                             </li>
                         </ul>
@@ -307,7 +314,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="register(Map, java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>register</strong>(<a href='../../../../Map.html'>Map</a> newRecords, java.lang.Class clazz)</h4>
+                                <h4>void <strong>register</strong>(java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt; newRecords, java.lang.Class clazz)</h4>
                                 <p> Register any possible new records.  These will be added to the list, if not already in the list. <DL><DT><B>Parameters:</B></DT><DD><code>newRecords</code> -  The records to add.  The key for the map is the domain class's simpleName and the value array
         contains the TypeUtils.toShortString() for the record.</DD><DD><code>clazz</code> -  The domain/loader class being loaded.   This is used to duplicate the records for all parent classes.
               This is done since the parent class's list() method finds the child records by default.</DD></DL></p>

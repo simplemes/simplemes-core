@@ -98,6 +98,16 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@io.micronaut.data.annotation.MappedEntity
+@<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntity.html' title='DomainEntity'>DomainEntity</a>
+@com.fasterxml.jackson.annotation.JsonFilter(value: searchableFilter)
+@groovy.transform.EqualsAndHashCode(includes: [uuid])
+class ArchiveLog
+extends java.lang.Object</pre>
 
     <p> This tracks archiving of old records no longer needed in the active database.  A record is written for each top-level
  object that is archived.
@@ -142,7 +152,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateArchived">dateArchived</a></code><br>The date/time this record was archived.</td>
                         </tr>
                         
@@ -152,7 +162,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#recordUUID">recordUUID</a></code><br>The record UUID for the archived record.</td>
                         </tr>
                         
@@ -162,7 +172,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -217,7 +227,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toString()">toString</a></strong>()</code><br>Create human readable string for this record. </td>
+                            <td class="colLast"><code><strong><a href="#toString()">toString</a></strong>()</code><br>Create human readable string for this record.</td>
                         </tr>
                         
                     </table>
@@ -282,7 +292,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateArchived"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateArchived</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateArchived</strong></h4>
                                 <p> The date/time this record was archived.</p>
                             </li>
                         </ul>
@@ -299,7 +309,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="recordUUID"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>recordUUID</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>recordUUID</strong></h4>
                                 <p> The record UUID for the archived record.</p>
                             </li>
                         </ul>
@@ -315,7 +325,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -358,7 +368,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="toString()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>toString</strong>()</h4>
                                 <p> Create human readable string for this record. <DL><DT><B>Returns:</B></DT><DD>The string.</DD></DL></p>
                             </li>

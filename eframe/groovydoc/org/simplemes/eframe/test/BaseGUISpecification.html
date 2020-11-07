@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+class BaseGUISpecification
+extends <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a></pre>
 
     <p> This is the common Spock specification base class for GUI/GEB tests.
  This includes login/out and debug functions for GEB elements.</p>
@@ -131,12 +138,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Locale.html'>Locale</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Locale</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#currentLocale">currentLocale</a></code><br>The current local being tested.  </td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dumpAttributes">dumpAttributes</a></code><br></td>
                         </tr>
                         
@@ -205,7 +212,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Tuple2.html'>Tuple2</a></code></td>
+                            <td class="colLast"><code>groovy.lang.Tuple2</code></td>
                             <td class="colLast"><code><strong><a href="#calculateOffset(java.lang.Object, java.lang.Object)">calculateOffset</a></strong>(java.lang.Object element1, java.lang.Object element2)</code><br>Calculates the display offsets between a given pair of GEB (HTML) elements.
  </td>
                         </tr>
@@ -213,25 +220,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#checkMenuLabels(java.lang.String, java.lang.String, List)">checkMenuLabels</a></strong>(java.lang.String menuName, java.lang.String menuLabel, <a href='../../../../List.html'>List</a> subMenus)</code><br>Check a menu from a toolbar-style menu with some sub menus. </td>
+                            <td class="colLast"><code><strong><a href="#checkMenuLabels(java.lang.String, java.lang.String, List)">checkMenuLabels</a></strong>(java.lang.String menuName, java.lang.String menuLabel, java.util.List&lt;java.util.List&lt;java.lang.String&gt;&gt; subMenus)</code><br>Check a menu from a toolbar-style menu with some sub menus.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#clickButton(java.lang.String)">clickButton</a></strong>(java.lang.String id)</code><br>Clicks a toolkit button with the given view ID. </td>
+                            <td class="colLast"><code><strong><a href="#clickButton(java.lang.String)">clickButton</a></strong>(java.lang.String id)</code><br>Clicks a toolkit button with the given view ID.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#clickMenu(java.lang.String, java.lang.String)">clickMenu</a></strong>(java.lang.String menuID, java.lang.String subMenuID)</code><br>Clicks a menu (and maybe sub menu). </td>
+                            <td class="colLast"><code><strong><a href="#clickMenu(java.lang.String, java.lang.String)">clickMenu</a></strong>(java.lang.String menuID, java.lang.String subMenuID)</code><br>Clicks a menu (and maybe sub menu).</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#dumpElement(java.lang.Object, int)">dumpElement</a></strong>(java.lang.Object elementList, int level)</code><br>Creates a human readable debug representation of the given element and its children (recursive). </td>
+                            <td class="colLast"><code><strong><a href="#dumpElement(java.lang.Object, int)">dumpElement</a></strong>(java.lang.Object elementList, int level)</code><br>Creates a human readable debug representation of the given element and its children (recursive).</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -249,7 +256,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>geb.navigator.Navigator</code></td>
-                            <td class="colLast"><code><strong><a href="#getComboListItem(java.lang.String)">getComboListItem</a></strong>(java.lang.String id)</code><br>Finds the combobox popup list item with the given ID. </td>
+                            <td class="colLast"><code><strong><a href="#getComboListItem(java.lang.String)">getComboListItem</a></strong>(java.lang.String id)</code><br>Finds the combobox popup list item with the given ID.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -298,27 +305,28 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#lookup(java.lang.String, Locale, java.lang.Object)">lookup</a></strong>(java.lang.String key, <a href='../../../../Locale.html'>Locale</a> locale, java.lang.Object[] args)</code><br>Convenience method for general message.properties lookup.
+                            <td class="colLast"><code><strong><a href="#lookup(java.lang.String, java.util.Locale, java.lang.Object)">lookup</a></strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</code><br>Convenience method for general message.properties lookup.
  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#lookupRequired(java.lang.String, Locale, java.lang.Object)">lookupRequired</a></strong>(java.lang.String key, <a href='../../../../Locale.html'>Locale</a> locale, java.lang.Object[] args)</code><br>Convenience method for general message.properties lookup for fields marked as required.
+                            <td class="colLast"><code><strong><a href="#lookupRequired(java.lang.String, java.util.Locale, java.lang.Object)">lookupRequired</a></strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</code><br>Convenience method for general message.properties lookup for fields marked as required.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#nonZeroRecordCount(java.lang.Class)">nonZeroRecordCount</a></strong>(java.lang.Class domainClass)</code><br>Returns true if the given domain has non-zero record count. </td>
+                            <td class="colLast"><code><strong><a href="#nonZeroRecordCount(java.lang.Class)">nonZeroRecordCount</a></strong>(java.lang.Class domainClass)</code><br>Returns true if the given domain has non-zero record count.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#sendKey(java.lang.Object)">sendKey</a></strong>(java.lang.Object keys)</code><br>Send the key(s) without wait to the browser.</td>
+                            <td class="colLast"><code><strong><a href="#sendKey(java.lang.Object)">sendKey</a></strong>(java.lang.Object keys)</code><br>Send the key(s) without wait to the browser.
+ </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -342,13 +350,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setMultiCombobox(java.lang.Object, List)">setMultiCombobox</a></strong>(java.lang.Object combobox, <a href='../../../../List.html'>List</a> values)</code><br>Sets a multi-select combobox to the given list of IDs. </td>
+                            <td class="colLast"><code><strong><a href="#setMultiCombobox(java.lang.Object, java.util.List)">setMultiCombobox</a></strong>(java.lang.Object combobox, java.util.List values)</code><br>Sets a multi-select combobox to the given list of IDs. </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setMultiCombobox(java.lang.String, List)">setMultiCombobox</a></strong>(java.lang.String view, <a href='../../../../List.html'>List</a> values)</code><br>Sets a multi-select combobox to the given list of IDs. </td>
+                            <td class="colLast"><code><strong><a href="#setMultiCombobox(java.lang.String, java.util.List)">setMultiCombobox</a></strong>(java.lang.String view, java.util.List values)</code><br>Sets a multi-select combobox to the given list of IDs. </td>
                         </tr>
                         
                         <tr class="altColor">
@@ -372,7 +380,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#waitForNonZeroRecordCount(java.lang.Class)">waitForNonZeroRecordCount</a></strong>(java.lang.Class domainClass)</code><br>Wait for a record to to be created in the database. </td>
+                            <td class="colLast"><code><strong><a href="#waitForNonZeroRecordCount(java.lang.Class)">waitForNonZeroRecordCount</a></strong>(java.lang.Class domainClass)</code><br>Wait for a record to to be created in the database.</td>
                         </tr>
                         
                     </table>
@@ -391,7 +399,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a></code></td>
-                            <td class="colLast"><code><a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#assertValidationFails(java.lang.Object, int, java.lang.String, List)'>assertValidationFails</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#checkForLeftoverRecords()'>checkForLeftoverRecords</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#checkJavascript(java.lang.String)'>checkJavascript</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#checkJavascriptFragment(java.lang.String)'>checkJavascriptFragment</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#checkPage(java.lang.String)'>checkPage</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#cleanup()'>cleanup</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#cleanupDomainRecords()'>cleanupDomainRecords</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#cleanupMockedUtilityClasses()'>cleanupMockedUtilityClasses</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#createReportLabel(java.lang.String)'>createReportLabel</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#deleteAllRecords(java.lang.Class, java.lang.Boolean)'>deleteAllRecords</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#disableSQLTrace()'>disableSQLTrace</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#disableStackTraceLogging()'>disableStackTraceLogging</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#doAutoCleanups()'>doAutoCleanups</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#doOtherCleanups()'>doOtherCleanups</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#enableSQLTrace(boolean)'>enableSQLTrace</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#getPreparedStatement(java.lang.String)'>getPreparedStatement</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#lookup(java.lang.String, Locale, java.lang.Object)'>lookup</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#lookupRequired(java.lang.String, Locale, java.lang.Object)'>lookupRequired</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#mockFieldExtension(Map)'>mockFieldExtension</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#mockRequest(Map)'>mockRequest</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#needs(java.lang.String)'>needs</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#needsServer()'>needsServer</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#propertyMissing(java.lang.String)'>propertyMissing</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#registerAutoCleanup(org.simplemes.eframe.test.AutoCleanupMockInterface)'>registerAutoCleanup</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#report(java.lang.String)'>report</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#reportFailure(java.lang.String)'>reportFailure</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#setCurrentUser(java.lang.String)'>setCurrentUser</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#setTraceLogLevel(java.lang.Class)'>setTraceLogLevel</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#setup()'>setup</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#setupSpec()'>setupSpec</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#startServerIfNeeded()'>startServerIfNeeded</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#waitForInitialDataLoad()'>waitForInitialDataLoad</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#waitForRecordChange(java.lang.Object)'>waitForRecordChange</a></code></td>
+                            <td class="colLast"><code><a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#assertValidationFails(java.lang.Object, int, java.lang.String, List)'>assertValidationFails</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#checkForLeftoverRecords()'>checkForLeftoverRecords</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#checkJavascript(java.lang.String)'>checkJavascript</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#checkJavascriptFragment(java.lang.String)'>checkJavascriptFragment</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#checkPage(java.lang.String)'>checkPage</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#cleanup()'>cleanup</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#cleanupDomainRecords()'>cleanupDomainRecords</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#cleanupMockedUtilityClasses()'>cleanupMockedUtilityClasses</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#createReportLabel(java.lang.String)'>createReportLabel</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#deleteAllRecords(java.lang.Class, java.lang.Boolean)'>deleteAllRecords</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#disableSQLTrace()'>disableSQLTrace</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#disableStackTraceLogging()'>disableStackTraceLogging</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#doAutoCleanups()'>doAutoCleanups</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#doOtherCleanups()'>doOtherCleanups</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#enableSQLTrace(boolean)'>enableSQLTrace</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#getPreparedStatement(java.lang.String)'>getPreparedStatement</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#lookup(java.lang.String, java.util.Locale, java.lang.Object)'>lookup</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#lookupRequired(java.lang.String, java.util.Locale, java.lang.Object)'>lookupRequired</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#mockFieldExtension(java.util.Map)'>mockFieldExtension</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#mockRequest(java.util.Map)'>mockRequest</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#needs(java.lang.String)'>needs</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#needsServer()'>needsServer</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#propertyMissing(java.lang.String)'>propertyMissing</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#registerAutoCleanup(org.simplemes.eframe.test.AutoCleanupMockInterface)'>registerAutoCleanup</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#report(java.lang.String)'>report</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#reportFailure(java.lang.String)'>reportFailure</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#setCurrentUser(java.lang.String)'>setCurrentUser</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#setTraceLogLevel(java.lang.Class)'>setTraceLogLevel</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#setup()'>setup</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#setupSpec()'>setupSpec</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#startServerIfNeeded()'>startServerIfNeeded</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#waitForInitialDataLoad()'>waitForInitialDataLoad</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#waitForRecordChange(java.lang.Object)'>waitForRecordChange</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -421,7 +429,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="currentLocale"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Locale.html'>Locale</a> <strong>currentLocale</strong></h4>
+                                <h4>private&nbsp;java.util.Locale <strong>currentLocale</strong></h4>
                                 <p> The current local being tested.  Comes from the -Dgeb.lang option (e.g. -Dgeb.lang=de-DE).  (<b>Default</b>: en-US).</p>
                             </li>
                         </ul>
@@ -429,7 +437,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dumpAttributes"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;final&nbsp;<a href='../../../../List.html'>List</a> <strong>dumpAttributes</strong></h4>
+                                <h4>private&nbsp;static&nbsp;final&nbsp;java.util.List&lt;java.lang.String&gt; <strong>dumpAttributes</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -496,7 +504,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="calculateOffset(java.lang.Object, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Tuple2.html'>Tuple2</a> <strong>calculateOffset</strong>(java.lang.Object element1, java.lang.Object element2)</h4>
+                                <h4>groovy.lang.Tuple2 <strong>calculateOffset</strong>(java.lang.Object element1, java.lang.Object element2)</h4>
                                 <p> Calculates the display offsets between a given pair of GEB (HTML) elements.
  This is the distance to move from element1 to element2. <DL><DT><B>Parameters:</B></DT><DD><code>element1</code> -  The first GEB element.</DD><DD><code>element2</code> -  The second GEB element.</DD></DL><DL><DT><B>Returns:</B></DT><DD>A Tuple with the x and y offset.</DD></DL></p>
                             </li>
@@ -505,7 +513,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="checkMenuLabels(java.lang.String, java.lang.String, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>boolean <strong>checkMenuLabels</strong>(java.lang.String menuName, java.lang.String menuLabel, <a href='../../../../List.html'>List</a> subMenus)</h4>
+                                <h4>boolean <strong>checkMenuLabels</strong>(java.lang.String menuName, java.lang.String menuLabel, java.util.List&lt;java.util.List&lt;java.lang.String&gt;&gt; subMenus)</h4>
                                 <p> Check a menu from a toolbar-style menu with some sub menus. <DL><DT><B>Parameters:</B></DT><DD><code>menuName</code> -  The top-level menu.</DD><DD><code>menuLabel</code> -  The top-level menu lookup key.</DD><DD><code>subMenus</code> -  The list of menus to check (element 0 = menu ID, element 1 = lookup key for label.</DD></DL><DL><DT><B>Returns:</B></DT><DD>Always returns true.</DD></DL></p>
                             </li>
                         </ul>
@@ -629,11 +637,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="lookup(java.lang.String, Locale, java.lang.Object)"><!-- --></a>
+                        <a name="lookup(java.lang.String, java.util.Locale, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-java.lang.String <strong>lookup</strong>(java.lang.String key, <a href='../../../../Locale.html'>Locale</a> locale, java.lang.Object[] args)</h4>
+                                <h4>@java.lang.Override
+java.lang.String <strong>lookup</strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</h4>
                                 <p> Convenience method for general message.properties lookup.
  This sub-class uses the current locale from the GUI test browser if none is given.
  <p>
@@ -641,11 +649,11 @@ java.lang.String <strong>lookup</strong>(java.lang.String key, <a href='../../..
                             </li>
                         </ul>
                     
-                        <a name="lookupRequired(java.lang.String, Locale, java.lang.Object)"><!-- --></a>
+                        <a name="lookupRequired(java.lang.String, java.util.Locale, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-java.lang.String <strong>lookupRequired</strong>(java.lang.String key, <a href='../../../../Locale.html'>Locale</a> locale, java.lang.Object[] args)</h4>
+                                <h4>@java.lang.Override
+java.lang.String <strong>lookupRequired</strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</h4>
                                 <p> Convenience method for general message.properties lookup for fields marked as required.
  This sub-class uses the current locale from the GUI test browser if none is given.
  <p>
@@ -693,18 +701,18 @@ java.lang.String <strong>lookupRequired</strong>(java.lang.String key, <a href='
                             </li>
                         </ul>
                     
-                        <a name="setMultiCombobox(java.lang.Object, List)"><!-- --></a>
+                        <a name="setMultiCombobox(java.lang.Object, java.util.List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>setMultiCombobox</strong>(java.lang.Object combobox, <a href='../../../../List.html'>List</a> values)</h4>
+                                <h4>void <strong>setMultiCombobox</strong>(java.lang.Object combobox, java.util.List values)</h4>
                                 <p> Sets a multi-select combobox to the given list of IDs. Does not use the drop-down. <DL><DT><B>Parameters:</B></DT><DD><code>combobox</code> -  The combobox module to set the value to.</DD><DD><code>values</code> -  The list of values to set (uses the .id element).</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="setMultiCombobox(java.lang.String, List)"><!-- --></a>
+                        <a name="setMultiCombobox(java.lang.String, java.util.List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>setMultiCombobox</strong>(java.lang.String view, <a href='../../../../List.html'>List</a> values)</h4>
+                                <h4>void <strong>setMultiCombobox</strong>(java.lang.String view, java.util.List values)</h4>
                                 <p> Sets a multi-select combobox to the given list of IDs. Does not use the drop-down. <DL><DT><B>Parameters:</B></DT><DD><code>view</code> -  The combobox view.</DD><DD><code>values</code> -  The list of values to set (uses the .id element).</DD></DL></p>
                             </li>
                         </ul>

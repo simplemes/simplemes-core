@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
+class ProductionLogService
+extends java.lang.Object</pre>
 
     <p> This service provided methods to log production activity for long-term tracking.
  This works with the ProductionLOg domain object to record the important shop floor
@@ -166,14 +174,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#archiveOld(org.simplemes.mes.tracking.ProductionLogArchiveRequest)">archiveOld</a></strong>(<a href='../../../../../org/simplemes/mes/tracking/ProductionLogArchiveRequest.html'>ProductionLogArchiveRequest</a> request)</code><br>Archives/deletes old records, using the given configuration.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#log(org.simplemes.mes.tracking.ProductionLogRequest)">log</a></strong>(<a href='../../../../../org/simplemes/mes/tracking/ProductionLogRequest.html'>ProductionLogRequest</a> request)</code><br>Logs a given production event. </td>
+                            <td class="colLast"><code><strong><a href="#log(org.simplemes.mes.tracking.ProductionLogRequest)">log</a></strong>(<a href='../../../../../org/simplemes/mes/tracking/ProductionLogRequest.html'>ProductionLogRequest</a> request)</code><br>Logs a given production event.</td>
                         </tr>
                         
                     </table>
@@ -247,8 +255,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="archiveOld(org.simplemes.mes.tracking.ProductionLogArchiveRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-<a href='../../../../../List.html'>List</a> <strong>archiveOld</strong>(<a href='../../../../../org/simplemes/mes/tracking/ProductionLogArchiveRequest.html'>ProductionLogArchiveRequest</a> request)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: [GroovyMissingReturnStatement, NestedBlockDepth])
+java.util.List&lt;java.lang.String&gt; <strong>archiveOld</strong>(<a href='../../../../../org/simplemes/mes/tracking/ProductionLogArchiveRequest.html'>ProductionLogArchiveRequest</a> request)</h4>
                                 <p> Archives/deletes old records, using the given configuration.
  <p>
  <b>Note:</b> This method creates new transactions when archiving each batch of records.
@@ -267,7 +275,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="log(org.simplemes.mes.tracking.ProductionLogRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.transaction.TransactionalTransactional
+                                <h4>@javax.transaction.Transactional
 void <strong>log</strong>(<a href='../../../../../org/simplemes/mes/tracking/ProductionLogRequest.html'>ProductionLogRequest</a> request)</h4>
                                 <p> Logs a given production event. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request to log.</DD></DL></p>
                             </li>

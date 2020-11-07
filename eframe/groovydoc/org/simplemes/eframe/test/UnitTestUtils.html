@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class UnitTestUtils
+extends java.lang.Object</pre>
 
           </li>
     </ul>
@@ -237,52 +243,52 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#allParamsHaveValues(java.lang.Throwable)">allParamsHaveValues</a></strong>(java.lang.Throwable e)</code><br>This method tests that the given exception's string value has all replaceable parameters replaced with a value. </td>
+                            <td class="colLast"><code><strong><a href="#allParamsHaveValues(java.lang.Throwable)">allParamsHaveValues</a></strong>(java.lang.Throwable e)</code><br>This method tests that the given exception's string value has all replaceable parameters replaced with a value.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#assertClose(java.lang.Number, java.lang.Number, java.lang.String, java.lang.Number)">assertClose</a></strong>(java.lang.Number value, java.lang.Number target, java.lang.String valueName, java.lang.Number range)</code><br>Tests if the given value is within the range of the given target. </td>
+                            <td class="colLast"><code><strong><a href="#assertClose(java.lang.Number, java.lang.Number, java.lang.String, java.lang.Number)">assertClose</a></strong>(java.lang.Number value, java.lang.Number target, java.lang.String valueName, java.lang.Number range)</code><br>Tests if the given value is within the range of the given target.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#assertClose(int, int, java.lang.String, int)">assertClose</a></strong>(int value, int target, java.lang.String label, int tolerance)</code><br>Tests if the given value is within the range of the given target. </td>
+                            <td class="colLast"><code><strong><a href="#assertClose(int, int, java.lang.String, int)">assertClose</a></strong>(int value, int target, java.lang.String label, int tolerance)</code><br>Tests if the given value is within the range of the given target.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#assertContainsAllIgnoreCase(java.lang.Object, List)">assertContainsAllIgnoreCase</a></strong>(java.lang.Object testString, <a href='../../../../List.html'>List</a> values)</code><br>Asserts that the given string contains all of the values (in any order).
+                            <td class="colLast"><code><strong><a href="#assertContainsAllIgnoreCase(java.lang.Object, List)">assertContainsAllIgnoreCase</a></strong>(java.lang.Object testString, java.util.List&lt;java.lang.String&gt; values)</code><br>Asserts that the given string contains all of the values (in any order).
  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#assertContainsError(List, int, java.lang.String, List)">assertContainsError</a></strong>(<a href='../../../../List.html'>List</a> list, int code, java.lang.String fieldName, <a href='../../../../List.html'>List</a> values)</code><br>Asserts that the given list of validation errors contains the given error on the given field with
- the strings in the message. </td>
+                            <td class="colLast"><code><strong><a href="#assertContainsError(List, int, java.lang.String, List)">assertContainsError</a></strong>(java.util.List&lt;ValidationErrorInterface&gt; list, int code, java.lang.String fieldName, java.util.List&lt;java.lang.String&gt; values)</code><br>Asserts that the given list of validation errors contains the given error on the given field with
+ the strings in the message.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#assertExceptionIsValid(java.lang.Throwable, List, java.lang.Integer)">assertExceptionIsValid</a></strong>(java.lang.Throwable e, <a href='../../../../List.html'>List</a> expectedStrings, java.lang.Integer errorCode)</code><br>A convenience method to make sure the given exception has the right values. </td>
+                            <td class="colLast"><code><strong><a href="#assertExceptionIsValid(java.lang.Throwable, List, java.lang.Integer)">assertExceptionIsValid</a></strong>(java.lang.Throwable e, java.util.List&lt;java.lang.String&gt; expectedStrings, java.lang.Integer errorCode)</code><br>A convenience method to make sure the given exception has the right values.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#compareDates(Date, Date, java.lang.Long)">compareDates</a></strong>(<a href='../../../../Date.html'>Date</a> date, <a href='../../../../Date.html'>Date</a> compareDate, java.lang.Long tolerance)</code><br>Verify that the given date/time is recent (within 2 seconds) of the given time.
+                            <td class="colLast"><code><strong><a href="#compareDates(java.util.Date, java.util.Date, java.lang.Long)">compareDates</a></strong>(java.util.Date date, java.util.Date compareDate, java.lang.Long tolerance)</code><br>Verify that the given date/time is recent (within 2 seconds) of the given time.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#dateIsCloseToNow(Date, java.lang.Long)">dateIsCloseToNow</a></strong>(<a href='../../../../Date.html'>Date</a> date, java.lang.Long tolerance)</code><br>Verify that the given date/time is within a certain tolerance (2 seconds) of the current time.
+                            <td class="colLast"><code><strong><a href="#dateIsCloseToNow(java.util.Date, java.lang.Long)">dateIsCloseToNow</a></strong>(java.util.Date date, java.lang.Long tolerance)</code><br>Verify that the given date/time is within a certain tolerance (2 seconds) of the current time.
  </td>
                         </tr>
                         
@@ -457,7 +463,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="assertContainsAllIgnoreCase(java.lang.Object, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;boolean <strong>assertContainsAllIgnoreCase</strong>(java.lang.Object testString, <a href='../../../../List.html'>List</a> values)</h4>
+                                <h4>static&nbsp;boolean <strong>assertContainsAllIgnoreCase</strong>(java.lang.Object testString, java.util.List&lt;java.lang.String&gt; values)</h4>
                                 <p> Asserts that the given string contains all of the values (in any order).
  Comparison is case insensitive. <DL><DT><B>Parameters:</B></DT><DD><code>testString</code> -  The string to check for the contained values.</DD><DD><code>values</code> -  The values to check.</DD></DL><DL><DT><B>Returns:</B></DT><DD>true if contains all.  Will throw an assertion exception otherwise.</DD></DL></p>
                             </li>
@@ -466,7 +472,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="assertContainsError(List, int, java.lang.String, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;boolean <strong>assertContainsError</strong>(<a href='../../../../List.html'>List</a> list, int code, java.lang.String fieldName, <a href='../../../../List.html'>List</a> values)</h4>
+                                <h4>static&nbsp;boolean <strong>assertContainsError</strong>(java.util.List&lt;ValidationErrorInterface&gt; list, int code, java.lang.String fieldName, java.util.List&lt;java.lang.String&gt; values)</h4>
                                 <p> Asserts that the given list of validation errors contains the given error on the given field with
  the strings in the message. <DL><DT><B>Parameters:</B></DT><DD><code>errors</code> -  The validation errors list of check.</DD><DD><code>values</code> -  The values to check.</DD></DL><DL><DT><B>Returns:</B></DT><DD>true if contains all.  Will throw an assertion exception otherwise.</DD></DL></p>
                             </li>
@@ -475,25 +481,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="assertExceptionIsValid(java.lang.Throwable, List, java.lang.Integer)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;boolean <strong>assertExceptionIsValid</strong>(java.lang.Throwable e, <a href='../../../../List.html'>List</a> expectedStrings, java.lang.Integer errorCode)</h4>
+                                <h4>static&nbsp;boolean <strong>assertExceptionIsValid</strong>(java.lang.Throwable e, java.util.List&lt;java.lang.String&gt; expectedStrings, java.lang.Integer errorCode)</h4>
                                 <p> A convenience method to make sure the given exception has the right values. <DL><DT><B>Parameters:</B></DT><DD><code>e</code> -  The exception.</DD><DD><code>expectedStrings</code> -  These strings should be in the exception's toString() result.  Case insensitive check.</DD><DD><code>values</code> -  The values to check.</DD><DD><code>errorCode</code> -  If a BusinessException, then this is the expected code.  Optional.</DD></DL><DL><DT><B>Returns:</B></DT><DD>true</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="compareDates(Date, Date, java.lang.Long)"><!-- --></a>
+                        <a name="compareDates(java.util.Date, java.util.Date, java.lang.Long)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;boolean <strong>compareDates</strong>(<a href='../../../../Date.html'>Date</a> date, <a href='../../../../Date.html'>Date</a> compareDate, java.lang.Long tolerance)</h4>
+                                <h4>static&nbsp;boolean <strong>compareDates</strong>(java.util.Date date, java.util.Date compareDate, java.lang.Long tolerance)</h4>
                                 <p> Verify that the given date/time is recent (within 2 seconds) of the given time.
  This is typically used in tests of code that use the current date, but the test can't get the exact date/time for
  comparison. <DL><DT><B>Parameters:</B></DT><DD><code>date</code> -  The date to check (<b>Required</b>).</DD><DD><code>compareDate</code> -  The date to compare to (<b>Required</b>).</DD><DD><code>tolerance</code> -  The tolerance for the check (milliseconds).(<b>Default: </b> 2000 (2sec))</DD></DL><DL><DT><B>Returns:</B></DT><DD>True if the time is within 2 seconds.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="dateIsCloseToNow(Date, java.lang.Long)"><!-- --></a>
+                        <a name="dateIsCloseToNow(java.util.Date, java.lang.Long)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;boolean <strong>dateIsCloseToNow</strong>(<a href='../../../../Date.html'>Date</a> date, java.lang.Long tolerance)</h4>
+                                <h4>static&nbsp;boolean <strong>dateIsCloseToNow</strong>(java.util.Date date, java.lang.Long tolerance)</h4>
                                 <p> Verify that the given date/time is within a certain tolerance (2 seconds) of the current time.
  This is typically used in tests of code that use the current date, but the test can't get the exact date/time for
  comparison. <DL><DT><B>Parameters:</B></DT><DD><code>date</code> -  The date to check (<b>Required</b>).</DD><DD><code>tolerance</code> -  The tolerance for the check (milliseconds).(<b>Default: </b> 2000 (1sec))</DD></DL><DL><DT><B>Returns:</B></DT><DD>True if the time is within 2 seconds.</DD></DL></p>

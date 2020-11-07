@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.security.annotation.Secured(value: ADMIN)
+@io.micronaut.http.annotation.Controller(value: /user)
+class UserController
+extends <a href='../../../../../org/simplemes/eframe/controller/BaseCrudController.html'>BaseCrudController</a></pre>
 
     <p> Handles the controller actions for the User objects.  Includes CRUD actions on the user.</p>
 
@@ -205,7 +214,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#bindEvent(java.lang.Object, java.lang.Object)">bindEvent</a></strong>(java.lang.Object record, java.lang.Object params)</code><br>An overridable method that can do additional binding from HTTP params to the domain object. </td>
+                            <td class="colLast"><code><strong><a href="#bindEvent(java.lang.Object, java.lang.Object)">bindEvent</a></strong>(java.lang.Object record, java.lang.Object params)</code><br>An overridable method that can do additional binding from HTTP params to the domain object.</td>
                         </tr>
                         
                     </table>
@@ -301,7 +310,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="bindEvent(java.lang.Object, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>bindEvent</strong>(java.lang.Object record, java.lang.Object params)</h4>
                                 <p> An overridable method that can do additional binding from HTTP params to the domain object. <DL><DT><B>Parameters:</B></DT><DD><code>record</code> -  The domain record.</DD><DD><code>params</code> -  The HTTP parameters/body (as a Map).</DD></DL></p>
                             </li>

@@ -97,12 +97,17 @@ if (location.href.indexOf('is-external=true') == -1) {
     <ul class="blockList">
         <li class="blockList">
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>interface WorkableInterface</pre>
 
     <p> This interface represents the smallest possible unit that can be worked.
  Classes that implement this can be processed with the Work Service.
  These classes will provide tha ability to start and complete work on the workable element.
  <p/>
- <b>Note</b>: These methods are normally provided by the WorkStateTrait logic.</p>
+ <b>Note</b>: These methods are normally provided by the <a href='../../../../org/simplemes/mes/demand/WorkStateTrait.html' title='WorkStateTrait'>WorkStateTrait</a> logic.</p>
 
           </li>
     </ul>
@@ -173,13 +178,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/mes/demand/WorkableInterface.html'>WorkableInterface</a></code></td>
-                            <td class="colLast"><code><strong><a href="#determineNextWorkable()">determineNextWorkable</a></strong>()</code><br>Determines the next workable to be performed after this workable is completed. </td>
+                            <td class="colLast"><code><strong><a href="#determineNextWorkable()">determineNextWorkable</a></strong>()</code><br>Determines the next workable to be performed after this workable is completed.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#queueQty(BigDecimal)">queueQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty)</code><br>Queues the given qty at this workable. </td>
+                            <td class="colLast"><code><strong><a href="#queueQty(BigDecimal)">queueQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty)</code><br>Queues the given qty at this workable.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -205,19 +210,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../BigDecimal.html'>BigDecimal</a></code></td>
-                            <td class="colLast"><code><strong><a href="#startQty(BigDecimal, Date)">startQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, <a href='../../../../Date.html'>Date</a> dateTime)</code><br>Starts the given qty at this workable location.  </td>
+                            <td class="colLast"><code><strong><a href="#startQty(BigDecimal, java.util.Date)">startQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, java.util.Date dateTime)</code><br>Starts the given qty at this workable location.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../BigDecimal.html'>BigDecimal</a></code></td>
-                            <td class="colLast"><code><strong><a href="#validateCompleteQty(BigDecimal)">validateCompleteQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty)</code><br>Validates that the given qty can be completed at this workable location. </td>
+                            <td class="colLast"><code><strong><a href="#validateCompleteQty(BigDecimal)">validateCompleteQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty)</code><br>Validates that the given qty can be completed at this workable location.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../BigDecimal.html'>BigDecimal</a></code></td>
-                            <td class="colLast"><code><strong><a href="#validateStartQty(BigDecimal)">validateStartQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty)</code><br>Validates that the given qty can be started at this workable location. </td>
+                            <td class="colLast"><code><strong><a href="#validateStartQty(BigDecimal)">validateStartQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty)</code><br>Validates that the given qty can be started at this workable location.</td>
                         </tr>
                         
                     </table>
@@ -322,10 +327,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="startQty(BigDecimal, Date)"><!-- --></a>
+                        <a name="startQty(BigDecimal, java.util.Date)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../BigDecimal.html'>BigDecimal</a> <strong>startQty</strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, <a href='../../../../Date.html'>Date</a> dateTime)</h4>
+                                <h4><a href='../../../../BigDecimal.html'>BigDecimal</a> <strong>startQty</strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, java.util.Date dateTime)</h4>
                                 <p> Starts the given qty at this workable location.  This should move the qty from in queue
  to in work. <DL><DT><B>Parameters:</B></DT><DD><code>qty</code> -  The quantity to start.  <b>Default:</b> all quantity in queue</DD><DD><code>dateTime</code> -  The date/time this qty is started (<b>Default:</b> now).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The quantity actually started.</DD></DL></p>
                             </li>

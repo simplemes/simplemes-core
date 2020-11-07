@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@java.lang.SuppressWarnings(value: JavaIoPackageAccess)
+class FileFactory
+extends java.lang.Object</pre>
 
     <p> This is a pluggable File object creator.  It is used in production to build a standard Java File
  object.  In tests, it can be replaced with a MockFileFactory to test using a simple string contents.</p>
@@ -185,8 +192,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../File.html'>File</a></code></td>
-                            <td class="colLast"><code><strong><a href="#newFile(java.lang.String)">newFile</a></strong>(java.lang.String path)</code><br>The factory method to return a new File() instance for the given path. </td>
+                            <td class="colLast"><code>java.io.File</code></td>
+                            <td class="colLast"><code><strong><a href="#newFile(java.lang.String)">newFile</a></strong>(java.lang.String path)</code><br>The factory method to return a new File() instance for the given path.</td>
                         </tr>
                         
                     </table>
@@ -278,7 +285,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="newFile(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../File.html'>File</a> <strong>newFile</strong>(java.lang.String path)</h4>
+                                <h4>java.io.File <strong>newFile</strong>(java.lang.String path)</h4>
                                 <p> The factory method to return a new File() instance for the given path. <DL><DT><B>Parameters:</B></DT><DD><code>path</code> -  The path (in local OS format).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The File instance.</DD></DL></p>
                             </li>
                         </ul>

@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+class DomainBinder
+extends java.lang.Object</pre>
 
     <p> Provides standardized binding of HTTP-style parameters to a domain or POGO class.
   <h3>Logging</h3>
@@ -146,7 +153,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../../../org/simplemes/eframe/domain/validate/ValidationErrorInterface.html' title='ValidationErrorInterface'>ValidationErrorInterface</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#errors">errors</a></code><br>Any errors accumulated during binding.</td>
                         </tr>
                         
@@ -161,7 +168,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#fieldsToSkipBinding">fieldsToSkipBinding</a></code><br>These are fields that not bound to domain objects.</td>
                         </tr>
                         
@@ -233,25 +240,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#adjustSQLValue(java.sql.ResultSet, int)">adjustSQLValue</a></strong>(java.sql.ResultSet rs, int columnIndex)</code><br>Converts some special SQL types to internal types (mainly dates). </td>
+                            <td class="colLast"><code><strong><a href="#adjustSQLValue(java.sql.ResultSet, int)">adjustSQLValue</a></strong>(java.sql.ResultSet rs, int columnIndex)</code><br>Converts some special SQL types to internal types (mainly dates).</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#bind(java.lang.Object, Map, java.lang.Boolean)">bind</a></strong>(java.lang.Object object, <a href='../../../../Map.html'>Map</a> params, java.lang.Boolean ui)</code><br>Binds the given parameters to the given object instance. </td>
+                            <td class="colLast"><code><strong><a href="#bind(java.lang.Object, java.util.Map, java.lang.Boolean)">bind</a></strong>(java.lang.Object object, java.util.Map params, java.lang.Boolean ui)</code><br>Binds the given parameters to the given object instance.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#bind(java.lang.Object, java.sql.ResultSet)">bind</a></strong>(java.lang.Object object, java.sql.ResultSet rs)</code><br>Binds the current row of the result set to the given object instance. </td>
+                            <td class="colLast"><code><strong><a href="#bind(java.lang.Object, java.sql.ResultSet)">bind</a></strong>(java.lang.Object object, java.sql.ResultSet rs)</code><br>Binds the current row of the result set to the given object instance.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#bindChildren(java.lang.Object, Map, java.lang.String)">bindChildren</a></strong>(java.lang.Object object, <a href='../../../../Map.html'>Map</a> paramsIn, java.lang.String prefix)</code><br>Binds the given parameters to the given object instance for child elements. </td>
+                            <td class="colLast"><code><strong><a href="#bindChildren(java.lang.Object, java.util.Map, java.lang.String)">bindChildren</a></strong>(java.lang.Object object, java.util.Map paramsIn, java.lang.String prefix)</code><br>Binds the given parameters to the given object instance for child elements.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -263,19 +270,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#bindPossibleDomainReference(java.lang.String, java.lang.Object, java.lang.Object)">bindPossibleDomainReference</a></strong>(java.lang.String columnName, java.lang.Object object, java.lang.Object value)</code><br>Attempt to bind the given value to the given object as a domain reference. </td>
+                            <td class="colLast"><code><strong><a href="#bindPossibleDomainReference(java.lang.String, java.lang.Object, java.lang.Object)">bindPossibleDomainReference</a></strong>(java.lang.String columnName, java.lang.Object object, java.lang.Object value)</code><br>Attempt to bind the given value to the given object as a domain reference.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a></code></td>
-                            <td class="colLast"><code><strong><a href="#bindResultSet(java.sql.ResultSet, java.lang.Class)">bindResultSet</a></strong>(java.sql.ResultSet rs, java.lang.Class domainClazz)</code><br>Converts the current row in the result set to the given domain object. </td>
+                            <td class="colLast"><code><strong><a href="#bindResultSet(java.sql.ResultSet, java.lang.Class)">bindResultSet</a></strong>(java.sql.ResultSet rs, java.lang.Class domainClazz)</code><br>Converts the current row in the result set to the given domain object.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/eframe/domain/DomainBinder.html'>DomainBinder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#build(org.simplemes.eframe.domain.DomainBinder)">build</a></strong>(<a href='../../../../org/simplemes/eframe/domain/DomainBinder.html'>DomainBinder</a> parentBinder)</code><br>Factory method to build a new DomainBinder. </td>
+                            <td class="colLast"><code><strong><a href="#build(org.simplemes.eframe.domain.DomainBinder)">build</a></strong>(<a href='../../../../org/simplemes/eframe/domain/DomainBinder.html'>DomainBinder</a> parentBinder)</code><br>Factory method to build a new DomainBinder.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -288,13 +295,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#convertUIChildParamsToAPIForm(Map)">convertUIChildParamsToAPIForm</a></strong>(<a href='../../../../Map.html'>Map</a> params)</code><br>Converts any child elements from the UI format to API format.  </td>
+                            <td class="colLast"><code><strong><a href="#convertUIChildParamsToAPIForm(java.util.Map)">convertUIChildParamsToAPIForm</a></strong>(java.util.Map params)</code><br>Converts any child elements from the UI format to API format.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#deleteUnusedChildRecords(Collection, List, java.lang.String, org.simplemes.eframe.data.FieldDefinitionInterface)">deleteUnusedChildRecords</a></strong>(<a href='../../../../Collection.html'>Collection</a> originalList, <a href='../../../../List.html'>List</a> list, java.lang.String fieldName, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</code><br>Deletes the DB records for child records that are not in the updated list of children. </td>
+                            <td class="colLast"><code><strong><a href="#deleteUnusedChildRecords(java.util.Collection, List, java.lang.String, org.simplemes.eframe.data.FieldDefinitionInterface)">deleteUnusedChildRecords</a></strong>(java.util.Collection originalList, java.util.List&lt;java.util.Map&gt; list, java.lang.String fieldName, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</code><br>Deletes the DB records for child records that are not in the updated list of children.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -306,7 +313,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#preBindSpecialColumn(Map, java.lang.String, java.lang.Object)">preBindSpecialColumn</a></strong>(<a href='../../../../Map.html'>Map</a> map, java.lang.String fieldName, java.lang.Object object)</code><br>Handles mapping of some special values that are usually ignored by the bind() method.
+                            <td class="colLast"><code><strong><a href="#preBindSpecialColumn(java.util.Map, java.lang.String, java.lang.Object)">preBindSpecialColumn</a></strong>(java.util.Map map, java.lang.String fieldName, java.lang.Object object)</code><br>Handles mapping of some special values that are usually ignored by the bind() method.
  </td>
                         </tr>
                         
@@ -372,7 +379,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="errors"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>errors</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../../../org/simplemes/eframe/domain/validate/ValidationErrorInterface.html' title='ValidationErrorInterface'>ValidationErrorInterface</a>&gt; <strong>errors</strong></h4>
                                 <p> Any errors accumulated during binding.</p>
                             </li>
                         </ul>
@@ -397,7 +404,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="fieldsToSkipBinding"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>fieldsToSkipBinding</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.String&gt; <strong>fieldsToSkipBinding</strong></h4>
                                 <p> These are fields that not bound to domain objects.</p>
                             </li>
                         </ul>
@@ -471,11 +478,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="bind(java.lang.Object, Map, java.lang.Boolean)"><!-- --></a>
+                        <a name="bind(java.lang.Object, java.util.Map, java.lang.Boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-void <strong>bind</strong>(java.lang.Object object, <a href='../../../../Map.html'>Map</a> params, java.lang.Boolean ui)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: [GroovyAssignabilityCheck, EmptyIfStatement])
+void <strong>bind</strong>(java.lang.Object object, java.util.Map params, java.lang.Boolean ui)</h4>
                                 <p> Binds the given parameters to the given object instance. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to bind to.</DD><DD><code>params</code> -  The parameters.</DD><DD><code>ui</code> -  If true, then the string values are parsed using the UI formats.  Otherwise, uses internal decoding formats.
         (<b>Default:</b> false)</DD></DL><DL><DT><B>Returns:</B></DT><DD>Any errors found while binding.  Mostly parse errors.</DD></DL></p>
                             </li>
@@ -484,16 +491,16 @@ void <strong>bind</strong>(java.lang.Object object, <a href='../../../../Map.htm
                         <a name="bind(java.lang.Object, java.sql.ResultSet)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: [GroovyAssignabilityCheck, EmptyIfStatement])
 void <strong>bind</strong>(java.lang.Object object, java.sql.ResultSet rs)</h4>
                                 <p> Binds the current row of the result set to the given object instance. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to bind to.</DD><DD><code>rs</code> -  The result set.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="bindChildren(java.lang.Object, Map, java.lang.String)"><!-- --></a>
+                        <a name="bindChildren(java.lang.Object, java.util.Map, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;void <strong>bindChildren</strong>(java.lang.Object object, <a href='../../../../Map.html'>Map</a> paramsIn, java.lang.String prefix)</h4>
+                                <h4>protected&nbsp;void <strong>bindChildren</strong>(java.lang.Object object, java.util.Map paramsIn, java.lang.String prefix)</h4>
                                 <p> Binds the given parameters to the given object instance for child elements. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to bind to.</DD><DD><code>paramsIn</code> -  the Top-level map of parameters to process.</DD><DD><code>prefix</code> -  The parameter name prefix to process.</DD></DL></p>
                             </li>
                         </ul>
@@ -539,10 +546,10 @@ void <strong>bind</strong>(java.lang.Object object, java.sql.ResultSet rs)</h4>
                             </li>
                         </ul>
                     
-                        <a name="convertUIChildParamsToAPIForm(Map)"><!-- --></a>
+                        <a name="convertUIChildParamsToAPIForm(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>convertUIChildParamsToAPIForm</strong>(<a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4>void <strong>convertUIChildParamsToAPIForm</strong>(java.util.Map params)</h4>
                                 <p> Converts any child elements from the UI format to API format.  This converts elements like:
  'sampleChildren[2].title' to a sub-list of maps: sampleChildren: [ [title: 'abc']. . . ].
  This is only done when in UI mode.
@@ -550,10 +557,10 @@ void <strong>bind</strong>(java.lang.Object object, java.sql.ResultSet rs)</h4>
                             </li>
                         </ul>
                     
-                        <a name="deleteUnusedChildRecords(Collection, List, java.lang.String, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
+                        <a name="deleteUnusedChildRecords(java.util.Collection, List, java.lang.String, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>deleteUnusedChildRecords</strong>(<a href='../../../../Collection.html'>Collection</a> originalList, <a href='../../../../List.html'>List</a> list, java.lang.String fieldName, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</h4>
+                                <h4>void <strong>deleteUnusedChildRecords</strong>(java.util.Collection originalList, java.util.List&lt;java.util.Map&gt; list, java.lang.String fieldName, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</h4>
                                 <p> Deletes the DB records for child records that are not in the updated list of children. <DL><DT><B>Parameters:</B></DT><DD><code>originalList</code> -  The original list of records. This is updated too (removes the deleted record).</DD><DD><code>list</code> -  The new list of children (map of input parameters).</DD><DD><code>fieldName</code> -  The name of the field these children belongs to.</DD><DD><code>fieldDef</code> -  The field definition.</DD></DL></p>
                             </li>
                         </ul>
@@ -566,10 +573,10 @@ void <strong>bind</strong>(java.lang.Object object, java.sql.ResultSet rs)</h4>
                             </li>
                         </ul>
                     
-                        <a name="preBindSpecialColumn(Map, java.lang.String, java.lang.Object)"><!-- --></a>
+                        <a name="preBindSpecialColumn(java.util.Map, java.lang.String, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>preBindSpecialColumn</strong>(<a href='../../../../Map.html'>Map</a> map, java.lang.String fieldName, java.lang.Object object)</h4>
+                                <h4>void <strong>preBindSpecialColumn</strong>(java.util.Map map, java.lang.String fieldName, java.lang.Object object)</h4>
                                 <p> Handles mapping of some special values that are usually ignored by the bind() method.
  The value will be removed from the map. <DL><DT><B>Parameters:</B></DT><DD><code>map</code> -  The map containing the possible value to pre-bind.</DD><DD><code>fieldName</code> -  The field to pre-bind.</DD><DD><code>object</code> -  The object pre-bind the value into.</DD></DL></p>
                             </li>

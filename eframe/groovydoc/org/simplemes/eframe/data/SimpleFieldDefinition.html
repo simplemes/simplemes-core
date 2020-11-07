@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.transform.ToStringToString
+
+<pre>@groovy.transform.ToString(includePackage: false, includeNames: true)
 class SimpleFieldDefinition
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a></pre>
 
     <p> A simple field definition.  Typically corresponds to String, Integer, etc fields in a domain/POGO.</p>
 
@@ -169,7 +169,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#guiHints">guiHints</a></code><br>The GUI hints (field-specific parameters) to pass to a marker.</td>
                         </tr>
                         
@@ -261,8 +261,8 @@ extends java.lang.Object
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#SimpleFieldDefinition(Map)">SimpleFieldDefinition</a>
-                                (<a href='../../../../Map.html'>Map</a> options)</code><br>Basic constructor.</td>
+                                <code><a href="#SimpleFieldDefinition(java.util.Map)">SimpleFieldDefinition</a>
+                                (java.util.Map options)</code><br>Basic constructor.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -307,13 +307,13 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#getFieldValue(java.lang.Object)">getFieldValue</a></strong>(java.lang.Object domainOrPogoObject)</code><br>Gets the given field value from the given object (domain or POGO depending on sub-class). </td>
+                            <td class="colLast"><code><strong><a href="#getFieldValue(java.lang.Object)">getFieldValue</a></strong>(java.lang.Object domainOrPogoObject)</code><br>Gets the given field value from the given object (domain or POGO depending on sub-class).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/data/format/FieldFormatInterface.html'>FieldFormatInterface</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getFormat()">getFormat</a></strong>()</code><br>Gets the field format. </td>
+                            <td class="colLast"><code><strong><a href="#getFormat()">getFormat</a></strong>()</code><br>Gets the field format.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -325,7 +325,7 @@ extends java.lang.Object
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setFieldValue(java.lang.Object, java.lang.Object)">setFieldValue</a></strong>(java.lang.Object domainOrPogoObject, java.lang.Object value)</code><br>Sets the given field value in the given object (domain or POGO depending on sub-class). </td>
+                            <td class="colLast"><code><strong><a href="#setFieldValue(java.lang.Object, java.lang.Object)">setFieldValue</a></strong>(java.lang.Object domainOrPogoObject, java.lang.Object value)</code><br>Sets the given field value in the given object (domain or POGO depending on sub-class).</td>
                         </tr>
                         
                     </table>
@@ -417,7 +417,7 @@ extends java.lang.Object
                         <a name="guiHints"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>guiHints</strong></h4>
+                                <h4>private&nbsp;java.util.Map <strong>guiHints</strong></h4>
                                 <p> The GUI hints (field-specific parameters) to pass to a marker.</p>
                             </li>
                         </ul>
@@ -536,11 +536,11 @@ extends java.lang.Object
                             </li>
                         </ul>
                     
-                        <a name="SimpleFieldDefinition(Map)"><!-- --></a>
+                        <a name="SimpleFieldDefinition(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-<strong>SimpleFieldDefinition</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+<strong>SimpleFieldDefinition</strong>(java.util.Map options)</h4>
                                 <p> Basic constructor. <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  The options.</DD></DL></p>
                             </li>
                         </ul>
@@ -585,7 +585,7 @@ extends java.lang.Object
                         <a name="getFieldValue(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.Object <strong>getFieldValue</strong>(java.lang.Object domainOrPogoObject)</h4>
                                 <p> Gets the given field value from the given object (domain or POGO depending on sub-class). <DL><DT><B>Parameters:</B></DT><DD><code>domainOrPogoObject</code> -  The domain or POGO object the field is stored in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The value of the field.</DD></DL></p>
                             </li>
@@ -610,7 +610,7 @@ java.lang.Object <strong>getFieldValue</strong>(java.lang.Object domainOrPogoObj
                         <a name="setFieldValue(java.lang.Object, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>setFieldValue</strong>(java.lang.Object domainOrPogoObject, java.lang.Object value)</h4>
                                 <p> Sets the given field value in the given object (domain or POGO depending on sub-class). <DL><DT><B>Parameters:</B></DT><DD><code>domainOrPogoObject</code> -  The domain or POGO object the field is to be stored in.</DD><DD><code>value</code> -  The field value.</DD></DL></p>
                             </li>

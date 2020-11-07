@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+class CompilerTestUtils
+extends java.lang.Object</pre>
 
     <p> Utility methods for testing annotations and other compiler features in unit tests.  Provides a way to compile
  arbitrary code.</p>
@@ -186,7 +193,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.Class</code></td>
-                            <td class="colLast"><code><strong><a href="#compileSimpleClass(Map)">compileSimpleClass</a></strong>(<a href='../../../../Map.html'>Map</a> options)</code><br>Convenience method that compiles a class for testing. </td>
+                            <td class="colLast"><code><strong><a href="#compileSimpleClass(java.util.Map)">compileSimpleClass</a></strong>(java.util.Map options)</code><br>Convenience method that compiles a class for testing. </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -282,10 +289,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="compileSimpleClass(Map)"><!-- --></a>
+                        <a name="compileSimpleClass(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.Class <strong>compileSimpleClass</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>static&nbsp;java.lang.Class <strong>compileSimpleClass</strong>(java.util.Map options)</h4>
                                 <p> Convenience method that compiles a class for testing. The class is called TestClass.
  This method builds the boiler plate around the class contents passed in.
  Also sets any class level annotations.
@@ -300,7 +307,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="compileSource(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: [SystemOutPrint, CatchException])
 static&nbsp;java.lang.Class <strong>compileSource</strong>(java.lang.String src)</h4>
                                 <p> Convenience method that compiles a given source string for testing.
  Used for unit testing compiler logic such as annotations. <DL><DT><B>Parameters:</B></DT><DD><code>src</code> -  The groovy source.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The compiled class.</DD></DL></p>

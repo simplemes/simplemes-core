@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
+class ResolveService
+extends java.lang.Object</pre>
 
     <p> This service provided methods to resolve identifiers into workable objects in SimpleMES.
  This includes methods to find the appropriate workable unit and to find an order/LSN from
@@ -169,13 +177,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/mes/demand/domain/LSN.html'>LSN</a></code></td>
-                            <td class="colLast"><code><strong><a href="#determineLSNForWorkable(org.simplemes.mes.demand.WorkableInterface)">determineLSNForWorkable</a></strong>(<a href='../../../../../org/simplemes/mes/demand/WorkableInterface.html'>WorkableInterface</a> w)</code><br>Utility method to determine the LSN for a given workable. </td>
+                            <td class="colLast"><code><strong><a href="#determineLSNForWorkable(org.simplemes.mes.demand.WorkableInterface)">determineLSNForWorkable</a></strong>(<a href='../../../../../org/simplemes/mes/demand/WorkableInterface.html'>WorkableInterface</a> w)</code><br>Utility method to determine the LSN for a given workable.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a></code></td>
-                            <td class="colLast"><code><strong><a href="#determineOrderForWorkable(org.simplemes.mes.demand.WorkableInterface)">determineOrderForWorkable</a></strong>(<a href='../../../../../org/simplemes/mes/demand/WorkableInterface.html'>WorkableInterface</a> w)</code><br>Utility method to determine the order for a given workable. </td>
+                            <td class="colLast"><code><strong><a href="#determineOrderForWorkable(org.simplemes.mes.demand.WorkableInterface)">determineOrderForWorkable</a></strong>(<a href='../../../../../org/simplemes/mes/demand/WorkableInterface.html'>WorkableInterface</a> w)</code><br>Utility method to determine the order for a given workable.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -273,7 +281,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="determineLSNForWorkable(org.simplemes.mes.demand.WorkableInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GrMethodMayBeStatic)
 <a href='../../../../../org/simplemes/mes/demand/domain/LSN.html'>LSN</a> <strong>determineLSNForWorkable</strong>(<a href='../../../../../org/simplemes/mes/demand/WorkableInterface.html'>WorkableInterface</a> w)</h4>
                                 <p> Utility method to determine the LSN for a given workable. <DL><DT><B>Parameters:</B></DT><DD><code>w</code> -  The workable.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The LSN (null if not an LSN).</DD></DL></p>
                             </li>
@@ -282,7 +290,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="determineOrderForWorkable(org.simplemes.mes.demand.WorkableInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GrMethodMayBeStatic)
 <a href='../../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> <strong>determineOrderForWorkable</strong>(<a href='../../../../../org/simplemes/mes/demand/WorkableInterface.html'>WorkableInterface</a> w)</h4>
                                 <p> Utility method to determine the order for a given workable. <DL><DT><B>Parameters:</B></DT><DD><code>w</code> -  The workable.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The order (non-null for valid workables).</DD></DL></p>
                             </li>
@@ -330,7 +338,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="resolveWorkable(org.simplemes.mes.demand.ResolveWorkableRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GrMethodMayBeStatic)
 <a href='../../../../../org/simplemes/mes/demand/WorkableInterface.html'>WorkableInterface</a>[] <strong>resolveWorkable</strong>(<a href='../../../../../org/simplemes/mes/demand/ResolveWorkableRequest.html'>ResolveWorkableRequest</a> request)</h4>
                                 <p> Determines the right level to process a given order and/or LSN.  This is based on the Product settings and the
  current state of this order.  This finds where the in work, in queue and other quantities are handled for these cases.

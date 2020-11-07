@@ -101,15 +101,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>net.sf.jasperreports.extensions.ExtensionsRegistryFactory, net.sf.jasperreports.extensions.ExtensionsRegistry</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
+
 <pre>class HyperlinkProducerFactory
 extends net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory
-
-</pre>
-
-
+implements net.sf.jasperreports.extensions.ExtensionsRegistryFactory, net.sf.jasperreports.extensions.ExtensionsRegistry</pre>
 
     <p> This is the factory and registry to register the HyperLinkProducer for our reports.  This will point to the
  hyperlink producer to generate links to other reports.</p>
@@ -177,19 +177,19 @@ extends net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>net.sf.jasperreports.extensions.ExtensionsRegistry</code></td>
-                            <td class="colLast"><code><strong><a href="#createRegistry(java.lang.String, net.sf.jasperreports.engine.JRPropertiesMap)">createRegistry</a></strong>(java.lang.String registryId, net.sf.jasperreports.engine.JRPropertiesMap properties)</code><br>Instantiates an extensions registry. </td>
+                            <td class="colLast"><code><strong><a href="#createRegistry(java.lang.String, net.sf.jasperreports.engine.JRPropertiesMap)">createRegistry</a></strong>(java.lang.String registryId, net.sf.jasperreports.engine.JRPropertiesMap properties)</code><br>Instantiates an extensions registry.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code>&lt;T&gt;</code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getExtensions(java.lang.Class)">getExtensions</a></strong>(java.lang.Class extensionType)</code><br>Returns a list of extension objects for a specific extension type. </td>
+                            <td class="colLast"><code>java.util.List&lt;T&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getExtensions(Class)">getExtensions</a></strong>(java.lang.Class&lt;T&gt; extensionType)</code><br>Returns a list of extension objects for a specific extension type.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>net.sf.jasperreports.engine.export.JRHyperlinkProducer</code></td>
-                            <td class="colLast"><code><strong><a href="#getHandler(java.lang.String)">getHandler</a></strong>(java.lang.String linkType)</code><br>Returns the hyperlink producer associated with a specific hyperlink type. </td>
+                            <td class="colLast"><code><strong><a href="#getHandler(java.lang.String)">getHandler</a></strong>(java.lang.String linkType)</code><br>Returns the hyperlink producer associated with a specific hyperlink type.</td>
                         </tr>
                         
                     </table>
@@ -263,7 +263,7 @@ extends net.sf.jasperreports.engine.export.JRHyperlinkProducerFactory
                         <a name="createRegistry(java.lang.String, net.sf.jasperreports.engine.JRPropertiesMap)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 net.sf.jasperreports.extensions.ExtensionsRegistry <strong>createRegistry</strong>(java.lang.String registryId, net.sf.jasperreports.engine.JRPropertiesMap properties)</h4>
                                 <p> Instantiates an extensions registry. <DL><DT><B>Parameters:</B></DT><DD><code>registryId</code> -  the ID of the registry to instantiate.
  The ID can be used to identify a set of properties to be used
@@ -272,11 +272,11 @@ net.sf.jasperreports.extensions.ExtensionsRegistry <strong>createRegistry</stron
                             </li>
                         </ul>
                     
-                        <a name="getExtensions(java.lang.Class)"><!-- --></a>
+                        <a name="getExtensions(Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>&lt;T&gt; @java.lang.OverrideOverride
-<a href='../../../../List.html'>List</a> <strong>getExtensions</strong>(java.lang.Class extensionType)</h4>
+                                <h4>&lt;T&gt; @java.lang.Override
+java.util.List&lt;T&gt; <strong>getExtensions</strong>(java.lang.Class&lt;T&gt; extensionType)</h4>
                                 <p> Returns a list of extension objects for a specific extension type. <DL><DT><B>Parameters:</B></DT><DD><code>extensionType</code> -  the extension type</DD></DL><DL><DT><B>Returns:</B></DT><DD>a list of extension objects</DD></DL></p>
                             </li>
                         </ul>
@@ -284,7 +284,7 @@ net.sf.jasperreports.extensions.ExtensionsRegistry <strong>createRegistry</stron
                         <a name="getHandler(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 net.sf.jasperreports.engine.export.JRHyperlinkProducer <strong>getHandler</strong>(java.lang.String linkType)</h4>
                                 <p> Returns the hyperlink producer associated with a specific hyperlink type. <DL><DT><B>Parameters:</B></DT><DD><code>linkType</code> -  the hyperlink type</DD></DL><DL><DT><B>Returns:</B></DT><DD>an associated hyperlink producer, or <code>null</code> when none associated</DD></DL></p>
                             </li>

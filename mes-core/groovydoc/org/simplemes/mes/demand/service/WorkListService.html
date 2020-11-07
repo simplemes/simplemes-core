@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
+class WorkListService
+extends java.lang.Object</pre>
 
     <p> Defines Services for list work that is available (in queue) or in work.  Can be restricted to work
  in a work center or global.  This can show Orders and/or LSNs.
@@ -174,13 +182,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildSQL(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest)">buildSQL</a></strong>(java.lang.Class domainClass, <a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest)</code><br>Build the FROM...WHERE clause for the given domainClass and work request. </td>
+                            <td class="colLast"><code><strong><a href="#buildSQL(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest)">buildSQL</a></strong>(java.lang.Class domainClass, <a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest)</code><br>Build the FROM...WHERE clause for the given domainClass and work request.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/mes/demand/FindWorkResponse.html'>FindWorkResponse</a></code></td>
-                            <td class="colLast"><code><strong><a href="#findWork(org.simplemes.mes.demand.FindWorkRequest)">findWork</a></strong>(<a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest)</code><br>Finds the active/queued work available based on the request restrictions. </td>
+                            <td class="colLast"><code><strong><a href="#findWork(org.simplemes.mes.demand.FindWorkRequest)">findWork</a></strong>(<a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest)</code><br>Finds the active/queued work available based on the request restrictions.</td>
                         </tr>
                         
                     </table>
@@ -262,7 +270,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="findWork(org.simplemes.mes.demand.FindWorkRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
 <a href='../../../../../org/simplemes/mes/demand/FindWorkResponse.html'>FindWorkResponse</a> <strong>findWork</strong>(<a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest)</h4>
                                 <p> Finds the active/queued work available based on the request restrictions. <DL><DT><B>Parameters:</B></DT><DD><code>findWorkRequest</code> -  Defines the request restrictions for the search.  Null allowed.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of elements that are in work (Orders/LSNs).</DD></DL></p>
                             </li>

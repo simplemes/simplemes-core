@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../org/simplemes/eframe/test/AutoCleanupMockInterface.html'>AutoCleanupMockInterface</a>, org.spockframework.mock.IDefaultResponse</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.transform.ToStringToString
+
+<pre>@groovy.transform.ToString(includePackage: false, includeNames: true)
 class MockControllerUtils
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../org/simplemes/eframe/test/AutoCleanupMockInterface.html'>AutoCleanupMockInterface</a>, org.spockframework.mock.IDefaultResponse</pre>
 
     <p> Builds a very simple mock/stub version of ControllerUtils that returns the given controller(s) classes as possible controllers.
  <p>
@@ -163,7 +163,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.Class&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#controllerClassList">controllerClassList</a></code><br>The list of classes to pretend are controller classes.</td>
                         </tr>
                         
@@ -179,7 +179,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#originalMethods">originalMethods</a></code><br>The list of original methods to call on the real ControllerUtils class.
  </td>
                         </tr>
@@ -208,13 +208,13 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst">
                                 <code><a href="#MockControllerUtils(org.simplemes.eframe.test.BaseSpecification, java.lang.Class, List)">MockControllerUtils</a>
-                                (<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, java.lang.Class clazz, <a href='../../../../List.html'>List</a> originalMethods)</code><br>Basic constructor.  </td>
+                                (<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, java.lang.Class clazz, java.util.List&lt;java.lang.String&gt; originalMethods)</code><br>Basic constructor.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst">
                                 <code><a href="#MockControllerUtils(org.simplemes.eframe.test.BaseSpecification, List, List)">MockControllerUtils</a>
-                                (<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, <a href='../../../../List.html'>List</a> classes, <a href='../../../../List.html'>List</a> originalMethods)</code><br>Basic constructor.  </td>
+                                (<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, java.util.List&lt;java.lang.Class&gt; classes, java.util.List&lt;java.lang.String&gt; originalMethods)</code><br>Basic constructor.  </td>
                         </tr>
                         
                         <tr class="altColor">
@@ -247,7 +247,7 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#doCleanup(org.simplemes.eframe.test.BaseSpecification)">doCleanup</a></strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> testSpec)</code><br>Performs the cleanup action. </td>
+                            <td class="colLast"><code><strong><a href="#doCleanup(org.simplemes.eframe.test.BaseSpecification)">doCleanup</a></strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> testSpec)</code><br>Performs the cleanup action.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -316,7 +316,7 @@ extends java.lang.Object
                         <a name="controllerClassList"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>controllerClassList</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.Class&gt; <strong>controllerClassList</strong></h4>
                                 <p> The list of classes to pretend are controller classes.</p>
                             </li>
                         </ul>
@@ -341,7 +341,7 @@ extends java.lang.Object
                         <a name="originalMethods"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>originalMethods</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.String&gt; <strong>originalMethods</strong></h4>
                                 <p> The list of original methods to call on the real ControllerUtils class.
  This allows testing of those real methods with a mocked ControllerUtils class.
  Defaults to include 'getControllerByName' and 'getDomainClass'.</p>
@@ -365,7 +365,7 @@ extends java.lang.Object
                         <a name="MockControllerUtils(org.simplemes.eframe.test.BaseSpecification, java.lang.Class, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>MockControllerUtils</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, java.lang.Class clazz, <a href='../../../../List.html'>List</a> originalMethods)</h4>
+                                <h4><strong>MockControllerUtils</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, java.lang.Class clazz, java.util.List&lt;java.lang.String&gt; originalMethods)</h4>
                                 <p> Basic constructor.  You must call install() to make this mock active. <DL><DT><B>Parameters:</B></DT><DD><code>baseSpec</code> -  The test specification that needs the mock (usually this).</DD><DD><code>clazz</code> -  The class to pretend is a controller class.</DD><DD><code>originalMethods</code> -  The list of method names to use in the original (real) method for testing (<b>Optional</b>).</DD></DL></p>
                             </li>
                         </ul>
@@ -373,7 +373,7 @@ extends java.lang.Object
                         <a name="MockControllerUtils(org.simplemes.eframe.test.BaseSpecification, List, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>MockControllerUtils</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, <a href='../../../../List.html'>List</a> classes, <a href='../../../../List.html'>List</a> originalMethods)</h4>
+                                <h4><strong>MockControllerUtils</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, java.util.List&lt;java.lang.Class&gt; classes, java.util.List&lt;java.lang.String&gt; originalMethods)</h4>
                                 <p> Basic constructor.  You must call install() to make this mock active. <DL><DT><B>Parameters:</B></DT><DD><code>baseSpec</code> -  The test specification that needs the mock (usually this).</DD><DD><code>classes</code> -  The classes to  pretend they are controller classes.</DD><DD><code>originalMethods</code> -  The list of method names to use in the original (real) method for testing (<b>Optional</b>).</DD></DL></p>
                             </li>
                         </ul>
@@ -402,7 +402,7 @@ extends java.lang.Object
                         <a name="doCleanup(org.simplemes.eframe.test.BaseSpecification)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>doCleanup</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> testSpec)</h4>
                                 <p> Performs the cleanup action. <DL><DT><B>Parameters:</B></DT><DD><code>testSpec</code> -  The test that requests the cleanup.</DD></DL></p>
                             </li>
@@ -420,7 +420,7 @@ void <strong>doCleanup</strong>(<a href='../../../../org/simplemes/eframe/test/B
                         <a name="respond(org.spockframework.mock.IMockInvocation)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.Object <strong>respond</strong>(org.spockframework.mock.IMockInvocation invocation)</h4>
                                 <p></p>
                             </li>

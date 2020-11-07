@@ -97,6 +97,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <ul class="blockList">
         <li class="blockList">
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>interface ConfigurableTypeInterface</pre>
 
     <p> Defines an open-ended data type that can be configured by the end-user without extensive GUI or domain changes.
  This is used to indicate that a given domain property is a configurable type and can be used by the framework in
@@ -169,14 +174,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;<a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html' title='FieldDefinitionInterface'>FieldDefinitionInterface</a>&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#determineInputFields(java.lang.String)">determineInputFields</a></strong>(java.lang.String configurableTypeFieldName)</code><br>Builds the fields needed to configure this type.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toStringLocalized(Locale)">toStringLocalized</a></strong>(<a href='../../../../Locale.html'>Locale</a> locale)</code><br>Gets the localized display name for this type of configurable object.  </td>
+                            <td class="colLast"><code><strong><a href="#toStringLocalized(java.util.Locale)">toStringLocalized</a></strong>(java.util.Locale locale)</code><br>Gets the localized display name for this type of configurable object.  </td>
                         </tr>
                         
                     </table>
@@ -232,17 +237,17 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="determineInputFields(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>determineInputFields</strong>(java.lang.String configurableTypeFieldName)</h4>
+                                <h4>java.util.List&lt;<a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html' title='FieldDefinitionInterface'>FieldDefinitionInterface</a>&gt; <strong>determineInputFields</strong>(java.lang.String configurableTypeFieldName)</h4>
                                 <p> Builds the fields needed to configure this type.  This will be used to build the GUI field HTML elements. <DL><DT><B>Parameters:</B></DT><DD><code>configurableTypeFieldName</code> -  The name of the Configurable Type field that the caller wants the fields for.
                                   This is used to specify the prefix for the values in the custom field holder.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of fields needed to configure this type.  These fields should match the names and types of the
          data fields.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="toStringLocalized(Locale)"><!-- --></a>
+                        <a name="toStringLocalized(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>toStringLocalized</strong>(<a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>java.lang.String <strong>toStringLocalized</strong>(java.util.Locale locale)</h4>
                                 <p> Gets the localized display name for this type of configurable object.  This is typically displayed in drop-down lists
  and other display locations. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale to display the name from (if null, defaults to the request locale).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The display name.</DD></DL></p>
                             </li>

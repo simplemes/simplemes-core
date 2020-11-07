@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
+class StartupHandler
+extends java.lang.Object</pre>
 
     <p> This bean is executed on startup.  This is used to load initial data and handle similar actions.
 
@@ -170,7 +178,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#configureJacksonObjectMapper(com.fasterxml.jackson.databind.ObjectMapper)">configureJacksonObjectMapper</a></strong>(com.fasterxml.jackson.databind.ObjectMapper mapper)</code><br>Configures the Jackson object mapper with the settings we need. </td>
+                            <td class="colLast"><code><strong><a href="#configureJacksonObjectMapper(com.fasterxml.jackson.databind.ObjectMapper)">configureJacksonObjectMapper</a></strong>(com.fasterxml.jackson.databind.ObjectMapper mapper)</code><br>Configures the Jackson object mapper with the settings we need.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -271,8 +279,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="onStartup(io.micronaut.context.event.StartupEvent)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.runtime.event.annotation.EventListenerEventListener
-@io.micronaut.scheduling.annotation.AsyncAsync
+                                <h4>@java.util.EventListener
+@io.micronaut.scheduling.annotation.Async
 void <strong>onStartup</strong>(io.micronaut.context.event.StartupEvent event)</h4>
                                 <p> Executed on Startup.  Triggers the initial data load process. <DL><DT><B>Parameters:</B></DT><DD>event</DD></DL></p>
                             </li>

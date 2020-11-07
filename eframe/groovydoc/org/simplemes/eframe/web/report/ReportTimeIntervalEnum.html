@@ -101,15 +101,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>java.lang.Comparable</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
+
 <pre>final&nbsp;enum ReportTimeIntervalEnum
-extends java.lang.Enum
-
-</pre>
-
-
+extends java.lang.Enum&lt;E&lt;E&gt;&gt;
+implements java.lang.Comparable</pre>
 
     <p>
  Defines a report/chart interval of time.  The enum is capable of calculating the absolute start/end of the interval
@@ -242,7 +242,7 @@ extends java.lang.Enum
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Closure.html'>Closure</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;groovy.lang.Closure&lt;DateRange&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#calculationClosure">calculationClosure</a></code><br>The closure (logic) needed to calculate the absolute start/end date/times for the interval.
  </td>
                         </tr>
@@ -275,8 +275,8 @@ extends java.lang.Enum
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#ReportTimeIntervalEnum(java.lang.String, Closure)">ReportTimeIntervalEnum</a>
-                                (java.lang.String id, <a href='../../../../../Closure.html'>Closure</a> calculationClosure)</code><br>Convenience constructor for an interval.</td>
+                                <code><a href="#ReportTimeIntervalEnum(java.lang.String, groovy.lang.Closure)">ReportTimeIntervalEnum</a>
+                                (java.lang.String id, groovy.lang.Closure calculationClosure)</code><br>Convenience constructor for an interval.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -315,7 +315,7 @@ extends java.lang.Enum
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/date/DateRange.html'>DateRange</a></code></td>
-                            <td class="colLast"><code><strong><a href="#determineRange(Date)">determineRange</a></strong>(<a href='../../../../../Date.html'>Date</a> now)</code><br>Calculates the date range for this enum instance, relative to now. </td>
+                            <td class="colLast"><code><strong><a href="#determineRange(java.util.Date)">determineRange</a></strong>(java.util.Date now)</code><br>Calculates the date range for this enum instance, relative to now.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -333,7 +333,7 @@ extends java.lang.Enum
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toStringLocalized(Locale)">toStringLocalized</a></strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</code><br>Build a human-readable version of this object. </td>
+                            <td class="colLast"><code><strong><a href="#toStringLocalized(java.util.Locale)">toStringLocalized</a></strong>(java.util.Locale locale)</code><br>Build a human-readable version of this object.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -352,24 +352,6 @@ extends java.lang.Enum
                    </ul>
               </li>
             
-            <li class="blockList"><a name="method_summary"><!--   --></a>
-                    <h3>Inherited Methods Summary</h3>
-                    <ul class="blockList">
-                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Inherited Methods Summary table">
-                        <caption><span>Inherited Methods</span><span class="tabEnd">&nbsp;</span></caption>
-                        <tr>
-                            <th class="colFirst" scope="col">Methods inherited from class</th>
-                            <th class="colLast" scope="col">Name</th>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code>class java.lang.Enum</code></td>
-                            <td class="colLast"><code>java.lang.Enum#name(), java.lang.Enum#equals(java.lang.Object), java.lang.Enum#toString(), java.lang.Enum#hashCode(), java.lang.Enum#compareTo(java.lang.Object), java.lang.Enum#compareTo(java.lang.Enum), java.lang.Enum#valueOf(java.lang.Class, java.lang.String), java.lang.Enum#describeConstable(), java.lang.Enum#getDeclaringClass(), java.lang.Enum#ordinal(), java.lang.Enum#wait(long, int), java.lang.Enum#wait(), java.lang.Enum#wait(long), java.lang.Enum#getClass(), java.lang.Enum#notify(), java.lang.Enum#notifyAll()</code></td>
-                        </tr>
-                    </table>
-                   </ul>
-              </li>
-                
         </ul>
         
     </li>
@@ -508,7 +490,7 @@ extends java.lang.Enum
                         <a name="calculationClosure"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;final&nbsp;<a href='../../../../../Closure.html'>Closure</a> <strong>calculationClosure</strong></h4>
+                                <h4>private&nbsp;final&nbsp;groovy.lang.Closure&lt;DateRange&gt; <strong>calculationClosure</strong></h4>
                                 <p> The closure (logic) needed to calculate the absolute start/end date/times for the interval.
  This closure is passed the time that is considered 'now' for this calculation.
  It should return a DateRange with the right start/end values.</p>
@@ -537,10 +519,10 @@ extends java.lang.Enum
                 </a>
                     <h3>Constructor Detail</h3>
                     
-                        <a name="ReportTimeIntervalEnum(java.lang.String, Closure)"><!-- --></a>
+                        <a name="ReportTimeIntervalEnum(java.lang.String, groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>ReportTimeIntervalEnum</strong>(java.lang.String id, <a href='../../../../../Closure.html'>Closure</a> calculationClosure)</h4>
+                                <h4><strong>ReportTimeIntervalEnum</strong>(java.lang.String id, groovy.lang.Closure calculationClosure)</h4>
                                 <p> Convenience constructor for an interval. <DL><DT><B>Parameters:</B></DT><DD><code>id</code> -  The stored value in the DB.</DD><DD><code>calculationClosure</code> -  A closure that calculates the start.end date relative to a passed in now date/time.</DD></DL></p>
                             </li>
                         </ul>
@@ -569,16 +551,16 @@ extends java.lang.Enum
                         <a name="$INIT([Ljava.lang.Object;)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.Generatedgroovy.transform.Generated
+                                <h4>@groovy.transform.Generated
 static&nbsp;final&nbsp;<a href='../../../../../org/simplemes/eframe/web/report/ReportTimeIntervalEnum.html'>ReportTimeIntervalEnum</a> <strong>$INIT</strong>( para)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="determineRange(Date)"><!-- --></a>
+                        <a name="determineRange(java.util.Date)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../org/simplemes/eframe/date/DateRange.html'>DateRange</a> <strong>determineRange</strong>(<a href='../../../../../Date.html'>Date</a> now)</h4>
+                                <h4><a href='../../../../../org/simplemes/eframe/date/DateRange.html'>DateRange</a> <strong>determineRange</strong>(java.util.Date now)</h4>
                                 <p> Calculates the date range for this enum instance, relative to now. <DL><DT><B>Parameters:</B></DT><DD><code>now</code> -  The now value to use for the calculation.  (<b>Default</b>: current date/time)</DD></DL><DL><DT><B>Returns:</B></DT><DD>The date/time range.</DD></DL></p>
                             </li>
                         </ul>
@@ -586,7 +568,7 @@ static&nbsp;final&nbsp;<a href='../../../../../org/simplemes/eframe/web/report/R
                         <a name="next()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.Generatedgroovy.transform.Generated
+                                <h4>@groovy.transform.Generated
 <a href='../../../../../org/simplemes/eframe/web/report/ReportTimeIntervalEnum.html'>ReportTimeIntervalEnum</a> <strong>next</strong>()</h4>
                                 <p></p>
                             </li>
@@ -595,16 +577,16 @@ static&nbsp;final&nbsp;<a href='../../../../../org/simplemes/eframe/web/report/R
                         <a name="previous()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.Generatedgroovy.transform.Generated
+                                <h4>@groovy.transform.Generated
 <a href='../../../../../org/simplemes/eframe/web/report/ReportTimeIntervalEnum.html'>ReportTimeIntervalEnum</a> <strong>previous</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="toStringLocalized(Locale)"><!-- --></a>
+                        <a name="toStringLocalized(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>toStringLocalized</strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>java.lang.String <strong>toStringLocalized</strong>(java.util.Locale locale)</h4>
                                 <p> Build a human-readable version of this object. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale to display the enum display text.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The human-readable string.</DD></DL></p>
                             </li>
                         </ul>
@@ -612,7 +594,7 @@ static&nbsp;final&nbsp;<a href='../../../../../org/simplemes/eframe/web/report/R
                         <a name="valueOf(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.Generatedgroovy.transform.Generated
+                                <h4>@groovy.transform.Generated
 static&nbsp;<a href='../../../../../org/simplemes/eframe/web/report/ReportTimeIntervalEnum.html'>ReportTimeIntervalEnum</a> <strong>valueOf</strong>(java.lang.String name)</h4>
                                 <p></p>
                             </li>
@@ -621,7 +603,7 @@ static&nbsp;<a href='../../../../../org/simplemes/eframe/web/report/ReportTimeIn
                         <a name="values()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.Generatedgroovy.transform.Generated
+                                <h4>@groovy.transform.Generated
 static&nbsp;final&nbsp;<a href='../../../../../org/simplemes/eframe/web/report/ReportTimeIntervalEnum.html'>ReportTimeIntervalEnum</a>[] <strong>values</strong>()</h4>
                                 <p></p>
                             </li>

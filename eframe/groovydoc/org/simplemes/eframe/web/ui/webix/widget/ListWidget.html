@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class ListWidget
+extends <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html'>BaseWidget</a></pre>
 
     <p> The base definition list widget class.  Produces the UI elements needed for a list display
  <h3>Attributes</h3>
@@ -159,7 +165,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#actionButtons">actionButtons</a></code><br>The list of button names needed for each row in the list.</td>
                         </tr>
                         
@@ -230,7 +236,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.CharSequence</code></td>
-                            <td class="colLast"><code><strong><a href="#build()">build</a></strong>()</code><br>Builds the string for the UI elements. </td>
+                            <td class="colLast"><code><strong><a href="#build()">build</a></strong>()</code><br>Builds the string for the UI elements.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -242,8 +248,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildColumnOptions(List)">buildColumnOptions</a></strong>(<a href='../../../../../../../List.html'>List</a> columns)</code><br>Build the options for the buildTableColumns() call, with default sizes from the preferences. </td>
+                            <td class="colLast"><code>java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#buildColumnOptions(List)">buildColumnOptions</a></strong>(java.util.List&lt;java.lang.String&gt; columns)</code><br>Build the options for the buildTableColumns() call, with default sizes from the preferences.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -261,7 +267,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildDataSource(java.lang.String)">buildDataSource</a></strong>(java.lang.String controllerName)</code><br>Builds the data source element for the datatable. </td>
+                            <td class="colLast"><code><strong><a href="#buildDataSource(java.lang.String)">buildDataSource</a></strong>(java.lang.String controllerName)</code><br>Builds the data source element for the datatable.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -303,8 +309,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#findActionButtons()">findActionButtons</a></strong>()</code><br>Looks through the parameters for action buttons (e.g. name@buttonHandler). </td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#findActionButtons()">findActionButtons</a></strong>()</code><br>Looks through the parameters for action buttons (e.g. name@buttonHandler).</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -330,7 +336,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html'>BaseWidget</a></code></td>
-                            <td class="colLast"><code><a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#addGlobalPostscriptText(java.lang.String)'>addGlobalPostscriptText</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#addPostscriptText(java.lang.String)'>addPostscriptText</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#build()'>build</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#buildStandardLabelWidth()'>buildStandardLabelWidth</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#escape(java.lang.String)'>escape</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#escapeForJavascript(java.lang.String, java.lang.Boolean)'>escapeForJavascript</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#generate()'>generate</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getBooleanAttribute(java.lang.String)'>getBooleanAttribute</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getControllerClass()'>getControllerClass</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getDomainClass()'>getDomainClass</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getRequestParameters()'>getRequestParameters</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getSizeAttribute(java.lang.String)'>getSizeAttribute</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#lookup(java.lang.String, Locale, java.lang.Object)'>lookup</a></code></td>
+                            <td class="colLast"><code><a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#addGlobalPostscriptText(java.lang.String)'>addGlobalPostscriptText</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#addPostscriptText(java.lang.String)'>addPostscriptText</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#build()'>build</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#buildStandardLabelWidth()'>buildStandardLabelWidth</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#escape(java.lang.String)'>escape</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#escapeForJavascript(java.lang.String, java.lang.Boolean)'>escapeForJavascript</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#generate()'>generate</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getBooleanAttribute(java.lang.String)'>getBooleanAttribute</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getControllerClass()'>getControllerClass</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getDomainClass()'>getDomainClass</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getRequestParameters()'>getRequestParameters</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getSizeAttribute(java.lang.String)'>getSizeAttribute</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#lookup(java.lang.String, java.util.Locale, java.lang.Object)'>lookup</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -360,7 +366,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="actionButtons"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../../../List.html'>List</a> <strong>actionButtons</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.String&gt; <strong>actionButtons</strong></h4>
                                 <p> The list of button names needed for each row in the list.</p>
                             </li>
                         </ul>
@@ -427,7 +433,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="build()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.CharSequence <strong>build</strong>()</h4>
                                 <p> Builds the string for the UI elements. <DL><DT><B>Returns:</B></DT><DD>The UI page text.</DD></DL></p>
                             </li>
@@ -445,7 +451,7 @@ java.lang.CharSequence <strong>build</strong>()</h4>
                         <a name="buildColumnOptions(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../../../Map.html'>Map</a> <strong>buildColumnOptions</strong>(<a href='../../../../../../../List.html'>List</a> columns)</h4>
+                                <h4>java.util.Map <strong>buildColumnOptions</strong>(java.util.List&lt;java.lang.String&gt; columns)</h4>
                                 <p> Build the options for the buildTableColumns() call, with default sizes from the preferences. <DL><DT><B>Parameters:</B></DT><DD><code>columns</code> -  The list of columns to display.</DD></DL><DL><DT><B>Returns:</B></DT><DD>A map with the desired options for the columns.</DD></DL></p>
                             </li>
                         </ul>
@@ -526,8 +532,8 @@ java.lang.CharSequence <strong>build</strong>()</h4>
                         <a name="findActionButtons()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-<a href='../../../../../../../List.html'>List</a> <strong>findActionButtons</strong>()</h4>
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+java.util.List&lt;java.lang.String&gt; <strong>findActionButtons</strong>()</h4>
                                 <p> Looks through the parameters for action buttons (e.g. name@buttonHandler). <DL><DT><B>Returns:</B></DT><DD>The list of names for buttons found.</DD></DL></p>
                             </li>
                         </ul>

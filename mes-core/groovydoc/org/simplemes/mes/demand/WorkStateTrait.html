@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.Trait
+trait WorkStateTrait
+extends java.lang.Object</pre>
 
     <p> Provides the Domain classes with a generic Work State.
  This object holds the work state of an operation or an overall object (e.g. Order or LSN).
@@ -151,22 +158,22 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong><a href='../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateFirstQueued">dateFirstQueued</a></code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong><a href='../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateFirstStarted">dateFirstStarted</a></code><br></td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong><a href='../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateQtyQueued">dateQtyQueued</a></code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong><a href='../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateQtyStarted">dateQtyStarted</a></code><br></td>
                         </tr>
                         
@@ -241,25 +248,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Date.html'>Date</a></code></td>
+                            <td class="colLast"><code>java.util.Date</code></td>
                             <td class="colLast"><code><strong><a href="#getDateFirstQueued()">getDateFirstQueued</a></strong>()</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Date.html'>Date</a></code></td>
+                            <td class="colLast"><code>java.util.Date</code></td>
                             <td class="colLast"><code><strong><a href="#getDateFirstStarted()">getDateFirstStarted</a></strong>()</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Date.html'>Date</a></code></td>
+                            <td class="colLast"><code>java.util.Date</code></td>
                             <td class="colLast"><code><strong><a href="#getDateQtyQueued()">getDateQtyQueued</a></strong>()</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Date.html'>Date</a></code></td>
+                            <td class="colLast"><code>java.util.Date</code></td>
                             <td class="colLast"><code><strong><a href="#getDateQtyStarted()">getDateQtyStarted</a></strong>()</code><br></td>
                         </tr>
                         
@@ -284,20 +291,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#queueQty(BigDecimal, Date)">queueQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, <a href='../../../../Date.html'>Date</a> dateTime)</code><br>Queues the given qty at this workable. </td>
+                            <td class="colLast"><code><strong><a href="#queueQty(BigDecimal, java.util.Date)">queueQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, java.util.Date dateTime)</code><br>Queues the given qty at this workable. </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../BigDecimal.html'>BigDecimal</a></code></td>
-                            <td class="colLast"><code><strong><a href="#reverseCompleteQty(BigDecimal, Date)">reverseCompleteQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, <a href='../../../../Date.html'>Date</a> dateTime)</code><br>Reverses the complete of work on an Order/LSN.
+                            <td class="colLast"><code><strong><a href="#reverseCompleteQty(BigDecimal, java.util.Date)">reverseCompleteQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, java.util.Date dateTime)</code><br>Reverses the complete of work on an Order/LSN.
  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../BigDecimal.html'>BigDecimal</a></code></td>
-                            <td class="colLast"><code><strong><a href="#reverseStartQty(BigDecimal, Date)">reverseStartQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, <a href='../../../../Date.html'>Date</a> dateTime)</code><br>Reverses the start of work on an Order/LSN.
+                            <td class="colLast"><code><strong><a href="#reverseStartQty(BigDecimal, java.util.Date)">reverseStartQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, java.util.Date dateTime)</code><br>Reverses the start of work on an Order/LSN.
  </td>
                         </tr>
                         
@@ -310,32 +317,31 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setDateFirstQueued(Date)">setDateFirstQueued</a></strong>(<a href='../../../../Date.html'>Date</a> dateFirstQueued)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#setDateFirstQueued(java.util.Date)">setDateFirstQueued</a></strong>(java.util.Date dateFirstQueued)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setDateFirstStarted(Date)">setDateFirstStarted</a></strong>(<a href='../../../../Date.html'>Date</a> dateFirstStarted)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#setDateFirstStarted(java.util.Date)">setDateFirstStarted</a></strong>(java.util.Date dateFirstStarted)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setDateQtyQueued(Date)">setDateQtyQueued</a></strong>(<a href='../../../../Date.html'>Date</a> dateQtyQueued)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#setDateQtyQueued(java.util.Date)">setDateQtyQueued</a></strong>(java.util.Date dateQtyQueued)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setDateQtyStarted(Date)">setDateQtyStarted</a></strong>(<a href='../../../../Date.html'>Date</a> dateQtyStarted)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#setDateQtyStarted(java.util.Date)">setDateQtyStarted</a></strong>(java.util.Date dateQtyStarted)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#setDatesAsNeeded(Date)">setDatesAsNeeded</a></strong>(<a href='../../../../Date.html'>Date</a> dateTime)</code><br>Sets the dates queued/started if the appropriate qty is non-zero.
- </td>
+                            <td class="colLast"><code><strong><a href="#setDatesAsNeeded(java.util.Date)">setDatesAsNeeded</a></strong>(java.util.Date dateTime)</code><br>Sets the dates queued/started if the appropriate qty is non-zero.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -359,25 +365,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../BigDecimal.html'>BigDecimal</a></code></td>
-                            <td class="colLast"><code><strong><a href="#startQty(BigDecimal, Date)">startQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, <a href='../../../../Date.html'>Date</a> dateTime)</code><br>Starts the given qty at this order (top-level) location.  </td>
+                            <td class="colLast"><code><strong><a href="#startQty(BigDecimal, java.util.Date)">startQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, java.util.Date dateTime)</code><br>Starts the given qty at this order (top-level) location.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../BigDecimal.html'>BigDecimal</a></code></td>
-                            <td class="colLast"><code><strong><a href="#validateCompleteQty(BigDecimal)">validateCompleteQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty)</code><br>Validates that the given qty can be completed at this workable location. </td>
+                            <td class="colLast"><code><strong><a href="#validateCompleteQty(BigDecimal)">validateCompleteQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty)</code><br>Validates that the given qty can be completed at this workable location.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../BigDecimal.html'>BigDecimal</a></code></td>
-                            <td class="colLast"><code><strong><a href="#validateReverseCompleteQty(BigDecimal)">validateReverseCompleteQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty)</code><br>Validates that the given qty can be reverse completed at this workable location. </td>
+                            <td class="colLast"><code><strong><a href="#validateReverseCompleteQty(BigDecimal)">validateReverseCompleteQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty)</code><br>Validates that the given qty can be reverse completed at this workable location.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../BigDecimal.html'>BigDecimal</a></code></td>
-                            <td class="colLast"><code><strong><a href="#validateStartQty(BigDecimal)">validateStartQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty)</code><br>Validates that the given qty can be started at this workable location. </td>
+                            <td class="colLast"><code><strong><a href="#validateStartQty(BigDecimal)">validateStartQty</a></strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty)</code><br>Validates that the given qty can be started at this workable location.</td>
                         </tr>
                         
                     </table>
@@ -426,7 +432,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateFirstQueued"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Date.html'>Date</a> <strong>dateFirstQueued</strong></h4>
+                                <h4>java.util.Date <strong>dateFirstQueued</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -434,7 +440,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateFirstStarted"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Date.html'>Date</a> <strong>dateFirstStarted</strong></h4>
+                                <h4>java.util.Date <strong>dateFirstStarted</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -442,7 +448,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateQtyQueued"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Date.html'>Date</a> <strong>dateQtyQueued</strong></h4>
+                                <h4>java.util.Date <strong>dateQtyQueued</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -450,7 +456,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateQtyStarted"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Date.html'>Date</a> <strong>dateQtyStarted</strong></h4>
+                                <h4>java.util.Date <strong>dateQtyStarted</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -526,7 +532,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getDateFirstQueued()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Date.html'>Date</a> <strong>getDateFirstQueued</strong>()</h4>
+                                <h4>java.util.Date <strong>getDateFirstQueued</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -534,7 +540,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getDateFirstStarted()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Date.html'>Date</a> <strong>getDateFirstStarted</strong>()</h4>
+                                <h4>java.util.Date <strong>getDateFirstStarted</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -542,7 +548,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getDateQtyQueued()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Date.html'>Date</a> <strong>getDateQtyQueued</strong>()</h4>
+                                <h4>java.util.Date <strong>getDateQtyQueued</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -550,7 +556,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getDateQtyStarted()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Date.html'>Date</a> <strong>getDateQtyStarted</strong>()</h4>
+                                <h4>java.util.Date <strong>getDateQtyStarted</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -579,27 +585,27 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="queueQty(BigDecimal, Date)"><!-- --></a>
+                        <a name="queueQty(BigDecimal, java.util.Date)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>queueQty</strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, <a href='../../../../Date.html'>Date</a> dateTime)</h4>
+                                <h4>void <strong>queueQty</strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, java.util.Date dateTime)</h4>
                                 <p> Queues the given qty at this workable. This method does not trigger the save() on the workable element. <DL><DT><B>Parameters:</B></DT><DD><code>qty</code> -  The quantity to queue.</DD><DD><code>dateTime</code> -  The date/time this qty is queued (<b>Default:</b> now).</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="reverseCompleteQty(BigDecimal, Date)"><!-- --></a>
+                        <a name="reverseCompleteQty(BigDecimal, java.util.Date)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../BigDecimal.html'>BigDecimal</a> <strong>reverseCompleteQty</strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, <a href='../../../../Date.html'>Date</a> dateTime)</h4>
+                                <h4><a href='../../../../BigDecimal.html'>BigDecimal</a> <strong>reverseCompleteQty</strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, java.util.Date dateTime)</h4>
                                 <p> Reverses the complete of work on an Order/LSN.
  This moves the in work qty back to in queue. <DL><DT><B>Parameters:</B></DT><DD><code>qty</code> -  The quantity to reverse the complete for.</DD><DD><code>dateTime</code> -  The date/time this qty completed is reversed (<b>Default:</b> now).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The quantity actually reversed.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="reverseStartQty(BigDecimal, Date)"><!-- --></a>
+                        <a name="reverseStartQty(BigDecimal, java.util.Date)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../BigDecimal.html'>BigDecimal</a> <strong>reverseStartQty</strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, <a href='../../../../Date.html'>Date</a> dateTime)</h4>
+                                <h4><a href='../../../../BigDecimal.html'>BigDecimal</a> <strong>reverseStartQty</strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, java.util.Date dateTime)</h4>
                                 <p> Reverses the start of work on an Order/LSN.
  This moves the in work qty back to in queue. <DL><DT><B>Parameters:</B></DT><DD><code>qty</code> -  The quantity to reverse the start for.</DD><DD><code>dateTime</code> -  The date/time this qty start is reversed (<b>Default:</b> now).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The quantity actually reversed.</DD></DL></p>
                             </li>
@@ -613,42 +619,42 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="setDateFirstQueued(Date)"><!-- --></a>
+                        <a name="setDateFirstQueued(java.util.Date)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>setDateFirstQueued</strong>(@javax.annotation.NullableNullable <a href='../../../../Date.html'>Date</a> dateFirstQueued)</h4>
+                                <h4>void <strong>setDateFirstQueued</strong>(@javax.annotation.Nullable java.util.Date dateFirstQueued)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="setDateFirstStarted(Date)"><!-- --></a>
+                        <a name="setDateFirstStarted(java.util.Date)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>setDateFirstStarted</strong>(@javax.annotation.NullableNullable <a href='../../../../Date.html'>Date</a> dateFirstStarted)</h4>
+                                <h4>void <strong>setDateFirstStarted</strong>(@javax.annotation.Nullable java.util.Date dateFirstStarted)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="setDateQtyQueued(Date)"><!-- --></a>
+                        <a name="setDateQtyQueued(java.util.Date)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>setDateQtyQueued</strong>(@javax.annotation.NullableNullable <a href='../../../../Date.html'>Date</a> dateQtyQueued)</h4>
+                                <h4>void <strong>setDateQtyQueued</strong>(@javax.annotation.Nullable java.util.Date dateQtyQueued)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="setDateQtyStarted(Date)"><!-- --></a>
+                        <a name="setDateQtyStarted(java.util.Date)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>setDateQtyStarted</strong>(@javax.annotation.NullableNullable <a href='../../../../Date.html'>Date</a> dateQtyStarted)</h4>
+                                <h4>void <strong>setDateQtyStarted</strong>(@javax.annotation.Nullable java.util.Date dateQtyStarted)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="setDatesAsNeeded(Date)"><!-- --></a>
+                        <a name="setDatesAsNeeded(java.util.Date)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.Object <strong>setDatesAsNeeded</strong>(<a href='../../../../Date.html'>Date</a> dateTime)</h4>
+                                <h4>java.lang.Object <strong>setDatesAsNeeded</strong>(java.util.Date dateTime)</h4>
                                 <p> Sets the dates queued/started if the appropriate qty is non-zero.
  <DL><DT><B>Parameters:</B></DT><DD><code>dateTime</code> -  The date/time this qty is started (<b>Default:</b> now).</DD></DL></p>
                             </li>
@@ -678,10 +684,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="startQty(BigDecimal, Date)"><!-- --></a>
+                        <a name="startQty(BigDecimal, java.util.Date)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../BigDecimal.html'>BigDecimal</a> <strong>startQty</strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, <a href='../../../../Date.html'>Date</a> dateTime)</h4>
+                                <h4><a href='../../../../BigDecimal.html'>BigDecimal</a> <strong>startQty</strong>(<a href='../../../../BigDecimal.html'>BigDecimal</a> qty, java.util.Date dateTime)</h4>
                                 <p> Starts the given qty at this order (top-level) location.  This moves the qty from 'in queue'
  to 'in work'. Saves the changes to the order. <DL><DT><B>Parameters:</B></DT><DD><code>qty</code> -  The quantity to start (<b>Default:</b> all quantity in queue).</DD><DD><code>dateTime</code> -  The date/time this qty is started (<b>Default:</b> now).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The quantity actually started.</DD></DL></p>
                             </li>

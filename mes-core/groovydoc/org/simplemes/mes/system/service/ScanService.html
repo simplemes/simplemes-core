@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
+class ScanService
+extends java.lang.Object</pre>
 
     <p> This service provided methods to handle user barcode scans in a shop floor dashboard.
  It determines what was scanned and processes the scan to perform the desired action on the object scanned.
@@ -229,15 +237,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map&lt;java.lang.String, java.lang.String&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getBarcodePrefixMapping()">getBarcodePrefixMapping</a></strong>()</code><br>Returns the barcode prefix mapping list.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#parseScan(org.simplemes.mes.system.ScanRequestInterface)">parseScan</a></strong>(<a href='../../../../../org/simplemes/mes/system/ScanRequestInterface.html'>ScanRequestInterface</a> scanRequest)</code><br>Attempts to parse the scanned data, looking for specific markers for specific field types (e.g. button,
- order, lsn, product, etc). </td>
+ order, lsn, product, etc).</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -385,8 +393,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getBarcodePrefixMapping()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@org.simplemes.eframe.custom.annotation.ExtensionPointExtensionPoint
-<a href='../../../../../Map.html'>Map</a> <strong>getBarcodePrefixMapping</strong>()</h4>
+                                <h4>@org.simplemes.eframe.custom.annotation.ExtensionPoint(value: GetBarcodePrefixPoint, comment: The Scan dashboard getBarcodePrefixMapping() method)
+java.util.Map&lt;java.lang.String, java.lang.String&gt; <strong>getBarcodePrefixMapping</strong>()</h4>
                                 <p> Returns the barcode prefix mapping list.  This maps a literal barcode prefix value (e.g. 'BTN') to
  the standard name (e.g. 'BUTTON').  The standard name is used in most parsing logic decisions (e.g. which action
  to perform).
@@ -399,8 +407,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="parseScan(org.simplemes.mes.system.ScanRequestInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.transaction.TransactionalTransactional
-<a href='../../../../../Map.html'>Map</a> <strong>parseScan</strong>(<a href='../../../../../org/simplemes/mes/system/ScanRequestInterface.html'>ScanRequestInterface</a> scanRequest)</h4>
+                                <h4>@javax.transaction.Transactional
+java.util.Map <strong>parseScan</strong>(<a href='../../../../../org/simplemes/mes/system/ScanRequestInterface.html'>ScanRequestInterface</a> scanRequest)</h4>
                                 <p> Attempts to parse the scanned data, looking for specific markers for specific field types (e.g. button,
  order, lsn, product, etc). <DL><DT><B>Parameters:</B></DT><DD><code>scanRequest</code> -  The original barcode scan request.</DD></DL><DL><DT><B>Returns:</B></DT><DD>A map containing the parsed name/value pairs found in the barcode (if any).</DD></DL></p>
                             </li>
@@ -409,7 +417,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="processOrder(org.simplemes.mes.system.ScanResponseInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.transaction.TransactionalTransactional
+                                <h4>@javax.transaction.Transactional
 void <strong>processOrder</strong>(<a href='../../../../../org/simplemes/mes/system/ScanResponseInterface.html'>ScanResponseInterface</a> scanResponse)</h4>
                                 <p> Attempts to execute the automatic actions for an order when scanned.
  This includes starting the order if in queue. <DL><DT><B>Parameters:</B></DT><DD><code>scanResponse</code> -  The response with the order.  Updated by this method when an action is performed.</DD></DL></p>
@@ -419,8 +427,8 @@ void <strong>processOrder</strong>(<a href='../../../../../org/simplemes/mes/sys
                         <a name="scan(org.simplemes.mes.system.ScanRequestInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.transaction.TransactionalTransactional
-@org.simplemes.eframe.custom.annotation.ExtensionPointExtensionPoint
+                                <h4>@javax.transaction.Transactional
+@org.simplemes.eframe.custom.annotation.ExtensionPoint(value: ScanPoint, comment: The Scan dashboard scan() method)
 <a href='../../../../../org/simplemes/mes/system/ScanResponseInterface.html'>ScanResponseInterface</a> <strong>scan</strong>(<a href='../../../../../org/simplemes/mes/system/ScanRequestInterface.html'>ScanRequestInterface</a> scanRequest)</h4>
                                 <p> Handles the scan from the user.  This resolves the ID and will sometimes process the ID.
  <p/>

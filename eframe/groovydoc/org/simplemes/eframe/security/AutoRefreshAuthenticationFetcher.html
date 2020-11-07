@@ -101,20 +101,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>io.micronaut.security.filters.AuthenticationFetcher</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.util.logging.Slf4jSlf4j
-@javax.inject.SingletonSingleton
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
 class AutoRefreshAuthenticationFetcher
 extends java.lang.Object
-
-</pre>
-
-
+implements io.micronaut.security.filters.AuthenticationFetcher</pre>
 
     <p> Authentication fetcher that will trigger a JWT refresh if possible on all requests.
- Works with AutoRefreshTokenFilter to update the JWT cookies on browser for this response.</p>
+ Works with <a href='../../../../org/simplemes/eframe/security/AutoRefreshTokenFilter.html' title='AutoRefreshTokenFilter'>AutoRefreshTokenFilter</a> to update the JWT cookies on browser for this response.</p>
 
           </li>
     </ul>
@@ -221,7 +221,7 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst">
                                 <code><a href="#AutoRefreshAuthenticationFetcher(io.micronaut.security.token.jwt.cookie.JwtCookieConfiguration, io.micronaut.security.token.config.TokenConfiguration, io.micronaut.security.token.jwt.validator.JwtTokenValidator, org.simplemes.eframe.security.service.RefreshTokenService, Collection, Collection, Collection)">AutoRefreshAuthenticationFetcher</a>
-                                (io.micronaut.security.token.jwt.cookie.JwtCookieConfiguration jwtCookieConfiguration, io.micronaut.security.token.config.TokenConfiguration tokenConfiguration, io.micronaut.security.token.jwt.validator.JwtTokenValidator jwtTokenValidator, <a href='../../../../org/simplemes/eframe/security/service/RefreshTokenService.html'>RefreshTokenService</a> refreshTokenService, <a href='../../../../Collection.html'>Collection</a> signatureConfigurations, <a href='../../../../Collection.html'>Collection</a> encryptionConfigurations, <a href='../../../../Collection.html'>Collection</a> genericJwtClaimsValidators)</code><br></td>
+                                (io.micronaut.security.token.jwt.cookie.JwtCookieConfiguration jwtCookieConfiguration, io.micronaut.security.token.config.TokenConfiguration tokenConfiguration, io.micronaut.security.token.jwt.validator.JwtTokenValidator jwtTokenValidator, <a href='../../../../org/simplemes/eframe/security/service/RefreshTokenService.html'>RefreshTokenService</a> refreshTokenService, java.util.Collection&lt;SignatureConfiguration&gt; signatureConfigurations, java.util.Collection&lt;EncryptionConfiguration&gt; encryptionConfigurations, java.util.Collection&lt;GenericJwtClaimsValidator&gt; genericJwtClaimsValidators)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -253,8 +253,8 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>org.reactivestreams.Publisher</code></td>
-                            <td class="colLast"><code><strong><a href="#fetchAuthentication(io.micronaut.http.HttpRequest)">fetchAuthentication</a></strong>(io.micronaut.http.HttpRequest request)</code><br></td>
+                            <td class="colLast"><code>Publisher&lt;Authentication&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#fetchAuthentication(HttpRequest)">fetchAuthentication</a></strong>(HttpRequest&lt;?&gt; request)</code><br></td>
                         </tr>
                         
                     </table>
@@ -375,7 +375,7 @@ extends java.lang.Object
                         <a name="AutoRefreshAuthenticationFetcher(io.micronaut.security.token.jwt.cookie.JwtCookieConfiguration, io.micronaut.security.token.config.TokenConfiguration, io.micronaut.security.token.jwt.validator.JwtTokenValidator, org.simplemes.eframe.security.service.RefreshTokenService, Collection, Collection, Collection)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>AutoRefreshAuthenticationFetcher</strong>(io.micronaut.security.token.jwt.cookie.JwtCookieConfiguration jwtCookieConfiguration, io.micronaut.security.token.config.TokenConfiguration tokenConfiguration, io.micronaut.security.token.jwt.validator.JwtTokenValidator jwtTokenValidator, <a href='../../../../org/simplemes/eframe/security/service/RefreshTokenService.html'>RefreshTokenService</a> refreshTokenService, <a href='../../../../Collection.html'>Collection</a> signatureConfigurations, <a href='../../../../Collection.html'>Collection</a> encryptionConfigurations, <a href='../../../../Collection.html'>Collection</a> genericJwtClaimsValidators)</h4>
+                                <h4><strong>AutoRefreshAuthenticationFetcher</strong>(io.micronaut.security.token.jwt.cookie.JwtCookieConfiguration jwtCookieConfiguration, io.micronaut.security.token.config.TokenConfiguration tokenConfiguration, io.micronaut.security.token.jwt.validator.JwtTokenValidator jwtTokenValidator, <a href='../../../../org/simplemes/eframe/security/service/RefreshTokenService.html'>RefreshTokenService</a> refreshTokenService, java.util.Collection&lt;SignatureConfiguration&gt; signatureConfigurations, java.util.Collection&lt;EncryptionConfiguration&gt; encryptionConfigurations, java.util.Collection&lt;GenericJwtClaimsValidator&gt; genericJwtClaimsValidators)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -401,11 +401,11 @@ extends java.lang.Object
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="fetchAuthentication(io.micronaut.http.HttpRequest)"><!-- --></a>
+                        <a name="fetchAuthentication(HttpRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-org.reactivestreams.Publisher <strong>fetchAuthentication</strong>(io.micronaut.http.HttpRequest request)</h4>
+                                <h4>@java.lang.Override
+Publisher&lt;Authentication&gt; <strong>fetchAuthentication</strong>(HttpRequest&lt;?&gt; request)</h4>
                                 <p></p>
                             </li>
                         </ul>

@@ -97,13 +97,20 @@ if (location.href.indexOf('is-external=true') == -1) {
     <ul class="blockList">
         <li class="blockList">
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@io.micronaut.data.annotation.TypeDef(type: DataType.STRING)
+@java.lang.SuppressWarnings(value: GroovyDocCheck)
+interface EncodedTypeInterface</pre>
 
     <p> Flags a basic type that is stored as an encoded value in the database.  Each concrete class
  provides an ID that is stored in the database.  The base class also provides a valueOf() static
  method to convert from the database (encoded) value to a real instance.
 
  <p>
- <b>Note:</b> This works in conjunction with ChoiceListInterface and ChoiceListItemInterface to define
+ <b>Note:</b> This works in conjunction with <a href='../../../../org/simplemes/eframe/data/ChoiceListInterface.html' title='ChoiceListInterface'>ChoiceListInterface</a> and <a href='../../../../org/simplemes/eframe/data/ChoiceListItemInterface.html' title='ChoiceListItemInterface'>ChoiceListItemInterface</a> to define
     the common type for drop-downs in GUIs.
     <p>
  See <a href='http://docs.simplemes.org'>http://docs.simplemes.org</a>
@@ -172,7 +179,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getId()">getId</a></strong>()</code><br>Returns the encoded ID of this value. </td>
+                            <td class="colLast"><code><strong><a href="#getId()">getId</a></strong>()</code><br>Returns the encoded ID of this value.</td>
                         </tr>
                         
                     </table>

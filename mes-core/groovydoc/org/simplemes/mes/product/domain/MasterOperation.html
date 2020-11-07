@@ -101,23 +101,23 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../../org/simplemes/mes/product/OperationTrait.html'>OperationTrait</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@io.micronaut.data.annotation.MappedEntityMappedEntity
-@org.simplemes.eframe.domain.annotation.DomainEntityDomainEntity
-@groovy.transform.EqualsAndHashCodeEqualsAndHashCode
-@java.lang.SuppressWarningsSuppressWarnings
-@groovy.transform.ToStringToString
+
+<pre>@io.micronaut.data.annotation.MappedEntity
+@org.simplemes.eframe.domain.annotation.DomainEntity
+@groovy.transform.EqualsAndHashCode
+@java.lang.SuppressWarnings(value: unused)
+@groovy.transform.ToString(includeNames: true, includePackage: false, excludes: [masterRouting])
 class MasterOperation
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../../org/simplemes/mes/product/OperationTrait.html'>OperationTrait</a></pre>
 
     <p> This defines a single operation performed to produce a product.  These are normally grouped together in
- a org.simplemes.mes.product.RoutingTrait to be performed in a specific sequence.  Operations can be assigned
+ a <a href='../../../../../org/simplemes/mes/product/RoutingTrait.html' title='RoutingTrait'>RoutingTrait</a> to be performed in a specific sequence.  Operations can be assigned
  to be worked in a given Work Center, but that is optional.</p>
 
           </li>
@@ -179,7 +179,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -245,8 +245,8 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#validate()">validate</a></strong>()</code><br>Validates the record before save. </td>
+                            <td class="colLast"><code>java.util.List&lt;ValidationError&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#validate()">validate</a></strong>()</code><br>Validates the record before save.</td>
                         </tr>
                         
                     </table>
@@ -344,7 +344,7 @@ extends java.lang.Object
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -403,7 +403,7 @@ extends java.lang.Object
                         <a name="validate()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>validate</strong>()</h4>
+                                <h4>java.util.List&lt;ValidationError&gt; <strong>validate</strong>()</h4>
                                 <p> Validates the record before save. <DL><DT><B>Returns:</B></DT><DD>The list of errors.</DD></DL></p>
                             </li>
                         </ul>

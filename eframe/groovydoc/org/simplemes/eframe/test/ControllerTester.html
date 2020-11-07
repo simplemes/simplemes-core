@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.transform.ToString(includeNames: true, includePackage: false)
+class ControllerTester
+extends java.lang.Object</pre>
 
     <p> Helps tests common features of controller classes, such as security and the TaskMenu support.</p>
 
@@ -140,7 +148,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map&lt;java.lang.String, java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#_secured">_secured</a></code><br>A map of the specific method checks to make.</td>
                         </tr>
                         
@@ -150,12 +158,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.util.Map&lt;java.lang.String, java.lang.Object&gt;&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#_taskMenus">_taskMenus</a></code><br>Defines the expected task menus needed in the controller.</td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#ignoredMethods">ignoredMethods</a></code><br></td>
                         </tr>
                         
@@ -240,7 +248,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#controller(java.lang.Class)">controller</a></strong>(java.lang.Class controller)</code><br>Sets the controller class to test. </td>
+                            <td class="colLast"><code><strong><a href="#controller(java.lang.Class)">controller</a></strong>(java.lang.Class controller)</code><br>Sets the controller class to test.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -252,19 +260,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isJustAnonymous(io.micronaut.security.annotation.Secured)">isJustAnonymous</a></strong>(io.micronaut.security.annotation.Secured annotation)</code><br>Returns true if the given annotation just contains isAnonymous(). </td>
+                            <td class="colLast"><code><strong><a href="#isJustAnonymous(io.micronaut.security.annotation.Secured)">isJustAnonymous</a></strong>(io.micronaut.security.annotation.Secured annotation)</code><br>Returns true if the given annotation just contains isAnonymous().</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isSecured(java.lang.Class, java.lang.String)">isSecured</a></strong>(java.lang.Class clazz, java.lang.String role)</code><br>Determines if the given class is secured, with an optional role. </td>
+                            <td class="colLast"><code><strong><a href="#isSecured(java.lang.Class, java.lang.String)">isSecured</a></strong>(java.lang.Class clazz, java.lang.String role)</code><br>Determines if the given class is secured, with an optional role.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isSecured(java.lang.reflect.Method, java.lang.String)">isSecured</a></strong>(java.lang.reflect.Method method, java.lang.String role)</code><br>Determines if the given class is secured, with an optional role. </td>
+                            <td class="colLast"><code><strong><a href="#isSecured(java.lang.reflect.Method, java.lang.String)">isSecured</a></strong>(java.lang.reflect.Method method, java.lang.String role)</code><br>Determines if the given class is secured, with an optional role.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -276,25 +284,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#secured(java.lang.String, java.lang.String)">secured</a></strong>(java.lang.String methodName, java.lang.String role)</code><br>Adds a specific test for a single method name and role. </td>
+                            <td class="colLast"><code><strong><a href="#secured(java.lang.String, java.lang.String)">secured</a></strong>(java.lang.String methodName, java.lang.String role)</code><br>Adds a specific test for a single method name and role.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#securityCheck(java.lang.Boolean)">securityCheck</a></strong>(java.lang.Boolean securityCheck)</code><br>If true, then the method security checks are made. </td>
+                            <td class="colLast"><code><strong><a href="#securityCheck(java.lang.Boolean)">securityCheck</a></strong>(java.lang.Boolean securityCheck)</code><br>If true, then the method security checks are made.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#taskMenu(Map)">taskMenu</a></strong>(<a href='../../../../Map.html'>Map</a> taskMenuOptions)</code><br>Defines a single expected task menus needed in the controller. </td>
+                            <td class="colLast"><code><strong><a href="#taskMenu(Map)">taskMenu</a></strong>(java.util.Map&lt;java.lang.String, java.lang.Object&gt; taskMenuOptions)</code><br>Defines a single expected task menus needed in the controller.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/eframe/test/ControllerTester.html'>ControllerTester</a></code></td>
-                            <td class="colLast"><code><strong><a href="#test(Closure)">test</a></strong>(<a href='../../../../Closure.html'>Closure</a> config)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#test(groovy.lang.Closure)">test</a></strong>(groovy.lang.Closure config)</code><br></td>
                         </tr>
                         
                     </table>
@@ -359,7 +367,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="_secured"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>_secured</strong></h4>
+                                <h4>private&nbsp;java.util.Map&lt;java.lang.String, java.lang.String&gt; <strong>_secured</strong></h4>
                                 <p> A map of the specific method checks to make.</p>
                             </li>
                         </ul>
@@ -375,7 +383,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="_taskMenus"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>_taskMenus</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.util.Map&lt;java.lang.String, java.lang.Object&gt;&gt; <strong>_taskMenus</strong></h4>
                                 <p> Defines the expected task menus needed in the controller.</p>
                             </li>
                         </ul>
@@ -383,7 +391,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="ignoredMethods"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>ignoredMethods</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.String&gt; <strong>ignoredMethods</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -530,16 +538,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="taskMenu(Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>taskMenu</strong>(<a href='../../../../Map.html'>Map</a> taskMenuOptions)</h4>
+                                <h4>void <strong>taskMenu</strong>(java.util.Map&lt;java.lang.String, java.lang.Object&gt; taskMenuOptions)</h4>
                                 <p> Defines a single expected task menus needed in the controller. <DL><DT><B>Parameters:</B></DT><DD><code>taskMenuOptions</code> -  The task menu values to check.  Supports: 'name', 'uri', 'clientRootActivity',
         'folder', 'displayOrder'.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="test(Closure)"><!-- --></a>
+                        <a name="test(groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../org/simplemes/eframe/test/ControllerTester.html'>ControllerTester</a> <strong>test</strong>(@DelegatesToDelegatesTo <a href='../../../../Closure.html'>Closure</a> config)</h4>
+                                <h4>static&nbsp;<a href='../../../../org/simplemes/eframe/test/ControllerTester.html'>ControllerTester</a> <strong>test</strong>(@groovy.lang.DelegatesTo(value: ControllerTester) groovy.lang.Closure config)</h4>
                                 <p></p>
                             </li>
                         </ul>

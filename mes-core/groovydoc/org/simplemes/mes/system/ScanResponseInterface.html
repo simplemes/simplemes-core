@@ -97,6 +97,12 @@ if (location.href.indexOf('is-external=true') == -1) {
     <ul class="blockList">
         <li class="blockList">
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>interface ScanResponseInterface
+extends org.simplemes.eframe.web.undo.UndoableInterface</pre>
 
     <p> The response for the scan() method.  This scan resolution is typically handled by the ScanService.
  This POGO is returned after the scan has been evaluated.</p>
@@ -150,7 +156,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong><a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>java.util.Map</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#parsedBarcode">parsedBarcode</a></code><br></td>
                         </tr>
                         
@@ -234,7 +240,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#getParsedBarcode()">getParsedBarcode</a></strong>()</code><br>Returns the parsed barcode content.  </td>
                         </tr>
                         
@@ -246,7 +252,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;<a href='../../../../org/simplemes/mes/system/ScanActionInterface.html' title='ScanActionInterface'>ScanActionInterface</a>&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getScanActions()">getScanActions</a></strong>()</code><br>The recommended actions the client will need to take to respond to the scan.  </td>
                         </tr>
                         
@@ -277,7 +283,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setParsedBarcode(Map)">setParsedBarcode</a></strong>(<a href='../../../../Map.html'>Map</a> map)</code><br>Sets the parsed barcode content.  </td>
+                            <td class="colLast"><code><strong><a href="#setParsedBarcode(java.util.Map)">setParsedBarcode</a></strong>(java.util.Map map)</code><br>Sets the parsed barcode content.  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -364,7 +370,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="parsedBarcode"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>parsedBarcode</strong></h4>
+                                <h4>java.util.Map <strong>parsedBarcode</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -449,7 +455,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getParsedBarcode()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>getParsedBarcode</strong>()</h4>
+                                <h4>java.util.Map <strong>getParsedBarcode</strong>()</h4>
                                 <p> Returns the parsed barcode content.  This is a map with the key being the standardized logic name for the barcode element.
  For example: [BUTTON: 'START'] <DL><DT><B>Returns:</B></DT><DD>The barcode parse map.</DD></DL></p>
                             </li>
@@ -466,7 +472,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getScanActions()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getScanActions</strong>()</h4>
+                                <h4>java.util.List&lt;<a href='../../../../org/simplemes/mes/system/ScanActionInterface.html' title='ScanActionInterface'>ScanActionInterface</a>&gt; <strong>getScanActions</strong>()</h4>
                                 <p> The recommended actions the client will need to take to respond to the scan.  This can include
  button presses or Dashboard event triggering.</p>
                             </li>
@@ -506,10 +512,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="setParsedBarcode(Map)"><!-- --></a>
+                        <a name="setParsedBarcode(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>setParsedBarcode</strong>(<a href='../../../../Map.html'>Map</a> map)</h4>
+                                <h4>void <strong>setParsedBarcode</strong>(java.util.Map map)</h4>
                                 <p> Sets the parsed barcode content.  This is a map with the key being the standardized logic name for the barcode element.
  For example: [BUTTON: 'START'] <DL><DT><B>Parameters:</B></DT><DD><code>map</code> -  The barcode parse map.</DD></DL></p>
                             </li>

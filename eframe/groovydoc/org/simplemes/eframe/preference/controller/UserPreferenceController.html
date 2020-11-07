@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_AUTHENTICATED)
+@groovy.util.logging.Slf4j
+@io.micronaut.http.annotation.Controller(value: /userPreference)
+class UserPreferenceController
+extends java.lang.Object</pre>
 
     <p> The controller for user preference changes from the GUI.  This is normally called from the toolkit.ui.js
  javascript methods and similar methods elsewhere.
@@ -194,13 +203,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#findPreferences(io.micronaut.http.HttpRequest)">findPreferences</a></strong>(io.micronaut.http.HttpRequest request)</code><br>Finds the given preference.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#findSimplePreference(io.micronaut.http.HttpRequest)">findSimplePreference</a></strong>(io.micronaut.http.HttpRequest request)</code><br>Finds the simple preference value for the current user and the given page.
  </td>
                         </tr>
@@ -214,7 +223,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#saveSimplePreference(Map)">saveSimplePreference</a></strong>(<a href='../../../../../Map.html'>Map</a> params)</code><br>Saves the given preference value into the user's preferences for the give element.
+                            <td class="colLast"><code><strong><a href="#saveSimplePreference(java.util.Map)">saveSimplePreference</a></strong>(java.util.Map params)</code><br>Saves the given preference value into the user's preferences for the give element.
  </td>
                         </tr>
                         
@@ -307,8 +316,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="findPreferences(io.micronaut.http.HttpRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-<a href='../../../../../Map.html'>Map</a> <strong>findPreferences</strong>(io.micronaut.http.HttpRequest request)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /findPreferences)
+java.util.Map <strong>findPreferences</strong>(io.micronaut.http.HttpRequest request)</h4>
                                 <p> Finds the given preference.  This is designed for use in the browser for dynamic preferences such as dialog
  sizes.<p/>
  Inputs from the request params are:
@@ -326,8 +335,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="findSimplePreference(io.micronaut.http.HttpRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-<a href='../../../../../Map.html'>Map</a> <strong>findSimplePreference</strong>(io.micronaut.http.HttpRequest request)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /findSimplePreference)
+java.util.Map <strong>findSimplePreference</strong>(io.micronaut.http.HttpRequest request)</h4>
                                 <p> Finds the simple preference value for the current user and the given page.
  This is a simplified view of preferences that just supports a simple name/value setting.
 
@@ -344,24 +353,24 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="guiStateChanged(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.PostPost
-io.micronaut.http.HttpResponse <strong>guiStateChanged</strong>(@io.micronaut.http.annotation.BodyBody java.lang.String body)</h4>
+                                <h4>@io.micronaut.http.annotation.Post(value: /guiStateChanged)
+io.micronaut.http.HttpResponse <strong>guiStateChanged</strong>(@io.micronaut.http.annotation.Body java.lang.String body)</h4>
                                 <p> Handles user's changes to the GUI state.  These are stored in the session and persisted for later displays of the page.
  The request body should be a JSON object with these values:
  <ul>
    <li><code>pageURI</code> - The URI for the page these settings changed on.</li>
    <li><code>element</code> - The HTML ID of the element that changed.</li>
-   <li><code>event</code> - The change event (e.g.'ColumnResized' for  org.simplemes.eframe.preference.event.ColumnResized, etc).</li>
+   <li><code>event</code> - The change event (e.g.'ColumnResized' for  <a href='../../../../../org/simplemes/eframe/preference/event/ColumnResized.html' title='ColumnResized'>ColumnResized</a>, etc).</li>
    <li><code><i>value</i></code> - The value(s).  This depends on the event type.</li>
  </ul> <DL><DT><B>Parameters:</B></DT><DD><code>body</code> -  The request body.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="saveSimplePreference(Map)"><!-- --></a>
+                        <a name="saveSimplePreference(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.PostPost
-void <strong>saveSimplePreference</strong>(<a href='../../../../../Map.html'>Map</a> params)</h4>
+                                <h4>@io.micronaut.http.annotation.Post(value: /saveSimplePreference)
+void <strong>saveSimplePreference</strong>(java.util.Map params)</h4>
                                 <p> Saves the given preference value into the user's preferences for the give element.
  This is a simplified view of preferences that just supports a simple name/value setting.
 

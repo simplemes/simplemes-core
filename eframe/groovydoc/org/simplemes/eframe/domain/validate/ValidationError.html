@@ -101,15 +101,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../../org/simplemes/eframe/domain/validate/ValidationErrorInterface.html'>ValidationErrorInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
+
 <pre>public&nbsp;class ValidationError
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../../org/simplemes/eframe/domain/validate/ValidationErrorInterface.html'>ValidationErrorInterface</a></pre>
 
     <p> A single validation error on a field.  The display value (toString()) uses the messages.properties file
  to find the matching error string, with replaceable parameters.  The key in the .properties file is
@@ -197,7 +197,7 @@ extends java.lang.Object
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toString(Locale)">toString</a></strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</code><br>toString() with a locale.</td>
+                            <td class="colLast"><code><strong><a href="#toString(java.util.Locale)">toString</a></strong>(java.util.Locale locale)</code><br>toString() with a locale.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -286,7 +286,7 @@ extends java.lang.Object
                         <a name="getCode()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.MarkerAnnotationExprOverride
+                                <h4>@java.lang.Override
 public&nbsp;int <strong>getCode</strong>()</h4>
                                 <p> The message code.
     <DL><DT><B>Returns:</B></DT><DD>The message code.</DD></DL></p>
@@ -296,17 +296,17 @@ public&nbsp;int <strong>getCode</strong>()</h4>
                         <a name="getFieldName()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.MarkerAnnotationExprOverride
+                                <h4>@java.lang.Override
 public&nbsp;java.lang.String <strong>getFieldName</strong>()</h4>
                                 <p> The name of the field with the validation error.
     <DL><DT><B>Returns:</B></DT><DD>The field name.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="toString(Locale)"><!-- --></a>
+                        <a name="toString(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;java.lang.String <strong>toString</strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>public&nbsp;java.lang.String <strong>toString</strong>(java.util.Locale locale)</h4>
                                 <p> toString() with a locale.
     <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The localized toString().</DD></DL></p>
                             </li>
@@ -315,7 +315,7 @@ public&nbsp;java.lang.String <strong>getFieldName</strong>()</h4>
                         <a name="toString()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.MarkerAnnotationExprOverride
+                                <h4>@java.lang.Override
 public&nbsp;java.lang.String <strong>toString</strong>()</h4>
                                 <p></p>
                             </li>

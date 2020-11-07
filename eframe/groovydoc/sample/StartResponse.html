@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../org/simplemes/eframe/web/undo/UndoableInterface.html'>UndoableInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.transform.ToStringToString
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
 class StartResponse
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../org/simplemes/eframe/web/undo/UndoableInterface.html'>UndoableInterface</a></pre>
 
     <p> The start result response POGO (sample).</p>
 
@@ -148,7 +148,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateStarted">dateStarted</a></code><br></td>
                         </tr>
                         
@@ -217,7 +217,7 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;UndoActionInterface&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getUndoActions()">getUndoActions</a></strong>()</code><br>The undo action(s) needed to undo the previous user action.</td>
                         </tr>
                         
@@ -275,7 +275,7 @@ extends java.lang.Object
                         <a name="dateStarted"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../Date.html'>Date</a> <strong>dateStarted</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateStarted</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -342,8 +342,8 @@ extends java.lang.Object
                         <a name="getUndoActions()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-<a href='../List.html'>List</a> <strong>getUndoActions</strong>()</h4>
+                                <h4>@java.lang.Override
+java.util.List&lt;UndoActionInterface&gt; <strong>getUndoActions</strong>()</h4>
                                 <p> The undo action(s) needed to undo the previous user action.</p>
                             </li>
                         </ul>

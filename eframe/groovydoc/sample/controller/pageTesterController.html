@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Controller(value: /pageTester)
+class pageTesterController
+extends java.lang.Object</pre>
 
     <p> A simple controller to support UI view testing.
  Simply serves a page with the standard libraries loaded.</p>
@@ -165,7 +173,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a></code></td>
-                            <td class="colLast"><code><strong><a href="#index(io.micronaut.http.HttpRequest, java.security.Principal)">index</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Displays the given page (by default the index.hbs). </td>
+                            <td class="colLast"><code><strong><a href="#index(io.micronaut.http.HttpRequest, java.security.Principal)">index</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Displays the given page (by default the index.hbs).</td>
                         </tr>
                         
                     </table>
@@ -239,9 +247,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="index(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-<a href='../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>index</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /)
+<a href='../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>index</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the given page (by default the index.hbs). <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.</DD><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The model/view to display.</DD></DL></p>
                             </li>
                         </ul>

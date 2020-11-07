@@ -97,6 +97,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <ul class="blockList">
         <li class="blockList">
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>interface ConfigurableFormatInterface</pre>
 
     <p> Defines a custom field format works with a Configurable Type field.
  This is mainly used to return the list of fields currently selected for the Configurable Type value.</p>
@@ -163,7 +168,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;FieldDefinitionInterface&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getCurrentFields(java.lang.Object, java.lang.String)">getCurrentFields</a></strong>(java.lang.Object object, java.lang.String fieldName)</code><br>Gets list of fields currently selected for the Configurable Type value.
  </td>
                         </tr>
@@ -221,7 +226,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getCurrentFields(java.lang.Object, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>getCurrentFields</strong>(java.lang.Object object, java.lang.String fieldName)</h4>
+                                <h4>java.util.List&lt;FieldDefinitionInterface&gt; <strong>getCurrentFields</strong>(java.lang.Object object, java.lang.String fieldName)</h4>
                                 <p> Gets list of fields currently selected for the Configurable Type value.
  These are typically treated as normal fields in the GUI and API, but are stored in the
  custom field holder. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The domain object the field is stored in.</DD><DD><code>fieldName</code> -  The name of the configurable field.  Used to find the current value and the fields.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list.</DD></DL></p>

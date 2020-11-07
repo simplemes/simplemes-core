@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
+class MessageSource
+extends java.lang.Object</pre>
 
     <p> A bean that provides the message bundle access to lookup localized text.
  Currently finds the localized text from the messages.properties and similar files, using the
@@ -138,31 +146,31 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../Collection.html'>Collection</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.Collection&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#baseNames">baseNames</a></code></td>
                             <td class="colLast">The list of bundle base names to use</td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../ResourceBundle.Control.html'>Control</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.ResourceBundle$Control</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#bundleControl">bundleControl</a></code></td>
                             <td class="colLast">The control used to load the bundle.</td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.Map&lt;java.net.URL, java.util.ResourceBundle&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#cachedBundles">cachedBundles</a></code></td>
                             <td class="colLast">Cache to hold the bundle for each unique URL.  </td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.Map&lt;java.lang.String, java.util.Map&lt;java.util.Locale, MessageFormat&gt;&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#cachedMessageFormats">cachedMessageFormats</a></code></td>
                             <td class="colLast">Cache to hold already generated lookup values from the .properties files.</td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.Map&lt;java.lang.String, java.util.Map&lt;java.util.Locale, java.util.List&lt;java.util.ResourceBundle&gt;&gt;&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#cachedResourceBundles">cachedResourceBundles</a></code></td>
                             <td class="colLast">Cache to hold loaded ResourceBundles.   </td>
                         </tr>
@@ -174,7 +182,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../File.html'>File</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.io.File</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#messagesFile">messagesFile</a></code></td>
                             <td class="colLast"></td>
                         </tr>
@@ -219,7 +227,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst">
                                 <code><a href="#MessageSource(Collection)">MessageSource</a>
-                                (<a href='../../../../Collection.html'>Collection</a> baseNames)</code><br>Constructor to add other base names.  </td>
+                                (java.util.Collection&lt;java.lang.String&gt; baseNames)</code><br>Constructor to add other base names.  </td>
                         </tr>
                         
                         <tr class="altColor">
@@ -257,46 +265,46 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../ResourceBundle.Control.html'>Control</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getBundleControl()">getBundleControl</a></strong>()</code><br>The control used to load the bundle. </td>
+                            <td class="colLast"><code>java.util.ResourceBundle$Control</code></td>
+                            <td class="colLast"><code><strong><a href="#getBundleControl()">getBundleControl</a></strong>()</code><br>The control used to load the bundle.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getMessage(java.lang.String, Locale, java.lang.Object)">getMessage</a></strong>(java.lang.String key, <a href='../../../../Locale.html'>Locale</a> locale, java.lang.Object[] args)</code><br>Looks up the given string from the supported resource bundle(s) and formats the arguments into the message for
- a localized display string. </td>
+                            <td class="colLast"><code><strong><a href="#getMessage(java.lang.String, java.util.Locale, java.lang.Object)">getMessage</a></strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</code><br>Looks up the given string from the supported resource bundle(s) and formats the arguments into the message for
+ a localized display string.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.text.MessageFormat</code></td>
-                            <td class="colLast"><code><strong><a href="#getMessageFormat(java.lang.String, Locale)">getMessageFormat</a></strong>(java.lang.String key, <a href='../../../../Locale.html'>Locale</a> locale)</code><br>Checks gets the message format for the given key/locale.
+                            <td class="colLast"><code><strong><a href="#getMessageFormat(java.lang.String, java.util.Locale)">getMessageFormat</a></strong>(java.lang.String key, java.util.Locale locale)</code><br>Checks gets the message format for the given key/locale.
  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getResourceBundles(java.lang.String, Locale)">getResourceBundles</a></strong>(java.lang.String baseName, <a href='../../../../Locale.html'>Locale</a> locale)</code><br>Gets/loads the given resource bundle for the given locale.  </td>
+                            <td class="colLast"><code>java.util.List&lt;java.util.ResourceBundle&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getResourceBundles(java.lang.String, java.util.Locale)">getResourceBundles</a></strong>(java.lang.String baseName, java.util.Locale locale)</code><br>Gets/loads the given resource bundle for the given locale.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#loadBundles(java.lang.String, Locale)">loadBundles</a></strong>(java.lang.String baseName, <a href='../../../../Locale.html'>Locale</a> locale)</code><br>Loads the bundle(s) for the given locale.  </td>
+                            <td class="colLast"><code>java.util.List&lt;java.util.ResourceBundle&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#loadBundles(java.lang.String, java.util.Locale)">loadBundles</a></strong>(java.lang.String baseName, java.util.Locale locale)</code><br>Loads the bundle(s) for the given locale.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#loadBundles(List)">loadBundles</a></strong>(<a href='../../../../List.html'>List</a> urls)</code><br>Loads the bundles for the given URL(s). </td>
+                            <td class="colLast"><code>java.util.List&lt;java.util.ResourceBundle&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#loadBundles(List)">loadBundles</a></strong>(java.util.List&lt;java.net.URL&gt; urls)</code><br>Loads the bundles for the given URL(s).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#lookupKey(java.lang.String, Locale)">lookupKey</a></strong>(java.lang.String key, <a href='../../../../Locale.html'>Locale</a> locale)</code><br>Looks up the given string from the supported resource bundle(s). </td>
+                            <td class="colLast"><code><strong><a href="#lookupKey(java.lang.String, java.util.Locale)">lookupKey</a></strong>(java.lang.String key, java.util.Locale locale)</code><br>Looks up the given string from the supported resource bundle(s).</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -349,7 +357,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="baseNames"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../Collection.html'>Collection</a> <strong>baseNames</strong></h4>
+                                <h4>protected&nbsp;java.util.Collection&lt;java.lang.String&gt; <strong>baseNames</strong></h4>
                                 <p> The list of bundle base names to use</p>
                             </li>
                         </ul>
@@ -357,7 +365,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="bundleControl"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../ResourceBundle.Control.html'>Control</a> <strong>bundleControl</strong></h4>
+                                <h4>protected&nbsp;java.util.ResourceBundle$Control <strong>bundleControl</strong></h4>
                                 <p> The control used to load the bundle.</p>
                             </li>
                         </ul>
@@ -365,7 +373,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="cachedBundles"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../Map.html'>Map</a> <strong>cachedBundles</strong></h4>
+                                <h4>protected&nbsp;java.util.Map&lt;java.net.URL, java.util.ResourceBundle&gt; <strong>cachedBundles</strong></h4>
                                 <p> Cache to hold the bundle for each unique URL.  This avoid re-reading the fallback bundles.</p>
                             </li>
                         </ul>
@@ -373,7 +381,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="cachedMessageFormats"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../Map.html'>Map</a> <strong>cachedMessageFormats</strong></h4>
+                                <h4>protected&nbsp;java.util.Map&lt;java.lang.String, java.util.Map&lt;java.util.Locale, MessageFormat&gt;&gt; <strong>cachedMessageFormats</strong></h4>
                                 <p> Cache to hold already generated lookup values from the .properties files.</p>
                             </li>
                         </ul>
@@ -381,7 +389,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="cachedResourceBundles"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../Map.html'>Map</a> <strong>cachedResourceBundles</strong></h4>
+                                <h4>protected&nbsp;java.util.Map&lt;java.lang.String, java.util.Map&lt;java.util.Locale, java.util.List&lt;java.util.ResourceBundle&gt;&gt;&gt; <strong>cachedResourceBundles</strong></h4>
                                 <p> Cache to hold loaded ResourceBundles.   Stored by base file name, then a map stored by locale.
  The List<ResourceBundle> contains all bundles from all classpath .jar/folders that apply for the
  given baseName/locale.</p>
@@ -399,7 +407,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="messagesFile"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../File.html'>File</a> <strong>messagesFile</strong></h4>
+                                <h4>protected&nbsp;java.io.File <strong>messagesFile</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -439,7 +447,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="MessageSource(Collection)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>MessageSource</strong>(<a href='../../../../Collection.html'>Collection</a> baseNames)</h4>
+                                <h4><strong>MessageSource</strong>(java.util.Collection&lt;java.lang.String&gt; baseNames)</h4>
                                 <p> Constructor to add other base names.  Mainly used for testing. <DL><DT><B>Parameters:</B></DT><DD><code>baseNames</code> -  The extra base names to search.</DD></DL></p>
                             </li>
                         </ul>
@@ -476,41 +484,41 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getBundleControl()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../ResourceBundle.Control.html'>Control</a> <strong>getBundleControl</strong>()</h4>
+                                <h4>java.util.ResourceBundle$Control <strong>getBundleControl</strong>()</h4>
                                 <p> The control used to load the bundle. <DL><DT><B>Returns:</B></DT><DD>The control used to load the bundle.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="getMessage(java.lang.String, Locale, java.lang.Object)"><!-- --></a>
+                        <a name="getMessage(java.lang.String, java.util.Locale, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>getMessage</strong>(java.lang.String key, <a href='../../../../Locale.html'>Locale</a> locale, java.lang.Object[] args)</h4>
+                                <h4>java.lang.String <strong>getMessage</strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</h4>
                                 <p> Looks up the given string from the supported resource bundle(s) and formats the arguments into the message for
  a localized display string. <DL><DT><B>Parameters:</B></DT><DD><code>key</code> -  The look up key.</DD><DD><code>locale</code> -  The locale.  Can be null.</DD><DD><code>args</code> -  The optional arguments.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The localized, looked up message with the arguments replaced.  Null if not found.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="getMessageFormat(java.lang.String, Locale)"><!-- --></a>
+                        <a name="getMessageFormat(java.lang.String, java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;java.text.MessageFormat <strong>getMessageFormat</strong>(java.lang.String key, <a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>protected&nbsp;java.text.MessageFormat <strong>getMessageFormat</strong>(java.lang.String key, java.util.Locale locale)</h4>
                                 <p> Checks gets the message format for the given key/locale.
  Also caches the MessageFormat if found. <DL><DT><B>Parameters:</B></DT><DD><code>key</code> -  The look up key.</DD><DD><code>locale</code> -  The locale.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The looked up message with the arguments replaced.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="getResourceBundles(java.lang.String, Locale)"><!-- --></a>
+                        <a name="getResourceBundles(java.lang.String, java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getResourceBundles</strong>(java.lang.String baseName, <a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>java.util.List&lt;java.util.ResourceBundle&gt; <strong>getResourceBundles</strong>(java.lang.String baseName, java.util.Locale locale)</h4>
                                 <p> Gets/loads the given resource bundle for the given locale.  Uses the cachedResourceBundles. <DL><DT><B>Parameters:</B></DT><DD><code>baseName</code> -  The bundle base name.</DD><DD><code>locale</code> -  The locale.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The bundle.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="loadBundles(java.lang.String, Locale)"><!-- --></a>
+                        <a name="loadBundles(java.lang.String, java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>loadBundles</strong>(java.lang.String baseName, <a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>java.util.List&lt;java.util.ResourceBundle&gt; <strong>loadBundles</strong>(java.lang.String baseName, java.util.Locale locale)</h4>
                                 <p> Loads the bundle(s) for the given locale.  This includes the specific locale-based .properties files
  followed by less-specific files.  Up to the fallback .properties file. <DL><DT><B>Parameters:</B></DT><DD><code>baseName</code> -  The bundle base name.</DD><DD><code>locale</code> -  The locale.  Required.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of bundles, in order.  Most specific first (e.g. messages_US.properties,messages.properties).</DD></DL></p>
                             </li>
@@ -519,15 +527,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="loadBundles(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>loadBundles</strong>(<a href='../../../../List.html'>List</a> urls)</h4>
+                                <h4>java.util.List&lt;java.util.ResourceBundle&gt; <strong>loadBundles</strong>(java.util.List&lt;java.net.URL&gt; urls)</h4>
                                 <p> Loads the bundles for the given URL(s). <DL><DT><B>Parameters:</B></DT><DD><code>urls</code> -  The list of URLs.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The bundles.  May be from a cache.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="lookupKey(java.lang.String, Locale)"><!-- --></a>
+                        <a name="lookupKey(java.lang.String, java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;java.lang.String <strong>lookupKey</strong>(java.lang.String key, <a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>protected&nbsp;java.lang.String <strong>lookupKey</strong>(java.lang.String key, java.util.Locale locale)</h4>
                                 <p> Looks up the given string from the supported resource bundle(s). <DL><DT><B>Parameters:</B></DT><DD><code>key</code> -  The look up key.</DD><DD><code>locale</code> -  The locale.  Can be null.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The localized, looked up text.</DD></DL></p>
                             </li>
                         </ul>
@@ -535,7 +543,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="toString()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>toString</strong>()</h4>
                                 <p></p>
                             </li>

@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../sample/ProductionInterface.html'>ProductionInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@javax.inject.SingletonSingleton
+
+<pre>@groovy.lang.Singleton
 class StartExtension
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../sample/ProductionInterface.html'>ProductionInterface</a></pre>
 
     <p> A sample extension that handles Start actions.</p>
 
@@ -177,7 +177,7 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#started(sample.StartRequest, sample.StartResponse, boolean)">started</a></strong>(<a href='../../sample/StartRequest.html'>StartRequest</a> startRequest, <a href='../../sample/StartResponse.html'>StartResponse</a> startResponse, boolean fail)</code><br>Called when an order is started (sample code). </td>
+                            <td class="colLast"><code><strong><a href="#started(sample.StartRequest, sample.StartResponse, boolean)">started</a></strong>(<a href='../../sample/StartRequest.html'>StartRequest</a> startRequest, <a href='../../sample/StartResponse.html'>StartResponse</a> startResponse, boolean fail)</code><br>Called when an order is started (sample code).</td>
                         </tr>
                         
                     </table>
@@ -251,7 +251,7 @@ extends java.lang.Object
                         <a name="started(sample.StartRequest, sample.StartResponse, boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>started</strong>(<a href='../../sample/StartRequest.html'>StartRequest</a> startRequest, <a href='../../sample/StartResponse.html'>StartResponse</a> startResponse, boolean fail)</h4>
                                 <p> Called when an order is started (sample code). <DL><DT><B>Parameters:</B></DT><DD><code>startRequest</code> -  The order start request.</DD><DD><code>startResponse</code> -  The response from the core start logic.</DD></DL></p>
                             </li>

@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../org/simplemes/eframe/data/ChoiceListItemInterface.html'>ChoiceListItemInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.transform.ToStringToString
+
+<pre>@groovy.transform.ToString(includePackage: false, includeNames: true)
 class SimpleChoiceListItem
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../org/simplemes/eframe/data/ChoiceListItemInterface.html'>ChoiceListItemInterface</a></pre>
 
     <p> A generic entry of the ChoiceListItemInterface element.  This uses a static display value for the current locale.
  Not localization is performed by this class.
@@ -217,13 +217,13 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isDefaultChoice()">isDefaultChoice</a></strong>()</code><br>Returns true if this choice is the default choice in the list. </td>
+                            <td class="colLast"><code><strong><a href="#isDefaultChoice()">isDefaultChoice</a></strong>()</code><br>Returns true if this choice is the default choice in the list.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toStringLocalized(Locale)">toStringLocalized</a></strong>(<a href='../../../../Locale.html'>Locale</a> locale)</code><br>Returns the localized display value for the choice. </td>
+                            <td class="colLast"><code><strong><a href="#toStringLocalized(java.util.Locale)">toStringLocalized</a></strong>(java.util.Locale locale)</code><br>Returns the localized display value for the choice.</td>
                         </tr>
                         
                     </table>
@@ -339,17 +339,17 @@ extends java.lang.Object
                         <a name="isDefaultChoice()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 boolean <strong>isDefaultChoice</strong>()</h4>
                                 <p> Returns true if this choice is the default choice in the list. <DL><DT><B>Returns:</B></DT><DD>True if it is the default.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="toStringLocalized(Locale)"><!-- --></a>
+                        <a name="toStringLocalized(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-java.lang.String <strong>toStringLocalized</strong>(<a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>@java.lang.Override
+java.lang.String <strong>toStringLocalized</strong>(java.util.Locale locale)</h4>
                                 <p> Returns the localized display value for the choice. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale to use for the localized string.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The display value.</DD></DL></p>
                             </li>
                         </ul>

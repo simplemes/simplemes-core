@@ -98,6 +98,17 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@<a href='../../org/simplemes/eframe/domain/annotation/DomainEntity.html' title='DomainEntity'>DomainEntity</a>
+@io.micronaut.data.annotation.MappedEntity
+@groovy.transform.ToString(includeNames: true, excludes: [order])
+@groovy.transform.EqualsAndHashCode(includes: [uuid])
+@java.lang.SuppressWarnings(value: unused)
+class CustomOrderComponent
+extends java.lang.Object</pre>
 
     <p> A sample domain class that simulates an custom order component record.
  Used only in custom field tests (via SampleAddition).
@@ -182,7 +193,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -351,7 +362,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>

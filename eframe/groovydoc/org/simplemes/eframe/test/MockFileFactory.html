@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class MockFileFactory
+extends <a href='../../../../org/simplemes/eframe/misc/FileFactory.html'>FileFactory</a></pre>
 
     <p> A mock FileFactory that can be used to write text to string for later use.</p>
 
@@ -140,17 +146,17 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#simulatedContents">simulatedContents</a></code><br>The simulated file contents for a simulated file system.</td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#simulatedFiles">simulatedFiles</a></code><br>The simulated file system structure.</td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../StringWriter.html'>StringWriter</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.io.StringWriter</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#stringWriter">stringWriter</a></code><br>The writer.</td>
                         </tr>
                         
@@ -188,8 +194,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#MockFileFactory(StringWriter, int)">MockFileFactory</a>
-                                (<a href='../../../../StringWriter.html'>StringWriter</a> stringWriter, int existCountTrue)</code><br>Creates a factory that uses the given string writer to hold the output data.</td>
+                                <code><a href="#MockFileFactory(java.io.StringWriter, int)">MockFileFactory</a>
+                                (java.io.StringWriter stringWriter, int existCountTrue)</code><br>Creates a factory that uses the given string writer to hold the output data.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -221,8 +227,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../File.html'>File</a></code></td>
-                            <td class="colLast"><code><strong><a href="#newFile(java.lang.String)">newFile</a></strong>(java.lang.String path)</code><br>The factory method to return a new File() instance for the given path. </td>
+                            <td class="colLast"><code>java.io.File</code></td>
+                            <td class="colLast"><code><strong><a href="#newFile(java.lang.String)">newFile</a></strong>(java.lang.String path)</code><br>The factory method to return a new File() instance for the given path.</td>
                         </tr>
                         
                     </table>
@@ -288,7 +294,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="simulatedContents"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>simulatedContents</strong></h4>
+                                <h4>private&nbsp;java.util.Map <strong>simulatedContents</strong></h4>
                                 <p> The simulated file contents for a simulated file system.
  <p>
  For Example:
@@ -303,7 +309,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="simulatedFiles"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>simulatedFiles</strong></h4>
+                                <h4>private&nbsp;java.util.Map <strong>simulatedFiles</strong></h4>
                                 <p> The simulated file system structure.
  <p>
  For Example:
@@ -320,7 +326,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="stringWriter"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../StringWriter.html'>StringWriter</a> <strong>stringWriter</strong></h4>
+                                <h4>private&nbsp;java.io.StringWriter <strong>stringWriter</strong></h4>
                                 <p> The writer.</p>
                             </li>
                         </ul>
@@ -355,10 +361,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="MockFileFactory(StringWriter, int)"><!-- --></a>
+                        <a name="MockFileFactory(java.io.StringWriter, int)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>MockFileFactory</strong>(<a href='../../../../StringWriter.html'>StringWriter</a> stringWriter, int existCountTrue)</h4>
+                                <h4><strong>MockFileFactory</strong>(java.io.StringWriter stringWriter, int existCountTrue)</h4>
                                 <p> Creates a factory that uses the given string writer to hold the output data. <DL><DT><B>Parameters:</B></DT><DD><code>stringWriter</code> -  The writer to hold the output data.</DD><DD><code>existCountTrue</code> -  If >0, then return true for the exist() method on the MockFile for this many times.</DD></DL></p>
                             </li>
                         </ul>
@@ -387,8 +393,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="newFile(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-<a href='../../../../File.html'>File</a> <strong>newFile</strong>(java.lang.String path)</h4>
+                                <h4>@java.lang.Override
+java.io.File <strong>newFile</strong>(java.lang.String path)</h4>
                                 <p> The factory method to return a new File() instance for the given path. <DL><DT><B>Parameters:</B></DT><DD><code>path</code> -  The path (in local OS format).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The File instance.</DD></DL></p>
                             </li>
                         </ul>

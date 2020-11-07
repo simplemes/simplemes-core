@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>java.util.concurrent.RejectedExecutionHandler</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.util.logging.Slf4jSlf4j
+
+<pre>@groovy.util.logging.Slf4j
 class SearchEnginePoolExecutor
 extends java.util.concurrent.ThreadPoolExecutor
-
-</pre>
-
-
+implements java.util.concurrent.RejectedExecutionHandler</pre>
 
     <p> The thread pool executor that provides background processing of search engine requests.
  This works in conjunction with the bound SearchEngineRequestQueue to process most index requests
@@ -195,8 +195,8 @@ extends java.util.concurrent.ThreadPoolExecutor
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#SearchEnginePoolExecutor(int, int, long, java.util.concurrent.TimeUnit, java.util.concurrent.BlockingQueue)">SearchEnginePoolExecutor</a>
-                                (int corePoolSize, int maxPoolSize, long keepAliveTime, java.util.concurrent.TimeUnit timeUnits, java.util.concurrent.BlockingQueue queue)</code><br></td>
+                                <code><a href="#SearchEnginePoolExecutor(int, int, long, java.util.concurrent.TimeUnit, BlockingQueue)">SearchEnginePoolExecutor</a>
+                                (int corePoolSize, int maxPoolSize, long keepAliveTime, java.util.concurrent.TimeUnit timeUnits, BlockingQueue&lt;java.lang.Runnable&gt; queue)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -228,14 +228,14 @@ extends java.util.concurrent.ThreadPoolExecutor
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;java.util.concurrent.Future</code></td>
-                            <td class="colLast"><code><strong><a href="#addRequest(org.simplemes.eframe.search.SearchEngineRequestInterface)">addRequest</a></strong>(<a href='../../../../org/simplemes/eframe/search/SearchEngineRequestInterface.html'>SearchEngineRequestInterface</a> request)</code><br>Adds a request to the queue for processing. </td>
+                            <td class="colLast"><code>static&nbsp;Future&lt;?&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#addRequest(org.simplemes.eframe.search.SearchEngineRequestInterface)">addRequest</a></strong>(<a href='../../../../org/simplemes/eframe/search/SearchEngineRequestInterface.html'>SearchEngineRequestInterface</a> request)</code><br>Adds a request to the queue for processing.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#afterExecute(java.lang.Runnable, java.lang.Throwable)">afterExecute</a></strong>(java.lang.Runnable r, java.lang.Throwable t)</code><br>This afterExecute hook mainly detects exceptions and logs them. </td>
+                            <td class="colLast"><code><strong><a href="#afterExecute(java.lang.Runnable, java.lang.Throwable)">afterExecute</a></strong>(java.lang.Runnable r, java.lang.Throwable t)</code><br>This afterExecute hook mainly detects exceptions and logs them.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -255,13 +255,13 @@ extends java.util.concurrent.ThreadPoolExecutor
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.concurrent.ThreadFactory</code></td>
-                            <td class="colLast"><code><strong><a href="#getThreadFactory()">getThreadFactory</a></strong>()</code><br>Returns the thread factory used to create new threads. </td>
+                            <td class="colLast"><code><strong><a href="#getThreadFactory()">getThreadFactory</a></strong>()</code><br>Returns the thread factory used to create new threads.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isIdle()">isIdle</a></strong>()</code><br>Determines if the pool is idle and has no requests in queue. </td>
+                            <td class="colLast"><code><strong><a href="#isIdle()">isIdle</a></strong>()</code><br>Determines if the pool is idle and has no requests in queue.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -354,11 +354,11 @@ extends java.util.concurrent.ThreadPoolExecutor
                 </a>
                     <h3>Constructor Detail</h3>
                     
-                        <a name="SearchEnginePoolExecutor(int, int, long, java.util.concurrent.TimeUnit, java.util.concurrent.BlockingQueue)"><!-- --></a>
+                        <a name="SearchEnginePoolExecutor(int, int, long, java.util.concurrent.TimeUnit, BlockingQueue)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-<strong>SearchEnginePoolExecutor</strong>(int corePoolSize, int maxPoolSize, long keepAliveTime, java.util.concurrent.TimeUnit timeUnits, java.util.concurrent.BlockingQueue queue)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: ThisReferenceEscapesConstructor)
+<strong>SearchEnginePoolExecutor</strong>(int corePoolSize, int maxPoolSize, long keepAliveTime, java.util.concurrent.TimeUnit timeUnits, BlockingQueue&lt;java.lang.Runnable&gt; queue)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -387,7 +387,7 @@ extends java.util.concurrent.ThreadPoolExecutor
                         <a name="addRequest(org.simplemes.eframe.search.SearchEngineRequestInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.util.concurrent.Future <strong>addRequest</strong>(<a href='../../../../org/simplemes/eframe/search/SearchEngineRequestInterface.html'>SearchEngineRequestInterface</a> request)</h4>
+                                <h4>static&nbsp;Future&lt;?&gt; <strong>addRequest</strong>(<a href='../../../../org/simplemes/eframe/search/SearchEngineRequestInterface.html'>SearchEngineRequestInterface</a> request)</h4>
                                 <p> Adds a request to the queue for processing. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.</DD></DL></p>
                             </li>
                         </ul>
@@ -395,7 +395,7 @@ extends java.util.concurrent.ThreadPoolExecutor
                         <a name="afterExecute(java.lang.Runnable, java.lang.Throwable)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 protected&nbsp;void <strong>afterExecute</strong>(java.lang.Runnable r, java.lang.Throwable t)</h4>
                                 <p> This afterExecute hook mainly detects exceptions and logs them. <DL><DT><B>Parameters:</B></DT><DD><code>r</code> -  the runnable that has completed</DD><DD><code>t</code> -  the exception that caused termination, or null if
  execution completed normally</DD></DL></p>
@@ -423,7 +423,7 @@ protected&nbsp;void <strong>afterExecute</strong>(java.lang.Runnable r, java.lan
                         <a name="getThreadFactory()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.util.concurrent.ThreadFactory <strong>getThreadFactory</strong>()</h4>
                                 <p> Returns the thread factory used to create new threads. <DL><DT><B>Returns:</B></DT><DD>the current thread factory</DD></DL><DL><DT><B>See Also:</B></DT><DD><a href='#setThreadFactory(java.util.concurrent.ThreadFactory)'>setThreadFactory(ThreadFactory)</a></DD></DL></p>
                             </li>
@@ -440,7 +440,7 @@ java.util.concurrent.ThreadFactory <strong>getThreadFactory</strong>()</h4>
                         <a name="rejectedExecution(java.lang.Runnable, java.util.concurrent.ThreadPoolExecutor)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>rejectedExecution</strong>(java.lang.Runnable r, java.util.concurrent.ThreadPoolExecutor executor)</h4>
                                 <p></p>
                             </li>

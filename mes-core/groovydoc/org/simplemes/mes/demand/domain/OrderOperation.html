@@ -101,20 +101,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../../org/simplemes/mes/product/OperationTrait.html'>OperationTrait</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@io.micronaut.data.annotation.MappedEntityMappedEntity
-@org.simplemes.eframe.domain.annotation.DomainEntityDomainEntity
-@java.lang.SuppressWarningsSuppressWarnings
-@groovy.transform.EqualsAndHashCodeEqualsAndHashCode
-@groovy.transform.ToStringToString
+
+<pre>@io.micronaut.data.annotation.MappedEntity
+@org.simplemes.eframe.domain.annotation.DomainEntity
+@java.lang.SuppressWarnings(value: unused)
+@groovy.transform.EqualsAndHashCode(includes: [order, sequence])
+@groovy.transform.ToString(includeNames: true, includePackage: false, excludes: [order])
 class OrderOperation
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../../org/simplemes/mes/product/OperationTrait.html'>OperationTrait</a></pre>
 
     <p> Defines a routing for a specific order and the status of the operations for the order.
  A routing is a sequence of steps (operations) needed to manufacture a product.
@@ -181,7 +181,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -247,8 +247,8 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#validate()">validate</a></strong>()</code><br>Validates the record before save. </td>
+                            <td class="colLast"><code>java.util.List&lt;ValidationError&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#validate()">validate</a></strong>()</code><br>Validates the record before save.</td>
                         </tr>
                         
                     </table>
@@ -346,7 +346,7 @@ extends java.lang.Object
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -405,7 +405,7 @@ extends java.lang.Object
                         <a name="validate()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>validate</strong>()</h4>
+                                <h4>java.util.List&lt;ValidationError&gt; <strong>validate</strong>()</h4>
                                 <p> Validates the record before save. <DL><DT><B>Returns:</B></DT><DD>The list of errors.</DD></DL></p>
                             </li>
                         </ul>

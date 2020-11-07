@@ -91,13 +91,19 @@ if (location.href.indexOf('is-external=true') == -1) {
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li>org.simplemes.eframe.search.SearchEngineRequestQueue
+<li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li>org.simplemes.eframe.search.SearchEngineRequestQueue
 </ul>
 <div class="description">
     <ul class="blockList">
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class SearchEngineRequestQueue
+extends LinkedTransferQueue&lt;java.lang.Runnable&gt;</pre>
 
     <p> The search request queue.  This is mostly a standard LinkedTransferQueue, but it tries to transfer the
  request to a waiting thread.  If not possible, then a new thread may be created or the request will be
@@ -173,24 +179,6 @@ if (location.href.indexOf('is-external=true') == -1) {
                    </ul>
               </li>
             
-            <li class="blockList"><a name="method_summary"><!--   --></a>
-                    <h3>Inherited Methods Summary</h3>
-                    <ul class="blockList">
-                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Inherited Methods Summary table">
-                        <caption><span>Inherited Methods</span><span class="tabEnd">&nbsp;</span></caption>
-                        <tr>
-                            <th class="colFirst" scope="col">Methods inherited from class</th>
-                            <th class="colLast" scope="col">Name</th>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code>class java.util.concurrent.LinkedTransferQueue</code></td>
-                            <td class="colLast"><code>java.util.concurrent.LinkedTransferQueue#add(java.lang.Object), java.util.concurrent.LinkedTransferQueue#remove(java.lang.Object), java.util.concurrent.LinkedTransferQueue#put(java.lang.Object), java.util.concurrent.LinkedTransferQueue#toString(), java.util.concurrent.LinkedTransferQueue#clear(), java.util.concurrent.LinkedTransferQueue#isEmpty(), java.util.concurrent.LinkedTransferQueue#size(), java.util.concurrent.LinkedTransferQueue#toArray(), java.util.concurrent.LinkedTransferQueue#toArray([Ljava.lang.Object;), java.util.concurrent.LinkedTransferQueue#iterator(), java.util.concurrent.LinkedTransferQueue#contains(java.lang.Object), java.util.concurrent.LinkedTransferQueue#spliterator(), java.util.concurrent.LinkedTransferQueue#forEach(java.util.function.Consumer), java.util.concurrent.LinkedTransferQueue#poll(), java.util.concurrent.LinkedTransferQueue#poll(long, java.util.concurrent.TimeUnit), java.util.concurrent.LinkedTransferQueue#peek(), java.util.concurrent.LinkedTransferQueue#retainAll(java.util.Collection), java.util.concurrent.LinkedTransferQueue#removeAll(java.util.Collection), java.util.concurrent.LinkedTransferQueue#removeIf(java.util.function.Predicate), java.util.concurrent.LinkedTransferQueue#transfer(java.lang.Object), java.util.concurrent.LinkedTransferQueue#offer(java.lang.Object), java.util.concurrent.LinkedTransferQueue#offer(java.lang.Object, long, java.util.concurrent.TimeUnit), java.util.concurrent.LinkedTransferQueue#take(), java.util.concurrent.LinkedTransferQueue#tryTransfer(java.lang.Object), java.util.concurrent.LinkedTransferQueue#tryTransfer(java.lang.Object, long, java.util.concurrent.TimeUnit), java.util.concurrent.LinkedTransferQueue#hasWaitingConsumer(), java.util.concurrent.LinkedTransferQueue#getWaitingConsumerCount(), java.util.concurrent.LinkedTransferQueue#drainTo(java.util.Collection), java.util.concurrent.LinkedTransferQueue#drainTo(java.util.Collection, int), java.util.concurrent.LinkedTransferQueue#remainingCapacity(), java.util.concurrent.LinkedTransferQueue#remove(), java.util.concurrent.LinkedTransferQueue#addAll(java.util.Collection), java.util.concurrent.LinkedTransferQueue#element(), java.util.concurrent.LinkedTransferQueue#containsAll(java.util.Collection), java.util.concurrent.LinkedTransferQueue#wait(long, int), java.util.concurrent.LinkedTransferQueue#wait(), java.util.concurrent.LinkedTransferQueue#wait(long), java.util.concurrent.LinkedTransferQueue#equals(java.lang.Object), java.util.concurrent.LinkedTransferQueue#hashCode(), java.util.concurrent.LinkedTransferQueue#getClass(), java.util.concurrent.LinkedTransferQueue#notify(), java.util.concurrent.LinkedTransferQueue#notifyAll(), java.util.concurrent.LinkedTransferQueue#toArray(java.util.function.IntFunction), java.util.concurrent.LinkedTransferQueue#stream(), java.util.concurrent.LinkedTransferQueue#parallelStream()</code></td>
-                        </tr>
-                    </table>
-                   </ul>
-              </li>
-                
         </ul>
         
     </li>
@@ -240,7 +228,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="offer(java.lang.Runnable)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 boolean <strong>offer</strong>(java.lang.Runnable e)</h4>
                                 <p></p>
                             </li>

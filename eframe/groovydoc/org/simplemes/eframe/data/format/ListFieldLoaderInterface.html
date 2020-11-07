@@ -97,6 +97,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <ul class="blockList">
         <li class="blockList">
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>interface ListFieldLoaderInterface</pre>
 
     <p> Defines a custom field format that the value needs to be loaded from the database as a list.
  Mainly used by the custom child list format to load/save the values when needed.</p>
@@ -163,14 +168,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#readList(org.simplemes.eframe.domain.annotation.DomainEntityInterface, org.simplemes.eframe.data.FieldDefinitionInterface)">readList</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Gets the given field value from the given object (domain or POGO depending on sub-class). </td>
+                            <td class="colLast"><code>java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#readList(org.simplemes.eframe.domain.annotation.DomainEntityInterface, org.simplemes.eframe.data.FieldDefinitionInterface)">readList</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Gets the given field value from the given object (domain or POGO depending on sub-class).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#saveList(org.simplemes.eframe.domain.annotation.DomainEntityInterface, List, org.simplemes.eframe.data.FieldDefinitionInterface)">saveList</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, <a href='../../../../../List.html'>List</a> list, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Saves the list field values to the DB.  </td>
+                            <td class="colLast"><code><strong><a href="#saveList(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.util.List, org.simplemes.eframe.data.FieldDefinitionInterface)">saveList</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.util.List list, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Saves the list field values to the DB.  </td>
                         </tr>
                         
                     </table>
@@ -226,15 +231,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="readList(org.simplemes.eframe.domain.annotation.DomainEntityInterface, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>readList</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
+                                <h4>java.util.List <strong>readList</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
                                 <p> Gets the given field value from the given object (domain or POGO depending on sub-class). <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The domain object the field is stored in.</DD><DD><code>fieldDefinition</code> -  The field definition used to define this field (<b>Required</b>).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="saveList(org.simplemes.eframe.domain.annotation.DomainEntityInterface, List, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
+                        <a name="saveList(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.util.List, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>saveList</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, <a href='../../../../../List.html'>List</a> list, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
+                                <h4>void <strong>saveList</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.util.List list, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
                                 <p> Saves the list field values to the DB.  Relies on the Micronaut Data save() mechanism and dirty
  checking for the save. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The domain object the field is to be stored in.</DD><DD><code>list</code> -  The field list.</DD><DD><code>fieldDefinition</code> -  The field definition used to define this field (<b>Required</b>).</DD></DL></p>
                             </li>

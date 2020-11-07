@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+class WidgetContext
+extends java.lang.Object</pre>
 
     <p> The context the widget is executing in.  This includes the URI for the page, the marker and field definition
  for the widget.</p>
@@ -171,7 +178,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#parameters">parameters</a></code><br>The parameters from the marker.  </td>
                         </tr>
                         
@@ -213,14 +220,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#WidgetContext(Map)">WidgetContext</a>
-                                (<a href='../../../../../../../Map.html'>Map</a> options)</code><br>Standard Map constructor.   </td>
+                                <code><a href="#WidgetContext(java.util.Map)">WidgetContext</a>
+                                (java.util.Map options)</code><br>Standard Map constructor.   </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#WidgetContext(org.simplemes.eframe.web.ui.webix.widget.WidgetContext, Map)">WidgetContext</a>
-                                (<a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/WidgetContext.html'>WidgetContext</a> widgetContext, <a href='../../../../../../../Map.html'>Map</a> parameters)</code><br>A copy constructor that copies all properties, except for the parameters.  </td>
+                                <code><a href="#WidgetContext(org.simplemes.eframe.web.ui.webix.widget.WidgetContext, java.util.Map)">WidgetContext</a>
+                                (<a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/WidgetContext.html'>WidgetContext</a> widgetContext, java.util.Map parameters)</code><br>A copy constructor that copies all properties, except for the parameters.  </td>
                         </tr>
                         
                         <tr class="altColor">
@@ -349,7 +356,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="parameters"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../../../Map.html'>Map</a> <strong>parameters</strong></h4>
+                                <h4>private&nbsp;java.util.Map <strong>parameters</strong></h4>
                                 <p> The parameters from the marker.  Never Null.</p>
                             </li>
                         </ul>
@@ -392,18 +399,18 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Constructor Detail</h3>
                     
-                        <a name="WidgetContext(Map)"><!-- --></a>
+                        <a name="WidgetContext(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>WidgetContext</strong>(<a href='../../../../../../../Map.html'>Map</a> options)</h4>
+                                <h4><strong>WidgetContext</strong>(java.util.Map options)</h4>
                                 <p> Standard Map constructor.   Sets individual name properties from the given options. <DL><DT><B>Parameters:</B></DT><DD>options</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="WidgetContext(org.simplemes.eframe.web.ui.webix.widget.WidgetContext, Map)"><!-- --></a>
+                        <a name="WidgetContext(org.simplemes.eframe.web.ui.webix.widget.WidgetContext, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>WidgetContext</strong>(<a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/WidgetContext.html'>WidgetContext</a> widgetContext, <a href='../../../../../../../Map.html'>Map</a> parameters)</h4>
+                                <h4><strong>WidgetContext</strong>(<a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/WidgetContext.html'>WidgetContext</a> widgetContext, java.util.Map parameters)</h4>
                                 <p> A copy constructor that copies all properties, except for the parameters.  Those are passed in. <DL><DT><B>Parameters:</B></DT><DD><code>widgetContext</code> -  The context to copy most properties from (except 'parameters').</DD><DD><code>parameters</code> -  The  parameters Map for the new widget.</DD></DL></p>
                             </li>
                         </ul>

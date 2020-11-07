@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.transform.EqualsAndHashCode(includes: [reportFolder, reportName, params])
+@groovy.transform.ToString(includeNames: true, includePackage: false, includes: [reportFolder, reportName, params, resourceBundleName])
+class Report
+extends java.lang.Object</pre>
 
     <p> Holds the report details needed to generate a report using the third-party report engine.
  Provides methods to write the report in HTML or PDF format.</p>
@@ -161,12 +170,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Locale.html'>Locale</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Locale</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#locale">locale</a></code><br>The report locale to use.</td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#params">params</a></code><br>The input parameters from the controller.</td>
                         </tr>
                         
@@ -176,7 +185,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#reportDate">reportDate</a></code><br>The date/time the report was generated.   </td>
                         </tr>
                         
@@ -218,8 +227,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#Report(Map, java.security.Principal)">Report</a>
-                                (<a href='../../../../Map.html'>Map</a> params, java.security.Principal principal)</code><br>Main constructor for use from a controller.</td>
+                                <code><a href="#Report(java.util.Map, java.security.Principal)">Report</a>
+                                (java.util.Map params, java.security.Principal principal)</code><br>Main constructor for use from a controller.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -230,8 +239,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#Report(java.lang.String, Map)">Report</a>
-                                (java.lang.String reportLocation, <a href='../../../../Map.html'>Map</a> options)</code><br>Convenience constructor.</td>
+                                <code><a href="#Report(java.lang.String, java.util.Map)">Report</a>
+                                (java.lang.String reportLocation, java.util.Map options)</code><br>Convenience constructor.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -263,7 +272,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map&lt;java.lang.String, java.lang.Object&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#buildBaseParametersForReport()">buildBaseParametersForReport</a></strong>()</code><br>Builds the base input parameters to pass to the report.  </td>
                         </tr>
                         
@@ -276,8 +285,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#determineReportParams(Map)">determineReportParams</a></strong>(<a href='../../../../Map.html'>Map</a> inputParams)</code><br>Determines the effective report parameters to use.  </td>
+                            <td class="colLast"><code>java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#determineReportParams(java.util.Map)">determineReportParams</a></strong>(java.util.Map inputParams)</code><br>Determines the effective report parameters to use.  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -294,14 +303,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map&lt;java.lang.String, java.lang.Object&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getDefaultParameters()">getDefaultParameters</a></strong>()</code><br>Finds the default values for the report parameters.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getDefinedReportParameters()">getDefinedReportParameters</a></strong>()</code><br>Finds the defined report parameters. </td>
+                            <td class="colLast"><code>java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#getDefinedReportParameters()">getDefinedReportParameters</a></strong>()</code><br>Finds the defined report parameters.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -312,13 +321,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;<a href='../../../../org/simplemes/eframe/reports/ReportFieldDefinition.html' title='ReportFieldDefinition'>ReportFieldDefinition</a>&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getReportParameters()">getReportParameters</a></strong>()</code><br>Finds the effective report parameters to use.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map&lt;java.lang.String, java.lang.String&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getSubReports()">getSubReports</a></strong>()</code><br>Returns the list of sub-reports that need to be compiled.
  </td>
                         </tr>
@@ -326,19 +335,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isPdf()">isPdf</a></strong>()</code><br>Returns true if the report output in PDF is requested. </td>
+                            <td class="colLast"><code><strong><a href="#isPdf()">isPdf</a></strong>()</code><br>Returns true if the report output in PDF is requested.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#setContentType(java.lang.String)">setContentType</a></strong>(java.lang.String contentType)</code><br>Sets the content type for this report. </td>
+                            <td class="colLast"><code><strong><a href="#setContentType(java.lang.String)">setContentType</a></strong>(java.lang.String contentType)</code><br>Sets the content type for this report.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setData(List)">setData</a></strong>(<a href='../../../../List.html'>List</a> data)</code><br>Sets the report data for the report. </td>
+                            <td class="colLast"><code><strong><a href="#setData(List)">setData</a></strong>(java.util.List&lt;java.util.Map&gt; data)</code><br>Sets the report data for the report. </td>
                         </tr>
                         
                     </table>
@@ -435,7 +444,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="locale"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Locale.html'>Locale</a> <strong>locale</strong></h4>
+                                <h4>private&nbsp;java.util.Locale <strong>locale</strong></h4>
                                 <p> The report locale to use.</p>
                             </li>
                         </ul>
@@ -443,7 +452,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="params"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>params</strong></h4>
+                                <h4>private&nbsp;java.util.Map <strong>params</strong></h4>
                                 <p> The input parameters from the controller.</p>
                             </li>
                         </ul>
@@ -459,7 +468,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="reportDate"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Date.html'>Date</a> <strong>reportDate</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>reportDate</strong></h4>
                                 <p> The date/time the report was generated.   This is used when working with the reportTimeInterval for consistent
  reports.</p>
                             </li>
@@ -503,10 +512,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Constructor Detail</h3>
                     
-                        <a name="Report(Map, java.security.Principal)"><!-- --></a>
+                        <a name="Report(java.util.Map, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>Report</strong>(<a href='../../../../Map.html'>Map</a> params, java.security.Principal principal)</h4>
+                                <h4><strong>Report</strong>(java.util.Map params, java.security.Principal principal)</h4>
                                 <p> Main constructor for use from a controller. <DL><DT><B>Parameters:</B></DT><DD><code>params</code> -  The request parameters.</DD><DD><code>principal</code> -  The user logged in.</DD></DL></p>
                             </li>
                         </ul>
@@ -519,10 +528,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="Report(java.lang.String, Map)"><!-- --></a>
+                        <a name="Report(java.lang.String, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>Report</strong>(java.lang.String reportLocation, <a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4><strong>Report</strong>(java.lang.String reportLocation, java.util.Map options)</h4>
                                 <p> Convenience constructor. <DL><DT><B>Parameters:</B></DT><DD><code>reportLocation</code> -  The report location (with folder).</DD><DD><code>options</code> -  The other options to be set in this class.</DD></DL></p>
                             </li>
                         </ul>
@@ -551,7 +560,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="buildBaseParametersForReport()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>buildBaseParametersForReport</strong>()</h4>
+                                <h4>java.util.Map&lt;java.lang.String, java.lang.Object&gt; <strong>buildBaseParametersForReport</strong>()</h4>
                                 <p> Builds the base input parameters to pass to the report.  This mainly builds values such as BaseDir
  the the resource bundle needed by most reports.</p>
                             </li>
@@ -567,10 +576,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="determineReportParams(Map)"><!-- --></a>
+                        <a name="determineReportParams(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>determineReportParams</strong>(<a href='../../../../Map.html'>Map</a> inputParams)</h4>
+                                <h4>java.util.Map <strong>determineReportParams</strong>(java.util.Map inputParams)</h4>
                                 <p> Determines the effective report parameters to use.  Check the URL (controller) params and the user preferences as a
  fall-back.  This uses the controller params and adds any parameters from the user preferences that are not
  in the controller params. <DL><DT><B>Parameters:</B></DT><DD><code>inputParams</code> -  The parameters from the URL.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The effective parameters.</DD></DL></p>
@@ -597,7 +606,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getDefaultParameters()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>getDefaultParameters</strong>()</h4>
+                                <h4>java.util.Map&lt;java.lang.String, java.lang.Object&gt; <strong>getDefaultParameters</strong>()</h4>
                                 <p> Finds the default values for the report parameters.</p>
                             </li>
                         </ul>
@@ -605,7 +614,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getDefinedReportParameters()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getDefinedReportParameters</strong>()</h4>
+                                <h4>java.util.List <strong>getDefinedReportParameters</strong>()</h4>
                                 <p> Finds the defined report parameters. <DL><DT><B>Returns:</B></DT><DD>A list of JRParameter objects.</DD></DL></p>
                             </li>
                         </ul>
@@ -622,7 +631,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getReportParameters()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getReportParameters</strong>()</h4>
+                                <h4>java.util.List&lt;<a href='../../../../org/simplemes/eframe/reports/ReportFieldDefinition.html' title='ReportFieldDefinition'>ReportFieldDefinition</a>&gt; <strong>getReportParameters</strong>()</h4>
                                 <p> Finds the effective report parameters to use.  This uses the controller params and the default values
  from the compiled report.  List is sorted in display sequence.</p>
                             </li>
@@ -631,7 +640,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getSubReports()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>getSubReports</strong>()</h4>
+                                <h4>java.util.Map&lt;java.lang.String, java.lang.String&gt; <strong>getSubReports</strong>()</h4>
                                 <p> Returns the list of sub-reports that need to be compiled.
  Finds parameters that start with 'SubReport' and extracts the report name from the default value expression.
  The default value must be in the form: '$P{BaseDir}+"/SampleSubReport.jrxml"'. <DL><DT><B>Returns:</B></DT><DD>A map of the sub-report.  The key is the parameter name for the sub report.</DD></DL></p>
@@ -657,7 +666,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="setData(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>setData</strong>(<a href='../../../../List.html'>List</a> data)</h4>
+                                <h4>void <strong>setData</strong>(java.util.List&lt;java.util.Map&gt; data)</h4>
                                 <p> Sets the report data for the report. Unit tests only. <DL><DT><B>Parameters:</B></DT><DD><code>data</code> -  The data.</DD></DL></p>
                             </li>
                         </ul>

@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class URLUtils
+extends java.lang.Object</pre>
 
     <p> Common URL/URI utils.  Used to encapsulate the URI/URL manipulation utilities.
 
@@ -166,13 +172,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#addParametersToURI(java.lang.String, Map)">addParametersToURI</a></strong>(java.lang.String uri, <a href='../../../../Map.html'>Map</a> parameters)</code><br>Adds any arguments to the URI (encoded) to the given URI.  </td>
+                            <td class="colLast"><code><strong><a href="#addParametersToURI(java.lang.String, java.util.Map)">addParametersToURI</a></strong>(java.lang.String uri, java.util.Map parameters)</code><br>Adds any arguments to the URI (encoded) to the given URI.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#encode(java.lang.String)">encode</a></strong>(java.lang.String value)</code><br>Internal encoding of URI strings. </td>
+                            <td class="colLast"><code><strong><a href="#encode(java.lang.String)">encode</a></strong>(java.lang.String value)</code><br>Internal encoding of URI strings.</td>
                         </tr>
                         
                     </table>
@@ -243,10 +249,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="addParametersToURI(java.lang.String, Map)"><!-- --></a>
+                        <a name="addParametersToURI(java.lang.String, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>addParametersToURI</strong>(java.lang.String uri, <a href='../../../../Map.html'>Map</a> parameters)</h4>
+                                <h4>static&nbsp;java.lang.String <strong>addParametersToURI</strong>(java.lang.String uri, java.util.Map parameters)</h4>
                                 <p> Adds any arguments to the URI (encoded) to the given URI.  This detects if the URI already has any parameters
  and adds the parameters correctly. <DL><DT><B>Parameters:</B></DT><DD><code>uri</code> -  The URI.</DD><DD><code>parameters</code> -  The extra parameters to add (if any). (Can be null).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The adjusted URI.</DD></DL></p>
                             </li>

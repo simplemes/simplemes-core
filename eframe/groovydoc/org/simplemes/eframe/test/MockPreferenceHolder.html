@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../org/simplemes/eframe/test/AutoCleanupMockInterface.html'>AutoCleanupMockInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.transform.ToStringToString
+
+<pre>@groovy.transform.ToString(includePackage: false, includeNames: true)
 class MockPreferenceHolder
 extends <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html'>PreferenceHolder</a>
-
-</pre>
-
-
+implements <a href='../../../../org/simplemes/eframe/test/AutoCleanupMockInterface.html'>AutoCleanupMockInterface</a></pre>
 
     <p> Builds a very simple mock/stub for the PreferenceHolder that returns the given preference.
  This class restores the original PreferenceHolder during BaseSpecification.cleanup().
@@ -160,7 +160,7 @@ extends <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.ht
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;PreferenceSettingInterface&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#preferences">preferences</a></code><br>The preference to return when requested, by the correct key.</td>
                         </tr>
                         
@@ -188,7 +188,7 @@ extends <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.ht
                         <tr class="altColor">
                             <td class="colFirst">
                                 <code><a href="#MockPreferenceHolder(org.simplemes.eframe.test.BaseSpecification, List)">MockPreferenceHolder</a>
-                                (<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, <a href='../../../../List.html'>List</a> preferences)</code><br>Basic constructor - supports single preference.</td>
+                                (<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, java.util.List&lt;PreferenceSettingInterface&gt; preferences)</code><br>Basic constructor - supports single preference.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -221,19 +221,19 @@ extends <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.ht
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#doCleanup(org.simplemes.eframe.test.BaseSpecification)">doCleanup</a></strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> testSpec)</code><br>Performs the cleanup action. </td>
+                            <td class="colLast"><code><strong><a href="#doCleanup(org.simplemes.eframe.test.BaseSpecification)">doCleanup</a></strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> testSpec)</code><br>Performs the cleanup action.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/preference/PreferenceSettingInterface.html'>PreferenceSettingInterface</a></code></td>
-                            <td class="colLast"><code><strong><a href="#get(java.lang.String)">get</a></strong>(java.lang.String name)</code><br>Returns the appropriate bean implementation, if needed. </td>
+                            <td class="colLast"><code><strong><a href="#get(java.lang.String)">get</a></strong>(java.lang.String name)</code><br>Returns the appropriate bean implementation, if needed.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getSettings()">getSettings</a></strong>()</code><br>Returns the list of settings. </td>
+                            <td class="colLast"><code>java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#getSettings()">getSettings</a></strong>()</code><br>Returns the list of settings.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -245,13 +245,13 @@ extends <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.ht
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html'>PreferenceHolder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#save()">save</a></strong>()</code><br>Save current setting to database. </td>
+                            <td class="colLast"><code><strong><a href="#save()">save</a></strong>()</code><br>Save current setting to database.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html'>PreferenceHolder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#setPreference(org.simplemes.eframe.preference.PreferenceSettingInterface)">setPreference</a></strong>(<a href='../../../../org/simplemes/eframe/preference/PreferenceSettingInterface.html'>PreferenceSettingInterface</a> setting)</code><br>Internal method to set/update the preference. </td>
+                            <td class="colLast"><code><strong><a href="#setPreference(org.simplemes.eframe.preference.PreferenceSettingInterface)">setPreference</a></strong>(<a href='../../../../org/simplemes/eframe/preference/PreferenceSettingInterface.html'>PreferenceSettingInterface</a> setting)</code><br>Internal method to set/update the preference.</td>
                         </tr>
                         
                     </table>
@@ -270,7 +270,7 @@ extends <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.ht
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html'>PreferenceHolder</a></code></td>
-                            <td class="colLast"><code><a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#element(java.lang.String)'>element</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#find(Closure)'>find</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#get(java.lang.String)'>get</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#getElementNames()'>getElementNames</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#getSettings()'>getSettings</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#load()'>load</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#name(java.lang.String)'>name</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#page(java.lang.String)'>page</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#save()'>save</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#set(java.lang.String, org.simplemes.eframe.preference.PreferenceSettingInterface)'>set</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#setElement(java.lang.String)'>setElement</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#setPreference(org.simplemes.eframe.preference.PreferenceSettingInterface)'>setPreference</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#setSettings(List)'>setSettings</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#user(java.lang.String)'>user</a></code></td>
+                            <td class="colLast"><code><a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#element(java.lang.String)'>element</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#find(groovy.lang.Closure)'>find</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#get(java.lang.String)'>get</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#getElementNames()'>getElementNames</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#getSettings()'>getSettings</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#load()'>load</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#name(java.lang.String)'>name</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#page(java.lang.String)'>page</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#save()'>save</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#set(java.lang.String, org.simplemes.eframe.preference.PreferenceSettingInterface)'>set</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#setElement(java.lang.String)'>setElement</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#setPreference(org.simplemes.eframe.preference.PreferenceSettingInterface)'>setPreference</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#setSettings(java.util.List)'>setSettings</a>, <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html#user(java.lang.String)'>user</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -308,7 +308,7 @@ extends <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.ht
                         <a name="preferences"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>preferences</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;PreferenceSettingInterface&gt; <strong>preferences</strong></h4>
                                 <p> The preference to return when requested, by the correct key.</p>
                             </li>
                         </ul>
@@ -330,7 +330,7 @@ extends <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.ht
                         <a name="MockPreferenceHolder(org.simplemes.eframe.test.BaseSpecification, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>MockPreferenceHolder</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, <a href='../../../../List.html'>List</a> preferences)</h4>
+                                <h4><strong>MockPreferenceHolder</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> baseSpec, java.util.List&lt;PreferenceSettingInterface&gt; preferences)</h4>
                                 <p> Basic constructor - supports single preference. <DL><DT><B>Parameters:</B></DT><DD><code>baseSpec</code> -  The test specification that needs the mock (usually this).</DD><DD><code>preferences</code> -  A list of preference to return. Optional.  These might be updated by new preferences
         added to this mock holder.</DD></DL></p>
                             </li>
@@ -360,7 +360,7 @@ extends <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.ht
                         <a name="doCleanup(org.simplemes.eframe.test.BaseSpecification)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>doCleanup</strong>(<a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a> testSpec)</h4>
                                 <p> Performs the cleanup action. <DL><DT><B>Parameters:</B></DT><DD><code>testSpec</code> -  The test that requests the cleanup.</DD></DL></p>
                             </li>
@@ -369,7 +369,7 @@ void <strong>doCleanup</strong>(<a href='../../../../org/simplemes/eframe/test/B
                         <a name="get(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 <a href='../../../../org/simplemes/eframe/preference/PreferenceSettingInterface.html'>PreferenceSettingInterface</a> <strong>get</strong>(java.lang.String name)</h4>
                                 <p> Returns the appropriate bean implementation, if needed. <DL><DT><B>Returns:</B></DT><DD>The bean implementation for the getBean() response.</DD></DL></p>
                             </li>
@@ -378,8 +378,8 @@ void <strong>doCleanup</strong>(<a href='../../../../org/simplemes/eframe/test/B
                         <a name="getSettings()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-<a href='../../../../List.html'>List</a> <strong>getSettings</strong>()</h4>
+                                <h4>@java.lang.Override
+java.util.List <strong>getSettings</strong>()</h4>
                                 <p> Returns the list of settings. <DL><DT><B>Returns:</B></DT><DD>The settings.</DD></DL></p>
                             </li>
                         </ul>
@@ -395,7 +395,7 @@ void <strong>doCleanup</strong>(<a href='../../../../org/simplemes/eframe/test/B
                         <a name="save()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html'>PreferenceHolder</a> <strong>save</strong>()</h4>
                                 <p> Save current setting to database. <DL><DT><B>Returns:</B></DT><DD>This holder.</DD></DL></p>
                             </li>
@@ -404,7 +404,7 @@ void <strong>doCleanup</strong>(<a href='../../../../org/simplemes/eframe/test/B
                         <a name="setPreference(org.simplemes.eframe.preference.PreferenceSettingInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html'>PreferenceHolder</a> <strong>setPreference</strong>(<a href='../../../../org/simplemes/eframe/preference/PreferenceSettingInterface.html'>PreferenceSettingInterface</a> setting)</h4>
                                 <p> Internal method to set/update the preference. <DL><DT><B>Parameters:</B></DT><DD><code>setting</code> -  The setting to store.</DD></DL></p>
                             </li>

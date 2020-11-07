@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.security.annotation.Secured(value: Roles.DESIGNER)
+@io.micronaut.http.annotation.Controller(value: /extension)
+class ExtensionController
+extends <a href='../../../../../org/simplemes/eframe/controller/BaseController.html'>BaseController</a></pre>
 
     <p> Controller to support GUI extension/customization.  Provides dialogs and server support for customizing GUIs and
  domains.
@@ -332,9 +341,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="configDialog(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-@io.micronaut.http.annotation.ProducesProduces
-<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>configDialog</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /configDialog)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>configDialog</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Serves the configuration dialog content for the definition GUI configuration editor.
  This controller finds the current state and passes it to the .ftl file to generate
  the dialog content.
@@ -362,9 +371,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="deleteField(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.PostPost
-@io.micronaut.http.annotation.ProducesProduces
-io.micronaut.http.HttpResponse <strong>deleteField</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Post(value: /deleteField)
+@io.micronaut.http.annotation.Produces(value: MediaType.APPLICATION_JSON)
+io.micronaut.http.HttpResponse <strong>deleteField</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Deletes the custom field definition and removes it from the field order.
 
  <h3>Body</h3>
@@ -379,9 +388,9 @@ io.micronaut.http.HttpResponse <strong>deleteField</strong>(io.micronaut.http.Ht
                         <a name="dialog(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-@io.micronaut.http.annotation.ProducesProduces
-io.micronaut.http.HttpResponse <strong>dialog</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /dialog)
+@io.micronaut.http.annotation.Produces(value: application/javascript)
+io.micronaut.http.HttpResponse <strong>dialog</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Serves up a page for the extension-related client functions. This is served from an .ftl file.
 
  <h3>Parameters</h3>
@@ -396,9 +405,9 @@ io.micronaut.http.HttpResponse <strong>dialog</strong>(io.micronaut.http.HttpReq
                         <a name="fieldDialog(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-@io.micronaut.http.annotation.ProducesProduces
-<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>fieldDialog</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /editFieldDialog)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>fieldDialog</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Serves the custom field edit/add dialog content for the definition GUI configuration editor.
  This controller finds the current state and passes it to the .ftl file to generate
  the dialog content.
@@ -423,9 +432,9 @@ io.micronaut.http.HttpResponse <strong>dialog</strong>(io.micronaut.http.HttpReq
                         <a name="saveField(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.PostPost
-@io.micronaut.http.annotation.ProducesProduces
-io.micronaut.http.HttpResponse <strong>saveField</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Post(value: /saveField)
+@io.micronaut.http.annotation.Produces(value: MediaType.APPLICATION_JSON)
+io.micronaut.http.HttpResponse <strong>saveField</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Saves the custom field definition.
 
  <h3>Body</h3>
@@ -451,10 +460,10 @@ io.micronaut.http.HttpResponse <strong>saveField</strong>(io.micronaut.http.Http
                         <a name="saveFieldOrder(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.http.annotation.PostPost
-@io.micronaut.http.annotation.ProducesProduces
-io.micronaut.http.HttpResponse <strong>saveFieldOrder</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+@io.micronaut.http.annotation.Post(value: /saveFieldOrder)
+@io.micronaut.http.annotation.Produces(value: MediaType.APPLICATION_JSON)
+io.micronaut.http.HttpResponse <strong>saveFieldOrder</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Saves the GUI definition field order.
 
  <h3>Body</h3>

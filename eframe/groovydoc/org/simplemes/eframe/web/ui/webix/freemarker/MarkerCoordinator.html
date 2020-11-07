@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class MarkerCoordinator
+extends java.lang.Object</pre>
 
     <p> This is used to coordinate between multiple markers that need to produce a legal web page.
  This holds various chunks of javascript/HTML produced by the markers and stored in
@@ -152,7 +158,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#others">others</a></code><br>A place to store other elements.  </td>
                         </tr>
                         
@@ -237,7 +243,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#addPrescript(java.lang.String)">addPrescript</a></strong>(java.lang.String pre)</code><br>Adds the given pre script text to the end of the current prescript. </td>
+                            <td class="colLast"><code><strong><a href="#addPrescript(java.lang.String)">addPrescript</a></strong>(java.lang.String pre)</code><br>Adds the given pre script text to the end of the current prescript.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -257,13 +263,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getPrescript()">getPrescript</a></strong>()</code><br>Returns the current prescript (as a string). </td>
+                            <td class="colLast"><code><strong><a href="#getPrescript()">getPrescript</a></strong>()</code><br>Returns the current prescript (as a string).</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Integer</code></td>
-                            <td class="colLast"><code><strong><a href="#getUniqueIDCounter()">getUniqueIDCounter</a></strong>()</code><br>Increments the unique counter and returns the value. </td>
+                            <td class="colLast"><code><strong><a href="#getUniqueIDCounter()">getUniqueIDCounter</a></strong>()</code><br>Increments the unique counter and returns the value.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -343,7 +349,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="others"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../../../Map.html'>Map</a> <strong>others</strong></h4>
+                                <h4>private&nbsp;java.util.Map <strong>others</strong></h4>
                                 <p> A place to store other elements.  These are used when there the coordination is only needed between two markers.
  The key should be a constant in one of the markers.</p>
                             </li>
@@ -474,7 +480,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="toString()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>toString</strong>()</h4>
                                 <p></p>
                             </li>

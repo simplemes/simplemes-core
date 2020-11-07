@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+class TaskMenu
+extends java.lang.Object</pre>
 
     <p> Defines a task menu which has folders and tasks the user can execute.
  This class maintains the menu items/folders for a given task menu.</p>
@@ -198,7 +205,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;<a href='../../../../../org/simplemes/eframe/web/task/TaskMenuFolder.html'>TaskMenuFolder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildFoldersIfNeeded(List, List)">buildFoldersIfNeeded</a></strong>(<a href='../../../../../List.html'>List</a> currentFolders, <a href='../../../../../List.html'>List</a> menuFolders)</code><br>This will build the folders in the correct hierarchy.  </td>
+                            <td class="colLast"><code><strong><a href="#buildFoldersIfNeeded(List, List)">buildFoldersIfNeeded</a></strong>(java.util.List&lt;<a href='../../../../../org/simplemes/eframe/web/task/TaskMenuFolder.html' title='TaskMenuFolder'>TaskMenuFolder</a>&gt; currentFolders, java.util.List&lt;<a href='../../../../../org/simplemes/eframe/web/task/TaskMenuFolder.html' title='TaskMenuFolder'>TaskMenuFolder</a>&gt; menuFolders)</code><br>This will build the folders in the correct hierarchy.  </td>
                         </tr>
                         
                         <tr class="altColor">
@@ -327,7 +334,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="buildFoldersIfNeeded(List, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../org/simplemes/eframe/web/task/TaskMenuFolder.html'>TaskMenuFolder</a> <strong>buildFoldersIfNeeded</strong>(<a href='../../../../../List.html'>List</a> currentFolders, <a href='../../../../../List.html'>List</a> menuFolders)</h4>
+                                <h4>protected&nbsp;<a href='../../../../../org/simplemes/eframe/web/task/TaskMenuFolder.html'>TaskMenuFolder</a> <strong>buildFoldersIfNeeded</strong>(java.util.List&lt;<a href='../../../../../org/simplemes/eframe/web/task/TaskMenuFolder.html' title='TaskMenuFolder'>TaskMenuFolder</a>&gt; currentFolders, java.util.List&lt;<a href='../../../../../org/simplemes/eframe/web/task/TaskMenuFolder.html' title='TaskMenuFolder'>TaskMenuFolder</a>&gt; menuFolders)</h4>
                                 <p> This will build the folders in the correct hierarchy.  It will add them to the current folder list
  and return the lowest level folder. <DL><DT><B>Parameters:</B></DT><DD><code>currentFolders</code> -  The current level of folders being processed.</DD><DD><code>menuFolders</code> -  The list of folders to process from the current level.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The lowest level folder.</DD></DL></p>
                             </li>
@@ -346,7 +353,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>void <strong>sort</strong>()</h4>
-                                <p> Sorts the folders and all sub folders.  Also sorts the menu items. See TaskMenuFolder for details.</p>
+                                <p> Sorts the folders and all sub folders.  Also sorts the menu items. See <a href='../../../../../org/simplemes/eframe/web/task/TaskMenuFolder.html' title='TaskMenuFolder'>TaskMenuFolder</a> for details.</p>
                             </li>
                         </ul>
                     

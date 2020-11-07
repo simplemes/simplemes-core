@@ -101,21 +101,21 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../../org/simplemes/mes/product/RoutingTrait.html'>RoutingTrait</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@io.micronaut.data.annotation.MappedEntityMappedEntity
-@org.simplemes.eframe.domain.annotation.DomainEntityDomainEntity
-@com.fasterxml.jackson.annotation.JsonFilterJsonFilter
-@java.lang.SuppressWarningsSuppressWarnings
-@groovy.transform.ToStringToString
-@groovy.transform.EqualsAndHashCodeEqualsAndHashCode
+
+<pre>@io.micronaut.data.annotation.MappedEntity
+@org.simplemes.eframe.domain.annotation.DomainEntity
+@com.fasterxml.jackson.annotation.JsonFilter(value: searchableFilter)
+@java.lang.SuppressWarnings(value: unused)
+@groovy.transform.ToString(includeNames: true, includePackage: false)
+@groovy.transform.EqualsAndHashCode(includes: [product])
 class Product
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../../org/simplemes/mes/product/RoutingTrait.html'>RoutingTrait</a></pre>
 
     <p> Defines the a product (part) built or used within the system.
  A product is a part or object that is produced on your shop floor or purchased from external sources.
@@ -152,12 +152,12 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateCreated">dateCreated</a></code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateUpdated">dateUpdated</a></code><br></td>
                         </tr>
                         
@@ -198,7 +198,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/mes/product/domain/ProductOperation.html' title='ProductOperation'>ProductOperation</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#operations">operations</a></code><br>The operations used only by this product.  </td>
                         </tr>
                         
@@ -219,7 +219,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -279,19 +279,19 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/mes/product/RoutingTrait.html'>RoutingTrait</a></code></td>
-                            <td class="colLast"><code><strong><a href="#determineEffectiveRouting()">determineEffectiveRouting</a></strong>()</code><br>Determines the effective routing to use for this product. </td>
+                            <td class="colLast"><code><strong><a href="#determineEffectiveRouting()">determineEffectiveRouting</a></strong>()</code><br>Determines the effective routing to use for this product.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setOperations(List)">setOperations</a></strong>(<a href='../../../../../List.html'>List</a> operations)</code><br>Sets the operations. </td>
+                            <td class="colLast"><code><strong><a href="#setOperations(List)">setOperations</a></strong>(java.util.List&lt;OperationTrait&gt; operations)</code><br>Sets the operations.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toStringLocalized(Locale)">toStringLocalized</a></strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</code><br>Build a human-readable version of this object, localized.
+                            <td class="colLast"><code><strong><a href="#toStringLocalized(java.util.Locale)">toStringLocalized</a></strong>(java.util.Locale locale)</code><br>Build a human-readable version of this object, localized.
  </td>
                         </tr>
                         
@@ -341,7 +341,7 @@ extends java.lang.Object
                         <a name="dateCreated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateCreated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateCreated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -349,7 +349,7 @@ extends java.lang.Object
                         <a name="dateUpdated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateUpdated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateUpdated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -415,7 +415,7 @@ extends java.lang.Object
                         <a name="operations"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../List.html'>List</a> <strong>operations</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/mes/product/domain/ProductOperation.html' title='ProductOperation'>ProductOperation</a>&gt; <strong>operations</strong></h4>
                                 <p> The operations used only by this product.  No other products will use this list of operations.</p>
                             </li>
                         </ul>
@@ -451,7 +451,7 @@ extends java.lang.Object
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -510,16 +510,16 @@ extends java.lang.Object
                         <a name="setOperations(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-void <strong>setOperations</strong>(<a href='../../../../../List.html'>List</a> operations)</h4>
+                                <h4>@java.lang.Override
+void <strong>setOperations</strong>(java.util.List&lt;OperationTrait&gt; operations)</h4>
                                 <p> Sets the operations. <DL><DT><B>Parameters:</B></DT><DD><code>operations</code> -  The operations.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="toStringLocalized(Locale)"><!-- --></a>
+                        <a name="toStringLocalized(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>toStringLocalized</strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>java.lang.String <strong>toStringLocalized</strong>(java.util.Locale locale)</h4>
                                 <p> Build a human-readable version of this object, localized.
  Simply uses toShortString(). <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale to display the enum display text.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The human-readable string.</DD></DL></p>
                             </li>

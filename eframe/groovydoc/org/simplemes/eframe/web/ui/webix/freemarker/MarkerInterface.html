@@ -97,6 +97,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <ul class="blockList">
         <li class="blockList">
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>interface MarkerInterface</pre>
 
     <p> Defines the methods that a freemarker marker implementation will provide.  This is used to generate the
  HTML page output for custom markers.</p>
@@ -175,14 +180,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getRequestParameters()">getRequestParameters</a></strong>()</code><br>Gets the parameters from the HTTP request that called this marker. </td>
+                            <td class="colLast"><code>java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#getRequestParameters()">getRequestParameters</a></strong>()</code><br>Gets the parameters from the HTTP request that called this marker.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setValues(io.micronaut.context.env.Environment, Map, freemarker.template.TemplateModel, freemarker.template.TemplateDirectiveBody)">setValues</a></strong>(io.micronaut.context.env.Environment env, <a href='../../../../../../../Map.html'>Map</a> params, freemarker.template.TemplateModel[] loopVars, freemarker.template.TemplateDirectiveBody body)</code><br>Sets the values passed from the directive execution.  </td>
+                            <td class="colLast"><code><strong><a href="#setValues(io.micronaut.context.env.Environment, java.util.Map, freemarker.template.TemplateModel, freemarker.template.TemplateDirectiveBody)">setValues</a></strong>(io.micronaut.context.env.Environment env, java.util.Map params, freemarker.template.TemplateModel[] loopVars, freemarker.template.TemplateDirectiveBody body)</code><br>Sets the values passed from the directive execution.  </td>
                         </tr>
                         
                         <tr class="altColor">
@@ -261,15 +266,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getRequestParameters()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../../../Map.html'>Map</a> <strong>getRequestParameters</strong>()</h4>
+                                <h4>java.util.Map <strong>getRequestParameters</strong>()</h4>
                                 <p> Gets the parameters from the HTTP request that called this marker. <DL><DT><B>Returns:</B></DT><DD>The parameters from the HTTP request.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="setValues(io.micronaut.context.env.Environment, Map, freemarker.template.TemplateModel, freemarker.template.TemplateDirectiveBody)"><!-- --></a>
+                        <a name="setValues(io.micronaut.context.env.Environment, java.util.Map, freemarker.template.TemplateModel, freemarker.template.TemplateDirectiveBody)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>setValues</strong>(io.micronaut.context.env.Environment env, <a href='../../../../../../../Map.html'>Map</a> params, freemarker.template.TemplateModel[] loopVars, freemarker.template.TemplateDirectiveBody body)</h4>
+                                <h4>void <strong>setValues</strong>(io.micronaut.context.env.Environment env, java.util.Map params, freemarker.template.TemplateModel[] loopVars, freemarker.template.TemplateDirectiveBody body)</h4>
                                 <p> Sets the values passed from the directive execution.  This includes the values needed to build the HTML output. <DL><DT><B>Parameters:</B></DT><DD>env</DD><DD>params</DD><DD>loopVars</DD><DD>body</DD></DL></p>
                             </li>
                         </ul>

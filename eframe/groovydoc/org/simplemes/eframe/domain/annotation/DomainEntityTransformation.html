@@ -101,17 +101,17 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>org.codehaus.groovy.transform.ASTTransformation</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
-@com.github.javaparser.ast.expr.NormalAnnotationExprGroovyASTTransformation
+
+<pre>@java.lang.SuppressWarnings({"DefaultAnnotationParam"})
+@org.codehaus.groovy.transform.GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 public&nbsp;class DomainEntityTransformation
 extends java.lang.Object
-
-</pre>
-
-
+implements org.codehaus.groovy.transform.ASTTransformation</pre>
 
     <p> This class provides the compile-time AST transformation that adds an extensible field to the given
  domain class.  This injects the custom field holder as a persistent field with a given maxSize.  Also
@@ -234,7 +234,7 @@ extends java.lang.Object
                         <a name="DomainEntityTransformation()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings("unused")
 public&nbsp;<strong>DomainEntityTransformation</strong>()</h4>
                                 <p> Basic Constructor.
    </p>

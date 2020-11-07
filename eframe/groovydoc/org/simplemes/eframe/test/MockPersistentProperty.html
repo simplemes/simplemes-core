@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>org.spockframework.mock.IDefaultResponse</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.transform.ToStringToString
+
+<pre>@groovy.transform.ToString(includePackage: false, includeNames: true)
 class MockPersistentProperty
 extends java.lang.Object
-
-</pre>
-
-
+implements org.spockframework.mock.IDefaultResponse</pre>
 
     <p> A very simple mock/stub of a PersistentProperty for mocked domain use.
  This is used mainly to provide a list of persistent fields.</p>
@@ -331,7 +331,7 @@ extends java.lang.Object
                         <a name="respond(org.spockframework.mock.IMockInvocation)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.Object <strong>respond</strong>(org.spockframework.mock.IMockInvocation invocation)</h4>
                                 <p></p>
                             </li>

@@ -98,6 +98,17 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.data.annotation.MappedEntity
+@<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntity.html' title='DomainEntity'>DomainEntity</a>
+@groovy.transform.EqualsAndHashCode(includes: [dashboard])
+@groovy.transform.ToString(includePackage: false, includeNames: true, excludes: [dateCreated, dateUpdated])
+class DashboardConfig
+extends java.lang.Object</pre>
 
     <p> Defines the basic dashboard configuration.  This provides the framework to execute application-level pages (activities)
  for configurable dashboards.  This class defines the persistent dashboard configuration for pre-defined dashboards
@@ -156,7 +167,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/dashboard/domain/DashboardButton.html' title='DashboardButton'>DashboardButton</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#buttons">buttons</a></code><br>A list of buttons display in the dashboard.
  </td>
                         </tr>
@@ -173,18 +184,18 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/dashboard/domain/DashboardPanel.html' title='DashboardPanel'>DashboardPanel</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dashboardPanels">dashboardPanels</a></code><br>A list of display panels configured for this dashboard.
  </td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateCreated">dateCreated</a></code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateUpdated">dateUpdated</a></code><br></td>
                         </tr>
                         
@@ -200,7 +211,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/dashboard/domain/DashboardPanelSplitter.html' title='DashboardPanelSplitter'>DashboardPanelSplitter</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#splitterPanels">splitterPanels</a></code><br>A list of display panels configured for this dashboard.
  </td>
                         </tr>
@@ -211,7 +222,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -289,25 +300,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#hierarchyToString()">hierarchyToString</a></strong>()</code><br>Build human readable version of this dashboard's hierarchy. </td>
+                            <td class="colLast"><code><strong><a href="#hierarchyToString()">hierarchyToString</a></strong>()</code><br>Build human readable version of this dashboard's hierarchy.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#validate()">validate</a></strong>()</code><br>Validates the config. </td>
+                            <td class="colLast"><code>java.util.List&lt;ValidationError&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#validate()">validate</a></strong>()</code><br>Validates the config.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;ValidationError&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#validateButtons()">validateButtons</a></strong>()</code><br>Validate that the buttons are valid.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#validatePanels()">validatePanels</a></strong>()</code><br>Validate that the panels have valid panel (names) and parent panel references. </td>
+                            <td class="colLast"><code>java.util.List&lt;ValidationError&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#validatePanels()">validatePanels</a></strong>()</code><br>Validate that the panels have valid panel (names) and parent panel references.</td>
                         </tr>
                         
                     </table>
@@ -374,7 +385,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="buttons"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../List.html'>List</a> <strong>buttons</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/dashboard/domain/DashboardButton.html' title='DashboardButton'>DashboardButton</a>&gt; <strong>buttons</strong></h4>
                                 <p> A list of buttons display in the dashboard.
  <b>Optional.</b></p>
                             </li>
@@ -403,7 +414,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dashboardPanels"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../List.html'>List</a> <strong>dashboardPanels</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/dashboard/domain/DashboardPanel.html' title='DashboardPanel'>DashboardPanel</a>&gt; <strong>dashboardPanels</strong></h4>
                                 <p> A list of display panels configured for this dashboard.
  <b>Required.</b></p>
                             </li>
@@ -412,7 +423,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateCreated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateCreated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateCreated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -420,7 +431,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateUpdated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateUpdated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateUpdated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -445,7 +456,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="splitterPanels"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../List.html'>List</a> <strong>splitterPanels</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/dashboard/domain/DashboardPanelSplitter.html' title='DashboardPanelSplitter'>DashboardPanelSplitter</a>&gt; <strong>splitterPanels</strong></h4>
                                 <p> A list of display panels configured for this dashboard.
  <b>Required.</b></p>
                             </li>
@@ -462,7 +473,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -513,7 +524,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="beforeSave()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: unused)
 java.lang.Object <strong>beforeSave</strong>()</h4>
                                 <p></p>
                             </li>
@@ -522,7 +533,7 @@ java.lang.Object <strong>beforeSave</strong>()</h4>
                         <a name="beforeValidate()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: [GroovyAssignabilityCheck])
 java.lang.Object <strong>beforeValidate</strong>()</h4>
                                 <p> Called before validate happens.</p>
                             </li>
@@ -531,7 +542,7 @@ java.lang.Object <strong>beforeValidate</strong>()</h4>
                         <a name="clearOtherDefaultDashboardsIfNeeded()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: UnnecessaryQualifiedReference)
 protected&nbsp;java.lang.Object <strong>clearOtherDefaultDashboardsIfNeeded</strong>()</h4>
                                 <p> Internal method to clear the other dashboards if the default flag is set on this dashboard.</p>
                             </li>
@@ -548,7 +559,7 @@ protected&nbsp;java.lang.Object <strong>clearOtherDefaultDashboardsIfNeeded</str
                         <a name="validate()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>validate</strong>()</h4>
+                                <h4>java.util.List&lt;ValidationError&gt; <strong>validate</strong>()</h4>
                                 <p> Validates the config. <DL><DT><B>Returns:</B></DT><DD>A list of errors (may be empty).</DD></DL></p>
                             </li>
                         </ul>
@@ -556,7 +567,7 @@ protected&nbsp;java.lang.Object <strong>clearOtherDefaultDashboardsIfNeeded</str
                         <a name="validateButtons()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>validateButtons</strong>()</h4>
+                                <h4>java.util.List&lt;ValidationError&gt; <strong>validateButtons</strong>()</h4>
                                 <p> Validate that the buttons are valid.  Checks the button activities for valid panel (names). <DL><DT><B>Parameters:</B></DT><DD><code>buttons</code> -  The list of buttons.</DD><DD><code>config</code> -  The rest of the dashboard config.</DD></DL></p>
                             </li>
                         </ul>
@@ -564,7 +575,7 @@ protected&nbsp;java.lang.Object <strong>clearOtherDefaultDashboardsIfNeeded</str
                         <a name="validatePanels()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>validatePanels</strong>()</h4>
+                                <h4>java.util.List&lt;ValidationError&gt; <strong>validatePanels</strong>()</h4>
                                 <p> Validate that the panels have valid panel (names) and parent panel references. <DL><DT><B>Parameters:</B></DT><DD><code>panels</code> -  The list of panels.</DD></DL></p>
                             </li>
                         </ul>

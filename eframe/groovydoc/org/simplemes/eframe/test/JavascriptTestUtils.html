@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+class JavascriptTestUtils
+extends java.lang.Object</pre>
 
     <p> Some utilities for testing generated Javascript code.  Basic testing only.
  Uses the Java built-in ECMAScript engine (Rhino).
@@ -222,7 +229,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>static&nbsp;java.util.List&lt;java.lang.String&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#extractScriptsFromPage(java.lang.String)">extractScriptsFromPage</a></strong>(java.lang.String page)</code><br>Extracts the scripts from the given page text.  </td>
                         </tr>
                         
@@ -323,7 +330,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="checkScript(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: CatchThrowable)
 static&nbsp;boolean <strong>checkScript</strong>(java.lang.String script)</h4>
                                 <p> Checks the syntax for the given valid javascript formatting.  This is used on the actual Javascript. <DL><DT><B>Parameters:</B></DT><DD><code>script</code> -  The javascript.</DD></DL><DL><DT><B>Returns:</B></DT><DD>True if passed.</DD></DL></p>
                             </li>
@@ -332,7 +339,7 @@ static&nbsp;boolean <strong>checkScript</strong>(java.lang.String script)</h4>
                         <a name="checkScriptFragment(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: CatchThrowable)
 static&nbsp;boolean <strong>checkScriptFragment</strong>(java.lang.String fragment)</h4>
                                 <p> Checks the syntax for the given valid javascript formatting.  This is used on fragments that typically
  used as values in a variable or in a javascript object created for the GUI toolkit. <DL><DT><B>Parameters:</B></DT><DD><code>fragment</code> -  The fragment (e.g. ' { view: "button", label: "label"} '</DD></DL></p>
@@ -342,7 +349,7 @@ static&nbsp;boolean <strong>checkScriptFragment</strong>(java.lang.String fragme
                         <a name="checkScriptsOnPage(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: CatchThrowable)
 static&nbsp;boolean <strong>checkScriptsOnPage</strong>(java.lang.String page)</h4>
                                 <p> Checks the given page text for all &lt;script&gt; sections and compiles them in Javascript.
  The ECMAScript engine throws parsing exceptions when the javascript is badly formed.
@@ -381,7 +388,7 @@ static&nbsp;boolean <strong>checkScriptsOnPage</strong>(java.lang.String page)</
                         <a name="extractScriptsFromPage(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../List.html'>List</a> <strong>extractScriptsFromPage</strong>(java.lang.String page)</h4>
+                                <h4>static&nbsp;java.util.List&lt;java.lang.String&gt; <strong>extractScriptsFromPage</strong>(java.lang.String page)</h4>
                                 <p> Extracts the scripts from the given page text.  Finds all &lt;script&gt; sections and returns them as
  a list of scripts.<p/>
  Currently does not handle &lt;/script&gt; embedded in a quoted string in the script section.

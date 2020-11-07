@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.transform.ToString(includePackage: false, includeNames: true)
+class SearchHit
+extends java.lang.Object</pre>
 
     <p> A single search hit from the search engine.</p>
 
@@ -155,7 +163,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br>The object ID.</td>
                         </tr>
                         
@@ -188,8 +196,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#SearchHit(Map)">SearchHit</a>
-                                (<a href='../../../../Map.html'>Map</a> jsonMap)</code><br>Convenience constructor that pulls the values from the search result JSON Map from the search engine.</td>
+                                <code><a href="#SearchHit(java.util.Map)">SearchHit</a>
+                                (java.util.Map jsonMap)</code><br>Convenience constructor that pulls the values from the search result JSON Map from the search engine.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -228,25 +236,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getDisplayValue()">getDisplayValue</a></strong>()</code><br>Builds the display value for this hit. </td>
+                            <td class="colLast"><code><strong><a href="#getDisplayValue()">getDisplayValue</a></strong>()</code><br>Builds the display value for this hit.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>java.lang.Class</code></td>
-                            <td class="colLast"><code><strong><a href="#getDomainClass()">getDomainClass</a></strong>()</code><br>This will read the actual domain object from the DB. </td>
+                            <td class="colLast"><code>java.lang.Class&lt;DomainEntityInterface&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getDomainClass()">getDomainClass</a></strong>()</code><br>This will read the actual domain object from the DB.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getLink()">getLink</a></strong>()</code><br>Builds the link HREF for this search hit. </td>
+                            <td class="colLast"><code><strong><a href="#getLink()">getLink</a></strong>()</code><br>Builds the link HREF for this search hit.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#getObject()">getObject</a></strong>()</code><br>This will read the actual domain object from the DB. </td>
+                            <td class="colLast"><code><strong><a href="#getObject()">getObject</a></strong>()</code><br>This will read the actual domain object from the DB.</td>
                         </tr>
                         
                     </table>
@@ -335,7 +343,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p> The object ID.</p>
                             </li>
                         </ul>
@@ -362,11 +370,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="SearchHit(Map)"><!-- --></a>
+                        <a name="SearchHit(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-<strong>SearchHit</strong>(<a href='../../../../Map.html'>Map</a> jsonMap)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+<strong>SearchHit</strong>(java.util.Map jsonMap)</h4>
                                 <p> Convenience constructor that pulls the values from the search result JSON Map from the search engine. <DL><DT><B>Parameters:</B></DT><DD><code>jsonMap</code> -  The parsed JSON (as  map) from the search engine.</DD></DL></p>
                             </li>
                         </ul>
@@ -411,7 +419,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getDomainClass()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.Class <strong>getDomainClass</strong>()</h4>
+                                <h4>java.lang.Class&lt;DomainEntityInterface&gt; <strong>getDomainClass</strong>()</h4>
                                 <p> This will read the actual domain object from the DB. <DL><DT><B>Returns:</B></DT><DD>The object.</DD></DL></p>
                             </li>
                         </ul>

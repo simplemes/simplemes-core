@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+class AssembledComponentAction
+extends org.simplemes.mes.system.ScanAction</pre>
 
     <p> The action/event triggered when a component has been assembled by a scan.
  The client side action is to publish the ORDER_COMPONENT_STATUS_CHANGED event on the client dashboard.</p>
@@ -245,7 +252,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class org.simplemes.mes.system.ScanAction</code></td>
-                            <td class="colLast"><code>org.simplemes.mes.system.ScanAction#equals(java.lang.Object), org.simplemes.mes.system.ScanAction#hashCode(), org.simplemes.mes.system.ScanAction#getType(), org.simplemes.mes.system.ScanAction#getSource(), org.simplemes.mes.system.ScanAction#canEqual(java.lang.Object), org.simplemes.mes.system.ScanAction#setSource(java.lang.String), org.simplemes.mes.system.ScanAction#super$1$hashCode(), org.simplemes.mes.system.ScanAction#super$1$equals(java.lang.Object), org.simplemes.mes.system.ScanAction#getMetaClass(), org.simplemes.mes.system.ScanAction#setMetaClass(groovy.lang.MetaClass), org.simplemes.mes.system.ScanAction#setType(java.lang.String), org.simplemes.mes.system.ScanAction#wait(long, int), org.simplemes.mes.system.ScanAction#wait(), org.simplemes.mes.system.ScanAction#wait(long), org.simplemes.mes.system.ScanAction#toString(), org.simplemes.mes.system.ScanAction#getClass(), org.simplemes.mes.system.ScanAction#notify(), org.simplemes.mes.system.ScanAction#notifyAll(), org.simplemes.mes.system.ScanAction#getProperty(java.lang.String), org.simplemes.mes.system.ScanAction#setProperty(java.lang.String, java.lang.Object), org.simplemes.mes.system.ScanAction#invokeMethod(java.lang.String, java.lang.Object)</code></td>
+                            <td class="colLast"><code>org.simplemes.mes.system.ScanAction#equals(java.lang.Object), org.simplemes.mes.system.ScanAction#hashCode(), org.simplemes.mes.system.ScanAction#getType(), org.simplemes.mes.system.ScanAction#getSource(), org.simplemes.mes.system.ScanAction#setSource(java.lang.String), org.simplemes.mes.system.ScanAction#super$1$equals(java.lang.Object), org.simplemes.mes.system.ScanAction#super$1$hashCode(), org.simplemes.mes.system.ScanAction#canEqual(java.lang.Object), org.simplemes.mes.system.ScanAction#getMetaClass(), org.simplemes.mes.system.ScanAction#setMetaClass(groovy.lang.MetaClass), org.simplemes.mes.system.ScanAction#setType(java.lang.String), org.simplemes.mes.system.ScanAction#wait(long, int), org.simplemes.mes.system.ScanAction#wait(), org.simplemes.mes.system.ScanAction#wait(long), org.simplemes.mes.system.ScanAction#toString(), org.simplemes.mes.system.ScanAction#getClass(), org.simplemes.mes.system.ScanAction#notify(), org.simplemes.mes.system.ScanAction#notifyAll(), org.simplemes.mes.system.ScanAction#getProperty(java.lang.String), org.simplemes.mes.system.ScanAction#setProperty(java.lang.String, java.lang.Object), org.simplemes.mes.system.ScanAction#invokeMethod(java.lang.String, java.lang.Object)</code></td>
                         </tr>
                     </table>
                    </ul>
@@ -350,7 +357,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getType()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>getType</strong>()</h4>
                                 <p> The recommended client action.</p>
                             </li>

@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.transform.ToString(includeNames: true, includePackage: false)
+class CRUDGUITester
+extends java.lang.Object</pre>
 
     <p> A full-scale GUI tester to test a standardized set of definition pages for a single domain/controller.
  This tester covers list/show/create/edit pages for a given domain.  It performs these test in the current
@@ -164,7 +172,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../Locale.html'>Locale</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.Locale</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#currentLocale">currentLocale</a></code></td>
                             <td class="colLast">The locale being tested.</td>
                         </tr>
@@ -176,25 +184,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#effectiveCreateFields">effectiveCreateFields</a></code></td>
                             <td class="colLast">The effective list of fields that are displayed in the create page.</td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#effectiveEditFields">effectiveEditFields</a></code></td>
                             <td class="colLast">The effective list of fields that are displayed in the edit page.</td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#effectiveListColumns">effectiveListColumns</a></code></td>
                             <td class="colLast">The effective list of columns that are displayed in the list page.</td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#effectiveShowFields">effectiveShowFields</a></code></td>
                             <td class="colLast">The effective list of fields that are displayed in the show page.</td>
                         </tr>
@@ -206,7 +214,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#fieldOrder">fieldOrder</a></code></td>
                             <td class="colLast">The fieldOrder list (flattened) from the domain class.</td>
                         </tr>
@@ -218,13 +226,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;static&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;static&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#missingPropertySuffixes">missingPropertySuffixes</a></code></td>
                             <td class="colLast"></td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;static&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;static&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#possibleBadLabelSuffixes">possibleBadLabelSuffixes</a></code></td>
                             <td class="colLast">A list of string that indicate a piece of text might not be properly internationalized.</td>
                         </tr>
@@ -250,7 +258,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Closure.html'>Closure</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;groovy.lang.Closure</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#_createClosure">_createClosure</a></code><br>A closure to run when the create page is tested.  </td>
                         </tr>
                         
@@ -270,7 +278,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Closure.html'>Closure</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;groovy.lang.Closure</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#_editClosure">_editClosure</a></code><br>A closure to run when the edit page is tested.  </td>
                         </tr>
                         
@@ -310,18 +318,18 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#_minimalParams">_minimalParams</a></code><br>The parameters needed to create a second test record with the minimal required fields specified.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#_readOnlyFields">_readOnlyFields</a></code><br>A list of fields that are not editable on create/edit pages.</td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#_recordParams">_recordParams</a></code><br>Values to set in the domain object for created and edit.
  </td>
                         </tr>
@@ -337,7 +345,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#_unlabeledFields">_unlabeledFields</a></code><br>A list of fields that do not have a label.</td>
                         </tr>
                         
@@ -347,22 +355,22 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#effectiveCreateFieldsByPanel">effectiveCreateFieldsByPanel</a></code><br>The fields to be displayed in a specific panel on the create page.  </td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#effectiveEditFieldsByPanel">effectiveEditFieldsByPanel</a></code><br>The fields to be displayed in a specific panel on the edit page.  </td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#effectiveShowFieldsByPanel">effectiveShowFieldsByPanel</a></code><br>The fields to be displayed in a specific panel.  </td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map&lt;java.lang.Class, java.util.List&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#recordsCreated">recordsCreated</a></code><br>Defines the list of record created for class.  </td>
                         </tr>
                         
@@ -427,13 +435,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#addInlineGridRow(java.lang.String, Map, org.simplemes.eframe.data.FieldDefinitionInterface)">addInlineGridRow</a></strong>(java.lang.String fieldName, <a href='../../../../Map.html'>Map</a> rowData, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</code><br>Adds a single row to the given inline grid. </td>
+                            <td class="colLast"><code><strong><a href="#addInlineGridRow(java.lang.String, java.util.Map, org.simplemes.eframe.data.FieldDefinitionInterface)">addInlineGridRow</a></strong>(java.lang.String fieldName, java.util.Map rowData, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</code><br>Adds a single row to the given inline grid.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#assertLocalized(java.lang.String, java.lang.String, java.lang.String)">assertLocalized</a></strong>(java.lang.String text, java.lang.String element, java.lang.String page)</code><br>Verifies that the given text has been localized and the text was found in the properties file. </td>
+                            <td class="colLast"><code><strong><a href="#assertLocalized(java.lang.String, java.lang.String, java.lang.String)">assertLocalized</a></strong>(java.lang.String text, java.lang.String element, java.lang.String page)</code><br>Verifies that the given text has been localized and the text was found in the properties file.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -445,7 +453,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#checkChildRecordValues(java.lang.String, java.lang.Object, Collection)">checkChildRecordValues</a></strong>(java.lang.String fieldName, java.lang.Object record, <a href='../../../../Collection.html'>Collection</a> expectedValues)</code><br>Checks the child record values against the input values. </td>
+                            <td class="colLast"><code><strong><a href="#checkChildRecordValues(java.lang.String, java.lang.Object, java.util.Collection)">checkChildRecordValues</a></strong>(java.lang.String fieldName, java.lang.Object record, java.util.Collection expectedValues)</code><br>Checks the child record values against the input values.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -457,25 +465,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#checkFieldLabel(java.lang.String)">checkFieldLabel</a></strong>(java.lang.String fieldName)</code><br>Checks the field label. </td>
+                            <td class="colLast"><code><strong><a href="#checkFieldLabel(java.lang.String)">checkFieldLabel</a></strong>(java.lang.String fieldName)</code><br>Checks the field label.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#checkFieldValue(java.lang.String, org.simplemes.eframe.domain.DomainReference, org.simplemes.eframe.data.FieldDefinitionInterface, boolean)">checkFieldValue</a></strong>(java.lang.String fieldName, <a href='../../../../org/simplemes/eframe/domain/DomainReference.html'>DomainReference</a> expectedRef, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef, boolean editable)</code><br>Checks the field value against the expected value. </td>
+                            <td class="colLast"><code><strong><a href="#checkFieldValue(java.lang.String, org.simplemes.eframe.domain.DomainReference, org.simplemes.eframe.data.FieldDefinitionInterface, boolean)">checkFieldValue</a></strong>(java.lang.String fieldName, <a href='../../../../org/simplemes/eframe/domain/DomainReference.html'>DomainReference</a> expectedRef, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef, boolean editable)</code><br>Checks the field value against the expected value.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#checkInlineGridValues(java.lang.String, Collection, org.simplemes.eframe.data.FieldDefinitionInterface)">checkInlineGridValues</a></strong>(java.lang.String fieldName, <a href='../../../../Collection.html'>Collection</a> expectedValues, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</code><br>Checks the inline grid displayed values against the expected values for the list. </td>
+                            <td class="colLast"><code><strong><a href="#checkInlineGridValues(java.lang.String, java.util.Collection, org.simplemes.eframe.data.FieldDefinitionInterface)">checkInlineGridValues</a></strong>(java.lang.String fieldName, java.util.Collection expectedValues, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</code><br>Checks the inline grid displayed values against the expected values for the list.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#checkListColumn(java.lang.String, java.lang.String, java.lang.Object, int)">checkListColumn</a></strong>(java.lang.String columnName, java.lang.String listHTMLID, java.lang.Object value, int row)</code><br>Checks a single column in the list. </td>
+                            <td class="colLast"><code><strong><a href="#checkListColumn(java.lang.String, java.lang.String, java.lang.Object, int)">checkListColumn</a></strong>(java.lang.String columnName, java.lang.String listHTMLID, java.lang.Object value, int row)</code><br>Checks a single column in the list.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -487,25 +495,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#checkLookedUpLabel(java.lang.String)">checkLookedUpLabel</a></strong>(java.lang.String label)</code><br>Verifies that the given label is looked up and found in the messages.properties. </td>
+                            <td class="colLast"><code><strong><a href="#checkLookedUpLabel(java.lang.String)">checkLookedUpLabel</a></strong>(java.lang.String label)</code><br>Verifies that the given label is looked up and found in the messages.properties.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#checkRecord(java.lang.Object, Map, boolean)">checkRecord</a></strong>(java.lang.Object record, <a href='../../../../Map.html'>Map</a> expectedValues, boolean ignoreDateFields)</code><br>Checks to see if the record's values matches the expected values. </td>
+                            <td class="colLast"><code><strong><a href="#checkRecord(java.lang.Object, java.util.Map, boolean)">checkRecord</a></strong>(java.lang.Object record, java.util.Map expectedValues, boolean ignoreDateFields)</code><br>Checks to see if the record's values matches the expected values.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#checkShowField(java.lang.String, org.simplemes.eframe.domain.DomainReference)">checkShowField</a></strong>(java.lang.String fieldName, <a href='../../../../org/simplemes/eframe/domain/DomainReference.html'>DomainReference</a> expectedRef)</code><br>Checks a single show field label and value. </td>
+                            <td class="colLast"><code><strong><a href="#checkShowField(java.lang.String, org.simplemes.eframe.domain.DomainReference)">checkShowField</a></strong>(java.lang.String fieldName, <a href='../../../../org/simplemes/eframe/domain/DomainReference.html'>DomainReference</a> expectedRef)</code><br>Checks a single show field label and value.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#checkToolbarButton(java.lang.String, java.lang.String, java.lang.String)">checkToolbarButton</a></strong>(java.lang.String page, java.lang.String id, java.lang.String destinationPage)</code><br>Verifies that the given toolbar button works. </td>
+                            <td class="colLast"><code><strong><a href="#checkToolbarButton(java.lang.String, java.lang.String, java.lang.String)">checkToolbarButton</a></strong>(java.lang.String page, java.lang.String id, java.lang.String destinationPage)</code><br>Verifies that the given toolbar button works.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -517,13 +525,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#clickButton(java.lang.String)">clickButton</a></strong>(java.lang.String id)</code><br>Click on the given button. </td>
+                            <td class="colLast"><code><strong><a href="#clickButton(java.lang.String)">clickButton</a></strong>(java.lang.String id)</code><br>Click on the given button.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#clickPanel(java.lang.String)">clickPanel</a></strong>(java.lang.String panel)</code><br>Click on the given panel to make sure it is displayed. </td>
+                            <td class="colLast"><code><strong><a href="#clickPanel(java.lang.String)">clickPanel</a></strong>(java.lang.String panel)</code><br>Click on the given panel to make sure it is displayed.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -553,7 +561,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#createClosure(Closure)">createClosure</a></strong>(<a href='../../../../Closure.html'>Closure</a> closure)</code><br>Set the closure to run when the create page is tested.  </td>
+                            <td class="colLast"><code><strong><a href="#createClosure(groovy.lang.Closure)">createClosure</a></strong>(groovy.lang.Closure closure)</code><br>Set the closure to run when the create page is tested.  </td>
                         </tr>
                         
                         <tr class="altColor">
@@ -565,20 +573,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#createRecord(Map)">createRecord</a></strong>(<a href='../../../../Map.html'>Map</a> params)</code><br>Creates a single domain record for the given set of parameters. </td>
+                            <td class="colLast"><code><strong><a href="#createRecord(java.util.Map)">createRecord</a></strong>(java.util.Map params)</code><br>Creates a single domain record for the given set of parameters.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#dashDOption(java.lang.String)">dashDOption</a></strong>(java.lang.String dashDOption)</code><br>The -D testOnly option from the command line (or simulated for unit testing). </td>
+                            <td class="colLast"><code><strong><a href="#dashDOption(java.lang.String)">dashDOption</a></strong>(java.lang.String dashDOption)</code><br>The -D testOnly option from the command line (or simulated for unit testing).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Collection.html'>Collection</a></code></td>
+                            <td class="colLast"><code>java.util.Collection</code></td>
                             <td class="colLast"><code><strong><a href="#determineExpectedRowsAfterSave(java.lang.String)">determineExpectedRowsAfterSave</a></strong>(java.lang.String fieldName)</code><br>Combines the minimal and record params values for child records into the list expected
- after create/edit is finished. </td>
+ after create/edit is finished.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -596,19 +604,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#doTest(Locale)">doTest</a></strong>(<a href='../../../../Locale.html'>Locale</a> locale)</code><br>Tests the domain/controller/pages in a single locale.</td>
+                            <td class="colLast"><code><strong><a href="#doTest(java.util.Locale)">doTest</a></strong>(java.util.Locale locale)</code><br>Tests the domain/controller/pages in a single locale.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#domain(java.lang.Class)">domain</a></strong>(java.lang.Class domain)</code><br>Sets the domain to test the CRUD GUIs for. </td>
+                            <td class="colLast"><code><strong><a href="#domain(java.lang.Class)">domain</a></strong>(java.lang.Class domain)</code><br>Sets the domain to test the CRUD GUIs for.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#editClosure(Closure)">editClosure</a></strong>(<a href='../../../../Closure.html'>Closure</a> closure)</code><br>Set the closure to run when the edit page is tested.  </td>
+                            <td class="colLast"><code><strong><a href="#editClosure(groovy.lang.Closure)">editClosure</a></strong>(groovy.lang.Closure closure)</code><br>Set the closure to run when the edit page is tested.  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -644,13 +652,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#fillInField(java.lang.String, java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)">fillInField</a></strong>(java.lang.String fieldName, java.lang.Object value, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</code><br>Fills in the field value. </td>
+                            <td class="colLast"><code><strong><a href="#fillInField(java.lang.String, java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)">fillInField</a></strong>(java.lang.String fieldName, java.lang.Object value, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</code><br>Fills in the field value.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#findRecord(Map)">findRecord</a></strong>(<a href='../../../../Map.html'>Map</a> params)</code><br>Finds the domain record in the DB for the given parameter set.  </td>
+                            <td class="colLast"><code><strong><a href="#findRecord(java.util.Map)">findRecord</a></strong>(java.util.Map params)</code><br>Finds the domain record in the DB for the given parameter set.  </td>
                         </tr>
                         
                         <tr class="altColor">
@@ -662,13 +670,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#formatExpectedValueForShow(java.lang.Object)">formatExpectedValueForShow</a></strong>(java.lang.Object object)</code><br>Format the expected value to a display format (string usually). </td>
+                            <td class="colLast"><code><strong><a href="#formatExpectedValueForShow(java.lang.Object)">formatExpectedValueForShow</a></strong>(java.lang.Object object)</code><br>Format the expected value to a display format (string usually).</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#go(java.lang.String)">go</a></strong>(java.lang.String subURI)</code><br>Sends the browser to the given page (relative to the domain's controller top level). </td>
+                            <td class="colLast"><code><strong><a href="#go(java.lang.String)">go</a></strong>(java.lang.String subURI)</code><br>Sends the browser to the given page (relative to the domain's controller top level).</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -692,32 +700,32 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#lookup(java.lang.String, List)">lookup</a></strong>(java.lang.String code, <a href='../../../../List.html'>List</a> args)</code><br>Lookup a code from the message bundle. </td>
+                            <td class="colLast"><code><strong><a href="#lookup(java.lang.String, java.util.List)">lookup</a></strong>(java.lang.String code, java.util.List args)</code><br>Lookup a code from the message bundle.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#lookupRequired(java.lang.String, List)">lookupRequired</a></strong>(java.lang.String code, <a href='../../../../List.html'>List</a> args)</code><br>Lookup a code from the message bundle, add the required flag (*). </td>
+                            <td class="colLast"><code><strong><a href="#lookupRequired(java.lang.String, java.util.List)">lookupRequired</a></strong>(java.lang.String code, java.util.List args)</code><br>Lookup a code from the message bundle, add the required flag (*).</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#minimalParams(Map)">minimalParams</a></strong>(<a href='../../../../Map.html'>Map</a> minimalParams)</code><br>The parameters needed to create a second test record with the minimal required fields specified.
+                            <td class="colLast"><code><strong><a href="#minimalParams(Map)">minimalParams</a></strong>(java.util.Map&lt;java.lang.String, java.lang.Object&gt; minimalParams)</code><br>The parameters needed to create a second test record with the minimal required fields specified.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#readOnlyFields(java.lang.String)">readOnlyFields</a></strong>(java.lang.String s)</code><br>A list of fields that are not editable in the create/edit pages. </td>
+                            <td class="colLast"><code><strong><a href="#readOnlyFields(java.lang.String)">readOnlyFields</a></strong>(java.lang.String s)</code><br>A list of fields that are not editable in the create/edit pages.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#recordParams(Map)">recordParams</a></strong>(<a href='../../../../Map.html'>Map</a> recordParams)</code><br>Values to set in the domain object for created and edit.
+                            <td class="colLast"><code><strong><a href="#recordParams(Map)">recordParams</a></strong>(java.util.Map&lt;java.lang.String, java.lang.Object&gt; recordParams)</code><br>Values to set in the domain object for created and edit.
  </td>
                         </tr>
                         
@@ -736,7 +744,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/eframe/test/CRUDGUITester.html'>CRUDGUITester</a></code></td>
-                            <td class="colLast"><code><strong><a href="#test(Closure)">test</a></strong>(<a href='../../../../Closure.html'>Closure</a> config)</code><br>Triggers the test itself. </td>
+                            <td class="colLast"><code><strong><a href="#test(groovy.lang.Closure)">test</a></strong>(groovy.lang.Closure config)</code><br>Triggers the test itself.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -766,7 +774,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#testShowPageDelete(java.lang.Object)">testShowPageDelete</a></strong>(java.lang.Object mainRecord)</code><br>Test the delete action on the show page. </td>
+                            <td class="colLast"><code><strong><a href="#testShowPageDelete(java.lang.Object)">testShowPageDelete</a></strong>(java.lang.Object mainRecord)</code><br>Test the delete action on the show page.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -778,13 +786,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#tester(org.simplemes.eframe.test.BaseGUISpecification)">tester</a></strong>(<a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html'>BaseGUISpecification</a> tester)</code><br>Sets the domain to Spock test specification to be used to the tests. </td>
+                            <td class="colLast"><code><strong><a href="#tester(org.simplemes.eframe.test.BaseGUISpecification)">tester</a></strong>(<a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html'>BaseGUISpecification</a> tester)</code><br>Sets the domain to Spock test specification to be used to the tests.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#unlabeledFields(java.lang.String)">unlabeledFields</a></strong>(java.lang.String s)</code><br>A list of fields that do not have a label. </td>
+                            <td class="colLast"><code><strong><a href="#unlabeledFields(java.lang.String)">unlabeledFields</a></strong>(java.lang.String s)</code><br>A list of fields that do not have a label.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -853,7 +861,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="currentLocale"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../Locale.html'>Locale</a> <strong>currentLocale</strong></h4>
+                                <h4>protected&nbsp;java.util.Locale <strong>currentLocale</strong></h4>
                                 <p> The locale being tested.</p>
                             </li>
                         </ul>
@@ -869,7 +877,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="effectiveCreateFields"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../List.html'>List</a> <strong>effectiveCreateFields</strong></h4>
+                                <h4>protected&nbsp;java.util.List&lt;java.lang.String&gt; <strong>effectiveCreateFields</strong></h4>
                                 <p> The effective list of fields that are displayed in the create page.</p>
                             </li>
                         </ul>
@@ -877,7 +885,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="effectiveEditFields"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../List.html'>List</a> <strong>effectiveEditFields</strong></h4>
+                                <h4>protected&nbsp;java.util.List&lt;java.lang.String&gt; <strong>effectiveEditFields</strong></h4>
                                 <p> The effective list of fields that are displayed in the edit page.</p>
                             </li>
                         </ul>
@@ -885,7 +893,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="effectiveListColumns"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../List.html'>List</a> <strong>effectiveListColumns</strong></h4>
+                                <h4>protected&nbsp;java.util.List&lt;java.lang.String&gt; <strong>effectiveListColumns</strong></h4>
                                 <p> The effective list of columns that are displayed in the list page.</p>
                             </li>
                         </ul>
@@ -893,7 +901,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="effectiveShowFields"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../List.html'>List</a> <strong>effectiveShowFields</strong></h4>
+                                <h4>protected&nbsp;java.util.List&lt;java.lang.String&gt; <strong>effectiveShowFields</strong></h4>
                                 <p> The effective list of fields that are displayed in the show page.</p>
                             </li>
                         </ul>
@@ -909,7 +917,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="fieldOrder"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../List.html'>List</a> <strong>fieldOrder</strong></h4>
+                                <h4>protected&nbsp;java.util.List&lt;java.lang.String&gt; <strong>fieldOrder</strong></h4>
                                 <p> The fieldOrder list (flattened) from the domain class.</p>
                             </li>
                         </ul>
@@ -925,7 +933,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="missingPropertySuffixes"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;static&nbsp;final&nbsp;<a href='../../../../List.html'>List</a> <strong>missingPropertySuffixes</strong></h4>
+                                <h4>protected&nbsp;static&nbsp;final&nbsp;java.util.List&lt;java.lang.String&gt; <strong>missingPropertySuffixes</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -933,7 +941,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="possibleBadLabelSuffixes"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;static&nbsp;<a href='../../../../List.html'>List</a> <strong>possibleBadLabelSuffixes</strong></h4>
+                                <h4>protected&nbsp;static&nbsp;java.util.List&lt;java.lang.String&gt; <strong>possibleBadLabelSuffixes</strong></h4>
                                 <p> A list of string that indicate a piece of text might not be properly internationalized.</p>
                             </li>
                         </ul>
@@ -953,7 +961,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="_createClosure"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Closure.html'>Closure</a> <strong>_createClosure</strong></h4>
+                                <h4>private&nbsp;groovy.lang.Closure <strong>_createClosure</strong></h4>
                                 <p> A closure to run when the create page is tested.  Typically used to set values in the GUI before the save.</p>
                             </li>
                         </ul>
@@ -986,7 +994,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="_editClosure"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Closure.html'>Closure</a> <strong>_editClosure</strong></h4>
+                                <h4>private&nbsp;groovy.lang.Closure <strong>_editClosure</strong></h4>
                                 <p> A closure to run when the edit page is tested.  Typically used to set values in the GUI before the save.</p>
                             </li>
                         </ul>
@@ -1052,7 +1060,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="_minimalParams"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>_minimalParams</strong></h4>
+                                <h4>private&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt; <strong>_minimalParams</strong></h4>
                                 <p> The parameters needed to create a second test record with the minimal required fields specified.
  If there are any initial data load records, then this minimal record should appear before the initially loaded records.
  This record should appear alphabetically after the <code>recordParams</code> in the list page with the default sorting.
@@ -1063,7 +1071,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="_readOnlyFields"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>_readOnlyFields</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.String&gt; <strong>_readOnlyFields</strong></h4>
                                 <p> A list of fields that are not editable on create/edit pages.</p>
                             </li>
                         </ul>
@@ -1071,7 +1079,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="_recordParams"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>_recordParams</strong></h4>
+                                <h4>private&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt; <strong>_recordParams</strong></h4>
                                 <p> Values to set in the domain object for created and edit.
  If there are any initial data load records, then this record should appear before the initially loaded records.</p>
                             </li>
@@ -1097,7 +1105,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="_unlabeledFields"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>_unlabeledFields</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.String&gt; <strong>_unlabeledFields</strong></h4>
                                 <p> A list of fields that do not have a label.</p>
                             </li>
                         </ul>
@@ -1113,7 +1121,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="effectiveCreateFieldsByPanel"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>effectiveCreateFieldsByPanel</strong></h4>
+                                <h4>private&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt; <strong>effectiveCreateFieldsByPanel</strong></h4>
                                 <p> The fields to be displayed in a specific panel on the create page.  Stores the list of fields per panel.</p>
                             </li>
                         </ul>
@@ -1121,7 +1129,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="effectiveEditFieldsByPanel"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>effectiveEditFieldsByPanel</strong></h4>
+                                <h4>private&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt; <strong>effectiveEditFieldsByPanel</strong></h4>
                                 <p> The fields to be displayed in a specific panel on the edit page.  Stores the list of fields per panel.</p>
                             </li>
                         </ul>
@@ -1129,7 +1137,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="effectiveShowFieldsByPanel"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>effectiveShowFieldsByPanel</strong></h4>
+                                <h4>private&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt; <strong>effectiveShowFieldsByPanel</strong></h4>
                                 <p> The fields to be displayed in a specific panel.  Stores the list of fields per panel.</p>
                             </li>
                         </ul>
@@ -1137,7 +1145,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="recordsCreated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>recordsCreated</strong></h4>
+                                <h4>private&nbsp;java.util.Map&lt;java.lang.Class, java.util.List&gt; <strong>recordsCreated</strong></h4>
                                 <p> Defines the list of record created for class.  The inner list is a list of record IDs (Long).</p>
                             </li>
                         </ul>
@@ -1193,10 +1201,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="addInlineGridRow(java.lang.String, Map, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
+                        <a name="addInlineGridRow(java.lang.String, java.util.Map, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>addInlineGridRow</strong>(java.lang.String fieldName, <a href='../../../../Map.html'>Map</a> rowData, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</h4>
+                                <h4>void <strong>addInlineGridRow</strong>(java.lang.String fieldName, java.util.Map rowData, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</h4>
                                 <p> Adds a single row to the given inline grid. <DL><DT><B>Parameters:</B></DT><DD><code>fieldName</code> -  The grid.</DD><DD><code>rowData</code> -  The row values.</DD><DD><code>fieldDef</code> -  The grid's field definition.</DD></DL></p>
                             </li>
                         </ul>
@@ -1217,11 +1225,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="checkChildRecordValues(java.lang.String, java.lang.Object, Collection)"><!-- --></a>
+                        <a name="checkChildRecordValues(java.lang.String, java.lang.Object, java.util.Collection)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-void <strong>checkChildRecordValues</strong>(java.lang.String fieldName, java.lang.Object record, <a href='../../../../Collection.html'>Collection</a> expectedValues)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+void <strong>checkChildRecordValues</strong>(java.lang.String fieldName, java.lang.Object record, java.util.Collection expectedValues)</h4>
                                 <p> Checks the child record values against the input values. <DL><DT><B>Parameters:</B></DT><DD><code>fieldName</code> -  The child element name (e.g. 'sampleChildren').  This is the name of the child field (collection).</DD><DD><code>record</code> -  The parent record.</DD><DD><code>expectedValues</code> -  The list of values.</DD></DL></p>
                             </li>
                         </ul>
@@ -1245,17 +1253,17 @@ void <strong>checkChildRecordValues</strong>(java.lang.String fieldName, java.la
                         <a name="checkFieldValue(java.lang.String, org.simplemes.eframe.domain.DomainReference, org.simplemes.eframe.data.FieldDefinitionInterface, boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: EmptyIfStatement)
 protected&nbsp;void <strong>checkFieldValue</strong>(java.lang.String fieldName, <a href='../../../../org/simplemes/eframe/domain/DomainReference.html'>DomainReference</a> expectedRef, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef, boolean editable)</h4>
                                 <p> Checks the field value against the expected value. <DL><DT><B>Parameters:</B></DT><DD><code>fieldName</code> -  The field name.</DD><DD><code>expectedRef</code> -  The domain reference for the expected value that should be displayed in the value section.</DD><DD><code>fieldDef</code> -  The field definition.</DD><DD><code>editable</code> -  If true, then the value will come from an input field.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="checkInlineGridValues(java.lang.String, Collection, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
+                        <a name="checkInlineGridValues(java.lang.String, java.util.Collection, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-void <strong>checkInlineGridValues</strong>(java.lang.String fieldName, <a href='../../../../Collection.html'>Collection</a> expectedValues, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: SpellCheckingInspection)
+void <strong>checkInlineGridValues</strong>(java.lang.String fieldName, java.util.Collection expectedValues, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</h4>
                                 <p> Checks the inline grid displayed values against the expected values for the list. <DL><DT><B>Parameters:</B></DT><DD><code>fieldName</code> -  The child element name (e.g. 'sampleChildren').  This is the name of the child field (collection).</DD><DD><code>expectedValues</code> -  The expected value(s).  This is a List<Map>.</DD><DD><code>fieldDef</code> -  The field definition.</DD></DL></p>
                             </li>
                         </ul>
@@ -1284,11 +1292,11 @@ void <strong>checkInlineGridValues</strong>(java.lang.String fieldName, <a href=
                             </li>
                         </ul>
                     
-                        <a name="checkRecord(java.lang.Object, Map, boolean)"><!-- --></a>
+                        <a name="checkRecord(java.lang.Object, java.util.Map, boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-protected&nbsp;void <strong>checkRecord</strong>(java.lang.Object record, <a href='../../../../Map.html'>Map</a> expectedValues, boolean ignoreDateFields)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+protected&nbsp;void <strong>checkRecord</strong>(java.lang.Object record, java.util.Map expectedValues, boolean ignoreDateFields)</h4>
                                 <p> Checks to see if the record's values matches the expected values. <DL><DT><B>Parameters:</B></DT><DD><code>record</code> -  The record to check.</DD><DD><code>expectedValues</code> -  The expected values, typically the Map of values defined for the test (e.g. recordParams).</DD><DD><code>ignoreDateFields</code> -  If true, no checks are made on the date fields.</DD></DL></p>
                             </li>
                         </ul>
@@ -1369,10 +1377,10 @@ protected&nbsp;void <strong>checkRecord</strong>(java.lang.Object record, <a hre
                             </li>
                         </ul>
                     
-                        <a name="createClosure(Closure)"><!-- --></a>
+                        <a name="createClosure(groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>createClosure</strong>(<a href='../../../../Closure.html'>Closure</a> closure)</h4>
+                                <h4>void <strong>createClosure</strong>(groovy.lang.Closure closure)</h4>
                                 <p> Set the closure to run when the create page is tested.  Typically used to set values in the GUI before the save.</p>
                             </li>
                         </ul>
@@ -1386,10 +1394,10 @@ protected&nbsp;void <strong>checkRecord</strong>(java.lang.Object record, <a hre
                             </li>
                         </ul>
                     
-                        <a name="createRecord(Map)"><!-- --></a>
+                        <a name="createRecord(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.Object <strong>createRecord</strong>(<a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4>java.lang.Object <strong>createRecord</strong>(java.util.Map params)</h4>
                                 <p> Creates a single domain record for the given set of parameters. <DL><DT><B>Parameters:</B></DT><DD><code>params</code> -  The parameters.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The top-level record created.</DD></DL></p>
                             </li>
                         </ul>
@@ -1405,7 +1413,7 @@ protected&nbsp;void <strong>checkRecord</strong>(java.lang.Object record, <a hre
                         <a name="determineExpectedRowsAfterSave(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Collection.html'>Collection</a> <strong>determineExpectedRowsAfterSave</strong>(java.lang.String fieldName)</h4>
+                                <h4>java.util.Collection <strong>determineExpectedRowsAfterSave</strong>(java.lang.String fieldName)</h4>
                                 <p> Combines the minimal and record params values for child records into the list expected
  after create/edit is finished. <DL><DT><B>Parameters:</B></DT><DD><code>fieldName</code> -  The child element name (e.g. 'sampleChildren').  This is the name of the child field (collection).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The combined list of child records.</DD></DL></p>
                             </li>
@@ -1427,10 +1435,10 @@ protected&nbsp;void <strong>checkRecord</strong>(java.lang.Object record, <a hre
                             </li>
                         </ul>
                     
-                        <a name="doTest(Locale)"><!-- --></a>
+                        <a name="doTest(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>doTest</strong>(<a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>void <strong>doTest</strong>(java.util.Locale locale)</h4>
                                 <p> Tests the domain/controller/pages in a single locale.</p>
                             </li>
                         </ul>
@@ -1443,10 +1451,10 @@ protected&nbsp;void <strong>checkRecord</strong>(java.lang.Object record, <a hre
                             </li>
                         </ul>
                     
-                        <a name="editClosure(Closure)"><!-- --></a>
+                        <a name="editClosure(groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>editClosure</strong>(<a href='../../../../Closure.html'>Closure</a> closure)</h4>
+                                <h4>void <strong>editClosure</strong>(groovy.lang.Closure closure)</h4>
                                 <p> Set the closure to run when the edit page is tested.  Typically used to set values in the GUI before the save.</p>
                             </li>
                         </ul>
@@ -1500,10 +1508,10 @@ protected&nbsp;void <strong>checkRecord</strong>(java.lang.Object record, <a hre
                             </li>
                         </ul>
                     
-                        <a name="findRecord(Map)"><!-- --></a>
+                        <a name="findRecord(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;java.lang.Object <strong>findRecord</strong>(<a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4>protected&nbsp;java.lang.Object <strong>findRecord</strong>(java.util.Map params)</h4>
                                 <p> Finds the domain record in the DB for the given parameter set.  Searches by key field. <DL><DT><B>Parameters:</B></DT><DD><code>params</code> -  The parameters for the record to be found.</DD></DL></p>
                             </li>
                         </ul>
@@ -1545,7 +1553,8 @@ protected&nbsp;void <strong>checkRecord</strong>(java.lang.Object record, <a hre
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>boolean <strong>isComboBoxField</strong>(<a href='../../../../org/simplemes/eframe/data/format/FieldFormatInterface.html'>FieldFormatInterface</a> fieldFormat)</h4>
-                                <p> Returns true if the given field format is normally displayed in a combobox. <DL><DT><B>Returns:</B></DT><DD><DL><DT><B>Parameters:</B></DT><DD><code>fieldFormat</code> -  The field format.</DD></DL></DD></DL></p>
+                                <p> Returns true if the given field format is normally displayed in a combobox.
+ @return <DL><DT><B>Parameters:</B></DT><DD><code>fieldFormat</code> -  The field format.</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -1558,18 +1567,18 @@ protected&nbsp;void <strong>checkRecord</strong>(java.lang.Object record, <a hre
                             </li>
                         </ul>
                     
-                        <a name="lookup(java.lang.String, List)"><!-- --></a>
+                        <a name="lookup(java.lang.String, java.util.List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>lookup</strong>(java.lang.String code, <a href='../../../../List.html'>List</a> args)</h4>
+                                <h4>java.lang.String <strong>lookup</strong>(java.lang.String code, java.util.List args)</h4>
                                 <p> Lookup a code from the message bundle. <DL><DT><B>Parameters:</B></DT><DD><code>code</code> -  The message code (e.g. search.label).</DD><DD><code>args</code> -  The optional arguments for the lookup.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The looked up value.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="lookupRequired(java.lang.String, List)"><!-- --></a>
+                        <a name="lookupRequired(java.lang.String, java.util.List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>lookupRequired</strong>(java.lang.String code, <a href='../../../../List.html'>List</a> args)</h4>
+                                <h4>java.lang.String <strong>lookupRequired</strong>(java.lang.String code, java.util.List args)</h4>
                                 <p> Lookup a code from the message bundle, add the required flag (*). <DL><DT><B>Parameters:</B></DT><DD><code>code</code> -  The message code (e.g. search.label).</DD><DD><code>args</code> -  The optional arguments for the lookup.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The looked up value.</DD></DL></p>
                             </li>
                         </ul>
@@ -1577,7 +1586,7 @@ protected&nbsp;void <strong>checkRecord</strong>(java.lang.Object record, <a hre
                         <a name="minimalParams(Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>minimalParams</strong>(<a href='../../../../Map.html'>Map</a> minimalParams)</h4>
+                                <h4>void <strong>minimalParams</strong>(java.util.Map&lt;java.lang.String, java.lang.Object&gt; minimalParams)</h4>
                                 <p> The parameters needed to create a second test record with the minimal required fields specified.
  If there are any initial data load records, then this minimal record should appear before the initially loaded records.
  This record should appear alphabetically after the <code>recordParams</code> in the list page with the default sorting.
@@ -1596,7 +1605,7 @@ protected&nbsp;void <strong>checkRecord</strong>(java.lang.Object record, <a hre
                         <a name="recordParams(Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>recordParams</strong>(<a href='../../../../Map.html'>Map</a> recordParams)</h4>
+                                <h4>void <strong>recordParams</strong>(java.util.Map&lt;java.lang.String, java.lang.Object&gt; recordParams)</h4>
                                 <p> Values to set in the domain object for created and edit.
  If there are any initial data load records, then this record should appear before the initially loaded records. <DL><DT><B>Parameters:</B></DT><DD><code>recordParams</code> -  The values.</DD></DL></p>
                             </li>
@@ -1619,10 +1628,10 @@ protected&nbsp;void <strong>checkRecord</strong>(java.lang.Object record, <a hre
                             </li>
                         </ul>
                     
-                        <a name="test(Closure)"><!-- --></a>
+                        <a name="test(groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../org/simplemes/eframe/test/CRUDGUITester.html'>CRUDGUITester</a> <strong>test</strong>(@DelegatesToDelegatesTo <a href='../../../../Closure.html'>Closure</a> config)</h4>
+                                <h4>static&nbsp;<a href='../../../../org/simplemes/eframe/test/CRUDGUITester.html'>CRUDGUITester</a> <strong>test</strong>(@groovy.lang.DelegatesTo(value: CRUDGUITester) groovy.lang.Closure config)</h4>
                                 <p> Triggers the test itself. <DL><DT><B>Parameters:</B></DT><DD><code>config</code> -  The configuration.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The number of tests executed (1 for list page, 1 for show page, etc).</DD></DL></p>
                             </li>
                         </ul>
@@ -1630,7 +1639,7 @@ protected&nbsp;void <strong>checkRecord</strong>(java.lang.Object record, <a hre
                         <a name="testCreatePage()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GrReassignedInClosureLocalVar)
 void <strong>testCreatePage</strong>()</h4>
                                 <p> Perform the tests on the create page.</p>
                             </li>
@@ -1639,7 +1648,7 @@ void <strong>testCreatePage</strong>()</h4>
                         <a name="testEditPage()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GrReassignedInClosureLocalVar)
 void <strong>testEditPage</strong>()</h4>
                                 <p> Perform the tests on the edit page.</p>
                             </li>

@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+class BaseSpecification
+extends geb.spock.GebSpec</pre>
 
     <p> The base class for most non-GUI tests.  This supports starting an embedded server and cleanup of the database tables.
  These needs are flagged in your test classes with several static variables:
@@ -115,7 +122,7 @@ if (location.href.indexOf('is-external=true') == -1) {
  <p>
  This class will reset any mocked versions of the common utility classes (e.g. DomainUtils and ControllerUtils).
  This means you do not need to reset these .instance values during your cleanup.  This BaseSpecification does that for you.
- See the list BaseSpecification#utilityClassesToCheck#utilityClassesToCheck below.
+ See the list <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#utilityClassesToCheck' title='BaseSpecification.utilityClassesToCheck'>BaseSpecification.utilityClassesToCheck</a> below.
 
  <h3>Standard Cleanups</h3>
  This base class resets the following elements after each test:
@@ -201,7 +208,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../../../org/simplemes/eframe/test/AutoCleanupMockInterface.html' title='AutoCleanupMockInterface'>AutoCleanupMockInterface</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#autoCleanupsNeeded">autoCleanupsNeeded</a></code><br>The list of cleanups needed by mocked elements.</td>
                         </tr>
                         
@@ -211,7 +218,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.Class&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#otherDirtyDomains">otherDirtyDomains</a></code><br>A list of other domain classes that need cleanup.</td>
                         </tr>
                         
@@ -281,7 +288,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#assertValidationFails(java.lang.Object, int, java.lang.String, List)">assertValidationFails</a></strong>(java.lang.Object object, int code, java.lang.String fieldName, <a href='../../../../List.html'>List</a> expectedStrings)</code><br>Runs the validation on the given domain object and verifies that the given validation (code/fieldName)
+                            <td class="colLast"><code><strong><a href="#assertValidationFails(java.lang.Object, int, java.lang.String, List)">assertValidationFails</a></strong>(java.lang.Object object, int code, java.lang.String fieldName, java.util.List&lt;java.lang.String&gt; expectedStrings)</code><br>Runs the validation on the given domain object and verifies that the given validation (code/fieldName)
  are found.  </td>
                         </tr>
                         
@@ -332,13 +339,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#createReportLabel(java.lang.String)">createReportLabel</a></strong>(java.lang.String methodName)</code><br>Builds a unique file name. </td>
+                            <td class="colLast"><code><strong><a href="#createReportLabel(java.lang.String)">createReportLabel</a></strong>(java.lang.String methodName)</code><br>Builds a unique file name.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#deleteAllRecords(java.lang.Class, java.lang.Boolean)">deleteAllRecords</a></strong>(java.lang.Class domainClass, java.lang.Boolean ignoreInitialRecords)</code><br>Utility method to clean up all records in a given domain. </td>
+                            <td class="colLast"><code><strong><a href="#deleteAllRecords(java.lang.Class, java.lang.Boolean)">deleteAllRecords</a></strong>(java.lang.Class domainClass, java.lang.Boolean ignoreInitialRecords)</code><br>Utility method to clean up all records in a given domain.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -374,33 +381,33 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.sql.PreparedStatement</code></td>
-                            <td class="colLast"><code><strong><a href="#getPreparedStatement(java.lang.String)">getPreparedStatement</a></strong>(java.lang.String sql)</code><br>Creates a prepared SQL statement. </td>
+                            <td class="colLast"><code><strong><a href="#getPreparedStatement(java.lang.String)">getPreparedStatement</a></strong>(java.lang.String sql)</code><br>Creates a prepared SQL statement.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#lookup(java.lang.String, Locale, java.lang.Object)">lookup</a></strong>(java.lang.String key, <a href='../../../../Locale.html'>Locale</a> locale, java.lang.Object[] args)</code><br>Convenience method for general message.properties lookup.
+                            <td class="colLast"><code><strong><a href="#lookup(java.lang.String, java.util.Locale, java.lang.Object)">lookup</a></strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</code><br>Convenience method for general message.properties lookup.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#lookupRequired(java.lang.String, Locale, java.lang.Object)">lookupRequired</a></strong>(java.lang.String key, <a href='../../../../Locale.html'>Locale</a> locale, java.lang.Object[] args)</code><br>Convenience method for general message.properties lookup for fields marked as required.
+                            <td class="colLast"><code><strong><a href="#lookupRequired(java.lang.String, java.util.Locale, java.lang.Object)">lookupRequired</a></strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</code><br>Convenience method for general message.properties lookup for fields marked as required.
  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#mockFieldExtension(Map)">mockFieldExtension</a></strong>(<a href='../../../../Map.html'>Map</a> options)</code><br>Mocks a specific field extension.  </td>
+                            <td class="colLast"><code><strong><a href="#mockFieldExtension(java.util.Map)">mockFieldExtension</a></strong>(java.util.Map options)</code><br>Mocks a specific field extension.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>io.micronaut.http.HttpRequest</code></td>
-                            <td class="colLast"><code><strong><a href="#mockRequest(Map)">mockRequest</a></strong>(<a href='../../../../Map.html'>Map</a> params)</code><br>Mocks a request with the given parameters.  </td>
+                            <td class="colLast"><code><strong><a href="#mockRequest(java.util.Map)">mockRequest</a></strong>(java.util.Map params)</code><br>Mocks a request with the given parameters.  </td>
                         </tr>
                         
                         <tr class="altColor">
@@ -425,13 +432,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#registerAutoCleanup(org.simplemes.eframe.test.AutoCleanupMockInterface)">registerAutoCleanup</a></strong>(<a href='../../../../org/simplemes/eframe/test/AutoCleanupMockInterface.html'>AutoCleanupMockInterface</a> acm)</code><br>Registers an auto cleanup task with this test. </td>
+                            <td class="colLast"><code><strong><a href="#registerAutoCleanup(org.simplemes.eframe.test.AutoCleanupMockInterface)">registerAutoCleanup</a></strong>(<a href='../../../../org/simplemes/eframe/test/AutoCleanupMockInterface.html'>AutoCleanupMockInterface</a> acm)</code><br>Registers an auto cleanup task with this test.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#report(java.lang.String)">report</a></strong>(java.lang.String methodName)</code><br>Writes the screen shot to the reports directory. </td>
+                            <td class="colLast"><code><strong><a href="#report(java.lang.String)">report</a></strong>(java.lang.String methodName)</code><br>Writes the screen shot to the reports directory.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -500,7 +507,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class geb.spock.GebSpec</code></td>
-                            <td class="colLast"><code>geb.spock.GebSpec#getProperty(java.lang.String), geb.spock.GebSpec#setProperty(java.lang.String, java.lang.Object), geb.spock.GebSpec#propertyMissing(java.lang.String, java.lang.Object), geb.spock.GebSpec#propertyMissing(java.lang.String), geb.spock.GebSpec#methodMissing(java.lang.String, java.lang.Object), geb.spock.GebSpec#get_browser(), geb.spock.GebSpec#set_browser(geb.Browser), geb.spock.GebSpec#getGebConfEnv(), geb.spock.GebSpec#setGebConfEnv(java.lang.String), geb.spock.GebSpec#getGebConfScript(), geb.spock.GebSpec#setGebConfScript(java.lang.String), geb.spock.GebSpec#get$spock_sharedField__browser(), geb.spock.GebSpec#set$spock_sharedField__browser(geb.Browser), geb.spock.GebSpec#createConf(), geb.spock.GebSpec#createBrowser(), geb.spock.GebSpec#getBrowser(), geb.spock.GebSpec#resetBrowser(), geb.spock.GebSpec#invokeMethod(java.lang.String, java.lang.Object), geb.spock.GebSpec#getMetaClass(), geb.spock.GebSpec#setMetaClass(groovy.lang.MetaClass), geb.spock.GebSpec#old(java.lang.Object), geb.spock.GebSpec#with(java.lang.Object, groovy.lang.Closure), geb.spock.GebSpec#with(java.lang.Object, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#thrown(), geb.spock.GebSpec#thrown(java.lang.Class), geb.spock.GebSpec#verifyAll(java.lang.Object, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#verifyAll(java.lang.Object, groovy.lang.Closure), geb.spock.GebSpec#verifyAll(groovy.lang.Closure), geb.spock.GebSpec#notThrown(java.lang.Class), geb.spock.GebSpec#noExceptionThrown(), geb.spock.GebSpec#interaction(groovy.lang.Closure), geb.spock.GebSpec#Mock(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#Mock(groovy.lang.Closure), geb.spock.GebSpec#Mock(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Mock(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Mock(), geb.spock.GebSpec#Mock(java.util.Map), geb.spock.GebSpec#Mock(java.lang.Class), geb.spock.GebSpec#Mock(java.util.Map, java.lang.Class), geb.spock.GebSpec#Stub(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#Stub(groovy.lang.Closure), geb.spock.GebSpec#Stub(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Stub(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Stub(), geb.spock.GebSpec#Stub(java.util.Map), geb.spock.GebSpec#Stub(java.lang.Class), geb.spock.GebSpec#Stub(java.util.Map, java.lang.Class), geb.spock.GebSpec#Spy(groovy.lang.Closure), geb.spock.GebSpec#Spy(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#Spy(java.util.Map, java.lang.Class), geb.spock.GebSpec#Spy(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Spy(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Spy(), geb.spock.GebSpec#Spy(java.util.Map), geb.spock.GebSpec#Spy(java.lang.Class), geb.spock.GebSpec#Spy(java.lang.Object), geb.spock.GebSpec#GroovyMock(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(), geb.spock.GebSpec#GroovyMock(java.util.Map), geb.spock.GebSpec#GroovyMock(java.lang.Class), geb.spock.GebSpec#GroovyMock(java.util.Map, java.lang.Class), geb.spock.GebSpec#GroovyStub(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#GroovyStub(groovy.lang.Closure), geb.spock.GebSpec#GroovyStub(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovyStub(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovyStub(), geb.spock.GebSpec#GroovyStub(java.util.Map), geb.spock.GebSpec#GroovyStub(java.lang.Class), geb.spock.GebSpec#GroovyStub(java.util.Map, java.lang.Class), geb.spock.GebSpec#GroovySpy(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#GroovySpy(groovy.lang.Closure), geb.spock.GebSpec#GroovySpy(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovySpy(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovySpy(), geb.spock.GebSpec#GroovySpy(java.util.Map), geb.spock.GebSpec#GroovySpy(java.lang.Class), geb.spock.GebSpec#GroovySpy(java.util.Map, java.lang.Class), geb.spock.GebSpec#getSpecificationContext(), geb.spock.GebSpec#createMock(java.lang.String, java.lang.reflect.Type, org.spockframework.mock.MockNature, org.spockframework.mock.MockImplementation, java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#createMock(java.lang.String, java.lang.Object, java.lang.reflect.Type, org.spockframework.mock.MockNature, org.spockframework.mock.MockImplementation, java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#wait(long, int), geb.spock.GebSpec#wait(), geb.spock.GebSpec#wait(long), geb.spock.GebSpec#equals(java.lang.Object), geb.spock.GebSpec#toString(), geb.spock.GebSpec#hashCode(), geb.spock.GebSpec#getClass(), geb.spock.GebSpec#notify(), geb.spock.GebSpec#notifyAll()</code></td>
+                            <td class="colLast"><code>geb.spock.GebSpec#getProperty(java.lang.String), geb.spock.GebSpec#setProperty(java.lang.String, java.lang.Object), geb.spock.GebSpec#propertyMissing(java.lang.String, java.lang.Object), geb.spock.GebSpec#propertyMissing(java.lang.String), geb.spock.GebSpec#methodMissing(java.lang.String, java.lang.Object), geb.spock.GebSpec#getGebConfEnv(), geb.spock.GebSpec#createConf(), geb.spock.GebSpec#createBrowser(), geb.spock.GebSpec#getBrowser(), geb.spock.GebSpec#resetBrowser(), geb.spock.GebSpec#get_browser(), geb.spock.GebSpec#set_browser(geb.Browser), geb.spock.GebSpec#setGebConfEnv(java.lang.String), geb.spock.GebSpec#getGebConfScript(), geb.spock.GebSpec#setGebConfScript(java.lang.String), geb.spock.GebSpec#get$spock_sharedField__browser(), geb.spock.GebSpec#set$spock_sharedField__browser(geb.Browser), geb.spock.GebSpec#invokeMethod(java.lang.String, java.lang.Object), geb.spock.GebSpec#getMetaClass(), geb.spock.GebSpec#setMetaClass(groovy.lang.MetaClass), geb.spock.GebSpec#old(java.lang.Object), geb.spock.GebSpec#with(java.lang.Object, groovy.lang.Closure), geb.spock.GebSpec#with(java.lang.Object, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#thrown(), geb.spock.GebSpec#thrown(java.lang.Class), geb.spock.GebSpec#verifyAll(java.lang.Object, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#verifyAll(java.lang.Object, groovy.lang.Closure), geb.spock.GebSpec#verifyAll(groovy.lang.Closure), geb.spock.GebSpec#noExceptionThrown(), geb.spock.GebSpec#notThrown(java.lang.Class), geb.spock.GebSpec#interaction(groovy.lang.Closure), geb.spock.GebSpec#Mock(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#Mock(groovy.lang.Closure), geb.spock.GebSpec#Mock(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Mock(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Mock(), geb.spock.GebSpec#Mock(java.util.Map), geb.spock.GebSpec#Mock(java.lang.Class), geb.spock.GebSpec#Mock(java.util.Map, java.lang.Class), geb.spock.GebSpec#Stub(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#Stub(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Stub(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Stub(), geb.spock.GebSpec#Stub(java.util.Map), geb.spock.GebSpec#Stub(java.lang.Class), geb.spock.GebSpec#Stub(java.util.Map, java.lang.Class), geb.spock.GebSpec#Stub(groovy.lang.Closure), geb.spock.GebSpec#Spy(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#Spy(groovy.lang.Closure), geb.spock.GebSpec#Spy(java.util.Map, java.lang.Class), geb.spock.GebSpec#Spy(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Spy(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Spy(), geb.spock.GebSpec#Spy(java.util.Map), geb.spock.GebSpec#Spy(java.lang.Class), geb.spock.GebSpec#Spy(java.lang.Object), geb.spock.GebSpec#Spy(java.lang.Object, groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(), geb.spock.GebSpec#GroovyMock(java.util.Map), geb.spock.GebSpec#GroovyMock(java.lang.Class), geb.spock.GebSpec#GroovyMock(java.util.Map, java.lang.Class), geb.spock.GebSpec#GroovyStub(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#GroovyStub(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovyStub(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovyStub(java.lang.Class), geb.spock.GebSpec#GroovyStub(), geb.spock.GebSpec#GroovyStub(java.util.Map), geb.spock.GebSpec#GroovyStub(groovy.lang.Closure), geb.spock.GebSpec#GroovyStub(java.util.Map, java.lang.Class), geb.spock.GebSpec#GroovySpy(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#GroovySpy(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovySpy(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovySpy(java.util.Map, java.lang.Class), geb.spock.GebSpec#GroovySpy(), geb.spock.GebSpec#GroovySpy(java.util.Map), geb.spock.GebSpec#GroovySpy(java.lang.Class), geb.spock.GebSpec#GroovySpy(groovy.lang.Closure), geb.spock.GebSpec#getSpecificationContext(), geb.spock.GebSpec#createMock(java.lang.String, java.lang.reflect.Type, org.spockframework.mock.MockNature, org.spockframework.mock.MockImplementation, java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#createMock(java.lang.String, java.lang.Object, java.lang.reflect.Type, org.spockframework.mock.MockNature, org.spockframework.mock.MockImplementation, java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#wait(long, int), geb.spock.GebSpec#wait(), geb.spock.GebSpec#wait(long), geb.spock.GebSpec#equals(java.lang.Object), geb.spock.GebSpec#toString(), geb.spock.GebSpec#hashCode(), geb.spock.GebSpec#getClass(), geb.spock.GebSpec#notify(), geb.spock.GebSpec#notifyAll()</code></td>
                         </tr>
                     </table>
                    </ul>
@@ -569,7 +576,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="autoCleanupsNeeded"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>autoCleanupsNeeded</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../../../org/simplemes/eframe/test/AutoCleanupMockInterface.html' title='AutoCleanupMockInterface'>AutoCleanupMockInterface</a>&gt; <strong>autoCleanupsNeeded</strong></h4>
                                 <p> The list of cleanups needed by mocked elements.
 </p>
                             </li>
@@ -586,7 +593,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="otherDirtyDomains"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>otherDirtyDomains</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.Class&gt; <strong>otherDirtyDomains</strong></h4>
                                 <p> A list of other domain classes that need cleanup.</p>
                             </li>
                         </ul>
@@ -654,7 +661,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="assertValidationFails(java.lang.Object, int, java.lang.String, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>boolean <strong>assertValidationFails</strong>(java.lang.Object object, int code, java.lang.String fieldName, <a href='../../../../List.html'>List</a> expectedStrings)</h4>
+                                <h4>boolean <strong>assertValidationFails</strong>(java.lang.Object object, int code, java.lang.String fieldName, java.util.List&lt;java.lang.String&gt; expectedStrings)</h4>
                                 <p> Runs the validation on the given domain object and verifies that the given validation (code/fieldName)
  are found.  Also checks the message for the presence of the expectedStrings. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The domain object to validate.</DD><DD><code>code</code> -  The expected error code.</DD><DD><code>fieldName</code> -  The expected error field.</DD><DD><code>expectedStrings</code> -  The expected strings the in the message.</DD></DL><DL><DT><B>Returns:</B></DT><DD>True if passes.  Throws assertion exception if not.</DD></DL></p>
                             </li>
@@ -730,7 +737,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="deleteAllRecords(java.lang.Class, java.lang.Boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
 void <strong>deleteAllRecords</strong>(java.lang.Class domainClass, java.lang.Boolean ignoreInitialRecords)</h4>
                                 <p> Utility method to clean up all records in a given domain. <DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The domain to clean up.</DD><DD><code>ignoreInitialRecords</code> -  If true, then the allowed initial data load records will nto be deleted.</DD></DL></p>
                             </li>
@@ -771,7 +778,7 @@ void <strong>deleteAllRecords</strong>(java.lang.Class domainClass, java.lang.Bo
                         <a name="enableSQLTrace(boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: unused)
 void <strong>enableSQLTrace</strong>(boolean includeParams)</h4>
                                 <p> Enable SQL trace.  Used mainly in debugging of SQL without enabling it during startup. <DL><DT><B>Parameters:</B></DT><DD><code>includeParams</code> -  If true, then parameters are logged too.  (<b>Default</b>: false).</DD></DL></p>
                             </li>
@@ -785,10 +792,10 @@ void <strong>enableSQLTrace</strong>(boolean includeParams)</h4>
                             </li>
                         </ul>
                     
-                        <a name="lookup(java.lang.String, Locale, java.lang.Object)"><!-- --></a>
+                        <a name="lookup(java.lang.String, java.util.Locale, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>lookup</strong>(java.lang.String key, <a href='../../../../Locale.html'>Locale</a> locale, java.lang.Object[] args)</h4>
+                                <h4>java.lang.String <strong>lookup</strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</h4>
                                 <p> Convenience method for general message.properties lookup.
  Delegates to GlobalUtils#lookup(java.lang.String, java.lang.Object [ ]).
  <p>
@@ -797,10 +804,10 @@ void <strong>enableSQLTrace</strong>(boolean includeParams)</h4>
                             </li>
                         </ul>
                     
-                        <a name="lookupRequired(java.lang.String, Locale, java.lang.Object)"><!-- --></a>
+                        <a name="lookupRequired(java.lang.String, java.util.Locale, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>lookupRequired</strong>(java.lang.String key, <a href='../../../../Locale.html'>Locale</a> locale, java.lang.Object[] args)</h4>
+                                <h4>java.lang.String <strong>lookupRequired</strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</h4>
                                 <p> Convenience method for general message.properties lookup for fields marked as required.
  Delegates to GlobalUtils#lookup(java.lang.String, java.lang.Object [ ]).
  <p>
@@ -808,18 +815,18 @@ void <strong>enableSQLTrace</strong>(boolean includeParams)</h4>
                             </li>
                         </ul>
                     
-                        <a name="mockFieldExtension(Map)"><!-- --></a>
+                        <a name="mockFieldExtension(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>mockFieldExtension</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
-                                <p> Mocks a specific field extension.  Needs the <a href='#EXTENSION_MOCK'>EXTENSION_MOCK</a> in the specNeeds property. <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  The options for the field to add.  See MockFieldExtension for details.</DD></DL></p>
+                                <h4>void <strong>mockFieldExtension</strong>(java.util.Map options)</h4>
+                                <p> Mocks a specific field extension.  Needs the <a href='#EXTENSION_MOCK'>EXTENSION_MOCK</a> in the specNeeds property. <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  The options for the field to add.  See <a href='../../../../org/simplemes/eframe/test/MockFieldExtension.html' title='MockFieldExtension'>MockFieldExtension</a> for details.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="mockRequest(Map)"><!-- --></a>
+                        <a name="mockRequest(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>io.micronaut.http.HttpRequest <strong>mockRequest</strong>(<a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4>io.micronaut.http.HttpRequest <strong>mockRequest</strong>(java.util.Map params)</h4>
                                 <p> Mocks a request with the given parameters.  This also stores the mock request in the currentRequest for indirect
  access.<p>
  <h3>Support params</h3>
@@ -856,7 +863,8 @@ void <strong>enableSQLTrace</strong>(boolean includeParams)</h4>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>java.lang.Object <strong>propertyMissing</strong>(java.lang.String name)</h4>
-                                <p> The missing property handler.   This avoids the GEB propertyMissing handler when possible. <DL><DT><B>Returns:</B></DT><DD><DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The missing property.</DD></DL></DD></DL></p>
+                                <p> The missing property handler.   This avoids the GEB propertyMissing handler when possible.
+ @return <DL><DT><B>Parameters:</B></DT><DD><code>name</code> -  The missing property.</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -908,7 +916,7 @@ void <strong>enableSQLTrace</strong>(boolean includeParams)</h4>
                         <a name="setup()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: [Println, GroovyAssignabilityCheck, SystemOutPrint])
 java.lang.Object <strong>setup</strong>()</h4>
                                 <p> Sets up the Spock test.<p>
  <b>Note:</b> This method indirectly sets the JVM's default timezone to UTC for proper date handling in the database.
@@ -919,7 +927,7 @@ java.lang.Object <strong>setup</strong>()</h4>
                         <a name="setupSpec()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: [SystemOutPrint, unused])
 java.lang.Object <strong>setupSpec</strong>()</h4>
                                 <p> The setup method.  This method writes the test in IDEA runner format to allow us to re-produce the
  order of execution.  Writes each test suite to 'tmp/tests.txt'.</p>

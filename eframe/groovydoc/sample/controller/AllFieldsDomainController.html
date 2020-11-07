@@ -98,6 +98,16 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.CompileStatic
+@groovy.util.logging.Slf4j
+@io.micronaut.security.annotation.Secured(value: ADMIN)
+@io.micronaut.http.annotation.Controller(value: /allFieldsDomain)
+class AllFieldsDomainController
+extends <a href='../../org/simplemes/eframe/controller/BaseCrudRestController.html'>BaseCrudRestController</a></pre>
 
     <p> Handles the controller actions for the AllFieldsDomain objects.  Includes CRUD actions on the AllFieldsDomain sample
  test domain.</p>
@@ -306,7 +316,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getView(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>getView</strong>(java.lang.String methodName)</h4>
                                 <p> Determines the view to display for the given method.  <p>
  This sample class uses the views from the sample folder. <DL><DT><B>Parameters:</B></DT><DD><code>methodName</code> -  The method that needs the view (e.g. 'index').</DD></DL><DL><DT><B>Returns:</B></DT><DD>The resulting view path.</DD></DL></p>

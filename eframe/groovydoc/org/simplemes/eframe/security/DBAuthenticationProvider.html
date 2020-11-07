@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>io.micronaut.security.authentication.AuthenticationProvider</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@javax.inject.SingletonSingleton
+
+<pre>@groovy.lang.Singleton
 class DBAuthenticationProvider
 extends java.lang.Object
-
-</pre>
-
-
+implements io.micronaut.security.authentication.AuthenticationProvider</pre>
 
     <p> Defines the basic DB-based user authentication.</p>
 
@@ -176,8 +176,8 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>org.reactivestreams.Publisher</code></td>
-                            <td class="colLast"><code><strong><a href="#authenticate(io.micronaut.http.HttpRequest, io.micronaut.security.authentication.AuthenticationRequest)">authenticate</a></strong>(io.micronaut.http.HttpRequest httpRequest, io.micronaut.security.authentication.AuthenticationRequest authenticationRequest)</code><br>Authenticates a user with the given request. </td>
+                            <td class="colLast"><code>Publisher&lt;AuthenticationResponse&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#authenticate(HttpRequest, AuthenticationRequest)">authenticate</a></strong>(HttpRequest&lt;?&gt; httpRequest, AuthenticationRequest&lt;?, ?&gt; authenticationRequest)</code><br>Authenticates a user with the given request. </td>
                         </tr>
                         
                     </table>
@@ -248,11 +248,11 @@ extends java.lang.Object
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="authenticate(io.micronaut.http.HttpRequest, io.micronaut.security.authentication.AuthenticationRequest)"><!-- --></a>
+                        <a name="authenticate(HttpRequest, AuthenticationRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-org.reactivestreams.Publisher <strong>authenticate</strong>(@javax.annotation.NullableNullable io.micronaut.http.HttpRequest httpRequest, io.micronaut.security.authentication.AuthenticationRequest authenticationRequest)</h4>
+                                <h4>@java.lang.Override
+Publisher&lt;AuthenticationResponse&gt; <strong>authenticate</strong>(@javax.annotation.Nullable HttpRequest&lt;?&gt; httpRequest, AuthenticationRequest&lt;?, ?&gt; authenticationRequest)</h4>
                                 <p> Authenticates a user with the given request. If a successful authentication is
  returned, the object must be an instance of UserDetails.
 

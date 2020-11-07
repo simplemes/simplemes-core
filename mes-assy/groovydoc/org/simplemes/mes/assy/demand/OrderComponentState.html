@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+class OrderComponentState
+extends java.lang.Object</pre>
 
     <p> This class contains the fields for a single row in the component assembly state for an order/LSN.</p>
 
@@ -205,7 +212,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#removalLabels">removalLabels</a></code><br>The list of labels for each removal sequence.  </td>
                         </tr>
                         
@@ -215,7 +222,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.Integer&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#sequencesForRemoval">sequencesForRemoval</a></code><br>The list of OrderAssembledComponent.sequence values that make up this record.  </td>
                         </tr>
                         
@@ -419,7 +426,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="removalLabels"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../List.html'>List</a> <strong>removalLabels</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.String&gt; <strong>removalLabels</strong></h4>
                                 <p> The list of labels for each removal sequence.  Suitable for use in a coonfirmation GUI.
  Includes the component, sequence, and assy data.</p>
                             </li>
@@ -436,7 +443,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="sequencesForRemoval"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../List.html'>List</a> <strong>sequencesForRemoval</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.Integer&gt; <strong>sequencesForRemoval</strong></h4>
                                 <p> The list of OrderAssembledComponent.sequence values that make up this record.  Allows quick removal.</p>
                             </li>
                         </ul>

@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.CompileStatic
+@groovy.util.logging.Slf4j
+class ClassPathScanner
+extends java.lang.Object</pre>
 
     <p> Utility to scan the class path for folder with resources from all modules (.jar files) and class path directories.
  Supports only the format: 'folder/*.ext'.
@@ -137,7 +145,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../../../ClassPathScannerFactory.html'>ClassPathScannerFactory</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;org.simplemes.eframe.misc.ClassPathScannerFactory</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#factory">factory</a></code><br>The factory to build a class path scanner.  </td>
                         </tr>
                         
@@ -207,56 +215,56 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../URL.html'>URL</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildJarFileUrl(File, java.lang.String)">buildJarFileUrl</a></strong>(<a href='../../../../File.html'>File</a> file, java.lang.String path)</code><br>Builds a jar file URL for the given jar file and path.</td>
+                            <td class="colLast"><code>java.net.URL</code></td>
+                            <td class="colLast"><code><strong><a href="#buildJarFileUrl(java.io.File, java.lang.String)">buildJarFileUrl</a></strong>(java.io.File file, java.lang.String path)</code><br>Builds a jar file URL for the given jar file and path.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getJarFilePath(URL)">getJarFilePath</a></strong>(<a href='../../../../URL.html'>URL</a> url)</code><br>Gets the file name for the given JAR file URL. </td>
+                            <td class="colLast"><code><strong><a href="#getJarFilePath(java.net.URL)">getJarFilePath</a></strong>(java.net.URL url)</code><br>Gets the file name for the given JAR file URL.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getRootPath()">getRootPath</a></strong>()</code><br>Returns the root path for the desired resources. </td>
+                            <td class="colLast"><code><strong><a href="#getRootPath()">getRootPath</a></strong>()</code><br>Returns the root path for the desired resources.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#match(URL)">match</a></strong>(<a href='../../../../URL.html'>URL</a> url)</code><br>Returns the portion of the given URL matches the desired search spec. </td>
+                            <td class="colLast"><code><strong><a href="#match(java.net.URL)">match</a></strong>(java.net.URL url)</code><br>Returns the portion of the given URL matches the desired search spec.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#match(java.lang.String)">match</a></strong>(java.lang.String url)</code><br>Returns the portion of the given URL matches the desired search spec. </td>
+                            <td class="colLast"><code><strong><a href="#match(java.lang.String)">match</a></strong>(java.lang.String url)</code><br>Returns the portion of the given URL matches the desired search spec.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#scan()">scan</a></strong>()</code><br>Scans the classpath for matching resources. </td>
+                            <td class="colLast"><code>java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#scan()">scan</a></strong>()</code><br>Scans the classpath for matching resources.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#scanFileFolder(File)">scanFileFolder</a></strong>(<a href='../../../../File.html'>File</a> folder)</code><br>Scan a file folder, including sub-folders. </td>
+                            <td class="colLast"><code>java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#scanFileFolder(java.io.File)">scanFileFolder</a></strong>(java.io.File folder)</code><br>Scan a file folder, including sub-folders.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#scanJarFolder(File)">scanJarFolder</a></strong>(<a href='../../../../File.html'>File</a> file)</code><br>Scan a JAR file folder, including sub-folders. </td>
+                            <td class="colLast"><code>java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#scanJarFolder(java.io.File)">scanJarFolder</a></strong>(java.io.File file)</code><br>Scan a JAR file folder, including sub-folders.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#scanResource(URL)">scanResource</a></strong>(<a href='../../../../URL.html'>URL</a> url)</code><br>Scans a single resource for sub-elements that match the pattern. </td>
+                            <td class="colLast"><code>java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#scanResource(java.net.URL)">scanResource</a></strong>(java.net.URL url)</code><br>Scans a single resource for sub-elements that match the pattern.</td>
                         </tr>
                         
                     </table>
@@ -313,7 +321,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="factory"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;<a href='../../../../ClassPathScannerFactory.html'>ClassPathScannerFactory</a> <strong>factory</strong></h4>
+                                <h4>private&nbsp;static&nbsp;org.simplemes.eframe.misc.ClassPathScannerFactory <strong>factory</strong></h4>
                                 <p> The factory to build a class path scanner.  This allows tests to provide specific results
  from the scan() method.</p>
                             </li>
@@ -378,18 +386,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="buildJarFileUrl(File, java.lang.String)"><!-- --></a>
+                        <a name="buildJarFileUrl(java.io.File, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../URL.html'>URL</a> <strong>buildJarFileUrl</strong>(<a href='../../../../File.html'>File</a> file, java.lang.String path)</h4>
-                                <p> Builds a jar file URL for the given jar file and path. <DL><DT><B>Returns:</B></DT><DD><DL><DT><B>Parameters:</B></DT><DD><code>file</code> -  The .jar file.</DD><DD><code>path</code> -  The</DD></DL></DD></DL></p>
+                                <h4>java.net.URL <strong>buildJarFileUrl</strong>(java.io.File file, java.lang.String path)</h4>
+                                <p> Builds a jar file URL for the given jar file and path.
+ @return <DL><DT><B>Parameters:</B></DT><DD><code>file</code> -  The .jar file.</DD><DD><code>path</code> -  The</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="getJarFilePath(URL)"><!-- --></a>
+                        <a name="getJarFilePath(java.net.URL)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>getJarFilePath</strong>(<a href='../../../../URL.html'>URL</a> url)</h4>
+                                <h4>java.lang.String <strong>getJarFilePath</strong>(java.net.URL url)</h4>
                                 <p> Gets the file name for the given JAR file URL. <DL><DT><B>Parameters:</B></DT><DD><code>url</code> -  The URL of the jar file to get.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The path for the file.</DD></DL></p>
                             </li>
                         </ul>
@@ -402,10 +411,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="match(URL)"><!-- --></a>
+                        <a name="match(java.net.URL)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>match</strong>(<a href='../../../../URL.html'>URL</a> url)</h4>
+                                <h4>java.lang.String <strong>match</strong>(java.net.URL url)</h4>
                                 <p> Returns the portion of the given URL matches the desired search spec. <DL><DT><B>Parameters:</B></DT><DD><code>url</code> -  The URL to check.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The matching portion.</DD></DL></p>
                             </li>
                         </ul>
@@ -421,31 +430,31 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="scan()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>scan</strong>()</h4>
+                                <h4>java.util.List <strong>scan</strong>()</h4>
                                 <p> Scans the classpath for matching resources. <DL><DT><B>Returns:</B></DT><DD>The resource URLs or relative paths.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="scanFileFolder(File)"><!-- --></a>
+                        <a name="scanFileFolder(java.io.File)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>scanFileFolder</strong>(<a href='../../../../File.html'>File</a> folder)</h4>
+                                <h4>java.util.List <strong>scanFileFolder</strong>(java.io.File folder)</h4>
                                 <p> Scan a file folder, including sub-folders. <DL><DT><B>Parameters:</B></DT><DD><code>folder</code> -  The folder to check.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The matching resources found in the folder.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="scanJarFolder(File)"><!-- --></a>
+                        <a name="scanJarFolder(java.io.File)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>scanJarFolder</strong>(<a href='../../../../File.html'>File</a> file)</h4>
+                                <h4>java.util.List <strong>scanJarFolder</strong>(java.io.File file)</h4>
                                 <p> Scan a JAR file folder, including sub-folders. <DL><DT><B>Parameters:</B></DT><DD><code>url</code> -  The URL of the jar file to check.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The matching resources found in the folder.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="scanResource(URL)"><!-- --></a>
+                        <a name="scanResource(java.net.URL)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>scanResource</strong>(<a href='../../../../URL.html'>URL</a> url)</h4>
+                                <h4>java.util.List <strong>scanResource</strong>(java.net.URL url)</h4>
                                 <p> Scans a single resource for sub-elements that match the pattern. <DL><DT><B>Parameters:</B></DT><DD><code>url</code> -  The resource to check.</DD></DL><DL><DT><B>Returns:</B></DT><DD>Any sub-folder resources found.</DD></DL></p>
                             </li>
                         </ul>

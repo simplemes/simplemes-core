@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.Trait
+trait RoutingTrait
+extends java.lang.Object</pre>
 
     <p> Defines the common behavior for all routings (e.g. MasterRouting, a Product and Order routing).
  A routing is a sequence of steps (operations) needed to manufacture a product.
@@ -137,7 +144,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong><a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>java.util.List&lt;<a href='../../../../org/simplemes/mes/product/OperationTrait.html' title='OperationTrait'>OperationTrait</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#operations">operations</a></code><br></td>
                         </tr>
                         
@@ -192,19 +199,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>int</code></td>
-                            <td class="colLast"><code><strong><a href="#determineNextOperation(int)">determineNextOperation</a></strong>(int sequence)</code><br>Determines the next operation to be performed after the given operation is completed. </td>
+                            <td class="colLast"><code><strong><a href="#determineNextOperation(int)">determineNextOperation</a></strong>(int sequence)</code><br>Determines the next operation to be performed after the given operation is completed.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getOperations()">getOperations</a></strong>()</code><br>Gets the operations. </td>
+                            <td class="colLast"><code>java.util.List&lt;<a href='../../../../org/simplemes/mes/product/OperationTrait.html' title='OperationTrait'>OperationTrait</a>&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getOperations()">getOperations</a></strong>()</code><br>Gets the operations.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setOperations(List)">setOperations</a></strong>(<a href='../../../../List.html'>List</a> operations)</code><br>Sets the operations. </td>
+                            <td class="colLast"><code><strong><a href="#setOperations(List)">setOperations</a></strong>(java.util.List&lt;<a href='../../../../org/simplemes/mes/product/OperationTrait.html' title='OperationTrait'>OperationTrait</a>&gt; operations)</code><br>Sets the operations.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -215,8 +222,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#validateOperations(java.lang.String)">validateOperations</a></strong>(java.lang.String routing)</code><br>Validates that the operations are valid (no duplicate sequences and has at least one operation). </td>
+                            <td class="colLast"><code>java.util.List&lt;ValidationError&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#validateOperations(java.lang.String)">validateOperations</a></strong>(java.lang.String routing)</code><br>Validates that the operations are valid (no duplicate sequences and has at least one operation).</td>
                         </tr>
                         
                     </table>
@@ -265,7 +272,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="operations"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>operations</strong></h4>
+                                <h4>java.util.List&lt;<a href='../../../../org/simplemes/mes/product/OperationTrait.html' title='OperationTrait'>OperationTrait</a>&gt; <strong>operations</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -316,7 +323,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getOperations()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getOperations</strong>()</h4>
+                                <h4>java.util.List&lt;<a href='../../../../org/simplemes/mes/product/OperationTrait.html' title='OperationTrait'>OperationTrait</a>&gt; <strong>getOperations</strong>()</h4>
                                 <p> Gets the operations. <DL><DT><B>Returns:</B></DT><DD>The operations.</DD></DL></p>
                             </li>
                         </ul>
@@ -324,7 +331,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="setOperations(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>setOperations</strong>(<a href='../../../../List.html'>List</a> operations)</h4>
+                                <h4>void <strong>setOperations</strong>(java.util.List&lt;<a href='../../../../org/simplemes/mes/product/OperationTrait.html' title='OperationTrait'>OperationTrait</a>&gt; operations)</h4>
                                 <p> Sets the operations. <DL><DT><B>Parameters:</B></DT><DD><code>operations</code> -  The operations.</DD></DL></p>
                             </li>
                         </ul>
@@ -340,7 +347,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="validateOperations(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>validateOperations</strong>(java.lang.String routing)</h4>
+                                <h4>java.util.List&lt;ValidationError&gt; <strong>validateOperations</strong>(java.lang.String routing)</h4>
                                 <p> Validates that the operations are valid (no duplicate sequences and has at least one operation). <DL><DT><B>Parameters:</B></DT><DD><code>routing</code> -  The routing the operations are on (used only for error messages).</DD></DL></p>
                             </li>
                         </ul>

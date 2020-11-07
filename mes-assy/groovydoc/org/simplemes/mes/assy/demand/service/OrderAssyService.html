@@ -101,18 +101,18 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>org.simplemes.mes.demand.service.OrderReleasePoint, org.simplemes.eframe.search.AdjustQueryInterface</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.util.logging.Slf4jSlf4j
-@javax.inject.SingletonSingleton
-@javax.transaction.TransactionalTransactional
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
+@javax.transaction.Transactional
 class OrderAssyService
 extends java.lang.Object
-
-</pre>
-
-
+implements org.simplemes.mes.demand.service.OrderReleasePoint, org.simplemes.eframe.search.AdjustQueryInterface</pre>
 
     <p> This service provides business logic used for the Assembly module that
  provides additions to the core Order service.
@@ -230,7 +230,7 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;OrderComponentState&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#findComponentAssemblyState(org.simplemes.mes.assy.demand.FindComponentAssemblyStateRequest)">findComponentAssemblyState</a></strong>(<a href='../../../../../../org/simplemes/mes/assy/demand/FindComponentAssemblyStateRequest.html'>FindComponentAssemblyStateRequest</a> request)</code><br>Finds the state of all the components needed for the given order/LSN.
  </td>
                         </tr>
@@ -238,13 +238,13 @@ extends java.lang.Object
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#formatForRemoval(org.simplemes.mes.assy.demand.domain.OrderAssembledComponent)">formatForRemoval</a></strong>(<a href='../../../../../../org/simplemes/mes/assy/demand/domain/OrderAssembledComponent.html'>OrderAssembledComponent</a> orderAssembledComponent)</code><br>Formats the given assembled component, suitable for a removal confirmation. </td>
+                            <td class="colLast"><code><strong><a href="#formatForRemoval(org.simplemes.mes.assy.demand.domain.OrderAssembledComponent)">formatForRemoval</a></strong>(<a href='../../../../../../org/simplemes/mes/assy/demand/domain/OrderAssembledComponent.html'>OrderAssembledComponent</a> orderAssembledComponent)</code><br>Formats the given assembled component, suitable for a removal confirmation.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#postAdjustQuery(java.lang.String, java.lang.String, java.lang.Class)">postAdjustQuery</a></strong>(java.lang.String response, java.lang.String queryString, java.lang.Class domainClass)</code><br>ExtensionPoint post method to adjust the query string to make the input more user friendly. </td>
+                            <td class="colLast"><code><strong><a href="#postAdjustQuery(java.lang.String, java.lang.String, java.lang.Class)">postAdjustQuery</a></strong>(java.lang.String response, java.lang.String queryString, java.lang.Class domainClass)</code><br>ExtensionPoint post method to adjust the query string to make the input more user friendly.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -416,8 +416,8 @@ extends java.lang.Object
                         <a name="findComponentAssemblyState(org.simplemes.mes.assy.demand.FindComponentAssemblyStateRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-<a href='../../../../../../List.html'>List</a> <strong>findComponentAssemblyState</strong>(<a href='../../../../../../org/simplemes/mes/assy/demand/FindComponentAssemblyStateRequest.html'>FindComponentAssemblyStateRequest</a> request)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: AbcMetric)
+java.util.List&lt;OrderComponentState&gt; <strong>findComponentAssemblyState</strong>(<a href='../../../../../../org/simplemes/mes/assy/demand/FindComponentAssemblyStateRequest.html'>FindComponentAssemblyStateRequest</a> request)</h4>
                                 <p> Finds the state of all the components needed for the given order/LSN.
  If LSN is given, then the logic will attempt to reconcile order-based components
  with this single LSN.  This will cause problems when mixing order-based and LSN-based
@@ -439,7 +439,7 @@ extends java.lang.Object
                         <a name="postAdjustQuery(java.lang.String, java.lang.String, java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>postAdjustQuery</strong>(java.lang.String response, java.lang.String queryString, java.lang.Class domainClass)</h4>
                                 <p> ExtensionPoint post method to adjust the query string to make the input more user friendly. <DL><DT><B>Parameters:</B></DT><DD><code>response</code> -  The core response.</DD><DD><code>queryString</code> -  The input query string from the user. Null not allowed.</DD><DD><code>domainClass</code> -  The domain class for domain-specific searches.  Null allowed.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The adjusted query string.</DD></DL></p>
                             </li>
@@ -448,7 +448,7 @@ java.lang.String <strong>postAdjustQuery</strong>(java.lang.String response, jav
                         <a name="postRelease(org.simplemes.mes.demand.OrderReleaseResponse, org.simplemes.mes.demand.OrderReleaseRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 org.simplemes.mes.demand.OrderReleaseResponse <strong>postRelease</strong>(org.simplemes.mes.demand.OrderReleaseResponse coreResponse, org.simplemes.mes.demand.OrderReleaseRequest orderReleaseRequest)</h4>
                                 <p> After an order is released by the mes-core module, this addition method will copy any ProductComponent (BOM)
  records to the order.
@@ -462,7 +462,7 @@ org.simplemes.mes.demand.OrderReleaseResponse <strong>postRelease</strong>(org.s
                         <a name="preAdjustQuery(java.lang.String, java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>preAdjustQuery</strong>(java.lang.String queryString, java.lang.Class domainClass)</h4>
                                 <p> ExtensionPoint pre method to adjust the query string to make the input more user friendly.
  <p>
@@ -476,7 +476,7 @@ void <strong>preAdjustQuery</strong>(java.lang.String queryString, java.lang.Cla
                         <a name="preRelease(org.simplemes.mes.demand.OrderReleaseRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>preRelease</strong>(org.simplemes.mes.demand.OrderReleaseRequest orderReleaseRequest)</h4>
                                 <p> Pre-release extension method for the order release process.
  <p>

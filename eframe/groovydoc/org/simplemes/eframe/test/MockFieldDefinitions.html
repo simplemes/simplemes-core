@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class MockFieldDefinitions
+extends <a href='../../../../org/simplemes/eframe/data/FieldDefinitions.html'>FieldDefinitions</a></pre>
 
     <p> A mock of the FieldDefinitions, designed to easily create the field definitions needed for marker and related testing.</p>
 
@@ -137,13 +143,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst">
                                 <code><a href="#MockFieldDefinitions(Map)">MockFieldDefinitions</a>
-                                (<a href='../../../../Map.html'>Map</a> fields)</code><br>Convenience constructor where each entry in the map defines a single field.</td>
+                                (java.util.Map&lt;java.lang.String, java.lang.Object&gt; fields)</code><br>Convenience constructor where each entry in the map defines a single field.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#MockFieldDefinitions(List)">MockFieldDefinitions</a>
-                                (<a href='../../../../List.html'>List</a> fieldDefs)</code><br>Creates a FieldDefinitions holder for multiple fields of simple type (String/40 or a specific field def).</td>
+                                <code><a href="#MockFieldDefinitions(java.util.List)">MockFieldDefinitions</a>
+                                (java.util.List fieldDefs)</code><br>Creates a FieldDefinitions holder for multiple fields of simple type (String/40 or a specific field def).</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -229,15 +235,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="MockFieldDefinitions(Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>MockFieldDefinitions</strong>(<a href='../../../../Map.html'>Map</a> fields)</h4>
+                                <h4><strong>MockFieldDefinitions</strong>(java.util.Map&lt;java.lang.String, java.lang.Object&gt; fields)</h4>
                                 <p> Convenience constructor where each entry in the map defines a single field. <DL><DT><B>Parameters:</B></DT><DD><code>fields</code> -  The map of fields.  The key is the field name, the value is the type (a Class).</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="MockFieldDefinitions(List)"><!-- --></a>
+                        <a name="MockFieldDefinitions(java.util.List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>MockFieldDefinitions</strong>(<a href='../../../../List.html'>List</a> fieldDefs)</h4>
+                                <h4><strong>MockFieldDefinitions</strong>(java.util.List fieldDefs)</h4>
                                 <p> Creates a FieldDefinitions holder for multiple fields of simple type (String/40 or a specific field def). <DL><DT><B>Parameters:</B></DT><DD><code>fieldDefs</code> -  The list of field names or field definitions.  If a field starts with a '*', then it is marked as required.</DD></DL></p>
                             </li>
                         </ul>
@@ -267,7 +273,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>boolean <strong>isSimple</strong>(java.lang.Class clazz)</h4>
-                                <p> Determines if the class is a simple class for field definition purposes. <DL><DT><B>Returns:</B></DT><DD><DL><DT><B>Parameters:</B></DT><DD>clazz</DD></DL></DD></DL></p>
+                                <p> Determines if the class is a simple class for field definition purposes.
+ @return <DL><DT><B>Parameters:</B></DT><DD>clazz</DD></DL></p>
                             </li>
                         </ul>
                     

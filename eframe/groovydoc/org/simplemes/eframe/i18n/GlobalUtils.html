@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class GlobalUtils
+extends java.lang.Object</pre>
 
     <p> Miscellaneous globalization utils.  Most are static methods for convenience but work with
  thread context values as needed.
@@ -156,7 +162,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../../../Locale.html'>Locale</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.Locale</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#defaultLocale">defaultLocale</a></code><br>The default locale to use when the request locale is not available.</td>
                         </tr>
                         
@@ -216,20 +222,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../Locale.html'>Locale</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getRequestLocale(Locale)">getRequestLocale</a></strong>(<a href='../../../../Locale.html'>Locale</a> locale)</code><br>Determines the locale to be used from the request.  </td>
+                            <td class="colLast"><code>static&nbsp;java.util.Locale</code></td>
+                            <td class="colLast"><code><strong><a href="#getRequestLocale(java.util.Locale)">getRequestLocale</a></strong>(java.util.Locale locale)</code><br>Determines the locale to be used from the request.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#lookup(java.lang.String, Locale, java.lang.Object)">lookup</a></strong>(java.lang.String key, <a href='../../../../Locale.html'>Locale</a> locale, java.lang.Object[] args)</code><br>Convenience method for general message.properties lookup.
+                            <td class="colLast"><code><strong><a href="#lookup(java.lang.String, java.util.Locale, java.lang.Object)">lookup</a></strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</code><br>Convenience method for general message.properties lookup.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../Tuple2.html'>Tuple2</a></code></td>
+                            <td class="colLast"><code>static&nbsp;groovy.lang.Tuple2</code></td>
                             <td class="colLast"><code><strong><a href="#lookupLabelAndTooltip(java.lang.String, java.lang.String)">lookupLabelAndTooltip</a></strong>(java.lang.String labelKey, java.lang.String tooltipKey)</code><br>Convenience method to lookup a label and a tooltip based on inputs from parameters.
  </td>
                         </tr>
@@ -237,7 +243,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toStringLocalized(java.lang.Object, Locale)">toStringLocalized</a></strong>(java.lang.Object o, <a href='../../../../Locale.html'>Locale</a> locale)</code><br>Safely call toString() on an object, using the locale if the object supports it. </td>
+                            <td class="colLast"><code><strong><a href="#toStringLocalized(java.lang.Object, java.util.Locale)">toStringLocalized</a></strong>(java.lang.Object o, java.util.Locale locale)</code><br>Safely call toString() on an object, using the locale if the object supports it.</td>
                         </tr>
                         
                     </table>
@@ -304,7 +310,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="defaultLocale"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;<a href='../../../../Locale.html'>Locale</a> <strong>defaultLocale</strong></h4>
+                                <h4>private&nbsp;static&nbsp;java.util.Locale <strong>defaultLocale</strong></h4>
                                 <p> The default locale to use when the request locale is not available.</p>
                             </li>
                         </ul>
@@ -352,23 +358,23 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="getRequestLocale(Locale)"><!-- --></a>
+                        <a name="getRequestLocale(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../Locale.html'>Locale</a> <strong>getRequestLocale</strong>(<a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>static&nbsp;java.util.Locale <strong>getRequestLocale</strong>(java.util.Locale locale)</h4>
                                 <p> Determines the locale to be used from the request.  This relies on the ThreadLocal Spring
  RequestContextHolder to find the request. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale for the various status text values. (<b>Default:</b> Request locale, or Locale.default).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The request locale, falls back to the system default.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="lookup(java.lang.String, Locale, java.lang.Object)"><!-- --></a>
+                        <a name="lookup(java.lang.String, java.util.Locale, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-static&nbsp;java.lang.String <strong>lookup</strong>(java.lang.String key, <a href='../../../../Locale.html'>Locale</a> locale, java.lang.Object[] args)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: UnnecessaryGetter)
+static&nbsp;java.lang.String <strong>lookup</strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</h4>
                                 <p> Convenience method for general message.properties lookup.
  If the message is not found, then the original key will be returned.  If the configuration option
- org.simplemes.eframe.application.EFrameConfiguration#localizationTest is true, then the
+ <a href='../../../../org/simplemes/eframe/application/EFrameConfiguration.html#localizationTest' title='EFrameConfiguration.localizationTest'>EFrameConfiguration.localizationTest</a> is true, then the
  value returned is "-==${key}==-" for keys with a period.  This will help flag missing properties
  entries. <DL><DT><B>Parameters:</B></DT><DD><code>key</code> -  The key to lookup.</DD><DD><code>locale</code> -  The locale to use for the message. (<b>Default</b>: Request Locale)</DD><DD><code>args</code> -  The replaceable arguments used by the message (if any).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The looked up message.</DD></DL></p>
                             </li>
@@ -377,18 +383,18 @@ static&nbsp;java.lang.String <strong>lookup</strong>(java.lang.String key, <a hr
                         <a name="lookupLabelAndTooltip(java.lang.String, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../Tuple2.html'>Tuple2</a> <strong>lookupLabelAndTooltip</strong>(java.lang.String labelKey, java.lang.String tooltipKey)</h4>
+                                <h4>static&nbsp;groovy.lang.Tuple2 <strong>lookupLabelAndTooltip</strong>(java.lang.String labelKey, java.lang.String tooltipKey)</h4>
                                 <p> Convenience method to lookup a label and a tooltip based on inputs from parameters.
  If no tooltip is given, will use the label key as the basis for a tooltip lookup.
  If no tooltip is given and the generated key is not found, then the tooltip returned is null. <DL><DT><B>Parameters:</B></DT><DD><code>labelKey</code> -  The key to lookup the label with (<b>Required</b>).</DD><DD><code>tooltipKey</code> -  The key to lookup the tooltip with with (<b>Optional</b>).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The looked up values (first is label, second is the tooltip).</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="toStringLocalized(java.lang.Object, Locale)"><!-- --></a>
+                        <a name="toStringLocalized(java.lang.Object, java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-static&nbsp;java.lang.String <strong>toStringLocalized</strong>(java.lang.Object o, <a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: UnnecessaryGetter)
+static&nbsp;java.lang.String <strong>toStringLocalized</strong>(java.lang.Object o, java.util.Locale locale)</h4>
                                 <p> Safely call toString() on an object, using the locale if the object supports it. <DL><DT><B>Parameters:</B></DT><DD><code>o</code> -  The object to get a string form.</DD><DD><code>locale</code> -  The locale. Defaults to the request locale. (<b>Optional:</b>).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The string value (localized if supported).  '' if o is null.</DD></DL></p>
                             </li>
                         </ul>

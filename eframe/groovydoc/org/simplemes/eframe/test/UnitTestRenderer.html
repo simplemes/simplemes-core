@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class UnitTestRenderer
+extends java.lang.Object</pre>
 
     <p> Defines a Freemarker renderer that can render views from memory(string).
  <h3>Options</h3>
@@ -140,7 +146,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../StringWriter.html'>StringWriter</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.io.StringWriter</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#resultWriter">resultWriter</a></code><br>The writer that will hold the rendered view.</td>
                         </tr>
                         
@@ -167,8 +173,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#UnitTestRenderer(Map)">UnitTestRenderer</a>
-                                (<a href='../../../../Map.html'>Map</a> options)</code><br>Builds a renderer with the given model and related values for rendering views.</td>
+                                <code><a href="#UnitTestRenderer(java.util.Map)">UnitTestRenderer</a>
+                                (java.util.Map options)</code><br>Builds a renderer with the given model and related values for rendering views.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -208,7 +214,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#render()">render</a></strong>()</code><br>Renders the rendered content. </td>
+                            <td class="colLast"><code><strong><a href="#render()">render</a></strong>()</code><br>Renders the rendered content.</td>
                         </tr>
                         
                     </table>
@@ -257,7 +263,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="resultWriter"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../StringWriter.html'>StringWriter</a> <strong>resultWriter</strong></h4>
+                                <h4>private&nbsp;java.io.StringWriter <strong>resultWriter</strong></h4>
                                 <p> The writer that will hold the rendered view.</p>
                             </li>
                         </ul>
@@ -276,11 +282,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Constructor Detail</h3>
                     
-                        <a name="UnitTestRenderer(Map)"><!-- --></a>
+                        <a name="UnitTestRenderer(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-<strong>UnitTestRenderer</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+<strong>UnitTestRenderer</strong>(java.util.Map options)</h4>
                                 <p> Builds a renderer with the given model and related values for rendering views. <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  See options above.</DD></DL></p>
                             </li>
                         </ul>

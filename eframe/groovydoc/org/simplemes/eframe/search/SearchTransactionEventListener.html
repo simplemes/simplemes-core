@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.lang.Singleton
+class SearchTransactionEventListener
+extends java.lang.Object</pre>
 
     <p> Listens for the transaction commit events on domain objects.
  Mainly notifies the search logic to (maybe) index or re-index the object.</p>
@@ -239,8 +246,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="onNewSaveEvent(org.simplemes.eframe.domain.DomainSaveTransactionEvent)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.transaction.annotation.TransactionalEventListenerTransactionalEventListener
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+@io.micronaut.transaction.annotation.TransactionalEventListener
 void <strong>onNewSaveEvent</strong>(<a href='../../../../org/simplemes/eframe/domain/DomainSaveTransactionEvent.html'>DomainSaveTransactionEvent</a> event)</h4>
                                 <p></p>
                             </li>

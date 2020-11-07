@@ -101,17 +101,17 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>org.simplemes.eframe.web.undo.UndoActionInterface</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@java.lang.SuppressWarningsSuppressWarnings
-@groovy.transform.ToStringToString
+
+<pre>@java.lang.SuppressWarnings(value: [FieldName, GetterMethodCouldBeProperty])
+@groovy.transform.ToString(includePackage: false, includeNames: true)
 class CompleteUndoAction
 extends java.lang.Object
-
-</pre>
-
-
+implements org.simplemes.eframe.web.undo.UndoActionInterface</pre>
 
     <p> Defines the action needed to undo a single complete action.</p>
 
@@ -179,7 +179,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.util.Map&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#successEvents">successEvents</a></code><br>Optional dashboard events to trigger after the undo action completes successfully.</td>
                         </tr>
                         
@@ -329,7 +329,7 @@ extends java.lang.Object
                         <a name="successEvents"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>successEvents</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.util.Map&gt; <strong>successEvents</strong></h4>
                                 <p> Optional dashboard events to trigger after the undo action completes successfully.</p>
                             </li>
                         </ul>
@@ -380,7 +380,7 @@ extends java.lang.Object
                         <a name="getJson()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>getJson</strong>()</h4>
                                 <p> The JSON content to submit in order to undo a previous action.</p>
                             </li>
@@ -389,7 +389,7 @@ java.lang.String <strong>getJson</strong>()</h4>
                         <a name="getUri()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>getUri</strong>()</h4>
                                 <p> The URI to submit the JSON content to in order to undo a previous action.</p>
                             </li>

@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+class ComponentRemoveUndoRequest
+extends java.lang.Object</pre>
 
     <p> This class is the request to undo a single component removal action for the order.
  This request marks the record as assembled..
@@ -176,8 +183,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#ComponentRemoveUndoRequest(Map)">ComponentRemoveUndoRequest</a>
-                                (<a href='../../../../../Map.html'>Map</a> params)</code><br>Main constructor for use with a controller's HTTP parameters.  </td>
+                                <code><a href="#ComponentRemoveUndoRequest(java.util.Map)">ComponentRemoveUndoRequest</a>
+                                (java.util.Map params)</code><br>Main constructor for use with a controller's HTTP parameters.  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -281,10 +288,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="ComponentRemoveUndoRequest(Map)"><!-- --></a>
+                        <a name="ComponentRemoveUndoRequest(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>ComponentRemoveUndoRequest</strong>(<a href='../../../../../Map.html'>Map</a> params)</h4>
+                                <h4><strong>ComponentRemoveUndoRequest</strong>(java.util.Map params)</h4>
                                 <p> Main constructor for use with a controller's HTTP parameters.  Validates the inputs, but does not fail if no order is
  given. <DL><DT><B>Parameters:</B></DT><DD><code>params</code> -  The HTTP parameters (order and sequence as string)</DD></DL></p>
                             </li>

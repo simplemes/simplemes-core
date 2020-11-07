@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
+class Holders
+extends java.lang.Object</pre>
 
     <p> A place to hold specific global values.  Simplifies access to things like the ApplicationContext.</p>
 
@@ -145,7 +153,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../../../Set.html'>Set</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.Set&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#fallbackEnvironmentNames">fallbackEnvironmentNames</a></code><br>A fallback environment for unit only tests and such.</td>
                         </tr>
                         
@@ -220,13 +228,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code>&lt;T&gt;</code></td>
                             <td class="colLast"><code>static&nbsp;T</code></td>
-                            <td class="colLast"><code><strong><a href="#getBean(java.lang.Class)">getBean</a></strong>(java.lang.Class c)</code><br>Convenience method to get the bean from the Application Context. </td>
+                            <td class="colLast"><code><strong><a href="#getBean(Class)">getBean</a></strong>(java.lang.Class&lt;T&gt; c)</code><br>Convenience method to get the bean from the Application Context.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;io.micronaut.http.HttpRequest</code></td>
-                            <td class="colLast"><code><strong><a href="#getCurrentRequest()">getCurrentRequest</a></strong>()</code><br>Returns the current request for this thread. </td>
+                            <td class="colLast"><code><strong><a href="#getCurrentRequest()">getCurrentRequest</a></strong>()</code><br>Returns the current request for this thread.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -245,13 +253,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;com.fasterxml.jackson.databind.ObjectMapper</code></td>
-                            <td class="colLast"><code><strong><a href="#getObjectMapper()">getObjectMapper</a></strong>()</code><br>Returns the object mapper in use for this server. </td>
+                            <td class="colLast"><code><strong><a href="#getObjectMapper()">getObjectMapper</a></strong>()</code><br>Returns the object mapper in use for this server.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isEnvironmentDev()">isEnvironmentDev</a></strong>()</code><br>Returns true if the current environment is dev. </td>
+                            <td class="colLast"><code><strong><a href="#isEnvironmentDev()">isEnvironmentDev</a></strong>()</code><br>Returns true if the current environment is dev.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -263,7 +271,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#onStartup(io.micronaut.context.event.StartupEvent)">onStartup</a></strong>(io.micronaut.context.event.StartupEvent event)</code><br>Handles application startup events. </td>
+                            <td class="colLast"><code><strong><a href="#onStartup(io.micronaut.context.event.StartupEvent)">onStartup</a></strong>(io.micronaut.context.event.StartupEvent event)</code><br>Handles application startup events.</td>
                         </tr>
                         
                     </table>
@@ -336,7 +344,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="fallbackEnvironmentNames"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;<a href='../../../../Set.html'>Set</a> <strong>fallbackEnvironmentNames</strong></h4>
+                                <h4>private&nbsp;static&nbsp;java.util.Set&lt;java.lang.String&gt; <strong>fallbackEnvironmentNames</strong></h4>
                                 <p> A fallback environment for unit only tests and such.</p>
                             </li>
                         </ul>
@@ -408,10 +416,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="getBean(java.lang.Class)"><!-- --></a>
+                        <a name="getBean(Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>&lt;T&gt; static&nbsp;T <strong>getBean</strong>(java.lang.Class c)</h4>
+                                <h4>&lt;T&gt; static&nbsp;T <strong>getBean</strong>(java.lang.Class&lt;T&gt; c)</h4>
                                 <p> Convenience method to get the bean from the Application Context. <DL><DT><B>Returns:</B></DT><DD>The bean.</DD></DL></p>
                             </li>
                         </ul>
@@ -468,7 +476,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="onStartup(io.micronaut.context.event.StartupEvent)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.runtime.event.annotation.EventListenerEventListener
+                                <h4>@java.util.EventListener
 void <strong>onStartup</strong>(io.micronaut.context.event.StartupEvent event)</h4>
                                 <p> Handles application startup events. <DL><DT><B>Parameters:</B></DT><DD><code>event</code> -  The event.</DD></DL></p>
                             </li>

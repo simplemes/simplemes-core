@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+class SQLUtils
+extends java.lang.Object</pre>
 
     <p> Common utility methods used to access SQL data directly. Use with caution.</p>
 
@@ -185,7 +192,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#bindResultSet(java.sql.ResultSet, java.lang.Class)">bindResultSet</a></strong>(java.sql.ResultSet resultSet, java.lang.Class domainClass)</code><br>Binds the current row of the given result set to an instance of the given domain class. </td>
+                            <td class="colLast"><code><strong><a href="#bindResultSet(java.sql.ResultSet, java.lang.Class)">bindResultSet</a></strong>(java.sql.ResultSet resultSet, java.lang.Class domainClass)</code><br>Binds the current row of the given result set to an instance of the given domain class.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -196,14 +203,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>&lt;T&gt;</code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#executeQuery(java.lang.String, java.lang.Class, java.lang.Object)">executeQuery</a></strong>(java.lang.String sql, java.lang.Class domainClass, java.lang.Object[] args)</code><br>Executes the given SQL as a prepared statement with the given arguments.
+                            <td class="colLast"><code>java.util.List&lt;T&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#executeQuery(java.lang.String, Class, java.lang.Object)">executeQuery</a></strong>(java.lang.String sql, java.lang.Class&lt;T&gt; domainClass, java.lang.Object[] args)</code><br>Executes the given SQL as a prepared statement with the given arguments.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Tuple2.html'>Tuple2</a></code></td>
+                            <td class="colLast"><code>groovy.lang.Tuple2</code></td>
                             <td class="colLast"><code><strong><a href="#fixInClauseArray(java.lang.String, java.lang.Object)">fixInClauseArray</a></strong>(java.lang.String sql, java.lang.Object[] args)</code><br>Fixes the IN(?) </td>
                         </tr>
                         
@@ -216,7 +223,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.sql.PreparedStatement</code></td>
-                            <td class="colLast"><code><strong><a href="#getPreparedStatement(java.lang.String)">getPreparedStatement</a></strong>(java.lang.String sql)</code><br>Creates a prepared statement for the given SQL. </td>
+                            <td class="colLast"><code><strong><a href="#getPreparedStatement(java.lang.String)">getPreparedStatement</a></strong>(java.lang.String sql)</code><br>Creates a prepared statement for the given SQL.</td>
                         </tr>
                         
                     </table>
@@ -322,11 +329,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="executeQuery(java.lang.String, java.lang.Class, java.lang.Object)"><!-- --></a>
+                        <a name="executeQuery(java.lang.String, Class, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>&lt;T&gt; @java.lang.SuppressWarningsSuppressWarnings
-<a href='../../../../List.html'>List</a> <strong>executeQuery</strong>(java.lang.String sql, java.lang.Class domainClass, java.lang.Object[] args)</h4>
+                                <h4>&lt;T&gt; @java.lang.SuppressWarnings(value: GrUnnecessaryPublicModifier)
+java.util.List&lt;T&gt; <strong>executeQuery</strong>(java.lang.String sql, java.lang.Class&lt;T&gt; domainClass, java.lang.Object[] args)</h4>
                                 <p> Executes the given SQL as a prepared statement with the given arguments.
  The row offset/limit defaults to offset 0, 100 rows max for non-COUNT SELECT statements.
  <p>
@@ -341,7 +348,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="fixInClauseArray(java.lang.String, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Tuple2.html'>Tuple2</a> <strong>fixInClauseArray</strong>(java.lang.String sql, java.lang.Object[] args)</h4>
+                                <h4>groovy.lang.Tuple2 <strong>fixInClauseArray</strong>(java.lang.String sql, java.lang.Object[] args)</h4>
                                 <p> Fixes the IN(?) clause for an SQL statement.  Expands the array in the arguments into individual
  elements in the args list.  Also expands the IN(?) to IN(?,?,?)... <DL><DT><B>Parameters:</B></DT><DD><code>sql</code> -  The SQL to alter.</DD><DD><code>args</code> -  The arguments.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The tuple with the new SQL and new args list.</DD></DL></p>
                             </li>

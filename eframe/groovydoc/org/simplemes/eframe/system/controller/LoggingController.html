@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.security.annotation.Secured(value: ADMIN)
+@io.micronaut.http.annotation.Controller(value: /logging)
+class LoggingController
+extends <a href='../../../../../org/simplemes/eframe/controller/BaseController.html'>BaseController</a></pre>
 
     <p> This controller provides access to the logging configuration for runtime logging changes.</p>
 
@@ -146,7 +155,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>static&nbsp;<a href='../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>static&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#DEFAULT_OTHERS">DEFAULT_OTHERS</a></code></td>
                             <td class="colLast">The default entries in the list of 'others'.</td>
                         </tr>
@@ -267,26 +276,26 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#addOtherLoggerToPref(java.lang.String)">addOtherLoggerToPref</a></strong>(java.lang.String logger)</code><br>Adds a single level to the 'Others' logger list in the user preferences. </td>
+                            <td class="colLast"><code>protected&nbsp;java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#addOtherLoggerToPref(java.lang.String)">addOtherLoggerToPref</a></strong>(java.lang.String logger)</code><br>Adds a single level to the 'Others' logger list in the user preferences.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#assignIDs(java.lang.Object)">assignIDs</a></strong>(java.lang.Object res)</code><br>Assign a unique ID to all elements. </td>
+                            <td class="colLast"><code><strong><a href="#assignIDs(java.lang.Object)">assignIDs</a></strong>(java.lang.Object res)</code><br>Assign a unique ID to all elements.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildMapForOneTopLevel(java.lang.String, List, List, boolean)">buildMapForOneTopLevel</a></strong>(java.lang.String titleKey, <a href='../../../../../List.html'>List</a> classesOrNames, <a href='../../../../../List.html'>List</a> openLevels, boolean sort)</code><br>Builds one top level node of loggers for the given list.  </td>
+                            <td class="colLast"><code>protected&nbsp;java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#buildMapForOneTopLevel(java.lang.String, List, List, boolean)">buildMapForOneTopLevel</a></strong>(java.lang.String titleKey, java.util.List&lt;java.lang.Object&gt; classesOrNames, java.util.List&lt;java.lang.String&gt; openLevels, boolean sort)</code><br>Builds one top level node of loggers for the given list.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildTreeData(java.lang.String)">buildTreeData</a></strong>(java.lang.String userName)</code><br>Finds the current logging level for the given logger (class). </td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#buildTreeData(java.lang.String)">buildTreeData</a></strong>(java.lang.String userName)</code><br>Finds the current logging level for the given logger (class).</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -297,8 +306,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getClientLevels()">getClientLevels</a></strong>()</code><br>Returns the list of client javascript levels defined in the system. </td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getClientLevels()">getClientLevels</a></strong>()</code><br>Returns the list of client javascript levels defined in the system.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -309,20 +318,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getLoggingLevels(java.lang.String)">getLoggingLevels</a></strong>(java.lang.String logger)</code><br>Finds the current logging level for the given logger (class). </td>
+                            <td class="colLast"><code>protected&nbsp;java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#getLoggingLevels(java.lang.String)">getLoggingLevels</a></strong>(java.lang.String logger)</code><br>Finds the current logging level for the given logger (class).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getOpenLevels(java.lang.String)">getOpenLevels</a></strong>(java.lang.String userName)</code><br>Determines the 'open' top-level entries in the tree from the user preferences. </td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getOpenLevels(java.lang.String)">getOpenLevels</a></strong>(java.lang.String userName)</code><br>Determines the 'open' top-level entries in the tree from the user preferences.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getOtherLevels(java.lang.String)">getOtherLevels</a></strong>(java.lang.String userName)</code><br>Determines the 'other' logger levels the user cares about. </td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getOtherLevels(java.lang.String)">getOtherLevels</a></strong>(java.lang.String userName)</code><br>Determines the 'other' logger levels the user cares about.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -340,12 +349,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#removeOtherLoggerFromPref(java.lang.String)">removeOtherLoggerFromPref</a></strong>(java.lang.String logger)</code><br>Removes a single level from the 'Others' logger list in the user preferences. </td>
+                            <td class="colLast"><code><strong><a href="#removeOtherLoggerFromPref(java.lang.String)">removeOtherLoggerFromPref</a></strong>(java.lang.String logger)</code><br>Removes a single level from the 'Others' logger list in the user preferences.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#setLoggingLevel(java.lang.String)">setLoggingLevel</a></strong>(java.lang.String body)</code><br>This sets or clears the current logging level for the given logger.  </td>
                         </tr>
                         
@@ -417,7 +426,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="DEFAULT_OTHERS"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;static&nbsp;final&nbsp;<a href='../../../../../List.html'>List</a> <strong>DEFAULT_OTHERS</strong></h4>
+                                <h4>public&nbsp;static&nbsp;final&nbsp;java.util.List&lt;java.lang.String&gt; <strong>DEFAULT_OTHERS</strong></h4>
                                 <p> The default entries in the list of 'others'.</p>
                             </li>
                         </ul>
@@ -504,8 +513,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="addOtherLogger(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.PostPost
-io.micronaut.http.HttpResponse <strong>addOtherLogger</strong>(@io.micronaut.http.annotation.BodyBody java.lang.String body)</h4>
+                                <h4>@io.micronaut.http.annotation.Post(value: /addOtherLogger)
+io.micronaut.http.HttpResponse <strong>addOtherLogger</strong>(@io.micronaut.http.annotation.Body java.lang.String body)</h4>
                                 <p> Adds an other logger to the list displayed.  Requires <b>Admin</b> role.
  This is persisted for future use. <DL><DT><B>Parameters:</B></DT><DD><code>body</code> -  The body.  This contains a JSON object with one element: logger.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The HTTP response with the new logger's status in the body.</DD></DL></p>
                             </li>
@@ -514,8 +523,8 @@ io.micronaut.http.HttpResponse <strong>addOtherLogger</strong>(@io.micronaut.htt
                         <a name="addOtherLoggerToPref(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.transaction.TransactionalTransactional
-protected&nbsp;<a href='../../../../../Map.html'>Map</a> <strong>addOtherLoggerToPref</strong>(java.lang.String logger)</h4>
+                                <h4>@javax.transaction.Transactional
+protected&nbsp;java.util.Map <strong>addOtherLoggerToPref</strong>(java.lang.String logger)</h4>
                                 <p> Adds a single level to the 'Others' logger list in the user preferences. <DL><DT><B>Parameters:</B></DT><DD><code>logger</code> -  The logger name.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The logger levels.</DD></DL></p>
                             </li>
                         </ul>
@@ -531,7 +540,7 @@ protected&nbsp;<a href='../../../../../Map.html'>Map</a> <strong>addOtherLoggerT
                         <a name="buildMapForOneTopLevel(java.lang.String, List, List, boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../Map.html'>Map</a> <strong>buildMapForOneTopLevel</strong>(java.lang.String titleKey, <a href='../../../../../List.html'>List</a> classesOrNames, <a href='../../../../../List.html'>List</a> openLevels, boolean sort)</h4>
+                                <h4>protected&nbsp;java.util.Map <strong>buildMapForOneTopLevel</strong>(java.lang.String titleKey, java.util.List&lt;java.lang.Object&gt; classesOrNames, java.util.List&lt;java.lang.String&gt; openLevels, boolean sort)</h4>
                                 <p> Builds one top level node of loggers for the given list.  Adds the given list of classes
  as children. <DL><DT><B>Parameters:</B></DT><DD><code>titleKey</code> -  The messages.properties label key for the top-level entry (e.g. 'domains.label').</DD><DD><code>classesOrNames</code> -  The list of classes or list of class names.</DD><DD><code>openLevels</code> -  The list of tree entries that should be open by default.</DD><DD><code>sort</code> -  If true, the sort the list.  (*Default*: true).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The top-level Map for the client display.</DD></DL></p>
                             </li>
@@ -540,7 +549,7 @@ protected&nbsp;<a href='../../../../../Map.html'>Map</a> <strong>addOtherLoggerT
                         <a name="buildTreeData(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../List.html'>List</a> <strong>buildTreeData</strong>(java.lang.String userName)</h4>
+                                <h4>protected&nbsp;java.util.List <strong>buildTreeData</strong>(java.lang.String userName)</h4>
                                 <p> Finds the current logging level for the given logger (class). <DL><DT><B>Parameters:</B></DT><DD><code>userName</code> -  The logged in user name.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The logging level state.</DD></DL></p>
                             </li>
                         </ul>
@@ -548,9 +557,9 @@ protected&nbsp;<a href='../../../../../Map.html'>Map</a> <strong>addOtherLoggerT
                         <a name="client(io.micronaut.http.HttpRequest, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.PostPost
-io.micronaut.http.HttpResponse <strong>client</strong>(io.micronaut.http.HttpRequest request, @io.micronaut.http.annotation.BodyBody java.lang.String body)</h4>
+                                <h4>@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_AUTHENTICATED)
+@io.micronaut.http.annotation.Post(value: /client)
+io.micronaut.http.HttpResponse <strong>client</strong>(io.micronaut.http.HttpRequest request, @io.micronaut.http.annotation.Body java.lang.String body)</h4>
                                 <p> Logs a client message to the server log.  Requires user to be logged in. <DL><DT><B>Parameters:</B></DT><DD><code>body</code> -  The body.  This contains a JSON object with one element: logger.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The HTTP response with the new logger's status in the body.</DD></DL></p>
                             </li>
                         </ul>
@@ -558,7 +567,7 @@ io.micronaut.http.HttpResponse <strong>client</strong>(io.micronaut.http.HttpReq
                         <a name="getClientLevels()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../List.html'>List</a> <strong>getClientLevels</strong>()</h4>
+                                <h4>protected&nbsp;java.util.List&lt;java.lang.String&gt; <strong>getClientLevels</strong>()</h4>
                                 <p> Returns the list of client javascript levels defined in the system. <DL><DT><B>Returns:</B></DT><DD>The list of levels.</DD></DL></p>
                             </li>
                         </ul>
@@ -576,7 +585,7 @@ io.micronaut.http.HttpResponse <strong>client</strong>(io.micronaut.http.HttpReq
                         <a name="getLoggingLevels(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../Map.html'>Map</a> <strong>getLoggingLevels</strong>(java.lang.String logger)</h4>
+                                <h4>protected&nbsp;java.util.Map <strong>getLoggingLevels</strong>(java.lang.String logger)</h4>
                                 <p> Finds the current logging level for the given logger (class). <DL><DT><B>Parameters:</B></DT><DD><code>logger</code> -  The logger name (class).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The logging level state.</DD></DL></p>
                             </li>
                         </ul>
@@ -584,8 +593,8 @@ io.micronaut.http.HttpResponse <strong>client</strong>(io.micronaut.http.HttpReq
                         <a name="getOpenLevels(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.transaction.TransactionalTransactional
-protected&nbsp;<a href='../../../../../List.html'>List</a> <strong>getOpenLevels</strong>(java.lang.String userName)</h4>
+                                <h4>@javax.transaction.Transactional
+protected&nbsp;java.util.List&lt;java.lang.String&gt; <strong>getOpenLevels</strong>(java.lang.String userName)</h4>
                                 <p> Determines the 'open' top-level entries in the tree from the user preferences. <DL><DT><B>Parameters:</B></DT><DD><code>userName</code> -  The logged in user name.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of open tree levels.</DD></DL></p>
                             </li>
                         </ul>
@@ -593,8 +602,8 @@ protected&nbsp;<a href='../../../../../List.html'>List</a> <strong>getOpenLevels
                         <a name="getOtherLevels(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.transaction.TransactionalTransactional
-protected&nbsp;<a href='../../../../../List.html'>List</a> <strong>getOtherLevels</strong>(java.lang.String userName)</h4>
+                                <h4>@javax.transaction.Transactional
+protected&nbsp;java.util.List&lt;java.lang.String&gt; <strong>getOtherLevels</strong>(java.lang.String userName)</h4>
                                 <p> Determines the 'other' logger levels the user cares about. <DL><DT><B>Parameters:</B></DT><DD><code>userName</code> -  The logged in user name.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of levels.</DD></DL></p>
                             </li>
                         </ul>
@@ -602,9 +611,9 @@ protected&nbsp;<a href='../../../../../List.html'>List</a> <strong>getOtherLevel
                         <a name="index(java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>index</strong>(@javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /)
+<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>index</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the index page.  Requires a view  '{domain}/index' for the given domain. <DL><DT><B>Parameters:</B></DT><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The model/view to display.</DD></DL></p>
                             </li>
                         </ul>
@@ -612,8 +621,8 @@ protected&nbsp;<a href='../../../../../List.html'>List</a> <strong>getOtherLevel
                         <a name="removeOtherLogger(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.PostPost
-io.micronaut.http.HttpResponse <strong>removeOtherLogger</strong>(@io.micronaut.http.annotation.BodyBody java.lang.String body)</h4>
+                                <h4>@io.micronaut.http.annotation.Post(value: /removeOtherLogger)
+io.micronaut.http.HttpResponse <strong>removeOtherLogger</strong>(@io.micronaut.http.annotation.Body java.lang.String body)</h4>
                                 <p> Removes the given 'other logger' from the list displayed.  Requires <b>Admin</b> role.
  This is persisted for future use. <DL><DT><B>Parameters:</B></DT><DD><code>body</code> -  The body.  This contains a JSON object with one element: logger.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The HTTP response.</DD></DL></p>
                             </li>
@@ -622,7 +631,7 @@ io.micronaut.http.HttpResponse <strong>removeOtherLogger</strong>(@io.micronaut.
                         <a name="removeOtherLoggerFromPref(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.transaction.TransactionalTransactional
+                                <h4>@javax.transaction.Transactional
 protected&nbsp;void <strong>removeOtherLoggerFromPref</strong>(java.lang.String logger)</h4>
                                 <p> Removes a single level from the 'Others' logger list in the user preferences. <DL><DT><B>Parameters:</B></DT><DD><code>logger</code> -  The logger name.</DD></DL></p>
                             </li>
@@ -631,8 +640,8 @@ protected&nbsp;void <strong>removeOtherLoggerFromPref</strong>(java.lang.String 
                         <a name="setLoggingLevel(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.PostPost
-<a href='../../../../../Map.html'>Map</a> <strong>setLoggingLevel</strong>(@io.micronaut.http.annotation.BodyBody java.lang.String body)</h4>
+                                <h4>@io.micronaut.http.annotation.Post(value: /setLoggingLevel)
+java.util.Map <strong>setLoggingLevel</strong>(@io.micronaut.http.annotation.Body java.lang.String body)</h4>
                                 <p> This sets or clears the current logging level for the given logger.  Can be used to clear the logging level for a logger
  so that the level from the parent(s) is used.
 

@@ -97,6 +97,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <ul class="blockList">
         <li class="blockList">
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>interface FieldFormatInterface</pre>
 
     <p> Defines the basic field format handling.  Implementations are provided for all of the major field types
  (e.g. String, BigDecimal, etc).
@@ -168,13 +173,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#convertFromJsonFormat(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)">convertFromJsonFormat</a></strong>(java.lang.Object value, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Converts the given value from a format suitable for JSON storage. </td>
+                            <td class="colLast"><code><strong><a href="#convertFromJsonFormat(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)">convertFromJsonFormat</a></strong>(java.lang.Object value, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Converts the given value from a format suitable for JSON storage.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#convertToJsonFormat(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)">convertToJsonFormat</a></strong>(java.lang.Object value, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Converts the given value to a format suitable for JSON storage. </td>
+                            <td class="colLast"><code><strong><a href="#convertToJsonFormat(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)">convertToJsonFormat</a></strong>(java.lang.Object value, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Converts the given value to a format suitable for JSON storage.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -186,26 +191,26 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#encode(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)">encode</a></strong>(java.lang.Object value, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Encodes the given value as a string for internal storage. </td>
+                            <td class="colLast"><code><strong><a href="#encode(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)">encode</a></strong>(java.lang.Object value, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Encodes the given value as a string for internal storage.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#format(java.lang.Object, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)">format</a></strong>(java.lang.Object value, <a href='../../../../../Locale.html'>Locale</a> locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Formats the given value for display as a string into the correct type for a field. </td>
+                            <td class="colLast"><code><strong><a href="#format(java.lang.Object, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)">format</a></strong>(java.lang.Object value, java.util.Locale locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Formats the given value for display as a string into the correct type for a field.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#formatForm(java.lang.Object, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)">formatForm</a></strong>(java.lang.Object value, <a href='../../../../../Locale.html'>Locale</a> locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Formats the given value for uses in an input value in a UI form.
+                            <td class="colLast"><code><strong><a href="#formatForm(java.lang.Object, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)">formatForm</a></strong>(java.lang.Object value, java.util.Locale locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Formats the given value for uses in an input value in a UI form.
  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getGridEditor(org.simplemes.eframe.data.FieldDefinitionInterface)">getGridEditor</a></strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Defines the editor to use for this type of field when used in an editable inline grid. </td>
+                            <td class="colLast"><code><strong><a href="#getGridEditor(org.simplemes.eframe.data.FieldDefinitionInterface)">getGridEditor</a></strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Defines the editor to use for this type of field when used in an editable inline grid.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -223,25 +228,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Class</code></td>
-                            <td class="colLast"><code><strong><a href="#getType()">getType</a></strong>()</code><br>Returns the Class that represents this type. </td>
+                            <td class="colLast"><code><strong><a href="#getType()">getType</a></strong>()</code><br>Returns the Class that represents this type.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)">getValidValues</a></strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Returns the list of valid values for those formats that use a combobox or similar widget. </td>
+                            <td class="colLast"><code>java.util.List&lt;ChoiceListItemInterface&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)">getValidValues</a></strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Returns the list of valid values for those formats that use a combobox or similar widget.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#parse(java.lang.String, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)">parse</a></strong>(java.lang.String value, <a href='../../../../../Locale.html'>Locale</a> locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Parses the given value from a string into the correct type for a field.  </td>
+                            <td class="colLast"><code><strong><a href="#parse(java.lang.String, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)">parse</a></strong>(java.lang.String value, java.util.Locale locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Parses the given value from a string into the correct type for a field.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#parseForm(java.lang.String, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)">parseForm</a></strong>(java.lang.String value, <a href='../../../../../Locale.html'>Locale</a> locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Parses the given value from a string using the form submission format.
+                            <td class="colLast"><code><strong><a href="#parseForm(java.lang.String, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)">parseForm</a></strong>(java.lang.String value, java.util.Locale locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Parses the given value from a string using the form submission format.
  </td>
                         </tr>
                         
@@ -328,18 +333,18 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="format(java.lang.Object, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
+                        <a name="format(java.lang.Object, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>format</strong>(java.lang.Object value, <a href='../../../../../Locale.html'>Locale</a> locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
+                                <h4>java.lang.String <strong>format</strong>(java.lang.Object value, java.util.Locale locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
                                 <p> Formats the given value for display as a string into the correct type for a field. <DL><DT><B>Parameters:</B></DT><DD><code>value</code> -  The object to format for display.  Null is allowed.  Empty strings are treated as null.</DD><DD><code>locale</code> -  The locale to format the value for (default: The request locale).</DD><DD><code>fieldDefinition</code> -  The field definition used to define this field (optional).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The formatted value.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="formatForm(java.lang.Object, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
+                        <a name="formatForm(java.lang.Object, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>formatForm</strong>(java.lang.Object value, <a href='../../../../../Locale.html'>Locale</a> locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
+                                <h4>java.lang.String <strong>formatForm</strong>(java.lang.Object value, java.util.Locale locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
                                 <p> Formats the given value for uses in an input value in a UI form.
  This might be locale-independent in some cases (e.g. dates).  This depends mostly on the way the GUI
  toolkit submits the field values.  Most implementation classes will just delegate to the format/parse
@@ -382,24 +387,24 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>getValidValues</strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
+                                <h4>java.util.List&lt;ChoiceListItemInterface&gt; <strong>getValidValues</strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
                                 <p> Returns the list of valid values for those formats that use a combobox or similar widget. <DL><DT><B>Parameters:</B></DT><DD><code>fieldDefinition</code> -  The field definition used to define this field (optional, provided additional details such as valid values).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of valid values.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="parse(java.lang.String, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
+                        <a name="parse(java.lang.String, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.Object <strong>parse</strong>(java.lang.String value, <a href='../../../../../Locale.html'>Locale</a> locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
+                                <h4>java.lang.Object <strong>parse</strong>(java.lang.String value, java.util.Locale locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
                                 <p> Parses the given value from a string into the correct type for a field.  This method will fail with various format exceptions
  if the string is not valid for the type. <DL><DT><B>Parameters:</B></DT><DD><code>value</code> -  The string encoded value.  Null is allowed.  Empty strings are treated as null.</DD><DD><code>locale</code> -  The locale to parse from (default: The request locale).</DD><DD><code>fieldDefinition</code> -  The field definition used to define this field (optional, provided additional details such as valid values).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The value.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="parseForm(java.lang.String, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
+                        <a name="parseForm(java.lang.String, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.Object <strong>parseForm</strong>(java.lang.String value, <a href='../../../../../Locale.html'>Locale</a> locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
+                                <h4>java.lang.Object <strong>parseForm</strong>(java.lang.String value, java.util.Locale locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
                                 <p> Parses the given value from a string using the form submission format.
  This might be locale-independent in some cases (e.g. dates).  This depends mostly on the way the GUI
  toolkit submits the field values.  Most implementation classes will just delegate to the format/parse

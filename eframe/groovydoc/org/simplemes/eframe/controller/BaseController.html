@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@java.lang.SuppressWarnings(value: unused)
+abstract&nbsp;class BaseController
+extends java.lang.Object</pre>
 
     <p> Provides the standard error handler definition for a normal controller.
  This sends a response from the controller with a JSON encoded MessageHolder as the response
@@ -202,13 +210,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>io.micronaut.http.HttpResponse</code></td>
-                            <td class="colLast"><code><strong><a href="#buildErrorResponse(java.lang.String)">buildErrorResponse</a></strong>(java.lang.String msg)</code><br>Builds an HTTP Response with an error message in the standard format. </td>
+                            <td class="colLast"><code><strong><a href="#buildErrorResponse(java.lang.String)">buildErrorResponse</a></strong>(java.lang.String msg)</code><br>Builds an HTTP Response with an error message in the standard format.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>io.micronaut.http.HttpResponse</code></td>
-                            <td class="colLast"><code><strong><a href="#buildOkResponse(java.lang.Object)">buildOkResponse</a></strong>(java.lang.Object content)</code><br>Builds an HTTP Response with the given content object as JSON string. </td>
+                            <td class="colLast"><code><strong><a href="#buildOkResponse(java.lang.Object)">buildOkResponse</a></strong>(java.lang.Object content)</code><br>Builds an HTTP Response with the given content object as JSON string.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -342,7 +350,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="error(io.micronaut.http.HttpRequest, java.lang.Throwable)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.ErrorError
+                                <h4>@java.lang.Error
 io.micronaut.http.HttpResponse <strong>error</strong>(io.micronaut.http.HttpRequest request, java.lang.Throwable throwable)</h4>
                                 <p> Handles uncaught exceptions in this controller.
  Builds a generic HTML page for HTML requests.  Otherwise, returns a BAD_REQUEST with

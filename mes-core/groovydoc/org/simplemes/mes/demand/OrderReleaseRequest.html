@@ -98,11 +98,19 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+@groovy.transform.EqualsAndHashCode
+class OrderReleaseRequest
+extends java.lang.Object</pre>
 
     <p> The request argument for the OrderService.release() service method.  This provides the details
  for the release of the order.
  <p/>
- This is a POGO used by the org.simplemes.mes.demand.service.OrderService#release(org.simplemes.mes.demand.OrderReleaseRequest) method.</p>
+ This is a POGO used by the <a href='../../../../org/simplemes/mes/demand/service/OrderService.html#release(org.simplemes.mes.demand.OrderReleaseRequest)' title='OrderService.release'>OrderService.release</a> method.</p>
 
           </li>
     </ul>
@@ -133,7 +141,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateTime">dateTime</a></code><br>The date/time this release should be logged as.</td>
                         </tr>
                         
@@ -176,8 +184,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#OrderReleaseRequest(Map)">OrderReleaseRequest</a>
-                                (<a href='../../../../Map.html'>Map</a> options)</code><br>Map constructor.  </td>
+                                <code><a href="#OrderReleaseRequest(java.util.Map)">OrderReleaseRequest</a>
+                                (java.util.Map options)</code><br>Map constructor.  </td>
                         </tr>
                         
                         <tr class="altColor">
@@ -244,7 +252,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateTime"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Date.html'>Date</a> <strong>dateTime</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateTime</strong></h4>
                                 <p> The date/time this release should be logged as.</p>
                             </li>
                         </ul>
@@ -287,10 +295,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="OrderReleaseRequest(Map)"><!-- --></a>
+                        <a name="OrderReleaseRequest(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>OrderReleaseRequest</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4><strong>OrderReleaseRequest</strong>(java.util.Map options)</h4>
                                 <p> Map constructor.  Provides the standard Groovy map constructor.  Needed since we have a convenience constructor above. <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  The options map</DD></DL></p>
                             </li>
                         </ul>

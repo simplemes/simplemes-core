@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class FieldDefinitionFactory
+extends java.lang.Object</pre>
 
     <p> Builds the correct field definition for a given property of class field.</p>
 
@@ -130,7 +136,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#ignoreOnCopyProperties">ignoreOnCopyProperties</a></code><br></td>
                         </tr>
                         
@@ -185,20 +191,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildFieldDefinition(org.simplemes.eframe.domain.PersistentProperty)">buildFieldDefinition</a></strong>(<a href='../../../../org/simplemes/eframe/domain/PersistentProperty.html'>PersistentProperty</a> property)</code><br>Builds the correct field definition for a persistent entity property. </td>
+                            <td class="colLast"><code><strong><a href="#buildFieldDefinition(org.simplemes.eframe.domain.PersistentProperty)">buildFieldDefinition</a></strong>(<a href='../../../../org/simplemes/eframe/domain/PersistentProperty.html'>PersistentProperty</a> property)</code><br>Builds the correct field definition for a persistent entity property.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildFieldDefinition(java.lang.reflect.Field)">buildFieldDefinition</a></strong>(java.lang.reflect.Field field)</code><br>Builds the correct field definition for a normal Java field. </td>
+                            <td class="colLast"><code><strong><a href="#buildFieldDefinition(java.lang.reflect.Field)">buildFieldDefinition</a></strong>(java.lang.reflect.Field field)</code><br>Builds the correct field definition for a normal Java field.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a></code></td>
-                            <td class="colLast"><code><strong><a href="#copy(org.simplemes.eframe.data.FieldDefinitionInterface, Map)">copy</a></strong>(<a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> original, <a href='../../../../Map.html'>Map</a> options)</code><br>Create a new instance of this field definition and adjust the copy's fields
- with the given options. </td>
+                            <td class="colLast"><code><strong><a href="#copy(org.simplemes.eframe.data.FieldDefinitionInterface, java.util.Map)">copy</a></strong>(<a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> original, java.util.Map options)</code><br>Create a new instance of this field definition and adjust the copy's fields
+ with the given options.</td>
                         </tr>
                         
                     </table>
@@ -247,7 +253,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="ignoreOnCopyProperties"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;<a href='../../../../List.html'>List</a> <strong>ignoreOnCopyProperties</strong></h4>
+                                <h4>private&nbsp;static&nbsp;java.util.List&lt;java.lang.String&gt; <strong>ignoreOnCopyProperties</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -303,10 +309,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="copy(org.simplemes.eframe.data.FieldDefinitionInterface, Map)"><!-- --></a>
+                        <a name="copy(org.simplemes.eframe.data.FieldDefinitionInterface, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> <strong>copy</strong>(<a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> original, <a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>static&nbsp;<a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> <strong>copy</strong>(<a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> original, java.util.Map options)</h4>
                                 <p> Create a new instance of this field definition and adjust the copy's fields
  with the given options. <DL><DT><B>Parameters:</B></DT><DD><code>original</code> -  The original field definition.</DD><DD><code>options</code> -  The options to apply to the copy.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The copy.</DD></DL></p>
                             </li>

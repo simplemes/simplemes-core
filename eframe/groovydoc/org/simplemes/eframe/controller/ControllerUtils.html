@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+class ControllerUtils
+extends java.lang.Object</pre>
 
     <p> Controller support utilities.
  These class provide common controller class utilities that simplify
@@ -225,27 +232,27 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildURI(java.lang.String, Map)">buildURI</a></strong>(java.lang.String uri, <a href='../../../../Map.html'>Map</a> params)</code><br>Builds a URI from the base URI and the given parameters. </td>
+                            <td class="colLast"><code><strong><a href="#buildURI(java.lang.String, java.util.Map)">buildURI</a></strong>(java.lang.String uri, java.util.Map params)</code><br>Builds a URI from the base URI and the given parameters.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Tuple2.html'>Tuple2</a></code></td>
-                            <td class="colLast"><code><strong><a href="#calculateFromAndSizeForList(Map, boolean)">calculateFromAndSizeForList</a></strong>(<a href='../../../../Map.html'>Map</a> params, boolean allowNull)</code><br>Calculates the effective <code>from</code> (page start) and <code>size</code>(page size) for standard list queries.
+                            <td class="colLast"><code>groovy.lang.Tuple2&lt;java.lang.Integer, java.lang.Integer&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#calculateFromAndSizeForList(java.util.Map, boolean)">calculateFromAndSizeForList</a></strong>(java.util.Map params, boolean allowNull)</code><br>Calculates the effective <code>from</code> (page start) and <code>size</code>(page size) for standard list queries.
  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Tuple2.html'>Tuple2</a></code></td>
-                            <td class="colLast"><code><strong><a href="#calculateSortingForList(Map)">calculateSortingForList</a></strong>(<a href='../../../../Map.html'>Map</a> params)</code><br>Calculates the effective <code>sortdatafield</code> and <code>sortorder</code> for standard list queries.
+                            <td class="colLast"><code>groovy.lang.Tuple2&lt;java.lang.String, java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#calculateSortingForList(java.util.Map)">calculateSortingForList</a></strong>(java.util.Map params)</code><br>Calculates the effective <code>sortdatafield</code> and <code>sortorder</code> for standard list queries.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#convertToMap(io.micronaut.http.HttpParameters)">convertToMap</a></strong>(io.micronaut.http.HttpParameters parameters)</code><br>Converts the given http request parameters to a true map. </td>
+                            <td class="colLast"><code>java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#convertToMap(io.micronaut.http.HttpParameters)">convertToMap</a></strong>(io.micronaut.http.HttpParameters parameters)</code><br>Converts the given http request parameters to a true map.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -262,20 +269,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getAllBrowserPaths()">getAllBrowserPaths</a></strong>()</code><br>Returns all of the paths defined by the controllers in the server.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.Class&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getAllControllers()">getAllControllers</a></strong>()</code><br>Returns all of the controller classes defined in the system.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Class</code></td>
-                            <td class="colLast"><code><strong><a href="#getControllerByName(java.lang.String)">getControllerByName</a></strong>(java.lang.String controllerName)</code><br>Finds the controller Class using the given simpleName for the class. </td>
+                            <td class="colLast"><code><strong><a href="#getControllerByName(java.lang.String)">getControllerByName</a></strong>(java.lang.String controllerName)</code><br>Finds the controller Class using the given simpleName for the class.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -293,7 +300,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Class</code></td>
-                            <td class="colLast"><code><strong><a href="#getDomainClass(java.lang.String)">getDomainClass</a></strong>(java.lang.String uri)</code><br>Finds the domain class associated with the base controller URI. </td>
+                            <td class="colLast"><code><strong><a href="#getDomainClass(java.lang.String)">getDomainClass</a></strong>(java.lang.String uri)</code><br>Finds the domain class associated with the base controller URI.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -305,7 +312,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getRootPath(java.lang.Class)">getRootPath</a></strong>(java.lang.Class controllerClass)</code><br>Finds the root path for this controller (as specified in the<DL><DT><B>Controller:</B></DT><DD>annotation).</td>
+                            <td class="colLast"><code><strong><a href="#getRootPath(java.lang.Class)">getRootPath</a></strong>(java.lang.Class controllerClass)</code><br>Finds the root path for this controller (as specified in the<DL><DT><B>Controller:</B></DT><DD>annotation).</DD></DL> </td>
                         </tr>
                         
                     </table>
@@ -431,18 +438,18 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="buildURI(java.lang.String, Map)"><!-- --></a>
+                        <a name="buildURI(java.lang.String, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>buildURI</strong>(java.lang.String uri, <a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4>java.lang.String <strong>buildURI</strong>(java.lang.String uri, java.util.Map params)</h4>
                                 <p> Builds a URI from the base URI and the given parameters. <DL><DT><B>Parameters:</B></DT><DD><code>uri</code> -  The base URI.</DD><DD><code>parameters</code> -  The params to add to the URI.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The URI with parameters (encoded).</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="calculateFromAndSizeForList(Map, boolean)"><!-- --></a>
+                        <a name="calculateFromAndSizeForList(java.util.Map, boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Tuple2.html'>Tuple2</a> <strong>calculateFromAndSizeForList</strong>(<a href='../../../../Map.html'>Map</a> params, boolean allowNull)</h4>
+                                <h4>groovy.lang.Tuple2&lt;java.lang.Integer, java.lang.Integer&gt; <strong>calculateFromAndSizeForList</strong>(java.util.Map params, boolean allowNull)</h4>
                                 <p> Calculates the effective <code>from</code> (page start) and <code>size</code>(page size) for standard list queries.
  Supports GUI toolkit-style <code>start</code> and <code>count</code>.  Limits the <code>size</code> to 100 (configurable)
  for safety.
@@ -454,10 +461,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="calculateSortingForList(Map)"><!-- --></a>
+                        <a name="calculateSortingForList(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Tuple2.html'>Tuple2</a> <strong>calculateSortingForList</strong>(<a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4>groovy.lang.Tuple2&lt;java.lang.String, java.lang.String&gt; <strong>calculateSortingForList</strong>(java.util.Map params)</h4>
                                 <p> Calculates the effective <code>sortdatafield</code> and <code>sortorder</code> for standard list queries.
  Supports toolkit-style <code>sort[field]=asc</code> as well as the simpler
  <code>sort</code> and <code>order</code> parameters.  The toolkit-style <code>sort[field]=asc</code>
@@ -472,7 +479,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="convertToMap(io.micronaut.http.HttpParameters)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>convertToMap</strong>(io.micronaut.http.HttpParameters parameters)</h4>
+                                <h4>java.util.Map <strong>convertToMap</strong>(io.micronaut.http.HttpParameters parameters)</h4>
                                 <p> Converts the given http request parameters to a true map. <DL><DT><B>Parameters:</B></DT><DD><code>parameters</code> -  The parameters.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The map.</DD></DL></p>
                             </li>
                         </ul>
@@ -496,7 +503,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getAllBrowserPaths()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getAllBrowserPaths</strong>()</h4>
+                                <h4>java.util.List&lt;java.lang.String&gt; <strong>getAllBrowserPaths</strong>()</h4>
                                 <p> Returns all of the paths defined by the controllers in the server.  This checks all controllers
  for the Task Menu Items that define a clientRootActivity=true. <DL><DT><B>Returns:</B></DT><DD>The list of paths.</DD></DL></p>
                             </li>
@@ -505,7 +512,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getAllControllers()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getAllControllers</strong>()</h4>
+                                <h4>java.util.List&lt;java.lang.Class&gt; <strong>getAllControllers</strong>()</h4>
                                 <p> Returns all of the controller classes defined in the system.
  <p>
  This looks for classes that use the<DL><DT><B>Controller:</B></DT><DD>annotation.</DD></DL> <DL><DT><B>Returns:</B></DT><DD>The list of controller classes.</DD></DL></p>

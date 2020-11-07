@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+@groovy.transform.EqualsAndHashCode
+class SearchDomainSettings
+extends java.lang.Object</pre>
 
     <p> Defines the search settings for single domain class.</p>
 
@@ -130,7 +138,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#exclude">exclude</a></code><br>The fields to exclude from the search of this object.</td>
                         </tr>
                         
@@ -173,17 +181,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#SearchDomainSettings(Map)">SearchDomainSettings</a>
-                                (<a href='../../../../Map.html'>Map</a> options)</code><br>Constructor for a Map case.</td>
+                                <code><a href="#SearchDomainSettings(java.util.Map)">SearchDomainSettings</a>
+                                (java.util.Map options)</code><br>Constructor for a Map case.</td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst">
-                                <code><a href="#SearchDomainSettings(Closure)">SearchDomainSettings</a>
-                                (<a href='../../../../Closure.html'>Closure</a> delegate)</code><br>Constructor for a closure case.</td>
-                        </tr>
-                        
-                        <tr class="rowColor">
                             <td class="colFirst">
                                 <code><a href="#SearchDomainSettings()">SearchDomainSettings</a>
                                 ()</code><br></td>
@@ -219,7 +221,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setExclude(List)">setExclude</a></strong>(<a href='../../../../List.html'>List</a> exclude)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#setExclude(List)">setExclude</a></strong>(java.util.List&lt;java.lang.String&gt; exclude)</code><br></td>
                         </tr>
                         
                     </table>
@@ -268,7 +270,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="exclude"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>exclude</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.String&gt; <strong>exclude</strong></h4>
                                 <p> The fields to exclude from the search of this object.</p>
                             </li>
                         </ul>
@@ -312,19 +314,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="SearchDomainSettings(Map)"><!-- --></a>
+                        <a name="SearchDomainSettings(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>SearchDomainSettings</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4><strong>SearchDomainSettings</strong>(java.util.Map options)</h4>
                                 <p> Constructor for a Map case. <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  The options.</DD></DL></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="SearchDomainSettings(Closure)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4><strong>SearchDomainSettings</strong>(<a href='../../../../Closure.html'>Closure</a> delegate)</h4>
-                                <p> Constructor for a closure case. <DL><DT><B>Parameters:</B></DT><DD><code>delegate</code> -  The closure.</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -360,7 +354,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="setExclude(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>setExclude</strong>(@DelegatesToDelegatesTo <a href='../../../../List.html'>List</a> exclude)</h4>
+                                <h4>void <strong>setExclude</strong>(@groovy.lang.DelegatesTo(value: SearchDomainSettings) java.util.List&lt;java.lang.String&gt; exclude)</h4>
                                 <p></p>
                             </li>
                         </ul>

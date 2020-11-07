@@ -91,13 +91,19 @@ if (location.href.indexOf('is-external=true') == -1) {
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li>org.simplemes.eframe.exception.MessageHolderSerializer
+<li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li>org.simplemes.eframe.exception.MessageHolderSerializer
 </ul>
 <div class="description">
     <ul class="blockList">
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class MessageHolderSerializer
+extends StdSerializer&lt;<a href='../../../../org/simplemes/eframe/exception/MessageHolder.html' title='MessageHolder'>MessageHolder</a>&gt;</pre>
 
     <p> This is the Jackson serializer used for a MessageHolder.
  This is used for a specific, flexible format used for messages in the framework.</p>
@@ -143,8 +149,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#MessageHolderSerializer(java.lang.Class)">MessageHolderSerializer</a>
-                                (java.lang.Class t)</code><br>Main constructor.</td>
+                                <code><a href="#MessageHolderSerializer(Class)">MessageHolderSerializer</a>
+                                (java.lang.Class&lt;<a href='../../../../org/simplemes/eframe/exception/MessageHolder.html' title='MessageHolder'>MessageHolder</a>&gt; t)</code><br>Main constructor.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -184,24 +190,6 @@ if (location.href.indexOf('is-external=true') == -1) {
                    </ul>
               </li>
             
-            <li class="blockList"><a name="method_summary"><!--   --></a>
-                    <h3>Inherited Methods Summary</h3>
-                    <ul class="blockList">
-                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Inherited Methods Summary table">
-                        <caption><span>Inherited Methods</span><span class="tabEnd">&nbsp;</span></caption>
-                        <tr>
-                            <th class="colFirst" scope="col">Methods inherited from class</th>
-                            <th class="colLast" scope="col">Name</th>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code>class com.fasterxml.jackson.databind.ser.std.StdSerializer</code></td>
-                            <td class="colLast"><code>com.fasterxml.jackson.databind.ser.std.StdSerializer#acceptJsonFormatVisitor(com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatVisitorWrapper, com.fasterxml.jackson.databind.JavaType), com.fasterxml.jackson.databind.ser.std.StdSerializer#handledType(), com.fasterxml.jackson.databind.ser.std.StdSerializer#wrapAndThrow(com.fasterxml.jackson.databind.SerializerProvider, java.lang.Throwable, java.lang.Object, java.lang.String), com.fasterxml.jackson.databind.ser.std.StdSerializer#wrapAndThrow(com.fasterxml.jackson.databind.SerializerProvider, java.lang.Throwable, java.lang.Object, int), com.fasterxml.jackson.databind.ser.std.StdSerializer#serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider), com.fasterxml.jackson.databind.ser.std.StdSerializer#getSchema(com.fasterxml.jackson.databind.SerializerProvider, java.lang.reflect.Type), com.fasterxml.jackson.databind.ser.std.StdSerializer#getSchema(com.fasterxml.jackson.databind.SerializerProvider, java.lang.reflect.Type, boolean), com.fasterxml.jackson.databind.ser.std.StdSerializer#isEmpty(com.fasterxml.jackson.databind.SerializerProvider, java.lang.Object), com.fasterxml.jackson.databind.ser.std.StdSerializer#isEmpty(java.lang.Object), com.fasterxml.jackson.databind.ser.std.StdSerializer#properties(), com.fasterxml.jackson.databind.ser.std.StdSerializer#replaceDelegatee(com.fasterxml.jackson.databind.JsonSerializer), com.fasterxml.jackson.databind.ser.std.StdSerializer#getDelegatee(), com.fasterxml.jackson.databind.ser.std.StdSerializer#unwrappingSerializer(com.fasterxml.jackson.databind.util.NameTransformer), com.fasterxml.jackson.databind.ser.std.StdSerializer#withFilterId(java.lang.Object), com.fasterxml.jackson.databind.ser.std.StdSerializer#serializeWithType(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider, com.fasterxml.jackson.databind.jsontype.TypeSerializer), com.fasterxml.jackson.databind.ser.std.StdSerializer#usesObjectId(), com.fasterxml.jackson.databind.ser.std.StdSerializer#isUnwrappingSerializer(), com.fasterxml.jackson.databind.ser.std.StdSerializer#wait(long, int), com.fasterxml.jackson.databind.ser.std.StdSerializer#wait(), com.fasterxml.jackson.databind.ser.std.StdSerializer#wait(long), com.fasterxml.jackson.databind.ser.std.StdSerializer#equals(java.lang.Object), com.fasterxml.jackson.databind.ser.std.StdSerializer#toString(), com.fasterxml.jackson.databind.ser.std.StdSerializer#hashCode(), com.fasterxml.jackson.databind.ser.std.StdSerializer#getClass(), com.fasterxml.jackson.databind.ser.std.StdSerializer#notify(), com.fasterxml.jackson.databind.ser.std.StdSerializer#notifyAll()</code></td>
-                        </tr>
-                    </table>
-                   </ul>
-              </li>
-                
         </ul>
         
     </li>
@@ -235,10 +223,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="MessageHolderSerializer(java.lang.Class)"><!-- --></a>
+                        <a name="MessageHolderSerializer(Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>MessageHolderSerializer</strong>(java.lang.Class t)</h4>
+                                <h4><strong>MessageHolderSerializer</strong>(java.lang.Class&lt;<a href='../../../../org/simplemes/eframe/exception/MessageHolder.html' title='MessageHolder'>MessageHolder</a>&gt; t)</h4>
                                 <p> Main constructor. <DL><DT><B>Parameters:</B></DT><DD>t</DD></DL></p>
                             </li>
                         </ul>
@@ -267,7 +255,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="serialize(org.simplemes.eframe.exception.MessageHolder, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>serialize</strong>(<a href='../../../../org/simplemes/eframe/exception/MessageHolder.html'>MessageHolder</a> value, com.fasterxml.jackson.core.JsonGenerator gen, com.fasterxml.jackson.databind.SerializerProvider provider)</h4>
                                 <p> Serializes a MessageHolder.<DL><DT><B>throws:</B></DT><DD>IOException</DD></DL> <DL><DT><B>Parameters:</B></DT><DD>value</DD><DD>gen</DD><DD>provider</DD></DL></p>
                             </li>

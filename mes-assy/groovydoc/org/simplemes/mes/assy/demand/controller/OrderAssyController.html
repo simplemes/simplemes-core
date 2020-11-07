@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.security.annotation.Secured(value: OPERATOR)
+@io.micronaut.http.annotation.Controller(value: /orderAssy)
+class OrderAssyController
+extends org.simplemes.eframe.controller.BaseController</pre>
 
     <p> The OrderAssy controller.  Provides basic access to the OrderAssyService.
  Does NOT provide CRUD access to any domain class.
@@ -230,7 +239,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>org.simplemes.eframe.controller.StandardModelAndView</code></td>
-                            <td class="colLast"><code><strong><a href="#assemblyActivity(io.micronaut.http.HttpRequest, java.security.Principal)">assemblyActivity</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Displays the core assembly activity page. </td>
+                            <td class="colLast"><code><strong><a href="#assemblyActivity(io.micronaut.http.HttpRequest, java.security.Principal)">assemblyActivity</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Displays the core assembly activity page.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -263,8 +272,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../org/simplemes/mes/assy/demand/domain/OrderAssembledComponent.html'>OrderAssembledComponent</a></code></td>
-                            <td class="colLast"><code><strong><a href="#resolveComponent(Map)">resolveComponent</a></strong>(<a href='../../../../../../Map.html'>Map</a> params)</code><br>Resolves the assembleComponentDialog() HTTP parameters into a prototype OrderAssembledComponent object
- that is used for the dialog field's model. </td>
+                            <td class="colLast"><code><strong><a href="#resolveComponent(java.util.Map)">resolveComponent</a></strong>(java.util.Map params)</code><br>Resolves the assembleComponentDialog() HTTP parameters into a prototype OrderAssembledComponent object
+ that is used for the dialog field's model.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -290,7 +299,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class org.simplemes.eframe.controller.BaseController</code></td>
-                            <td class="colLast"><code>org.simplemes.eframe.controller.BaseController#error(io.micronaut.http.HttpRequest, java.lang.Throwable), org.simplemes.eframe.controller.BaseController#buildErrorResponse(java.lang.String), org.simplemes.eframe.controller.BaseController#buildOkResponse(java.lang.Object), org.simplemes.eframe.controller.BaseController#buildOkResponse(), org.simplemes.eframe.controller.BaseController#buildDeniedResponse(io.micronaut.http.HttpRequest, java.lang.String, java.security.Principal), org.simplemes.eframe.controller.BaseController#parseBody(io.micronaut.http.HttpRequest, java.lang.Class), org.simplemes.eframe.controller.BaseController#getMetaClass(), org.simplemes.eframe.controller.BaseController#setMetaClass(groovy.lang.MetaClass), org.simplemes.eframe.controller.BaseController#wait(long, int), org.simplemes.eframe.controller.BaseController#wait(), org.simplemes.eframe.controller.BaseController#wait(long), org.simplemes.eframe.controller.BaseController#equals(java.lang.Object), org.simplemes.eframe.controller.BaseController#toString(), org.simplemes.eframe.controller.BaseController#hashCode(), org.simplemes.eframe.controller.BaseController#getClass(), org.simplemes.eframe.controller.BaseController#notify(), org.simplemes.eframe.controller.BaseController#notifyAll(), org.simplemes.eframe.controller.BaseController#getProperty(java.lang.String), org.simplemes.eframe.controller.BaseController#setProperty(java.lang.String, java.lang.Object), org.simplemes.eframe.controller.BaseController#invokeMethod(java.lang.String, java.lang.Object)</code></td>
+                            <td class="colLast"><code>org.simplemes.eframe.controller.BaseController#error(io.micronaut.http.HttpRequest, java.lang.Throwable), org.simplemes.eframe.controller.BaseController#buildErrorResponse(java.lang.String), org.simplemes.eframe.controller.BaseController#buildOkResponse(), org.simplemes.eframe.controller.BaseController#buildOkResponse(java.lang.Object), org.simplemes.eframe.controller.BaseController#buildDeniedResponse(io.micronaut.http.HttpRequest, java.lang.String, java.security.Principal), org.simplemes.eframe.controller.BaseController#parseBody(io.micronaut.http.HttpRequest, java.lang.Class), org.simplemes.eframe.controller.BaseController#getMetaClass(), org.simplemes.eframe.controller.BaseController#setMetaClass(groovy.lang.MetaClass), org.simplemes.eframe.controller.BaseController#wait(long, int), org.simplemes.eframe.controller.BaseController#wait(), org.simplemes.eframe.controller.BaseController#wait(long), org.simplemes.eframe.controller.BaseController#equals(java.lang.Object), org.simplemes.eframe.controller.BaseController#toString(), org.simplemes.eframe.controller.BaseController#hashCode(), org.simplemes.eframe.controller.BaseController#getClass(), org.simplemes.eframe.controller.BaseController#notify(), org.simplemes.eframe.controller.BaseController#notifyAll(), org.simplemes.eframe.controller.BaseController#getProperty(java.lang.String), org.simplemes.eframe.controller.BaseController#setProperty(java.lang.String, java.lang.Object), org.simplemes.eframe.controller.BaseController#invokeMethod(java.lang.String, java.lang.Object)</code></td>
                         </tr>
                     </table>
                    </ul>
@@ -371,16 +380,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="addComponent(java.lang.String, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.PostPost
-@java.lang.SuppressWarningsSuppressWarnings
-io.micronaut.http.HttpResponse <strong>addComponent</strong>(@io.micronaut.http.annotation.BodyBody java.lang.String body, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Post(value: /addComponent)
+@java.lang.SuppressWarnings(value: unused)
+io.micronaut.http.HttpResponse <strong>addComponent</strong>(@io.micronaut.http.annotation.Body java.lang.String body, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> This method adds a component to the order/LSN.
  This exposes the OrderAssyService method of the same name.
  The argument is parsed from the request input body (JSON).
  <p>
  <b>Input</b>: AddOrderAssembledComponentRequest (JSON format).
  <p>
- <b>Response</b>: org.simplemes.mes.assy.demand.domain.OrderAssembledComponent (JSON format)
+ <b>Response</b>: <a href='../../../../../../org/simplemes/mes/assy/demand/domain/OrderAssembledComponent.html' title='OrderAssembledComponent'>OrderAssembledComponent</a> (JSON format)
 </p>
                             </li>
                         </ul>
@@ -388,10 +397,10 @@ io.micronaut.http.HttpResponse <strong>addComponent</strong>(@io.micronaut.http.
                         <a name="assembleComponentDialog(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-org.simplemes.eframe.controller.StandardModelAndView <strong>assembleComponentDialog</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /assembleComponentDialog)
+org.simplemes.eframe.controller.StandardModelAndView <strong>assembleComponentDialog</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the assemble component dialog for a single component with Flex Type.
 
  <h3>HTTP Parameters</h3>
@@ -409,10 +418,10 @@ org.simplemes.eframe.controller.StandardModelAndView <strong>assembleComponentDi
                         <a name="assemblyActivity(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-org.simplemes.eframe.controller.StandardModelAndView <strong>assemblyActivity</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /assemblyActivity)
+org.simplemes.eframe.controller.StandardModelAndView <strong>assemblyActivity</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the core assembly activity page. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.</DD><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The model/view to display.</DD></DL></p>
                             </li>
                         </ul>
@@ -420,9 +429,9 @@ org.simplemes.eframe.controller.StandardModelAndView <strong>assemblyActivity</s
                         <a name="findComponentAssemblyState(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-@java.lang.SuppressWarningsSuppressWarnings
-io.micronaut.http.HttpResponse <strong>findComponentAssemblyState</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /findComponentAssemblyState)
+@java.lang.SuppressWarnings(value: unused)
+io.micronaut.http.HttpResponse <strong>findComponentAssemblyState</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Returns the assembly state of a given order/LSN.
  Returns a standard JSON list of OrderComponentState POGOs.  This includes the normal total_count value.
  Also included is a boolean 'fullyAssembled' that is true if the order/lsn is fully assembled.
@@ -439,7 +448,7 @@ io.micronaut.http.HttpResponse <strong>findComponentAssemblyState</strong>(io.mi
  <h3>Response</h3>
  A JSON formatted map with these elements:
  <ul>
-   <li><b>data</b> - List<OrderComponentState> org.simplemes.mes.assy.demand.OrderComponentState (JSON format) </li>
+   <li><b>data</b> - List<OrderComponentState> <a href='../../../../../../org/simplemes/mes/assy/demand/OrderComponentState.html' title='OrderComponentState'>OrderComponentState</a> (JSON format) </li>
    <li><b>total_count</b> - The number of component records in the list. </li>
    <li><b>fullyAssembled</b> - 'true' if the order is fully assembled. </li>
  </ul></p>
@@ -449,9 +458,9 @@ io.micronaut.http.HttpResponse <strong>findComponentAssemblyState</strong>(io.mi
                         <a name="removeComponent(java.lang.String, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.PostPost
-@java.lang.SuppressWarningsSuppressWarnings
-io.micronaut.http.HttpResponse <strong>removeComponent</strong>(@io.micronaut.http.annotation.BodyBody java.lang.String body, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Post(value: /removeComponent)
+@java.lang.SuppressWarnings(value: unused)
+io.micronaut.http.HttpResponse <strong>removeComponent</strong>(@io.micronaut.http.annotation.Body java.lang.String body, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> This method removes a component to the order/LSN.
  This exposes the OrderAssyService method of the same name.
  The argument is parsed from the request input body (JSON).
@@ -462,7 +471,7 @@ io.micronaut.http.HttpResponse <strong>removeComponent</strong>(@io.micronaut.ht
  The response includes these two top-level elements in a map (JSON):
  <ul>
    <li><b>orderAssembledComponent</b> - The OrderAssembledComponent that was removed for this request.
- org.simplemes.mes.assy.demand.domain.OrderAssembledComponent.</li>
+ <a href='../../../../../../org/simplemes/mes/assy/demand/domain/OrderAssembledComponent.html' title='OrderAssembledComponent'>OrderAssembledComponent</a>.</li>
    <li><b>undoActions</b> - The list of undo actions needed to reverse this removal. </li>
  </ul>
 </p>
@@ -472,10 +481,10 @@ io.micronaut.http.HttpResponse <strong>removeComponent</strong>(@io.micronaut.ht
                         <a name="removeComponentDialog(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-org.simplemes.eframe.controller.StandardModelAndView <strong>removeComponentDialog</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: [unused])
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /removeComponentDialog)
+org.simplemes.eframe.controller.StandardModelAndView <strong>removeComponentDialog</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the remove component dialog for a single component with Flex Type.
 
  <h3>HTTP Parameters</h3>
@@ -491,9 +500,9 @@ org.simplemes.eframe.controller.StandardModelAndView <strong>removeComponentDial
                         <a name="removeComponents(java.lang.String, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.PostPost
-@java.lang.SuppressWarningsSuppressWarnings
-io.micronaut.http.HttpResponse <strong>removeComponents</strong>(@io.micronaut.http.annotation.BodyBody java.lang.String body, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Post(value: /removeComponents)
+@java.lang.SuppressWarnings(value: unused)
+io.micronaut.http.HttpResponse <strong>removeComponents</strong>(@io.micronaut.http.annotation.Body java.lang.String body, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> This method removes one or more components from an order.
  This uses the list of sequences to determine which record to mark as removed.
  <p>
@@ -509,7 +518,7 @@ io.micronaut.http.HttpResponse <strong>removeComponents</strong>(@io.micronaut.h
  The response includes these two top-level elements in a map (JSON):
  <ul>
    <li><b>orderAssembledComponents</b> - The List of OrderAssembledComponent that were removed for this request.
- org.simplemes.mes.assy.demand.domain.OrderAssembledComponent.</li>
+ <a href='../../../../../../org/simplemes/mes/assy/demand/domain/OrderAssembledComponent.html' title='OrderAssembledComponent'>OrderAssembledComponent</a>.</li>
    <li><b>undoActions</b> - The list of undo actions needed to reverse this removal. </li>
  </ul>
  <p>
@@ -517,10 +526,10 @@ io.micronaut.http.HttpResponse <strong>removeComponents</strong>(@io.micronaut.h
                             </li>
                         </ul>
                     
-                        <a name="resolveComponent(Map)"><!-- --></a>
+                        <a name="resolveComponent(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../../org/simplemes/mes/assy/demand/domain/OrderAssembledComponent.html'>OrderAssembledComponent</a> <strong>resolveComponent</strong>(<a href='../../../../../../Map.html'>Map</a> params)</h4>
+                                <h4><a href='../../../../../../org/simplemes/mes/assy/demand/domain/OrderAssembledComponent.html'>OrderAssembledComponent</a> <strong>resolveComponent</strong>(java.util.Map params)</h4>
                                 <p> Resolves the assembleComponentDialog() HTTP parameters into a prototype OrderAssembledComponent object
  that is used for the dialog field's model. <DL><DT><B>Parameters:</B></DT><DD><code>params</code> -  The HTTP params.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The OrderAssembledComponent prototype for the planned component.</DD></DL></p>
                             </li>
@@ -529,16 +538,16 @@ io.micronaut.http.HttpResponse <strong>removeComponents</strong>(@io.micronaut.h
                         <a name="undoRemoveComponent(java.lang.String, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.PostPost
-@java.lang.SuppressWarningsSuppressWarnings
-io.micronaut.http.HttpResponse <strong>undoRemoveComponent</strong>(@io.micronaut.http.annotation.BodyBody java.lang.String body, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Post(value: /undoRemoveComponent)
+@java.lang.SuppressWarnings(value: unused)
+io.micronaut.http.HttpResponse <strong>undoRemoveComponent</strong>(@io.micronaut.http.annotation.Body java.lang.String body, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> This method restores the removed component to the order.
  This exposes the OrderAssyService method of the same name.
  The argument is parsed from the request input body (JSON).
  <p>
  <b>Input</b>: RemoveOrderAssembledComponentRequest (JSON format).
  <p>
- <b>Response</b>: JSON formatted org.simplemes.mes.assy.demand.domain.OrderAssembledComponent.
+ <b>Response</b>: JSON formatted <a href='../../../../../../org/simplemes/mes/assy/demand/domain/OrderAssembledComponent.html' title='OrderAssembledComponent'>OrderAssembledComponent</a>.
 </p>
                             </li>
                         </ul>

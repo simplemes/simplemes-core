@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class Addition
+extends java.lang.Object</pre>
 
     <p> Defines the features/requirements for a given Module (Addition) to be added to the application.
  This includes definitions of EncodedType classes, data loaders, domain class package(s) and
@@ -178,8 +184,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../AdditionConfiguration.html'>AdditionConfiguration</a></code></td>
-                            <td class="colLast"><code><strong><a href="#configure(Closure)">configure</a></strong>(<a href='../../../../Closure.html'>Closure</a> closure)</code><br>The main entry point to define the configuration for the addition. </td>
+                            <td class="colLast"><code>static&nbsp;org.simplemes.eframe.custom.AdditionConfiguration</code></td>
+                            <td class="colLast"><code><strong><a href="#configure(groovy.lang.Closure)">configure</a></strong>(groovy.lang.Closure closure)</code><br>The main entry point to define the configuration for the addition.</td>
                         </tr>
                         
                     </table>
@@ -250,10 +256,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="configure(Closure)"><!-- --></a>
+                        <a name="configure(groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../AdditionConfiguration.html'>AdditionConfiguration</a> <strong>configure</strong>(@DelegatesToDelegatesTo <a href='../../../../Closure.html'>Closure</a> closure)</h4>
+                                <h4>static&nbsp;org.simplemes.eframe.custom.AdditionConfiguration <strong>configure</strong>(@groovy.lang.DelegatesTo(value: AdditionConfiguration) groovy.lang.Closure closure)</h4>
                                 <p> The main entry point to define the configuration for the addition. <DL><DT><B>Parameters:</B></DT><DD><code>closure</code> -  The configuration closure (DSL).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The addition configuration.</DD></DL></p>
                             </li>
                         </ul>

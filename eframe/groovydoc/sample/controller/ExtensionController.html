@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@io.micronaut.http.annotation.Controller(value: /sample/extension)
+class ExtensionController
+extends java.lang.Object</pre>
 
     <p> Test controller for extension mechanism.</p>
 
@@ -250,7 +257,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="error(io.micronaut.http.HttpRequest, java.lang.Exception)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.ErrorError
+                                <h4>@java.lang.Error
 io.micronaut.http.HttpResponse <strong>error</strong>(io.micronaut.http.HttpRequest request, java.lang.Exception exception)</h4>
                                 <p></p>
                             </li>
@@ -259,8 +266,8 @@ io.micronaut.http.HttpResponse <strong>error</strong>(io.micronaut.http.HttpRequ
                         <a name="read()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.http.annotation.GetGet
+                                <h4>@java.lang.SuppressWarnings(value: [GroovyMissingReturnStatement, GrMethodMayBeStatic])
+@io.micronaut.http.annotation.Get(value: read)
 java.lang.String <strong>read</strong>()</h4>
                                 <p></p>
                             </li>
@@ -269,9 +276,9 @@ java.lang.String <strong>read</strong>()</h4>
                         <a name="test(java.lang.Boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.http.annotation.GetGet
-java.lang.String <strong>test</strong>(@javax.annotation.NullableNullable java.lang.Boolean fail)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: [GroovyMissingReturnStatement, GrMethodMayBeStatic])
+@io.micronaut.http.annotation.Get(value: test{?fail})
+java.lang.String <strong>test</strong>(@javax.annotation.Nullable java.lang.Boolean fail)</h4>
                                 <p></p>
                             </li>
                         </ul>

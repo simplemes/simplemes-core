@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+class SecurityUtils
+extends java.lang.Object</pre>
 
     <p> Utility methods to access the system's security features.</p>
 
@@ -232,20 +239,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>io.micronaut.http.HttpResponse</code></td>
-                            <td class="colLast"><code><strong><a href="#checkRoleFromSubClass(java.lang.Object, java.security.Principal)">checkRoleFromSubClass</a></strong>(java.lang.Object controller, java.security.Principal principal)</code><br>Verifies that the sub-class<DL><DT><B>Secure:</B></DT><DD>annotation is valid for this given user principal.
- </td>
+                            <td class="colLast"><code><strong><a href="#checkRoleFromSubClass(java.lang.Object, java.security.Principal)">checkRoleFromSubClass</a></strong>(java.lang.Object controller, java.security.Principal principal)</code><br>Verifies that the sub-class<DL><DT><B>Secure:</B></DT><DD>annotation is valid for this given user principal.</DD></DL>
+  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getCurrentUserName()">getCurrentUserName</a></strong>()</code><br>A Convenience method to return the user name for the user currently logged in for the current HTTP request. </td>
+                            <td class="colLast"><code><strong><a href="#getCurrentUserName()">getCurrentUserName</a></strong>()</code><br>A Convenience method to return the user name for the user currently logged in for the current HTTP request.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isAllGranted(java.lang.String, java.security.Principal)">isAllGranted</a></strong>(java.lang.String roles, java.security.Principal user)</code><br>Returns true if any role in the given list is not granted to the given user. </td>
+                            <td class="colLast"><code><strong><a href="#isAllGranted(java.lang.String, java.security.Principal)">isAllGranted</a></strong>(java.lang.String roles, java.security.Principal user)</code><br>Returns true if any role in the given list is not granted to the given user.</td>
                         </tr>
                         
                     </table>
@@ -388,7 +395,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="checkRoleFromSubClass(java.lang.Object, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
 io.micronaut.http.HttpResponse <strong>checkRoleFromSubClass</strong>(java.lang.Object controller, java.security.Principal principal)</h4>
                                 <p> Verifies that the sub-class<DL><DT><B>Secure:</B></DT><DD>annotation is valid for this given user principal.
  Makes sure the user has at least one of the roles required by the parent controller sub-class.

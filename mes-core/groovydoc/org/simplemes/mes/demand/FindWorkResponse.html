@@ -98,11 +98,18 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+class FindWorkResponse
+extends java.lang.Object</pre>
 
     <p> The response from the WorkListService.findWork() service method.
  This contains header data and a list of detail rows that represent the unit of work.
  <p/>
- This is a POGO used by the org.simplemes.mes.demand.service.WorkListService#findWork(org.simplemes.mes.demand.FindWorkRequest) method.
+ This is a POGO used by the <a href='../../../../org/simplemes/mes/demand/service/WorkListService.html#findWork(org.simplemes.mes.demand.FindWorkRequest)' title='WorkListService.findWork'>WorkListService.findWork</a> method.
  <p>
  <b>Note:</b> This POGO is suitable as the input to a &lt;ef:list&gt; tag.</p>
 
@@ -135,7 +142,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../../../org/simplemes/mes/demand/FindWorkResponseDetail.html' title='FindWorkResponseDetail'>FindWorkResponseDetail</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#list">list</a></code><br>The list of details rows found that match the search criteria.
  </td>
                         </tr>
@@ -224,7 +231,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="list"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>list</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../../../org/simplemes/mes/demand/FindWorkResponseDetail.html' title='FindWorkResponseDetail'>FindWorkResponseDetail</a>&gt; <strong>list</strong></h4>
                                 <p> The list of details rows found that match the search criteria.
  This detail represents a single unit in queue or in work.  This can be an order and/or LSN.</p>
                             </li>

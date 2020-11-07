@@ -97,6 +97,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <ul class="blockList">
         <li class="blockList">
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>interface SearchEngineClientInterface</pre>
 
     <p> This interface defines the API provided by the search interface to the external search engine (Elastic Search in this case).
  This allows for easier use of the search engine and
@@ -167,50 +172,50 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#bulkIndex(List, List)">bulkIndex</a></strong>(<a href='../../../../List.html'>List</a> objects, <a href='../../../../List.html'>List</a> archiveReferenceList)</code><br>Indexes a list of objects, waiting for completion.  </td>
+                            <td class="colLast"><code>java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#bulkIndex(java.util.List, List)">bulkIndex</a></strong>(java.util.List objects, java.util.List&lt;java.lang.String&gt; archiveReferenceList)</code><br>Indexes a list of objects, waiting for completion.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#deleteAllIndices()">deleteAllIndices</a></strong>()</code><br>Deletes all Indices in the search engine.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a></code></td>
-                            <td class="colLast"><code><strong><a href="#domainSearch(java.lang.Class, java.lang.String, Map)">domainSearch</a></strong>(java.lang.Class domainClass, java.lang.String query, <a href='../../../../Map.html'>Map</a> params)</code><br>Performs a standard domain search with the query string. </td>
+                            <td class="colLast"><code><strong><a href="#domainSearch(java.lang.Class, java.lang.String, java.util.Map)">domainSearch</a></strong>(java.lang.Class domainClass, java.lang.String query, java.util.Map params)</code><br>Performs a standard domain search with the query string.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/search/SearchStatus.html'>SearchStatus</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getStatus()">getStatus</a></strong>()</code><br>Returns the status of the search engine's cluster. </td>
+                            <td class="colLast"><code><strong><a href="#getStatus()">getStatus</a></strong>()</code><br>Returns the status of the search engine's cluster.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a></code></td>
-                            <td class="colLast"><code><strong><a href="#globalSearch(java.lang.String, Map)">globalSearch</a></strong>(java.lang.String query, <a href='../../../../Map.html'>Map</a> params)</code><br>Performs a global search using the given query string. </td>
+                            <td class="colLast"><code><strong><a href="#globalSearch(java.lang.String, java.util.Map)">globalSearch</a></strong>(java.lang.String query, java.util.Map params)</code><br>Performs a global search using the given query string.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#indexObject(java.lang.Object)">indexObject</a></strong>(java.lang.Object object)</code><br>Indexes a single object, waiting for completion.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#removeObjectFromIndex(java.lang.Object)">removeObjectFromIndex</a></strong>(java.lang.Object object)</code><br>Removes a single object from the index. </td>
+                            <td class="colLast"><code>java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#removeObjectFromIndex(java.lang.Object)">removeObjectFromIndex</a></strong>(java.lang.Object object)</code><br>Removes a single object from the index.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setHosts(List)">setHosts</a></strong>(<a href='../../../../List.html'>List</a> hosts)</code><br>Sets the external search hosts to be used. </td>
+                            <td class="colLast"><code><strong><a href="#setHosts(List)">setHosts</a></strong>(java.util.List&lt;HttpHost&gt; hosts)</code><br>Sets the external search hosts to be used.</td>
                         </tr>
                         
                     </table>
@@ -263,10 +268,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="bulkIndex(List, List)"><!-- --></a>
+                        <a name="bulkIndex(java.util.List, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>bulkIndex</strong>(<a href='../../../../List.html'>List</a> objects, <a href='../../../../List.html'>List</a> archiveReferenceList)</h4>
+                                <h4>java.util.Map <strong>bulkIndex</strong>(java.util.List objects, java.util.List&lt;java.lang.String&gt; archiveReferenceList)</h4>
                                 <p> Indexes a list of objects, waiting for completion.  This can be used directly, but is typically called by the request
  queue logic.
  Can log performance as level INFO and values as DEBUG log messages. <DL><DT><B>Parameters:</B></DT><DD><code>objects</code> -  The domain objects to index.  Must be saved.</DD><DD><code>archiveReferenceList</code> -  The list of archive references associated with the list of objects.  (Optional).
@@ -278,16 +283,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="deleteAllIndices()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>deleteAllIndices</strong>()</h4>
+                                <h4>java.util.Map <strong>deleteAllIndices</strong>()</h4>
                                 <p> Deletes all Indices in the search engine.  This will lose all data there.
  Can log performance as level INFO log messages. <DL><DT><B>Returns:</B></DT><DD>Status of the removal.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="domainSearch(java.lang.Class, java.lang.String, Map)"><!-- --></a>
+                        <a name="domainSearch(java.lang.Class, java.lang.String, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>domainSearch</strong>(java.lang.Class domainClass, java.lang.String query, <a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>domainSearch</strong>(java.lang.Class domainClass, java.lang.String query, java.util.Map params)</h4>
                                 <p> Performs a standard domain search with the query string. <DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The domain class to search.</DD><DD><code>query</code> -  The query string.</DD><DD><code>params</code> -  Optional query parameters.  Supported elements: from and size</DD></DL><DL><DT><B>Returns:</B></DT><DD>The search result, containing the list of values found.</DD></DL></p>
                             </li>
                         </ul>
@@ -300,10 +305,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="globalSearch(java.lang.String, Map)"><!-- --></a>
+                        <a name="globalSearch(java.lang.String, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>globalSearch</strong>(java.lang.String query, <a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>globalSearch</strong>(java.lang.String query, java.util.Map params)</h4>
                                 <p> Performs a global search using the given query string. <DL><DT><B>Parameters:</B></DT><DD><code>query</code> -  The query string.  If it starts with &#123; then the string is used as the body for the GET request.</DD><DD><code>params</code> -  Optional query parameters.  Supported elements: from and size.</DD><DD><code>The</code> -  search results.</DD></DL></p>
                             </li>
                         </ul>
@@ -311,7 +316,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="indexObject(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>indexObject</strong>(java.lang.Object object)</h4>
+                                <h4>java.util.Map <strong>indexObject</strong>(java.lang.Object object)</h4>
                                 <p> Indexes a single object, waiting for completion.  This can be used directly, but is typically called by the request
  queue logic. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The domain object to index.  Must be saved.</DD></DL><DL><DT><B>Returns:</B></DT><DD>Status of the index creation.  A Map.</DD></DL></p>
                             </li>
@@ -320,7 +325,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="removeObjectFromIndex(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>removeObjectFromIndex</strong>(java.lang.Object object)</h4>
+                                <h4>java.util.Map <strong>removeObjectFromIndex</strong>(java.lang.Object object)</h4>
                                 <p> Removes a single object from the index. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The domain object to remove from the index.  Must have a record id..</DD></DL><DL><DT><B>Returns:</B></DT><DD>Status of the index creation.  A Map.</DD></DL></p>
                             </li>
                         </ul>
@@ -328,7 +333,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="setHosts(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>setHosts</strong>(<a href='../../../../List.html'>List</a> hosts)</h4>
+                                <h4>void <strong>setHosts</strong>(java.util.List&lt;HttpHost&gt; hosts)</h4>
                                 <p> Sets the external search hosts to be used. <DL><DT><B>Parameters:</B></DT><DD><code>hosts</code> -  The list of hosts.</DD></DL></p>
                             </li>
                         </ul>

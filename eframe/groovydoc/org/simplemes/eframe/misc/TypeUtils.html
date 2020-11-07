@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@java.lang.SuppressWarnings(value: NonFinalPublicField)
+@groovy.transform.CompileStatic
+class TypeUtils
+extends java.lang.Object</pre>
 
     <p> Various utilities that operate on generic types (or classes).
 </p>
@@ -165,7 +173,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#doesClassHaveStaticMethod(java.lang.Class, java.lang.String)">doesClassHaveStaticMethod</a></strong>(java.lang.Class clazz, java.lang.String methodName)</code><br>Determines if the given class has the given static method (no arguments). </td>
+                            <td class="colLast"><code><strong><a href="#doesClassHaveStaticMethod(java.lang.Class, java.lang.String)">doesClassHaveStaticMethod</a></strong>(java.lang.Class clazz, java.lang.String methodName)</code><br>Determines if the given class has the given static method (no arguments).</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -177,25 +185,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#getStaticProperty(java.lang.Object, java.lang.String)">getStaticProperty</a></strong>(java.lang.Object object, java.lang.String name)</code><br>Gets the static property from the object. </td>
+                            <td class="colLast"><code><strong><a href="#getStaticProperty(java.lang.Object, java.lang.String)">getStaticProperty</a></strong>(java.lang.Object object, java.lang.String name)</code><br>Gets the static property from the object.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getStaticPropertyInSuperClasses(java.lang.Class, java.lang.String)">getStaticPropertyInSuperClasses</a></strong>(java.lang.Class c, java.lang.String propertyName)</code><br>Find all values of a given property <DL><DT><B>Parameters:</B></DT><DD><code>c</code> -  The class to find the property in, searching through parent classes.</td>
+                            <td class="colLast"><code>static&nbsp;java.util.List&lt;java.util.List&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getStaticPropertyInSuperClasses(java.lang.Class, java.lang.String)">getStaticPropertyInSuperClasses</a></strong>(java.lang.Class c, java.lang.String propertyName)</code><br>Find all values of a given property</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getSuperClasses(java.lang.Class, List)">getSuperClasses</a></strong>(java.lang.Class c, <a href='../../../../List.html'>List</a> list)</code><br>Find all of the super-classes for the given class. </td>
+                            <td class="colLast"><code>static&nbsp;java.util.List&lt;java.lang.Class&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getSuperClasses(java.lang.Class, List)">getSuperClasses</a></strong>(java.lang.Class c, java.util.List&lt;java.lang.Class&gt; list)</code><br>Find all of the super-classes for the given class.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isMock(java.lang.Object)">isMock</a></strong>(java.lang.Object object)</code><br>Determines if the given object is a mock. </td>
+                            <td class="colLast"><code><strong><a href="#isMock(java.lang.Object)">isMock</a></strong>(java.lang.Object object)</code><br>Determines if the given object is a mock.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -208,19 +216,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.Class</code></td>
-                            <td class="colLast"><code><strong><a href="#loadClass(java.lang.String)">loadClass</a></strong>(java.lang.String className)</code><br>Returns the class instance for the name. </td>
+                            <td class="colLast"><code><strong><a href="#loadClass(java.lang.String)">loadClass</a></strong>(java.lang.String className)</code><br>Returns the class instance for the name.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.reflect.Field</code></td>
-                            <td class="colLast"><code><strong><a href="#safeGetField(java.lang.Class, java.lang.String)">safeGetField</a></strong>(java.lang.Class clazz, java.lang.String fieldName)</code><br>Returns the field from the class;s declared fields, null if not found. </td>
+                            <td class="colLast"><code><strong><a href="#safeGetField(java.lang.Class, java.lang.String)">safeGetField</a></strong>(java.lang.Class clazz, java.lang.String fieldName)</code><br>Returns the field from the class;s declared fields, null if not found.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toClassHierarchy(java.lang.Class, List)">toClassHierarchy</a></strong>(java.lang.Class clazz, <a href='../../../../List.html'>List</a> list)</code><br>Generates an indented class hierarchy for a given class. </td>
+                            <td class="colLast"><code><strong><a href="#toClassHierarchy(java.lang.Class, List)">toClassHierarchy</a></strong>(java.lang.Class clazz, java.util.List&lt;java.lang.String&gt; list)</code><br>Generates an indented class hierarchy for a given class.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -317,7 +325,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getStaticProperty(java.lang.Object, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.CompileDynamicCompileDynamic
+                                <h4>@groovy.transform.CompileDynamic
 static&nbsp;java.lang.Object <strong>getStaticProperty</strong>(java.lang.Object object, java.lang.String name)</h4>
                                 <p> Gets the static property from the object. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to get the property from (if it has it). Can be a class or an instance of an object.</DD><DD><code>name</code> -  The name of the property.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The property value.</DD></DL></p>
                             </li>
@@ -326,8 +334,8 @@ static&nbsp;java.lang.Object <strong>getStaticProperty</strong>(java.lang.Object
                         <a name="getStaticPropertyInSuperClasses(java.lang.Class, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.CompileDynamicCompileDynamic
-static&nbsp;<a href='../../../../List.html'>List</a> <strong>getStaticPropertyInSuperClasses</strong>(java.lang.Class c, java.lang.String propertyName)</h4>
+                                <h4>@groovy.transform.CompileDynamic
+static&nbsp;java.util.List&lt;java.util.List&gt; <strong>getStaticPropertyInSuperClasses</strong>(java.lang.Class c, java.lang.String propertyName)</h4>
                                 <p> Find all values of a given property <DL><DT><B>Parameters:</B></DT><DD><code>c</code> -  The class to find the property in, searching through parent classes.</DD><DD><code>propertyName</code> -  The static property to find.</DD></DL><DL><DT><B>Returns:</B></DT><DD>A list of lists of values, top-level parent first.</DD></DL></p>
                             </li>
                         </ul>
@@ -335,7 +343,7 @@ static&nbsp;<a href='../../../../List.html'>List</a> <strong>getStaticPropertyIn
                         <a name="getSuperClasses(java.lang.Class, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../List.html'>List</a> <strong>getSuperClasses</strong>(java.lang.Class c, <a href='../../../../List.html'>List</a> list)</h4>
+                                <h4>static&nbsp;java.util.List&lt;java.lang.Class&gt; <strong>getSuperClasses</strong>(java.lang.Class c, java.util.List&lt;java.lang.Class&gt; list)</h4>
                                 <p> Find all of the super-classes for the given class. <DL><DT><B>Parameters:</B></DT><DD><code>c</code> -  The class.</DD><DD><code>list</code> -  The list to add the super classes to.</DD></DL><DL><DT><B>Returns:</B></DT><DD>A list of parent classes (not including Object).</DD></DL></p>
                             </li>
                         </ul>
@@ -351,7 +359,7 @@ static&nbsp;<a href='../../../../List.html'>List</a> <strong>getStaticPropertyIn
                         <a name="isPrimitiveAssignableTo(java.lang.Class, java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GrEqualsBetweenInconvertibleTypes)
 static&nbsp;boolean <strong>isPrimitiveAssignableTo</strong>(java.lang.Class from, java.lang.Class to)</h4>
                                 <p> Determines if the two classes can be assigned to each other if one is a primitive.
  Supports Integer, Long and Boolean. <DL><DT><B>Parameters:</B></DT><DD><code>from</code> -  The from assignment class.</DD><DD><code>to</code> -  The to assignment class.</DD></DL><DL><DT><B>Returns:</B></DT><DD>True if one is a primitive and can be assigned to the other.  If one is not a</DD></DL></p>
@@ -361,7 +369,7 @@ static&nbsp;boolean <strong>isPrimitiveAssignableTo</strong>(java.lang.Class fro
                         <a name="loadClass(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: ClassForName)
 static&nbsp;java.lang.Class <strong>loadClass</strong>(java.lang.String className)</h4>
                                 <p> Returns the class instance for the name. <DL><DT><B>Parameters:</B></DT><DD><code>className</code> -  The fully-qualified name of the class.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The class.</DD></DL></p>
                             </li>
@@ -378,7 +386,7 @@ static&nbsp;java.lang.Class <strong>loadClass</strong>(java.lang.String classNam
                         <a name="toClassHierarchy(java.lang.Class, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>toClassHierarchy</strong>(java.lang.Class clazz, <a href='../../../../List.html'>List</a> list)</h4>
+                                <h4>static&nbsp;java.lang.String <strong>toClassHierarchy</strong>(java.lang.Class clazz, java.util.List&lt;java.lang.String&gt; list)</h4>
                                 <p> Generates an indented class hierarchy for a given class. <DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class.</DD><DD><code>list</code> -  The list of super classes.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The hierarchy.</DD></DL></p>
                             </li>
                         </ul>
@@ -386,7 +394,7 @@ static&nbsp;java.lang.Class <strong>loadClass</strong>(java.lang.String classNam
                         <a name="toShortString(java.lang.Object, java.lang.Boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.CompileDynamicCompileDynamic
+                                <h4>@groovy.transform.CompileDynamic
 static&nbsp;java.lang.String <strong>toShortString</strong>(java.lang.Object object, java.lang.Boolean addTitle)</h4>
                                 <p> A short string for the given object.  Usage is similar to toString(), but returns just one key identifier.
  Suitable for drop-down lists, etc.  Will call toShortString() on the object if it exists.  If not, then

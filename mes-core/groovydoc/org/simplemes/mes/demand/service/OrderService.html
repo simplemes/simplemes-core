@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
+@java.lang.SuppressWarnings(value: GrMethodMayBeStatic)
+class OrderService
+extends java.lang.Object</pre>
 
     <p> This service provided methods to manipulate orders in SimpleMES.  This contains the core business logic
  for orders.  This provides methods to release an order for production and close an order when completed early.
@@ -138,13 +147,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code><strong>static&nbsp;java.lang.String</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#ACTION_RELEASE_LSN">ACTION_RELEASE_LSN</a></code></td>
-                            <td class="colLast">The org.simplemes.mes.tracking.domain.ActionLog entry used for Release LSN actions.</td>
+                            <td class="colLast">The <a href='../../../../../org/simplemes/mes/tracking/domain/ActionLog.html' title='ActionLog'>ActionLog</a> entry used for Release LSN actions.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code><strong>static&nbsp;java.lang.String</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#ACTION_RELEASE_ORDER">ACTION_RELEASE_ORDER</a></code></td>
-                            <td class="colLast">The org.simplemes.mes.tracking.domain.ActionLog entry used for Release order actions.</td>
+                            <td class="colLast">The <a href='../../../../../org/simplemes/mes/tracking/domain/ActionLog.html' title='ActionLog'>ActionLog</a> entry used for Release order actions.</td>
                         </tr>
                         
                     </table>
@@ -222,7 +231,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#archiveOld(BigDecimal, java.lang.Long, java.lang.Integer)">archiveOld</a></strong>(<a href='../../../../../BigDecimal.html'>BigDecimal</a> ageDays, java.lang.Long maxOrdersPerTxn, java.lang.Integer maxTxns)</code><br>Archive old, done orders based on the date that they were completed.  </td>
                         </tr>
                         
@@ -234,14 +243,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#determineQtyStates(org.simplemes.mes.demand.domain.Order)">determineQtyStates</a></strong>(<a href='../../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> order)</code><br>Finds all places the given order is in queue or in work. </td>
+                            <td class="colLast"><code>java.util.List&lt;WorkableInterface&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#determineQtyStates(org.simplemes.mes.demand.domain.Order)">determineQtyStates</a></strong>(<a href='../../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> order)</code><br>Finds all places the given order is in queue or in work.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#determineQtyStates(org.simplemes.mes.demand.domain.LSN)">determineQtyStates</a></strong>(<a href='../../../../../org/simplemes/mes/demand/domain/LSN.html'>LSN</a> lsn)</code><br>Finds all places the given LSN is in queue or in work. </td>
+                            <td class="colLast"><code>java.util.List&lt;WorkableInterface&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#determineQtyStates(org.simplemes.mes.demand.domain.LSN)">determineQtyStates</a></strong>(<a href='../../../../../org/simplemes/mes/demand/domain/LSN.html'>LSN</a> lsn)</code><br>Finds all places the given LSN is in queue or in work.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -295,7 +304,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>public&nbsp;static&nbsp;final&nbsp;java.lang.String <strong>ACTION_RELEASE_LSN</strong></h4>
-                                <p> The org.simplemes.mes.tracking.domain.ActionLog entry used for Release LSN actions.</p>
+                                <p> The <a href='../../../../../org/simplemes/mes/tracking/domain/ActionLog.html' title='ActionLog'>ActionLog</a> entry used for Release LSN actions.</p>
                             </li>
                         </ul>
                     
@@ -303,7 +312,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>public&nbsp;static&nbsp;final&nbsp;java.lang.String <strong>ACTION_RELEASE_ORDER</strong></h4>
-                                <p> The org.simplemes.mes.tracking.domain.ActionLog entry used for Release order actions.</p>
+                                <p> The <a href='../../../../../org/simplemes/mes/tracking/domain/ActionLog.html' title='ActionLog'>ActionLog</a> entry used for Release order actions.</p>
                             </li>
                         </ul>
                     
@@ -365,9 +374,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="archiveOld(BigDecimal, java.lang.Long, java.lang.Integer)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@groovy.transform.SynchronizedSynchronized
-<a href='../../../../../List.html'>List</a> <strong>archiveOld</strong>(<a href='../../../../../BigDecimal.html'>BigDecimal</a> ageDays, java.lang.Long maxOrdersPerTxn, java.lang.Integer maxTxns)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: JavaIoPackageAccess)
+@groovy.transform.Synchronized
+java.util.List&lt;java.lang.String&gt; <strong>archiveOld</strong>(<a href='../../../../../BigDecimal.html'>BigDecimal</a> ageDays, java.lang.Long maxOrdersPerTxn, java.lang.Integer maxTxns)</h4>
                                 <p> Archive old, done orders based on the date that they were completed.  There are options
  for the age (days) and the max number of orders to archive in one batch (transaction).  There is also an option to limit the number
  batches archived at a time.  This last option is used to limit the slowdown from archiving during 'catch-up' scenarios when
@@ -385,8 +394,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="delete(org.simplemes.mes.demand.domain.Order)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@javax.transaction.TransactionalTransactional
+                                <h4>@java.lang.SuppressWarnings(value: GrUnnecessaryDefModifier)
+@javax.transaction.Transactional
 void <strong>delete</strong>(<a href='../../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> order)</h4>
                                 <p> Deletes the given order and related records.  There is no confirmation for this delete.
  It relies on the Order#findRelatedRecords()#findRelatedRecords() <DL><DT><B>Parameters:</B></DT><DD><code>order</code> -  The order to delete.</DD></DL></p>
@@ -396,7 +405,7 @@ void <strong>delete</strong>(<a href='../../../../../org/simplemes/mes/demand/do
                         <a name="determineQtyStates(org.simplemes.mes.demand.domain.Order)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>determineQtyStates</strong>(<a href='../../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> order)</h4>
+                                <h4>java.util.List&lt;WorkableInterface&gt; <strong>determineQtyStates</strong>(<a href='../../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> order)</h4>
                                 <p> Finds all places the given order is in queue or in work. <DL><DT><B>Parameters:</B></DT><DD><code>order</code> -  The order to query.</DD></DL><DL><DT><B>Returns:</B></DT><DD>A list of workable objects where the order is in queue or in work.  Sorted on operation sequence if an operation object.</DD></DL></p>
                             </li>
                         </ul>
@@ -404,7 +413,7 @@ void <strong>delete</strong>(<a href='../../../../../org/simplemes/mes/demand/do
                         <a name="determineQtyStates(org.simplemes.mes.demand.domain.LSN)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>determineQtyStates</strong>(<a href='../../../../../org/simplemes/mes/demand/domain/LSN.html'>LSN</a> lsn)</h4>
+                                <h4>java.util.List&lt;WorkableInterface&gt; <strong>determineQtyStates</strong>(<a href='../../../../../org/simplemes/mes/demand/domain/LSN.html'>LSN</a> lsn)</h4>
                                 <p> Finds all places the given LSN is in queue or in work. <DL><DT><B>Parameters:</B></DT><DD><code>lsn</code> -  The LSN to query.</DD></DL><DL><DT><B>Returns:</B></DT><DD>A list of workable objects where the LSN is in queue or in work.  Sorted on operation sequence if an operation object.</DD></DL></p>
                             </li>
                         </ul>
@@ -412,9 +421,9 @@ void <strong>delete</strong>(<a href='../../../../../org/simplemes/mes/demand/do
                         <a name="release(org.simplemes.mes.demand.OrderReleaseRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.transaction.TransactionalTransactional
-@org.simplemes.eframe.custom.annotation.ExtensionPointExtensionPoint
-@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@javax.transaction.Transactional
+@org.simplemes.eframe.custom.annotation.ExtensionPoint(value: OrderReleasePoint, comment: The Order release() method)
+@java.lang.SuppressWarnings(value: GrUnnecessaryDefModifier)
 <a href='../../../../../org/simplemes/mes/demand/OrderReleaseResponse.html'>OrderReleaseResponse</a> <strong>release</strong>(<a href='../../../../../org/simplemes/mes/demand/OrderReleaseRequest.html'>OrderReleaseRequest</a> orderReleaseRequest)</h4>
                                 <p> Release the given order for production.  The order cannot be worked on the shop floor until it is released.
  This method makes the quantity released available for production by queueing it the appropriate entry point (first

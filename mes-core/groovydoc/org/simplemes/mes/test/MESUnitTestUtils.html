@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class MESUnitTestUtils
+extends java.lang.Object</pre>
 
     <p> Convenience utilities for MES unit tests.  Used to create common data structures.
  Can also be used for GUI/Integration tests with proper transaction settings.
@@ -193,37 +199,37 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#adjustOperation(org.simplemes.mes.product.domain.ProductOperation, Map)">adjustOperation</a></strong>(<a href='../../../../org/simplemes/mes/product/domain/ProductOperation.html'>ProductOperation</a> operation, <a href='../../../../Map.html'>Map</a> options)</code><br>Allows sub-classes to adjust the ProductOperation before it is saved. </td>
+                            <td class="colLast"><code><strong><a href="#adjustOperation(org.simplemes.mes.product.domain.ProductOperation, java.util.Map)">adjustOperation</a></strong>(<a href='../../../../org/simplemes/mes/product/domain/ProductOperation.html'>ProductOperation</a> operation, java.util.Map options)</code><br>Allows sub-classes to adjust the ProductOperation before it is saved.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#adjustOperation(org.simplemes.mes.product.domain.MasterOperation, Map)">adjustOperation</a></strong>(<a href='../../../../org/simplemes/mes/product/domain/MasterOperation.html'>MasterOperation</a> operation, <a href='../../../../Map.html'>Map</a> options)</code><br>Allows sub-classes to adjust the MasterOperation before it is saved. </td>
+                            <td class="colLast"><code><strong><a href="#adjustOperation(org.simplemes.mes.product.domain.MasterOperation, java.util.Map)">adjustOperation</a></strong>(<a href='../../../../org/simplemes/mes/product/domain/MasterOperation.html'>MasterOperation</a> operation, java.util.Map options)</code><br>Allows sub-classes to adjust the MasterOperation before it is saved.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#adjustOrder(org.simplemes.mes.demand.domain.Order, Map)">adjustOrder</a></strong>(<a href='../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> order, <a href='../../../../Map.html'>Map</a> options)</code><br>Allows sub-classes to adjust the Order before it is saved. </td>
+                            <td class="colLast"><code><strong><a href="#adjustOrder(org.simplemes.mes.demand.domain.Order, java.util.Map)">adjustOrder</a></strong>(<a href='../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> order, java.util.Map options)</code><br>Allows sub-classes to adjust the Order before it is saved.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#adjustProduct(org.simplemes.mes.product.domain.Product, Map)">adjustProduct</a></strong>(<a href='../../../../org/simplemes/mes/product/domain/Product.html'>Product</a> product, <a href='../../../../Map.html'>Map</a> options)</code><br>Allows sub-classes to adjust the Product before it is saved. </td>
+                            <td class="colLast"><code><strong><a href="#adjustProduct(org.simplemes.mes.product.domain.Product, java.util.Map)">adjustProduct</a></strong>(<a href='../../../../org/simplemes/mes/product/domain/Product.html'>Product</a> product, java.util.Map options)</code><br>Allows sub-classes to adjust the Product before it is saved.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/mes/product/domain/MasterRouting.html'>MasterRouting</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildMasterRouting(Map)">buildMasterRouting</a></strong>(<a href='../../../../Map.html'>Map</a> options)</code><br>Build a simple master routing the given operations.</td>
+                            <td class="colLast"><code><strong><a href="#buildMasterRouting(java.util.Map)">buildMasterRouting</a></strong>(java.util.Map options)</code><br>Build a simple master routing the given operations.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/mes/product/domain/Product.html'>Product</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildSimpleProductWithRouting(Map)">buildSimpleProductWithRouting</a></strong>(<a href='../../../../Map.html'>Map</a> options)</code><br>Build a product with a simple 3 operation routing for use in an product.</td>
+                            <td class="colLast"><code><strong><a href="#buildSimpleProductWithRouting(java.util.Map)">buildSimpleProductWithRouting</a></strong>(java.util.Map options)</code><br>Build a product with a simple 3 operation routing for use in an product.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -235,38 +241,38 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#forceQtyDone(org.simplemes.mes.demand.domain.Order, BigDecimal)">forceQtyDone</a></strong>(<a href='../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> order, <a href='../../../../BigDecimal.html'>BigDecimal</a> qtyDone)</code><br>Forces the qty to done for the given order (and LSNs if any). </td>
+                            <td class="colLast"><code><strong><a href="#forceQtyDone(org.simplemes.mes.demand.domain.Order, BigDecimal)">forceQtyDone</a></strong>(<a href='../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> order, <a href='../../../../BigDecimal.html'>BigDecimal</a> qtyDone)</code><br>Forces the qty to done for the given order (and LSNs if any).</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#forceQtyInWork(org.simplemes.mes.demand.domain.Order, BigDecimal)">forceQtyInWork</a></strong>(<a href='../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> order, <a href='../../../../BigDecimal.html'>BigDecimal</a> qtyInWork)</code><br>Forces the qty to in work for the given order (and LSNs if any). </td>
+                            <td class="colLast"><code><strong><a href="#forceQtyInWork(org.simplemes.mes.demand.domain.Order, BigDecimal)">forceQtyInWork</a></strong>(<a href='../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> order, <a href='../../../../BigDecimal.html'>BigDecimal</a> qtyInWork)</code><br>Forces the qty to in work for the given order (and LSNs if any).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#loadOrderInitialDataNeeded(Map)">loadOrderInitialDataNeeded</a></strong>(<a href='../../../../Map.html'>Map</a> options)</code><br>Loads any initial data needed for order release.  </td>
+                            <td class="colLast"><code><strong><a href="#loadOrderInitialDataNeeded(java.util.Map)">loadOrderInitialDataNeeded</a></strong>(java.util.Map options)</code><br>Loads any initial data needed for order release.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a></code></td>
-                            <td class="colLast"><code><strong><a href="#releaseOrder(Map)">releaseOrder</a></strong>(<a href='../../../../Map.html'>Map</a> options)</code><br>Create and release a single order, optionally on a routing with or without LSNs.
+                            <td class="colLast"><code><strong><a href="#releaseOrder(java.util.Map)">releaseOrder</a></strong>(java.util.Map options)</code><br>Create and release a single order, optionally on a routing with or without LSNs.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#releaseOrders(Map)">releaseOrders</a></strong>(<a href='../../../../Map.html'>Map</a> options)</code><br>Create and release orders, optionally on a routing with or without LSNs.</td>
+                            <td class="colLast"><code>static&nbsp;java.util.List&lt;Order&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#releaseOrders(java.util.Map)">releaseOrders</a></strong>(java.util.Map options)</code><br>Create and release orders, optionally on a routing with or without LSNs.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#releaseOrdersInternal(Map)">releaseOrdersInternal</a></strong>(<a href='../../../../Map.html'>Map</a> options)</code><br>Internal create and release orders.  </td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List&lt;Order&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#releaseOrdersInternal(java.util.Map)">releaseOrdersInternal</a></strong>(java.util.Map options)</code><br>Internal create and release orders.  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -284,7 +290,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;long</code></td>
-                            <td class="colLast"><code><strong><a href="#setDates(org.simplemes.mes.demand.WorkStateTrait, long)">setDates</a></strong>(<a href='../../../../org/simplemes/mes/demand/WorkStateTrait.html'>WorkStateTrait</a> workState, long timeStamp)</code><br>Sets the date queued/started (if already set) to the given timestamp and then increments the timestamp. </td>
+                            <td class="colLast"><code><strong><a href="#setDates(org.simplemes.mes.demand.WorkStateTrait, long)">setDates</a></strong>(<a href='../../../../org/simplemes/mes/demand/WorkStateTrait.html'>WorkStateTrait</a> workState, long timeStamp)</code><br>Sets the date queued/started (if already set) to the given timestamp and then increments the timestamp.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -296,7 +302,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#spreadDates(List)">spreadDates</a></strong>(<a href='../../../../List.html'>List</a> orders)</code><br>Utility method to set the dates queued/started to a known value for a list of orders/LSNs.
+                            <td class="colLast"><code><strong><a href="#spreadDates(List)">spreadDates</a></strong>(java.util.List&lt;Order&gt; orders)</code><br>Utility method to set the dates queued/started to a known value for a list of orders/LSNs.
  </td>
                         </tr>
                         
@@ -394,46 +400,46 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="adjustOperation(org.simplemes.mes.product.domain.ProductOperation, Map)"><!-- --></a>
+                        <a name="adjustOperation(org.simplemes.mes.product.domain.ProductOperation, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-protected&nbsp;void <strong>adjustOperation</strong>(<a href='../../../../org/simplemes/mes/product/domain/ProductOperation.html'>ProductOperation</a> operation, <a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+protected&nbsp;void <strong>adjustOperation</strong>(<a href='../../../../org/simplemes/mes/product/domain/ProductOperation.html'>ProductOperation</a> operation, java.util.Map options)</h4>
                                 <p> Allows sub-classes to adjust the ProductOperation before it is saved. <DL><DT><B>Parameters:</B></DT><DD><code>operation</code> -  The un-saved operation.</DD><DD><code>options</code> -  the options for the order release.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="adjustOperation(org.simplemes.mes.product.domain.MasterOperation, Map)"><!-- --></a>
+                        <a name="adjustOperation(org.simplemes.mes.product.domain.MasterOperation, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-protected&nbsp;void <strong>adjustOperation</strong>(<a href='../../../../org/simplemes/mes/product/domain/MasterOperation.html'>MasterOperation</a> operation, <a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+protected&nbsp;void <strong>adjustOperation</strong>(<a href='../../../../org/simplemes/mes/product/domain/MasterOperation.html'>MasterOperation</a> operation, java.util.Map options)</h4>
                                 <p> Allows sub-classes to adjust the MasterOperation before it is saved. <DL><DT><B>Parameters:</B></DT><DD><code>operation</code> -  The un-saved operation.</DD><DD><code>options</code> -  the options for the order release.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="adjustOrder(org.simplemes.mes.demand.domain.Order, Map)"><!-- --></a>
+                        <a name="adjustOrder(org.simplemes.mes.demand.domain.Order, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-protected&nbsp;void <strong>adjustOrder</strong>(<a href='../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> order, <a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+protected&nbsp;void <strong>adjustOrder</strong>(<a href='../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> order, java.util.Map options)</h4>
                                 <p> Allows sub-classes to adjust the Order before it is saved. <DL><DT><B>Parameters:</B></DT><DD><code>product</code> -  The un-saved order.</DD><DD><code>options</code> -  the options for the order release.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="adjustProduct(org.simplemes.mes.product.domain.Product, Map)"><!-- --></a>
+                        <a name="adjustProduct(org.simplemes.mes.product.domain.Product, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-protected&nbsp;void <strong>adjustProduct</strong>(<a href='../../../../org/simplemes/mes/product/domain/Product.html'>Product</a> product, <a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+protected&nbsp;void <strong>adjustProduct</strong>(<a href='../../../../org/simplemes/mes/product/domain/Product.html'>Product</a> product, java.util.Map options)</h4>
                                 <p> Allows sub-classes to adjust the Product before it is saved. <DL><DT><B>Parameters:</B></DT><DD><code>product</code> -  The un-saved product.</DD><DD><code>options</code> -  the options for the order release.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="buildMasterRouting(Map)"><!-- --></a>
+                        <a name="buildMasterRouting(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../org/simplemes/mes/product/domain/MasterRouting.html'>MasterRouting</a> <strong>buildMasterRouting</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>static&nbsp;<a href='../../../../org/simplemes/mes/product/domain/MasterRouting.html'>MasterRouting</a> <strong>buildMasterRouting</strong>(java.util.Map options)</h4>
                                 <p> Build a simple master routing the given operations.
 
  <h3>Options</h3>
@@ -445,10 +451,10 @@ protected&nbsp;void <strong>adjustProduct</strong>(<a href='../../../../org/simp
                             </li>
                         </ul>
                     
-                        <a name="buildSimpleProductWithRouting(Map)"><!-- --></a>
+                        <a name="buildSimpleProductWithRouting(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../org/simplemes/mes/product/domain/Product.html'>Product</a> <strong>buildSimpleProductWithRouting</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>static&nbsp;<a href='../../../../org/simplemes/mes/product/domain/Product.html'>Product</a> <strong>buildSimpleProductWithRouting</strong>(java.util.Map options)</h4>
                                 <p> Build a product with a simple 3 operation routing for use in an product.
 
  <h3>Options</h3>
@@ -486,18 +492,18 @@ protected&nbsp;void <strong>adjustProduct</strong>(<a href='../../../../org/simp
                             </li>
                         </ul>
                     
-                        <a name="loadOrderInitialDataNeeded(Map)"><!-- --></a>
+                        <a name="loadOrderInitialDataNeeded(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.Object <strong>loadOrderInitialDataNeeded</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>static&nbsp;java.lang.Object <strong>loadOrderInitialDataNeeded</strong>(java.util.Map options)</h4>
                                 <p> Loads any initial data needed for order release.  Always loads the OrderStatus. <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  Uses the lsnTrackingOption to decide if LSN Sequence and Status must be loaded.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="releaseOrder(Map)"><!-- --></a>
+                        <a name="releaseOrder(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> <strong>releaseOrder</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>static&nbsp;<a href='../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> <strong>releaseOrder</strong>(java.util.Map options)</h4>
                                 <p> Create and release a single order, optionally on a routing with or without LSNs.
  This is a convenience function that calls <a href='#releaseOrders(java.util.Map)'>releaseOrders(java.util.Map)</a>.
  <p>
@@ -505,10 +511,10 @@ protected&nbsp;void <strong>adjustProduct</strong>(<a href='../../../../org/simp
                             </li>
                         </ul>
                     
-                        <a name="releaseOrders(Map)"><!-- --></a>
+                        <a name="releaseOrders(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../List.html'>List</a> <strong>releaseOrders</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>static&nbsp;java.util.List&lt;Order&gt; <strong>releaseOrders</strong>(java.util.Map options)</h4>
                                 <p> Create and release orders, optionally on a routing with or without LSNs.
  <p>
  <b>This method creates a <b>transaction</b> (if needed).</b>.
@@ -540,11 +546,11 @@ protected&nbsp;void <strong>adjustProduct</strong>(<a href='../../../../org/simp
                             </li>
                         </ul>
                     
-                        <a name="releaseOrdersInternal(Map)"><!-- --></a>
+                        <a name="releaseOrdersInternal(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-protected&nbsp;<a href='../../../../List.html'>List</a> <strong>releaseOrdersInternal</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: AbcMetric)
+protected&nbsp;java.util.List&lt;Order&gt; <strong>releaseOrdersInternal</strong>(java.util.Map options)</h4>
                                 <p> Internal create and release orders.  This is used as a non-static method to allow sub-classes to alter the
  objects created.
  <p>
@@ -587,8 +593,8 @@ protected&nbsp;<a href='../../../../List.html'>List</a> <strong>releaseOrdersInt
                         <a name="spreadDates(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-protected&nbsp;void <strong>spreadDates</strong>(<a href='../../../../List.html'>List</a> orders)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+protected&nbsp;void <strong>spreadDates</strong>(java.util.List&lt;Order&gt; orders)</h4>
                                 <p> Utility method to set the dates queued/started to a known value for a list of orders/LSNs.
  Processes all LSNs in the orders for all possible routing steps. <DL><DT><B>Parameters:</B></DT><DD><code>orders</code> -  The orders to set the dates on.</DD></DL></p>
                             </li>

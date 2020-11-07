@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.transform.ToString(includeNames: true, includePackage: false)
+class DomainTester
+extends java.lang.Object</pre>
 
     <p> Helps tests common features of domain classes, such as constraints and field order.
  <p>
@@ -142,22 +150,22 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map&lt;java.lang.String, java.lang.Integer&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#_maxSizes">_maxSizes</a></code><br>A map of the max size checks to make.</td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#_notInFieldOrder">_notInFieldOrder</a></code><br>The list of fields that should not be in the field order.</td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#_notNullChecks">_notNullChecks</a></code><br>A list of the fields to make sure the non-null validation works.</td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#_requiredValues">_requiredValues</a></code><br>A map of the required field values for a valid save.</td>
                         </tr>
                         
@@ -212,19 +220,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#assertErrorIsPresent(List, java.lang.String, int, java.lang.String)">assertErrorIsPresent</a></strong>(<a href='../../../../List.html'>List</a> errors, java.lang.String fieldName, int code, java.lang.String msg)</code><br>Verifies that the given code/fieldName pair is in the list of validation errors. </td>
+                            <td class="colLast"><code><strong><a href="#assertErrorIsPresent(List, java.lang.String, int, java.lang.String)">assertErrorIsPresent</a></strong>(java.util.List&lt;ValidationErrorInterface&gt; errors, java.lang.String fieldName, int code, java.lang.String msg)</code><br>Verifies that the given code/fieldName pair is in the list of validation errors.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#doMaxSizeTest(java.lang.String, int)">doMaxSizeTest</a></strong>(java.lang.String fieldName, int maxLength)</code><br>Performs a single max size check. </td>
+                            <td class="colLast"><code><strong><a href="#doMaxSizeTest(java.lang.String, int)">doMaxSizeTest</a></strong>(java.lang.String fieldName, int maxLength)</code><br>Performs a single max size check.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#doNotNullTest(java.lang.String)">doNotNullTest</a></strong>(java.lang.String fieldName)</code><br>Performs a not null check. </td>
+                            <td class="colLast"><code><strong><a href="#doNotNullTest(java.lang.String)">doNotNullTest</a></strong>(java.lang.String fieldName)</code><br>Performs a not null check.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -236,50 +244,50 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#domain(java.lang.Class)">domain</a></strong>(java.lang.Class domain)</code><br>Sets the domain class to test. </td>
+                            <td class="colLast"><code><strong><a href="#domain(java.lang.Class)">domain</a></strong>(java.lang.Class domain)</code><br>Sets the domain class to test.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#fieldOrderCheck(java.lang.Boolean)">fieldOrderCheck</a></strong>(java.lang.Boolean fieldOrderCheck)</code><br>If true, then the field order checks are made. </td>
+                            <td class="colLast"><code><strong><a href="#fieldOrderCheck(java.lang.Boolean)">fieldOrderCheck</a></strong>(java.lang.Boolean fieldOrderCheck)</code><br>If true, then the field order checks are made.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isCustomFieldHolder(java.lang.String)">isCustomFieldHolder</a></strong>(java.lang.String name)</code><br>Returns true if the field is the custom field holder. </td>
+                            <td class="colLast"><code><strong><a href="#isCustomFieldHolder(java.lang.String)">isCustomFieldHolder</a></strong>(java.lang.String name)</code><br>Returns true if the field is the custom field holder.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#maxSize(java.lang.String, int)">maxSize</a></strong>(java.lang.String fieldName, int size)</code><br>Adds a maxSize check for the given field. </td>
+                            <td class="colLast"><code><strong><a href="#maxSize(java.lang.String, int)">maxSize</a></strong>(java.lang.String fieldName, int size)</code><br>Adds a maxSize check for the given field.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#notInFieldOrder(List)">notInFieldOrder</a></strong>(<a href='../../../../List.html'>List</a> fieldNames)</code><br>Verifies that the given fields are not in the Domain's field order.
+                            <td class="colLast"><code><strong><a href="#notInFieldOrder(List)">notInFieldOrder</a></strong>(java.util.List&lt;java.lang.String&gt; fieldNames)</code><br>Verifies that the given fields are not in the Domain's field order.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#notNullCheck(java.lang.String)">notNullCheck</a></strong>(java.lang.String fieldName)</code><br>Verifies that the nulls can't be saved for the given field. </td>
+                            <td class="colLast"><code><strong><a href="#notNullCheck(java.lang.String)">notNullCheck</a></strong>(java.lang.String fieldName)</code><br>Verifies that the nulls can't be saved for the given field.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#requiredValues(Map)">requiredValues</a></strong>(<a href='../../../../Map.html'>Map</a> requiredValues)</code><br>Sets the required values for the domain object. </td>
+                            <td class="colLast"><code><strong><a href="#requiredValues(Map)">requiredValues</a></strong>(java.util.Map&lt;java.lang.String, java.lang.Object&gt; requiredValues)</code><br>Sets the required values for the domain object.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/eframe/test/DomainTester.html'>DomainTester</a></code></td>
-                            <td class="colLast"><code><strong><a href="#test(Closure)">test</a></strong>(<a href='../../../../Closure.html'>Closure</a> config)</code><br></td>
+                            <td class="colLast"><code><strong><a href="#test(groovy.lang.Closure)">test</a></strong>(groovy.lang.Closure config)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
@@ -350,7 +358,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="_maxSizes"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>_maxSizes</strong></h4>
+                                <h4>private&nbsp;java.util.Map&lt;java.lang.String, java.lang.Integer&gt; <strong>_maxSizes</strong></h4>
                                 <p> A map of the max size checks to make.</p>
                             </li>
                         </ul>
@@ -358,7 +366,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="_notInFieldOrder"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>_notInFieldOrder</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.String&gt; <strong>_notInFieldOrder</strong></h4>
                                 <p> The list of fields that should not be in the field order.</p>
                             </li>
                         </ul>
@@ -366,7 +374,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="_notNullChecks"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>_notNullChecks</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.String&gt; <strong>_notNullChecks</strong></h4>
                                 <p> A list of the fields to make sure the non-null validation works.</p>
                             </li>
                         </ul>
@@ -374,7 +382,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="_requiredValues"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>_requiredValues</strong></h4>
+                                <h4>private&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt; <strong>_requiredValues</strong></h4>
                                 <p> A map of the required field values for a valid save.</p>
                             </li>
                         </ul>
@@ -417,7 +425,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="assertErrorIsPresent(List, java.lang.String, int, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;void <strong>assertErrorIsPresent</strong>(<a href='../../../../List.html'>List</a> errors, java.lang.String fieldName, int code, java.lang.String msg)</h4>
+                                <h4>protected&nbsp;void <strong>assertErrorIsPresent</strong>(java.util.List&lt;ValidationErrorInterface&gt; errors, java.lang.String fieldName, int code, java.lang.String msg)</h4>
                                 <p> Verifies that the given code/fieldName pair is in the list of validation errors. <DL><DT><B>Parameters:</B></DT><DD><code>errors</code> -  The validation errors.</DD><DD><code>fieldName</code> -  The field Name.</DD><DD><code>code</code> -  The error code.</DD><DD><code>msg</code> -  The Assertion message that indicates what the error is.</DD></DL></p>
                             </li>
                         </ul>
@@ -481,7 +489,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="notInFieldOrder(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>notInFieldOrder</strong>(<a href='../../../../List.html'>List</a> fieldNames)</h4>
+                                <h4>void <strong>notInFieldOrder</strong>(java.util.List&lt;java.lang.String&gt; fieldNames)</h4>
                                 <p> Verifies that the given fields are not in the Domain's field order.
  All other persistent fields must be in the fieldOrder. <DL><DT><B>Parameters:</B></DT><DD><code>fieldNames</code> -  The fields that should not be in the fieldOrder.</DD></DL></p>
                             </li>
@@ -498,15 +506,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="requiredValues(Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>requiredValues</strong>(<a href='../../../../Map.html'>Map</a> requiredValues)</h4>
+                                <h4>void <strong>requiredValues</strong>(java.util.Map&lt;java.lang.String, java.lang.Object&gt; requiredValues)</h4>
                                 <p> Sets the required values for the domain object. <DL><DT><B>Parameters:</B></DT><DD><code>domain</code> -  The domain class</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="test(Closure)"><!-- --></a>
+                        <a name="test(groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../org/simplemes/eframe/test/DomainTester.html'>DomainTester</a> <strong>test</strong>(@DelegatesToDelegatesTo <a href='../../../../Closure.html'>Closure</a> config)</h4>
+                                <h4>static&nbsp;<a href='../../../../org/simplemes/eframe/test/DomainTester.html'>DomainTester</a> <strong>test</strong>(@groovy.lang.DelegatesTo(value: DomainTester) groovy.lang.Closure config)</h4>
                                 <p></p>
                             </li>
                         </ul>

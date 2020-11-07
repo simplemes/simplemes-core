@@ -98,13 +98,24 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@org.simplemes.eframe.domain.annotation.DomainEntity
+@io.micronaut.data.annotation.MappedEntity(value: order_bom_component)
+@java.lang.SuppressWarnings(value: unused)
+@groovy.transform.ToString(includeNames: true, includePackage: false, excludes: [order])
+@groovy.transform.EqualsAndHashCode(includes: [uuid])
+class OrderBOMComponent
+extends java.lang.Object</pre>
 
     <p> Defines a single component required for a given order.  This is basically a copy of the ProductComponent
  records defined for the product.
  <p>
  This element informally belongs to the MES Core Order domain.  Since the Order is in another module,
  the normal child relationship can't be used.
- Instead, the org.simplemes.mes.assy.application.AssemblyAddition adds this as a custom child to the core domain.
+ Instead, the <a href='../../../../../../org/simplemes/mes/assy/application/AssemblyAddition.html' title='AssemblyAddition'>AssemblyAddition</a> adds this as a custom child to the core domain.
 </p>
 
           </li>
@@ -167,7 +178,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -311,7 +322,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>

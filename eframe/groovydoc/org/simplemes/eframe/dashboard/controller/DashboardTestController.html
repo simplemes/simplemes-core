@@ -98,6 +98,17 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.context.annotation.Requires(env: [test, dev])
+@io.micronaut.http.annotation.Controller(value: /test/dashboard)
+@java.lang.SuppressWarnings(value: unused)
+final&nbsp;class DashboardTestController
+extends <a href='../../../../../org/simplemes/eframe/controller/BaseController.html'>BaseController</a></pre>
 
     <p> Test controller for dashboard testing.  This is only exposed in test mode.
  Provides ability to display arbitrary dashboard activities and to handle request from the dashboard.
@@ -196,12 +207,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.Map&lt;java.lang.String, java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#memory">memory</a></code><br>The static memory holder for unit test pages.</td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.Map</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#startCounters">startCounters</a></code><br>Some internal counters to use for undo testing.  </td>
                         </tr>
                         
@@ -268,7 +279,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>io.micronaut.http.HttpResponse</code></td>
-                            <td class="colLast"><code><strong><a href="#cookies(io.micronaut.http.HttpRequest)">cookies</a></strong>(io.micronaut.http.HttpRequest request)</code><br>Displays the cookies submitted to the server (for testing purposes). </td>
+                            <td class="colLast"><code><strong><a href="#cookies(io.micronaut.http.HttpRequest)">cookies</a></strong>(io.micronaut.http.HttpRequest request)</code><br>Displays the cookies submitted to the server (for testing purposes).</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -398,7 +409,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="memory"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;<a href='../../../../../Map.html'>Map</a> <strong>memory</strong></h4>
+                                <h4>private&nbsp;static&nbsp;java.util.Map&lt;java.lang.String, java.lang.String&gt; <strong>memory</strong></h4>
                                 <p> The static memory holder for unit test pages.</p>
                             </li>
                         </ul>
@@ -406,7 +417,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="startCounters"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;<a href='../../../../../Map.html'>Map</a> <strong>startCounters</strong></h4>
+                                <h4>private&nbsp;static&nbsp;java.util.Map <strong>startCounters</strong></h4>
                                 <p> Some internal counters to use for undo testing.  Can be incremented/decremented.
  Contains a start and undo counter for each 'order' start/undo used.</p>
                             </li>
@@ -466,8 +477,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="cookies(io.micronaut.http.HttpRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
+                                <h4>@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /cookies)
 io.micronaut.http.HttpResponse <strong>cookies</strong>(io.micronaut.http.HttpRequest request)</h4>
                                 <p> Displays the cookies submitted to the server (for testing purposes). <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The cookies (in a page).</DD></DL></p>
                             </li>
@@ -476,11 +487,11 @@ io.micronaut.http.HttpResponse <strong>cookies</strong>(io.micronaut.http.HttpRe
                         <a name="echo(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.PostPost
-io.micronaut.http.HttpResponse <strong>echo</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Produces(value: MediaType.APPLICATION_JSON)
+@io.micronaut.http.annotation.Post(value: /echo)
+io.micronaut.http.HttpResponse <strong>echo</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Sample test method to process a POST request with a JSON body and echo the JSON in the response as a message.
  <p>
  <h3>Options</h3>
@@ -494,10 +505,10 @@ io.micronaut.http.HttpResponse <strong>echo</strong>(io.micronaut.http.HttpReque
                         <a name="memory(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.http.annotation.GetGet
-@io.micronaut.http.annotation.ProducesProduces
-io.micronaut.http.HttpResponse <strong>memory</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+@io.micronaut.http.annotation.Get(value: /memory)
+@io.micronaut.http.annotation.Produces(value: application/javascript)
+io.micronaut.http.HttpResponse <strong>memory</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Serves up a page from static memory for the dashboard testers. See setMemoryPage.
 
  <h3>Parameters</h3>
@@ -512,9 +523,9 @@ io.micronaut.http.HttpResponse <strong>memory</strong>(io.micronaut.http.HttpReq
                         <a name="page(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-@io.micronaut.http.annotation.ProducesProduces
-io.micronaut.http.HttpResponse <strong>page</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /page)
+@io.micronaut.http.annotation.Produces(value: application/javascript)
+io.micronaut.http.HttpResponse <strong>page</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Serves up a page for the dashboard testers. This is served from an .ftl file.
 
  <h3>Parameters</h3>
@@ -537,11 +548,11 @@ io.micronaut.http.HttpResponse <strong>page</strong>(io.micronaut.http.HttpReque
                         <a name="start(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.PostPost
-io.micronaut.http.HttpResponse <strong>start</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Produces(value: MediaType.APPLICATION_JSON)
+@io.micronaut.http.annotation.Post(value: /start)
+io.micronaut.http.HttpResponse <strong>start</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Sample test method to process a POST request for a sample start.  Updates a counter
  <p> <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The HTTP Request.  A JSON start request.</DD><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>A message holder with the content as a message.</DD></DL></p>
                             </li>
@@ -550,11 +561,11 @@ io.micronaut.http.HttpResponse <strong>start</strong>(io.micronaut.http.HttpRequ
                         <a name="undoStart(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.PostPost
-io.micronaut.http.HttpResponse <strong>undoStart</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Produces(value: MediaType.APPLICATION_JSON)
+@io.micronaut.http.annotation.Post(value: /undoStart)
+io.micronaut.http.HttpResponse <strong>undoStart</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Sample test method to process a POST request for a sample undo start.  Updates a counter
  <p> <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The HTTP Request.  A JSON undoStart request.</DD><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>A message holder with the content as a message.</DD></DL></p>
                             </li>

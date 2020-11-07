@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
+class SearchService
+extends java.lang.Object</pre>
 
     <p> A service to handle search-related tasks.
  This includes searching and indexing.</p>
@@ -177,19 +185,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a></code></td>
-                            <td class="colLast"><code><strong><a href="#domainSearch(java.lang.Class, java.lang.String, Map)">domainSearch</a></strong>(java.lang.Class domainClass, java.lang.String query, <a href='../../../../../Map.html'>Map</a> params)</code><br>Performs a standard domain search with the query string.  </td>
+                            <td class="colLast"><code><strong><a href="#domainSearch(java.lang.Class, java.lang.String, java.util.Map)">domainSearch</a></strong>(java.lang.Class domainClass, java.lang.String query, java.util.Map params)</code><br>Performs a standard domain search with the query string.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/search/SearchStatus.html'>SearchStatus</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getStatus()">getStatus</a></strong>()</code><br>Gets the search engine's status. </td>
+                            <td class="colLast"><code><strong><a href="#getStatus()">getStatus</a></strong>()</code><br>Gets the search engine's status.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a></code></td>
-                            <td class="colLast"><code><strong><a href="#globalSearch(java.lang.String, Map)">globalSearch</a></strong>(java.lang.String query, <a href='../../../../../Map.html'>Map</a> params)</code><br>Performs a standard global search with the query string. </td>
+                            <td class="colLast"><code><strong><a href="#globalSearch(java.lang.String, java.util.Map)">globalSearch</a></strong>(java.lang.String query, java.util.Map params)</code><br>Performs a standard global search with the query string.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -270,7 +278,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="adjustQuery(java.lang.String, java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@<a href='../../../../../org/simplemes/eframe/custom/annotation/ExtensionPoint.html' title='ExtensionPoint'>ExtensionPoint</a>ExtensionPoint
+                                <h4>@<a href='../../../../../org/simplemes/eframe/custom/annotation/ExtensionPoint.html' title='ExtensionPoint'>ExtensionPoint</a>(value: AdjustQueryInterface, comment: Search query string adjust - Allows modules to adjust the search engine query string.)
 java.lang.String <strong>adjustQuery</strong>(java.lang.String queryString, java.lang.Class domainClass)</h4>
                                 <p> Adjusts the query string to make the input more user friendly. This also serves as an extension point
  for modules to make their own ease-of-use adjustments to the query string.  For example, this framework
@@ -286,10 +294,10 @@ java.lang.String <strong>adjustQuery</strong>(java.lang.String queryString, java
                             </li>
                         </ul>
                     
-                        <a name="domainSearch(java.lang.Class, java.lang.String, Map)"><!-- --></a>
+                        <a name="domainSearch(java.lang.Class, java.lang.String, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>domainSearch</strong>(java.lang.Class domainClass, java.lang.String query, <a href='../../../../../Map.html'>Map</a> params)</h4>
+                                <h4><a href='../../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>domainSearch</strong>(java.lang.Class domainClass, java.lang.String query, java.util.Map params)</h4>
                                 <p> Performs a standard domain search with the query string.  This class will use a key-based SQL search as a fallback
  if the search engine is not available or the domain is not searchable. <DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The domain class to search.</DD><DD><code>query</code> -  The query string. This will be adjusted for Search Engine searches by the adjustQuery() method.</DD><DD><code>params</code> -  Optional query parameters.  Supported elements: from and size</DD></DL><DL><DT><B>Returns:</B></DT><DD>The search result, containing the list of values found.</DD></DL></p>
                             </li>
@@ -303,10 +311,10 @@ java.lang.String <strong>adjustQuery</strong>(java.lang.String queryString, java
                             </li>
                         </ul>
                     
-                        <a name="globalSearch(java.lang.String, Map)"><!-- --></a>
+                        <a name="globalSearch(java.lang.String, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>globalSearch</strong>(java.lang.String query, <a href='../../../../../Map.html'>Map</a> params)</h4>
+                                <h4><a href='../../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>globalSearch</strong>(java.lang.String query, java.util.Map params)</h4>
                                 <p> Performs a standard global search with the query string. <DL><DT><B>Parameters:</B></DT><DD><code>query</code> -  The query string.</DD><DD><code>params</code> -  Optional query parameters.  Supported elements: from and size</DD></DL><DL><DT><B>Returns:</B></DT><DD>The search result, containing the list of values found.</DD></DL></p>
                             </li>
                         </ul>
@@ -314,7 +322,7 @@ java.lang.String <strong>adjustQuery</strong>(java.lang.String queryString, java
                         <a name="startBulkIndex(java.lang.Boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.transaction.TransactionalTransactional
+                                <h4>@javax.transaction.Transactional
 void <strong>startBulkIndex</strong>(java.lang.Boolean deleteAllIndices)</h4>
                                 <p> Rebuilds all search indices, with an option to delete existing indices.
  Starts the bulk index request.  This queues up the index requests needed. <DL><DT><B>Parameters:</B></DT><DD><code>deleteAllIndices</code> -  If true, then this triggers a delete of all indices before the request is started.</DD></DL></p>

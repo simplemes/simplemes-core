@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class ISODate
+extends java.lang.Object</pre>
 
           </li>
     </ul>
@@ -162,25 +168,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#format(Date)">format</a></strong>(<a href='../../../../Date.html'>Date</a> date)</code><br>Formats the given date in standard ISO 8601 format, with UTZ Timezone (e.g. 2010-11-14T13:24:56.987Z). </td>
+                            <td class="colLast"><code><strong><a href="#format(java.util.Date)">format</a></strong>(java.util.Date date)</code><br>Formats the given date in standard ISO 8601 format, with UTZ Timezone (e.g. 2010-11-14T13:24:56.987Z).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#format(org.simplemes.eframe.date.DateOnly)">format</a></strong>(<a href='../../../../org/simplemes/eframe/date/DateOnly.html'>DateOnly</a> dateOnly)</code><br>Formats the given dateOnly in standard ISO 8601 format. </td>
+                            <td class="colLast"><code><strong><a href="#format(org.simplemes.eframe.date.DateOnly)">format</a></strong>(<a href='../../../../org/simplemes/eframe/date/DateOnly.html'>DateOnly</a> dateOnly)</code><br>Formats the given dateOnly in standard ISO 8601 format.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../Date.html'>Date</a></code></td>
-                            <td class="colLast"><code><strong><a href="#parse(java.lang.String)">parse</a></strong>(java.lang.String s)</code><br>Parses the given date/time in standard ISO format. </td>
+                            <td class="colLast"><code>static&nbsp;java.util.Date</code></td>
+                            <td class="colLast"><code><strong><a href="#parse(java.lang.String)">parse</a></strong>(java.lang.String s)</code><br>Parses the given date/time in standard ISO format.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/eframe/date/DateOnly.html'>DateOnly</a></code></td>
-                            <td class="colLast"><code><strong><a href="#parseDateOnly(java.lang.String)">parseDateOnly</a></strong>(java.lang.String s)</code><br>Parses the given date only standard ISO format. </td>
+                            <td class="colLast"><code><strong><a href="#parseDateOnly(java.lang.String)">parseDateOnly</a></strong>(java.lang.String s)</code><br>Parses the given date only standard ISO format.</td>
                         </tr>
                         
                     </table>
@@ -251,10 +257,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="format(Date)"><!-- --></a>
+                        <a name="format(java.util.Date)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>format</strong>(<a href='../../../../Date.html'>Date</a> date)</h4>
+                                <h4>static&nbsp;java.lang.String <strong>format</strong>(java.util.Date date)</h4>
                                 <p> Formats the given date in standard ISO 8601 format, with UTZ Timezone (e.g. 2010-11-14T13:24:56.987Z). <DL><DT><B>Parameters:</B></DT><DD><code>date</code> -  The date.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The formatted string.</DD></DL></p>
                             </li>
                         </ul>
@@ -270,7 +276,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="parse(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../Date.html'>Date</a> <strong>parse</strong>(java.lang.String s)</h4>
+                                <h4>static&nbsp;java.util.Date <strong>parse</strong>(java.lang.String s)</h4>
                                 <p> Parses the given date/time in standard ISO format. <DL><DT><B>Parameters:</B></DT><DD><code>s</code> -  The date/time formatted.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The parse date/time.</DD></DL></p>
                             </li>
                         </ul>

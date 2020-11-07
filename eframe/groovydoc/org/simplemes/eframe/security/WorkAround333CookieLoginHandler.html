@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@io.micronaut.context.annotation.Requires(property: micronaut.security.authentication, value: cookie)
+@groovy.lang.Singleton
+@io.micronaut.context.annotation.Replaces(value: JwtCookieLoginHandler)
+class WorkAround333CookieLoginHandler
+extends io.micronaut.security.token.jwt.cookie.JwtCookieLoginHandler</pre>
 
           </li>
     </ul>
@@ -191,8 +200,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getCookies(io.micronaut.security.token.jwt.render.AccessRefreshToken, io.micronaut.http.HttpRequest)">getCookies</a></strong>(io.micronaut.security.token.jwt.render.AccessRefreshToken accessRefreshToken, io.micronaut.http.HttpRequest request)</code><br>Return the cookies for the given parameters. </td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List&lt;Cookie&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getCookies(io.micronaut.security.token.jwt.render.AccessRefreshToken, HttpRequest)">getCookies</a></strong>(io.micronaut.security.token.jwt.render.AccessRefreshToken accessRefreshToken, HttpRequest&lt;?&gt; request)</code><br>Return the cookies for the given parameters.</td>
                         </tr>
                         
                     </table>
@@ -264,7 +273,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="WorkAround333CookieLoginHandler(io.micronaut.security.config.RedirectConfiguration, io.micronaut.security.token.jwt.cookie.JwtCookieConfiguration, io.micronaut.security.token.jwt.generator.AccessTokenConfiguration, io.micronaut.security.token.jwt.generator.AccessRefreshTokenGenerator, io.micronaut.security.errors.PriorToLoginPersistence)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>WorkAround333CookieLoginHandler</strong>(io.micronaut.security.config.RedirectConfiguration redirectConfiguration, io.micronaut.security.token.jwt.cookie.JwtCookieConfiguration jwtCookieConfiguration, io.micronaut.security.token.jwt.generator.AccessTokenConfiguration accessTokenConfiguration, io.micronaut.security.token.jwt.generator.AccessRefreshTokenGenerator accessRefreshTokenGenerator, @javax.annotation.NullableNullable io.micronaut.security.errors.PriorToLoginPersistence priorToLoginPersistence)</h4>
+                                <h4><strong>WorkAround333CookieLoginHandler</strong>(io.micronaut.security.config.RedirectConfiguration redirectConfiguration, io.micronaut.security.token.jwt.cookie.JwtCookieConfiguration jwtCookieConfiguration, io.micronaut.security.token.jwt.generator.AccessTokenConfiguration accessTokenConfiguration, io.micronaut.security.token.jwt.generator.AccessRefreshTokenGenerator accessRefreshTokenGenerator, @javax.annotation.Nullable io.micronaut.security.errors.PriorToLoginPersistence priorToLoginPersistence)</h4>
                                 <p> <DL><DT><B>Parameters:</B></DT><DD><code>redirectConfiguration</code> -  Redirect configuration</DD><DD><code>jwtCookieConfiguration</code> -  JWT Cookie Configuration</DD><DD><code>accessTokenConfiguration</code> -  JWT Generator Configuration</DD><DD><code>accessRefreshTokenGenerator</code> -  Access Refresh Token Generator</DD><DD><code>priorToLoginPersistence</code> -  Prior To Login Persistence Mechanism</DD></DL></p>
                             </li>
                         </ul>
@@ -290,11 +299,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="getCookies(io.micronaut.security.token.jwt.render.AccessRefreshToken, io.micronaut.http.HttpRequest)"><!-- --></a>
+                        <a name="getCookies(io.micronaut.security.token.jwt.render.AccessRefreshToken, HttpRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-protected&nbsp;<a href='../../../../List.html'>List</a> <strong>getCookies</strong>(io.micronaut.security.token.jwt.render.AccessRefreshToken accessRefreshToken, io.micronaut.http.HttpRequest request)</h4>
+                                <h4>@java.lang.Override
+protected&nbsp;java.util.List&lt;Cookie&gt; <strong>getCookies</strong>(io.micronaut.security.token.jwt.render.AccessRefreshToken accessRefreshToken, HttpRequest&lt;?&gt; request)</h4>
                                 <p> Return the cookies for the given parameters. <DL><DT><B>Parameters:</B></DT><DD><code>accessRefreshToken</code> -  The access refresh token</DD><DD><code>request</code> -  The current request</DD></DL><DL><DT><B>Returns:</B></DT><DD>A list of cookies</DD></DL></p>
                             </li>
                         </ul>

@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Controller(value: /xyz)
+class GlobalErrorController
+extends java.lang.Object</pre>
 
     <p> The global error handler.  Covers 404 errors and other common behaviors.</p>
 
@@ -164,7 +173,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;io.micronaut.http.HttpResponse</code></td>
-                            <td class="colLast"><code><strong><a href="#buildLoginRedirect(io.micronaut.http.HttpRequest)">buildLoginRedirect</a></strong>(io.micronaut.http.HttpRequest request)</code><br>Builds a redirect (303) to the login page or the access denied response. </td>
+                            <td class="colLast"><code><strong><a href="#buildLoginRedirect(io.micronaut.http.HttpRequest)">buildLoginRedirect</a></strong>(io.micronaut.http.HttpRequest request)</code><br>Builds a redirect (303) to the login page or the access denied response.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -176,7 +185,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>io.micronaut.http.HttpResponse</code></td>
-                            <td class="colLast"><code><strong><a href="#notFound(io.micronaut.http.HttpRequest)">notFound</a></strong>(io.micronaut.http.HttpRequest request)</code><br>Standard page not found display. </td>
+                            <td class="colLast"><code><strong><a href="#notFound(io.micronaut.http.HttpRequest)">notFound</a></strong>(io.micronaut.http.HttpRequest request)</code><br>Standard page not found display.</td>
                         </tr>
                         
                     </table>
@@ -258,7 +267,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="forbidden(io.micronaut.http.HttpRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.ErrorError
+                                <h4>@java.lang.Error(status: HttpStatus.FORBIDDEN, global: true)
 io.micronaut.http.HttpResponse <strong>forbidden</strong>(io.micronaut.http.HttpRequest request)</h4>
                                 <p> Handles the FORBIDDEN response from the security logic.  This indicates the user is not logged or
  not allowed access.  This will redirect the GUI to a login or access denied page content. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request that was forbidden.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The redirect or a simple FORBIDDEN response.</DD></DL></p>
@@ -268,7 +277,7 @@ io.micronaut.http.HttpResponse <strong>forbidden</strong>(io.micronaut.http.Http
                         <a name="notFound(io.micronaut.http.HttpRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.ErrorError
+                                <h4>@java.lang.Error(status: HttpStatus.NOT_FOUND, global: true)
 io.micronaut.http.HttpResponse <strong>notFound</strong>(io.micronaut.http.HttpRequest request)</h4>
                                 <p> Standard page not found display. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The HTTP request.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The error page contents.</DD></DL></p>
                             </li>

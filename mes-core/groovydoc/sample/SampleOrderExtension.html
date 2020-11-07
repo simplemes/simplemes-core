@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../org/simplemes/mes/demand/service/OrderReleasePoint.html'>OrderReleasePoint</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@javax.inject.SingletonSingleton
+
+<pre>@groovy.lang.Singleton
 class SampleOrderExtension
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../org/simplemes/mes/demand/service/OrderReleasePoint.html'>OrderReleasePoint</a></pre>
 
     <p> A sample extension to the order release extension point.
  Not shipped with product.</p>
@@ -205,7 +205,7 @@ extends java.lang.Object
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#preRelease(org.simplemes.mes.demand.OrderReleaseRequest)">preRelease</a></strong>(<a href='../org/simplemes/mes/demand/OrderReleaseRequest.html'>OrderReleaseRequest</a> orderReleaseRequest)</code><br>Pre-release extension method for the order release process. </td>
+                            <td class="colLast"><code><strong><a href="#preRelease(org.simplemes.mes.demand.OrderReleaseRequest)">preRelease</a></strong>(<a href='../org/simplemes/mes/demand/OrderReleaseRequest.html'>OrderReleaseRequest</a> orderReleaseRequest)</code><br>Pre-release extension method for the order release process.</td>
                         </tr>
                         
                     </table>
@@ -297,7 +297,7 @@ extends java.lang.Object
                         <a name="postRelease(org.simplemes.mes.demand.OrderReleaseResponse, org.simplemes.mes.demand.OrderReleaseRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 <a href='../org/simplemes/mes/demand/OrderReleaseResponse.html'>OrderReleaseResponse</a> <strong>postRelease</strong>(<a href='../org/simplemes/mes/demand/OrderReleaseResponse.html'>OrderReleaseResponse</a> coreResponse, <a href='../org/simplemes/mes/demand/OrderReleaseRequest.html'>OrderReleaseRequest</a> orderReleaseRequest)</h4>
                                 <p> Post-release extension method for the order release process.
  <p> <DL><DT><B>Parameters:</B></DT><DD><code>coreResponse</code> -  The response from the core method (or from other extensions that provide a response).</DD><DD><code>orderReleaseRequest</code> -  The details of the release request (order and qty).</DD></DL><DL><DT><B>Returns:</B></DT><DD>A replacement response value is used only for order EXT_TEST_1001.</DD></DL></p>
@@ -307,7 +307,7 @@ extends java.lang.Object
                         <a name="preRelease(org.simplemes.mes.demand.OrderReleaseRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>preRelease</strong>(<a href='../org/simplemes/mes/demand/OrderReleaseRequest.html'>OrderReleaseRequest</a> orderReleaseRequest)</h4>
                                 <p> Pre-release extension method for the order release process. <DL><DT><B>Parameters:</B></DT><DD><code>orderReleaseRequest</code> -  The details of the release request (order and qty).</DD></DL></p>
                             </li>

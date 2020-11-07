@@ -98,12 +98,23 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@org.simplemes.eframe.domain.annotation.DomainEntity
+@io.micronaut.data.annotation.MappedEntity
+@java.lang.SuppressWarnings(value: unused)
+@groovy.transform.ToString(includeNames: true, includePackage: false, excludes: [product])
+@groovy.transform.EqualsAndHashCode(includes: [uuid])
+class ProductComponent
+extends java.lang.Object</pre>
 
     <p> Defines a single component required for a given product.
  <p>
  This element informally belongs to the MES Core Product domain.  Since the Product is in another module,
  the normal child relationship is not used.
- Instead, the org.simplemes.mes.assy.application.AssemblyAddition adds this as a custom child to the core Product domain.
+ Instead, the <a href='../../../../../../org/simplemes/mes/assy/application/AssemblyAddition.html' title='AssemblyAddition'>AssemblyAddition</a> adds this as a custom child to the core Product domain.
  <p>
  <b>Note:</b> On Test cleanup, you should delete these ProductComponent records before deleting the Product records.
 </p>
@@ -168,7 +179,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -223,13 +234,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toShortString()">toShortString</a></strong>()</code><br>Returns the short-format of this object. </td>
+                            <td class="colLast"><code><strong><a href="#toShortString()">toShortString</a></strong>()</code><br>Returns the short-format of this object.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toStringLocalized(Locale)">toStringLocalized</a></strong>(<a href='../../../../../../Locale.html'>Locale</a> locale)</code><br>Build a human-readable version of this object, localized.
+                            <td class="colLast"><code><strong><a href="#toStringLocalized(java.util.Locale)">toStringLocalized</a></strong>(java.util.Locale locale)</code><br>Build a human-readable version of this object, localized.
  </td>
                         </tr>
                         
@@ -328,7 +339,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -376,10 +387,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="toStringLocalized(Locale)"><!-- --></a>
+                        <a name="toStringLocalized(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>toStringLocalized</strong>(<a href='../../../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>java.lang.String <strong>toStringLocalized</strong>(java.util.Locale locale)</h4>
                                 <p> Build a human-readable version of this object, localized.
  Simply uses toShortString(). <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale to display the enum display text.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The human-readable string.</DD></DL></p>
                             </li>

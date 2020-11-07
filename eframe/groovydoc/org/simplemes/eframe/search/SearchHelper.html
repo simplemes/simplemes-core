@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.CompileStatic
+@groovy.util.logging.Slf4j
+class SearchHelper
+extends java.lang.Object</pre>
 
     <p> This helper encapsulates the search interface.  This allows for easier use of the search engine and
  supports unit testing with an interface that can be easily mocked.
@@ -108,7 +116,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 
  <p> <p>
  <b>Note:</b> This is an internal helper class.  Application and module code should use the
- org.simplemes.eframe.search.service.SearchService instead.  This class is subject to change.
+ <a href='../../../../org/simplemes/eframe/search/service/SearchService.html' title='SearchService'>SearchService</a> instead.  This class is subject to change.
 
   <h3>Logging</h3>
  The logging for this class that can be enabled:
@@ -218,7 +226,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#domainSettingsCache">domainSettingsCache</a></code><br>The current cached domain settings.</td>
                         </tr>
                         
@@ -298,7 +306,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#addBulkIndexStatus(org.simplemes.eframe.search.SearchStatus)">addBulkIndexStatus</a></strong>(<a href='../../../../org/simplemes/eframe/search/SearchStatus.html'>SearchStatus</a> searchStatus)</code><br>Adds the bulk index request status to the given status. </td>
+                            <td class="colLast"><code><strong><a href="#addBulkIndexStatus(org.simplemes.eframe.search.SearchStatus)">addBulkIndexStatus</a></strong>(<a href='../../../../org/simplemes/eframe/search/SearchStatus.html'>SearchStatus</a> searchStatus)</code><br>Adds the bulk index request status to the given status.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -317,8 +325,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#bulkIndex(List, List)">bulkIndex</a></strong>(<a href='../../../../List.html'>List</a> objects, <a href='../../../../List.html'>List</a> archiveReferenceList)</code><br>Indexes a list of objects, waiting for completion.  </td>
+                            <td class="colLast"><code>java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#bulkIndex(java.util.List, List)">bulkIndex</a></strong>(java.util.List objects, java.util.List&lt;java.lang.String&gt; archiveReferenceList)</code><br>Indexes a list of objects, waiting for completion.  </td>
                         </tr>
                         
                         <tr class="altColor">
@@ -329,26 +337,26 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;HttpHost&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#determineHosts()">determineHosts</a></strong>()</code><br>Determines the search hosts to be contacted.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a></code></td>
-                            <td class="colLast"><code><strong><a href="#domainSearch(java.lang.Class, java.lang.String, Map)">domainSearch</a></strong>(java.lang.Class domainClass, java.lang.String query, <a href='../../../../Map.html'>Map</a> params)</code><br>Performs a standard domain search with the query string using the external search engine.</td>
+                            <td class="colLast"><code><strong><a href="#domainSearch(java.lang.Class, java.lang.String, java.util.Map)">domainSearch</a></strong>(java.lang.Class domainClass, java.lang.String query, java.util.Map params)</code><br>Performs a standard domain search with the query string using the external search engine.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a></code></td>
-                            <td class="colLast"><code><strong><a href="#domainSearchInDB(java.lang.Class, java.lang.String, Map)">domainSearchInDB</a></strong>(java.lang.Class domainClass, java.lang.String search, <a href='../../../../Map.html'>Map</a> params)</code><br>Performs a domain search via SQL with the query string.  </td>
+                            <td class="colLast"><code><strong><a href="#domainSearchInDB(java.lang.Class, java.lang.String, java.util.Map)">domainSearchInDB</a></strong>(java.lang.Class domainClass, java.lang.String search, java.util.Map params)</code><br>Performs a domain search via SQL with the query string.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#finishedBulkRequest(int)">finishedBulkRequest</a></strong>(int errorsFound)</code><br>This is called when a bulk request is finished. </td>
+                            <td class="colLast"><code><strong><a href="#finishedBulkRequest(int)">finishedBulkRequest</a></strong>(int errorsFound)</code><br>This is called when a bulk request is finished.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -388,7 +396,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/search/SearchDomainSettings.html'>SearchDomainSettings</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getSearchDomainSettings(java.lang.Class)">getSearchDomainSettings</a></strong>(java.lang.Class domainClass)</code><br>Returns the effective search settings for the given class. </td>
+                            <td class="colLast"><code><strong><a href="#getSearchDomainSettings(java.lang.Class)">getSearchDomainSettings</a></strong>(java.lang.Class domainClass)</code><br>Returns the effective search settings for the given class.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -406,7 +414,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a></code></td>
-                            <td class="colLast"><code><strong><a href="#globalSearch(java.lang.String, Map)">globalSearch</a></strong>(java.lang.String query, <a href='../../../../Map.html'>Map</a> params)</code><br>Performs a standard global search with the query string.</td>
+                            <td class="colLast"><code><strong><a href="#globalSearch(java.lang.String, java.util.Map)">globalSearch</a></strong>(java.lang.String query, java.util.Map params)</code><br>Performs a standard global search with the query string.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -423,20 +431,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#indexObject(java.lang.Object)">indexObject</a></strong>(java.lang.Object object)</code><br>Indexes a single object, waiting for completion.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isDomainSearchable(java.lang.Class)">isDomainSearchable</a></strong>(java.lang.Class domainClass)</code><br>Determines if the given domain is searchable and if the search engine is configured for this application. </td>
+                            <td class="colLast"><code><strong><a href="#isDomainSearchable(java.lang.Class)">isDomainSearchable</a></strong>(java.lang.Class domainClass)</code><br>Determines if the given domain is searchable and if the search engine is configured for this application.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isSearchDisabled()">isSearchDisabled</a></strong>()</code><br>Determines if the search engine is configured and enabled. </td>
+                            <td class="colLast"><code><strong><a href="#isSearchDisabled()">isSearchDisabled</a></strong>()</code><br>Determines if the search engine is configured and enabled.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -453,20 +461,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#removeObjectFromIndex(java.lang.Object)">removeObjectFromIndex</a></strong>(java.lang.Object object)</code><br>Removes a single object from the index. </td>
+                            <td class="colLast"><code>java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#removeObjectFromIndex(java.lang.Object)">removeObjectFromIndex</a></strong>(java.lang.Object object)</code><br>Removes a single object from the index.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#requestBackgroundIndexObject(java.lang.Object)">requestBackgroundIndexObject</a></strong>(java.lang.Object object)</code><br>Will create and submit an indexObject request to the search engine. </td>
+                            <td class="colLast"><code><strong><a href="#requestBackgroundIndexObject(java.lang.Object)">requestBackgroundIndexObject</a></strong>(java.lang.Object object)</code><br>Will create and submit an indexObject request to the search engine.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#requestBackgroundObjectRemoval(java.lang.Object)">requestBackgroundObjectRemoval</a></strong>(java.lang.Object object)</code><br>Will create and submit a deleteObject request to the search engine. </td>
+                            <td class="colLast"><code><strong><a href="#requestBackgroundObjectRemoval(java.lang.Object)">requestBackgroundObjectRemoval</a></strong>(java.lang.Object object)</code><br>Will create and submit a deleteObject request to the search engine.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -624,7 +632,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="domainSettingsCache"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>domainSettingsCache</strong></h4>
+                                <h4>private&nbsp;java.util.Map <strong>domainSettingsCache</strong></h4>
                                 <p> The current cached domain settings.</p>
                             </li>
                         </ul>
@@ -717,7 +725,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="buildAndSubmitBulkArchiveIndexRequests()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.CompileDynamicCompileDynamic
+                                <h4>@groovy.transform.CompileDynamic
 void <strong>buildAndSubmitBulkArchiveIndexRequests</strong>()</h4>
                                 <p> Builds the list of bulk index requests on archive files and submits them to the queue to be processed.
  This method logs a debug message with each archive file found.
@@ -728,7 +736,7 @@ void <strong>buildAndSubmitBulkArchiveIndexRequests</strong>()</h4>
                         <a name="buildAndSubmitBulkIndexRequests()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.CompileDynamicCompileDynamic
+                                <h4>@groovy.transform.CompileDynamic
 void <strong>buildAndSubmitBulkIndexRequests</strong>()</h4>
                                 <p> Builds the list of bulk index requests and submits them to the queue to be processed.
  This method logs a debug message with each domain and the number of requests queued for it.
@@ -736,10 +744,10 @@ void <strong>buildAndSubmitBulkIndexRequests</strong>()</h4>
                             </li>
                         </ul>
                     
-                        <a name="bulkIndex(List, List)"><!-- --></a>
+                        <a name="bulkIndex(java.util.List, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>bulkIndex</strong>(<a href='../../../../List.html'>List</a> objects, <a href='../../../../List.html'>List</a> archiveReferenceList)</h4>
+                                <h4>java.util.Map <strong>bulkIndex</strong>(java.util.List objects, java.util.List&lt;java.lang.String&gt; archiveReferenceList)</h4>
                                 <p> Indexes a list of objects, waiting for completion.  This can be used directly, but is typically called by the request
  queue logic.
  Can log performance as level INFO and values as DEBUG log messages. <DL><DT><B>Parameters:</B></DT><DD><code>objects</code> -  The domain object to index.  Must be saved.</DD><DD><code>archiveReferenceList</code> -  The list of archive references associated with the list of objects.  (Optional).
@@ -759,28 +767,28 @@ void <strong>buildAndSubmitBulkIndexRequests</strong>()</h4>
                         <a name="determineHosts()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.CompileDynamicCompileDynamic
-<a href='../../../../List.html'>List</a> <strong>determineHosts</strong>()</h4>
+                                <h4>@groovy.transform.CompileDynamic
+java.util.List&lt;HttpHost&gt; <strong>determineHosts</strong>()</h4>
                                 <p> Determines the search hosts to be contacted.  Configured in the <code>application.yml</code> file. <DL><DT><B>Returns:</B></DT><DD>The list of hosts.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="domainSearch(java.lang.Class, java.lang.String, Map)"><!-- --></a>
+                        <a name="domainSearch(java.lang.Class, java.lang.String, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>domainSearch</strong>(java.lang.Class domainClass, java.lang.String query, <a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>domainSearch</strong>(java.lang.Class domainClass, java.lang.String query, java.util.Map params)</h4>
                                 <p> Performs a standard domain search with the query string using the external search engine.
  <p>
  <b>Note:</b> This is an internal API method.  Application and module code should use the
- org.simplemes.eframe.search.service.SearchService instead. <DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The domain class to search.</DD><DD><code>query</code> -  The query string.</DD><DD><code>params</code> -  Optional query parameters.  Supported elements: from and size</DD></DL><DL><DT><B>Returns:</B></DT><DD>The search result, containing the list of values found.</DD></DL></p>
+ <a href='../../../../org/simplemes/eframe/search/service/SearchService.html' title='SearchService'>SearchService</a> instead. <DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The domain class to search.</DD><DD><code>query</code> -  The query string.</DD><DD><code>params</code> -  Optional query parameters.  Supported elements: from and size</DD></DL><DL><DT><B>Returns:</B></DT><DD>The search result, containing the list of values found.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="domainSearchInDB(java.lang.Class, java.lang.String, Map)"><!-- --></a>
+                        <a name="domainSearchInDB(java.lang.Class, java.lang.String, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.CompileDynamicCompileDynamic
-<a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>domainSearchInDB</strong>(java.lang.Class domainClass, java.lang.String search, <a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4>@groovy.transform.CompileDynamic
+<a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>domainSearchInDB</strong>(java.lang.Class domainClass, java.lang.String search, java.util.Map params)</h4>
                                 <p> Performs a domain search via SQL with the query string.  This uses a key-based SQL search.
 
  <h3>params</h3>
@@ -863,7 +871,7 @@ void <strong>buildAndSubmitBulkIndexRequests</strong>()</h4>
                         <a name="getSearchEngineClient()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: CouldBeElvis)
 <a href='../../../../org/simplemes/eframe/search/SearchEngineClientInterface.html'>SearchEngineClientInterface</a> <strong>getSearchEngineClient</strong>()</h4>
                                 <p></p>
                             </li>
@@ -878,21 +886,21 @@ void <strong>buildAndSubmitBulkIndexRequests</strong>()</h4>
                             </li>
                         </ul>
                     
-                        <a name="globalSearch(java.lang.String, Map)"><!-- --></a>
+                        <a name="globalSearch(java.lang.String, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>globalSearch</strong>(java.lang.String query, <a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>globalSearch</strong>(java.lang.String query, java.util.Map params)</h4>
                                 <p> Performs a standard global search with the query string.
  <p>
  <b>Note:</b> This is an internal API method.  Application and module code should use the
- org.simplemes.eframe.search.service.SearchService instead. <DL><DT><B>Parameters:</B></DT><DD><code>query</code> -  The query string.</DD><DD><code>params</code> -  Optional query parameters.  Supported elements: from and size</DD></DL><DL><DT><B>Returns:</B></DT><DD>The search result, containing the list of values found.</DD></DL></p>
+ <a href='../../../../org/simplemes/eframe/search/service/SearchService.html' title='SearchService'>SearchService</a> instead. <DL><DT><B>Parameters:</B></DT><DD><code>query</code> -  The query string.</DD><DD><code>params</code> -  Optional query parameters.  Supported elements: from and size</DD></DL><DL><DT><B>Returns:</B></DT><DD>The search result, containing the list of values found.</DD></DL></p>
                             </li>
                         </ul>
                     
                         <a name="handlePersistenceChange(org.simplemes.eframe.domain.annotation.DomainEntityInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.CompileDynamicCompileDynamic
+                                <h4>@groovy.transform.CompileDynamic
 void <strong>handlePersistenceChange</strong>(<a href='../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object)</h4>
                                 <p> Handles the persistence update/create for domains.  Updates the search engine indices for those changes. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The domain object.</DD></DL></p>
                             </li>
@@ -901,7 +909,7 @@ void <strong>handlePersistenceChange</strong>(<a href='../../../../org/simplemes
                         <a name="handlePersistenceDelete(org.simplemes.eframe.domain.annotation.DomainEntityInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.CompileDynamicCompileDynamic
+                                <h4>@groovy.transform.CompileDynamic
 void <strong>handlePersistenceDelete</strong>(<a href='../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object)</h4>
                                 <p> Handles the persistence delete for domains.  Removes the object index. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The domain object.</DD></DL></p>
                             </li>
@@ -910,7 +918,7 @@ void <strong>handlePersistenceDelete</strong>(<a href='../../../../org/simplemes
                         <a name="indexObject(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>indexObject</strong>(java.lang.Object object)</h4>
+                                <h4>java.util.Map <strong>indexObject</strong>(java.lang.Object object)</h4>
                                 <p> Indexes a single object, waiting for completion.  This can be used directly, but is typically called by the request
  queue logic. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The domain object to index.  Must be saved.</DD></DL><DL><DT><B>Returns:</B></DT><DD>Status of the index creation.  A Map.</DD></DL></p>
                             </li>
@@ -951,7 +959,7 @@ void <strong>handlePersistenceDelete</strong>(<a href='../../../../org/simplemes
                         <a name="removeObjectFromIndex(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>removeObjectFromIndex</strong>(java.lang.Object object)</h4>
+                                <h4>java.util.Map <strong>removeObjectFromIndex</strong>(java.lang.Object object)</h4>
                                 <p> Removes a single object from the index. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The domain object to remove from the index.  Must have a record id..</DD></DL><DL><DT><B>Returns:</B></DT><DD>Status of the index creation.  A Map.</DD></DL></p>
                             </li>
                         </ul>

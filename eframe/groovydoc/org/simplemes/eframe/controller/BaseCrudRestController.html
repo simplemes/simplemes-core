@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+abstract&nbsp;class BaseCrudRestController
+extends <a href='../../../../org/simplemes/eframe/controller/BaseCrudController.html'>BaseCrudController</a></pre>
 
     <p> Defines common JSON/REST API behavior for controllers.  This provides these endpoints for the controller:
 
@@ -108,7 +115,7 @@ if (location.href.indexOf('is-external=true') == -1) {
    <li>{domain}/crud/id <b>(PUT)</b> - Update a single record.</li>
    <li>{domain}/crud/id <b>(DELETE)</b> - Delete a single record.</li>
  </ul>
- CRUD UI access is via the BaseCrudController</p>
+ CRUD UI access is via the <a href='../../../../org/simplemes/eframe/controller/BaseCrudController.html' title='BaseCrudController'>BaseCrudController</a></p>
 
           </li>
     </ul>
@@ -289,10 +296,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="restDelete(java.lang.String, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.DeleteDelete
-io.micronaut.http.HttpResponse <strong>restDelete</strong>(@io.micronaut.http.annotation.PathVariablePathVariable java.lang.String x, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Delete(value: /crud/{x})
+io.micronaut.http.HttpResponse <strong>restDelete</strong>(@io.micronaut.http.annotation.PathVariable(name: x) java.lang.String x, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Deletes a single top-level domain object.
  <p>
  <b>Note:</b> This method secured by a secondary check on the real controllers'<DL><DT><B>Secured:</B></DT><DD>setting.</DD></DL> <DL><DT><B>Parameters:</B></DT><DD><code>x</code> -  The ID (or key field value) for the record to delete.</DD><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>NOT_FOUND if record not found.  Otherwise, NO_CONTENT for a good a good delete.</DD></DL></p>
@@ -302,11 +309,11 @@ io.micronaut.http.HttpResponse <strong>restDelete</strong>(@io.micronaut.http.an
                         <a name="restGet(java.lang.String, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-io.micronaut.http.HttpResponse <strong>restGet</strong>(@io.micronaut.http.annotation.PathVariablePathVariable java.lang.String x, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Produces(value: MediaType.APPLICATION_JSON)
+@io.micronaut.http.annotation.Get(value: /crud/{x})
+io.micronaut.http.HttpResponse <strong>restGet</strong>(@io.micronaut.http.annotation.PathVariable(name: x) java.lang.String x, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Gets a single domain object and returns it as a JSON content.
  <p>
  <b>Note:</b> This method secured by a secondary check on the real controllers'<DL><DT><B>Secured:</B></DT><DD>setting.</DD></DL> <DL><DT><B>Parameters:</B></DT><DD><code>x</code> -  The ID (or key field value) for the record to return.</DD><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The domain as JSON.</DD></DL></p>
@@ -316,11 +323,11 @@ io.micronaut.http.HttpResponse <strong>restGet</strong>(@io.micronaut.http.annot
                         <a name="restPost(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.PostPost
-io.micronaut.http.HttpResponse <strong>restPost</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Produces(value: MediaType.APPLICATION_JSON)
+@io.micronaut.http.annotation.Post(value: /crud)
+io.micronaut.http.HttpResponse <strong>restPost</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Creates a single top-level domain object.  This returns the created object in JSON so the caller can access the
  record's ID.
  <p>
@@ -331,11 +338,11 @@ io.micronaut.http.HttpResponse <strong>restPost</strong>(io.micronaut.http.HttpR
                         <a name="restPut(java.lang.String, io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.PutPut
-io.micronaut.http.HttpResponse <strong>restPut</strong>(@io.micronaut.http.annotation.PathVariablePathVariable java.lang.String x, io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Produces(value: MediaType.APPLICATION_JSON)
+@io.micronaut.http.annotation.Put(value: /crud/{x})
+io.micronaut.http.HttpResponse <strong>restPut</strong>(@io.micronaut.http.annotation.PathVariable(name: x) java.lang.String x, io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Updates a single top-level domain object.
  <p>
  <b>Note:</b> This method secured by a secondary check on the real controllers'<DL><DT><B>Secured:</B></DT><DD>setting.</DD></DL> <DL><DT><B>Parameters:</B></DT><DD><code>x</code> -  The ID (or key field value) for the record to return.</DD><DD><code>request</code> -  The HTTP Request.  The Body is the JSON needed to create the record.</DD><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The domain as JSON.</DD></DL></p>

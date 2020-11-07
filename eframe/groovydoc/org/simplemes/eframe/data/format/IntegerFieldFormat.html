@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.CompileStatic
+class IntegerFieldFormat
+extends <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html'>BasicFieldFormat</a></pre>
 
     <p> Defines a basic Integer field format.</p>
 
@@ -215,13 +222,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#encode(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)">encode</a></strong>(java.lang.Object value, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Encodes the given value as a string for internal storage. </td>
+                            <td class="colLast"><code><strong><a href="#encode(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)">encode</a></strong>(java.lang.Object value, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Encodes the given value as a string for internal storage.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#format(java.lang.Object, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)">format</a></strong>(java.lang.Object value, <a href='../../../../../Locale.html'>Locale</a> locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Formats the given value for display as a string into the correct type for a field. </td>
+                            <td class="colLast"><code><strong><a href="#format(java.lang.Object, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)">format</a></strong>(java.lang.Object value, java.util.Locale locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Formats the given value for display as a string into the correct type for a field.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -239,13 +246,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#parse(java.lang.String, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)">parse</a></strong>(java.lang.String value, <a href='../../../../../Locale.html'>Locale</a> locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Parses the given value from a string into the correct type for a field.  </td>
+                            <td class="colLast"><code><strong><a href="#parse(java.lang.String, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)">parse</a></strong>(java.lang.String value, java.util.Locale locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Parses the given value from a string into the correct type for a field.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toString()">toString</a></strong>()</code><br>Returns a string representation of the object. </td>
+                            <td class="colLast"><code><strong><a href="#toString()">toString</a></strong>()</code><br>Returns a string representation of the object.</td>
                         </tr>
                         
                     </table>
@@ -264,7 +271,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html'>BasicFieldFormat</a></code></td>
-                            <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#convertFromJsonFormat(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)'>convertFromJsonFormat</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#convertToJsonFormat(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)'>convertToJsonFormat</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#findByType(java.lang.Class)'>findByType</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#formatForm(java.lang.Object, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)'>formatForm</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#getGridEditor(org.simplemes.eframe.data.FieldDefinitionInterface)'>getGridEditor</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#getInstance()'>getInstance</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)'>getValidValues</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#getValue()'>getValue</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#isDefaultChoice()'>isDefaultChoice</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#parseForm(java.lang.String, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)'>parseForm</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#toStringLocalized(Locale)'>toStringLocalized</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#valueOf(java.lang.String)'>valueOf</a></code></td>
+                            <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#convertFromJsonFormat(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)'>convertFromJsonFormat</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#convertToJsonFormat(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)'>convertToJsonFormat</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#findByType(java.lang.Class)'>findByType</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#formatForm(java.lang.Object, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)'>formatForm</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#getGridEditor(org.simplemes.eframe.data.FieldDefinitionInterface)'>getGridEditor</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#getInstance()'>getInstance</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)'>getValidValues</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#getValue()'>getValue</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#isDefaultChoice()'>isDefaultChoice</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#parseForm(java.lang.String, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)'>parseForm</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#toStringLocalized(java.util.Locale)'>toStringLocalized</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#valueOf(java.lang.String)'>valueOf</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -355,7 +362,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="decode(java.lang.String, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.Object <strong>decode</strong>(java.lang.String encodedString, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
                                 <p> Decodes the given string from internal storage into the appropriate type.  This method will fail with various format exceptions
  if the string is not valid for the type. <DL><DT><B>Parameters:</B></DT><DD><code>encodedString</code> -  The string encoded value.  Null is allowed.  Empty strings are treated as null.</DD><DD><code>fieldDefinition</code> -  The field definition used to define this field (optional, provided additional details such as valid values).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The value.</DD></DL></p>
@@ -365,17 +372,17 @@ java.lang.Object <strong>decode</strong>(java.lang.String encodedString, <a href
                         <a name="encode(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>encode</strong>(java.lang.Object value, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
                                 <p> Encodes the given value as a string for internal storage. <DL><DT><B>Parameters:</B></DT><DD><code>value</code> -  The value.  Must be typed correctly.  Null is allowed.</DD><DD><code>fieldDefinition</code> -  The field definition used to define this field (optional, provided additional details such as valid values).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The string encoded value.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="format(java.lang.Object, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
+                        <a name="format(java.lang.Object, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-java.lang.String <strong>format</strong>(java.lang.Object value, <a href='../../../../../Locale.html'>Locale</a> locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
+                                <h4>@java.lang.Override
+java.lang.String <strong>format</strong>(java.lang.Object value, java.util.Locale locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
                                 <p> Formats the given value for display as a string into the correct type for a field. <DL><DT><B>Parameters:</B></DT><DD><code>value</code> -  The object to format for display.  Null is allowed.  Empty strings are treated as null.</DD><DD><code>locale</code> -  The locale to format the value for (default: The request locale).</DD><DD><code>fieldDefinition</code> -  The field definition used to define this field (optional).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The formatted value.</DD></DL></p>
                             </li>
                         </ul>
@@ -383,7 +390,7 @@ java.lang.String <strong>format</strong>(java.lang.Object value, <a href='../../
                         <a name="getId()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>getId</strong>()</h4>
                                 <p> The internal ID for the format.  Used as a short name in internal (string) representations of this field.</p>
                             </li>
@@ -392,17 +399,17 @@ java.lang.String <strong>getId</strong>()</h4>
                         <a name="getType()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.Class <strong>getType</strong>()</h4>
                                 <p> The Class that represents this type.</p>
                             </li>
                         </ul>
                     
-                        <a name="parse(java.lang.String, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
+                        <a name="parse(java.lang.String, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-java.lang.Object <strong>parse</strong>(java.lang.String value, <a href='../../../../../Locale.html'>Locale</a> locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
+                                <h4>@java.lang.Override
+java.lang.Object <strong>parse</strong>(java.lang.String value, java.util.Locale locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
                                 <p> Parses the given value from a string into the correct type for a field.  This method will fail with various format exceptions
  if the string is not valid for the type. <DL><DT><B>Parameters:</B></DT><DD><code>value</code> -  The string encoded value.  Null is allowed.  Empty strings are treated as null.</DD><DD><code>locale</code> -  The locale to parse from (default: The request locale).</DD><DD><code>fieldDefinition</code> -  The field definition used to define this field (optional, provided additional details such as valid values).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The value.</DD></DL></p>
                             </li>
@@ -411,7 +418,7 @@ java.lang.Object <strong>parse</strong>(java.lang.String value, <a href='../../.
                         <a name="toString()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>toString</strong>()</h4>
                                 <p> Returns a string representation of the object. <DL><DT><B>Returns:</B></DT><DD>a string representation of the object.</DD></DL></p>
                             </li>

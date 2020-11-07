@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+class TextUtils
+extends java.lang.Object</pre>
 
     <p> General-purpose text manipulation utilities.</p>
 
@@ -188,19 +195,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.StringBuilder</code></td>
-                            <td class="colLast"><code><strong><a href="#addFieldForDisplay(java.lang.StringBuilder, java.lang.String, java.lang.String, Map)">addFieldForDisplay</a></strong>(java.lang.StringBuilder sb, java.lang.String label, java.lang.String value, <a href='../../../../Map.html'>Map</a> options)</code><br>Adds a single field to the output buffer, formatted for display.  </td>
+                            <td class="colLast"><code><strong><a href="#addFieldForDisplay(java.lang.StringBuilder, java.lang.String, java.lang.String, java.util.Map)">addFieldForDisplay</a></strong>(java.lang.StringBuilder sb, java.lang.String label, java.lang.String value, java.util.Map options)</code><br>Adds a single field to the output buffer, formatted for display.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#evaluateGString(java.lang.String, Map)">evaluateGString</a></strong>(java.lang.String gString, <a href='../../../../Map.html'>Map</a> parameters)</code><br>Evaluates a given GString with the given parameters.  </td>
+                            <td class="colLast"><code><strong><a href="#evaluateGString(java.lang.String, java.util.Map)">evaluateGString</a></strong>(java.lang.String gString, java.util.Map parameters)</code><br>Evaluates a given GString with the given parameters.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#findLine(java.lang.String, java.lang.String)">findLine</a></strong>(java.lang.String page, java.lang.String text)</code><br>Utility method to find the line in the output with the given text. </td>
+                            <td class="colLast"><code><strong><a href="#findLine(java.lang.String, java.lang.String)">findLine</a></strong>(java.lang.String page, java.lang.String text)</code><br>Utility method to find the line in the output with the given text.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -211,14 +218,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#parseNameValuePairs(java.lang.String)">parseNameValuePairs</a></strong>(java.lang.String s)</code><br>Parses the name/value pairs in a string into a Map. </td>
+                            <td class="colLast"><code>static&nbsp;java.util.Map&lt;java.lang.String, java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#parseNameValuePairs(java.lang.String)">parseNameValuePairs</a></strong>(java.lang.String s)</code><br>Parses the name/value pairs in a string into a Map.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toStringBase(java.lang.Object)">toStringBase</a></strong>(java.lang.Object obj)</code><br>Builds the default toString() for the object (class and hashcode). </td>
+                            <td class="colLast"><code><strong><a href="#toStringBase(java.lang.Object)">toStringBase</a></strong>(java.lang.Object obj)</code><br>Builds the default toString() for the object (class and hashcode).</td>
                         </tr>
                         
                     </table>
@@ -309,10 +316,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="addFieldForDisplay(java.lang.StringBuilder, java.lang.String, java.lang.String, Map)"><!-- --></a>
+                        <a name="addFieldForDisplay(java.lang.StringBuilder, java.lang.String, java.lang.String, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.StringBuilder <strong>addFieldForDisplay</strong>(java.lang.StringBuilder sb, java.lang.String label, java.lang.String value, <a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>static&nbsp;java.lang.StringBuilder <strong>addFieldForDisplay</strong>(java.lang.StringBuilder sb, java.lang.String label, java.lang.String value, java.util.Map options)</h4>
                                 <p> Adds a single field to the output buffer, formatted for display.  Enforces the field limit.
 
  <h3>Options</h3>
@@ -325,11 +332,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="evaluateGString(java.lang.String, Map)"><!-- --></a>
+                        <a name="evaluateGString(java.lang.String, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-static&nbsp;java.lang.String <strong>evaluateGString</strong>(java.lang.String gString, <a href='../../../../Map.html'>Map</a> parameters)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: [GStringExpressionWithinString, ParameterReassignment])
+static&nbsp;java.lang.String <strong>evaluateGString</strong>(java.lang.String gString, java.util.Map parameters)</h4>
                                 <p> Evaluates a given GString with the given parameters.  This is needed because the normal GStrings are limited
  to the scope of the current method/class.  This would force the user to use strings like "${parameters.day}" instead
  of the simpler "$day".<p/>
@@ -364,7 +371,7 @@ static&nbsp;java.lang.String <strong>evaluateGString</strong>(java.lang.String g
                         <a name="parseNameValuePairs(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../Map.html'>Map</a> <strong>parseNameValuePairs</strong>(java.lang.String s)</h4>
+                                <h4>static&nbsp;java.util.Map&lt;java.lang.String, java.lang.String&gt; <strong>parseNameValuePairs</strong>(java.lang.String s)</h4>
                                 <p> Parses the name/value pairs in a string into a Map. <DL><DT><B>Parameters:</B></DT><DD><code>s</code> -  The source.  For example, "required='true' label='ABC' "</DD></DL><DL><DT><B>Returns:</B></DT><DD>The name/value pairs in a map.</DD></DL></p>
                             </li>
                         </ul>

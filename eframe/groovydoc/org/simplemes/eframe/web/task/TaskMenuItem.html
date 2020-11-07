@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+@groovy.transform.EqualsAndHashCode
+@groovy.transform.Sortable(includes: [displayOrder, name])
+class TaskMenuItem
+extends java.lang.Object</pre>
 
     <p> Defines a single task menu entry that the user can execute.</p>
 
@@ -217,19 +226,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getLocalizedName(Locale)">getLocalizedName</a></strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</code><br>Returns the localized name.  </td>
+                            <td class="colLast"><code><strong><a href="#getLocalizedName(java.util.Locale)">getLocalizedName</a></strong>(java.util.Locale locale)</code><br>Returns the localized name.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getLocalizedTooltip(Locale)">getLocalizedTooltip</a></strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</code><br>Returns the localized tooltip.  </td>
+                            <td class="colLast"><code><strong><a href="#getLocalizedTooltip(java.util.Locale)">getLocalizedTooltip</a></strong>(java.util.Locale locale)</code><br>Returns the localized tooltip.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getName()">getName</a></strong>()</code><br>Returns the sanitized name. </td>
+                            <td class="colLast"><code><strong><a href="#getName()">getName</a></strong>()</code><br>Returns the sanitized name.</td>
                         </tr>
                         
                     </table>
@@ -376,18 +385,18 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="getLocalizedName(Locale)"><!-- --></a>
+                        <a name="getLocalizedName(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>getLocalizedName</strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>java.lang.String <strong>getLocalizedName</strong>(java.util.Locale locale)</h4>
                                 <p> Returns the localized name.  Uses the name with 'taskMenu.${name}.label' to find the localized name. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The optional locale.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The localized name.  If not found, then returns the raw 'name'.  Single and double quotes are removed.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="getLocalizedTooltip(Locale)"><!-- --></a>
+                        <a name="getLocalizedTooltip(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>getLocalizedTooltip</strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>java.lang.String <strong>getLocalizedTooltip</strong>(java.util.Locale locale)</h4>
                                 <p> Returns the localized tooltip.  Uses the name with 'taskMenu.${name}.tooltip' to find the localized tooltip. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The optional locale.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The localized tooltip.  If not found, then returns the raw 'name'.  Single and double quotes are removed.</DD></DL></p>
                             </li>
                         </ul>

@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Controller(value: /taskMenu)
+class TaskMenuController
+extends java.lang.Object</pre>
 
     <p> Defines the controller access to the main menu (Task Menu).
  This provides a cache-able script file that defines the main menu for a user.</p>
@@ -165,12 +174,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildJSON(List)">buildJSON</a></strong>(<a href='../../../../../../List.html'>List</a> tree)</code><br>Optimizes the string for use as a single line of quoted text in Javascript. </td>
+                            <td class="colLast"><code><strong><a href="#buildJSON(java.util.List)">buildJSON</a></strong>(java.util.List tree)</code><br>Optimizes the string for use as a single line of quoted text in Javascript.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>protected&nbsp;java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#buildTree(org.simplemes.eframe.web.task.TaskMenuFolder)">buildTree</a></strong>(<a href='../../../../../../org/simplemes/eframe/web/task/TaskMenuFolder.html'>TaskMenuFolder</a> folder)</code><br>Builds the menu tree for a single level.  </td>
                         </tr>
                         
@@ -248,10 +257,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="buildJSON(List)"><!-- --></a>
+                        <a name="buildJSON(java.util.List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>buildJSON</strong>(<a href='../../../../../../List.html'>List</a> tree)</h4>
+                                <h4>java.lang.String <strong>buildJSON</strong>(java.util.List tree)</h4>
                                 <p> Optimizes the string for use as a single line of quoted text in Javascript. <DL><DT><B>Parameters:</B></DT><DD><code>tree</code> -  The list of root Task Menu nodes.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The JSON string as a single line.</DD></DL></p>
                             </li>
                         </ul>
@@ -259,7 +268,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="buildTree(org.simplemes.eframe.web.task.TaskMenuFolder)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../../Map.html'>Map</a> <strong>buildTree</strong>(<a href='../../../../../../org/simplemes/eframe/web/task/TaskMenuFolder.html'>TaskMenuFolder</a> folder)</h4>
+                                <h4>protected&nbsp;java.util.Map <strong>buildTree</strong>(<a href='../../../../../../org/simplemes/eframe/web/task/TaskMenuFolder.html'>TaskMenuFolder</a> folder)</h4>
                                 <p> Builds the menu tree for a single level.  Will build child levels recursively. <DL><DT><B>Parameters:</B></DT><DD><code>folder</code> -  The folder to build the tree for,</DD></DL><DL><DT><B>Returns:</B></DT><DD>A map that represents the tree.  Each level includes these items: id, label,html and child items.</DD></DL></p>
                             </li>
                         </ul>
@@ -267,9 +276,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="index(java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-io.micronaut.http.HttpResponse <strong>index</strong>(@javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Produces(value: application/javascript)
+@io.micronaut.http.annotation.Get(value: /)
+io.micronaut.http.HttpResponse <strong>index</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Provides the javascript used to define the task menu.  Mainly a string stored in the toolkit JS
  library.  (See eframe_toolkit.js). We use a string to reduce the load times on the client.  It is only
  parsed when the TaskMenu is displayed. <DL><DT><B>Parameters:</B></DT><DD><code>principal</code> -  The user logged in (Optional).  If null, then the default menu is returned.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The response.</DD></DL></p>

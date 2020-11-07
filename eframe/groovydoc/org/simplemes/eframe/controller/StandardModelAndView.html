@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includePackage: false, includeNames: true, includeSuper: true)
+class StandardModelAndView
+extends io.micronaut.views.ModelAndView</pre>
 
     <p> Defines an enhanced version of the model and view object used to display a page
  from a controller method.  Adds user principal details and marker data to the normal ModelAndView.</p>
@@ -248,13 +255,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#getAt(java.lang.String)">getAt</a></strong>(java.lang.String key)</code><br>Provides subscript access to the model without worrying about the Optional get() call. </td>
+                            <td class="colLast"><code><strong><a href="#getAt(java.lang.String)">getAt</a></strong>(java.lang.String key)</code><br>Provides subscript access to the model without worrying about the Optional get() call.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#putAt(java.lang.String, java.lang.Object)">putAt</a></strong>(java.lang.String key, java.lang.Object value)</code><br>Provides subscript access to the model without worrying about the Optional get() call. </td>
+                            <td class="colLast"><code><strong><a href="#putAt(java.lang.String, java.lang.Object)">putAt</a></strong>(java.lang.String key, java.lang.Object value)</code><br>Provides subscript access to the model without worrying about the Optional get() call.</td>
                         </tr>
                         
                     </table>
@@ -273,7 +280,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class io.micronaut.views.ModelAndView</code></td>
-                            <td class="colLast"><code>io.micronaut.views.ModelAndView#getModel(), io.micronaut.views.ModelAndView#setModel(java.lang.Object), io.micronaut.views.ModelAndView#getView(), io.micronaut.views.ModelAndView#setView(java.lang.String), io.micronaut.views.ModelAndView#wait(long, int), io.micronaut.views.ModelAndView#wait(), io.micronaut.views.ModelAndView#wait(long), io.micronaut.views.ModelAndView#equals(java.lang.Object), io.micronaut.views.ModelAndView#toString(), io.micronaut.views.ModelAndView#hashCode(), io.micronaut.views.ModelAndView#getClass(), io.micronaut.views.ModelAndView#notify(), io.micronaut.views.ModelAndView#notifyAll()</code></td>
+                            <td class="colLast"><code>io.micronaut.views.ModelAndView#setModel(java.lang.Object), io.micronaut.views.ModelAndView#getModel(), io.micronaut.views.ModelAndView#getView(), io.micronaut.views.ModelAndView#setView(java.lang.String), io.micronaut.views.ModelAndView#wait(long, int), io.micronaut.views.ModelAndView#wait(), io.micronaut.views.ModelAndView#wait(long), io.micronaut.views.ModelAndView#equals(java.lang.Object), io.micronaut.views.ModelAndView#toString(), io.micronaut.views.ModelAndView#hashCode(), io.micronaut.views.ModelAndView#getClass(), io.micronaut.views.ModelAndView#notify(), io.micronaut.views.ModelAndView#notifyAll()</code></td>
                         </tr>
                     </table>
                    </ul>
@@ -339,7 +346,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                             <li class="blockList">
                                 <h4>public&nbsp;static&nbsp;final&nbsp;java.lang.String <strong>MESSAGES</strong></h4>
                                 <p> The name of the Freemarker data model element that holds the server-side messages to display to the user.
- The messages are org.simplemes.eframe.exception.MessageHolder (<b>Value:</b> '_messages').</p>
+ The messages are <a href='../../../../org/simplemes/eframe/exception/MessageHolder.html' title='MessageHolder'>MessageHolder</a> (<b>Value:</b> '_messages').</p>
                             </li>
                         </ul>
                     

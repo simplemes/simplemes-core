@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includePackage: false)
+@groovy.transform.EqualsAndHashCode
+class DateRange
+extends java.lang.Object</pre>
 
     <p> Defines a single range of time (date/time) from a given start date/time to an end date/time.
 </p>
@@ -131,12 +139,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#end">end</a></code><br>The range's end date/time.</td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#start">start</a></code><br>The range's start date/time.</td>
                         </tr>
                         
@@ -163,8 +171,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#DateRange(Date, Date)">DateRange</a>
-                                (<a href='../../../../Date.html'>Date</a> start, <a href='../../../../Date.html'>Date</a> end)</code><br>Basic constructor.</td>
+                                <code><a href="#DateRange(java.util.Date, java.util.Date)">DateRange</a>
+                                (java.util.Date start, java.util.Date end)</code><br>Basic constructor.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -225,7 +233,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="end"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Date.html'>Date</a> <strong>end</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>end</strong></h4>
                                 <p> The range's end date/time.</p>
                             </li>
                         </ul>
@@ -233,7 +241,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="start"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Date.html'>Date</a> <strong>start</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>start</strong></h4>
                                 <p> The range's start date/time.</p>
                             </li>
                         </ul>
@@ -252,10 +260,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Constructor Detail</h3>
                     
-                        <a name="DateRange(Date, Date)"><!-- --></a>
+                        <a name="DateRange(java.util.Date, java.util.Date)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>DateRange</strong>(<a href='../../../../Date.html'>Date</a> start, <a href='../../../../Date.html'>Date</a> end)</h4>
+                                <h4><strong>DateRange</strong>(java.util.Date start, java.util.Date end)</h4>
                                 <p> Basic constructor. <DL><DT><B>Parameters:</B></DT><DD><code>start</code> -  The range's start date/time.</DD><DD><code>end</code> -  The range's end date/time.</DD></DL></p>
                             </li>
                         </ul>

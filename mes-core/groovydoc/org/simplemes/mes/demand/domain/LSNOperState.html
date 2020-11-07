@@ -101,20 +101,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../../org/simplemes/mes/demand/WorkStateTrait.html'>WorkStateTrait</a>, <a href='../../../../../org/simplemes/mes/demand/WorkableInterface.html'>WorkableInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@org.simplemes.eframe.domain.annotation.DomainEntityDomainEntity
-@io.micronaut.data.annotation.MappedEntityMappedEntity
-@java.lang.SuppressWarningsSuppressWarnings
-@groovy.transform.ToStringToString
-@groovy.transform.EqualsAndHashCodeEqualsAndHashCode
+
+<pre>@org.simplemes.eframe.domain.annotation.DomainEntity
+@io.micronaut.data.annotation.MappedEntity(value: lsn_oper_state)
+@java.lang.SuppressWarnings(value: unused)
+@groovy.transform.ToString(includeNames: true, includePackage: false)
+@groovy.transform.EqualsAndHashCode(includes: [lsn, sequence])
 class LSNOperState
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../../org/simplemes/mes/demand/WorkStateTrait.html'>WorkStateTrait</a>, <a href='../../../../../org/simplemes/mes/demand/WorkableInterface.html'>WorkableInterface</a></pre>
 
     <p> This object holds the work state of an operation for an LSN.
  <p/>
@@ -151,36 +151,36 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateCreated">dateCreated</a></code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateFirstQueued">dateFirstQueued</a></code><br>The date/time any quantity was first queued at this point (operation or top-level).
  </td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateFirstStarted">dateFirstStarted</a></code><br>The date/time any quantity was first started at this point (operation or top-level).
  </td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateQtyQueued">dateQtyQueued</a></code><br>The date/time any quantity was queued at this point (operation or top-level).
  </td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateQtyStarted">dateQtyStarted</a></code><br>The date/time any quantity was started at this point (operation or top-level).
  </td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateUpdated">dateUpdated</a></code><br></td>
                         </tr>
                         
@@ -218,7 +218,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -303,7 +303,7 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toString()">toString</a></strong>()</code><br>Provides a human readable string for this object. </td>
+                            <td class="colLast"><code><strong><a href="#toString()">toString</a></strong>()</code><br>Provides a human readable string for this object.</td>
                         </tr>
                         
                     </table>
@@ -352,7 +352,7 @@ extends java.lang.Object
                         <a name="dateCreated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateCreated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateCreated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -360,7 +360,7 @@ extends java.lang.Object
                         <a name="dateFirstQueued"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateFirstQueued</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateFirstQueued</strong></h4>
                                 <p> The date/time any quantity was first queued at this point (operation or top-level).
  <p/><b>WorkStateTrait field</b>.</p>
                             </li>
@@ -369,7 +369,7 @@ extends java.lang.Object
                         <a name="dateFirstStarted"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateFirstStarted</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateFirstStarted</strong></h4>
                                 <p> The date/time any quantity was first started at this point (operation or top-level).
  <p/><b>WorkStateTrait field</b>.</p>
                             </li>
@@ -378,7 +378,7 @@ extends java.lang.Object
                         <a name="dateQtyQueued"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateQtyQueued</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateQtyQueued</strong></h4>
                                 <p> The date/time any quantity was queued at this point (operation or top-level).
  Can be null if the nothing is in queue.
  <p/><b>WorkStateTrait field</b>.</p>
@@ -388,7 +388,7 @@ extends java.lang.Object
                         <a name="dateQtyStarted"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateQtyStarted</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateQtyStarted</strong></h4>
                                 <p> The date/time any quantity was started at this point (operation or top-level).
  Can be null if the nothing is in work.
  <p/><b>WorkStateTrait field</b>.</p>
@@ -398,7 +398,7 @@ extends java.lang.Object
                         <a name="dateUpdated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateUpdated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateUpdated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -457,7 +457,7 @@ extends java.lang.Object
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -541,7 +541,7 @@ extends java.lang.Object
                         <a name="toString()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>toString</strong>()</h4>
                                 <p> Provides a human readable string for this object. <DL><DT><B>Returns:</B></DT><DD>The string.</DD></DL></p>
                             </li>

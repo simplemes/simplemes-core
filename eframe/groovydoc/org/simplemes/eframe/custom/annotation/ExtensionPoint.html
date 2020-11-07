@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@java.lang.annotation.Retention(RetentionPolicy.RUNTIME)
+@java.lang.annotation.Target({ElementType.METHOD})
+@org.codehaus.groovy.transform.GroovyASTTransformationClass("org.simplemes.eframe.custom.annotation.ExtensionPointTransformation")
+public&nbsp;@interface ExtensionPoint</pre>
 
     <p> This annotation allows the application developer to mark a method as an extension point.  This
  allows other modules to add logic to core methods without changing the methods themselves.

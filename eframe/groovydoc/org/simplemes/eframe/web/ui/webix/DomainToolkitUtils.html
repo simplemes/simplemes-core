@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+class DomainToolkitUtils
+extends java.lang.Object</pre>
 
     <p> This class provides utilities to create schemas and other data needed for toolkit actions.
  For example, this will generate the table column definitions for a domain class.</p>
@@ -210,38 +217,38 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildComboEditorOptions(org.simplemes.eframe.data.FieldDefinitionInterface)">buildComboEditorOptions</a></strong>(<a href='../../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</code><br>Builds the combobox editor options (list of choices) and other options to display the choice list correctly. </td>
+                            <td class="colLast"><code><strong><a href="#buildComboEditorOptions(org.simplemes.eframe.data.FieldDefinitionInterface)">buildComboEditorOptions</a></strong>(<a href='../../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</code><br>Builds the combobox editor options (list of choices) and other options to display the choice list correctly.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildTableColumns(java.lang.Class, List, Map)">buildTableColumns</a></strong>(java.lang.Class domainClass, <a href='../../../../../../List.html'>List</a> columns, <a href='../../../../../../Map.html'>Map</a> options)</code><br>Builds the column definitions needed for a GUI toolkit-based grid/table.</td>
+                            <td class="colLast"><code><strong><a href="#buildTableColumns(java.lang.Class, List, java.util.Map)">buildTableColumns</a></strong>(java.lang.Class domainClass, java.util.List&lt;java.lang.String&gt; columns, java.util.Map options)</code><br>Builds the column definitions needed for a GUI toolkit-based grid/table.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildTableDataParser(java.lang.Class, List, Map)">buildTableDataParser</a></strong>(java.lang.Class domainClass, <a href='../../../../../../List.html'>List</a> columns, <a href='../../../../../../Map.html'>Map</a> options)</code><br>Builds a data parser (scheme) needed for a GUI toolkit-based grid/table.
+                            <td class="colLast"><code><strong><a href="#buildTableDataParser(java.lang.Class, List, java.util.Map)">buildTableDataParser</a></strong>(java.lang.Class domainClass, java.util.List&lt;java.lang.String&gt; columns, java.util.Map options)</code><br>Builds a data parser (scheme) needed for a GUI toolkit-based grid/table.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#convertDateFormatToToolkit(java.text.SimpleDateFormat)">convertDateFormatToToolkit</a></strong>(java.text.SimpleDateFormat dateFormat)</code><br>Converts the given date format to a toolkit-style date/time format. </td>
+                            <td class="colLast"><code><strong><a href="#convertDateFormatToToolkit(java.text.SimpleDateFormat)">convertDateFormatToToolkit</a></strong>(java.text.SimpleDateFormat dateFormat)</code><br>Converts the given date format to a toolkit-style date/time format.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getSortType(java.lang.Class)">getSortType</a></strong>(java.lang.Class format)</code><br>Determines the client sort type for the given field type. </td>
+                            <td class="colLast"><code><strong><a href="#getSortType(Class)">getSortType</a></strong>(java.lang.Class&lt;FieldFormatInterface&gt; format)</code><br>Determines the client sort type for the given field type.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isPrimaryKey(java.lang.Class, java.lang.String)">isPrimaryKey</a></strong>(java.lang.Class domainClass, java.lang.String name)</code><br>Determines if the given field is one of the primary key fields. </td>
+                            <td class="colLast"><code><strong><a href="#isPrimaryKey(java.lang.Class, java.lang.String)">isPrimaryKey</a></strong>(java.lang.Class domainClass, java.lang.String name)</code><br>Determines if the given field is one of the primary key fields.</td>
                         </tr>
                         
                     </table>
@@ -356,10 +363,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="buildTableColumns(java.lang.Class, List, Map)"><!-- --></a>
+                        <a name="buildTableColumns(java.lang.Class, List, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>buildTableColumns</strong>(java.lang.Class domainClass, <a href='../../../../../../List.html'>List</a> columns, <a href='../../../../../../Map.html'>Map</a> options)</h4>
+                                <h4>java.lang.String <strong>buildTableColumns</strong>(java.lang.Class domainClass, java.util.List&lt;java.lang.String&gt; columns, java.util.Map options)</h4>
                                 <p> Builds the column definitions needed for a GUI toolkit-based grid/table.
 
  <h3>options</h3>
@@ -375,11 +382,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="buildTableDataParser(java.lang.Class, List, Map)"><!-- --></a>
+                        <a name="buildTableDataParser(java.lang.Class, List, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-java.lang.String <strong>buildTableDataParser</strong>(java.lang.Class domainClass, <a href='../../../../../../List.html'>List</a> columns, <a href='../../../../../../Map.html'>Map</a> options)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+java.lang.String <strong>buildTableDataParser</strong>(java.lang.Class domainClass, java.util.List&lt;java.lang.String&gt; columns, java.util.Map options)</h4>
                                 <p> Builds a data parser (scheme) needed for a GUI toolkit-based grid/table.
  This is used to convert string JSON elements to proper types once the
  data is received by the client.  Mainly used for dates.
@@ -400,10 +407,10 @@ java.lang.String <strong>buildTableDataParser</strong>(java.lang.Class domainCla
                             </li>
                         </ul>
                     
-                        <a name="getSortType(java.lang.Class)"><!-- --></a>
+                        <a name="getSortType(Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>getSortType</strong>(java.lang.Class format)</h4>
+                                <h4>java.lang.String <strong>getSortType</strong>(java.lang.Class&lt;FieldFormatInterface&gt; format)</h4>
                                 <p> Determines the client sort type for the given field type. <DL><DT><B>Parameters:</B></DT><DD><code>fieldDef</code> -  The field type.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The toolkit sort type.</DD></DL></p>
                             </li>
                         </ul>

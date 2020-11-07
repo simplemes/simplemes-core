@@ -101,20 +101,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../org/simplemes/mes/system/ScanRequestInterface.html'>ScanRequestInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.transform.ToStringToString
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
 class ScanRequest
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../org/simplemes/mes/system/ScanRequestInterface.html'>ScanRequestInterface</a></pre>
 
     <p> The request argument for scan method.  This scan resolution is typically handled by the ScanService.
  <p/>
- This is a POGO used by the org.simplemes.mes.system.service.ScanService#scan method.</p>
+ This is a POGO used by the <a href='../../../../org/simplemes/mes/system/service/ScanService.html#scan' title='ScanService.scan'>ScanService.scan</a> method.</p>
 
           </li>
     </ul>
@@ -187,8 +187,8 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#ScanRequest(Map)">ScanRequest</a>
-                                (<a href='../../../../Map.html'>Map</a> options)</code><br>Constructor for use with JSON body request.  </td>
+                                <code><a href="#ScanRequest(java.util.Map)">ScanRequest</a>
+                                (java.util.Map options)</code><br>Constructor for use with JSON body request.  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -295,10 +295,10 @@ extends java.lang.Object
                 </a>
                     <h3>Constructor Detail</h3>
                     
-                        <a name="ScanRequest(Map)"><!-- --></a>
+                        <a name="ScanRequest(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>ScanRequest</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4><strong>ScanRequest</strong>(java.util.Map options)</h4>
                                 <p> Constructor for use with JSON body request.  This is a lenient form of the normal constructor.  It ignores
  values from the options that are not part of this POGO.  This makes the controller more reliable when
  the client sends in incorrect values. <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  The options from the JSON Body.</DD></DL></p>

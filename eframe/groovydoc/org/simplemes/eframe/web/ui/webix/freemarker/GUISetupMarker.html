@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class GUISetupMarker
+extends <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html'>BaseMarker</a></pre>
 
     <p> Provides the efGUISetup freemarker implementation.
  This extracts the current request's locale and includes the correct language files.</p>
@@ -185,7 +191,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildLoggerSetup()">buildLoggerSetup</a></strong>()</code><br>Builds the javascript logger setup for this page.</td>
+                            <td class="colLast"><code><strong><a href="#buildLoggerSetup()">buildLoggerSetup</a></strong>()</code><br>Builds the javascript logger setup for this page.
+ </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -197,13 +204,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getDateFormat(Locale)">getDateFormat</a></strong>(<a href='../../../../../../../Locale.html'>Locale</a> locale)</code><br>Gets the date only format for the given locale. </td>
+                            <td class="colLast"><code><strong><a href="#getDateFormat(java.util.Locale)">getDateFormat</a></strong>(java.util.Locale locale)</code><br>Gets the date only format for the given locale.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getFullDateFormat(Locale)">getFullDateFormat</a></strong>(<a href='../../../../../../../Locale.html'>Locale</a> locale)</code><br>Gets the full date/time format for the given locale. </td>
+                            <td class="colLast"><code><strong><a href="#getFullDateFormat(java.util.Locale)">getFullDateFormat</a></strong>(java.util.Locale locale)</code><br>Gets the full date/time format for the given locale.</td>
                         </tr>
                         
                     </table>
@@ -222,7 +229,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html'>BaseMarker</a></code></td>
-                            <td class="colLast"><code><a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#addFieldSpecificParameters(org.simplemes.eframe.web.ui.webix.widget.WidgetContext, java.lang.String, Map)'>addFieldSpecificParameters</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#buildPreloadedMessages(List)'>buildPreloadedMessages</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#buildWidgetContext(org.simplemes.eframe.data.FieldDefinitionInterface)'>buildWidgetContext</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#escape(java.lang.String)'>escape</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#getModelValue(java.lang.String)'>getModelValue</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#getObjectWrapper()'>getObjectWrapper</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#getRequestParameters()'>getRequestParameters</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#getUniqueIDCounter()'>getUniqueIDCounter</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#lookup(java.lang.String, Locale, java.lang.Object)'>lookup</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#lookupLabelAndTooltip(java.lang.String, Locale)'>lookupLabelAndTooltip</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#renderContent()'>renderContent</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#setValues(io.micronaut.context.env.Environment, Map, freemarker.template.TemplateModel, freemarker.template.TemplateDirectiveBody)'>setValues</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#toStringForException()'>toStringForException</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#unwrap(java.lang.Object)'>unwrap</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#write(java.lang.Object)'>write</a></code></td>
+                            <td class="colLast"><code><a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#addFieldSpecificParameters(org.simplemes.eframe.web.ui.webix.widget.WidgetContext, java.lang.String, java.util.Map)'>addFieldSpecificParameters</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#buildPreloadedMessages(List)'>buildPreloadedMessages</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#buildWidgetContext(org.simplemes.eframe.data.FieldDefinitionInterface)'>buildWidgetContext</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#escape(java.lang.String)'>escape</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#getModelValue(java.lang.String)'>getModelValue</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#getObjectWrapper()'>getObjectWrapper</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#getRequestParameters()'>getRequestParameters</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#getUniqueIDCounter()'>getUniqueIDCounter</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#lookup(java.lang.String, java.util.Locale, java.lang.Object)'>lookup</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#lookupLabelAndTooltip(java.lang.String, java.util.Locale)'>lookupLabelAndTooltip</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#renderContent()'>renderContent</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#setValues(io.micronaut.context.env.Environment, java.util.Map, freemarker.template.TemplateModel, freemarker.template.TemplateDirectiveBody)'>setValues</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#toStringForException()'>toStringForException</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#unwrap(java.lang.Object)'>unwrap</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#write(java.lang.Object)'>write</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -285,24 +292,24 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="execute()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>execute</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="getDateFormat(Locale)"><!-- --></a>
+                        <a name="getDateFormat(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>getDateFormat</strong>(<a href='../../../../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>java.lang.String <strong>getDateFormat</strong>(java.util.Locale locale)</h4>
                                 <p> Gets the date only format for the given locale. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The toolkit date format.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="getFullDateFormat(Locale)"><!-- --></a>
+                        <a name="getFullDateFormat(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>getFullDateFormat</strong>(<a href='../../../../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>java.lang.String <strong>getFullDateFormat</strong>(java.util.Locale locale)</h4>
                                 <p> Gets the full date/time format for the given locale. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The toolkit full date format.</DD></DL></p>
                             </li>
                         </ul>

@@ -91,13 +91,19 @@ if (location.href.indexOf('is-external=true') == -1) {
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li>org.simplemes.eframe.preference.PreferenceDeserializer
+<li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li>org.simplemes.eframe.preference.PreferenceDeserializer
 </ul>
 <div class="description">
     <ul class="blockList">
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class PreferenceDeserializer
+extends StdDeserializer&lt;<a href='../../../../org/simplemes/eframe/preference/Preference.html' title='Preference'>Preference</a>&gt;</pre>
 
     <p> Serializes a Preference object to JSON for storage.  Supports any arbitrary POGO as a setting in the settings list.</p>
 
@@ -142,8 +148,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#PreferenceDeserializer(java.lang.Class)">PreferenceDeserializer</a>
-                                (java.lang.Class p)</code><br>Constructor for a single preference.</td>
+                                <code><a href="#PreferenceDeserializer(Class)">PreferenceDeserializer</a>
+                                (java.lang.Class&lt;<a href='../../../../org/simplemes/eframe/preference/Preference.html' title='Preference'>Preference</a>&gt; p)</code><br>Constructor for a single preference.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -176,31 +182,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/preference/Preference.html'>Preference</a></code></td>
-                            <td class="colLast"><code><strong><a href="#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext)">deserialize</a></strong>(com.fasterxml.jackson.core.JsonParser jsonParser, com.fasterxml.jackson.databind.DeserializationContext context)</code><br>Method to deserialize a Preference from JSON. </td>
+                            <td class="colLast"><code><strong><a href="#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext)">deserialize</a></strong>(com.fasterxml.jackson.core.JsonParser jsonParser, com.fasterxml.jackson.databind.DeserializationContext context)</code><br>Method to deserialize a Preference from JSON.</td>
                         </tr>
                         
                     </table>
                    </ul>
               </li>
             
-            <li class="blockList"><a name="method_summary"><!--   --></a>
-                    <h3>Inherited Methods Summary</h3>
-                    <ul class="blockList">
-                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Inherited Methods Summary table">
-                        <caption><span>Inherited Methods</span><span class="tabEnd">&nbsp;</span></caption>
-                        <tr>
-                            <th class="colFirst" scope="col">Methods inherited from class</th>
-                            <th class="colLast" scope="col">Name</th>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code>class com.fasterxml.jackson.databind.deser.std.StdDeserializer</code></td>
-                            <td class="colLast"><code>com.fasterxml.jackson.databind.deser.std.StdDeserializer#getValueType(com.fasterxml.jackson.databind.DeserializationContext), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getValueType(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#deserializeWithType(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext, com.fasterxml.jackson.databind.jsontype.TypeDeserializer), com.fasterxml.jackson.databind.deser.std.StdDeserializer#handledType(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getValueClass(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#isCachable(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#deserializeWithType(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext, com.fasterxml.jackson.databind.jsontype.TypeDeserializer, java.lang.Object), com.fasterxml.jackson.databind.deser.std.StdDeserializer#unwrappingDeserializer(com.fasterxml.jackson.databind.util.NameTransformer), com.fasterxml.jackson.databind.deser.std.StdDeserializer#replaceDelegatee(com.fasterxml.jackson.databind.JsonDeserializer), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getDelegatee(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getKnownPropertyNames(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getNullValue(com.fasterxml.jackson.databind.DeserializationContext), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getNullValue(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getNullAccessPattern(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getEmptyAccessPattern(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getEmptyValue(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getEmptyValue(com.fasterxml.jackson.databind.DeserializationContext), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getObjectIdReader(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#findBackReference(java.lang.String), com.fasterxml.jackson.databind.deser.std.StdDeserializer#supportsUpdate(com.fasterxml.jackson.databind.DeserializationConfig), com.fasterxml.jackson.databind.deser.std.StdDeserializer#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext, java.lang.Object), com.fasterxml.jackson.databind.deser.std.StdDeserializer#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext), com.fasterxml.jackson.databind.deser.std.StdDeserializer#wait(long, int), com.fasterxml.jackson.databind.deser.std.StdDeserializer#wait(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#wait(long), com.fasterxml.jackson.databind.deser.std.StdDeserializer#equals(java.lang.Object), com.fasterxml.jackson.databind.deser.std.StdDeserializer#toString(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#hashCode(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getClass(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#notify(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#notifyAll()</code></td>
-                        </tr>
-                    </table>
-                   </ul>
-              </li>
-                
         </ul>
         
     </li>
@@ -234,10 +222,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="PreferenceDeserializer(java.lang.Class)"><!-- --></a>
+                        <a name="PreferenceDeserializer(Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>PreferenceDeserializer</strong>(java.lang.Class p)</h4>
+                                <h4><strong>PreferenceDeserializer</strong>(java.lang.Class&lt;<a href='../../../../org/simplemes/eframe/preference/Preference.html' title='Preference'>Preference</a>&gt; p)</h4>
                                 <p> Constructor for a single preference. <DL><DT><B>Parameters:</B></DT><DD>p</DD></DL></p>
                             </li>
                         </ul>
@@ -266,8 +254,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@java.lang.OverrideOverride
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+@java.lang.Override
 <a href='../../../../org/simplemes/eframe/preference/Preference.html'>Preference</a> <strong>deserialize</strong>(com.fasterxml.jackson.core.JsonParser jsonParser, com.fasterxml.jackson.databind.DeserializationContext context)</h4>
                                 <p> Method to deserialize a Preference from JSON. <DL><DT><B>Parameters:</B></DT><DD><code>jsonParser</code> -  Parsed used for reading JSON content</DD><DD><code>context</code> -  Context that can be used to access information about
    this deserialization activity.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The deserialized value</DD></DL></p>

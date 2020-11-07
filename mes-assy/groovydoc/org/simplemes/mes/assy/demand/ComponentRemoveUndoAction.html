@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>org.simplemes.eframe.web.undo.UndoActionInterface</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.transform.ToStringToString
+
+<pre>@groovy.transform.ToString(includePackage: false, includeNames: true)
 class ComponentRemoveUndoAction
 extends java.lang.Object
-
-</pre>
-
-
+implements org.simplemes.eframe.web.undo.UndoActionInterface</pre>
 
     <p> Defines the action needed to undo a single component removal action.</p>
 
@@ -153,7 +153,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.util.Map&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#successEvents">successEvents</a></code><br>Optional dashboard events to trigger after the undo action completes successfully.</td>
                         </tr>
                         
@@ -263,7 +263,7 @@ extends java.lang.Object
                         <a name="successEvents"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../List.html'>List</a> <strong>successEvents</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.util.Map&gt; <strong>successEvents</strong></h4>
                                 <p> Optional dashboard events to trigger after the undo action completes successfully.</p>
                             </li>
                         </ul>

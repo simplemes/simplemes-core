@@ -98,6 +98,16 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Controller(value: /)
+@java.lang.SuppressWarnings(value: [GroovyUnusedAssignment, unused])
+class HomeController
+extends <a href='../../../../../org/simplemes/eframe/controller/BaseController.html'>BaseController</a></pre>
 
           </li>
     </ul>
@@ -256,9 +266,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="index(java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-io.micronaut.views.ModelAndView <strong>index</strong>(@javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /)
+io.micronaut.views.ModelAndView <strong>index</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the index page.  Requires a view  '{domain}/index' for the given domain. <DL><DT><B>Parameters:</B></DT><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The model/view to display.</DD></DL></p>
                             </li>
                         </ul>

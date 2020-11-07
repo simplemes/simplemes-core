@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@javax.transaction.Transactional
+class WorkService
+extends java.lang.Object</pre>
 
     <p> Defines Services for the starting and completing work on Orders and LSNs.
  <p/>
@@ -135,25 +143,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code><strong>static&nbsp;java.lang.String</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#ACTION_COMPLETE">ACTION_COMPLETE</a></code></td>
-                            <td class="colLast">The org.simplemes.mes.tracking.domain.ActionLog entry used for complete work requests.</td>
+                            <td class="colLast">The <a href='../../../../../org/simplemes/mes/tracking/domain/ActionLog.html' title='ActionLog'>ActionLog</a> entry used for complete work requests.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code><strong>static&nbsp;java.lang.String</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#ACTION_REVERSE_COMPLETE">ACTION_REVERSE_COMPLETE</a></code></td>
-                            <td class="colLast">The ActionLog org.simplemes.mes.tracking.domain.ActionLog entry used for reverse complete work requests.</td>
+                            <td class="colLast">The ActionLog <a href='../../../../../org/simplemes/mes/tracking/domain/ActionLog.html' title='ActionLog'>ActionLog</a> entry used for reverse complete work requests.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code><strong>static&nbsp;java.lang.String</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#ACTION_REVERSE_START">ACTION_REVERSE_START</a></code></td>
-                            <td class="colLast">The ActionLog org.simplemes.mes.tracking.domain.ActionLog entry used for reverse start work requests.</td>
+                            <td class="colLast">The ActionLog <a href='../../../../../org/simplemes/mes/tracking/domain/ActionLog.html' title='ActionLog'>ActionLog</a> entry used for reverse start work requests.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code><strong>static&nbsp;java.lang.String</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#ACTION_START">ACTION_START</a></code></td>
-                            <td class="colLast">The ActionLog org.simplemes.mes.tracking.domain.ActionLog entry used for start work requests.</td>
+                            <td class="colLast">The ActionLog <a href='../../../../../org/simplemes/mes/tracking/domain/ActionLog.html' title='ActionLog'>ActionLog</a> entry used for start work requests.</td>
                         </tr>
                         
                     </table>
@@ -236,25 +244,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;CompleteResponse&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#complete(org.simplemes.mes.demand.CompleteRequest)">complete</a></strong>(<a href='../../../../../org/simplemes/mes/demand/CompleteRequest.html'>CompleteRequest</a> request)</code><br>Complete work on an Order/LSN.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;CompleteResponse&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#reverseComplete(org.simplemes.mes.demand.CompleteRequest)">reverseComplete</a></strong>(<a href='../../../../../org/simplemes/mes/demand/CompleteRequest.html'>CompleteRequest</a> request)</code><br>Reverses the complete of work on an Order/LSN.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;StartResponse&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#reverseStart(org.simplemes.mes.demand.StartRequest)">reverseStart</a></strong>(<a href='../../../../../org/simplemes/mes/demand/StartRequest.html'>StartRequest</a> request)</code><br>Reverses the start of work on an Order/LSN.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;StartResponse&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#start(org.simplemes.mes.demand.StartRequest)">start</a></strong>(<a href='../../../../../org/simplemes/mes/demand/StartRequest.html'>StartRequest</a> request)</code><br>Begin work on an Order/LSN.  </td>
                         </tr>
                         
@@ -303,7 +311,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>public&nbsp;static&nbsp;final&nbsp;java.lang.String <strong>ACTION_COMPLETE</strong></h4>
-                                <p> The org.simplemes.mes.tracking.domain.ActionLog entry used for complete work requests.</p>
+                                <p> The <a href='../../../../../org/simplemes/mes/tracking/domain/ActionLog.html' title='ActionLog'>ActionLog</a> entry used for complete work requests.</p>
                             </li>
                         </ul>
                     
@@ -311,7 +319,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>public&nbsp;static&nbsp;final&nbsp;java.lang.String <strong>ACTION_REVERSE_COMPLETE</strong></h4>
-                                <p> The ActionLog org.simplemes.mes.tracking.domain.ActionLog entry used for reverse complete work requests.</p>
+                                <p> The ActionLog <a href='../../../../../org/simplemes/mes/tracking/domain/ActionLog.html' title='ActionLog'>ActionLog</a> entry used for reverse complete work requests.</p>
                             </li>
                         </ul>
                     
@@ -319,7 +327,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>public&nbsp;static&nbsp;final&nbsp;java.lang.String <strong>ACTION_REVERSE_START</strong></h4>
-                                <p> The ActionLog org.simplemes.mes.tracking.domain.ActionLog entry used for reverse start work requests.</p>
+                                <p> The ActionLog <a href='../../../../../org/simplemes/mes/tracking/domain/ActionLog.html' title='ActionLog'>ActionLog</a> entry used for reverse start work requests.</p>
                             </li>
                         </ul>
                     
@@ -327,7 +335,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>public&nbsp;static&nbsp;final&nbsp;java.lang.String <strong>ACTION_START</strong></h4>
-                                <p> The ActionLog org.simplemes.mes.tracking.domain.ActionLog entry used for start work requests.</p>
+                                <p> The ActionLog <a href='../../../../../org/simplemes/mes/tracking/domain/ActionLog.html' title='ActionLog'>ActionLog</a> entry used for start work requests.</p>
                             </li>
                         </ul>
                     
@@ -397,8 +405,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="complete(org.simplemes.mes.demand.CompleteRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-<a href='../../../../../List.html'>List</a> <strong>complete</strong>(<a href='../../../../../org/simplemes/mes/demand/CompleteRequest.html'>CompleteRequest</a> request)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: AbcMetric)
+java.util.List&lt;CompleteResponse&gt; <strong>complete</strong>(<a href='../../../../../org/simplemes/mes/demand/CompleteRequest.html'>CompleteRequest</a> request)</h4>
                                 <p> Complete work on an Order/LSN.  The quantity processed is optional.
  Below is a typical usage:
  <pre>
@@ -408,34 +416,34 @@ if (location.href.indexOf('is-external=true') == -1) {
      request.order = Order.findByOrder('M001')
      Order results = workService.complete(request)
 } </pre> <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The complete request data itself.  This request is refined by the method
- org.simplemes.mes.demand.service.ResolveService#resolveProductionRequest.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The order/LSN(s) that were completed.</DD></DL></p>
+ <a href='../../../../../org/simplemes/mes/demand/service/ResolveService.html#resolveProductionRequest' title='ResolveService.resolveProductionRequest'>ResolveService.resolveProductionRequest</a>.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The order/LSN(s) that were completed.</DD></DL></p>
                             </li>
                         </ul>
                     
                         <a name="reverseComplete(org.simplemes.mes.demand.CompleteRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>reverseComplete</strong>(<a href='../../../../../org/simplemes/mes/demand/CompleteRequest.html'>CompleteRequest</a> request)</h4>
+                                <h4>java.util.List&lt;CompleteResponse&gt; <strong>reverseComplete</strong>(<a href='../../../../../org/simplemes/mes/demand/CompleteRequest.html'>CompleteRequest</a> request)</h4>
                                 <p> Reverses the complete of work on an Order/LSN.  The quantity processed is optional.
  This moves the done qty back to in queue.  No undo actions are supported for this. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The complete request data itself.  This request is refined by the method
- org.simplemes.mes.demand.service.ResolveService#resolveProductionRequest.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The order/LSN(s) that were reversed.</DD></DL></p>
+ <a href='../../../../../org/simplemes/mes/demand/service/ResolveService.html#resolveProductionRequest' title='ResolveService.resolveProductionRequest'>ResolveService.resolveProductionRequest</a>.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The order/LSN(s) that were reversed.</DD></DL></p>
                             </li>
                         </ul>
                     
                         <a name="reverseStart(org.simplemes.mes.demand.StartRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>reverseStart</strong>(<a href='../../../../../org/simplemes/mes/demand/StartRequest.html'>StartRequest</a> request)</h4>
+                                <h4>java.util.List&lt;StartResponse&gt; <strong>reverseStart</strong>(<a href='../../../../../org/simplemes/mes/demand/StartRequest.html'>StartRequest</a> request)</h4>
                                 <p> Reverses the start of work on an Order/LSN.  The quantity processed is optional.
  This moves the in work qty back to in queue.  No undo actions are supported for this. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The start request data itself.  This request is refined by the method
- org.simplemes.mes.demand.service.ResolveService#resolveProductionRequest.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The order/LSN(s) that were reversed.</DD></DL></p>
+ <a href='../../../../../org/simplemes/mes/demand/service/ResolveService.html#resolveProductionRequest' title='ResolveService.resolveProductionRequest'>ResolveService.resolveProductionRequest</a>.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The order/LSN(s) that were reversed.</DD></DL></p>
                             </li>
                         </ul>
                     
                         <a name="start(org.simplemes.mes.demand.StartRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>start</strong>(<a href='../../../../../org/simplemes/mes/demand/StartRequest.html'>StartRequest</a> request)</h4>
+                                <h4>java.util.List&lt;StartResponse&gt; <strong>start</strong>(<a href='../../../../../org/simplemes/mes/demand/StartRequest.html'>StartRequest</a> request)</h4>
                                 <p> Begin work on an Order/LSN.  The quantity processed is optional.
  Below is a typical usage:
  <pre>
@@ -445,7 +453,7 @@ if (location.href.indexOf('is-external=true') == -1) {
    request.order = Order.findByOrder('M001')
    workService.start(request)
  </pre> <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The start request data itself.  This request is refined by the method
- org.simplemes.mes.demand.service.ResolveService#resolveProductionRequest.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The order/LSN(s) that were started.</DD></DL></p>
+ <a href='../../../../../org/simplemes/mes/demand/service/ResolveService.html#resolveProductionRequest' title='ResolveService.resolveProductionRequest'>ResolveService.resolveProductionRequest</a>.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The order/LSN(s) that were started.</DD></DL></p>
                             </li>
                         </ul>
                     

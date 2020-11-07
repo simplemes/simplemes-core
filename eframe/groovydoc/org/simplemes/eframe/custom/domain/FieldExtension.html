@@ -101,19 +101,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../../org/simplemes/eframe/custom/domain/FieldInterface.html'>FieldInterface</a>, <a href='../../../../../org/simplemes/eframe/custom/domain/FieldTrait.html'>FieldTrait</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@io.micronaut.data.annotation.MappedEntityMappedEntity
-@<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntity.html' title='DomainEntity'>DomainEntity</a>DomainEntity
-@groovy.transform.EqualsAndHashCodeEqualsAndHashCode
-@groovy.transform.ToStringToString
+
+<pre>@io.micronaut.data.annotation.MappedEntity
+@<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntity.html' title='DomainEntity'>DomainEntity</a>
+@groovy.transform.EqualsAndHashCode(includes: [domainClassName, fieldName])
+@groovy.transform.ToString(includePackage: false, includeNames: true)
 class FieldExtension
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../../org/simplemes/eframe/custom/domain/FieldInterface.html'>FieldInterface</a>, <a href='../../../../../org/simplemes/eframe/custom/domain/FieldTrait.html'>FieldTrait</a></pre>
 
     <p> This class defines a single custom field for an application.  This field is inserted into the domain class
  by the Enterprise Framework module at startup or when the custom field is changed.
@@ -196,7 +196,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -387,7 +387,7 @@ extends java.lang.Object
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -447,7 +447,7 @@ extends java.lang.Object
                         <a name="beforeDelete()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: unused)
 java.lang.Object <strong>beforeDelete</strong>()</h4>
                                 <p> Delete will remove any references to this field from any FieldGUIExtensions</p>
                             </li>

@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../../org/simplemes/eframe/preference/event/GUIEventInterface.html'>GUIEventInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.util.logging.Slf4jSlf4j
+
+<pre>@groovy.util.logging.Slf4j
 class ListSorted
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../../org/simplemes/eframe/preference/event/GUIEventInterface.html'>GUIEventInterface</a></pre>
 
     <p> Detects when a list's sorting has changed from the default and stores this in the users preferences.
  Supports client events (non-server sorting) and explicit calls from the server-side queries when the
@@ -182,14 +182,14 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#checkForUserSortOrder(Map)">checkForUserSortOrder</a></strong>(<a href='../../../../../Map.html'>Map</a> params)</code><br>Handles the list sorted event (called explicitly from the server-side sorting).
+                            <td class="colLast"><code><strong><a href="#checkForUserSortOrder(java.util.Map)">checkForUserSortOrder</a></strong>(java.util.Map params)</code><br>Handles the list sorted event (called explicitly from the server-side sorting).
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#handleEvent(Map)">handleEvent</a></strong>(<a href='../../../../../Map.html'>Map</a> params)</code><br>Handles the list sorted event when called from the client.
+                            <td class="colLast"><code><strong><a href="#handleEvent(java.util.Map)">handleEvent</a></strong>(java.util.Map params)</code><br>Handles the list sorted event when called from the client.
  </td>
                         </tr>
                         
@@ -261,10 +261,10 @@ extends java.lang.Object
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="checkForUserSortOrder(Map)"><!-- --></a>
+                        <a name="checkForUserSortOrder(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;void <strong>checkForUserSortOrder</strong>(<a href='../../../../../Map.html'>Map</a> params)</h4>
+                                <h4>static&nbsp;void <strong>checkForUserSortOrder</strong>(java.util.Map params)</h4>
                                 <p> Handles the list sorted event (called explicitly from the server-side sorting).
  Inputs are:
  <ul>
@@ -272,14 +272,14 @@ extends java.lang.Object
    <li><code>element</code> - The HTML ID of the element that changed.</li>
  </ul>
  The request parameters follow the standard sorting protocol as defined in the
- method org.simplemes.eframe.controller.ControllerUtils#calculateSortingForList(java.util.Map). <DL><DT><B>Parameters:</B></DT><DD><code>params</code> -  The HTTP parameters.</DD></DL></p>
+ method <a href='../../../../../org/simplemes/eframe/controller/ControllerUtils.html#calculateSortingForList(java.util.Map)' title='ControllerUtils.calculateSortingForList'>ControllerUtils.calculateSortingForList</a>. <DL><DT><B>Parameters:</B></DT><DD><code>params</code> -  The HTTP parameters.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="handleEvent(Map)"><!-- --></a>
+                        <a name="handleEvent(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>handleEvent</strong>(<a href='../../../../../Map.html'>Map</a> params)</h4>
+                                <h4>void <strong>handleEvent</strong>(java.util.Map params)</h4>
                                 <p> Handles the list sorted event when called from the client.
  Inputs are:
  <ul>
@@ -288,7 +288,7 @@ extends java.lang.Object
    <li><code>event</code> - The change event (e.g. 'ListSorted', etc).</li>
  </ul>
  The request parameters follow the standard sorting protocol as defined in the
- method org.simplemes.eframe.controller.ControllerUtils#calculateSortingForList(java.util.Map). <DL><DT><B>Parameters:</B></DT><DD><code>params</code> -  The HTTP request parameters.</DD></DL></p>
+ method <a href='../../../../../org/simplemes/eframe/controller/ControllerUtils.html#calculateSortingForList(java.util.Map)' title='ControllerUtils.calculateSortingForList'>ControllerUtils.calculateSortingForList</a>. <DL><DT><B>Parameters:</B></DT><DD><code>params</code> -  The HTTP request parameters.</DD></DL></p>
                             </li>
                         </ul>
                     

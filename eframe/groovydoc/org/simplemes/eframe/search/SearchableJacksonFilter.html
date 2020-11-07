@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class SearchableJacksonFilter
+extends com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter</pre>
 
     <p> Defines a filter that looks at the searchable static field for any excluded fields and
  removes them from the JSON for the search engine.</p>
@@ -141,12 +147,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#excludes">excludes</a></code><br>The list of excluded fields.</td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#stdExcludes">stdExcludes</a></code><br>The list of standard fields that are excluded.</td>
                         </tr>
                         
@@ -174,7 +180,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst">
                                 <code><a href="#SearchableJacksonFilter(List, java.lang.Class)">SearchableJacksonFilter</a>
-                                (<a href='../../../../List.html'>List</a> excludes, java.lang.Class domainClass)</code><br>Constructor that supports a list of fields to exclude from the serialized JSON.</td>
+                                (java.util.List&lt;java.lang.String&gt; excludes, java.lang.Class domainClass)</code><br>Constructor that supports a list of fields to exclude from the serialized JSON.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -207,7 +213,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isAllowed(java.lang.String)">isAllowed</a></strong>(java.lang.String fieldName)</code><br>Determines if the field is allowed (e.g. not excluded). </td>
+                            <td class="colLast"><code><strong><a href="#isAllowed(java.lang.String)">isAllowed</a></strong>(java.lang.String fieldName)</code><br>Determines if the field is allowed (e.g. not excluded).</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -232,7 +238,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter</code></td>
-                            <td class="colLast"><code>com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#from(com.fasterxml.jackson.databind.ser.BeanPropertyFilter), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#serializeAsField(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider, com.fasterxml.jackson.databind.ser.BeanPropertyWriter), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#serializeAsField(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider, com.fasterxml.jackson.databind.ser.PropertyWriter), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#serializeAsElement(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider, com.fasterxml.jackson.databind.ser.PropertyWriter), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#depositSchemaProperty(com.fasterxml.jackson.databind.ser.PropertyWriter, com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor, com.fasterxml.jackson.databind.SerializerProvider), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#depositSchemaProperty(com.fasterxml.jackson.databind.ser.BeanPropertyWriter, com.fasterxml.jackson.databind.node.ObjectNode, com.fasterxml.jackson.databind.SerializerProvider), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#depositSchemaProperty(com.fasterxml.jackson.databind.ser.BeanPropertyWriter, com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor, com.fasterxml.jackson.databind.SerializerProvider), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#depositSchemaProperty(com.fasterxml.jackson.databind.ser.PropertyWriter, com.fasterxml.jackson.databind.node.ObjectNode, com.fasterxml.jackson.databind.SerializerProvider), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#serializeAll(), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#serializeAll(java.util.Set), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#filterOutAllExcept([Ljava.lang.String;), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#filterOutAllExcept(java.util.Set), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#serializeAllExcept(java.util.Set), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#serializeAllExcept([Ljava.lang.String;), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#wait(long, int), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#wait(), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#wait(long), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#equals(java.lang.Object), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#toString(), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#hashCode(), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#getClass(), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#notify(), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#notifyAll()</code></td>
+                            <td class="colLast"><code>com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#from(com.fasterxml.jackson.databind.ser.BeanPropertyFilter), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#serializeAll(), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#serializeAll(java.util.Set), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#filterOutAllExcept(java.util.Set), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#filterOutAllExcept([Ljava.lang.String;), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#serializeAllExcept([Ljava.lang.String;), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#serializeAllExcept(java.util.Set), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#serializeAsField(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider, com.fasterxml.jackson.databind.ser.BeanPropertyWriter), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#serializeAsField(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider, com.fasterxml.jackson.databind.ser.PropertyWriter), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#serializeAsElement(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider, com.fasterxml.jackson.databind.ser.PropertyWriter), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#depositSchemaProperty(com.fasterxml.jackson.databind.ser.BeanPropertyWriter, com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor, com.fasterxml.jackson.databind.SerializerProvider), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#depositSchemaProperty(com.fasterxml.jackson.databind.ser.PropertyWriter, com.fasterxml.jackson.databind.node.ObjectNode, com.fasterxml.jackson.databind.SerializerProvider), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#depositSchemaProperty(com.fasterxml.jackson.databind.ser.BeanPropertyWriter, com.fasterxml.jackson.databind.node.ObjectNode, com.fasterxml.jackson.databind.SerializerProvider), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#depositSchemaProperty(com.fasterxml.jackson.databind.ser.PropertyWriter, com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor, com.fasterxml.jackson.databind.SerializerProvider), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#wait(long, int), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#wait(), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#wait(long), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#equals(java.lang.Object), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#toString(), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#hashCode(), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#getClass(), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#notify(), com.fasterxml.jackson.databind.ser.impl.SimpleBeanPropertyFilter#notifyAll()</code></td>
                         </tr>
                     </table>
                    </ul>
@@ -279,7 +285,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="excludes"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>excludes</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.String&gt; <strong>excludes</strong></h4>
                                 <p> The list of excluded fields.</p>
                             </li>
                         </ul>
@@ -287,7 +293,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="stdExcludes"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;<a href='../../../../List.html'>List</a> <strong>stdExcludes</strong></h4>
+                                <h4>private&nbsp;static&nbsp;java.util.List&lt;java.lang.String&gt; <strong>stdExcludes</strong></h4>
                                 <p> The list of standard fields that are excluded.</p>
                             </li>
                         </ul>
@@ -309,7 +315,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="SearchableJacksonFilter(List, java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>SearchableJacksonFilter</strong>(<a href='../../../../List.html'>List</a> excludes, java.lang.Class domainClass)</h4>
+                                <h4><strong>SearchableJacksonFilter</strong>(java.util.List&lt;java.lang.String&gt; excludes, java.lang.Class domainClass)</h4>
                                 <p> Constructor that supports a list of fields to exclude from the serialized JSON. <DL><DT><B>Parameters:</B></DT><DD><code>excludes</code> -  The list of excluded fields.</DD><DD><code>domainClass</code> -  The domain class for this filter.</DD></DL></p>
                             </li>
                         </ul>
@@ -346,7 +352,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="serializeAsField(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider, com.fasterxml.jackson.databind.ser.PropertyWriter)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>serializeAsField</strong>(java.lang.Object pojo, com.fasterxml.jackson.core.JsonGenerator jgen, com.fasterxml.jackson.databind.SerializerProvider provider, com.fasterxml.jackson.databind.ser.PropertyWriter writer)</h4>
                                 <p></p>
                             </li>

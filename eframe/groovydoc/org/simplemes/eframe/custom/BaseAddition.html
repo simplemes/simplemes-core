@@ -101,15 +101,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../org/simplemes/eframe/custom/AdditionInterface.html'>AdditionInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
+
 <pre>abstract&nbsp;class BaseAddition
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../org/simplemes/eframe/custom/AdditionInterface.html'>AdditionInterface</a></pre>
 
     <p> Base class for most Addition classes.  Helps define the addition's elements to be added to the application.
  Includes elements like field extensions, new encoded types, etc.
@@ -177,25 +177,25 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getAssets()">getAssets</a></strong>()</code><br>Returns the assets defined in this addition. </td>
+                            <td class="colLast"><code>java.util.List&lt;org.simplemes.eframe.custom.AdditionAssetConfiguration&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getAssets()">getAssets</a></strong>()</code><br>Returns the assets defined in this addition.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getEncodedTypes()">getEncodedTypes</a></strong>()</code><br>Returns the list of encoded field types that data layer will support. </td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.Class&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getEncodedTypes()">getEncodedTypes</a></strong>()</code><br>Returns the list of encoded field types that data layer will support.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getFields()">getFields</a></strong>()</code><br>Returns the field extensions defined in this addition. </td>
+                            <td class="colLast"><code>java.util.List&lt;org.simplemes.eframe.custom.AdditionFieldConfiguration&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getFields()">getFields</a></strong>()</code><br>Returns the field extensions defined in this addition.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.Class&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getInitialDataLoaders()">getInitialDataLoaders</a></strong>()</code><br>Returns a list of classes that define non-domain classes that will perform initial data loading.
  </td>
                         </tr>
@@ -203,7 +203,7 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getName()">getName</a></strong>()</code><br>Returns the name of this addition. </td>
+                            <td class="colLast"><code><strong><a href="#getName()">getName</a></strong>()</code><br>Returns the name of this addition.</td>
                         </tr>
                         
                     </table>
@@ -277,8 +277,8 @@ extends java.lang.Object
                         <a name="getAssets()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-<a href='../../../../List.html'>List</a> <strong>getAssets</strong>()</h4>
+                                <h4>@java.lang.Override
+java.util.List&lt;org.simplemes.eframe.custom.AdditionAssetConfiguration&gt; <strong>getAssets</strong>()</h4>
                                 <p> Returns the assets defined in this addition. <DL><DT><B>Returns:</B></DT><DD>The asset additions.</DD></DL></p>
                             </li>
                         </ul>
@@ -286,8 +286,8 @@ extends java.lang.Object
                         <a name="getEncodedTypes()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-<a href='../../../../List.html'>List</a> <strong>getEncodedTypes</strong>()</h4>
+                                <h4>@java.lang.Override
+java.util.List&lt;java.lang.Class&gt; <strong>getEncodedTypes</strong>()</h4>
                                 <p> Returns the list of encoded field types that data layer will support. <DL><DT><B>Returns:</B></DT><DD>The list of classes.</DD></DL></p>
                             </li>
                         </ul>
@@ -295,8 +295,8 @@ extends java.lang.Object
                         <a name="getFields()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-<a href='../../../../List.html'>List</a> <strong>getFields</strong>()</h4>
+                                <h4>@java.lang.Override
+java.util.List&lt;org.simplemes.eframe.custom.AdditionFieldConfiguration&gt; <strong>getFields</strong>()</h4>
                                 <p> Returns the field extensions defined in this addition. <DL><DT><B>Returns:</B></DT><DD>The field additions.</DD></DL></p>
                             </li>
                         </ul>
@@ -304,8 +304,8 @@ extends java.lang.Object
                         <a name="getInitialDataLoaders()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-<a href='../../../../List.html'>List</a> <strong>getInitialDataLoaders</strong>()</h4>
+                                <h4>@java.lang.Override
+java.util.List&lt;java.lang.Class&gt; <strong>getInitialDataLoaders</strong>()</h4>
                                 <p> Returns a list of classes that define non-domain classes that will perform initial data loading.
  These classes need a static initialDataLoad() method. <DL><DT><B>Returns:</B></DT><DD>The list of other classes</DD></DL></p>
                             </li>
@@ -314,7 +314,7 @@ extends java.lang.Object
                         <a name="getName()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>getName</strong>()</h4>
                                 <p> Returns the name of this addition. <DL><DT><B>Returns:</B></DT><DD>The name.</DD></DL></p>
                             </li>

@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.security.annotation.Secured(value: OPERATOR)
+@io.micronaut.http.annotation.Controller(value: /selection)
+class SelectionController
+extends org.simplemes.eframe.controller.BaseController</pre>
 
     <p> The controller for the core MES selection activities.
 
@@ -211,7 +220,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>org.simplemes.eframe.controller.StandardModelAndView</code></td>
-                            <td class="colLast"><code><strong><a href="#changeWorkCenterDialog(io.micronaut.http.HttpRequest, java.security.Principal)">changeWorkCenterDialog</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Displays the change work center dialog contents. </td>
+                            <td class="colLast"><code><strong><a href="#changeWorkCenterDialog(io.micronaut.http.HttpRequest, java.security.Principal)">changeWorkCenterDialog</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Displays the change work center dialog contents.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -223,7 +232,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>org.simplemes.eframe.controller.StandardModelAndView</code></td>
-                            <td class="colLast"><code><strong><a href="#workCenterSelection(io.micronaut.http.HttpRequest, java.security.Principal)">workCenterSelection</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Displays the work center selection dashboard activity. </td>
+                            <td class="colLast"><code><strong><a href="#workCenterSelection(io.micronaut.http.HttpRequest, java.security.Principal)">workCenterSelection</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Displays the work center selection dashboard activity.</td>
                         </tr>
                         
                     </table>
@@ -242,7 +251,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class org.simplemes.eframe.controller.BaseController</code></td>
-                            <td class="colLast"><code>org.simplemes.eframe.controller.BaseController#error(io.micronaut.http.HttpRequest, java.lang.Throwable), org.simplemes.eframe.controller.BaseController#buildErrorResponse(java.lang.String), org.simplemes.eframe.controller.BaseController#buildOkResponse(java.lang.Object), org.simplemes.eframe.controller.BaseController#buildOkResponse(), org.simplemes.eframe.controller.BaseController#buildDeniedResponse(io.micronaut.http.HttpRequest, java.lang.String, java.security.Principal), org.simplemes.eframe.controller.BaseController#parseBody(io.micronaut.http.HttpRequest, java.lang.Class), org.simplemes.eframe.controller.BaseController#getMetaClass(), org.simplemes.eframe.controller.BaseController#setMetaClass(groovy.lang.MetaClass), org.simplemes.eframe.controller.BaseController#wait(long, int), org.simplemes.eframe.controller.BaseController#wait(), org.simplemes.eframe.controller.BaseController#wait(long), org.simplemes.eframe.controller.BaseController#equals(java.lang.Object), org.simplemes.eframe.controller.BaseController#toString(), org.simplemes.eframe.controller.BaseController#hashCode(), org.simplemes.eframe.controller.BaseController#getClass(), org.simplemes.eframe.controller.BaseController#notify(), org.simplemes.eframe.controller.BaseController#notifyAll(), org.simplemes.eframe.controller.BaseController#getProperty(java.lang.String), org.simplemes.eframe.controller.BaseController#setProperty(java.lang.String, java.lang.Object), org.simplemes.eframe.controller.BaseController#invokeMethod(java.lang.String, java.lang.Object)</code></td>
+                            <td class="colLast"><code>org.simplemes.eframe.controller.BaseController#error(io.micronaut.http.HttpRequest, java.lang.Throwable), org.simplemes.eframe.controller.BaseController#buildErrorResponse(java.lang.String), org.simplemes.eframe.controller.BaseController#buildOkResponse(), org.simplemes.eframe.controller.BaseController#buildOkResponse(java.lang.Object), org.simplemes.eframe.controller.BaseController#buildDeniedResponse(io.micronaut.http.HttpRequest, java.lang.String, java.security.Principal), org.simplemes.eframe.controller.BaseController#parseBody(io.micronaut.http.HttpRequest, java.lang.Class), org.simplemes.eframe.controller.BaseController#getMetaClass(), org.simplemes.eframe.controller.BaseController#setMetaClass(groovy.lang.MetaClass), org.simplemes.eframe.controller.BaseController#wait(long, int), org.simplemes.eframe.controller.BaseController#wait(), org.simplemes.eframe.controller.BaseController#wait(long), org.simplemes.eframe.controller.BaseController#equals(java.lang.Object), org.simplemes.eframe.controller.BaseController#toString(), org.simplemes.eframe.controller.BaseController#hashCode(), org.simplemes.eframe.controller.BaseController#getClass(), org.simplemes.eframe.controller.BaseController#notify(), org.simplemes.eframe.controller.BaseController#notifyAll(), org.simplemes.eframe.controller.BaseController#getProperty(java.lang.String), org.simplemes.eframe.controller.BaseController#setProperty(java.lang.String, java.lang.Object), org.simplemes.eframe.controller.BaseController#invokeMethod(java.lang.String, java.lang.Object)</code></td>
                         </tr>
                     </table>
                    </ul>
@@ -315,10 +324,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="changeWorkCenterDialog(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-@io.micronaut.http.annotation.ProducesProduces
-@java.lang.SuppressWarningsSuppressWarnings
-org.simplemes.eframe.controller.StandardModelAndView <strong>changeWorkCenterDialog</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /changeWorkCenterDialog)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@java.lang.SuppressWarnings(value: unused)
+org.simplemes.eframe.controller.StandardModelAndView <strong>changeWorkCenterDialog</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the change work center dialog contents. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.</DD><DD><code>principal</code> -  The user.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The page.</DD></DL></p>
                             </li>
                         </ul>
@@ -326,10 +335,10 @@ org.simplemes.eframe.controller.StandardModelAndView <strong>changeWorkCenterDia
                         <a name="workCenterChanged(java.lang.String, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.PostPost
-@javax.transaction.TransactionalTransactional
-@java.lang.SuppressWarningsSuppressWarnings
-void <strong>workCenterChanged</strong>(@io.micronaut.http.annotation.BodyBody java.lang.String body, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Post(value: /workCenterChanged)
+@javax.transaction.Transactional
+@java.lang.SuppressWarnings(value: unused)
+void <strong>workCenterChanged</strong>(@io.micronaut.http.annotation.Body java.lang.String body, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Saves the given work center preference value into the user's preferences for the give element.
 
  <h3>Body Content</h3>
@@ -344,10 +353,10 @@ void <strong>workCenterChanged</strong>(@io.micronaut.http.annotation.BodyBody j
                         <a name="workCenterSelection(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-@io.micronaut.http.annotation.ProducesProduces
-@java.lang.SuppressWarningsSuppressWarnings
-org.simplemes.eframe.controller.StandardModelAndView <strong>workCenterSelection</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /workCenterSelection)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@java.lang.SuppressWarnings(value: [unused, UnnecessaryQualifiedReference])
+org.simplemes.eframe.controller.StandardModelAndView <strong>workCenterSelection</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the work center selection dashboard activity. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.</DD><DD><code>principal</code> -  The user.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The page.</DD></DL></p>
                             </li>
                         </ul>

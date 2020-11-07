@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includePackage: false, includeNames: true, includeSuper: true)
+@groovy.transform.EqualsAndHashCode(includes: [column])
+class ColumnPreference
+extends <a href='../../../../org/simplemes/eframe/preference/BasePreferenceSetting.html'>BasePreferenceSetting</a></pre>
 
     <p> This holds the specific preferences for a single column in a list.
  The column's width, display order and sorting options are stored here.
@@ -193,8 +201,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#ColumnPreference(Map)">ColumnPreference</a>
-                                (<a href='../../../../Map.html'>Map</a> options)</code><br>Standard map constructor.</td>
+                                <code><a href="#ColumnPreference(java.util.Map)">ColumnPreference</a>
+                                (java.util.Map options)</code><br>Standard map constructor.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -323,11 +331,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="ColumnPreference(Map)"><!-- --></a>
+                        <a name="ColumnPreference(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-<strong>ColumnPreference</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+<strong>ColumnPreference</strong>(java.util.Map options)</h4>
                                 <p> Standard map constructor. <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  The options.</DD></DL></p>
                             </li>
                         </ul>
@@ -366,9 +374,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getKey()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>getKey</strong>()</h4>
-                                <p> The key (column name) for this preference.  This is unique within a single Preference object's settings list.</p>
+                                <p> The key (column name) for this preference.  This is unique within a single <a href='../../../../org/simplemes/eframe/preference/Preference.html' title='Preference'>Preference</a> object's settings list.</p>
                             </li>
                         </ul>
                     

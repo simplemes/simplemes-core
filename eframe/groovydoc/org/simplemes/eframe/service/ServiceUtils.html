@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+class ServiceUtils
+extends java.lang.Object</pre>
 
     <p> Service support utilities.
  These class provide common service class utilities that simplify
@@ -187,7 +194,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.Class&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getAllServices()">getAllServices</a></strong>()</code><br>Returns all of the service classes defined in the system.</td>
                         </tr>
                         
@@ -280,7 +287,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getAllServices()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getAllServices</strong>()</h4>
+                                <h4>java.util.List&lt;java.lang.Class&gt; <strong>getAllServices</strong>()</h4>
                                 <p> Returns all of the service classes defined in the system.
  <p>
  This looks for classes that use the<DL><DT><B>Singleton:</B></DT><DD>annotation and end with Service or ServiceDefinition$Intercepted.</DD></DL> <DL><DT><B>Returns:</B></DT><DD>The list of service classes.</DD></DL></p>

@@ -98,11 +98,20 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.security.annotation.Secured(value: OPERATOR)
+@io.micronaut.http.annotation.Controller(value: /work)
+class WorkController
+extends org.simplemes.eframe.controller.BaseController</pre>
 
     <p> Provides access to the WorkService for starting and completing work on Orders and LSN.
  Provides API access and client GUI access.
  <p>
- The org.simplemes.mes.demand.service.WorkService is part of the <b>Stable API</b>.
+ The <a href='../../../../../org/simplemes/mes/demand/service/WorkService.html' title='WorkService'>WorkService</a> is part of the <b>Stable API</b>.
 </p>
 
           </li>
@@ -215,7 +224,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>org.simplemes.eframe.controller.StandardModelAndView</code></td>
-                            <td class="colLast"><code><strong><a href="#completeActivity(java.security.Principal)">completeActivity</a></strong>(java.security.Principal principal)</code><br>Displays the core complete activity page. </td>
+                            <td class="colLast"><code><strong><a href="#completeActivity(java.security.Principal)">completeActivity</a></strong>(java.security.Principal principal)</code><br>Displays the core complete activity page.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -227,7 +236,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>org.simplemes.eframe.controller.StandardModelAndView</code></td>
-                            <td class="colLast"><code><strong><a href="#reverseCompleteActivity(java.security.Principal)">reverseCompleteActivity</a></strong>(java.security.Principal principal)</code><br>Displays the core reverse complete activity page. </td>
+                            <td class="colLast"><code><strong><a href="#reverseCompleteActivity(java.security.Principal)">reverseCompleteActivity</a></strong>(java.security.Principal principal)</code><br>Displays the core reverse complete activity page.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -239,7 +248,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>org.simplemes.eframe.controller.StandardModelAndView</code></td>
-                            <td class="colLast"><code><strong><a href="#reverseStartActivity(java.security.Principal)">reverseStartActivity</a></strong>(java.security.Principal principal)</code><br>Displays the core reverse start activity page. </td>
+                            <td class="colLast"><code><strong><a href="#reverseStartActivity(java.security.Principal)">reverseStartActivity</a></strong>(java.security.Principal principal)</code><br>Displays the core reverse start activity page.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -251,7 +260,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>org.simplemes.eframe.controller.StandardModelAndView</code></td>
-                            <td class="colLast"><code><strong><a href="#startActivity(java.security.Principal)">startActivity</a></strong>(java.security.Principal principal)</code><br>Displays the core start activity page. </td>
+                            <td class="colLast"><code><strong><a href="#startActivity(java.security.Principal)">startActivity</a></strong>(java.security.Principal principal)</code><br>Displays the core start activity page.</td>
                         </tr>
                         
                     </table>
@@ -270,7 +279,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class org.simplemes.eframe.controller.BaseController</code></td>
-                            <td class="colLast"><code>org.simplemes.eframe.controller.BaseController#error(io.micronaut.http.HttpRequest, java.lang.Throwable), org.simplemes.eframe.controller.BaseController#buildErrorResponse(java.lang.String), org.simplemes.eframe.controller.BaseController#buildOkResponse(java.lang.Object), org.simplemes.eframe.controller.BaseController#buildOkResponse(), org.simplemes.eframe.controller.BaseController#buildDeniedResponse(io.micronaut.http.HttpRequest, java.lang.String, java.security.Principal), org.simplemes.eframe.controller.BaseController#parseBody(io.micronaut.http.HttpRequest, java.lang.Class), org.simplemes.eframe.controller.BaseController#getMetaClass(), org.simplemes.eframe.controller.BaseController#setMetaClass(groovy.lang.MetaClass), org.simplemes.eframe.controller.BaseController#wait(long, int), org.simplemes.eframe.controller.BaseController#wait(), org.simplemes.eframe.controller.BaseController#wait(long), org.simplemes.eframe.controller.BaseController#equals(java.lang.Object), org.simplemes.eframe.controller.BaseController#toString(), org.simplemes.eframe.controller.BaseController#hashCode(), org.simplemes.eframe.controller.BaseController#getClass(), org.simplemes.eframe.controller.BaseController#notify(), org.simplemes.eframe.controller.BaseController#notifyAll(), org.simplemes.eframe.controller.BaseController#getProperty(java.lang.String), org.simplemes.eframe.controller.BaseController#setProperty(java.lang.String, java.lang.Object), org.simplemes.eframe.controller.BaseController#invokeMethod(java.lang.String, java.lang.Object)</code></td>
+                            <td class="colLast"><code>org.simplemes.eframe.controller.BaseController#error(io.micronaut.http.HttpRequest, java.lang.Throwable), org.simplemes.eframe.controller.BaseController#buildErrorResponse(java.lang.String), org.simplemes.eframe.controller.BaseController#buildOkResponse(), org.simplemes.eframe.controller.BaseController#buildOkResponse(java.lang.Object), org.simplemes.eframe.controller.BaseController#buildDeniedResponse(io.micronaut.http.HttpRequest, java.lang.String, java.security.Principal), org.simplemes.eframe.controller.BaseController#parseBody(io.micronaut.http.HttpRequest, java.lang.Class), org.simplemes.eframe.controller.BaseController#getMetaClass(), org.simplemes.eframe.controller.BaseController#setMetaClass(groovy.lang.MetaClass), org.simplemes.eframe.controller.BaseController#wait(long, int), org.simplemes.eframe.controller.BaseController#wait(), org.simplemes.eframe.controller.BaseController#wait(long), org.simplemes.eframe.controller.BaseController#equals(java.lang.Object), org.simplemes.eframe.controller.BaseController#toString(), org.simplemes.eframe.controller.BaseController#hashCode(), org.simplemes.eframe.controller.BaseController#getClass(), org.simplemes.eframe.controller.BaseController#notify(), org.simplemes.eframe.controller.BaseController#notifyAll(), org.simplemes.eframe.controller.BaseController#getProperty(java.lang.String), org.simplemes.eframe.controller.BaseController#setProperty(java.lang.String, java.lang.Object), org.simplemes.eframe.controller.BaseController#invokeMethod(java.lang.String, java.lang.Object)</code></td>
                         </tr>
                     </table>
                    </ul>
@@ -343,20 +352,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="complete(java.lang.String, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.PostPost
-@java.lang.SuppressWarningsSuppressWarnings
-io.micronaut.http.HttpResponse <strong>complete</strong>(@io.micronaut.http.annotation.BodyBody java.lang.String body, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Post(value: /complete)
+@java.lang.SuppressWarnings(value: unused)
+io.micronaut.http.HttpResponse <strong>complete</strong>(@io.micronaut.http.annotation.Body java.lang.String body, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Handle complete WorkService requests.  The parameters/content matches the fields of the request object
- org.simplemes.mes.demand.CompleteRequest.</p>
+ <a href='../../../../../org/simplemes/mes/demand/CompleteRequest.html' title='CompleteRequest'>CompleteRequest</a>.</p>
                             </li>
                         </ul>
                     
                         <a name="completeActivity(java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-@io.micronaut.http.annotation.ProducesProduces
-org.simplemes.eframe.controller.StandardModelAndView <strong>completeActivity</strong>(@javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /completeActivity)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+org.simplemes.eframe.controller.StandardModelAndView <strong>completeActivity</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the core complete activity page. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.</DD><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The model/view to display.</DD></DL></p>
                             </li>
                         </ul>
@@ -364,20 +373,20 @@ org.simplemes.eframe.controller.StandardModelAndView <strong>completeActivity</s
                         <a name="reverseComplete(java.lang.String, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.PostPost
-@java.lang.SuppressWarningsSuppressWarnings
-io.micronaut.http.HttpResponse <strong>reverseComplete</strong>(@io.micronaut.http.annotation.BodyBody java.lang.String body, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Post(value: /reverseComplete)
+@java.lang.SuppressWarnings(value: unused)
+io.micronaut.http.HttpResponse <strong>reverseComplete</strong>(@io.micronaut.http.annotation.Body java.lang.String body, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Handle reverse complete WorkService requests.  The parameters/content matches the fields of the request object
- org.simplemes.mes.demand.CompleteRequest.</p>
+ <a href='../../../../../org/simplemes/mes/demand/CompleteRequest.html' title='CompleteRequest'>CompleteRequest</a>.</p>
                             </li>
                         </ul>
                     
                         <a name="reverseCompleteActivity(java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-@io.micronaut.http.annotation.ProducesProduces
-org.simplemes.eframe.controller.StandardModelAndView <strong>reverseCompleteActivity</strong>(@javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /reverseCompleteActivity)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+org.simplemes.eframe.controller.StandardModelAndView <strong>reverseCompleteActivity</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the core reverse complete activity page. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.</DD><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The model/view to display.</DD></DL></p>
                             </li>
                         </ul>
@@ -385,20 +394,20 @@ org.simplemes.eframe.controller.StandardModelAndView <strong>reverseCompleteActi
                         <a name="reverseStart(java.lang.String, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.PostPost
-@java.lang.SuppressWarningsSuppressWarnings
-io.micronaut.http.HttpResponse <strong>reverseStart</strong>(@io.micronaut.http.annotation.BodyBody java.lang.String body, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Post(value: /reverseStart)
+@java.lang.SuppressWarnings(value: unused)
+io.micronaut.http.HttpResponse <strong>reverseStart</strong>(@io.micronaut.http.annotation.Body java.lang.String body, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Handle reverse start WorkService requests.  The parameters/content matches the fields of the request object
- org.simplemes.mes.demand.StartRequest.</p>
+ <a href='../../../../../org/simplemes/mes/demand/StartRequest.html' title='StartRequest'>StartRequest</a>.</p>
                             </li>
                         </ul>
                     
                         <a name="reverseStartActivity(java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-@io.micronaut.http.annotation.ProducesProduces
-org.simplemes.eframe.controller.StandardModelAndView <strong>reverseStartActivity</strong>(@javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /reverseStartActivity)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+org.simplemes.eframe.controller.StandardModelAndView <strong>reverseStartActivity</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the core reverse start activity page. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.</DD><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The model/view to display.</DD></DL></p>
                             </li>
                         </ul>
@@ -406,22 +415,22 @@ org.simplemes.eframe.controller.StandardModelAndView <strong>reverseStartActivit
                         <a name="start(java.lang.String, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.PostPost
-@java.lang.SuppressWarningsSuppressWarnings
-io.micronaut.http.HttpResponse <strong>start</strong>(@io.micronaut.http.annotation.BodyBody java.lang.String body, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Post(value: /start)
+@java.lang.SuppressWarnings(value: unused)
+io.micronaut.http.HttpResponse <strong>start</strong>(@io.micronaut.http.annotation.Body java.lang.String body, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Handle start WorkService requests.  The parameters/content matches the fields of the request object
- org.simplemes.mes.demand.StartRequest.
+ <a href='../../../../../org/simplemes/mes/demand/StartRequest.html' title='StartRequest'>StartRequest</a>.
  <p>
- <b>Response</b>: JSON list org.simplemes.mes.demand.StartResponse</p>
+ <b>Response</b>: JSON list <a href='../../../../../org/simplemes/mes/demand/StartResponse.html' title='StartResponse'>StartResponse</a></p>
                             </li>
                         </ul>
                     
                         <a name="startActivity(java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-@io.micronaut.http.annotation.ProducesProduces
-org.simplemes.eframe.controller.StandardModelAndView <strong>startActivity</strong>(@javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /startActivity)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+org.simplemes.eframe.controller.StandardModelAndView <strong>startActivity</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the core start activity page. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.</DD><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The model/view to display.</DD></DL></p>
                             </li>
                         </ul>

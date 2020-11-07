@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.security.annotation.Secured(value: [ADMIN, DESIGNER])
+@io.micronaut.http.annotation.Controller(value: /dashboard)
+class DashboardController
+extends <a href='../../../../../org/simplemes/eframe/controller/BaseController.html'>BaseController</a></pre>
 
     <p> Provides runtime access to a dashboard (configured or not).
  Most configuration actions require the Designer role.</p>
@@ -226,7 +235,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;TaskMenuItem&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getTaskMenuItems()">getTaskMenuItems</a></strong>()</code><br>Defines the standard end-user task entry points that this controller handles.
  </td>
                         </tr>
@@ -281,7 +290,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="ROOT_URI"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: unused)
 public&nbsp;static&nbsp;final&nbsp;java.lang.String <strong>ROOT_URI</strong></h4>
                                 <p> Root of the URI this controller services.  <b>("/dashboard")</b>.
  This is also the page used for user preferences.</p>
@@ -346,7 +355,7 @@ public&nbsp;static&nbsp;final&nbsp;java.lang.String <strong>ROOT_URI</strong></h
                         <a name="getTaskMenuItems()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>getTaskMenuItems</strong>()</h4>
+                                <h4>java.util.List&lt;TaskMenuItem&gt; <strong>getTaskMenuItems</strong>()</h4>
                                 <p> Defines the standard end-user task entry points that this controller handles.
  This method finds all current default dashboards and adds them to the list.</p>
                             </li>
@@ -355,10 +364,10 @@ public&nbsp;static&nbsp;final&nbsp;java.lang.String <strong>ROOT_URI</strong></h
                         <a name="index(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>index</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_AUTHENTICATED)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /)
+<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>index</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> The main dashboard entry point used at runtime.</p>
                             </li>
                         </ul>

@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+@groovy.transform.Sortable(includes: [displayOrder, name])
+class TaskMenuFolder
+extends java.lang.Object</pre>
 
     <p> Defines a folder (group) of task menu items.</p>
 
@@ -135,12 +143,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/web/task/TaskMenuFolder.html' title='TaskMenuFolder'>TaskMenuFolder</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#folders">folders</a></code><br>The list of sub-folders inside of this folder.</td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/web/task/TaskMenuItem.html' title='TaskMenuItem'>TaskMenuItem</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#menuItems">menuItems</a></code><br>The list of menu items in this folder.</td>
                         </tr>
                         
@@ -200,12 +208,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;static&nbsp;<a href='../../../../../org/simplemes/eframe/web/task/TaskMenuFolder.html'>TaskMenuFolder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildFolder(java.lang.String)">buildFolder</a></strong>(java.lang.String folderDef)</code><br>Convenience builder to build one folder with an optional display order from the string. </td>
+                            <td class="colLast"><code><strong><a href="#buildFolder(java.lang.String)">buildFolder</a></strong>(java.lang.String folderDef)</code><br>Convenience builder to build one folder with an optional display order from the string.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>static&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/web/task/TaskMenuFolder.html' title='TaskMenuFolder'>TaskMenuFolder</a>&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#buildFolders(java.lang.String)">buildFolders</a></strong>(java.lang.String foldersDef)</code><br>Convenience builder to build one or more folders from the given folder definition.
  </td>
                         </tr>
@@ -213,19 +221,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getLocalizedName(Locale)">getLocalizedName</a></strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</code><br>Returns the localized name.  </td>
+                            <td class="colLast"><code><strong><a href="#getLocalizedName(java.util.Locale)">getLocalizedName</a></strong>(java.util.Locale locale)</code><br>Returns the localized name.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getLocalizedTooltip(Locale)">getLocalizedTooltip</a></strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</code><br>Returns the localized tooltip.  </td>
+                            <td class="colLast"><code><strong><a href="#getLocalizedTooltip(java.util.Locale)">getLocalizedTooltip</a></strong>(java.util.Locale locale)</code><br>Returns the localized tooltip.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#leftShift(org.simplemes.eframe.web.task.TaskMenuItem)">leftShift</a></strong>(<a href='../../../../../org/simplemes/eframe/web/task/TaskMenuItem.html'>TaskMenuItem</a> menuItem)</code><br>Adds the given menu item to this folder. </td>
+                            <td class="colLast"><code><strong><a href="#leftShift(org.simplemes.eframe.web.task.TaskMenuItem)">leftShift</a></strong>(<a href='../../../../../org/simplemes/eframe/web/task/TaskMenuItem.html'>TaskMenuItem</a> menuItem)</code><br>Adds the given menu item to this folder.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -294,7 +302,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="folders"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../List.html'>List</a> <strong>folders</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/web/task/TaskMenuFolder.html' title='TaskMenuFolder'>TaskMenuFolder</a>&gt; <strong>folders</strong></h4>
                                 <p> The list of sub-folders inside of this folder.</p>
                             </li>
                         </ul>
@@ -302,7 +310,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="menuItems"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../List.html'>List</a> <strong>menuItems</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/web/task/TaskMenuItem.html' title='TaskMenuItem'>TaskMenuItem</a>&gt; <strong>menuItems</strong></h4>
                                 <p> The list of menu items in this folder.</p>
                             </li>
                         </ul>
@@ -361,24 +369,24 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="buildFolders(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../../List.html'>List</a> <strong>buildFolders</strong>(java.lang.String foldersDef)</h4>
+                                <h4>static&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/web/task/TaskMenuFolder.html' title='TaskMenuFolder'>TaskMenuFolder</a>&gt; <strong>buildFolders</strong>(java.lang.String foldersDef)</h4>
                                 <p> Convenience builder to build one or more folders from the given folder definition.
  The name is required, but the order is optional. <DL><DT><B>Parameters:</B></DT><DD><code>foldersDef</code> -  The folder definition for one or more folders.  Format: 'name:order.name:order'</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of folders in a flattened list (top-level first).</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="getLocalizedName(Locale)"><!-- --></a>
+                        <a name="getLocalizedName(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>getLocalizedName</strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>java.lang.String <strong>getLocalizedName</strong>(java.util.Locale locale)</h4>
                                 <p> Returns the localized name.  Uses the name with 'taskMenu.${name}.label' to find the localized name. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The optional locale.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The localized name.  If not found, then returns the raw 'name'.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="getLocalizedTooltip(Locale)"><!-- --></a>
+                        <a name="getLocalizedTooltip(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>getLocalizedTooltip</strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>java.lang.String <strong>getLocalizedTooltip</strong>(java.util.Locale locale)</h4>
                                 <p> Returns the localized tooltip.  Uses the name with 'taskMenu.${name}.tooltip' to find the localized tooltip. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The optional locale.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The localized tooltip.  If not found, then returns the raw 'name'.</DD></DL></p>
                             </li>
                         </ul>

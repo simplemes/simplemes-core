@@ -98,6 +98,18 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@io.micronaut.data.annotation.MappedEntity(value: ordr)
+@<a href='../../org/simplemes/eframe/domain/annotation/DomainEntity.html' title='DomainEntity'>DomainEntity</a>
+@com.fasterxml.jackson.annotation.JsonFilter(value: searchableFilter)
+@groovy.transform.ToString(includeNames: true)
+@groovy.transform.EqualsAndHashCode(includes: [order])
+@java.lang.SuppressWarnings(value: unused)
+class Order
+extends java.lang.Object</pre>
 
     <p> A sample domain class that simulates an order.
  Fields include: order, qtyToBuild, product, status, dueDate</p>
@@ -136,12 +148,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateCreated">dateCreated</a></code><br></td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateUpdated">dateUpdated</a></code><br></td>
                         </tr>
                         
@@ -166,7 +178,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../sample/domain/OrderLine.html' title='OrderLine'>OrderLine</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#orderLines">orderLines</a></code><br></td>
                         </tr>
                         
@@ -191,7 +203,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -235,14 +247,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#Order(Map)">Order</a>
-                                (<a href='../../Map.html'>Map</a> options)</code><br></td>
+                                <code><a href="#Order(java.util.Map)">Order</a>
+                                (java.util.Map options)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#Order(java.lang.String, UUID)">Order</a>
-                                (java.lang.String order, <a href='../../UUID.html'>UUID</a> uuid)</code><br></td>
+                                <code><a href="#Order(java.lang.String, java.util.UUID)">Order</a>
+                                (java.lang.String order, java.util.UUID uuid)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
@@ -293,7 +305,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toStringLocalized(Locale)">toStringLocalized</a></strong>(<a href='../../Locale.html'>Locale</a> locale)</code><br>Builds a localized version of the order. </td>
+                            <td class="colLast"><code><strong><a href="#toStringLocalized(java.util.Locale)">toStringLocalized</a></strong>(java.util.Locale locale)</code><br>Builds a localized version of the order.</td>
                         </tr>
                         
                     </table>
@@ -350,7 +362,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateCreated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../Date.html'>Date</a> <strong>dateCreated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateCreated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -358,7 +370,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateUpdated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../Date.html'>Date</a> <strong>dateUpdated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateUpdated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -398,7 +410,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="orderLines"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../List.html'>List</a> <strong>orderLines</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../sample/domain/OrderLine.html' title='OrderLine'>OrderLine</a>&gt; <strong>orderLines</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -438,7 +450,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -481,18 +493,18 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="Order(Map)"><!-- --></a>
+                        <a name="Order(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>Order</strong>(<a href='../../Map.html'>Map</a> options)</h4>
+                                <h4><strong>Order</strong>(java.util.Map options)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="Order(java.lang.String, UUID)"><!-- --></a>
+                        <a name="Order(java.lang.String, java.util.UUID)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>Order</strong>(java.lang.String order, <a href='../../UUID.html'>UUID</a> uuid)</h4>
+                                <h4><strong>Order</strong>(java.lang.String order, java.util.UUID uuid)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -542,10 +554,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="toStringLocalized(Locale)"><!-- --></a>
+                        <a name="toStringLocalized(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>toStringLocalized</strong>(<a href='../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>java.lang.String <strong>toStringLocalized</strong>(java.util.Locale locale)</h4>
                                 <p> Builds a localized version of the order. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  (ignored).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The order.</DD></DL></p>
                             </li>
                         </ul>

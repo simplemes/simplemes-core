@@ -91,13 +91,20 @@ if (location.href.indexOf('is-external=true') == -1) {
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li>org.simplemes.eframe.misc.ShortTermCacheMap
+<li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li>org.simplemes.eframe.misc.ShortTermCacheMap
 </ul>
 <div class="description">
     <ul class="blockList">
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+class ShortTermCacheMap
+extends java.util.HashMap</pre>
 
     <p> This is a map that will be used to temporarily cache some data for a very short time.  Typically <10 seconds.
  This is used to act as a level 1 cache for expensive logic that will not change in a very short time.
@@ -144,7 +151,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.Map&lt;java.lang.Object, java.lang.Long&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#addedTime">addedTime</a></code></td>
                             <td class="colLast">The time the given element was most recently added.</td>
                         </tr>
@@ -246,6 +253,24 @@ if (location.href.indexOf('is-external=true') == -1) {
                    </ul>
               </li>
             
+            <li class="blockList"><a name="method_summary"><!--   --></a>
+                    <h3>Inherited Methods Summary</h3>
+                    <ul class="blockList">
+                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Inherited Methods Summary table">
+                        <caption><span>Inherited Methods</span><span class="tabEnd">&nbsp;</span></caption>
+                        <tr>
+                            <th class="colFirst" scope="col">Methods inherited from class</th>
+                            <th class="colLast" scope="col">Name</th>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code>class java.util.HashMap</code></td>
+                            <td class="colLast"><code>java.util.HashMap#remove(java.lang.Object, java.lang.Object), java.util.HashMap#remove(java.lang.Object), java.util.HashMap#get(java.lang.Object), java.util.HashMap#put(java.lang.Object, java.lang.Object), java.util.HashMap#values(), java.util.HashMap#clone(), java.util.HashMap#clear(), java.util.HashMap#isEmpty(), java.util.HashMap#replace(java.lang.Object, java.lang.Object), java.util.HashMap#replace(java.lang.Object, java.lang.Object, java.lang.Object), java.util.HashMap#replaceAll(java.util.function.BiFunction), java.util.HashMap#size(), java.util.HashMap#merge(java.lang.Object, java.lang.Object, java.util.function.BiFunction), java.util.HashMap#entrySet(), java.util.HashMap#putAll(java.util.Map), java.util.HashMap#putIfAbsent(java.lang.Object, java.lang.Object), java.util.HashMap#compute(java.lang.Object, java.util.function.BiFunction), java.util.HashMap#forEach(java.util.function.BiConsumer), java.util.HashMap#containsKey(java.lang.Object), java.util.HashMap#computeIfAbsent(java.lang.Object, java.util.function.Function), java.util.HashMap#keySet(), java.util.HashMap#containsValue(java.lang.Object), java.util.HashMap#getOrDefault(java.lang.Object, java.lang.Object), java.util.HashMap#computeIfPresent(java.lang.Object, java.util.function.BiFunction), java.util.HashMap#equals(java.lang.Object), java.util.HashMap#toString(), java.util.HashMap#hashCode(), java.util.HashMap#wait(long, int), java.util.HashMap#wait(), java.util.HashMap#wait(long), java.util.HashMap#getClass(), java.util.HashMap#notify(), java.util.HashMap#notifyAll()</code></td>
+                        </tr>
+                    </table>
+                   </ul>
+              </li>
+                
         </ul>
         
     </li>
@@ -268,7 +293,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="addedTime"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../Map.html'>Map</a> <strong>addedTime</strong></h4>
+                                <h4>protected&nbsp;java.util.Map&lt;java.lang.Object, java.lang.Long&gt; <strong>addedTime</strong></h4>
                                 <p> The time the given element was most recently added.</p>
                             </li>
                         </ul>
@@ -339,7 +364,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="get(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.Object <strong>get</strong>(java.lang.Object key)</h4>
                                 <p> Returns the value to which the specified key is mapped,
  or <CODE>null</CODE> if this map contains no mapping for the key.
@@ -350,7 +375,7 @@ java.lang.Object <strong>get</strong>(java.lang.Object key)</h4>
                         <a name="put(java.lang.Object, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.Object <strong>put</strong>(java.lang.Object key, java.lang.Object value)</h4>
                                 <p> Associates the specified value with the specified key in this map.
  If the map previously contained a mapping for the key, the old

@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class MockAppender
+extends ch.qos.logback.core.AppenderBase</pre>
 
     <p> A Mock appender for the logback logging system.  Used to collect messages logged from a class under test.
  This approach does not require changes to the logback.groovy file or use of a non-final log instance.
@@ -169,12 +175,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#messages">messages</a></code><br>The messages logged since the last cleanup.</td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.List&lt;java.util.Map&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#mockedLoggers">mockedLoggers</a></code><br>The list of classes that have been mocked since the last cleanup.
  </td>
                         </tr>
@@ -235,19 +241,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#append(java.lang.Object)">append</a></strong>(java.lang.Object eventObject)</code><br>Unused. </td>
+                            <td class="colLast"><code><strong><a href="#append(java.lang.Object)">append</a></strong>(java.lang.Object eventObject)</code><br>Unused.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#assertFirstFoundMessageIsValid(java.lang.String, List)">assertFirstFoundMessageIsValid</a></strong>(java.lang.String searchString, <a href='../../../../List.html'>List</a> values)</code><br>Finds the first log message that contains the given search string.  </td>
+                            <td class="colLast"><code><strong><a href="#assertFirstFoundMessageIsValid(java.lang.String, List)">assertFirstFoundMessageIsValid</a></strong>(java.lang.String searchString, java.util.List&lt;java.lang.String&gt; values)</code><br>Finds the first log message that contains the given search string.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#assertMessageIsValid(List, int)">assertMessageIsValid</a></strong>(<a href='../../../../List.html'>List</a> values, int messageIndex)</code><br>Checks the given message to verify it contains all of the values (case ignored) and
+                            <td class="colLast"><code><strong><a href="#assertMessageIsValid(List, int)">assertMessageIsValid</a></strong>(java.util.List&lt;java.lang.String&gt; values, int messageIndex)</code><br>Checks the given message to verify it contains all of the values (case ignored) and
  has all parameters filled in.  </td>
                         </tr>
                         
@@ -312,7 +318,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class ch.qos.logback.core.AppenderBase</code></td>
-                            <td class="colLast"><code>ch.qos.logback.core.AppenderBase#getName(), ch.qos.logback.core.AppenderBase#toString(), ch.qos.logback.core.AppenderBase#start(), ch.qos.logback.core.AppenderBase#stop(), ch.qos.logback.core.AppenderBase#setName(java.lang.String), ch.qos.logback.core.AppenderBase#isStarted(), ch.qos.logback.core.AppenderBase#addFilter(ch.qos.logback.core.filter.Filter), ch.qos.logback.core.AppenderBase#clearAllFilters(), ch.qos.logback.core.AppenderBase#getCopyOfAttachedFiltersList(), ch.qos.logback.core.AppenderBase#getFilterChainDecision(java.lang.Object), ch.qos.logback.core.AppenderBase#doAppend(java.lang.Object), ch.qos.logback.core.AppenderBase#getContext(), ch.qos.logback.core.AppenderBase#setContext(ch.qos.logback.core.Context), ch.qos.logback.core.AppenderBase#addError(java.lang.String), ch.qos.logback.core.AppenderBase#addError(java.lang.String, java.lang.Throwable), ch.qos.logback.core.AppenderBase#addStatus(ch.qos.logback.core.status.Status), ch.qos.logback.core.AppenderBase#addInfo(java.lang.String, java.lang.Throwable), ch.qos.logback.core.AppenderBase#addInfo(java.lang.String), ch.qos.logback.core.AppenderBase#addWarn(java.lang.String, java.lang.Throwable), ch.qos.logback.core.AppenderBase#addWarn(java.lang.String), ch.qos.logback.core.AppenderBase#getStatusManager(), ch.qos.logback.core.AppenderBase#wait(long, int), ch.qos.logback.core.AppenderBase#wait(), ch.qos.logback.core.AppenderBase#wait(long), ch.qos.logback.core.AppenderBase#equals(java.lang.Object), ch.qos.logback.core.AppenderBase#hashCode(), ch.qos.logback.core.AppenderBase#getClass(), ch.qos.logback.core.AppenderBase#notify(), ch.qos.logback.core.AppenderBase#notifyAll()</code></td>
+                            <td class="colLast"><code>ch.qos.logback.core.AppenderBase#getName(), ch.qos.logback.core.AppenderBase#toString(), ch.qos.logback.core.AppenderBase#start(), ch.qos.logback.core.AppenderBase#stop(), ch.qos.logback.core.AppenderBase#setName(java.lang.String), ch.qos.logback.core.AppenderBase#isStarted(), ch.qos.logback.core.AppenderBase#addFilter(ch.qos.logback.core.filter.Filter), ch.qos.logback.core.AppenderBase#clearAllFilters(), ch.qos.logback.core.AppenderBase#getCopyOfAttachedFiltersList(), ch.qos.logback.core.AppenderBase#getFilterChainDecision(java.lang.Object), ch.qos.logback.core.AppenderBase#doAppend(java.lang.Object), ch.qos.logback.core.AppenderBase#getContext(), ch.qos.logback.core.AppenderBase#setContext(ch.qos.logback.core.Context), ch.qos.logback.core.AppenderBase#addError(java.lang.String), ch.qos.logback.core.AppenderBase#addError(java.lang.String, java.lang.Throwable), ch.qos.logback.core.AppenderBase#addInfo(java.lang.String, java.lang.Throwable), ch.qos.logback.core.AppenderBase#addInfo(java.lang.String), ch.qos.logback.core.AppenderBase#addWarn(java.lang.String, java.lang.Throwable), ch.qos.logback.core.AppenderBase#addWarn(java.lang.String), ch.qos.logback.core.AppenderBase#getStatusManager(), ch.qos.logback.core.AppenderBase#addStatus(ch.qos.logback.core.status.Status), ch.qos.logback.core.AppenderBase#wait(long, int), ch.qos.logback.core.AppenderBase#wait(), ch.qos.logback.core.AppenderBase#wait(long), ch.qos.logback.core.AppenderBase#equals(java.lang.Object), ch.qos.logback.core.AppenderBase#hashCode(), ch.qos.logback.core.AppenderBase#getClass(), ch.qos.logback.core.AppenderBase#notify(), ch.qos.logback.core.AppenderBase#notifyAll()</code></td>
                         </tr>
                     </table>
                    </ul>
@@ -350,7 +356,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="messages"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>messages</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.String&gt; <strong>messages</strong></h4>
                                 <p> The messages logged since the last cleanup.</p>
                             </li>
                         </ul>
@@ -358,7 +364,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="mockedLoggers"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;<a href='../../../../List.html'>List</a> <strong>mockedLoggers</strong></h4>
+                                <h4>private&nbsp;static&nbsp;java.util.List&lt;java.util.Map&gt; <strong>mockedLoggers</strong></h4>
                                 <p> The list of classes that have been mocked since the last cleanup.
  cleanup() will undo the mocking for these classes by setting the level to the original value.</p>
                             </li>
@@ -411,7 +417,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="append(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 protected&nbsp;void <strong>append</strong>(java.lang.Object eventObject)</h4>
                                 <p> Unused. <DL><DT><B>Parameters:</B></DT><DD>eventObject</DD></DL></p>
                             </li>
@@ -420,7 +426,7 @@ protected&nbsp;void <strong>append</strong>(java.lang.Object eventObject)</h4>
                         <a name="assertFirstFoundMessageIsValid(java.lang.String, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>boolean <strong>assertFirstFoundMessageIsValid</strong>(java.lang.String searchString, <a href='../../../../List.html'>List</a> values)</h4>
+                                <h4>boolean <strong>assertFirstFoundMessageIsValid</strong>(java.lang.String searchString, java.util.List&lt;java.lang.String&gt; values)</h4>
                                 <p> Finds the first log message that contains the given search string.  Then verifies that it is valid. <DL><DT><B>Parameters:</B></DT><DD><code>searchString</code> -  Used to find the right message to test.</DD><DD><code>values</code> -  The list of strings to look for.</DD></DL><DL><DT><B>Returns:</B></DT><DD>true - To support use in a Spock then/expect section.</DD></DL></p>
                             </li>
                         </ul>
@@ -428,7 +434,7 @@ protected&nbsp;void <strong>append</strong>(java.lang.Object eventObject)</h4>
                         <a name="assertMessageIsValid(List, int)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>boolean <strong>assertMessageIsValid</strong>(<a href='../../../../List.html'>List</a> values, int messageIndex)</h4>
+                                <h4>boolean <strong>assertMessageIsValid</strong>(java.util.List&lt;java.lang.String&gt; values, int messageIndex)</h4>
                                 <p> Checks the given message to verify it contains all of the values (case ignored) and
  has all parameters filled in.  Throws an assertion exception if not value. <DL><DT><B>Parameters:</B></DT><DD><code>values</code> -  The list of strings to look for.</DD><DD><code>messageIndex</code> -  The message to check (default: 0).</DD></DL><DL><DT><B>Returns:</B></DT><DD>true - To support use in a Spock then/expect section.</DD></DL></p>
                             </li>
@@ -437,7 +443,7 @@ protected&nbsp;void <strong>append</strong>(java.lang.Object eventObject)</h4>
                         <a name="cleanup()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
 static&nbsp;void <strong>cleanup</strong>()</h4>
                                 <p> Cleans up all MockAppenders and resets the log level to the original value.
  This is designed to be called in the test's <code>cleanup()</code> method.</p>
@@ -455,8 +461,8 @@ static&nbsp;void <strong>cleanup</strong>()</h4>
                         <a name="doAppend(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@java.lang.OverrideOverride
+                                <h4>@java.lang.SuppressWarnings(value: SynchronizedMethod)
+@java.lang.Override
 void <strong>doAppend</strong>(java.lang.Object eventObject)</h4>
                                 <p> The appender.  Collects all messages logged for later use by a unit test. <DL><DT><B>Parameters:</B></DT><DD>eventObject</DD></DL></p>
                             </li>
@@ -477,7 +483,7 @@ void <strong>doAppend</strong>(java.lang.Object eventObject)</h4>
                                 <p> Creates a mock appender and attaches it to the logger for the given class.
  This also sets the level to TRACE.
  <p>
- Note: The BaseSpecification will automatically clean up this mock appender. <DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class.</DD><DD><code>filterLevel</code> -  The level to filter the messages recorded.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The MockAppender.</DD></DL></p>
+ Note: The <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html' title='BaseSpecification'>BaseSpecification</a> will automatically clean up this mock appender. <DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class.</DD><DD><code>filterLevel</code> -  The level to filter the messages recorded.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The MockAppender.</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -488,7 +494,7 @@ void <strong>doAppend</strong>(java.lang.Object eventObject)</h4>
                                 <p> Creates a mock appender and attaches it to the logger for the given class.
  This also sets the level to TRACE.
  <p>
- Note: The BaseSpecification will automatically clean up this mock appender. <DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class.</DD><DD><code>filterLevel</code> -  The level to filter the messages recorded.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The MockAppender.</DD></DL></p>
+ Note: The <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html' title='BaseSpecification'>BaseSpecification</a> will automatically clean up this mock appender. <DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class.</DD><DD><code>filterLevel</code> -  The level to filter the messages recorded.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The MockAppender.</DD></DL></p>
                             </li>
                         </ul>
                     

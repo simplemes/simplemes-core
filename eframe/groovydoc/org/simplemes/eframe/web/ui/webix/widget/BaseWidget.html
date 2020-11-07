@@ -101,15 +101,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../../../../org/simplemes/eframe/web/ui/WidgetInterface.html'>WidgetInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
+
 <pre>class BaseWidget
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../../../../org/simplemes/eframe/web/ui/WidgetInterface.html'>WidgetInterface</a></pre>
 
     <p> Common elements used by most UI widgets.  Include HTML ID's and generating the HTML code along with the
  Javascript for the UI toolkit.</p>
@@ -172,7 +172,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#closingTexts">closingTexts</a></code><br>The list of closing texts to add to the end of the generated UI text.</td>
                         </tr>
                         
@@ -280,25 +280,25 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#escape(java.lang.String)">escape</a></strong>(java.lang.String value)</code><br>Escape the string for safe HTML output. </td>
+                            <td class="colLast"><code><strong><a href="#escape(java.lang.String)">escape</a></strong>(java.lang.String value)</code><br>Escape the string for safe HTML output.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#escapeForJavascript(java.lang.String, java.lang.Boolean)">escapeForJavascript</a></strong>(java.lang.String value, java.lang.Boolean labelMode)</code><br>Escape the string for safe use inside of a Javascript string variable. </td>
+                            <td class="colLast"><code><strong><a href="#escapeForJavascript(java.lang.String, java.lang.Boolean)">escapeForJavascript</a></strong>(java.lang.String value, java.lang.Boolean labelMode)</code><br>Escape the string for safe use inside of a Javascript string variable.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.CharSequence</code></td>
-                            <td class="colLast"><code><strong><a href="#generate()">generate</a></strong>()</code><br>Returns the final UI text and adds the closing text values as needed. </td>
+                            <td class="colLast"><code><strong><a href="#generate()">generate</a></strong>()</code><br>Returns the final UI text and adds the closing text values as needed.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#getBooleanAttribute(java.lang.String)">getBooleanAttribute</a></strong>(java.lang.String attributeName)</code><br>Returns the given boolean attribute as a boolean if the value is "true". </td>
+                            <td class="colLast"><code><strong><a href="#getBooleanAttribute(java.lang.String)">getBooleanAttribute</a></strong>(java.lang.String attributeName)</code><br>Returns the given boolean attribute as a boolean if the value is "true".</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -315,8 +315,8 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getRequestParameters()">getRequestParameters</a></strong>()</code><br>Gets the parameters from the HTTP request that called this marker. </td>
+                            <td class="colLast"><code>java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#getRequestParameters()">getRequestParameters</a></strong>()</code><br>Gets the parameters from the HTTP request that called this marker.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -329,7 +329,7 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#lookup(java.lang.String, Locale, java.lang.Object)">lookup</a></strong>(java.lang.String key, <a href='../../../../../../../Locale.html'>Locale</a> locale, java.lang.Object[] args)</code><br>Convenience method for general message.properties lookup.  </td>
+                            <td class="colLast"><code><strong><a href="#lookup(java.lang.String, java.util.Locale, java.lang.Object)">lookup</a></strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</code><br>Convenience method for general message.properties lookup.  </td>
                         </tr>
                         
                     </table>
@@ -405,7 +405,7 @@ extends java.lang.Object
                         <a name="closingTexts"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../../../List.html'>List</a> <strong>closingTexts</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.String&gt; <strong>closingTexts</strong></h4>
                                 <p> The list of closing texts to add to the end of the generated UI text.</p>
                             </li>
                         </ul>
@@ -584,7 +584,7 @@ extends java.lang.Object
                         <a name="getRequestParameters()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../../../Map.html'>Map</a> <strong>getRequestParameters</strong>()</h4>
+                                <h4>java.util.Map <strong>getRequestParameters</strong>()</h4>
                                 <p> Gets the parameters from the HTTP request that called this marker. <DL><DT><B>Returns:</B></DT><DD>The parameters from the HTTP request.</DD></DL></p>
                             </li>
                         </ul>
@@ -598,11 +598,11 @@ extends java.lang.Object
                             </li>
                         </ul>
                     
-                        <a name="lookup(java.lang.String, Locale, java.lang.Object)"><!-- --></a>
+                        <a name="lookup(java.lang.String, java.util.Locale, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-java.lang.String <strong>lookup</strong>(java.lang.String key, <a href='../../../../../../../Locale.html'>Locale</a> locale, java.lang.Object[] args)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: UnnecessaryGetter)
+java.lang.String <strong>lookup</strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</h4>
                                 <p> Convenience method for general message.properties lookup.  See
  GlobalUtils#lookup#lookup for details. <DL><DT><B>Parameters:</B></DT><DD><code>key</code> -  The key to lookup.</DD><DD><code>locale</code> -  The locale to use for the message. (<b>Default</b>: Request Locale)</DD><DD><code>args</code> -  The replaceable arguments used by the message (if any).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The looked up message.</DD></DL></p>
                             </li>

@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.CompileStatic
+class DateUtils
+extends java.lang.Object</pre>
 
     <p> Various date manipulation utility methods.  Includes formatting and parsing for display.</p>
 
@@ -146,7 +153,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>static&nbsp;<a href='../../../../TimeZone.html'>TimeZone</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>static&nbsp;java.util.TimeZone</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#TIMEZONE_UTC">TIMEZONE_UTC</a></code></td>
                             <td class="colLast">The UTC Timezone.</td>
                         </tr>
@@ -205,105 +212,105 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../Date.html'>Date</a></code></td>
-                            <td class="colLast"><code><strong><a href="#addMonths(Date, int)">addMonths</a></strong>(<a href='../../../../Date.html'>Date</a> date, int months)</code><br>Adds the number of months to the given date. </td>
+                            <td class="colLast"><code>static&nbsp;java.util.Date</code></td>
+                            <td class="colLast"><code><strong><a href="#addMonths(java.util.Date, int)">addMonths</a></strong>(java.util.Date date, int months)</code><br>Adds the number of months to the given date.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../Date.html'>Date</a></code></td>
-                            <td class="colLast"><code><strong><a href="#addYears(Date, int)">addYears</a></strong>(<a href='../../../../Date.html'>Date</a> date, int years)</code><br>Adds the number of years to the given date. </td>
+                            <td class="colLast"><code>static&nbsp;java.util.Date</code></td>
+                            <td class="colLast"><code><strong><a href="#addYears(java.util.Date, int)">addYears</a></strong>(java.util.Date date, int years)</code><br>Adds the number of years to the given date.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../Date.html'>Date</a></code></td>
-                            <td class="colLast"><code><strong><a href="#ceiling(Date, java.time.temporal.ChronoUnit, TimeZone)">ceiling</a></strong>(<a href='../../../../Date.html'>Date</a> date, java.time.temporal.ChronoUnit field, <a href='../../../../TimeZone.html'>TimeZone</a> timeZone)</code><br>Round up to the next value for the given date field. </td>
+                            <td class="colLast"><code>static&nbsp;java.util.Date</code></td>
+                            <td class="colLast"><code><strong><a href="#ceiling(java.util.Date, java.time.temporal.ChronoUnit, java.util.TimeZone)">ceiling</a></strong>(java.util.Date date, java.time.temporal.ChronoUnit field, java.util.TimeZone timeZone)</code><br>Round up to the next value for the given date field.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../TimeZone.html'>TimeZone</a></code></td>
-                            <td class="colLast"><code><strong><a href="#determineTimeZone()">determineTimeZone</a></strong>()</code><br>Determines the UI TimeZone. </td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#formatDate(Date, Locale)">formatDate</a></strong>(<a href='../../../../Date.html'>Date</a> date, <a href='../../../../Locale.html'>Locale</a> locale)</code><br>Formats the given date for GUI display.  </td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#formatDate(org.simplemes.eframe.date.DateOnly, Locale)">formatDate</a></strong>(<a href='../../../../org/simplemes/eframe/date/DateOnly.html'>DateOnly</a> date, <a href='../../../../Locale.html'>Locale</a> locale)</code><br>Formats the given DateOnly for GUI display.  </td>
+                            <td class="colLast"><code>static&nbsp;java.util.TimeZone</code></td>
+                            <td class="colLast"><code><strong><a href="#determineTimeZone()">determineTimeZone</a></strong>()</code><br>Determines the UI TimeZone.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#formatElapsedTime(long, Locale, java.lang.String)">formatElapsedTime</a></strong>(long elapsedTimeMS, <a href='../../../../Locale.html'>Locale</a> locale, java.lang.String precision)</code><br>Build a human-readable elapsed time string from the given elapsed time (ms), but only shows one number
+                            <td class="colLast"><code><strong><a href="#formatDate(java.util.Date, java.util.Locale)">formatDate</a></strong>(java.util.Date date, java.util.Locale locale)</code><br>Formats the given date for GUI display.  </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
+                            <td class="colLast"><code><strong><a href="#formatDate(org.simplemes.eframe.date.DateOnly, java.util.Locale)">formatDate</a></strong>(<a href='../../../../org/simplemes/eframe/date/DateOnly.html'>DateOnly</a> date, java.util.Locale locale)</code><br>Formats the given DateOnly for GUI display.  </td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
+                            <td class="colLast"><code><strong><a href="#formatElapsedTime(long, java.util.Locale, java.lang.String)">formatElapsedTime</a></strong>(long elapsedTimeMS, java.util.Locale locale, java.lang.String precision)</code><br>Build a human-readable elapsed time string from the given elapsed time (ms), but only shows one number
  to make it readable.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#formatForm(Date)">formatForm</a></strong>(<a href='../../../../Date.html'>Date</a> date)</code><br>Formats the given date for form default values in locale-independent format.  </td>
+                            <td class="colLast"><code><strong><a href="#formatForm(java.util.Date)">formatForm</a></strong>(java.util.Date date)</code><br>Formats the given date for form default values in locale-independent format.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#formatRelativeTime(long, Locale, java.lang.String)">formatRelativeTime</a></strong>(long relativeTime, <a href='../../../../Locale.html'>Locale</a> locale, java.lang.String precision)</code><br>Build a human-readable relative time. </td>
+                            <td class="colLast"><code><strong><a href="#formatRelativeTime(long, java.util.Locale, java.lang.String)">formatRelativeTime</a></strong>(long relativeTime, java.util.Locale locale, java.lang.String precision)</code><br>Build a human-readable relative time. </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.text.DateFormat</code></td>
-                            <td class="colLast"><code><strong><a href="#getDateFormat(Locale)">getDateFormat</a></strong>(<a href='../../../../Locale.html'>Locale</a> locale)</code><br>Finds the right date formatter for the given locale. </td>
+                            <td class="colLast"><code><strong><a href="#getDateFormat(java.util.Locale)">getDateFormat</a></strong>(java.util.Locale locale)</code><br>Finds the right date formatter for the given locale.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.text.DateFormat</code></td>
-                            <td class="colLast"><code><strong><a href="#getDateOnlyFormat(Locale)">getDateOnlyFormat</a></strong>(<a href='../../../../Locale.html'>Locale</a> locale)</code><br>Finds the right date formatter for the given locale. </td>
+                            <td class="colLast"><code><strong><a href="#getDateOnlyFormat(java.util.Locale)">getDateOnlyFormat</a></strong>(java.util.Locale locale)</code><br>Finds the right date formatter for the given locale.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../Date.html'>Date</a></code></td>
-                            <td class="colLast"><code><strong><a href="#parseDate(java.lang.String, Locale)">parseDate</a></strong>(java.lang.String s, <a href='../../../../Locale.html'>Locale</a> locale)</code><br>Parses the given string into a Date using the optional Locale.  </td>
+                            <td class="colLast"><code>static&nbsp;java.util.Date</code></td>
+                            <td class="colLast"><code><strong><a href="#parseDate(java.lang.String, java.util.Locale)">parseDate</a></strong>(java.lang.String s, java.util.Locale locale)</code><br>Parses the given string into a Date using the optional Locale.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/eframe/date/DateOnly.html'>DateOnly</a></code></td>
-                            <td class="colLast"><code><strong><a href="#parseDateOnly(java.lang.String, Locale)">parseDateOnly</a></strong>(java.lang.String s, <a href='../../../../Locale.html'>Locale</a> locale)</code><br>Parses the given string into a DateOnly using the optional Locale.  </td>
+                            <td class="colLast"><code><strong><a href="#parseDateOnly(java.lang.String, java.util.Locale)">parseDateOnly</a></strong>(java.lang.String s, java.util.Locale locale)</code><br>Parses the given string into a DateOnly using the optional Locale.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../Date.html'>Date</a></code></td>
-                            <td class="colLast"><code><strong><a href="#parseForm(java.lang.String)">parseForm</a></strong>(java.lang.String s)</code><br>Parses the given string into a Date using the locale-independent date format. </td>
+                            <td class="colLast"><code>static&nbsp;java.util.Date</code></td>
+                            <td class="colLast"><code><strong><a href="#parseForm(java.lang.String)">parseForm</a></strong>(java.lang.String s)</code><br>Parses the given string into a Date using the locale-independent date format.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../Date.html'>Date</a></code></td>
-                            <td class="colLast"><code><strong><a href="#subtractDays(Date, BigDecimal)">subtractDays</a></strong>(<a href='../../../../Date.html'>Date</a> date, <a href='../../../../BigDecimal.html'>BigDecimal</a> days)</code><br>Subtract the given number of days from the given date/time.  </td>
+                            <td class="colLast"><code>static&nbsp;java.util.Date</code></td>
+                            <td class="colLast"><code><strong><a href="#subtractDays(java.util.Date, BigDecimal)">subtractDays</a></strong>(java.util.Date date, <a href='../../../../BigDecimal.html'>BigDecimal</a> days)</code><br>Subtract the given number of days from the given date/time.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../Date.html'>Date</a></code></td>
-                            <td class="colLast"><code><strong><a href="#truncate(Date, java.time.temporal.ChronoUnit, TimeZone)">truncate</a></strong>(<a href='../../../../Date.html'>Date</a> date, java.time.temporal.ChronoUnit field, <a href='../../../../TimeZone.html'>TimeZone</a> timeZone)</code><br>Truncate the given date/time to nearest (lower) value of the given field. </td>
+                            <td class="colLast"><code>static&nbsp;java.util.Date</code></td>
+                            <td class="colLast"><code><strong><a href="#truncate(java.util.Date, java.time.temporal.ChronoUnit, java.util.TimeZone)">truncate</a></strong>(java.util.Date date, java.time.temporal.ChronoUnit field, java.util.TimeZone timeZone)</code><br>Truncate the given date/time to nearest (lower) value of the given field.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../Date.html'>Date</a></code></td>
-                            <td class="colLast"><code><strong><a href="#truncateSeconds(Date)">truncateSeconds</a></strong>(<a href='../../../../Date.html'>Date</a> date)</code><br>Truncate the given date/time to nearest minute. </td>
+                            <td class="colLast"><code>static&nbsp;java.util.Date</code></td>
+                            <td class="colLast"><code><strong><a href="#truncateSeconds(java.util.Date)">truncateSeconds</a></strong>(java.util.Date date)</code><br>Truncate the given date/time to nearest minute.</td>
                         </tr>
                         
                     </table>
@@ -374,7 +381,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="TIMEZONE_UTC"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;static&nbsp;final&nbsp;<a href='../../../../TimeZone.html'>TimeZone</a> <strong>TIMEZONE_UTC</strong></h4>
+                                <h4>public&nbsp;static&nbsp;final&nbsp;java.util.TimeZone <strong>TIMEZONE_UTC</strong></h4>
                                 <p> The UTC Timezone.</p>
                             </li>
                         </ul>
@@ -416,26 +423,26 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="addMonths(Date, int)"><!-- --></a>
+                        <a name="addMonths(java.util.Date, int)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../Date.html'>Date</a> <strong>addMonths</strong>(<a href='../../../../Date.html'>Date</a> date, int months)</h4>
+                                <h4>static&nbsp;java.util.Date <strong>addMonths</strong>(java.util.Date date, int months)</h4>
                                 <p> Adds the number of months to the given date. <DL><DT><B>Parameters:</B></DT><DD><code>date</code> -  The date.</DD><DD><code>months</code> -  The number of months (can be negative).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The date plus the months.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="addYears(Date, int)"><!-- --></a>
+                        <a name="addYears(java.util.Date, int)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../Date.html'>Date</a> <strong>addYears</strong>(<a href='../../../../Date.html'>Date</a> date, int years)</h4>
+                                <h4>static&nbsp;java.util.Date <strong>addYears</strong>(java.util.Date date, int years)</h4>
                                 <p> Adds the number of years to the given date. <DL><DT><B>Parameters:</B></DT><DD><code>date</code> -  The date.</DD><DD><code>years</code> -  The number of years (can be negative).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The date plus the years.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="ceiling(Date, java.time.temporal.ChronoUnit, TimeZone)"><!-- --></a>
+                        <a name="ceiling(java.util.Date, java.time.temporal.ChronoUnit, java.util.TimeZone)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../Date.html'>Date</a> <strong>ceiling</strong>(<a href='../../../../Date.html'>Date</a> date, java.time.temporal.ChronoUnit field, <a href='../../../../TimeZone.html'>TimeZone</a> timeZone)</h4>
+                                <h4>static&nbsp;java.util.Date <strong>ceiling</strong>(java.util.Date date, java.time.temporal.ChronoUnit field, java.util.TimeZone timeZone)</h4>
                                 <p> Round up to the next value for the given date field. <DL><DT><B>Parameters:</B></DT><DD><code>date</code> -  The date to round up to.</DD><DD><code>field</code> -  The field from Java's ChronoUnit.</DD><DD><code>timeZone</code> -  The time zone to round up the value in.   (<b>Default</b>: JVM's default).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The rounded up date.</DD></DL></p>
                             </li>
                         </ul>
@@ -443,31 +450,31 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="determineTimeZone()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../TimeZone.html'>TimeZone</a> <strong>determineTimeZone</strong>()</h4>
+                                <h4>static&nbsp;java.util.TimeZone <strong>determineTimeZone</strong>()</h4>
                                 <p> Determines the UI TimeZone. <DL><DT><B>Returns:</B></DT><DD>The time zone.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="formatDate(Date, Locale)"><!-- --></a>
+                        <a name="formatDate(java.util.Date, java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>formatDate</strong>(<a href='../../../../Date.html'>Date</a> date, <a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>static&nbsp;java.lang.String <strong>formatDate</strong>(java.util.Date date, java.util.Locale locale)</h4>
                                 <p> Formats the given date for GUI display.  Uses the standard Java SHORT and MEDIUM time format. <DL><DT><B>Parameters:</B></DT><DD><code>date</code> -  The date or DateOnly to format.</DD><DD><code>locale</code> -  The locale to use for formatting the date (default is the request Locale). (<b>Optional</b>)</DD></DL><DL><DT><B>Returns:</B></DT><DD>The date string.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="formatDate(org.simplemes.eframe.date.DateOnly, Locale)"><!-- --></a>
+                        <a name="formatDate(org.simplemes.eframe.date.DateOnly, java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>formatDate</strong>(<a href='../../../../org/simplemes/eframe/date/DateOnly.html'>DateOnly</a> date, <a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>static&nbsp;java.lang.String <strong>formatDate</strong>(<a href='../../../../org/simplemes/eframe/date/DateOnly.html'>DateOnly</a> date, java.util.Locale locale)</h4>
                                 <p> Formats the given DateOnly for GUI display.  Uses the standard Java SHORT and MEDIUM time format. <DL><DT><B>Parameters:</B></DT><DD><code>date</code> -  The date or DateOnly to format.</DD><DD><code>locale</code> -  The locale to use for formatting the date (default is the request Locale). (<b>Optional</b>)</DD></DL><DL><DT><B>Returns:</B></DT><DD>The date string.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="formatElapsedTime(long, Locale, java.lang.String)"><!-- --></a>
+                        <a name="formatElapsedTime(long, java.util.Locale, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>formatElapsedTime</strong>(long elapsedTimeMS, <a href='../../../../Locale.html'>Locale</a> locale, java.lang.String precision)</h4>
+                                <h4>static&nbsp;java.lang.String <strong>formatElapsedTime</strong>(long elapsedTimeMS, java.util.Locale locale, java.lang.String precision)</h4>
                                 <p> Build a human-readable elapsed time string from the given elapsed time (ms), but only shows one number
  to make it readable.  Use this in scenarios when super-precise display is not needed.
  Supports seconds, minutes, days and years.  This method does <b>not</b> round to nearest whole number when precision is
@@ -476,19 +483,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="formatForm(Date)"><!-- --></a>
+                        <a name="formatForm(java.util.Date)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>formatForm</strong>(<a href='../../../../Date.html'>Date</a> date)</h4>
+                                <h4>static&nbsp;java.lang.String <strong>formatForm</strong>(java.util.Date date)</h4>
                                 <p> Formats the given date for form default values in locale-independent format.  Uses
  the global time zone. <DL><DT><B>Parameters:</B></DT><DD><code>date</code> -  The date or DateOnly to format.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The date string.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="formatRelativeTime(long, Locale, java.lang.String)"><!-- --></a>
+                        <a name="formatRelativeTime(long, java.util.Locale, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>formatRelativeTime</strong>(long relativeTime, <a href='../../../../Locale.html'>Locale</a> locale, java.lang.String precision)</h4>
+                                <h4>static&nbsp;java.lang.String <strong>formatRelativeTime</strong>(long relativeTime, java.util.Locale locale, java.lang.String precision)</h4>
                                 <p> Build a human-readable relative time. Only shows one number
  to make it readable.  Handles past times (negative) and future times ('2 minutes ago' and '2 minutes from now').
  Use this in scenarios when super-precise display is not needed.
@@ -498,34 +505,34 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="getDateFormat(Locale)"><!-- --></a>
+                        <a name="getDateFormat(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.text.DateFormat <strong>getDateFormat</strong>(<a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>static&nbsp;java.text.DateFormat <strong>getDateFormat</strong>(java.util.Locale locale)</h4>
                                 <p> Finds the right date formatter for the given locale. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale to use for formatting the date (default is the request locale). (<b>Optional</b>)</DD></DL><DL><DT><B>Returns:</B></DT><DD>The formatter</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="getDateOnlyFormat(Locale)"><!-- --></a>
+                        <a name="getDateOnlyFormat(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.text.DateFormat <strong>getDateOnlyFormat</strong>(<a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>static&nbsp;java.text.DateFormat <strong>getDateOnlyFormat</strong>(java.util.Locale locale)</h4>
                                 <p> Finds the right date formatter for the given locale. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale to use for formatting the date (default is the request locale). (<b>Optional</b>)</DD></DL><DL><DT><B>Returns:</B></DT><DD>The formatter</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="parseDate(java.lang.String, Locale)"><!-- --></a>
+                        <a name="parseDate(java.lang.String, java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../Date.html'>Date</a> <strong>parseDate</strong>(java.lang.String s, <a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>static&nbsp;java.util.Date <strong>parseDate</strong>(java.lang.String s, java.util.Locale locale)</h4>
                                 <p> Parses the given string into a Date using the optional Locale.  Uses the standard Java date format for the locale (SHORT/MEDIUM). <DL><DT><B>Parameters:</B></DT><DD><code>s</code> -  The date string.  Can be null.</DD><DD><code>locale</code> -  The locale to use for parsing the date (default is the request Locale). (<b>Optional</b>)</DD></DL><DL><DT><B>Returns:</B></DT><DD>The parsed date or null.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="parseDateOnly(java.lang.String, Locale)"><!-- --></a>
+                        <a name="parseDateOnly(java.lang.String, java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../org/simplemes/eframe/date/DateOnly.html'>DateOnly</a> <strong>parseDateOnly</strong>(java.lang.String s, <a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>static&nbsp;<a href='../../../../org/simplemes/eframe/date/DateOnly.html'>DateOnly</a> <strong>parseDateOnly</strong>(java.lang.String s, java.util.Locale locale)</h4>
                                 <p> Parses the given string into a DateOnly using the optional Locale.  Uses the standard Java date format for the locale (SHORT). <DL><DT><B>Parameters:</B></DT><DD><code>s</code> -  The date string.  Can be null.</DD><DD><code>locale</code> -  The locale to use for parsing the date (default is the request locale). (<b>Optional</b>)</DD></DL><DL><DT><B>Returns:</B></DT><DD>The parsed date or null.</DD></DL></p>
                             </li>
                         </ul>
@@ -533,31 +540,31 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="parseForm(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../Date.html'>Date</a> <strong>parseForm</strong>(java.lang.String s)</h4>
+                                <h4>static&nbsp;java.util.Date <strong>parseForm</strong>(java.lang.String s)</h4>
                                 <p> Parses the given string into a Date using the locale-independent date format. <DL><DT><B>Parameters:</B></DT><DD><code>s</code> -  The date string.  Can be null.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The parsed date or null.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="subtractDays(Date, BigDecimal)"><!-- --></a>
+                        <a name="subtractDays(java.util.Date, BigDecimal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../Date.html'>Date</a> <strong>subtractDays</strong>(<a href='../../../../Date.html'>Date</a> date, <a href='../../../../BigDecimal.html'>BigDecimal</a> days)</h4>
+                                <h4>static&nbsp;java.util.Date <strong>subtractDays</strong>(java.util.Date date, <a href='../../../../BigDecimal.html'>BigDecimal</a> days)</h4>
                                 <p> Subtract the given number of days from the given date/time.  Supports partial days. <DL><DT><B>Parameters:</B></DT><DD><code>date</code> -  The date to subtract from.</DD><DD><code>days</code> -  The number of days to subtract.  Fractions allowed.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The new date/time.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="truncate(Date, java.time.temporal.ChronoUnit, TimeZone)"><!-- --></a>
+                        <a name="truncate(java.util.Date, java.time.temporal.ChronoUnit, java.util.TimeZone)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../Date.html'>Date</a> <strong>truncate</strong>(<a href='../../../../Date.html'>Date</a> date, java.time.temporal.ChronoUnit field, <a href='../../../../TimeZone.html'>TimeZone</a> timeZone)</h4>
+                                <h4>static&nbsp;java.util.Date <strong>truncate</strong>(java.util.Date date, java.time.temporal.ChronoUnit field, java.util.TimeZone timeZone)</h4>
                                 <p> Truncate the given date/time to nearest (lower) value of the given field. <DL><DT><B>Parameters:</B></DT><DD><code>date</code> -  The date to truncate.</DD><DD><code>field</code> -  The field from Java's ChronoUnit (YEARS, MONTHS, etc).</DD><DD><code>timeZone</code> -  The time zone to truncate the value in.   (<b>Default</b>: JVM's default).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The truncated date.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="truncateSeconds(Date)"><!-- --></a>
+                        <a name="truncateSeconds(java.util.Date)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../Date.html'>Date</a> <strong>truncateSeconds</strong>(<a href='../../../../Date.html'>Date</a> date)</h4>
+                                <h4>static&nbsp;java.util.Date <strong>truncateSeconds</strong>(java.util.Date date)</h4>
                                 <p> Truncate the given date/time to nearest minute. <DL><DT><B>Parameters:</B></DT><DD><code>date</code> -  The date to truncate.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The date, with the seconds and lower truncated.</DD></DL></p>
                             </li>
                         </ul>

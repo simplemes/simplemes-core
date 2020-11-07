@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includePackage: false, includeNames: true, includeSuper: true, includes: [configTypeFieldName])
+class ConfigurableTypeFieldDefinition
+extends <a href='../../../../org/simplemes/eframe/data/SimpleFieldDefinition.html'>SimpleFieldDefinition</a></pre>
 
     <p> Holds the basic definition needed for a single field in a configurable type field element.  This provides the
  basic FieldDefinitionInterface used for configurable types.  This class acts as a bridge from the
@@ -171,8 +178,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#ConfigurableTypeFieldDefinition(Map)">ConfigurableTypeFieldDefinition</a>
-                                (<a href='../../../../Map.html'>Map</a> map)</code><br>The map constructor.  </td>
+                                <code><a href="#ConfigurableTypeFieldDefinition(java.util.Map)">ConfigurableTypeFieldDefinition</a>
+                                (java.util.Map map)</code><br>The map constructor.  </td>
                         </tr>
                         
                         <tr class="altColor">
@@ -205,13 +212,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#getFieldValue(java.lang.Object)">getFieldValue</a></strong>(java.lang.Object domainOrPogoObject)</code><br>Gets the given field value from the given object (domain or POGO depending on sub-class). </td>
+                            <td class="colLast"><code><strong><a href="#getFieldValue(java.lang.Object)">getFieldValue</a></strong>(java.lang.Object domainOrPogoObject)</code><br>Gets the given field value from the given object (domain or POGO depending on sub-class).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setFieldValue(java.lang.Object, java.lang.Object)">setFieldValue</a></strong>(java.lang.Object domainOrPogoObject, java.lang.Object value)</code><br>Sets the given field value in the given object (domain or POGO depending on sub-class). </td>
+                            <td class="colLast"><code><strong><a href="#setFieldValue(java.lang.Object, java.lang.Object)">setFieldValue</a></strong>(java.lang.Object domainOrPogoObject, java.lang.Object value)</code><br>Sets the given field value in the given object (domain or POGO depending on sub-class).</td>
                         </tr>
                         
                     </table>
@@ -295,10 +302,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="ConfigurableTypeFieldDefinition(Map)"><!-- --></a>
+                        <a name="ConfigurableTypeFieldDefinition(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>ConfigurableTypeFieldDefinition</strong>(<a href='../../../../Map.html'>Map</a> map)</h4>
+                                <h4><strong>ConfigurableTypeFieldDefinition</strong>(java.util.Map map)</h4>
                                 <p> The map constructor.  Assigns values to elements from the Map <DL><DT><B>Parameters:</B></DT><DD><code>map</code> -  The map containing the field values.</DD></DL></p>
                             </li>
                         </ul>
@@ -327,7 +334,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getFieldValue(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.Object <strong>getFieldValue</strong>(java.lang.Object domainOrPogoObject)</h4>
                                 <p> Gets the given field value from the given object (domain or POGO depending on sub-class). <DL><DT><B>Parameters:</B></DT><DD><code>domainOrPogoObject</code> -  The domain or POGO object the field is stored in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The value of the field.</DD></DL></p>
                             </li>
@@ -336,7 +343,7 @@ java.lang.Object <strong>getFieldValue</strong>(java.lang.Object domainOrPogoObj
                         <a name="setFieldValue(java.lang.Object, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>setFieldValue</strong>(java.lang.Object domainOrPogoObject, java.lang.Object value)</h4>
                                 <p> Sets the given field value in the given object (domain or POGO depending on sub-class). <DL><DT><B>Parameters:</B></DT><DD><code>domainOrPogoObject</code> -  The domain or POGO object the field is to be stored in.</DD><DD><code>value</code> -  The field value.</DD></DL></p>
                             </li>

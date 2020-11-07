@@ -101,17 +101,17 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../org/simplemes/eframe/search/SearchEngineRequestInterface.html'>SearchEngineRequestInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.util.logging.Slf4jSlf4j
-@groovy.transform.ToStringToString
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.transform.ToString(includePackage: false, includeNames: true)
 class SearchEngineRequestIndexObject
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../org/simplemes/eframe/search/SearchEngineRequestInterface.html'>SearchEngineRequestInterface</a></pre>
 
     <p> This encapsulates a index request on a domain object.  It primarily sends the request to the
  external search engine and does minimal processing and error checking.</p>
@@ -332,7 +332,7 @@ extends java.lang.Object
                         <a name="run()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>run</strong>()</h4>
                                 <p> This executes the indexObject action on the external search server.</p>
                             </li>

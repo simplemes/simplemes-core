@@ -97,6 +97,12 @@ if (location.href.indexOf('is-external=true') == -1) {
     <ul class="blockList">
         <li class="blockList">
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@java.lang.SuppressWarnings(value: unused)
+interface ScanPoint</pre>
 
     <p> Defines the API for the scan extensions.</p>
 
@@ -229,7 +235,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                             <li class="blockList">
                                 <h4><a href='../../../../../org/simplemes/mes/system/ScanResponseInterface.html'>ScanResponseInterface</a> <strong>postScan</strong>(<a href='../../../../../org/simplemes/mes/system/ScanResponseInterface.html'>ScanResponseInterface</a> coreResponse, <a href='../../../../../org/simplemes/mes/system/ScanRequestInterface.html'>ScanRequestInterface</a> scanRequest)</h4>
                                 <p> Post-scan extension method for the scan() method.
- See the core method ScanService#scan(org.simplemes.mes.system.ScanRequestInterface) for details.
+ See the core method <a href='../../../../../org/simplemes/mes/system/service/ScanService.html#scan(org.simplemes.mes.system.ScanRequestInterface)' title='ScanService.scan'>ScanService.scan</a> for details.
  <p>
  <b>Note</b>: This method is part of the Stable API. <DL><DT><B>Parameters:</B></DT><DD><code>coreResponse</code> -  The response from the core method (or from other extensions that provide a response).</DD><DD><code>scanRequest</code> -  The details of the request .</DD></DL><DL><DT><B>Returns:</B></DT><DD>Return a new response if your extension needs to return a different value. Return null to use core response.
          You can also modify the coreResponse if it is a POGO that allows modification.</DD></DL></p>
@@ -241,7 +247,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                             <li class="blockList">
                                 <h4>void <strong>preScan</strong>(<a href='../../../../../org/simplemes/mes/system/ScanRequestInterface.html'>ScanRequestInterface</a> scanRequest)</h4>
                                 <p> Pre-scan extension method for the scan() method.
- See the core method ScanService#scan(org.simplemes.mes.system.ScanRequestInterface) for details.
+ See the core method <a href='../../../../../org/simplemes/mes/system/service/ScanService.html#scan(org.simplemes.mes.system.ScanRequestInterface)' title='ScanService.scan'>ScanService.scan</a> for details.
  <p>
  <b>Note</b>: This method is part of the Stable API. <DL><DT><B>Parameters:</B></DT><DD><code>orderReleaseRequest</code> -  The details of the request.</DD></DL></p>
                             </li>

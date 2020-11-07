@@ -101,15 +101,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>java.security.Principal</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
+
 <pre>class MockPrincipal
 extends java.lang.Object
-
-</pre>
-
-
+implements java.security.Principal</pre>
 
     <p> A mock of the user Principal for use in unit tests only.  Provides the specified (optional) roles for the user.</p>
 
@@ -142,7 +142,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#attributes">attributes</a></code><br>The attributes (simulates the attributes in AuthenticationJWTClaimsSetAdapter).</td>
                         </tr>
                         
@@ -187,7 +187,7 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst">
                                 <code><a href="#MockPrincipal(java.lang.String, List)">MockPrincipal</a>
-                                (java.lang.String userName, <a href='../../../../List.html'>List</a> roles)</code><br>Builds a mock principal for the given user (required).</td>
+                                (java.lang.String userName, java.util.List&lt;java.lang.String&gt; roles)</code><br>Builds a mock principal for the given user (required).</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -225,7 +225,7 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#getAttributes()">getAttributes</a></strong>()</code><br>The mock attributes.
  </td>
                         </tr>
@@ -233,7 +233,7 @@ extends java.lang.Object
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getName()">getName</a></strong>()</code><br>Returns the name of this principal. </td>
+                            <td class="colLast"><code><strong><a href="#getName()">getName</a></strong>()</code><br>Returns the name of this principal.</td>
                         </tr>
                         
                     </table>
@@ -282,7 +282,7 @@ extends java.lang.Object
                         <a name="attributes"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>attributes</strong></h4>
+                                <h4>private&nbsp;java.util.Map <strong>attributes</strong></h4>
                                 <p> The attributes (simulates the attributes in AuthenticationJWTClaimsSetAdapter).</p>
                             </li>
                         </ul>
@@ -328,8 +328,8 @@ extends java.lang.Object
                         <a name="MockPrincipal(java.lang.String, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-<strong>MockPrincipal</strong>(java.lang.String userName, <a href='../../../../List.html'>List</a> roles)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+<strong>MockPrincipal</strong>(java.lang.String userName, java.util.List&lt;java.lang.String&gt; roles)</h4>
                                 <p> Builds a mock principal for the given user (required). <DL><DT><B>Parameters:</B></DT><DD><code>userName</code> -  The user name.</DD><DD><code>roles</code> -  The roles the mock user has.</DD></DL></p>
                             </li>
                         </ul>
@@ -366,7 +366,7 @@ extends java.lang.Object
                         <a name="getAttributes()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>getAttributes</strong>()</h4>
+                                <h4>java.util.Map <strong>getAttributes</strong>()</h4>
                                 <p> The mock attributes.
  @return</p>
                             </li>
@@ -375,7 +375,7 @@ extends java.lang.Object
                         <a name="getName()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>getName</strong>()</h4>
                                 <p> Returns the name of this principal. <DL><DT><B>Returns:</B></DT><DD>the name of this principal.</DD></DL></p>
                             </li>

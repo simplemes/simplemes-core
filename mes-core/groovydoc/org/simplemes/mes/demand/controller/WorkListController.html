@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.security.annotation.Secured(value: OPERATOR)
+@io.micronaut.http.annotation.Controller(value: /workList)
+class WorkListController
+extends org.simplemes.eframe.controller.BaseController</pre>
 
     <p> The controller for the core MES selection activities.
 
@@ -217,7 +226,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>org.simplemes.eframe.controller.StandardModelAndView</code></td>
-                            <td class="colLast"><code><strong><a href="#workListActivity(io.micronaut.http.HttpRequest, java.security.Principal)">workListActivity</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Displays the core workList activity page. </td>
+                            <td class="colLast"><code><strong><a href="#workListActivity(io.micronaut.http.HttpRequest, java.security.Principal)">workListActivity</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Displays the core workList activity page.</td>
                         </tr>
                         
                     </table>
@@ -236,7 +245,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class org.simplemes.eframe.controller.BaseController</code></td>
-                            <td class="colLast"><code>org.simplemes.eframe.controller.BaseController#error(io.micronaut.http.HttpRequest, java.lang.Throwable), org.simplemes.eframe.controller.BaseController#buildErrorResponse(java.lang.String), org.simplemes.eframe.controller.BaseController#buildOkResponse(java.lang.Object), org.simplemes.eframe.controller.BaseController#buildOkResponse(), org.simplemes.eframe.controller.BaseController#buildDeniedResponse(io.micronaut.http.HttpRequest, java.lang.String, java.security.Principal), org.simplemes.eframe.controller.BaseController#parseBody(io.micronaut.http.HttpRequest, java.lang.Class), org.simplemes.eframe.controller.BaseController#getMetaClass(), org.simplemes.eframe.controller.BaseController#setMetaClass(groovy.lang.MetaClass), org.simplemes.eframe.controller.BaseController#wait(long, int), org.simplemes.eframe.controller.BaseController#wait(), org.simplemes.eframe.controller.BaseController#wait(long), org.simplemes.eframe.controller.BaseController#equals(java.lang.Object), org.simplemes.eframe.controller.BaseController#toString(), org.simplemes.eframe.controller.BaseController#hashCode(), org.simplemes.eframe.controller.BaseController#getClass(), org.simplemes.eframe.controller.BaseController#notify(), org.simplemes.eframe.controller.BaseController#notifyAll(), org.simplemes.eframe.controller.BaseController#getProperty(java.lang.String), org.simplemes.eframe.controller.BaseController#setProperty(java.lang.String, java.lang.Object), org.simplemes.eframe.controller.BaseController#invokeMethod(java.lang.String, java.lang.Object)</code></td>
+                            <td class="colLast"><code>org.simplemes.eframe.controller.BaseController#error(io.micronaut.http.HttpRequest, java.lang.Throwable), org.simplemes.eframe.controller.BaseController#buildErrorResponse(java.lang.String), org.simplemes.eframe.controller.BaseController#buildOkResponse(), org.simplemes.eframe.controller.BaseController#buildOkResponse(java.lang.Object), org.simplemes.eframe.controller.BaseController#buildDeniedResponse(io.micronaut.http.HttpRequest, java.lang.String, java.security.Principal), org.simplemes.eframe.controller.BaseController#parseBody(io.micronaut.http.HttpRequest, java.lang.Class), org.simplemes.eframe.controller.BaseController#getMetaClass(), org.simplemes.eframe.controller.BaseController#setMetaClass(groovy.lang.MetaClass), org.simplemes.eframe.controller.BaseController#wait(long, int), org.simplemes.eframe.controller.BaseController#wait(), org.simplemes.eframe.controller.BaseController#wait(long), org.simplemes.eframe.controller.BaseController#equals(java.lang.Object), org.simplemes.eframe.controller.BaseController#toString(), org.simplemes.eframe.controller.BaseController#hashCode(), org.simplemes.eframe.controller.BaseController#getClass(), org.simplemes.eframe.controller.BaseController#notify(), org.simplemes.eframe.controller.BaseController#notifyAll(), org.simplemes.eframe.controller.BaseController#getProperty(java.lang.String), org.simplemes.eframe.controller.BaseController#setProperty(java.lang.String, java.lang.Object), org.simplemes.eframe.controller.BaseController#invokeMethod(java.lang.String, java.lang.Object)</code></td>
                         </tr>
                     </table>
                    </ul>
@@ -309,10 +318,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="findWork(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-io.micronaut.http.HttpResponse <strong>findWork</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /findWork)
+io.micronaut.http.HttpResponse <strong>findWork</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Provides a list of active/queued work.  This exposes the
- org.simplemes.mes.demand.service.WorkListService#findWork(org.simplemes.mes.demand.FindWorkRequest) method.
+ <a href='../../../../../org/simplemes/mes/demand/service/WorkListService.html#findWork(org.simplemes.mes.demand.FindWorkRequest)' title='WorkListService.findWork'>WorkListService.findWork</a> method.
  The response is a JSON form used for data lists for the toolkit (e.g. data:...).
  The input objects supported are JSON forms from that method.
  <p>
@@ -324,9 +333,9 @@ io.micronaut.http.HttpResponse <strong>findWork</strong>(io.micronaut.http.HttpR
                         <a name="workListActivity(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-org.simplemes.eframe.controller.StandardModelAndView <strong>workListActivity</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /workListActivity)
+org.simplemes.eframe.controller.StandardModelAndView <strong>workListActivity</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the core workList activity page. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.</DD><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The model/view to display.</DD></DL></p>
                             </li>
                         </ul>

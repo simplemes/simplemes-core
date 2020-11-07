@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@java.lang.SuppressWarnings(value: UnusedMethodParameter)
+class MockFile
+extends java.io.File</pre>
 
     <p> A mock File that can be used to write text to string for later use.
  The file reader will rely on the text written to the mock file by previous calls to the
@@ -116,6 +123,26 @@ if (location.href.indexOf('is-external=true') == -1) {
         <!-- =========== ENUM CONSTANT SUMMARY =========== -->
         
         <!-- =========== FIELD SUMMARY =========== -->
+        
+            <ul class="blockList">
+                <li class="blockList"><a name="field_summary"><!--   --></a>
+                    <ul class="blockList">
+                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Inherited fields summary table">
+                        <caption><span>Inherited fields</span><span class="tabEnd">&nbsp;</span></caption>
+                        <tr>
+                            <th class="colFirst" scope="col">Fields inherited from class</th>
+                            <th class="colLast" scope="col">Fields</th>
+                        </tr>
+                                                <tr class="altColor">
+                            <td class="colFirst"><strong><code>class java.io.File</code></strong></td>
+                            <td class="colLast"><code>separatorChar, separator, pathSeparatorChar, pathSeparator</code></td>
+                        </tr>
+
+                    </table>
+                    </ul>
+                </li>
+                
+            </ul>
         
 
         <!-- =========== PROPERTY SUMMARY =========== -->
@@ -152,7 +179,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#files">files</a></code><br>The list of Mocked files in this mocked file.  </td>
                         </tr>
                         
@@ -162,7 +189,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Writer.html'>Writer</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.io.Writer</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#writer">writer</a></code><br>The writer to use for this mock file.</td>
                         </tr>
                         
@@ -195,14 +222,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#MockFile(Map)">MockFile</a>
-                                (<a href='../../../../Map.html'>Map</a> options)</code><br>Standard Map constructor.</td>
+                                <code><a href="#MockFile(java.util.Map)">MockFile</a>
+                                (java.util.Map options)</code><br>Standard Map constructor.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#MockFile(java.lang.String, Writer, org.simplemes.eframe.test.MockFileFactory)">MockFile</a>
-                                (java.lang.String path, <a href='../../../../Writer.html'>Writer</a> writer, <a href='../../../../org/simplemes/eframe/test/MockFileFactory.html'>MockFileFactory</a> factory)</code><br>Creates a new <code>File</code> instance by converting the given
+                                <code><a href="#MockFile(java.lang.String, java.io.Writer, org.simplemes.eframe.test.MockFileFactory)">MockFile</a>
+                                (java.lang.String path, java.io.Writer writer, <a href='../../../../org/simplemes/eframe/test/MockFileFactory.html'>MockFileFactory</a> factory)</code><br>Creates a new <code>File</code> instance by converting the given
  pathname string into an abstract pathname.  </td>
                         </tr>
                         
@@ -249,8 +276,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getAbsolutePath()">getAbsolutePath</a></strong>()</code><br>Returns the absolute pathname string of this abstract pathname.
- </td>
+                            <td class="colLast"><code><strong><a href="#getAbsolutePath()">getAbsolutePath</a></strong>()</code><br>Returns the absolute pathname string of this abstract pathname.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -273,32 +299,50 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../File.html'>File</a>[]</code></td>
+                            <td class="colLast"><code>java.io.File[]</code></td>
                             <td class="colLast"><code><strong><a href="#listFiles()">listFiles</a></strong>()</code><br>Mock method to simulate a directory (when needed).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Reader.html'>Reader</a></code></td>
+                            <td class="colLast"><code>java.io.Reader</code></td>
                             <td class="colLast"><code><strong><a href="#newReader()">newReader</a></strong>()</code><br>Builds a new reader for the mock file.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Writer.html'>Writer</a></code></td>
-                            <td class="colLast"><code><strong><a href="#newWriter(java.lang.String)">newWriter</a></strong>(java.lang.String codec)</code><br>Builds a new writer (uses the provided writer). </td>
+                            <td class="colLast"><code>java.io.Writer</code></td>
+                            <td class="colLast"><code><strong><a href="#newWriter(java.lang.String)">newWriter</a></strong>(java.lang.String codec)</code><br>Builds a new writer (uses the provided writer).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Writer.html'>Writer</a></code></td>
-                            <td class="colLast"><code><strong><a href="#newWriter()">newWriter</a></strong>()</code><br>Builds a new writer (uses the provided writer). </td>
+                            <td class="colLast"><code>java.io.Writer</code></td>
+                            <td class="colLast"><code><strong><a href="#newWriter()">newWriter</a></strong>()</code><br>Builds a new writer (uses the provided writer).</td>
                         </tr>
                         
                     </table>
                    </ul>
               </li>
             
+            <li class="blockList"><a name="method_summary"><!--   --></a>
+                    <h3>Inherited Methods Summary</h3>
+                    <ul class="blockList">
+                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Inherited Methods Summary table">
+                        <caption><span>Inherited Methods</span><span class="tabEnd">&nbsp;</span></caption>
+                        <tr>
+                            <th class="colFirst" scope="col">Methods inherited from class</th>
+                            <th class="colLast" scope="col">Name</th>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code>class java.io.File</code></td>
+                            <td class="colLast"><code>java.io.File#getName(), java.io.File#equals(java.lang.Object), java.io.File#length(), java.io.File#toString(), java.io.File#hashCode(), java.io.File#compareTo(java.lang.Object), java.io.File#compareTo(java.io.File), java.io.File#list(), java.io.File#list(java.io.FilenameFilter), java.io.File#isAbsolute(), java.io.File#getParent(), java.io.File#delete(), java.io.File#setReadOnly(), java.io.File#canRead(), java.io.File#getPath(), java.io.File#toURI(), java.io.File#toURL(), java.io.File#getAbsolutePath(), java.io.File#getCanonicalPath(), java.io.File#isDirectory(), java.io.File#getAbsoluteFile(), java.io.File#exists(), java.io.File#mkdir(), java.io.File#getCanonicalFile(), java.io.File#getParentFile(), java.io.File#mkdirs(), java.io.File#setWritable(boolean, boolean), java.io.File#setWritable(boolean), java.io.File#setReadable(boolean), java.io.File#setReadable(boolean, boolean), java.io.File#setExecutable(boolean, boolean), java.io.File#setExecutable(boolean), java.io.File#listRoots(), java.io.File#createTempFile(java.lang.String, java.lang.String, java.io.File), java.io.File#createTempFile(java.lang.String, java.lang.String), java.io.File#canWrite(), java.io.File#isFile(), java.io.File#isHidden(), java.io.File#lastModified(), java.io.File#createNewFile(), java.io.File#deleteOnExit(), java.io.File#listFiles(), java.io.File#listFiles(java.io.FileFilter), java.io.File#listFiles(java.io.FilenameFilter), java.io.File#renameTo(java.io.File), java.io.File#setLastModified(long), java.io.File#canExecute(), java.io.File#getTotalSpace(), java.io.File#getFreeSpace(), java.io.File#getUsableSpace(), java.io.File#toPath(), java.io.File#wait(long, int), java.io.File#wait(), java.io.File#wait(long), java.io.File#getClass(), java.io.File#notify(), java.io.File#notifyAll()</code></td>
+                        </tr>
+                    </table>
+                   </ul>
+              </li>
+                
         </ul>
         
     </li>
@@ -355,7 +399,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="files"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>files</strong></h4>
+                                <h4>private&nbsp;java.util.List <strong>files</strong></h4>
                                 <p> The list of Mocked files in this mocked file.  If given, then this is assumed to be a directory.</p>
                             </li>
                         </ul>
@@ -371,7 +415,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="writer"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Writer.html'>Writer</a> <strong>writer</strong></h4>
+                                <h4>private&nbsp;java.io.Writer <strong>writer</strong></h4>
                                 <p> The writer to use for this mock file.</p>
                             </li>
                         </ul>
@@ -393,24 +437,24 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="MockFile()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GroovyUnusedDeclaration)
 <strong>MockFile</strong>()</h4>
                                 <p> Dummy constructor.</p>
                             </li>
                         </ul>
                     
-                        <a name="MockFile(Map)"><!-- --></a>
+                        <a name="MockFile(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>MockFile</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4><strong>MockFile</strong>(java.util.Map options)</h4>
                                 <p> Standard Map constructor.</p>
                             </li>
                         </ul>
                     
-                        <a name="MockFile(java.lang.String, Writer, org.simplemes.eframe.test.MockFileFactory)"><!-- --></a>
+                        <a name="MockFile(java.lang.String, java.io.Writer, org.simplemes.eframe.test.MockFileFactory)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>MockFile</strong>(java.lang.String path, <a href='../../../../Writer.html'>Writer</a> writer, <a href='../../../../org/simplemes/eframe/test/MockFileFactory.html'>MockFileFactory</a> factory)</h4>
+                                <h4><strong>MockFile</strong>(java.lang.String path, java.io.Writer writer, <a href='../../../../org/simplemes/eframe/test/MockFileFactory.html'>MockFileFactory</a> factory)</h4>
                                 <p> Creates a new <code>File</code> instance by converting the given
  pathname string into an abstract pathname.  If the given string is
  the empty string, then the result is the empty abstract pathname.<DL><DT><B>throws:</B></DT><DD>NullPointerException*          If the <code>pathname</code> argument is <code>null</code></DD></DL> <DL><DT><B>Parameters:</B></DT><DD><code>pathname</code> -  A pathname string</DD></DL></p>
@@ -441,7 +485,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="delete()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 boolean <strong>delete</strong>()</h4>
                                 <p> Does nothing.</p>
                             </li>
@@ -450,7 +494,7 @@ boolean <strong>delete</strong>()</h4>
                         <a name="exists()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 boolean <strong>exists</strong>()</h4>
                                 <p> Tests whether the file or directory denoted by this abstract pathname
  exists.</p>
@@ -460,7 +504,7 @@ boolean <strong>exists</strong>()</h4>
                         <a name="getAbsolutePath()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>getAbsolutePath</strong>()</h4>
                                 <p> Returns the absolute pathname string of this abstract pathname.
  <DL><DT><B>Returns:</B></DT><DD>The absolute pathname string denoting the same file or
@@ -471,7 +515,7 @@ java.lang.String <strong>getAbsolutePath</strong>()</h4>
                         <a name="getName()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>getName</strong>()</h4>
                                 <p> Returns the base file name.
 </p>
@@ -481,7 +525,7 @@ java.lang.String <strong>getName</strong>()</h4>
                         <a name="isDirectory()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 boolean <strong>isDirectory</strong>()</h4>
                                 <p> Mock method to simulate a real directory, when needed.</p>
                             </li>
@@ -490,7 +534,7 @@ boolean <strong>isDirectory</strong>()</h4>
                         <a name="isFile()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 boolean <strong>isFile</strong>()</h4>
                                 <p> Mock method to simulate a real file, when needed.</p>
                             </li>
@@ -499,8 +543,8 @@ boolean <strong>isFile</strong>()</h4>
                         <a name="listFiles()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-<a href='../../../../File.html'>File</a>[] <strong>listFiles</strong>()</h4>
+                                <h4>@java.lang.Override
+java.io.File[] <strong>listFiles</strong>()</h4>
                                 <p> Mock method to simulate a directory (when needed).</p>
                             </li>
                         </ul>
@@ -508,7 +552,7 @@ boolean <strong>isFile</strong>()</h4>
                         <a name="newReader()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Reader.html'>Reader</a> <strong>newReader</strong>()</h4>
+                                <h4>java.io.Reader <strong>newReader</strong>()</h4>
                                 <p> Builds a new reader for the mock file.  Uses the string from the provided writer. <DL><DT><B>Parameters:</B></DT><DD><code>codec</code> -  Ignored.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The reader.</DD></DL></p>
                             </li>
                         </ul>
@@ -516,7 +560,7 @@ boolean <strong>isFile</strong>()</h4>
                         <a name="newWriter(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Writer.html'>Writer</a> <strong>newWriter</strong>(java.lang.String codec)</h4>
+                                <h4>java.io.Writer <strong>newWriter</strong>(java.lang.String codec)</h4>
                                 <p> Builds a new writer (uses the provided writer). <DL><DT><B>Parameters:</B></DT><DD><code>codec</code> -  Ignored.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The writer.</DD></DL></p>
                             </li>
                         </ul>
@@ -524,7 +568,7 @@ boolean <strong>isFile</strong>()</h4>
                         <a name="newWriter()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Writer.html'>Writer</a> <strong>newWriter</strong>()</h4>
+                                <h4>java.io.Writer <strong>newWriter</strong>()</h4>
                                 <p> Builds a new writer (uses the provided writer). <DL><DT><B>Returns:</B></DT><DD>The writer.</DD></DL></p>
                             </li>
                         </ul>

@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class LogUtils
+extends java.lang.Object</pre>
 
     <p> Utility methods for logging.  Provides static methods to handle common logging tasks.  Includes converting possibly long
  lists of domain objects to limited strings.  Also has support for client side logging features.
@@ -164,7 +170,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.Map&lt;Level, groovy.lang.Range&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#clientLevelMap">clientLevelMap</a></code><br>Maps the client logging framework's level number ranges with the server-side levels.</td>
                         </tr>
                         
@@ -248,38 +254,38 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;org.slf4j.Logger</code></td>
-                            <td class="colLast"><code><strong><a href="#getLogger(java.lang.String)">getLogger</a></strong>(java.lang.String loggerID)</code><br>Finds the logger for the given logging ID (e.g. package/class name). </td>
+                            <td class="colLast"><code><strong><a href="#getLogger(java.lang.String)">getLogger</a></strong>(java.lang.String loggerID)</code><br>Finds the logger for the given logging ID (e.g. package/class name).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;org.slf4j.Logger</code></td>
-                            <td class="colLast"><code><strong><a href="#getLogger(java.lang.Class)">getLogger</a></strong>(java.lang.Class clazz)</code><br>Finds the logger for the given class. </td>
+                            <td class="colLast"><code><strong><a href="#getLogger(java.lang.Class)">getLogger</a></strong>(java.lang.Class clazz)</code><br>Finds the logger for the given class.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#limitedLengthList(List)">limitedLengthList</a></strong>(<a href='../../../../List.html'>List</a> list)</code><br>Build a string representation of the list of objects with limits on the size of each object and number of objects.
+                            <td class="colLast"><code><strong><a href="#limitedLengthList(java.util.List)">limitedLengthList</a></strong>(java.util.List list)</code><br>Build a string representation of the list of objects with limits on the size of each object and number of objects.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#limitedLengthString(java.lang.String)">limitedLengthString</a></strong>(java.lang.String s)</code><br>Trims the given string if it exceeds the MAX_ELEMENT_SIZE (40). </td>
+                            <td class="colLast"><code><strong><a href="#limitedLengthString(java.lang.String)">limitedLengthString</a></strong>(java.lang.String s)</code><br>Trims the given string if it exceeds the MAX_ELEMENT_SIZE (40).</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#limitedLengthString(java.lang.String, int)">limitedLengthString</a></strong>(java.lang.String s, int maxLength)</code><br>Trims the given string if it exceeds the MAX_ELEMENT_SIZE (default: 40). </td>
+                            <td class="colLast"><code><strong><a href="#limitedLengthString(java.lang.String, int)">limitedLengthString</a></strong>(java.lang.String s, int maxLength)</code><br>Trims the given string if it exceeds the MAX_ELEMENT_SIZE (default: 40).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#logClientMessage(Map, Map)">logClientMessage</a></strong>(<a href='../../../../Map.html'>Map</a> json, <a href='../../../../Map.html'>Map</a> params)</code><br>Logs the given client-side message to the standard logger.  </td>
+                            <td class="colLast"><code><strong><a href="#logClientMessage(java.util.Map, java.util.Map)">logClientMessage</a></strong>(java.util.Map json, java.util.Map params)</code><br>Logs the given client-side message to the standard logger.  </td>
                         </tr>
                         
                         <tr class="altColor">
@@ -291,7 +297,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#toLevel(java.lang.String)">toLevel</a></strong>(java.lang.String level)</code><br>Converts the given string Level to the correct logger Level. </td>
+                            <td class="colLast"><code><strong><a href="#toLevel(java.lang.String)">toLevel</a></strong>(java.lang.String level)</code><br>Converts the given string Level to the correct logger Level.</td>
                         </tr>
                         
                     </table>
@@ -366,7 +372,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="clientLevelMap"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;<a href='../../../../Map.html'>Map</a> <strong>clientLevelMap</strong></h4>
+                                <h4>private&nbsp;static&nbsp;java.util.Map&lt;Level, groovy.lang.Range&gt; <strong>clientLevelMap</strong></h4>
                                 <p> Maps the client logging framework's level number ranges with the server-side levels.</p>
                             </li>
                         </ul>
@@ -464,10 +470,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="limitedLengthList(List)"><!-- --></a>
+                        <a name="limitedLengthList(java.util.List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>limitedLengthList</strong>(<a href='../../../../List.html'>List</a> list)</h4>
+                                <h4>static&nbsp;java.lang.String <strong>limitedLengthList</strong>(java.util.List list)</h4>
                                 <p> Build a string representation of the list of objects with limits on the size of each object and number of objects.
  If the string or count exceeds the limits, place holders are printed (... and '10 more...'). <DL><DT><B>Parameters:</B></DT><DD><code>list</code> -  The list of objects to print strings for.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The string representation (with limits).</DD></DL></p>
                             </li>
@@ -489,10 +495,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="logClientMessage(Map, Map)"><!-- --></a>
+                        <a name="logClientMessage(java.util.Map, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;void <strong>logClientMessage</strong>(<a href='../../../../Map.html'>Map</a> json, <a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4>static&nbsp;void <strong>logClientMessage</strong>(java.util.Map json, java.util.Map params)</h4>
                                 <p> Logs the given client-side message to the standard logger.  The input JSON is provided by the client logging
  framework. <DL><DT><B>Parameters:</B></DT><DD><code>json</code> -  The content of the logging request from the client framework.  This contains an array ('lg') or maps.
         The maps contain two important elements: 'l' (level as int), 'm' (the message text).</DD><DD><code>params</code> -  The HTTP request parameters (uses 'logger' as the name of the server-side logger).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The client-side logger name.</DD></DL></p>

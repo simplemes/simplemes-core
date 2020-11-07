@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class ForeignReferenceSerializer
+extends JsonSerializer&lt;java.lang.Object&gt;</pre>
 
     <p> A serializer for writing foreign domain references with a simple format: just the key field(s) and an ID.</p>
 
@@ -130,7 +136,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#keys">keys</a></code><br>The key fields for the domain reference.</td>
                         </tr>
                         
@@ -158,7 +164,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst">
                                 <code><a href="#ForeignReferenceSerializer(List)">ForeignReferenceSerializer</a>
-                                (<a href='../../../../List.html'>List</a> keys)</code><br>Builds the serializer, which dumps the given key fields.</td>
+                                (java.util.List&lt;java.lang.String&gt; keys)</code><br>Builds the serializer, which dumps the given key fields.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -191,31 +197,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)">serialize</a></strong>(java.lang.Object value, com.fasterxml.jackson.core.JsonGenerator gen, com.fasterxml.jackson.databind.SerializerProvider provider)</code><br>Serializes the domain record reference using the short string (e.g. primary key field). </td>
+                            <td class="colLast"><code><strong><a href="#serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)">serialize</a></strong>(java.lang.Object value, com.fasterxml.jackson.core.JsonGenerator gen, com.fasterxml.jackson.databind.SerializerProvider provider)</code><br>Serializes the domain record reference using the short string (e.g. primary key field).</td>
                         </tr>
                         
                     </table>
                    </ul>
               </li>
             
-            <li class="blockList"><a name="method_summary"><!--   --></a>
-                    <h3>Inherited Methods Summary</h3>
-                    <ul class="blockList">
-                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Inherited Methods Summary table">
-                        <caption><span>Inherited Methods</span><span class="tabEnd">&nbsp;</span></caption>
-                        <tr>
-                            <th class="colFirst" scope="col">Methods inherited from class</th>
-                            <th class="colLast" scope="col">Name</th>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code>class com.fasterxml.jackson.databind.JsonSerializer</code></td>
-                            <td class="colLast"><code>com.fasterxml.jackson.databind.JsonSerializer#isEmpty(com.fasterxml.jackson.databind.SerializerProvider, java.lang.Object), com.fasterxml.jackson.databind.JsonSerializer#isEmpty(java.lang.Object), com.fasterxml.jackson.databind.JsonSerializer#properties(), com.fasterxml.jackson.databind.JsonSerializer#acceptJsonFormatVisitor(com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatVisitorWrapper, com.fasterxml.jackson.databind.JavaType), com.fasterxml.jackson.databind.JsonSerializer#replaceDelegatee(com.fasterxml.jackson.databind.JsonSerializer), com.fasterxml.jackson.databind.JsonSerializer#handledType(), com.fasterxml.jackson.databind.JsonSerializer#getDelegatee(), com.fasterxml.jackson.databind.JsonSerializer#unwrappingSerializer(com.fasterxml.jackson.databind.util.NameTransformer), com.fasterxml.jackson.databind.JsonSerializer#withFilterId(java.lang.Object), com.fasterxml.jackson.databind.JsonSerializer#serializeWithType(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider, com.fasterxml.jackson.databind.jsontype.TypeSerializer), com.fasterxml.jackson.databind.JsonSerializer#usesObjectId(), com.fasterxml.jackson.databind.JsonSerializer#isUnwrappingSerializer(), com.fasterxml.jackson.databind.JsonSerializer#serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider), com.fasterxml.jackson.databind.JsonSerializer#wait(long, int), com.fasterxml.jackson.databind.JsonSerializer#wait(), com.fasterxml.jackson.databind.JsonSerializer#wait(long), com.fasterxml.jackson.databind.JsonSerializer#equals(java.lang.Object), com.fasterxml.jackson.databind.JsonSerializer#toString(), com.fasterxml.jackson.databind.JsonSerializer#hashCode(), com.fasterxml.jackson.databind.JsonSerializer#getClass(), com.fasterxml.jackson.databind.JsonSerializer#notify(), com.fasterxml.jackson.databind.JsonSerializer#notifyAll()</code></td>
-                        </tr>
-                    </table>
-                   </ul>
-              </li>
-                
         </ul>
         
     </li>
@@ -240,7 +228,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="keys"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>keys</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.String&gt; <strong>keys</strong></h4>
                                 <p> The key fields for the domain reference.</p>
                             </li>
                         </ul>
@@ -262,7 +250,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="ForeignReferenceSerializer(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>ForeignReferenceSerializer</strong>(<a href='../../../../List.html'>List</a> keys)</h4>
+                                <h4><strong>ForeignReferenceSerializer</strong>(java.util.List&lt;java.lang.String&gt; keys)</h4>
                                 <p> Builds the serializer, which dumps the given key fields. <DL><DT><B>Parameters:</B></DT><DD><code>keys</code> -  The key fields.</DD></DL></p>
                             </li>
                         </ul>
@@ -291,7 +279,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>serialize</strong>(java.lang.Object value, com.fasterxml.jackson.core.JsonGenerator gen, com.fasterxml.jackson.databind.SerializerProvider provider)</h4>
                                 <p> Serializes the domain record reference using the short string (e.g. primary key field). <DL><DT><B>Parameters:</B></DT><DD>value</DD><DD>gen</DD><DD>provider</DD></DL></p>
                             </li>

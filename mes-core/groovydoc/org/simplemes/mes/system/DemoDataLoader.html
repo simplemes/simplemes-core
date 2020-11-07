@@ -101,17 +101,17 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>org.simplemes.eframe.system.DemoDataLoaderInterface</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.util.logging.Slf4jSlf4j
-@javax.inject.SingletonSingleton
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
 class DemoDataLoader
 extends java.lang.Object
-
-</pre>
-
-
+implements org.simplemes.eframe.system.DemoDataLoaderInterface</pre>
 
     <p> Loads some demo data for the Assy module.</p>
 
@@ -177,20 +177,20 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;java.util.Map&lt;java.lang.String, java.lang.Object&gt;&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#loadDemoData()">loadDemoData</a></strong>()</code><br>Loads the demo data.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#loadManagerDashboard()">loadManagerDashboard</a></strong>()</code><br>Loads the a traditional dashboard with default activities. </td>
+                            <td class="colLast"><code>java.util.List&lt;java.util.Map&lt;java.lang.String, java.lang.Object&gt;&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#loadManagerDashboard()">loadManagerDashboard</a></strong>()</code><br>Loads the a traditional dashboard with default activities.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#loadScanDashboard()">loadScanDashboard</a></strong>()</code><br>Loads the a scan-based dashboard with default activities. </td>
+                            <td class="colLast"><code>java.util.List&lt;java.util.Map&lt;java.lang.String, java.lang.Object&gt;&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#loadScanDashboard()">loadScanDashboard</a></strong>()</code><br>Loads the a scan-based dashboard with default activities.</td>
                         </tr>
                         
                     </table>
@@ -264,8 +264,8 @@ extends java.lang.Object
                         <a name="loadDemoData()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-<a href='../../../../List.html'>List</a> <strong>loadDemoData</strong>()</h4>
+                                <h4>@java.lang.Override
+java.util.List&lt;java.util.Map&lt;java.lang.String, java.lang.Object&gt;&gt; <strong>loadDemoData</strong>()</h4>
                                 <p> Loads the demo data.  Loads a FlexType (LOT) and some Products to build a Bike.  Also loads a dashboard config for
  Assembly scanning.
 
@@ -283,7 +283,7 @@ extends java.lang.Object
                         <a name="loadManagerDashboard()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>loadManagerDashboard</strong>()</h4>
+                                <h4>java.util.List&lt;java.util.Map&lt;java.lang.String, java.lang.Object&gt;&gt; <strong>loadManagerDashboard</strong>()</h4>
                                 <p> Loads the a traditional dashboard with default activities. <DL><DT><B>Returns:</B></DT><DD>A list of Maps with the elements defined above.</DD></DL></p>
                             </li>
                         </ul>
@@ -291,7 +291,7 @@ extends java.lang.Object
                         <a name="loadScanDashboard()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>loadScanDashboard</strong>()</h4>
+                                <h4>java.util.List&lt;java.util.Map&lt;java.lang.String, java.lang.Object&gt;&gt; <strong>loadScanDashboard</strong>()</h4>
                                 <p> Loads the a scan-based dashboard with default activities. <DL><DT><B>Returns:</B></DT><DD>A list of Maps with the elements defined above.</DD></DL></p>
                             </li>
                         </ul>

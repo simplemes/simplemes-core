@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+class BaseDashboardSpecification
+extends <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html'>BaseGUISpecification</a></pre>
 
     <p> This is the common Spock specification base class for testing Dashboard related activities.
  It provides a way to define dashboard activities in memory for a specific test to avoid creating
@@ -106,7 +113,7 @@ if (location.href.indexOf('is-external=true') == -1) {
  This base class provides creation of simple one/two panel dashboards with memory-based content and buttons.
  This allows you to test dashboard functions with minimal dependencies on other elements.
  <p/>
- This class depends on the main org.simplemes.eframe.dashboard.controller.DashboardController and
+ This class depends on the main <a href='../../../../org/simplemes/eframe/dashboard/controller/DashboardController.html' title='DashboardController'>DashboardController</a> and
  DashboardTestController to provide the page displays needed for the
  dashboard itself and the content (test controller).<p/>
  For example:
@@ -229,25 +236,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildActivity(java.lang.String, java.lang.String)">buildActivity</a></strong>(java.lang.String activity, java.lang.String page)</code><br>Builds the correct activity URL/content reference for the <DL><DT><B>Parameters:</B></DT><DD><code>activity</code> -  The activity content.  </td>
+                            <td class="colLast"><code><strong><a href="#buildActivity(java.lang.String, java.lang.String)">buildActivity</a></strong>(java.lang.String activity, java.lang.String page)</code><br>Builds the correct activity URL/content reference for the</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#buildButton(java.lang.Object, java.lang.String, java.lang.String, int)">buildButton</a></strong>(java.lang.Object buttonContent, java.lang.String buttonActionPanel, java.lang.String id, int sequence)</code><br>Builds the button activities based on the inputs. </td>
+                            <td class="colLast"><code><strong><a href="#buildButton(java.lang.Object, java.lang.String, java.lang.String, int)">buildButton</a></strong>(java.lang.Object buttonContent, java.lang.String buttonActionPanel, java.lang.String id, int sequence)</code><br>Builds the button activities based on the inputs.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/dashboard/domain/DashboardConfig.html'>DashboardConfig</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildDashboard(Map)">buildDashboard</a></strong>(<a href='../../../../Map.html'>Map</a> options)</code><br>Builds a test dashboard for use by this GUI tester.  </td>
+                            <td class="colLast"><code><strong><a href="#buildDashboard(java.util.Map)">buildDashboard</a></strong>(java.util.Map options)</code><br>Builds a test dashboard for use by this GUI tester.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildSimplePanel(Map)">buildSimplePanel</a></strong>(<a href='../../../../Map.html'>Map</a> options)</code><br>Builds the text for simple panel. </td>
+                            <td class="colLast"><code><strong><a href="#buildSimplePanel(java.util.Map)">buildSimplePanel</a></strong>(java.util.Map options)</code><br>Builds the text for simple panel.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -279,21 +286,21 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#displayDashboard(Map)">displayDashboard</a></strong>(<a href='../../../../Map.html'>Map</a> options)</code><br>Navigates to the dashboard page with the given options.
+                            <td class="colLast"><code><strong><a href="#displayDashboard(java.util.Map)">displayDashboard</a></strong>(java.util.Map options)</code><br>Navigates to the dashboard page with the given options.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#getDashboardEvent(java.lang.String)">getDashboardEvent</a></strong>(java.lang.String event)</code><br>Gets the given event's contents from the standard test activity
- DashboardTestController.DISPLAY_EVENT_ACTIVITY. </td>
+ DashboardTestController.DISPLAY_EVENT_ACTIVITY.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isButtonPanelDisplayed()">isButtonPanelDisplayed</a></strong>()</code><br>Returns true if the test BUTTON_PANEL is displayed (somewhere). </td>
+                            <td class="colLast"><code><strong><a href="#isButtonPanelDisplayed()">isButtonPanelDisplayed</a></strong>()</code><br>Returns true if the test BUTTON_PANEL is displayed (somewhere).</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -305,14 +312,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#saveEditorChanges(org.simplemes.eframe.dashboard.domain.DashboardConfig)">saveEditorChanges</a></strong>(<a href='../../../../org/simplemes/eframe/dashboard/domain/DashboardConfig.html'>DashboardConfig</a> dashboard)</code><br>Opens the editor dialog and waits for the dialog to close and the record to be updated in the DB. </td>
+                            <td class="colLast"><code><strong><a href="#saveEditorChanges(org.simplemes.eframe.dashboard.domain.DashboardConfig)">saveEditorChanges</a></strong>(<a href='../../../../org/simplemes/eframe/dashboard/domain/DashboardConfig.html'>DashboardConfig</a> dashboard)</code><br>Opens the editor dialog and waits for the dialog to close and the record to be updated in the DB.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#waitForDashboardEvent(java.lang.String)">waitForDashboardEvent</a></strong>(java.lang.String event)</code><br>Waits for the given event to be displayed in the standard test activity
- DashboardTestController.DISPLAY_EVENT_ACTIVITY. </td>
+ DashboardTestController.DISPLAY_EVENT_ACTIVITY.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -337,11 +344,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html'>BaseGUISpecification</a></code></td>
-                            <td class="colLast"><code><a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#calculateOffset(java.lang.Object, java.lang.Object)'>calculateOffset</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#checkMenuLabels(java.lang.String, java.lang.String, List)'>checkMenuLabels</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#clickButton(java.lang.String)'>clickButton</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#clickMenu(java.lang.String, java.lang.String)'>clickMenu</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#dumpElement(java.lang.Object, int)'>dumpElement</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#findLogoutButton()'>findLogoutButton</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#getColumnIndex(java.lang.Class, java.lang.String)'>getColumnIndex</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#getComboListItem(java.lang.String)'>getComboListItem</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#getFieldLabel(java.lang.String)'>getFieldLabel</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#getInputField(java.lang.String)'>getInputField</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#getReadonlyFieldValue(java.lang.String)'>getReadonlyFieldValue</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#isFireFox()'>isFireFox</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#isSearchServerUp()'>isSearchServerUp</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#login(java.lang.String, java.lang.String)'>login</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#logout()'>logout</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#lookup(java.lang.String, Locale, java.lang.Object)'>lookup</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#lookupRequired(java.lang.String, Locale, java.lang.Object)'>lookupRequired</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#nonZeroRecordCount(java.lang.Class)'>nonZeroRecordCount</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#sendKey(java.lang.Object)'>sendKey</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#setCombobox(java.lang.Object, java.lang.String)'>setCombobox</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#setCombobox(java.lang.String, java.lang.String)'>setCombobox</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#setFieldValue(java.lang.String, java.lang.Object, java.lang.Object)'>setFieldValue</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#setMultiCombobox(java.lang.Object, List)'>setMultiCombobox</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#setMultiCombobox(java.lang.String, List)'>setMultiCombobox</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#setup()'>setup</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#standardGUISleep(int)'>standardGUISleep</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#waitForGridComboboxInputValue(java.lang.String)'>waitForGridComboboxInputValue</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#waitForNonZeroRecordCount(java.lang.Class)'>waitForNonZeroRecordCount</a></code></td>
+                            <td class="colLast"><code><a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#calculateOffset(java.lang.Object, java.lang.Object)'>calculateOffset</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#checkMenuLabels(java.lang.String, java.lang.String, List)'>checkMenuLabels</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#clickButton(java.lang.String)'>clickButton</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#clickMenu(java.lang.String, java.lang.String)'>clickMenu</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#dumpElement(java.lang.Object, int)'>dumpElement</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#findLogoutButton()'>findLogoutButton</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#getColumnIndex(java.lang.Class, java.lang.String)'>getColumnIndex</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#getComboListItem(java.lang.String)'>getComboListItem</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#getFieldLabel(java.lang.String)'>getFieldLabel</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#getInputField(java.lang.String)'>getInputField</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#getReadonlyFieldValue(java.lang.String)'>getReadonlyFieldValue</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#isFireFox()'>isFireFox</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#isSearchServerUp()'>isSearchServerUp</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#login(java.lang.String, java.lang.String)'>login</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#logout()'>logout</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#lookup(java.lang.String, java.util.Locale, java.lang.Object)'>lookup</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#lookupRequired(java.lang.String, java.util.Locale, java.lang.Object)'>lookupRequired</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#nonZeroRecordCount(java.lang.Class)'>nonZeroRecordCount</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#sendKey(java.lang.Object)'>sendKey</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#setCombobox(java.lang.Object, java.lang.String)'>setCombobox</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#setCombobox(java.lang.String, java.lang.String)'>setCombobox</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#setFieldValue(java.lang.String, java.lang.Object, java.lang.Object)'>setFieldValue</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#setMultiCombobox(java.lang.Object, java.util.List)'>setMultiCombobox</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#setMultiCombobox(java.lang.String, java.util.List)'>setMultiCombobox</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#setup()'>setup</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#standardGUISleep(int)'>standardGUISleep</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#waitForGridComboboxInputValue(java.lang.String)'>waitForGridComboboxInputValue</a>, <a href='../../../../org/simplemes/eframe/test/BaseGUISpecification.html#waitForNonZeroRecordCount(java.lang.Class)'>waitForNonZeroRecordCount</a></code></td>
                         </tr>
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html'>BaseSpecification</a></code></td>
-                            <td class="colLast"><code><a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#assertValidationFails(java.lang.Object, int, java.lang.String, List)'>assertValidationFails</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#checkForLeftoverRecords()'>checkForLeftoverRecords</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#checkJavascript(java.lang.String)'>checkJavascript</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#checkJavascriptFragment(java.lang.String)'>checkJavascriptFragment</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#checkPage(java.lang.String)'>checkPage</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#cleanup()'>cleanup</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#cleanupDomainRecords()'>cleanupDomainRecords</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#cleanupMockedUtilityClasses()'>cleanupMockedUtilityClasses</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#createReportLabel(java.lang.String)'>createReportLabel</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#deleteAllRecords(java.lang.Class, java.lang.Boolean)'>deleteAllRecords</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#disableSQLTrace()'>disableSQLTrace</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#disableStackTraceLogging()'>disableStackTraceLogging</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#doAutoCleanups()'>doAutoCleanups</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#doOtherCleanups()'>doOtherCleanups</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#enableSQLTrace(boolean)'>enableSQLTrace</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#getPreparedStatement(java.lang.String)'>getPreparedStatement</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#lookup(java.lang.String, Locale, java.lang.Object)'>lookup</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#lookupRequired(java.lang.String, Locale, java.lang.Object)'>lookupRequired</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#mockFieldExtension(Map)'>mockFieldExtension</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#mockRequest(Map)'>mockRequest</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#needs(java.lang.String)'>needs</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#needsServer()'>needsServer</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#propertyMissing(java.lang.String)'>propertyMissing</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#registerAutoCleanup(org.simplemes.eframe.test.AutoCleanupMockInterface)'>registerAutoCleanup</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#report(java.lang.String)'>report</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#reportFailure(java.lang.String)'>reportFailure</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#setCurrentUser(java.lang.String)'>setCurrentUser</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#setTraceLogLevel(java.lang.Class)'>setTraceLogLevel</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#setup()'>setup</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#setupSpec()'>setupSpec</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#startServerIfNeeded()'>startServerIfNeeded</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#waitForInitialDataLoad()'>waitForInitialDataLoad</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#waitForRecordChange(java.lang.Object)'>waitForRecordChange</a></code></td>
+                            <td class="colLast"><code><a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#assertValidationFails(java.lang.Object, int, java.lang.String, List)'>assertValidationFails</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#checkForLeftoverRecords()'>checkForLeftoverRecords</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#checkJavascript(java.lang.String)'>checkJavascript</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#checkJavascriptFragment(java.lang.String)'>checkJavascriptFragment</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#checkPage(java.lang.String)'>checkPage</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#cleanup()'>cleanup</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#cleanupDomainRecords()'>cleanupDomainRecords</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#cleanupMockedUtilityClasses()'>cleanupMockedUtilityClasses</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#createReportLabel(java.lang.String)'>createReportLabel</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#deleteAllRecords(java.lang.Class, java.lang.Boolean)'>deleteAllRecords</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#disableSQLTrace()'>disableSQLTrace</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#disableStackTraceLogging()'>disableStackTraceLogging</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#doAutoCleanups()'>doAutoCleanups</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#doOtherCleanups()'>doOtherCleanups</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#enableSQLTrace(boolean)'>enableSQLTrace</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#getPreparedStatement(java.lang.String)'>getPreparedStatement</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#lookup(java.lang.String, java.util.Locale, java.lang.Object)'>lookup</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#lookupRequired(java.lang.String, java.util.Locale, java.lang.Object)'>lookupRequired</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#mockFieldExtension(java.util.Map)'>mockFieldExtension</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#mockRequest(java.util.Map)'>mockRequest</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#needs(java.lang.String)'>needs</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#needsServer()'>needsServer</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#propertyMissing(java.lang.String)'>propertyMissing</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#registerAutoCleanup(org.simplemes.eframe.test.AutoCleanupMockInterface)'>registerAutoCleanup</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#report(java.lang.String)'>report</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#reportFailure(java.lang.String)'>reportFailure</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#setCurrentUser(java.lang.String)'>setCurrentUser</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#setTraceLogLevel(java.lang.Class)'>setTraceLogLevel</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#setup()'>setup</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#setupSpec()'>setupSpec</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#startServerIfNeeded()'>startServerIfNeeded</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#waitForInitialDataLoad()'>waitForInitialDataLoad</a>, <a href='../../../../org/simplemes/eframe/test/BaseSpecification.html#waitForRecordChange(java.lang.Object)'>waitForRecordChange</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -445,11 +452,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="buildDashboard(Map)"><!-- --></a>
+                        <a name="buildDashboard(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-<a href='../../../../org/simplemes/eframe/dashboard/domain/DashboardConfig.html'>DashboardConfig</a> <strong>buildDashboard</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+<a href='../../../../org/simplemes/eframe/dashboard/domain/DashboardConfig.html'>DashboardConfig</a> <strong>buildDashboard</strong>(java.util.Map options)</h4>
                                 <p> Builds a test dashboard for use by this GUI tester.  Builds a single or two panel dashboard with dynamic content.
  Supports buttons to display additional dynamic activities in the last panel.
  <h3>Options</h3>
@@ -464,10 +471,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="buildSimplePanel(Map)"><!-- --></a>
+                        <a name="buildSimplePanel(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>buildSimplePanel</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>java.lang.String <strong>buildSimplePanel</strong>(java.util.Map options)</h4>
                                 <p> Builds the text for simple panel. <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  The options.  Supports: text=Simple Text in the panel, finished: the finished button ID.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The panel content, suitable as the default or as a button activity content.</DD></DL></p>
                             </li>
                         </ul>
@@ -475,7 +482,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="cleanup()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>cleanup</strong>()</h4>
                                 <p></p>
                             </li>
@@ -504,14 +511,14 @@ void <strong>cleanup</strong>()</h4>
                             <li class="blockList">
                                 <h4>void <strong>displayDashboard</strong>(java.lang.String dashboard)</h4>
                                 <p> Navigates to the dashboard page with the given dashboard.
- See BaseDashboardSpecification#displayDashboard(java.util.Map) for details. <DL><DT><B>Parameters:</B></DT><DD><code>dashboard</code> -  The dashboard config to navigate to (<b>Default</b>: '_TEST').</DD></DL></p>
+ See <a href='../../../../org/simplemes/eframe/test/BaseDashboardSpecification.html#displayDashboard(java.util.Map)' title='BaseDashboardSpecification.displayDashboard'>BaseDashboardSpecification.displayDashboard</a> for details. <DL><DT><B>Parameters:</B></DT><DD><code>dashboard</code> -  The dashboard config to navigate to (<b>Default</b>: '_TEST').</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="displayDashboard(Map)"><!-- --></a>
+                        <a name="displayDashboard(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>displayDashboard</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>void <strong>displayDashboard</strong>(java.util.Map options)</h4>
                                 <p> Navigates to the dashboard page with the given options.
  <h3>Options</h3>
  <ul>
@@ -527,8 +534,8 @@ void <strong>cleanup</strong>()</h4>
                         <a name="getDashboardEvent(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-<a href='../../../../Map.html'>Map</a> <strong>getDashboardEvent</strong>(java.lang.String event)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+java.util.Map <strong>getDashboardEvent</strong>(java.lang.String event)</h4>
                                 <p> Gets the given event's contents from the standard test activity
  DashboardTestController.DISPLAY_EVENT_ACTIVITY. <DL><DT><B>Parameters:</B></DT><DD><code>event</code> -  The event.  If not given, then the whole event display string is used.  Will fail for multiple events.</DD></DL></p>
                             </li>

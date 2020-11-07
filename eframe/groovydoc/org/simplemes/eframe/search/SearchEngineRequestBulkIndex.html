@@ -101,17 +101,17 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../org/simplemes/eframe/search/SearchEngineRequestInterface.html'>SearchEngineRequestInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.util.logging.Slf4jSlf4j
-@groovy.transform.ToStringToString
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.transform.ToString(includePackage: false, includeNames: true)
 class SearchEngineRequestBulkIndex
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../org/simplemes/eframe/search/SearchEngineRequestInterface.html'>SearchEngineRequestInterface</a></pre>
 
     <p> This encapsulates a bulk index request on a list of domain objects.  It primarily sends the index request to the
  external search engine and does minimal processing and error checking.
@@ -161,7 +161,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#domainIDs">domainIDs</a></code><br>The domain object IDs to index.  </td>
                         </tr>
                         
@@ -198,8 +198,8 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#SearchEngineRequestBulkIndex(List)">SearchEngineRequestBulkIndex</a>
-                                (<a href='../../../../List.html'>List</a> domainObjects)</code><br>Constructor to request an index action on a list of domain objects.</td>
+                                <code><a href="#SearchEngineRequestBulkIndex(java.util.List)">SearchEngineRequestBulkIndex</a>
+                                (java.util.List domainObjects)</code><br>Constructor to request an index action on a list of domain objects.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -231,8 +231,8 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#findRecords()">findRecords</a></strong>()</code><br>Returns the domain objects using their IDs stored in domainIDs. </td>
+                            <td class="colLast"><code>java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#findRecords()">findRecords</a></strong>()</code><br>Returns the domain objects using their IDs stored in domainIDs.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -303,7 +303,7 @@ extends java.lang.Object
                         <a name="domainIDs"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>domainIDs</strong></h4>
+                                <h4>private&nbsp;java.util.List <strong>domainIDs</strong></h4>
                                 <p> The domain object IDs to index.  These are stored instead of the domains to reduce the memory used while waiting
  to be executed.
  Will log an INFO message if an object is deleted between the time ths list is built and when this\request is run.
@@ -341,10 +341,10 @@ extends java.lang.Object
                 </a>
                     <h3>Constructor Detail</h3>
                     
-                        <a name="SearchEngineRequestBulkIndex(List)"><!-- --></a>
+                        <a name="SearchEngineRequestBulkIndex(java.util.List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>SearchEngineRequestBulkIndex</strong>(<a href='../../../../List.html'>List</a> domainObjects)</h4>
+                                <h4><strong>SearchEngineRequestBulkIndex</strong>(java.util.List domainObjects)</h4>
                                 <p> Constructor to request an index action on a list of domain objects. <DL><DT><B>Parameters:</B></DT><DD><code>domainObjects</code> -  The objects to index.  All entries must be for the same domain (enforced).</DD></DL></p>
                             </li>
                         </ul>
@@ -373,7 +373,7 @@ extends java.lang.Object
                         <a name="findRecords()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>findRecords</strong>()</h4>
+                                <h4>java.util.List <strong>findRecords</strong>()</h4>
                                 <p> Returns the domain objects using their IDs stored in domainIDs. <DL><DT><B>Returns:</B></DT><DD>The list of domain objects.  Logs an info if different from the original list.</DD></DL></p>
                             </li>
                         </ul>
@@ -381,8 +381,8 @@ extends java.lang.Object
                         <a name="run()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@java.lang.OverrideOverride
+                                <h4>@java.lang.SuppressWarnings(value: UnnecessaryGetter)
+@java.lang.Override
 void <strong>run</strong>()</h4>
                                 <p> This executes the bulk index action on the external search server.</p>
                             </li>

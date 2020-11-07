@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class ArgumentUtils
+extends java.lang.Object</pre>
 
           </li>
     </ul>
@@ -162,7 +168,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#checkForProperties(java.lang.Object, List)">checkForProperties</a></strong>(java.lang.Object param, <a href='../../../../List.html'>List</a> propertyNames)</code><br>Check the given POGO for existing properties with the given name(s).  </td>
+                            <td class="colLast"><code><strong><a href="#checkForProperties(java.lang.Object, java.util.List)">checkForProperties</a></strong>(java.lang.Object param, java.util.List propertyNames)</code><br>Check the given POGO for existing properties with the given name(s).  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -174,19 +180,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../BigDecimal.html'>BigDecimal</a></code></td>
-                            <td class="colLast"><code><strong><a href="#convertToBigDecimal(java.lang.Object)">convertToBigDecimal</a></strong>(java.lang.Object value)</code><br>Safely convert to BigDecimal if needed and return the value. </td>
+                            <td class="colLast"><code><strong><a href="#convertToBigDecimal(java.lang.Object)">convertToBigDecimal</a></strong>(java.lang.Object value)</code><br>Safely convert to BigDecimal if needed and return the value.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.Boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#convertToBoolean(java.lang.Object)">convertToBoolean</a></strong>(java.lang.Object value)</code><br>Safely convert to Boolean if needed and return the value. </td>
+                            <td class="colLast"><code><strong><a href="#convertToBoolean(java.lang.Object)">convertToBoolean</a></strong>(java.lang.Object value)</code><br>Safely convert to Boolean if needed and return the value.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.Integer</code></td>
-                            <td class="colLast"><code><strong><a href="#convertToInteger(java.lang.Object)">convertToInteger</a></strong>(java.lang.Object value)</code><br>Safely convert to Integer if needed and return the value. </td>
+                            <td class="colLast"><code><strong><a href="#convertToInteger(java.lang.Object)">convertToInteger</a></strong>(java.lang.Object value)</code><br>Safely convert to Integer if needed and return the value.</td>
                         </tr>
                         
                     </table>
@@ -257,10 +263,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="checkForProperties(java.lang.Object, List)"><!-- --></a>
+                        <a name="checkForProperties(java.lang.Object, java.util.List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;void <strong>checkForProperties</strong>(java.lang.Object param, <a href='../../../../List.html'>List</a> propertyNames)</h4>
+                                <h4>static&nbsp;void <strong>checkForProperties</strong>(java.lang.Object param, java.util.List propertyNames)</h4>
                                 <p> Check the given POGO for existing properties with the given name(s).  If any are missing
  then this throws an IllegalArgumentException. <DL><DT><B>Parameters:</B></DT><DD><code>param</code> -  The POGO that needs the given properties.</DD><DD><code>propertyNames</code> -  The properties to check for.</DD></DL></p>
                             </li>
@@ -269,7 +275,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="checkMissing(java.lang.Object, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.CompileStaticCompileStatic
+                                <h4>@groovy.transform.CompileStatic
 static&nbsp;void <strong>checkMissing</strong>(java.lang.Object value, java.lang.String name)</h4>
                                 <p> Throws an IllegalArgumentException if the given value is null.  Suitable for use in most methods that need to prevent
  null value processing.  For example:

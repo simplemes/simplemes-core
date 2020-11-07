@@ -98,6 +98,16 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@io.micronaut.data.annotation.MappedEntity
+@org.simplemes.eframe.domain.annotation.DomainEntity
+@java.lang.SuppressWarnings(value: unused)
+@groovy.transform.ToString(includeNames: true, includePackage: false)
+class ProductionLog
+extends java.lang.Object</pre>
 
     <p> This class represents the result of a production action on the shop floor.
  Typically, this is written when the order/LSN is taken out of work so that the
@@ -143,12 +153,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateCreated">dateCreated</a></code><br></td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateTime">dateTime</a></code><br>The date/time the action took place  (<b>Default:</b> now).</td>
                         </tr>
                         
@@ -208,7 +218,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#startDateTime">startDateTime</a></code><br>The date/time the action took place  (<b>Default:</b> dateTime).</td>
                         </tr>
                         
@@ -218,7 +228,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -335,7 +345,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateCreated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateCreated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateCreated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -343,7 +353,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateTime"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateTime</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateTime</strong></h4>
                                 <p> The date/time the action took place  (<b>Default:</b> now).</p>
                             </li>
                         </ul>
@@ -439,7 +449,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="startDateTime"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>startDateTime</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>startDateTime</strong></h4>
                                 <p> The date/time the action took place  (<b>Default:</b> dateTime).</p>
                             </li>
                         </ul>
@@ -455,7 +465,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -506,7 +516,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="beforeValidate()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GroovyUnusedDeclaration)
 java.lang.Object <strong>beforeValidate</strong>()</h4>
                                 <p> Called before insert happens.  Used to set the user, if needed.</p>
                             </li>

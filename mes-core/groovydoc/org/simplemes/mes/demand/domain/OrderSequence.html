@@ -101,20 +101,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../../org/simplemes/mes/numbering/CodeSequenceTrait.html'>CodeSequenceTrait</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.util.logging.Slf4jSlf4j
-@io.micronaut.data.annotation.MappedEntityMappedEntity
-@org.simplemes.eframe.domain.annotation.DomainEntityDomainEntity
-@java.lang.SuppressWarningsSuppressWarnings
-@groovy.transform.ToStringToString
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.data.annotation.MappedEntity
+@org.simplemes.eframe.domain.annotation.DomainEntity
+@java.lang.SuppressWarnings(value: unused)
+@groovy.transform.ToString(includeNames: true, includePackage: false)
 class OrderSequence
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../../org/simplemes/mes/numbering/CodeSequenceTrait.html'>CodeSequenceTrait</a></pre>
 
     <p> Defines the sequence used to generate new order numbers.
  <p/>
@@ -155,12 +155,12 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateCreated">dateCreated</a></code><br></td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateUpdated">dateUpdated</a></code><br></td>
                         </tr>
                         
@@ -185,7 +185,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#initialDataRecords">initialDataRecords</a></code><br>A list of the records created by the initial data load.
  </td>
                         </tr>
@@ -201,7 +201,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -261,13 +261,12 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../../org/simplemes/mes/demand/domain/OrderSequence.html'>OrderSequence</a></code></td>
-                            <td class="colLast"><code><strong><a href="#findDefaultSequence()">findDefaultSequence</a></strong>()</code><br>Returns the order name sequence that is flagged as the default.
- </td>
+                            <td class="colLast"><code><strong><a href="#findDefaultSequence()">findDefaultSequence</a></strong>()</code><br>Returns the order name sequence that is flagged as the default.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>static&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#initialDataLoad()">initialDataLoad</a></strong>()</code><br>Loads initial naming sequence(s).  </td>
                         </tr>
                         
@@ -325,7 +324,7 @@ extends java.lang.Object
                         <a name="dateCreated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateCreated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateCreated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -333,7 +332,7 @@ extends java.lang.Object
                         <a name="dateUpdated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateUpdated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateUpdated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -375,7 +374,7 @@ extends java.lang.Object
                         <a name="initialDataRecords"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;<a href='../../../../../Map.html'>Map</a> <strong>initialDataRecords</strong></h4>
+                                <h4>private&nbsp;static&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt; <strong>initialDataRecords</strong></h4>
                                 <p> A list of the records created by the initial data load.
  Used only for test cleanup by org.simplemes.eframe.test.BaseSpecification.</p>
                             </li>
@@ -400,7 +399,7 @@ extends java.lang.Object
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -460,7 +459,7 @@ extends java.lang.Object
                         <a name="initialDataLoad()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../../Map.html'>Map</a> <strong>initialDataLoad</strong>()</h4>
+                                <h4>static&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt; <strong>initialDataLoad</strong>()</h4>
                                 <p> Loads initial naming sequence(s).  Default sequence is:
  <ul>
    <li> ORDER - <b>format:</b> <i>'M$currentSequence'</i></li>

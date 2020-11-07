@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class TypeableMapper
+extends java.lang.Object</pre>
 
     <p> The JSON formatter/parser that handles arbitrary list or map of objects in a single JSON string.
  The JSON is formatted as an array with a 2 or 3 entries for each object.
@@ -212,37 +218,37 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#finish(Writer)">finish</a></strong>(<a href='../../../../Writer.html'>Writer</a> writer)</code><br>Finishes the output of the JSON.</td>
+                            <td class="colLast"><code><strong><a href="#finish(java.io.Writer)">finish</a></strong>(java.io.Writer writer)</code><br>Finishes the output of the JSON.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isValidClass(java.lang.Class)">isValidClass</a></strong>(java.lang.Class clazz)</code><br>Determines if the given class is valid for de-serialization using this mapper. </td>
+                            <td class="colLast"><code><strong><a href="#isValidClass(java.lang.Class)">isValidClass</a></strong>(java.lang.Class clazz)</code><br>Determines if the given class is valid for de-serialization using this mapper.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#read(Reader)">read</a></strong>(<a href='../../../../Reader.html'>Reader</a> reader)</code><br>Reads multiple elements from the input reader and creates the original objects.  </td>
+                            <td class="colLast"><code>java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#read(java.io.Reader)">read</a></strong>(java.io.Reader reader)</code><br>Reads multiple elements from the input reader and creates the original objects.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#start(Writer)">start</a></strong>(<a href='../../../../Writer.html'>Writer</a> writer)</code><br>Starts the output of the JSON.</td>
+                            <td class="colLast"><code><strong><a href="#start(java.io.Writer)">start</a></strong>(java.io.Writer writer)</code><br>Starts the output of the JSON.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#writeList(Writer, List)">writeList</a></strong>(<a href='../../../../Writer.html'>Writer</a> writer, <a href='../../../../List.html'>List</a> list)</code><br>Writes the given list of objects to the given writer.  </td>
+                            <td class="colLast"><code><strong><a href="#writeList(java.io.Writer, java.util.List)">writeList</a></strong>(java.io.Writer writer, java.util.List list)</code><br>Writes the given list of objects to the given writer.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#writeOne(Writer, java.lang.Object, boolean)">writeOne</a></strong>(<a href='../../../../Writer.html'>Writer</a> writer, java.lang.Object object, boolean first)</code><br>Writes a single element.  </td>
+                            <td class="colLast"><code><strong><a href="#writeOne(java.io.Writer, java.lang.Object, boolean)">writeOne</a></strong>(java.io.Writer writer, java.lang.Object object, boolean first)</code><br>Writes a single element.  </td>
                         </tr>
                         
                     </table>
@@ -331,10 +337,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="finish(Writer)"><!-- --></a>
+                        <a name="finish(java.io.Writer)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>finish</strong>(<a href='../../../../Writer.html'>Writer</a> writer)</h4>
+                                <h4>void <strong>finish</strong>(java.io.Writer writer)</h4>
                                 <p> Finishes the output of the JSON.  <p>
    <b>Note:</b> Do not use with writeList(). <DL><DT><B>Parameters:</B></DT><DD><code>writer</code> -  The writer to write the JSON to.</DD></DL></p>
                             </li>
@@ -348,38 +354,38 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="read(Reader)"><!-- --></a>
+                        <a name="read(java.io.Reader)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-<a href='../../../../List.html'>List</a> <strong>read</strong>(<a href='../../../../Reader.html'>Reader</a> reader)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: [GroovyAssignabilityCheck])
+java.util.List <strong>read</strong>(java.io.Reader reader)</h4>
                                 <p> Reads multiple elements from the input reader and creates the original objects.  Uses the type (class name)
  from the JSON array. <DL><DT><B>Parameters:</B></DT><DD><code>reader</code> -  The reader for the JSON source.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The objects.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="start(Writer)"><!-- --></a>
+                        <a name="start(java.io.Writer)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>start</strong>(<a href='../../../../Writer.html'>Writer</a> writer)</h4>
+                                <h4>void <strong>start</strong>(java.io.Writer writer)</h4>
                                 <p> Starts the output of the JSON.  <p>
    <b>Note:</b> Do not use with writeList(). <DL><DT><B>Parameters:</B></DT><DD><code>writer</code> -  The writer to write the JSON to.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="writeList(Writer, List)"><!-- --></a>
+                        <a name="writeList(java.io.Writer, java.util.List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>writeList</strong>(<a href='../../../../Writer.html'>Writer</a> writer, <a href='../../../../List.html'>List</a> list)</h4>
+                                <h4>void <strong>writeList</strong>(java.io.Writer writer, java.util.List list)</h4>
                                 <p> Writes the given list of objects to the given writer.  This includes the class name of the object to make
  sure it can be read with the <a href='#read(java.io.Reader)'>read(java.io.Reader)</a> method. <DL><DT><B>Parameters:</B></DT><DD><code>writer</code> -  The writer to write the JSON to.</DD><DD><code>list</code> -  The list of objects.  Null not allowed.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="writeOne(Writer, java.lang.Object, boolean)"><!-- --></a>
+                        <a name="writeOne(java.io.Writer, java.lang.Object, boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>writeOne</strong>(<a href='../../../../Writer.html'>Writer</a> writer, java.lang.Object object, boolean first)</h4>
+                                <h4>void <strong>writeOne</strong>(java.io.Writer writer, java.lang.Object object, boolean first)</h4>
                                 <p> Writes a single element.  You must call start() before and finished() after the objects are written. <DL><DT><B>Parameters:</B></DT><DD><code>writer</code> -  The writer to write the JSON to.</DD><DD><code>object</code> -  The object to write.  Null not allowed.</DD><DD><code>first</code> -  If true, then this is the first element written. Used to make sure the right commas are used between elements.</DD></DL></p>
                             </li>
                         </ul>

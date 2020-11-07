@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class ValidationException
+extends <a href='../../../../org/simplemes/eframe/exception/BusinessException.html'>BusinessException</a></pre>
 
     <p> Defines a validation exception that is triggered when a domain object  save() fails the validation.</p>
 
@@ -130,7 +136,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;ValidationErrorInterface&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#errors">errors</a></code><br></td>
                         </tr>
                         
@@ -163,7 +169,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst">
                                 <code><a href="#ValidationException(List, java.lang.Object)">ValidationException</a>
-                                (<a href='../../../../List.html'>List</a> errors, java.lang.Object object)</code><br>The basic constructor.</td>
+                                (java.util.List&lt;ValidationErrorInterface&gt; errors, java.lang.Object object)</code><br>The basic constructor.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -196,7 +202,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toStringLocalized(Locale)">toStringLocalized</a></strong>(<a href='../../../../Locale.html'>Locale</a> locale)</code><br>Build a human-readable version of this exception. </td>
+                            <td class="colLast"><code><strong><a href="#toStringLocalized(java.util.Locale)">toStringLocalized</a></strong>(java.util.Locale locale)</code><br>Build a human-readable version of this exception.</td>
                         </tr>
                         
                     </table>
@@ -215,7 +221,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../../../org/simplemes/eframe/exception/MessageBasedException.html'>MessageBasedException</a></code></td>
-                            <td class="colLast"><code><a href='../../../../org/simplemes/eframe/exception/MessageBasedException.html#toString()'>toString</a>, <a href='../../../../org/simplemes/eframe/exception/MessageBasedException.html#toStringLocalized(Locale)'>toStringLocalized</a></code></td>
+                            <td class="colLast"><code><a href='../../../../org/simplemes/eframe/exception/MessageBasedException.html#toString()'>toString</a>, <a href='../../../../org/simplemes/eframe/exception/MessageBasedException.html#toStringLocalized(java.util.Locale)'>toStringLocalized</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -245,7 +251,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="errors"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>errors</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;ValidationErrorInterface&gt; <strong>errors</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -275,7 +281,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="ValidationException(List, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>ValidationException</strong>(<a href='../../../../List.html'>List</a> errors, java.lang.Object object)</h4>
+                                <h4><strong>ValidationException</strong>(java.util.List&lt;ValidationErrorInterface&gt; errors, java.lang.Object object)</h4>
                                 <p> The basic constructor. <DL><DT><B>Parameters:</B></DT><DD><code>errors</code> -  The errors.</DD><DD><code>object</code> -  The object the error is on.</DD></DL></p>
                             </li>
                         </ul>
@@ -301,11 +307,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="toStringLocalized(Locale)"><!-- --></a>
+                        <a name="toStringLocalized(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-java.lang.String <strong>toStringLocalized</strong>(<a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>@java.lang.Override
+java.lang.String <strong>toStringLocalized</strong>(java.util.Locale locale)</h4>
                                 <p> Build a human-readable version of this exception. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale to display the enum display text.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The human-readable string.</DD></DL></p>
                             </li>
                         </ul>

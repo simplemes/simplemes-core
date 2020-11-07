@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includePackage: false, includeNames: true, includeSuper: true)
+@groovy.transform.EqualsAndHashCode(includes: [dialogID])
+class DialogPreference
+extends <a href='../../../../org/simplemes/eframe/preference/BasePreferenceSetting.html'>BasePreferenceSetting</a></pre>
 
     <p> This holds the specific preferences for a single dialog from.
  The dialogs size/position are stored here.
@@ -327,9 +335,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getKey()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>getKey</strong>()</h4>
-                                <p> The key for this preference.  This is unique within a single Preference object's settings list.</p>
+                                <p> The key for this preference.  This is unique within a single <a href='../../../../org/simplemes/eframe/preference/Preference.html' title='Preference'>Preference</a> object's settings list.</p>
                             </li>
                         </ul>
                     

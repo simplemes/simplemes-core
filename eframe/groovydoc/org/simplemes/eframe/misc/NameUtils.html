@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class NameUtils
+extends java.lang.Object</pre>
 
     <p> Miscellaneous utilities for manipulating names in the application and for the framework.
  <p/>
@@ -236,7 +242,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isLegalIdentifier(java.lang.String)">isLegalIdentifier</a></strong>(java.lang.String id)</code><br>Determines if the given string is a legal Java identifier. </td>
+                            <td class="colLast"><code><strong><a href="#isLegalIdentifier(java.lang.String)">isLegalIdentifier</a></strong>(java.lang.String id)</code><br>Determines if the given string is a legal Java identifier.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -444,7 +450,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="lowercaseFirstWord(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: UnnecessarySubstring)
 static&nbsp;java.lang.String <strong>lowercaseFirstWord</strong>(java.lang.String value)</h4>
                                 <p> Force the first word to lowercase.  This will convert a string like 'LSNSequence' to 'lsnSequence'.
  This is useful with camel-case class names that start with an acronym. <DL><DT><B>Parameters:</B></DT><DD><code>value</code> -  The string to force the first word to lowercase.  If all uppercase, the force all letters to lowercase.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The string with the first word forced to lowercase.  Unchanged in some scenarios</DD></DL></p>

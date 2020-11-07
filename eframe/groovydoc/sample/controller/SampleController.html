@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@io.micronaut.security.annotation.Secured(value: MANAGER)
+@io.micronaut.http.annotation.Controller(value: /sample)
+class SampleController
+extends <a href='../../org/simplemes/eframe/controller/BaseCrudRestController.html'>BaseCrudRestController</a></pre>
 
     <p> Test controller for extension mechanism.</p>
 
@@ -323,7 +331,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getView(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>getView</strong>(java.lang.String methodName)</h4>
                                 <p> Determines the view to display for the given method.  This can be overridden in your controller class to
  use a different naming scheme.<p>
@@ -334,8 +342,8 @@ java.lang.String <strong>getView</strong>(java.lang.String methodName)</h4>
                         <a name="locale()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.GetGet
+                                <h4>@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Get(value: /locale)
 java.lang.String <strong>locale</strong>()</h4>
                                 <p></p>
                             </li>
@@ -344,8 +352,8 @@ java.lang.String <strong>locale</strong>()</h4>
                         <a name="throwsException()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.PostPost
+                                <h4>@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Post(value: /throwsException)
 java.lang.String <strong>throwsException</strong>()</h4>
                                 <p></p>
                             </li>
@@ -354,8 +362,8 @@ java.lang.String <strong>throwsException</strong>()</h4>
                         <a name="throwsInfiniteException()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.PostPost
+                                <h4>@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Post(value: /throwsInfiniteException)
 java.lang.String <strong>throwsInfiniteException</strong>()</h4>
                                 <p></p>
                             </li>

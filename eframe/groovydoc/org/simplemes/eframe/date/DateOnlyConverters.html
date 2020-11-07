@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.Factory
+@groovy.transform.CompileStatic
+class DateOnlyConverters
+extends java.lang.Object</pre>
 
     <p> Convert to/from SQL Date for DateOnly.  Needs to adjust for automatic JDBC time zone adjustment.</p>
 
@@ -163,13 +171,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>io.micronaut.core.convert.TypeConverter</code></td>
+                            <td class="colLast"><code>TypeConverter&lt;<a href='../../../../org/simplemes/eframe/date/DateOnly.html' title='DateOnly'>DateOnly</a>, java.util.Date&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#dateOnlyToDateConverter()">dateOnlyToDateConverter</a></strong>()</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>io.micronaut.core.convert.TypeConverter</code></td>
+                            <td class="colLast"><code>TypeConverter&lt;java.util.Date, <a href='../../../../org/simplemes/eframe/date/DateOnly.html' title='DateOnly'>DateOnly</a>&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#dateToDateOnlyConverter()">dateToDateOnlyConverter</a></strong>()</code><br></td>
                         </tr>
                         
@@ -244,8 +252,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateOnlyToDateConverter()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.inject.SingletonSingleton
-io.micronaut.core.convert.TypeConverter <strong>dateOnlyToDateConverter</strong>()</h4>
+                                <h4>@groovy.lang.Singleton
+TypeConverter&lt;<a href='../../../../org/simplemes/eframe/date/DateOnly.html' title='DateOnly'>DateOnly</a>, java.util.Date&gt; <strong>dateOnlyToDateConverter</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -253,8 +261,8 @@ io.micronaut.core.convert.TypeConverter <strong>dateOnlyToDateConverter</strong>
                         <a name="dateToDateOnlyConverter()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.inject.SingletonSingleton
-io.micronaut.core.convert.TypeConverter <strong>dateToDateOnlyConverter</strong>()</h4>
+                                <h4>@groovy.lang.Singleton
+TypeConverter&lt;java.util.Date, <a href='../../../../org/simplemes/eframe/date/DateOnly.html' title='DateOnly'>DateOnly</a>&gt; <strong>dateToDateOnlyConverter</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>

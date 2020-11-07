@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@io.micronaut.context.annotation.Primary
+@groovy.lang.Singleton
+@io.micronaut.context.annotation.Replaces(value: AssetPipelineService)
+class EFrameAssetPipelineServiceGroovy
+extends <a href='../../../../../org/simplemes/eframe/web/asset/EFrameAssetPipelineService.html'>EFrameAssetPipelineService</a></pre>
 
     <p> A groovy implementation of the asset pipeline replacement.  This just delegates
  to the .java class since the logic is not easily convertible to Groovy.
@@ -172,7 +181,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../../../../org/simplemes/eframe/web/asset/EFrameAssetPipelineService.html'>EFrameAssetPipelineService</a></code></td>
-                            <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/web/asset/EFrameAssetPipelineService.html#handleAsset(java.lang.String, io.micronaut.http.MediaType, java.lang.String, HttpRequest<?>, io.micronaut.http.filter.ServerFilterChain)'>handleAsset</a>, <a href='../../../../../org/simplemes/eframe/web/asset/EFrameAssetPipelineService.html#handleAssetWorkAround(java.lang.String, io.micronaut.http.MediaType, java.lang.String, HttpRequest<?>, io.micronaut.http.filter.ServerFilterChain)'>handleAssetWorkAround</a>, <a href='../../../../../org/simplemes/eframe/web/asset/EFrameAssetPipelineService.html#shouldForceDevMode(java.lang.String, HttpRequest<?>)'>shouldForceDevMode</a></code></td>
+                            <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/web/asset/EFrameAssetPipelineService.html#handleAsset(java.lang.String, io.micronaut.http.MediaType, java.lang.String, HttpRequest, io.micronaut.http.filter.ServerFilterChain)'>handleAsset</a>, <a href='../../../../../org/simplemes/eframe/web/asset/EFrameAssetPipelineService.html#handleAssetWorkAround(java.lang.String, io.micronaut.http.MediaType, java.lang.String, HttpRequest, io.micronaut.http.filter.ServerFilterChain)'>handleAssetWorkAround</a>, <a href='../../../../../org/simplemes/eframe/web/asset/EFrameAssetPipelineService.html#shouldForceDevMode(java.lang.String, HttpRequest)'>shouldForceDevMode</a></code></td>
                         </tr>
                     </table>
                    </ul>

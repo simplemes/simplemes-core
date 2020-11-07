@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+@io.micronaut.context.annotation.ConfigurationProperties(value: search)
+static&nbsp;class EFrameConfiguration.Search
+extends java.lang.Object</pre>
 
     <p> The config properties used for the external search engine interface.</p>
 
@@ -136,7 +144,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#hosts">hosts</a></code><br>The search engine server (host) that will provide the search functions.</td>
                         </tr>
                         
@@ -238,7 +246,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="hosts"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>hosts</strong></h4>
+                                <h4>private&nbsp;java.util.List <strong>hosts</strong></h4>
                                 <p> The search engine server (host) that will provide the search functions.</p>
                             </li>
                         </ul>

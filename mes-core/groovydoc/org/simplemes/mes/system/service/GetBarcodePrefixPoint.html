@@ -97,6 +97,12 @@ if (location.href.indexOf('is-external=true') == -1) {
     <ul class="blockList">
         <li class="blockList">
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@java.lang.SuppressWarnings(value: unused)
+interface GetBarcodePrefixPoint</pre>
 
     <p> Defines the API for the barcode prefix logic extensions.</p>
 
@@ -162,8 +168,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#postGetBarcodePrefixMapping(Map)">postGetBarcodePrefixMapping</a></strong>(<a href='../../../../../Map.html'>Map</a> coreResponse)</code><br>Post-scan extension method for the getBarcodePrefix() method.
+                            <td class="colLast"><code>java.util.Map&lt;java.lang.String, java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#postGetBarcodePrefixMapping(Map)">postGetBarcodePrefixMapping</a></strong>(java.util.Map&lt;java.lang.String, java.lang.String&gt; coreResponse)</code><br>Post-scan extension method for the getBarcodePrefix() method.
  </td>
                         </tr>
                         
@@ -227,9 +233,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="postGetBarcodePrefixMapping(Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../Map.html'>Map</a> <strong>postGetBarcodePrefixMapping</strong>(<a href='../../../../../Map.html'>Map</a> coreResponse)</h4>
+                                <h4>java.util.Map&lt;java.lang.String, java.lang.String&gt; <strong>postGetBarcodePrefixMapping</strong>(java.util.Map&lt;java.lang.String, java.lang.String&gt; coreResponse)</h4>
                                 <p> Post-scan extension method for the getBarcodePrefix() method.
- See the core method ScanService#getBarcodePrefixMapping()#getBarcodePrefixMapping() for details.
+ See the core method <a href='../../../../../org/simplemes/mes/system/service/ScanService.html#getBarcodePrefixMapping()' title='ScanService.getBarcodePrefixMapping'>ScanService.getBarcodePrefixMapping</a> for details.
  <p>
  <b>Note</b>: This method is part of the Stable API. <DL><DT><B>Parameters:</B></DT><DD><code>coreResponse</code> -  The response from the core method (or from other extensions that provide a response).</DD></DL><DL><DT><B>Returns:</B></DT><DD>Return a new response if your extension needs to return a different value. Return null to use core response.
          You can also modify the coreResponse if it is a POGO that allows modification.</DD></DL></p>
@@ -241,7 +247,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                             <li class="blockList">
                                 <h4>void <strong>preGetBarcodePrefixMapping</strong>()</h4>
                                 <p> Pre-scan extension method for the getBarcodePrefix() method.
- See the core method ScanService#getBarcodePrefixMapping()#getBarcodePrefixMapping() for details.
+ See the core method <a href='../../../../../org/simplemes/mes/system/service/ScanService.html#getBarcodePrefixMapping()' title='ScanService.getBarcodePrefixMapping'>ScanService.getBarcodePrefixMapping</a> for details.
  <p>
  <b>Note</b>: This method is part of the Stable API.</p>
                             </li>

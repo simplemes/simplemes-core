@@ -101,17 +101,17 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../org/simplemes/eframe/search/SearchEngineRequestInterface.html'>SearchEngineRequestInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.util.logging.Slf4jSlf4j
-@groovy.transform.ToStringToString
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.transform.ToString(includePackage: false, includeNames: true)
 class SearchEngineRequestBulkArchiveIndex
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../org/simplemes/eframe/search/SearchEngineRequestInterface.html'>SearchEngineRequestInterface</a></pre>
 
     <p> This encapsulates a bulk index request on a list of archive references.  It primarily sends the index request to the
  external search engine and does minimal processing and error checking.
@@ -151,7 +151,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#archiveRefs">archiveRefs</a></code><br>The archive file references to index.  </td>
                         </tr>
                         
@@ -184,7 +184,7 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst">
                                 <code><a href="#SearchEngineRequestBulkArchiveIndex(List)">SearchEngineRequestBulkArchiveIndex</a>
-                                (<a href='../../../../List.html'>List</a> archiveRefs)</code><br>Constructor to request an index action on a list of archive object references.</td>
+                                (java.util.List&lt;java.lang.String&gt; archiveRefs)</code><br>Constructor to request an index action on a list of archive object references.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -216,8 +216,8 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getDomains()">getDomains</a></strong>()</code><br>Returns the domain objects using their IDs stored in domainIDs. </td>
+                            <td class="colLast"><code>java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#getDomains()">getDomains</a></strong>()</code><br>Returns the domain objects using their IDs stored in domainIDs.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -272,7 +272,7 @@ extends java.lang.Object
                         <a name="archiveRefs"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>archiveRefs</strong></h4>
+                                <h4>private&nbsp;java.util.List <strong>archiveRefs</strong></h4>
                                 <p> The archive file references to index.  These are stored instead of the domains to reduce the memory used while waiting
  to be executed.</p>
                             </li>
@@ -303,7 +303,7 @@ extends java.lang.Object
                         <a name="SearchEngineRequestBulkArchiveIndex(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>SearchEngineRequestBulkArchiveIndex</strong>(<a href='../../../../List.html'>List</a> archiveRefs)</h4>
+                                <h4><strong>SearchEngineRequestBulkArchiveIndex</strong>(java.util.List&lt;java.lang.String&gt; archiveRefs)</h4>
                                 <p> Constructor to request an index action on a list of archive object references. <DL><DT><B>Parameters:</B></DT><DD><code>archiveRefs</code> -  The archive references for the objects to index.</DD></DL></p>
                             </li>
                         </ul>
@@ -332,7 +332,7 @@ extends java.lang.Object
                         <a name="getDomains()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getDomains</strong>()</h4>
+                                <h4>java.util.List <strong>getDomains</strong>()</h4>
                                 <p> Returns the domain objects using their IDs stored in domainIDs. <DL><DT><B>Returns:</B></DT><DD>The list of domain objects.  Logs an info if not found or other error.</DD></DL></p>
                             </li>
                         </ul>
@@ -340,8 +340,8 @@ extends java.lang.Object
                         <a name="run()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@java.lang.OverrideOverride
+                                <h4>@java.lang.SuppressWarnings(value: UnnecessaryGetter)
+@java.lang.Override
 void <strong>run</strong>()</h4>
                                 <p> This executes the bulk index action on the external search server.</p>
                             </li>

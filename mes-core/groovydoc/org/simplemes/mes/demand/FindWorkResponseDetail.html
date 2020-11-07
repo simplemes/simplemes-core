@@ -98,11 +98,18 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+class FindWorkResponseDetail
+extends java.lang.Object</pre>
 
     <p> The response from the WorkListService.findWork() service method.
  This represents a single unit in queue or in work.  This can be an order and/or LSN.
  <p/>
- This is a POGO used by the org.simplemes.mes.demand.service.WorkListService#findWork(org.simplemes.mes.demand.FindWorkRequest) method.</p>
+ This is a POGO used by the <a href='../../../../org/simplemes/mes/demand/service/WorkListService.html#findWork(org.simplemes.mes.demand.FindWorkRequest)' title='WorkListService.findWork'>WorkListService.findWork</a> method.</p>
 
           </li>
     </ul>
@@ -210,8 +217,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#FindWorkResponseDetail(Map)">FindWorkResponseDetail</a>
-                                (<a href='../../../../Map.html'>Map</a> options)</code><br>Map constructor.  </td>
+                                <code><a href="#FindWorkResponseDetail(java.util.Map)">FindWorkResponseDetail</a>
+                                (java.util.Map options)</code><br>Map constructor.  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -419,10 +426,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Constructor Detail</h3>
                     
-                        <a name="FindWorkResponseDetail(Map)"><!-- --></a>
+                        <a name="FindWorkResponseDetail(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>FindWorkResponseDetail</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4><strong>FindWorkResponseDetail</strong>(java.util.Map options)</h4>
                                 <p> Map constructor.  Provides the standard Groovy map constructor. <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  The options map</DD></DL></p>
                             </li>
                         </ul>

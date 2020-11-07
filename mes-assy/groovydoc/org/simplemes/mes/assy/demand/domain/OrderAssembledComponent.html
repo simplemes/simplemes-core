@@ -98,6 +98,17 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@org.simplemes.eframe.domain.annotation.DomainEntity
+@io.micronaut.data.annotation.MappedEntity
+@java.lang.SuppressWarnings(value: unused)
+@groovy.transform.ToString(includeNames: true, includePackage: false, excludes: [order, lsn])
+@groovy.transform.EqualsAndHashCode(includes: [uuid])
+class OrderAssembledComponent
+extends java.lang.Object</pre>
 
     <p> Defines a single component assembled into an order (and optionally an LSN).
  This includes a 'location' mechanism to track where the component was loaded from on the work center setup.
@@ -107,7 +118,7 @@ if (location.href.indexOf('is-external=true') == -1) {
  <p>
  This element informally belongs to the MES Core Order domain.  Since the Order is in another module,
  the normal child relationship can't be used.
- Instead, the org.simplemes.mes.assy.application.AssemblyAddition adds this as a custom child to the core domain.
+ Instead, the <a href='../../../../../../org/simplemes/mes/assy/application/AssemblyAddition.html' title='AssemblyAddition'>AssemblyAddition</a> adds this as a custom child to the core domain.
 </p>
 
           </li>
@@ -155,12 +166,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateCreated">dateCreated</a></code><br></td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateUpdated">dateUpdated</a></code><br></td>
                         </tr>
                         
@@ -205,7 +216,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#removedDate">removedDate</a></code><br>The date/time the user removed this component.</td>
                         </tr>
                         
@@ -225,7 +236,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -339,7 +350,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateCreated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../../Date.html'>Date</a> <strong>dateCreated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateCreated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -347,7 +358,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateUpdated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../../Date.html'>Date</a> <strong>dateUpdated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateUpdated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -419,7 +430,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="removedDate"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../../Date.html'>Date</a> <strong>removedDate</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>removedDate</strong></h4>
                                 <p> The date/time the user removed this component.</p>
                             </li>
                         </ul>
@@ -451,7 +462,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>

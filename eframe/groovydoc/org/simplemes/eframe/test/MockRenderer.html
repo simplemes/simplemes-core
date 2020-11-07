@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>io.micronaut.views.ViewsRenderer</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.transform.ToStringToString
+
+<pre>@groovy.transform.ToString(includePackage: false, includeNames: true)
 class MockRenderer
 extends java.lang.Object
-
-</pre>
-
-
+implements io.micronaut.views.ViewsRenderer</pre>
 
     <p> Builds a very simple mock/stub for the view renderer.  Defines a render() mock
  method records the view/model used to call renderer.
@@ -122,7 +122,7 @@ extends java.lang.Object
  </pre>
  <p>
  This will create a new instance of the Renderer and register it in a mock Bean context
- using MockBean.  This mock instance has a model and view property that was used by the laster
+ using <a href='../../../../org/simplemes/eframe/test/MockBean.html' title='MockBean'>MockBean</a>.  This mock instance has a model and view property that was used by the laster
  render() call.</p>
 
           </li>
@@ -225,7 +225,7 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#exists(java.lang.String)">exists</a></strong>(java.lang.String viewName)</code><br><DL><DT><B>Parameters:</B></DT><DD><code>viewName</code> -  view name to be render</DD></DL><DL><DT><B>Returns:</B></DT><DD>true if a template can be found for the supplied view name.</td>
+                            <td class="colLast"><code><strong><a href="#exists(java.lang.String)">exists</a></strong>(java.lang.String viewName)</code><br> <DL><DT><B>Parameters:</B></DT><DD><code>viewName</code> -  view name to be render</DD></DL></td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -236,8 +236,8 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>io.micronaut.core.io.Writable</code></td>
-                            <td class="colLast"><code><strong><a href="#render(java.lang.String, java.lang.Object)">render</a></strong>(java.lang.String viewName, java.lang.Object data)</code><br><DL><DT><B>Parameters:</B></DT><DD><code>viewName</code> -  view name to be render</DD><DD><code>data</code> -  response body to render it with a view</DD></DL><DL><DT><B>Returns:</B></DT><DD>A writable where the view will be written to.</td>
+                            <td class="colLast"><code>groovy.lang.Writable</code></td>
+                            <td class="colLast"><code><strong><a href="#render(java.lang.String, java.lang.Object)">render</a></strong>(java.lang.String viewName, java.lang.Object data)</code><br> <DL><DT><B>Parameters:</B></DT><DD><code>viewName</code> -  view name to be render</DD></DL></td>
                         </tr>
                         
                     </table>
@@ -353,8 +353,8 @@ extends java.lang.Object
                         <a name="exists(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-boolean <strong>exists</strong>(@javax.annotation.NonnullNonnull java.lang.String viewName)</h4>
+                                <h4>@java.lang.Override
+boolean <strong>exists</strong>(@javax.annotation.Nonnull java.lang.String viewName)</h4>
                                 <p> <DL><DT><B>Parameters:</B></DT><DD><code>viewName</code> -  view name to be render</DD></DL><DL><DT><B>Returns:</B></DT><DD>true if a template can be found for the supplied view name.</DD></DL></p>
                             </li>
                         </ul>
@@ -370,8 +370,8 @@ boolean <strong>exists</strong>(@javax.annotation.NonnullNonnull java.lang.Strin
                         <a name="render(java.lang.String, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-io.micronaut.core.io.Writable <strong>render</strong>(@javax.annotation.NonnullNonnull java.lang.String viewName, @javax.annotation.NullableNullable java.lang.Object data)</h4>
+                                <h4>@java.lang.Override
+groovy.lang.Writable <strong>render</strong>(@javax.annotation.Nonnull java.lang.String viewName, @javax.annotation.Nullable java.lang.Object data)</h4>
                                 <p> <DL><DT><B>Parameters:</B></DT><DD><code>viewName</code> -  view name to be render</DD><DD><code>data</code> -  response body to render it with a view</DD></DL><DL><DT><B>Returns:</B></DT><DD>A writable where the view will be written to.</DD></DL></p>
                             </li>
                         </ul>

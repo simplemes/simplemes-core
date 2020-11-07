@@ -97,6 +97,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <ul class="blockList">
         <li class="blockList">
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>interface ArchiverInterface</pre>
 
     <p> Defines the interface for an archiver.  Provides ways to remove/restore old records from the
  database.</p>
@@ -177,13 +182,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#close()">close</a></strong>()</code><br>Closes the current archive and removes the archived records from the database. </td>
+                            <td class="colLast"><code><strong><a href="#close()">close</a></strong>()</code><br>Closes the current archive and removes the archived records from the database.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#findAllArchives()">findAllArchives</a></strong>()</code><br>Gets a list of archive file references that exist in the active archive area (folder). </td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#findAllArchives()">findAllArchives</a></strong>()</code><br>Gets a list of archive file references that exist in the active archive area (folder).</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -195,7 +200,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object[]</code></td>
-                            <td class="colLast"><code><strong><a href="#unarchive(java.lang.String, java.lang.Boolean)">unarchive</a></strong>(java.lang.String ref, java.lang.Boolean save)</code><br>Unarchive the given file and save all of the domain objects in the archive. </td>
+                            <td class="colLast"><code><strong><a href="#unarchive(java.lang.String, java.lang.Boolean)">unarchive</a></strong>(java.lang.String ref, java.lang.Boolean save)</code><br>Unarchive the given file and save all of the domain objects in the archive.</td>
                         </tr>
                         
                     </table>
@@ -276,7 +281,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="findAllArchives()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>findAllArchives</strong>()</h4>
+                                <h4>java.util.List&lt;java.lang.String&gt; <strong>findAllArchives</strong>()</h4>
                                 <p> Gets a list of archive file references that exist in the active archive area (folder). <DL><DT><B>Returns:</B></DT><DD>The list of file references.</DD></DL></p>
                             </li>
                         </ul>
@@ -289,7 +294,7 @@ if (location.href.indexOf('is-external=true') == -1) {
  filling up a directory with .arc files.  The object's id can be used with this reference base
  to make a legal path name.<p>
  This is a relative path name from the archive topFolder location.
- When used with org.simplemes.eframe.archive.FileArchiver#makePathFromReference(String), the
+ When used with <a href='../../../../org/simplemes/eframe/archive/FileArchiver.html#makePathFromReference(String)' title='FileArchiver.makePathFromReference'>FileArchiver.makePathFromReference</a>, the
  actual file path can be found. <DL><DT><B>Parameters:</B></DT><DD><code>domainObject</code> -  The domain object to build the archive file name from.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The base reference.</DD></DL></p>
                             </li>
                         </ul>

@@ -101,17 +101,17 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>org.codehaus.groovy.transform.ASTTransformation</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
-@com.github.javaparser.ast.expr.NormalAnnotationExprGroovyASTTransformation
+
+<pre>@java.lang.SuppressWarnings({"DefaultAnnotationParam"})
+@org.codehaus.groovy.transform.GroovyASTTransformation(phase = CompilePhase.CANONICALIZATION)
 public&nbsp;class ExtensionPointTransformation
 extends java.lang.Object
-
-</pre>
-
-
+implements org.codehaus.groovy.transform.ASTTransformation</pre>
 
     <p> This annotation allows the application developer to mark a method as an extension point.  This
  allows other modules to add logic to core methods without changing the methods themselves.
@@ -241,7 +241,7 @@ extends java.lang.Object
                         <a name="ExtensionPointTransformation()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings("unused")
 public&nbsp;<strong>ExtensionPointTransformation</strong>()</h4>
                                 <p> Basic Constructor.
    </p>

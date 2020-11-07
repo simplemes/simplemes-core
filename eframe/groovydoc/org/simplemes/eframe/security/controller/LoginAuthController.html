@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Controller(value: /login)
+class LoginAuthController
+extends java.lang.Object</pre>
 
     <p> Handles the login authentication view pages.</p>
 
@@ -217,8 +225,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>io.micronaut.http.MutableHttpResponse</code></td>
-                            <td class="colLast"><code><strong><a href="#accessToken(io.micronaut.http.HttpRequest, java.lang.String)">accessToken</a></strong>(io.micronaut.http.HttpRequest request, java.lang.String cookieRefreshToken)</code><br></td>
+                            <td class="colLast"><code>MutableHttpResponse&lt;?&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#accessToken(HttpRequest, java.lang.String)">accessToken</a></strong>(HttpRequest&lt;?&gt; request, java.lang.String cookieRefreshToken)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -229,8 +237,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>io.micronaut.http.MutableHttpResponse</code></td>
-                            <td class="colLast"><code><strong><a href="#createSuccessResponse(io.micronaut.security.authentication.UserDetails, java.lang.String, io.micronaut.http.HttpRequest)">createSuccessResponse</a></strong>(io.micronaut.security.authentication.UserDetails userDetails, java.lang.String refreshToken, io.micronaut.http.HttpRequest request)</code><br>Creates a simple page for the response (suitable for iframe use).
+                            <td class="colLast"><code>MutableHttpResponse&lt;?&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#createSuccessResponse(io.micronaut.security.authentication.UserDetails, java.lang.String, HttpRequest)">createSuccessResponse</a></strong>(io.micronaut.security.authentication.UserDetails userDetails, java.lang.String refreshToken, HttpRequest&lt;?&gt; request)</code><br>Creates a simple page for the response (suitable for iframe use).
  </td>
                         </tr>
                         
@@ -360,12 +368,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="accessToken(io.micronaut.http.HttpRequest, java.lang.String)"><!-- --></a>
+                        <a name="accessToken(HttpRequest, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-io.micronaut.http.MutableHttpResponse <strong>accessToken</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable @io.micronaut.http.annotation.CookieValueCookieValue java.lang.String cookieRefreshToken)</h4>
+                                <h4>@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /access_token)
+MutableHttpResponse&lt;?&gt; <strong>accessToken</strong>(HttpRequest&lt;?&gt; request, @javax.annotation.Nullable @io.micronaut.http.annotation.CookieValue(value: RefreshTokenService.JWT_REFRESH_TOKEN) java.lang.String cookieRefreshToken)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -373,17 +381,17 @@ io.micronaut.http.MutableHttpResponse <strong>accessToken</strong>(io.micronaut.
                         <a name="auth(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-io.micronaut.http.HttpResponse <strong>auth</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /auth)
+io.micronaut.http.HttpResponse <strong>auth</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="createSuccessResponse(io.micronaut.security.authentication.UserDetails, java.lang.String, io.micronaut.http.HttpRequest)"><!-- --></a>
+                        <a name="createSuccessResponse(io.micronaut.security.authentication.UserDetails, java.lang.String, HttpRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>io.micronaut.http.MutableHttpResponse <strong>createSuccessResponse</strong>(io.micronaut.security.authentication.UserDetails userDetails, java.lang.String refreshToken, io.micronaut.http.HttpRequest request)</h4>
+                                <h4>MutableHttpResponse&lt;?&gt; <strong>createSuccessResponse</strong>(io.micronaut.security.authentication.UserDetails userDetails, java.lang.String refreshToken, HttpRequest&lt;?&gt; request)</h4>
                                 <p> Creates a simple page for the response (suitable for iframe use).
  Contains the cookies needed for access and refresh tokens. <DL><DT><B>Parameters:</B></DT><DD><code>userDetails</code> -  Authenticated user's representation.</DD><DD><code>refreshToken</code> -  The refresh token</DD><DD><code>request</code> -  The HttpRequest being executed</DD></DL><DL><DT><B>Returns:</B></DT><DD>An HTTP Response. Eg. a redirect or an JWT token rendered to the response</DD></DL></p>
                             </li>

@@ -13100,11 +13100,7 @@ See <a href="#index-example">Index Example</a>.</p>
 <div class="listingblock">
 <div class="title">Searchable Options</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> searchable = {
-  exclude = [<span class="string"><span class="delimiter">'</span><span class="content">title</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">releaseDate</span><span class="delimiter">'</span></span>]
-  parent = Order
-  searchable = <span class="predefined-constant">false</span>
-}</code></pre>
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="directive">static</span> searchable = [<span class="key">searchable</span>: <span class="predefined-constant">false</span>, <span class="key">exclude</span>: [<span class="string"><span class="delimiter">'</span><span class="content">title</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">releaseDate</span><span class="delimiter">'</span></span>], <span class="key">parent</span>: Order]</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -19390,7 +19386,7 @@ to the repository.  If you use the repository method directly, then this is not 
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-11-06 13:11:46 UTC
+Last updated 2020-11-07 23:16:19 UTC
 </div>
 </div>
 <style>

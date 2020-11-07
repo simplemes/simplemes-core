@@ -98,16 +98,25 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@io.micronaut.data.annotation.MappedEntity
+@<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntity.html' title='DomainEntity'>DomainEntity</a>
+@groovy.transform.EqualsAndHashCode(includes: [userName, page])
+class UserPreference
+extends java.lang.Object</pre>
 
     <p> This domain class allows the persistence of various user preferences.  This class can also be used to save
  global settings for all users.
  Inside of this domain class, the actual preferences are stored in various POGOs and
  saved in the <code>preferencesText</code> column (a CLOB or large text object).
  <p/>
- The Map preferences uses a key with the element name for the org.simplemes.eframe.preference.Preference object.
- A org.simplemes.eframe.preference.Preference object contains a Map that holds a number of
+ The Map preferences uses a key with the element name for the <a href='../../../../../org/simplemes/eframe/preference/Preference.html' title='Preference'>Preference</a> object.
+ A <a href='../../../../../org/simplemes/eframe/preference/Preference.html' title='Preference'>Preference</a> object contains a Map that holds a number of
  POGO elements with the actual preferences.  For a list HTML element, this is stored in the Map with the key _'ListColumns'_.
- This Map entry is a List of org.simplemes.eframe.preference.ColumnPreference objects, one for each column with a preference.
+ This Map entry is a List of <a href='../../../../../org/simplemes/eframe/preference/ColumnPreference.html' title='ColumnPreference'>ColumnPreference</a> objects, one for each column with a preference.
  In the case of columns, this includes the display sequence, width and sorting details.
  <p/>
  See <a href="http://www.simplemes.org/doc/latest/guide/single.html#gui-state-persistence">GUI State Persistence</a> for a more detailed
@@ -142,12 +151,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateCreated">dateCreated</a></code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateUpdated">dateUpdated</a></code><br></td>
                         </tr>
                         
@@ -157,7 +166,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;Preference&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#preferences">preferences</a></code><br>A non-persisted List of preferences (<b>transient</b>).</td>
                         </tr>
                         
@@ -182,7 +191,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -260,7 +269,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setPreferences(List)">setPreferences</a></strong>(<a href='../../../../../List.html'>List</a> pref)</code><br>Sets the Preferences.</td>
+                            <td class="colLast"><code><strong><a href="#setPreferences(List)">setPreferences</a></strong>(java.util.List&lt;Preference&gt; pref)</code><br>Sets the Preferences.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -272,7 +281,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toString()">toString</a></strong>()</code><br>Build a human-readable version of this object. </td>
+                            <td class="colLast"><code><strong><a href="#toString()">toString</a></strong>()</code><br>Build a human-readable version of this object.</td>
                         </tr>
                         
                     </table>
@@ -321,7 +330,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateCreated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateCreated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateCreated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -329,7 +338,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateUpdated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateUpdated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateUpdated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -345,7 +354,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="preferences"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../List.html'>List</a> <strong>preferences</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;Preference&gt; <strong>preferences</strong></h4>
                                 <p> A non-persisted List of preferences (<b>transient</b>).</p>
                             </li>
                         </ul>
@@ -386,7 +395,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -437,7 +446,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="beforeSave()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: unused)
 java.lang.Object <strong>beforeSave</strong>()</h4>
                                 <p> Called before a save() happens.  Calls persistPreferencesInXML().</p>
                             </li>
@@ -463,7 +472,7 @@ java.lang.Object <strong>beforeSave</strong>()</h4>
                         <a name="setPreferences(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>setPreferences</strong>(<a href='../../../../../List.html'>List</a> pref)</h4>
+                                <h4>void <strong>setPreferences</strong>(java.util.List&lt;Preference&gt; pref)</h4>
                                 <p> Sets the Preferences.</p>
                             </li>
                         </ul>
@@ -471,7 +480,7 @@ java.lang.Object <strong>beforeSave</strong>()</h4>
                         <a name="setPreferencesText(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: unused)
 void <strong>setPreferencesText</strong>(java.lang.String xml)</h4>
                                 <p> Sets the Preferences.</p>
                             </li>
@@ -480,7 +489,7 @@ void <strong>setPreferencesText</strong>(java.lang.String xml)</h4>
                         <a name="toString()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>toString</strong>()</h4>
                                 <p>  Build a human-readable version of this object. <DL><DT><B>Returns:</B></DT><DD>The human-readable string.</DD></DL></p>
                             </li>

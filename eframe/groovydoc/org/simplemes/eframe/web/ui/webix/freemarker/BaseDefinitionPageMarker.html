@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+abstract&nbsp;class BaseDefinitionPageMarker
+extends <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html'>BaseMarker</a></pre>
 
     <p> Provides the basic behavior for the efShow, efCreate and efEdit definition page Freemarker markers.
  This creates the HTML/JS needed to process a single top-level domain object with controls to allow
@@ -162,12 +169,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#fieldsByPanel">fieldsByPanel</a></code><br>The fields to be displayed in a specific panel.  </td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#fieldsToDisplay">fieldsToDisplay</a></code><br>The fields to be displayed, including tab panels.</td>
                         </tr>
                         
@@ -177,7 +184,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#keyFields">keyFields</a></code><br>The key fields for header section.</td>
                         </tr>
                         
@@ -232,19 +239,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildBody()">buildBody</a></strong>()</code><br>Builds the fields for the given panel (optional). </td>
+                            <td class="colLast"><code><strong><a href="#buildBody()">buildBody</a></strong>()</code><br>Builds the fields for the given panel (optional).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildDefaultPanelSelection()">buildDefaultPanelSelection</a></strong>()</code><br>Builds the javascript needed to select the right default panel. </td>
+                            <td class="colLast"><code><strong><a href="#buildDefaultPanelSelection()">buildDefaultPanelSelection</a></strong>()</code><br>Builds the javascript needed to select the right default panel.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildFields(List, java.lang.Boolean)">buildFields</a></strong>(<a href='../../../../../../../List.html'>List</a> fields, java.lang.Boolean keyField)</code><br>Builds the fields for the given panel (optional). </td>
+                            <td class="colLast"><code><strong><a href="#buildFields(List, java.lang.Boolean)">buildFields</a></strong>(java.util.List&lt;java.lang.String&gt; fields, java.lang.Boolean keyField)</code><br>Builds the fields for the given panel (optional).</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -257,49 +264,49 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildFooter()">buildFooter</a></strong>()</code><br>Builds the footer for the definition page (e.g. the place for buttons outside of the tabbed panel). </td>
+                            <td class="colLast"><code><strong><a href="#buildFooter()">buildFooter</a></strong>()</code><br>Builds the footer for the definition page (e.g. the place for buttons outside of the tabbed panel).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildFunctions()">buildFunctions</a></strong>()</code><br>Builds the javascript functions used by the page. </td>
+                            <td class="colLast"><code><strong><a href="#buildFunctions()">buildFunctions</a></strong>()</code><br>Builds the javascript functions used by the page.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildKeySection()">buildKeySection</a></strong>()</code><br>Builds the fields for the given panel (optional). </td>
+                            <td class="colLast"><code><strong><a href="#buildKeySection()">buildKeySection</a></strong>()</code><br>Builds the fields for the given panel (optional).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildPanel(java.lang.String, List)">buildPanel</a></strong>(java.lang.String panel, <a href='../../../../../../../List.html'>List</a> fields)</code><br>Builds the given tabbed-panel contents. </td>
+                            <td class="colLast"><code><strong><a href="#buildPanel(java.lang.String, List)">buildPanel</a></strong>(java.lang.String panel, java.util.List&lt;java.lang.String&gt; fields)</code><br>Builds the given tabbed-panel contents.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildPanelEnd()">buildPanelEnd</a></strong>()</code><br>Builds the end of the tabbed-panel element. </td>
+                            <td class="colLast"><code><strong><a href="#buildPanelEnd()">buildPanelEnd</a></strong>()</code><br>Builds the end of the tabbed-panel element.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildPanelStart()">buildPanelStart</a></strong>()</code><br>Builds the start of the tabbed-panel element. </td>
+                            <td class="colLast"><code><strong><a href="#buildPanelStart()">buildPanelStart</a></strong>()</code><br>Builds the start of the tabbed-panel element.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildPostScript()">buildPostScript</a></strong>()</code><br>Builds the script section for use after the UI elements are built. </td>
+                            <td class="colLast"><code><strong><a href="#buildPostScript()">buildPostScript</a></strong>()</code><br>Builds the script section for use after the UI elements are built.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildToolbar()">buildToolbar</a></strong>()</code><br>Builds the toolbar element for the page. </td>
+                            <td class="colLast"><code><strong><a href="#buildToolbar()">buildToolbar</a></strong>()</code><br>Builds the toolbar element for the page.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -316,7 +323,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List&lt;java.lang.String&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getFieldsToDisplay(java.lang.Class, java.lang.String)">getFieldsToDisplay</a></strong>(java.lang.Class clazz, java.lang.String parameterName)</code><br>Determines the effective fields to display.
  </td>
                         </tr>
@@ -337,7 +344,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html'>BaseMarker</a></code></td>
-                            <td class="colLast"><code><a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#addFieldSpecificParameters(org.simplemes.eframe.web.ui.webix.widget.WidgetContext, java.lang.String, Map)'>addFieldSpecificParameters</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#buildPreloadedMessages(List)'>buildPreloadedMessages</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#buildWidgetContext(org.simplemes.eframe.data.FieldDefinitionInterface)'>buildWidgetContext</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#escape(java.lang.String)'>escape</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#getModelValue(java.lang.String)'>getModelValue</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#getObjectWrapper()'>getObjectWrapper</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#getRequestParameters()'>getRequestParameters</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#getUniqueIDCounter()'>getUniqueIDCounter</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#lookup(java.lang.String, Locale, java.lang.Object)'>lookup</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#lookupLabelAndTooltip(java.lang.String, Locale)'>lookupLabelAndTooltip</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#renderContent()'>renderContent</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#setValues(io.micronaut.context.env.Environment, Map, freemarker.template.TemplateModel, freemarker.template.TemplateDirectiveBody)'>setValues</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#toStringForException()'>toStringForException</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#unwrap(java.lang.Object)'>unwrap</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#write(java.lang.Object)'>write</a></code></td>
+                            <td class="colLast"><code><a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#addFieldSpecificParameters(org.simplemes.eframe.web.ui.webix.widget.WidgetContext, java.lang.String, java.util.Map)'>addFieldSpecificParameters</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#buildPreloadedMessages(List)'>buildPreloadedMessages</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#buildWidgetContext(org.simplemes.eframe.data.FieldDefinitionInterface)'>buildWidgetContext</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#escape(java.lang.String)'>escape</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#getModelValue(java.lang.String)'>getModelValue</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#getObjectWrapper()'>getObjectWrapper</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#getRequestParameters()'>getRequestParameters</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#getUniqueIDCounter()'>getUniqueIDCounter</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#lookup(java.lang.String, java.util.Locale, java.lang.Object)'>lookup</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#lookupLabelAndTooltip(java.lang.String, java.util.Locale)'>lookupLabelAndTooltip</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#renderContent()'>renderContent</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#setValues(io.micronaut.context.env.Environment, java.util.Map, freemarker.template.TemplateModel, freemarker.template.TemplateDirectiveBody)'>setValues</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#toStringForException()'>toStringForException</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#unwrap(java.lang.Object)'>unwrap</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#write(java.lang.Object)'>write</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -383,7 +390,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="fieldsByPanel"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../../../Map.html'>Map</a> <strong>fieldsByPanel</strong></h4>
+                                <h4>private&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt; <strong>fieldsByPanel</strong></h4>
                                 <p> The fields to be displayed in a specific panel.  Stores the list of fields per panel.</p>
                             </li>
                         </ul>
@@ -391,7 +398,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="fieldsToDisplay"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../../../List.html'>List</a> <strong>fieldsToDisplay</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.String&gt; <strong>fieldsToDisplay</strong></h4>
                                 <p> The fields to be displayed, including tab panels.</p>
                             </li>
                         </ul>
@@ -407,7 +414,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="keyFields"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../../../List.html'>List</a> <strong>keyFields</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;java.lang.String&gt; <strong>keyFields</strong></h4>
                                 <p> The key fields for header section.</p>
                             </li>
                         </ul>
@@ -466,7 +473,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="buildFields(List, java.lang.Boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>buildFields</strong>(<a href='../../../../../../../List.html'>List</a> fields, java.lang.Boolean keyField)</h4>
+                                <h4>java.lang.String <strong>buildFields</strong>(java.util.List&lt;java.lang.String&gt; fields, java.lang.Boolean keyField)</h4>
                                 <p> Builds the fields for the given panel (optional). <DL><DT><B>Parameters:</B></DT><DD><code>panel</code> -  The panel name (Optional).  If null, then all fields will be generated.</DD><DD><code>keyField</code> -  If true, then this field is created as a key field (more centered on tabbed panels).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The Javascript needed for the fields.</DD></DL></p>
                             </li>
                         </ul>
@@ -507,7 +514,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="buildPanel(java.lang.String, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>buildPanel</strong>(java.lang.String panel, <a href='../../../../../../../List.html'>List</a> fields)</h4>
+                                <h4>java.lang.String <strong>buildPanel</strong>(java.lang.String panel, java.util.List&lt;java.lang.String&gt; fields)</h4>
                                 <p> Builds the given tabbed-panel contents. <DL><DT><B>Parameters:</B></DT><DD><code>panel</code> -  The tabbed panel to build.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The Javascript needed for the content of one tabbed panel.</DD></DL></p>
                             </li>
                         </ul>
@@ -557,7 +564,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="execute()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>execute</strong>()</h4>
                                 <p> Executes the directive, with the values passed by the setValues() method.</p>
                             </li>
@@ -566,7 +573,7 @@ void <strong>execute</strong>()</h4>
                         <a name="getFieldsToDisplay(java.lang.Class, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../../../../List.html'>List</a> <strong>getFieldsToDisplay</strong>(java.lang.Class clazz, java.lang.String parameterName)</h4>
+                                <h4>protected&nbsp;java.util.List&lt;java.lang.String&gt; <strong>getFieldsToDisplay</strong>(java.lang.Class clazz, java.lang.String parameterName)</h4>
                                 <p> Determines the effective fields to display.
  Uses the fieldOrder and marker parameter override to calculate this. <DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The object to get the fieldOrder from.</DD><DD><code>parameterName</code> -  The name of the marker parameter to use for the field list override (<b>Default</b>: 'fields').</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of fields.</DD></DL></p>
                             </li>

@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.transform.ToString(includePackage: false, includeNames: true)
+class InitialData
+extends java.lang.Object</pre>
 
     <p> A dummy domain class to add initial data load records to domains that are not in this class.
  This domain class has no persistence itself.</p>
@@ -136,7 +144,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#initialDataRecords">initialDataRecords</a></code><br>A list of the records created by the initial data load.
  </td>
                         </tr>
@@ -197,7 +205,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>static&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#initialDataLoad()">initialDataLoad</a></strong>()</code><br>Loads initial data for domains provided by plugins.</td>
                         </tr>
                         
@@ -255,7 +263,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="initialDataRecords"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;<a href='../../../../Map.html'>Map</a> <strong>initialDataRecords</strong></h4>
+                                <h4>private&nbsp;static&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt; <strong>initialDataRecords</strong></h4>
                                 <p> A list of the records created by the initial data load.
  Used only for test cleanup by org.simplemes.eframe.test.BaseSpecification.</p>
                             </li>
@@ -307,7 +315,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="initialDataLoad()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../Map.html'>Map</a> <strong>initialDataLoad</strong>()</h4>
+                                <h4>static&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;java.lang.String&gt;&gt; <strong>initialDataLoad</strong>()</h4>
                                 <p> Loads initial data for domains provided by plugins.</p>
                             </li>
                         </ul>

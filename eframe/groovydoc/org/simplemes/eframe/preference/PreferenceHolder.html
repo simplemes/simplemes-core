@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@java.lang.SuppressWarnings(value: ConfusingMethodName)
+@groovy.transform.ToString(includeNames: true, includePackage: false)
+class PreferenceHolder
+extends java.lang.Object</pre>
 
     <p> Defines a user preference object for given user, page and HTML element.  This includes
  a DSL for accessing these preference settings and for persisting them.  This object hides most of the
@@ -191,7 +200,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong><a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>java.util.List</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#settings">settings</a></code><br></td>
                         </tr>
                         
@@ -257,25 +266,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html'>PreferenceHolder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#find(Closure)">find</a></strong>(<a href='../../../../Closure.html'>Closure</a> config)</code><br>Finds the preferences for the given page/user/element.  </td>
+                            <td class="colLast"><code><strong><a href="#find(groovy.lang.Closure)">find</a></strong>(groovy.lang.Closure config)</code><br>Finds the preferences for the given page/user/element.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/preference/PreferenceSettingInterface.html'>PreferenceSettingInterface</a></code></td>
-                            <td class="colLast"><code><strong><a href="#get(java.lang.String)">get</a></strong>(java.lang.String key)</code><br>Gets the preference from the stored setting. </td>
+                            <td class="colLast"><code><strong><a href="#get(java.lang.String)">get</a></strong>(java.lang.String key)</code><br>Gets the preference from the stored setting.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getElementNames()">getElementNames</a></strong>()</code><br>Returns the list of element names. </td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getElementNames()">getElementNames</a></strong>()</code><br>Returns the list of element names.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getSettings()">getSettings</a></strong>()</code><br>Returns the list of settings. </td>
+                            <td class="colLast"><code>java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#getSettings()">getSettings</a></strong>()</code><br>Returns the list of settings.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -299,7 +308,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html'>PreferenceHolder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#save()">save</a></strong>()</code><br>Save current setting to database. </td>
+                            <td class="colLast"><code><strong><a href="#save()">save</a></strong>()</code><br>Save current setting to database.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -312,7 +321,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setElement(java.lang.String)">setElement</a></strong>(java.lang.String s)</code><br>Returns the list of element names. </td>
+                            <td class="colLast"><code><strong><a href="#setElement(java.lang.String)">setElement</a></strong>(java.lang.String s)</code><br>Returns the list of element names.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -324,7 +333,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setSettings(List)">setSettings</a></strong>(<a href='../../../../List.html'>List</a> settings)</code><br>Sets the list of settings. </td>
+                            <td class="colLast"><code><strong><a href="#setSettings(java.util.List)">setSettings</a></strong>(java.util.List settings)</code><br>Sets the list of settings.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -428,7 +437,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="settings"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>settings</strong></h4>
+                                <h4>java.util.List <strong>settings</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -484,10 +493,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="find(Closure)"><!-- --></a>
+                        <a name="find(groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html'>PreferenceHolder</a> <strong>find</strong>(@DelegatesToDelegatesTo <a href='../../../../Closure.html'>Closure</a> config)</h4>
+                                <h4>static&nbsp;<a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html'>PreferenceHolder</a> <strong>find</strong>(@groovy.lang.DelegatesTo(value: PreferenceHolder) groovy.lang.Closure config)</h4>
                                 <p> Finds the preferences for the given page/user/element.  This is the main entry point for the DSL. <DL><DT><B>Parameters:</B></DT><DD><code>config</code> -  The configuration DSL closure.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The holder.</DD></DL></p>
                             </li>
                         </ul>
@@ -495,7 +504,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="get(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
 <a href='../../../../org/simplemes/eframe/preference/PreferenceSettingInterface.html'>PreferenceSettingInterface</a> <strong>get</strong>(java.lang.String key)</h4>
                                 <p> Gets the preference from the stored setting. <DL><DT><B>Parameters:</B></DT><DD><code>key</code> -  The preference key.</DD></DL><DL><DT><B>Returns:</B></DT><DD>This preference setting.</DD></DL></p>
                             </li>
@@ -504,7 +513,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getElementNames()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getElementNames</strong>()</h4>
+                                <h4>java.util.List&lt;java.lang.String&gt; <strong>getElementNames</strong>()</h4>
                                 <p> Returns the list of element names. <DL><DT><B>Returns:</B></DT><DD>The names (can be empty list).</DD></DL></p>
                             </li>
                         </ul>
@@ -512,7 +521,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getSettings()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getSettings</strong>()</h4>
+                                <h4>java.util.List <strong>getSettings</strong>()</h4>
                                 <p> Returns the list of settings. <DL><DT><B>Returns:</B></DT><DD>The settings.</DD></DL></p>
                             </li>
                         </ul>
@@ -520,7 +529,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="load()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: [GroovyAssignabilityCheck, GroovyMissingReturnStatement])
 void <strong>load</strong>()</h4>
                                 <p> Load or create new UserPreference record.  Uses the cache, when possible.</p>
                             </li>
@@ -553,7 +562,7 @@ void <strong>load</strong>()</h4>
                         <a name="set(java.lang.String, org.simplemes.eframe.preference.PreferenceSettingInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
 void <strong>set</strong>(java.lang.String key, <a href='../../../../org/simplemes/eframe/preference/PreferenceSettingInterface.html'>PreferenceSettingInterface</a> value)</h4>
                                 <p> Sets the preference in the stored setting.
  This simulates a map-style set to mirror the map-style get above. <DL><DT><B>Parameters:</B></DT><DD><code>key</code> -  The preference key.</DD><DD><code>value</code> -  This preference setting.</DD></DL></p>
@@ -571,16 +580,16 @@ void <strong>set</strong>(java.lang.String key, <a href='../../../../org/simplem
                         <a name="setPreference(org.simplemes.eframe.preference.PreferenceSettingInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
 <a href='../../../../org/simplemes/eframe/preference/PreferenceHolder.html'>PreferenceHolder</a> <strong>setPreference</strong>(<a href='../../../../org/simplemes/eframe/preference/PreferenceSettingInterface.html'>PreferenceSettingInterface</a> setting)</h4>
                                 <p> Set the given preference in the current settings.  Will replace if the setting already exists. <DL><DT><B>Returns:</B></DT><DD>This holder.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="setSettings(List)"><!-- --></a>
+                        <a name="setSettings(java.util.List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>setSettings</strong>(<a href='../../../../List.html'>List</a> settings)</h4>
+                                <h4>void <strong>setSettings</strong>(java.util.List settings)</h4>
                                 <p> Sets the list of settings. <DL><DT><B>Parameters:</B></DT><DD><code>settings</code> -  The settings.</DD></DL></p>
                             </li>
                         </ul>

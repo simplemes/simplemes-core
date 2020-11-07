@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class JSONByKeyDeserializer
+extends com.fasterxml.jackson.databind.deser.std.StdDeserializer</pre>
 
     <p> Defines the Jackson deserializer that will serialize domain references with just the domain record's primary key field.
 </p>
@@ -143,8 +149,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#JSONByKeyDeserializer(java.lang.Class)">JSONByKeyDeserializer</a>
-                                (java.lang.Class vc)</code><br></td>
+                                <code><a href="#JSONByKeyDeserializer(Class)">JSONByKeyDeserializer</a>
+                                (java.lang.Class&lt;?&gt; vc)</code><br></td>
                         </tr>
                         
                         <tr class="altColor">
@@ -177,13 +183,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext)">deserialize</a></strong>(com.fasterxml.jackson.core.JsonParser p, com.fasterxml.jackson.databind.DeserializationContext context)</code><br>Converts an object key to a domain object. </td>
+                            <td class="colLast"><code><strong><a href="#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext)">deserialize</a></strong>(com.fasterxml.jackson.core.JsonParser p, com.fasterxml.jackson.databind.DeserializationContext context)</code><br>Converts an object key to a domain object.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Class</code></td>
-                            <td class="colLast"><code><strong><a href="#findTypeFromParser(com.fasterxml.jackson.core.JsonParser)">findTypeFromParser</a></strong>(com.fasterxml.jackson.core.JsonParser p)</code><br>Determines the type from the parser (if possible). </td>
+                            <td class="colLast"><code><strong><a href="#findTypeFromParser(com.fasterxml.jackson.core.JsonParser)">findTypeFromParser</a></strong>(com.fasterxml.jackson.core.JsonParser p)</code><br>Determines the type from the parser (if possible).</td>
                         </tr>
                         
                     </table>
@@ -202,7 +208,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class com.fasterxml.jackson.databind.deser.std.StdDeserializer</code></td>
-                            <td class="colLast"><code>com.fasterxml.jackson.databind.deser.std.StdDeserializer#getValueType(com.fasterxml.jackson.databind.DeserializationContext), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getValueType(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#deserializeWithType(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext, com.fasterxml.jackson.databind.jsontype.TypeDeserializer), com.fasterxml.jackson.databind.deser.std.StdDeserializer#handledType(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getValueClass(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#isCachable(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#deserializeWithType(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext, com.fasterxml.jackson.databind.jsontype.TypeDeserializer, java.lang.Object), com.fasterxml.jackson.databind.deser.std.StdDeserializer#unwrappingDeserializer(com.fasterxml.jackson.databind.util.NameTransformer), com.fasterxml.jackson.databind.deser.std.StdDeserializer#replaceDelegatee(com.fasterxml.jackson.databind.JsonDeserializer), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getDelegatee(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getKnownPropertyNames(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getNullValue(com.fasterxml.jackson.databind.DeserializationContext), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getNullValue(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getNullAccessPattern(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getEmptyAccessPattern(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getEmptyValue(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getEmptyValue(com.fasterxml.jackson.databind.DeserializationContext), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getObjectIdReader(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#findBackReference(java.lang.String), com.fasterxml.jackson.databind.deser.std.StdDeserializer#supportsUpdate(com.fasterxml.jackson.databind.DeserializationConfig), com.fasterxml.jackson.databind.deser.std.StdDeserializer#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext, java.lang.Object), com.fasterxml.jackson.databind.deser.std.StdDeserializer#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext), com.fasterxml.jackson.databind.deser.std.StdDeserializer#wait(long, int), com.fasterxml.jackson.databind.deser.std.StdDeserializer#wait(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#wait(long), com.fasterxml.jackson.databind.deser.std.StdDeserializer#equals(java.lang.Object), com.fasterxml.jackson.databind.deser.std.StdDeserializer#toString(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#hashCode(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getClass(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#notify(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#notifyAll()</code></td>
+                            <td class="colLast"><code>com.fasterxml.jackson.databind.deser.std.StdDeserializer#getValueType(com.fasterxml.jackson.databind.DeserializationContext), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getValueType(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getValueClass(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#deserializeWithType(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext, com.fasterxml.jackson.databind.jsontype.TypeDeserializer), com.fasterxml.jackson.databind.deser.std.StdDeserializer#handledType(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#isCachable(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getKnownPropertyNames(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getNullValue(com.fasterxml.jackson.databind.DeserializationContext), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getNullValue(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getNullAccessPattern(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getEmptyAccessPattern(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getEmptyValue(com.fasterxml.jackson.databind.DeserializationContext), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getEmptyValue(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getObjectIdReader(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#findBackReference(java.lang.String), com.fasterxml.jackson.databind.deser.std.StdDeserializer#supportsUpdate(com.fasterxml.jackson.databind.DeserializationConfig), com.fasterxml.jackson.databind.deser.std.StdDeserializer#deserializeWithType(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext, com.fasterxml.jackson.databind.jsontype.TypeDeserializer, java.lang.Object), com.fasterxml.jackson.databind.deser.std.StdDeserializer#unwrappingDeserializer(com.fasterxml.jackson.databind.util.NameTransformer), com.fasterxml.jackson.databind.deser.std.StdDeserializer#replaceDelegatee(com.fasterxml.jackson.databind.JsonDeserializer), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getDelegatee(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext), com.fasterxml.jackson.databind.deser.std.StdDeserializer#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext, java.lang.Object), com.fasterxml.jackson.databind.deser.std.StdDeserializer#wait(long, int), com.fasterxml.jackson.databind.deser.std.StdDeserializer#wait(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#wait(long), com.fasterxml.jackson.databind.deser.std.StdDeserializer#equals(java.lang.Object), com.fasterxml.jackson.databind.deser.std.StdDeserializer#toString(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#hashCode(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#getClass(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#notify(), com.fasterxml.jackson.databind.deser.std.StdDeserializer#notifyAll()</code></td>
                         </tr>
                     </table>
                    </ul>
@@ -236,16 +242,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="JSONByKeyDeserializer()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: unused)
 <strong>JSONByKeyDeserializer</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="JSONByKeyDeserializer(java.lang.Class)"><!-- --></a>
+                        <a name="JSONByKeyDeserializer(Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>JSONByKeyDeserializer</strong>(java.lang.Class vc)</h4>
+                                <h4><strong>JSONByKeyDeserializer</strong>(java.lang.Class&lt;?&gt; vc)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -274,7 +280,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.Object <strong>deserialize</strong>(com.fasterxml.jackson.core.JsonParser p, com.fasterxml.jackson.databind.DeserializationContext context)</h4>
                                 <p> Converts an object key to a domain object. <DL><DT><B>Parameters:</B></DT><DD><code>p</code> -  Parsed used for reading JSON content</DD><DD><code>context</code> -  Context that can be used to access information about
    this deserialization activity.</DD></DL><DL><DT><B>Returns:</B></DT><DD>Deserialized value</DD></DL></p>

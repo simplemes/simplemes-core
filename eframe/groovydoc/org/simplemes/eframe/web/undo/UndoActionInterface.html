@@ -97,6 +97,12 @@ if (location.href.indexOf('is-external=true') == -1) {
     <ul class="blockList">
         <li class="blockList">
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@java.lang.SuppressWarnings(value: GroovyUnusedDeclaration)
+interface UndoActionInterface</pre>
 
     <p> Defines a single undo action to that will undo a previous user action.</p>
 
@@ -163,7 +169,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getInfoMsg()">getInfoMsg</a></strong>()</code><br>Returns an optional  message to be displayed when the user triggers this undo action. </td>
+                            <td class="colLast"><code><strong><a href="#getInfoMsg()">getInfoMsg</a></strong>()</code><br>Returns an optional  message to be displayed when the user triggers this undo action.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -174,8 +180,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getSuccessEvents()">getSuccessEvents</a></strong>()</code><br>Returns optional dashboard events to trigger after the undo action completes successfully. </td>
+                            <td class="colLast"><code>java.util.List&lt;java.util.Map&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getSuccessEvents()">getSuccessEvents</a></strong>()</code><br>Returns optional dashboard events to trigger after the undo action completes successfully.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -253,7 +259,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getSuccessEvents()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>getSuccessEvents</strong>()</h4>
+                                <h4>java.util.List&lt;java.util.Map&gt; <strong>getSuccessEvents</strong>()</h4>
                                 <p> Returns optional dashboard events to trigger after the undo action completes successfully. <DL><DT><B>Returns:</B></DT><DD>The list of events. Null if none are needed.</DD></DL></p>
                             </li>
                         </ul>

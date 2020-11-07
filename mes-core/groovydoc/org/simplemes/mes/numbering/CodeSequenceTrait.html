@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.Trait
+trait CodeSequenceTrait
+extends java.lang.Object</pre>
 
     <p> Defines the code sequence numbering policy for generating an object code (primary key fields) on the shop floor.
  These are typically used for Orders and LSNs.
@@ -213,19 +220,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#formatTest(Map)">formatTest</a></strong>(<a href='../../../../Map.html'>Map</a> params)</code><br>Format the current number for test/display purposes.  </td>
+                            <td class="colLast"><code><strong><a href="#formatTest(java.util.Map)">formatTest</a></strong>(java.util.Map params)</code><br>Format the current number for test/display purposes.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#formatValues(int, Map)">formatValues</a></strong>(int nValues, <a href='../../../../Map.html'>Map</a> params)</code><br>Format one or more values using the current sequence.  </td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#formatValues(int, java.util.Map)">formatValues</a></strong>(int nValues, java.util.Map params)</code><br>Format one or more values using the current sequence.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#formatValuesInternal(int, Map)">formatValuesInternal</a></strong>(int nValues, <a href='../../../../Map.html'>Map</a> params)</code><br>Private internal format method.  </td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#formatValuesInternal(int, java.util.Map)">formatValuesInternal</a></strong>(int nValues, java.util.Map params)</code><br>Private internal format method.  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -398,28 +405,28 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="formatTest(Map)"><!-- --></a>
+                        <a name="formatTest(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>formatTest</strong>(<a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4>java.lang.String <strong>formatTest</strong>(java.util.Map params)</h4>
                                 <p> Format the current number for test/display purposes.  Does not increment the current sequence or other properties. <DL><DT><B>See Also:</B></DT><DD><a href='#formatValues'>formatValues</a></DD></DL><DL><DT><B>Parameters:</B></DT><DD><code>params</code> -  Optional list of parameters to be used in the formatting.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The formatted next number</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="formatValues(int, Map)"><!-- --></a>
+                        <a name="formatValues(int, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>formatValues</strong>(int nValues, <a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4>java.util.List&lt;java.lang.String&gt; <strong>formatValues</strong>(int nValues, java.util.Map params)</h4>
                                 <p> Format one or more values using the current sequence.  Updates the current sequence as needed.
  <p/>
  <b>Note:</b> For locking reasons, this method discards the original Sequence instance, so the caller should not rely on it. <DL><DT><B>Parameters:</B></DT><DD><code>nValues</code> -  The number of new numbers to generate.</DD><DD><code>params</code> -  Optional list of parameters to be used in the formatting.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The formatted next number</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="formatValuesInternal(int, Map)"><!-- --></a>
+                        <a name="formatValuesInternal(int, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>formatValuesInternal</strong>(int nValues, <a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4>java.util.List&lt;java.lang.String&gt; <strong>formatValuesInternal</strong>(int nValues, java.util.Map params)</h4>
                                 <p> Private internal format method.  Used to work around record locking issues.
  <p/>
  <b>Note:</b> Not to be called by client code under any circumstances. <DL><DT><B>Parameters:</B></DT><DD><code>nValues</code> -  The number of new numbers to generate.</DD><DD><code>params</code> -  Optional list of parameters to be used in the formatting.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The formatted next number</DD></DL></p>

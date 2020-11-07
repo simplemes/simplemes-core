@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+class MarkerContext
+extends java.lang.Object</pre>
 
     <p> Defines the context a given marker instance is executing in.  This is typically
  used to make sure the marker knows what controller it is associated with.</p>
@@ -184,8 +191,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#MarkerContext(Map)">MarkerContext</a>
-                                (<a href='../../../../../../../Map.html'>Map</a> options)</code><br>Map constructor.</td>
+                                <code><a href="#MarkerContext(java.util.Map)">MarkerContext</a>
+                                (java.util.Map options)</code><br>Map constructor.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -218,7 +225,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Class</code></td>
-                            <td class="colLast"><code><strong><a href="#getControllerClass()">getControllerClass</a></strong>()</code><br>Returns the class for the controller. </td>
+                            <td class="colLast"><code><strong><a href="#getControllerClass()">getControllerClass</a></strong>()</code><br>Returns the class for the controller.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -339,10 +346,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="MarkerContext(Map)"><!-- --></a>
+                        <a name="MarkerContext(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>MarkerContext</strong>(<a href='../../../../../../../Map.html'>Map</a> options)</h4>
+                                <h4><strong>MarkerContext</strong>(java.util.Map options)</h4>
                                 <p> Map constructor. <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  The map options.</DD></DL></p>
                             </li>
                         </ul>

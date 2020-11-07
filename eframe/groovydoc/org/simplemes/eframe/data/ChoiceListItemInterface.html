@@ -97,6 +97,12 @@ if (location.href.indexOf('is-external=true') == -1) {
     <ul class="blockList">
         <li class="blockList">
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@java.lang.SuppressWarnings(value: GroovyDocCheck)
+interface ChoiceListItemInterface</pre>
 
     <p> Defines a single instance of the possible choices for a class.
  Used with GUI widgets to define the list of values in a combobox or similar widgets.</p>
@@ -164,31 +170,31 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#getId()">getId</a></strong>()</code><br>Returns internal ID for this choice. </td>
+                            <td class="colLast"><code><strong><a href="#getId()">getId</a></strong>()</code><br>Returns internal ID for this choice.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#getValue()">getValue</a></strong>()</code><br>Returns the value for the choice list (e.g. a domain record or enum element). </td>
+                            <td class="colLast"><code><strong><a href="#getValue()">getValue</a></strong>()</code><br>Returns the value for the choice list (e.g. a domain record or enum element).</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isDefaultChoice()">isDefaultChoice</a></strong>()</code><br>Returns true if this choice is the default choice in the list. </td>
+                            <td class="colLast"><code><strong><a href="#isDefaultChoice()">isDefaultChoice</a></strong>()</code><br>Returns true if this choice is the default choice in the list.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toStringLocalized(Locale)">toStringLocalized</a></strong>(<a href='../../../../Locale.html'>Locale</a> locale)</code><br>Returns the localized display value for the choice. </td>
+                            <td class="colLast"><code><strong><a href="#toStringLocalized(java.util.Locale)">toStringLocalized</a></strong>(java.util.Locale locale)</code><br>Returns the localized display value for the choice.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toStringLocalized()">toStringLocalized</a></strong>()</code><br>Returns the localized display value for the choice (uses the default locale). </td>
+                            <td class="colLast"><code><strong><a href="#toStringLocalized()">toStringLocalized</a></strong>()</code><br>Returns the localized display value for the choice (uses the default locale).</td>
                         </tr>
                         
                     </table>
@@ -265,10 +271,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="toStringLocalized(Locale)"><!-- --></a>
+                        <a name="toStringLocalized(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>toStringLocalized</strong>(<a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>java.lang.String <strong>toStringLocalized</strong>(java.util.Locale locale)</h4>
                                 <p> Returns the localized display value for the choice. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale to use for the localized string.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The display value.</DD></DL></p>
                             </li>
                         </ul>

@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+class GridWidget
+extends <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseLabeledFieldWidget.html'>BaseLabeledFieldWidget</a></pre>
 
     <p> The base Grid widget class.  Produces the UI elements needed for a Grid (list) element.
  <p>
@@ -248,25 +255,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildAddButtonHandler(List)">buildAddButtonHandler</a></strong>(<a href='../../../../../../../List.html'>List</a> columns)</code><br>Builds the add/remove button handle functions for the table. </td>
+                            <td class="colLast"><code><strong><a href="#buildAddButtonHandler(List)">buildAddButtonHandler</a></strong>(java.util.List&lt;java.lang.String&gt; columns)</code><br>Builds the add/remove button handle functions for the table.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildAddRemoveButtons()">buildAddRemoveButtons</a></strong>()</code><br>Builds the add/remove buttons for the table. </td>
+                            <td class="colLast"><code><strong><a href="#buildAddRemoveButtons()">buildAddRemoveButtons</a></strong>()</code><br>Builds the add/remove buttons for the table.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildAutoSelectFirstRow(Collection)">buildAutoSelectFirstRow</a></strong>(<a href='../../../../../../../Collection.html'>Collection</a> value)</code><br>Returns a focus handle that auto selects the first row. </td>
+                            <td class="colLast"><code><strong><a href="#buildAutoSelectFirstRow(java.util.Collection)">buildAutoSelectFirstRow</a></strong>(java.util.Collection value)</code><br>Returns a focus handle that auto selects the first row.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildColumnOptions(List)">buildColumnOptions</a></strong>(<a href='../../../../../../../List.html'>List</a> columns)</code><br>Build the options for the buildTableColumns() call, with default sizes from the preferences. </td>
+                            <td class="colLast"><code>java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#buildColumnOptions(List)">buildColumnOptions</a></strong>(java.util.List&lt;java.lang.String&gt; columns)</code><br>Build the options for the buildTableColumns() call, with default sizes from the preferences.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -278,7 +285,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildColumnSortEventHandler(java.lang.Class)">buildColumnSortEventHandler</a></strong>(java.lang.Class referenceClass)</code><br>Build the event handler that reacts to columns sorting. </td>
+                            <td class="colLast"><code><strong><a href="#buildColumnSortEventHandler(java.lang.Class)">buildColumnSortEventHandler</a></strong>(java.lang.Class referenceClass)</code><br>Build the event handler that reacts to columns sorting.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -290,19 +297,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildMarkSorting()">buildMarkSorting</a></strong>()</code><br>Builds the script to mark the default sorting column/order. </td>
+                            <td class="colLast"><code><strong><a href="#buildMarkSorting()">buildMarkSorting</a></strong>()</code><br>Builds the script to mark the default sorting column/order.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildRegisterForSubmission()">buildRegisterForSubmission</a></strong>()</code><br>Returns the post-script code to register this form for submission. </td>
+                            <td class="colLast"><code><strong><a href="#buildRegisterForSubmission()">buildRegisterForSubmission</a></strong>()</code><br>Returns the post-script code to register this form for submission.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildRowData(List, Collection)">buildRowData</a></strong>(<a href='../../../../../../../List.html'>List</a> columns, <a href='../../../../../../../Collection.html'>Collection</a> values)</code><br>Builds the row data (in JS object format) for the grid. </td>
+                            <td class="colLast"><code><strong><a href="#buildRowData(List, java.util.Collection)">buildRowData</a></strong>(java.util.List&lt;java.lang.String&gt; columns, java.util.Collection values)</code><br>Builds the row data (in JS object format) for the grid.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -314,7 +321,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#calculateSortOrder(List)">calculateSortOrder</a></strong>(<a href='../../../../../../../List.html'>List</a> columns)</code><br>Determines the sorting from the user preferences. </td>
+                            <td class="colLast"><code><strong><a href="#calculateSortOrder(List)">calculateSortOrder</a></strong>(java.util.List&lt;java.lang.String&gt; columns)</code><br>Determines the sorting from the user preferences.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -326,7 +333,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#sortData(Collection)">sortData</a></strong>(<a href='../../../../../../../Collection.html'>Collection</a> values)</code><br>Sorts the data, if a user-sorting option is in needed.
+                            <td class="colLast"><code><strong><a href="#sortData(java.util.Collection)">sortData</a></strong>(java.util.Collection values)</code><br>Sorts the data, if a user-sorting option is in needed.
  </td>
                         </tr>
                         
@@ -350,7 +357,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html'>BaseWidget</a></code></td>
-                            <td class="colLast"><code><a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#addGlobalPostscriptText(java.lang.String)'>addGlobalPostscriptText</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#addPostscriptText(java.lang.String)'>addPostscriptText</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#build()'>build</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#buildStandardLabelWidth()'>buildStandardLabelWidth</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#escape(java.lang.String)'>escape</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#escapeForJavascript(java.lang.String, java.lang.Boolean)'>escapeForJavascript</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#generate()'>generate</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getBooleanAttribute(java.lang.String)'>getBooleanAttribute</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getControllerClass()'>getControllerClass</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getDomainClass()'>getDomainClass</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getRequestParameters()'>getRequestParameters</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getSizeAttribute(java.lang.String)'>getSizeAttribute</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#lookup(java.lang.String, Locale, java.lang.Object)'>lookup</a></code></td>
+                            <td class="colLast"><code><a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#addGlobalPostscriptText(java.lang.String)'>addGlobalPostscriptText</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#addPostscriptText(java.lang.String)'>addPostscriptText</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#build()'>build</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#buildStandardLabelWidth()'>buildStandardLabelWidth</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#escape(java.lang.String)'>escape</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#escapeForJavascript(java.lang.String, java.lang.Boolean)'>escapeForJavascript</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#generate()'>generate</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getBooleanAttribute(java.lang.String)'>getBooleanAttribute</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getControllerClass()'>getControllerClass</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getDomainClass()'>getDomainClass</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getRequestParameters()'>getRequestParameters</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#getSizeAttribute(java.lang.String)'>getSizeAttribute</a>, <a href='../../../../../../../org/simplemes/eframe/web/ui/webix/widget/BaseWidget.html#lookup(java.lang.String, java.util.Locale, java.lang.Object)'>lookup</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -472,7 +479,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="buildAddButtonHandler(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>buildAddButtonHandler</strong>(<a href='../../../../../../../List.html'>List</a> columns)</h4>
+                                <h4>java.lang.String <strong>buildAddButtonHandler</strong>(java.util.List&lt;java.lang.String&gt; columns)</h4>
                                 <p> Builds the add/remove button handle functions for the table. <DL><DT><B>Parameters:</B></DT><DD><code>columns</code> -  The list of columns to display.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The add/remove buttons (if needed).</DD></DL></p>
                             </li>
                         </ul>
@@ -485,10 +492,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="buildAutoSelectFirstRow(Collection)"><!-- --></a>
+                        <a name="buildAutoSelectFirstRow(java.util.Collection)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>buildAutoSelectFirstRow</strong>(<a href='../../../../../../../Collection.html'>Collection</a> value)</h4>
+                                <h4>java.lang.String <strong>buildAutoSelectFirstRow</strong>(java.util.Collection value)</h4>
                                 <p> Returns a focus handle that auto selects the first row. <DL><DT><B>Parameters:</B></DT><DD><code>value</code> -  The list of values.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The script to auto select onFocus.</DD></DL></p>
                             </li>
                         </ul>
@@ -496,7 +503,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="buildColumnOptions(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../../../Map.html'>Map</a> <strong>buildColumnOptions</strong>(<a href='../../../../../../../List.html'>List</a> columns)</h4>
+                                <h4>java.util.Map <strong>buildColumnOptions</strong>(java.util.List&lt;java.lang.String&gt; columns)</h4>
                                 <p> Build the options for the buildTableColumns() call, with default sizes from the preferences. <DL><DT><B>Parameters:</B></DT><DD><code>columns</code> -  The list of columns to display.</DD></DL><DL><DT><B>Returns:</B></DT><DD>A map with the desired options for the columns.</DD></DL></p>
                             </li>
                         </ul>
@@ -541,10 +548,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="buildRowData(List, Collection)"><!-- --></a>
+                        <a name="buildRowData(List, java.util.Collection)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>buildRowData</strong>(<a href='../../../../../../../List.html'>List</a> columns, <a href='../../../../../../../Collection.html'>Collection</a> values)</h4>
+                                <h4>java.lang.String <strong>buildRowData</strong>(java.util.List&lt;java.lang.String&gt; columns, java.util.Collection values)</h4>
                                 <p> Builds the row data (in JS object format) for the grid. <DL><DT><B>Parameters:</B></DT><DD><code>columns</code> -  The list of columns to build in the results.</DD><DD><code>values</code> -  The data value rows.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The javascript for the data.</DD></DL></p>
                             </li>
                         </ul>
@@ -552,7 +559,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="buildWidget(java.lang.String, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>buildWidget</strong>(java.lang.String id, java.lang.Object value)</h4>
                                 <p> Builds the field content widget itself.  This is the element to the right of the label.
  This base class builds a label (readOnly) or text input field. <DL><DT><B>Parameters:</B></DT><DD><code>id</code> -  The field ID.</DD><DD><code>value</code> -  The value</DD></DL><DL><DT><B>Returns:</B></DT><DD>The text for field element.</DD></DL></p>
@@ -562,7 +569,7 @@ java.lang.String <strong>buildWidget</strong>(java.lang.String id, java.lang.Obj
                         <a name="calculateSortOrder(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>calculateSortOrder</strong>(<a href='../../../../../../../List.html'>List</a> columns)</h4>
+                                <h4>void <strong>calculateSortOrder</strong>(java.util.List&lt;java.lang.String&gt; columns)</h4>
                                 <p> Determines the sorting from the user preferences. <DL><DT><B>Parameters:</B></DT><DD><code>columns</code> -  The list of columns to display.</DD></DL></p>
                             </li>
                         </ul>
@@ -575,10 +582,10 @@ java.lang.String <strong>buildWidget</strong>(java.lang.String id, java.lang.Obj
                             </li>
                         </ul>
                     
-                        <a name="sortData(Collection)"><!-- --></a>
+                        <a name="sortData(java.util.Collection)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.Object <strong>sortData</strong>(<a href='../../../../../../../Collection.html'>Collection</a> values)</h4>
+                                <h4>java.lang.Object <strong>sortData</strong>(java.util.Collection values)</h4>
                                 <p> Sorts the data, if a user-sorting option is in needed.
  Otherwise, leaves the original values list unchanged. <DL><DT><B>Parameters:</B></DT><DD><code>values</code> -  The list of values.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list (may be sorted).</DD></DL></p>
                             </li>

@@ -101,18 +101,18 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../org/simplemes/mes/system/ScanResponseInterface.html'>ScanResponseInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@com.fasterxml.jackson.annotation.JsonTypeNameJsonTypeName
-@com.fasterxml.jackson.annotation.JsonTypeInfoJsonTypeInfo
-@groovy.transform.ToStringToString
+
+<pre>@com.fasterxml.jackson.annotation.JsonTypeName(value: scanResponse)
+@com.fasterxml.jackson.annotation.JsonTypeInfo(include: JsonTypeInfo.As.WRAPPER_OBJECT, use: JsonTypeInfo.Id.NAME)
+@groovy.transform.ToString(includeNames: true, includePackage: false)
 class ScanResponse
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../org/simplemes/mes/system/ScanResponseInterface.html'>ScanResponseInterface</a></pre>
 
     <p> The response for the scan() method.  This scan resolution is typically handled by the ScanService.
  This POGO is returned after the scan has been evaluated.</p>
@@ -171,7 +171,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#parsedBarcode">parsedBarcode</a></code><br>The parsed barcode content.  </td>
                         </tr>
                         
@@ -181,12 +181,12 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#scanActions">scanActions</a></code><br>The recommended actions the client will need to take to respond to the scan.  </td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;UndoActionInterface&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#undoActions">undoActions</a></code><br>The undo action(s) needed to undo the previous user action.</td>
                         </tr>
                         
@@ -317,7 +317,7 @@ extends java.lang.Object
                         <a name="parsedBarcode"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>parsedBarcode</strong></h4>
+                                <h4>private&nbsp;java.util.Map <strong>parsedBarcode</strong></h4>
                                 <p> The parsed barcode content.  This is a map with the key being the standardized logic name for the barcode element.
  For example: [BUTTON: 'START']</p>
                             </li>
@@ -334,7 +334,7 @@ extends java.lang.Object
                         <a name="scanActions"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>scanActions</strong></h4>
+                                <h4>private&nbsp;java.util.List <strong>scanActions</strong></h4>
                                 <p> The recommended actions the client will need to take to respond to the scan.  This can include
  button presses or Dashboard event triggering.
  The Maps in this list use the action's properties as the key.  This allows easier conversion to JSON for
@@ -345,7 +345,7 @@ extends java.lang.Object
                         <a name="undoActions"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>undoActions</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;UndoActionInterface&gt; <strong>undoActions</strong></h4>
                                 <p> The undo action(s) needed to undo the previous user action.</p>
                             </li>
                         </ul>

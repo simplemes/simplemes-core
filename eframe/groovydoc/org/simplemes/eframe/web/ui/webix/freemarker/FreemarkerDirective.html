@@ -101,15 +101,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>freemarker.template.TemplateDirectiveModel</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
+
 <pre>class FreemarkerDirective
 extends java.lang.Object
-
-</pre>
-
-
+implements freemarker.template.TemplateDirectiveModel</pre>
 
     <p> The main entry point for freemarker directives.  This is a thread-safe entry-point for the marker directives.
  It will create a new marker instance for the given marker class and execute it.</p>
@@ -143,7 +143,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;java.lang.Class</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.lang.Class&lt;<a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/MarkerInterface.html' title='MarkerInterface'>MarkerInterface</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#markerClass">markerClass</a></code><br>The marker implementation class.</td>
                         </tr>
                         
@@ -204,7 +204,7 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#execute(io.micronaut.context.env.Environment, Map, freemarker.template.TemplateModel, freemarker.template.TemplateDirectiveBody)">execute</a></strong>(io.micronaut.context.env.Environment env, <a href='../../../../../../../Map.html'>Map</a> params, freemarker.template.TemplateModel[] loopVars, freemarker.template.TemplateDirectiveBody body)</code><br>Executes this user-defined directive; called by FreeMarker when the user-defined
+                            <td class="colLast"><code><strong><a href="#execute(io.micronaut.context.env.Environment, java.util.Map, freemarker.template.TemplateModel, freemarker.template.TemplateDirectiveBody)">execute</a></strong>(io.micronaut.context.env.Environment env, java.util.Map params, freemarker.template.TemplateModel[] loopVars, freemarker.template.TemplateDirectiveBody body)</code><br>Executes this user-defined directive; called by FreeMarker when the user-defined
  directive is called in the template.</td>
                         </tr>
                         
@@ -254,7 +254,7 @@ extends java.lang.Object
                         <a name="markerClass"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;java.lang.Class <strong>markerClass</strong></h4>
+                                <h4>private&nbsp;java.lang.Class&lt;<a href='../../../../../../../org/simplemes/eframe/web/ui/webix/freemarker/MarkerInterface.html' title='MarkerInterface'>MarkerInterface</a>&gt; <strong>markerClass</strong></h4>
                                 <p> The marker implementation class.</p>
                             </li>
                         </ul>
@@ -302,11 +302,11 @@ extends java.lang.Object
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="execute(io.micronaut.context.env.Environment, Map, freemarker.template.TemplateModel, freemarker.template.TemplateDirectiveBody)"><!-- --></a>
+                        <a name="execute(io.micronaut.context.env.Environment, java.util.Map, freemarker.template.TemplateModel, freemarker.template.TemplateDirectiveBody)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-void <strong>execute</strong>(io.micronaut.context.env.Environment env, <a href='../../../../../../../Map.html'>Map</a> params, freemarker.template.TemplateModel[] loopVars, freemarker.template.TemplateDirectiveBody body)</h4>
+                                <h4>@java.lang.Override
+void <strong>execute</strong>(io.micronaut.context.env.Environment env, java.util.Map params, freemarker.template.TemplateModel[] loopVars, freemarker.template.TemplateDirectiveBody body)</h4>
                                 <p> Executes this user-defined directive; called by FreeMarker when the user-defined
  directive is called in the template.
 </p>

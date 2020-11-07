@@ -98,10 +98,17 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+class CompleteResponse
+extends java.lang.Object</pre>
 
     <p> The response for Complete requests.  This returns the element that was completed.
  <p/>
- This is a POGO used by the org.simplemes.mes.demand.service.WorkService#complete method.</p>
+ This is a POGO used by the <a href='../../../../org/simplemes/mes/demand/service/WorkService.html#complete' title='WorkService.complete'>WorkService.complete</a> method.</p>
 
           </li>
     </ul>
@@ -211,7 +218,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;UndoActionInterface&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getUndoActions()">getUndoActions</a></strong>()</code><br>The undo action(s) needed to undo this complete.</td>
                         </tr>
                         
@@ -345,7 +352,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getUndoActions()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getUndoActions</strong>()</h4>
+                                <h4>java.util.List&lt;UndoActionInterface&gt; <strong>getUndoActions</strong>()</h4>
                                 <p> The undo action(s) needed to undo this complete.</p>
                             </li>
                         </ul>

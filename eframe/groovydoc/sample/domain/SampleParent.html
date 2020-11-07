@@ -101,21 +101,21 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../sample/domain/SampleParentInterface.html'>SampleParentInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@io.micronaut.data.annotation.MappedEntityMappedEntity
-@<a href='../../org/simplemes/eframe/domain/annotation/DomainEntity.html' title='DomainEntity'>DomainEntity</a>DomainEntity
-@groovy.transform.ToStringToString
-@groovy.transform.EqualsAndHashCodeEqualsAndHashCode
-@com.fasterxml.jackson.annotation.JsonFilterJsonFilter
-@java.lang.SuppressWarningsSuppressWarnings
+
+<pre>@io.micronaut.data.annotation.MappedEntity
+@<a href='../../org/simplemes/eframe/domain/annotation/DomainEntity.html' title='DomainEntity'>DomainEntity</a>
+@groovy.transform.ToString(includePackage: false, includeNames: true, includes: [name, title, notes, notDisplayed, moreNotes, dateCreated, dateUpdated, allFieldsDomain, allFieldsDomains, sampleChildren, uuid])
+@groovy.transform.EqualsAndHashCode(includes: [name])
+@com.fasterxml.jackson.annotation.JsonFilter(value: searchableFilter)
+@java.lang.SuppressWarnings(value: unused)
 class SampleParent
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../sample/domain/SampleParentInterface.html'>SampleParentInterface</a></pre>
 
     <p> A test/Sample parent domain class.
  Has child and foreign references.
@@ -157,7 +157,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../sample/domain/AllFieldsDomain.html' title='AllFieldsDomain'>AllFieldsDomain</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#allFieldsDomains">allFieldsDomains</a></code><br>A list of foreign references.</td>
                         </tr>
                         
@@ -172,12 +172,12 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateCreated">dateCreated</a></code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateUpdated">dateUpdated</a></code><br></td>
                         </tr>
                         
@@ -212,7 +212,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../sample/domain/SampleChild.html' title='SampleChild'>SampleChild</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#sampleChildren">sampleChildren</a></code><br>A list of children.</td>
                         </tr>
                         
@@ -227,7 +227,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -286,7 +286,7 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List</code></td>
                             <td class="colLast"><code><strong><a href="#findRelatedRecords()">findRelatedRecords</a></strong>()</code><br>Support routine for archiving.  </td>
                         </tr>
                         
@@ -356,7 +356,7 @@ extends java.lang.Object
                         <a name="allFieldsDomains"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../List.html'>List</a> <strong>allFieldsDomains</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../sample/domain/AllFieldsDomain.html' title='AllFieldsDomain'>AllFieldsDomain</a>&gt; <strong>allFieldsDomains</strong></h4>
                                 <p> A list of foreign references.</p>
                             </li>
                         </ul>
@@ -380,7 +380,7 @@ extends java.lang.Object
                         <a name="dateCreated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../Date.html'>Date</a> <strong>dateCreated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateCreated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -388,7 +388,7 @@ extends java.lang.Object
                         <a name="dateUpdated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../Date.html'>Date</a> <strong>dateUpdated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateUpdated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -444,7 +444,7 @@ extends java.lang.Object
                         <a name="sampleChildren"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../List.html'>List</a> <strong>sampleChildren</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../sample/domain/SampleChild.html' title='SampleChild'>SampleChild</a>&gt; <strong>sampleChildren</strong></h4>
                                 <p> A list of children.</p>
                             </li>
                         </ul>
@@ -468,7 +468,7 @@ extends java.lang.Object
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -519,7 +519,7 @@ extends java.lang.Object
                         <a name="findRelatedRecords()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../List.html'>List</a> <strong>findRelatedRecords</strong>()</h4>
+                                <h4>java.util.List <strong>findRelatedRecords</strong>()</h4>
                                 <p> Support routine for archiving.  Finds related records that should be archived when this record
  is archived.  This sample class finds any AllFieldsDomains with the same key value. <DL><DT><B>Returns:</B></DT><DD>The list of related records.</DD></DL></p>
                             </li>

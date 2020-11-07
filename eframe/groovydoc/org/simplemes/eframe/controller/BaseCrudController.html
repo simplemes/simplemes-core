@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+abstract&nbsp;class BaseCrudController
+extends <a href='../../../../org/simplemes/eframe/controller/BaseController.html'>BaseController</a></pre>
 
     <p> A base class for normal CRUD GUI controller actions such as index, list, edit, etc.</p>
 
@@ -184,7 +191,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#bindEvent(java.lang.Object, java.lang.Object)">bindEvent</a></strong>(java.lang.Object record, java.lang.Object params)</code><br>An overridable method that can do additional binding from HTTP params to the domain object. </td>
+                            <td class="colLast"><code><strong><a href="#bindEvent(java.lang.Object, java.lang.Object)">bindEvent</a></strong>(java.lang.Object record, java.lang.Object params)</code><br>An overridable method that can do additional binding from HTTP params to the domain object.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -220,7 +227,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Class</code></td>
-                            <td class="colLast"><code><strong><a href="#getDomain()">getDomain</a></strong>()</code><br>Returns the expected domain needed for this controller. </td>
+                            <td class="colLast"><code><strong><a href="#getDomain()">getDomain</a></strong>()</code><br>Returns the expected domain needed for this controller.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -333,10 +340,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="create(java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-io.micronaut.http.HttpResponse <strong>create</strong>(@javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /create)
+io.micronaut.http.HttpResponse <strong>create</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the create page.  Requires the view '{domain}/create.hbs' for the given domain.
  <p>
  <b>Note:</b> This method secured by a secondary check on the real controllers'<DL><DT><B>Secured:</B></DT><DD>setting.</DD></DL> <DL><DT><B>Parameters:</B></DT><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The response.</DD></DL></p>
@@ -346,12 +353,12 @@ io.micronaut.http.HttpResponse <strong>create</strong>(@javax.annotation.Nullabl
                         <a name="createPost(io.micronaut.http.HttpRequest, java.lang.Object, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.ConsumesConsumes
-@io.micronaut.http.annotation.PostPost
-io.micronaut.http.HttpResponse <strong>createPost</strong>(io.micronaut.http.HttpRequest request, @io.micronaut.http.annotation.BodyBody java.lang.Object bodyParams, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: [GroovyAssignabilityCheck, unused])
+@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Consumes(value: MediaType.APPLICATION_FORM_URLENCODED)
+@io.micronaut.http.annotation.Post(value: /create)
+io.micronaut.http.HttpResponse <strong>createPost</strong>(io.micronaut.http.HttpRequest request, @io.micronaut.http.annotation.Body java.lang.Object bodyParams, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Accepts the save from a create page and either creates the record or re-displays with errors shown.
  <p>
  <b>Note:</b> This method can use the configurable test delay. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.</DD><DD><code>bodyParams</code> -  The form values, as a the body (a Map).</DD><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The show page for success, the create page for failure.</DD></DL></p>
@@ -361,12 +368,12 @@ io.micronaut.http.HttpResponse <strong>createPost</strong>(io.micronaut.http.Htt
                         <a name="delete(io.micronaut.http.HttpRequest, java.lang.Object, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.security.annotation.SecuredSecured
-@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.ConsumesConsumes
-@io.micronaut.http.annotation.PostPost
-io.micronaut.http.HttpResponse <strong>delete</strong>(io.micronaut.http.HttpRequest request, @io.micronaut.http.annotation.BodyBody java.lang.Object bodyParams, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@java.lang.SuppressWarnings(value: unused)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Consumes(value: MediaType.APPLICATION_FORM_URLENCODED)
+@io.micronaut.http.annotation.Post(value: /delete)
+io.micronaut.http.HttpResponse <strong>delete</strong>(io.micronaut.http.HttpRequest request, @io.micronaut.http.annotation.Body java.lang.Object bodyParams, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Deletes a single top-level domain object.
  <p>
  <b>Note:</b> This method can use the configurable test delay.
@@ -378,10 +385,10 @@ io.micronaut.http.HttpResponse <strong>delete</strong>(io.micronaut.http.HttpReq
                         <a name="edit(java.lang.String, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-io.micronaut.http.HttpResponse <strong>edit</strong>(@io.micronaut.http.annotation.PathVariablePathVariable java.lang.String id, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /edit/{id})
+io.micronaut.http.HttpResponse <strong>edit</strong>(@io.micronaut.http.annotation.PathVariable(name: id) java.lang.String id, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the edit page.  Requires the view '{domain}/create.hbs' for the given domain.
  <p>
  <b>Note:</b> This method can use the configurable test delay. <DL><DT><B>Parameters:</B></DT><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The model/view to display.</DD></DL></p>
@@ -391,12 +398,12 @@ io.micronaut.http.HttpResponse <strong>edit</strong>(@io.micronaut.http.annotati
                         <a name="editPost(io.micronaut.http.HttpRequest, java.lang.Object, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.ConsumesConsumes
-@io.micronaut.http.annotation.PostPost
-io.micronaut.http.HttpResponse <strong>editPost</strong>(io.micronaut.http.HttpRequest request, @io.micronaut.http.annotation.BodyBody java.lang.Object bodyParams, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Consumes(value: MediaType.APPLICATION_FORM_URLENCODED)
+@io.micronaut.http.annotation.Post(value: /edit)
+io.micronaut.http.HttpResponse <strong>editPost</strong>(io.micronaut.http.HttpRequest request, @io.micronaut.http.annotation.Body java.lang.Object bodyParams, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Accepts the save from a edit page and either updates the record or re-displays with errors shown.
  <p>
  <b>Note:</b> This method can use the configurable test delay.
@@ -435,10 +442,10 @@ io.micronaut.http.HttpResponse <strong>editPost</strong>(io.micronaut.http.HttpR
                         <a name="index(java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-io.micronaut.http.HttpResponse <strong>index</strong>(@javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /)
+io.micronaut.http.HttpResponse <strong>index</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the index page.  Requires a view  '{domain}/index' for the given domain.
  <p>
  <b>Note:</b> This method secured by a secondary check on the real controllers'<DL><DT><B>Secured:</B></DT><DD>setting.</DD></DL> <DL><DT><B>Parameters:</B></DT><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The model/view to display.</DD></DL></p>
@@ -448,9 +455,9 @@ io.micronaut.http.HttpResponse <strong>index</strong>(@javax.annotation.Nullable
                         <a name="list(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.GetGet
-io.micronaut.http.HttpResponse <strong>list</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Get(value: /list)
+io.micronaut.http.HttpResponse <strong>list</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Returns a list (JSON formatted) from the controller's domain for use by the index page.
  Supports sorting and paging.<p>
  <b>Note:</b> This method can use the configurable test delay.
@@ -462,10 +469,10 @@ io.micronaut.http.HttpResponse <strong>list</strong>(io.micronaut.http.HttpReque
                         <a name="show(java.lang.String, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-io.micronaut.http.HttpResponse <strong>show</strong>(@io.micronaut.http.annotation.PathVariablePathVariable java.lang.String id, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /show/{id})
+io.micronaut.http.HttpResponse <strong>show</strong>(@io.micronaut.http.annotation.PathVariable(name: id) java.lang.String id, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the show page.  Requires the view '{domain}/show.hbs' for the given domain.
  <p>
  <b>Note:</b> This method secured by a secondary check on the real controllers'<DL><DT><B>Secured:</B></DT><DD>setting.</DD></DL> <DL><DT><B>Parameters:</B></DT><DD><code>id</code> -  The domain record ID to show.</DD><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The response.</DD></DL></p>

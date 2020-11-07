@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class MockRestClient
+extends java.lang.Object</pre>
 
     <p> This is a mock client that can simulate the external search engine's response to various requests.
  This is not suitable for production.
@@ -199,7 +205,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#response">response</a></code><br>Values to be used for the generated response.</td>
                         </tr>
                         
@@ -259,13 +265,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#performRequest(org.elasticsearch.client.Request)">performRequest</a></strong>(org.elasticsearch.client.Request request)</code><br>The simulated request method. </td>
+                            <td class="colLast"><code><strong><a href="#performRequest(org.elasticsearch.client.Request)">performRequest</a></strong>(org.elasticsearch.client.Request request)</code><br>The simulated request method.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#simulateDelete(java.lang.String)">simulateDelete</a></strong>(java.lang.String endpoint)</code><br>Simulates a DELETE action (e.g. delete all indices or remove single document from index). </td>
+                            <td class="colLast"><code><strong><a href="#simulateDelete(java.lang.String)">simulateDelete</a></strong>(java.lang.String endpoint)</code><br>Simulates a DELETE action (e.g. delete all indices or remove single document from index).</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -358,7 +364,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="response"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>response</strong></h4>
+                                <h4>private&nbsp;java.util.Map <strong>response</strong></h4>
                                 <p> Values to be used for the generated response.</p>
                             </li>
                         </ul>
@@ -409,7 +415,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="performRequest(org.elasticsearch.client.Request)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: [GroovyUnusedDeclaration])
 java.lang.Object <strong>performRequest</strong>(org.elasticsearch.client.Request request)</h4>
                                 <p> The simulated request method. <DL><DT><B>Returns:</B></DT><DD>The simulated response.</DD></DL></p>
                             </li>
@@ -418,7 +424,7 @@ java.lang.Object <strong>performRequest</strong>(org.elasticsearch.client.Reques
                         <a name="simulateDelete(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GroovyUnusedDeclaration)
 java.lang.Object <strong>simulateDelete</strong>(java.lang.String endpoint)</h4>
                                 <p> Simulates a DELETE action (e.g. delete all indices or remove single document from index). <DL><DT><B>Parameters:</B></DT><DD><code>endpoint</code> -  The URI.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The simulated response.</DD></DL></p>
                             </li>
@@ -427,7 +433,7 @@ java.lang.Object <strong>simulateDelete</strong>(java.lang.String endpoint)</h4>
                         <a name="simulateGet(java.lang.String, org.apache.http.HttpEntity)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: [GroovyUnusedDeclaration, GroovyVariableNotAssigned, GroovyAssignabilityCheck])
 java.lang.Object <strong>simulateGet</strong>(java.lang.String endpoint, org.apache.http.HttpEntity entity)</h4>
                                 <p> Simulates a GET action.  Supports: getStatus checks.
  The document indexObject action supports the response value 'id', 'result'. <DL><DT><B>Parameters:</B></DT><DD><code>endpoint</code> -  The URI.</DD><DD><code>entity</code> -  The input content.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The simulated response.</DD></DL></p>
@@ -437,7 +443,7 @@ java.lang.Object <strong>simulateGet</strong>(java.lang.String endpoint, org.apa
                         <a name="simulatePost(java.lang.String, org.apache.http.HttpEntity)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: [GroovyUnusedDeclaration, GroovyVariableNotAssigned])
 java.lang.Object <strong>simulatePost</strong>(java.lang.String endpoint, org.apache.http.HttpEntity entity)</h4>
                                 <p> Simulates a POST action (e.g. document bulk index).
  The document bulkIndex action supports the response value 'items' which is a list of domain object that should be

@@ -101,21 +101,21 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../../org/simplemes/mes/demand/DemandObject.html'>DemandObject</a>, <a href='../../../../../org/simplemes/mes/product/RoutingTrait.html'>RoutingTrait</a>, <a href='../../../../../org/simplemes/mes/demand/WorkStateTrait.html'>WorkStateTrait</a>, <a href='../../../../../org/simplemes/mes/demand/WorkableInterface.html'>WorkableInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@io.micronaut.data.annotation.MappedEntityMappedEntity
-@org.simplemes.eframe.domain.annotation.DomainEntityDomainEntity
-@java.lang.SuppressWarningsSuppressWarnings
-@com.fasterxml.jackson.annotation.JsonFilterJsonFilter
-@groovy.transform.ToStringToString
-@groovy.transform.EqualsAndHashCodeEqualsAndHashCode
+
+<pre>@io.micronaut.data.annotation.MappedEntity(value: ordr)
+@org.simplemes.eframe.domain.annotation.DomainEntity
+@java.lang.SuppressWarnings(value: unused)
+@com.fasterxml.jackson.annotation.JsonFilter(value: searchableFilter)
+@groovy.transform.ToString(includeNames: true, includePackage: false, excludes: [dateCreated, dateUpdated])
+@groovy.transform.EqualsAndHashCode(includes: [order])
 class Order
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../../org/simplemes/mes/demand/DemandObject.html'>DemandObject</a>, <a href='../../../../../org/simplemes/mes/product/RoutingTrait.html'>RoutingTrait</a>, <a href='../../../../../org/simplemes/mes/demand/WorkStateTrait.html'>WorkStateTrait</a>, <a href='../../../../../org/simplemes/mes/demand/WorkableInterface.html'>WorkableInterface</a></pre>
 
     <p> This is a manufacturing order that is used to produce a product on the shop floor.  This is the primary
  object that a production operator interacts with on the shop floor.
@@ -151,46 +151,46 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateCompleted">dateCompleted</a></code><br>The date this order was completed or marked as done.</td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateCreated">dateCreated</a></code><br></td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateFirstQueued">dateFirstQueued</a></code><br>The date/time any quantity was first queued at this point (operation or top-level).
  </td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateFirstStarted">dateFirstStarted</a></code><br>The date/time any quantity was first started at this point (operation or top-level).
  </td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateQtyQueued">dateQtyQueued</a></code><br>The date/time any quantity was queued at this point (operation or top-level).
  </td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateQtyStarted">dateQtyStarted</a></code><br>The date/time any quantity was started at this point (operation or top-level).
  </td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateReleased">dateReleased</a></code><br>The date this order was released.</td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateUpdated">dateUpdated</a></code><br></td>
                         </tr>
                         
@@ -210,18 +210,18 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/mes/demand/domain/LSN.html' title='LSN'>LSN</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#lsns">lsns</a></code><br>The Order can have child lot/serial numbers (LSNs) that can be processed for many actions.
  </td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/mes/demand/domain/OrderOperState.html' title='OrderOperState'>OrderOperState</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#operationStates">operationStates</a></code><br>This is the list operation states that corresponds to the current operations.  </td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;OperationTrait&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#operations">operations</a></code><br>This is the list of operations this order should be processed at.</td>
                         </tr>
                         
@@ -276,7 +276,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -349,19 +349,19 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/mes/demand/WorkableInterface.html'>WorkableInterface</a></code></td>
-                            <td class="colLast"><code><strong><a href="#determineNextWorkable(org.simplemes.mes.demand.domain.OrderOperState)">determineNextWorkable</a></strong>(<a href='../../../../../org/simplemes/mes/demand/domain/OrderOperState.html'>OrderOperState</a> currentOperState)</code><br>Determines the next workable to be performed after the given operation is done. </td>
+                            <td class="colLast"><code><strong><a href="#determineNextWorkable(org.simplemes.mes.demand.domain.OrderOperState)">determineNextWorkable</a></strong>(<a href='../../../../../org/simplemes/mes/demand/domain/OrderOperState.html'>OrderOperState</a> currentOperState)</code><br>Determines the next workable to be performed after the given operation is done.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/mes/demand/WorkableInterface.html'>WorkableInterface</a></code></td>
-                            <td class="colLast"><code><strong><a href="#determineNextWorkable()">determineNextWorkable</a></strong>()</code><br>Determines the next workable to be performed after this workable is completed. </td>
+                            <td class="colLast"><code><strong><a href="#determineNextWorkable()">determineNextWorkable</a></strong>()</code><br>Determines the next workable to be performed after this workable is completed.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#findRelatedRecords()">findRelatedRecords</a></strong>()</code><br>Finds objects the related for archiving. </td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.Object&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#findRelatedRecords()">findRelatedRecords</a></strong>()</code><br>Finds objects the related for archiving.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -379,7 +379,7 @@ extends java.lang.Object
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/mes/demand/domain/LSN.html'>LSN</a>[]</code></td>
-                            <td class="colLast"><code><strong><a href="#resolveSpecificLSNs(BigDecimal)">resolveSpecificLSNs</a></strong>(<a href='../../../../../BigDecimal.html'>BigDecimal</a> qtyNeeded)</code><br>Find the first N LSNs with a QTY in queue <DL><DT><B>Parameters:</B></DT><DD><code>qtyNeeded</code> -  The qty needed to be satisfied by the LSN(s).</td>
+                            <td class="colLast"><code><strong><a href="#resolveSpecificLSNs(BigDecimal)">resolveSpecificLSNs</a></strong>(<a href='../../../../../BigDecimal.html'>BigDecimal</a> qtyNeeded)</code><br>Find the first N LSNs with a QTY in queue</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -390,25 +390,25 @@ extends java.lang.Object
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#validate()">validate</a></strong>()</code><br>Validates the record before save. </td>
+                            <td class="colLast"><code>java.util.List&lt;ValidationError&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#validate()">validate</a></strong>()</code><br>Validates the record before save.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;ValidationError&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#validateLSNs()">validateLSNs</a></strong>()</code><br>Validates that the LSNs are legal for the given Order.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;ValidationError&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#validateQtyReleased()">validateQtyReleased</a></strong>()</code><br>Validates that the qtyReleased is legal for the given Order.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;ValidationError&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#validateQtyToBuild()">validateQtyToBuild</a></strong>()</code><br>Validates that the qtyToBuild is legal for the given Order.</td>
                         </tr>
                         
@@ -458,7 +458,7 @@ extends java.lang.Object
                         <a name="dateCompleted"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateCompleted</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateCompleted</strong></h4>
                                 <p> The date this order was completed or marked as done.</p>
                             </li>
                         </ul>
@@ -466,7 +466,7 @@ extends java.lang.Object
                         <a name="dateCreated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateCreated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateCreated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -474,7 +474,7 @@ extends java.lang.Object
                         <a name="dateFirstQueued"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateFirstQueued</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateFirstQueued</strong></h4>
                                 <p> The date/time any quantity was first queued at this point (operation or top-level).
  <p/><b>WorkStateTrait field</b>.</p>
                             </li>
@@ -483,7 +483,7 @@ extends java.lang.Object
                         <a name="dateFirstStarted"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateFirstStarted</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateFirstStarted</strong></h4>
                                 <p> The date/time any quantity was first started at this point (operation or top-level).
  <p/><b>WorkStateTrait field</b>.</p>
                             </li>
@@ -492,7 +492,7 @@ extends java.lang.Object
                         <a name="dateQtyQueued"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateQtyQueued</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateQtyQueued</strong></h4>
                                 <p> The date/time any quantity was queued at this point (operation or top-level).
  Can be null if the nothing is in queue.
  <p/><b>WorkStateTrait field</b>.</p>
@@ -502,7 +502,7 @@ extends java.lang.Object
                         <a name="dateQtyStarted"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateQtyStarted</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateQtyStarted</strong></h4>
                                 <p> The date/time any quantity was started at this point (operation or top-level).
  Can be null if the nothing is in work.
  <p/><b>WorkStateTrait field</b>.</p>
@@ -512,7 +512,7 @@ extends java.lang.Object
                         <a name="dateReleased"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateReleased</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateReleased</strong></h4>
                                 <p> The date this order was released.</p>
                             </li>
                         </ul>
@@ -520,7 +520,7 @@ extends java.lang.Object
                         <a name="dateUpdated"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../Date.html'>Date</a> <strong>dateUpdated</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateUpdated</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -553,7 +553,7 @@ extends java.lang.Object
                         <a name="lsns"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../List.html'>List</a> <strong>lsns</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/mes/demand/domain/LSN.html' title='LSN'>LSN</a>&gt; <strong>lsns</strong></h4>
                                 <p> The Order can have child lot/serial numbers (LSNs) that can be processed for many actions.
  Order is not guaranteed. <b>(Optional)</b></p>
                             </li>
@@ -562,7 +562,7 @@ extends java.lang.Object
                         <a name="operationStates"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../List.html'>List</a> <strong>operationStates</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/mes/demand/domain/OrderOperState.html' title='OrderOperState'>OrderOperState</a>&gt; <strong>operationStates</strong></h4>
                                 <p> This is the list operation states that corresponds to the current operations.  This holds the quantities
  in queue, in work, etc for a given operation.
 </p>
@@ -572,7 +572,7 @@ extends java.lang.Object
                         <a name="operations"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../List.html'>List</a> <strong>operations</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;OperationTrait&gt; <strong>operations</strong></h4>
                                 <p> This is the list of operations this order should be processed at.
 </p>
                             </li>
@@ -667,7 +667,7 @@ extends java.lang.Object
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -751,7 +751,7 @@ extends java.lang.Object
                         <a name="findRelatedRecords()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>findRelatedRecords</strong>()</h4>
+                                <h4>java.util.List&lt;java.lang.Object&gt; <strong>findRelatedRecords</strong>()</h4>
                                 <p> Finds objects the related for archiving. <DL><DT><B>Returns:</B></DT><DD>The list of objects.</DD></DL></p>
                             </li>
                         </ul>
@@ -794,7 +794,7 @@ extends java.lang.Object
                         <a name="validate()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>validate</strong>()</h4>
+                                <h4>java.util.List&lt;ValidationError&gt; <strong>validate</strong>()</h4>
                                 <p> Validates the record before save. <DL><DT><B>Returns:</B></DT><DD>The list of errors.</DD></DL></p>
                             </li>
                         </ul>
@@ -802,7 +802,7 @@ extends java.lang.Object
                         <a name="validateLSNs()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>validateLSNs</strong>()</h4>
+                                <h4>java.util.List&lt;ValidationError&gt; <strong>validateLSNs</strong>()</h4>
                                 <p> Validates that the LSNs are legal for the given Order.</p>
                             </li>
                         </ul>
@@ -810,7 +810,7 @@ extends java.lang.Object
                         <a name="validateQtyReleased()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>validateQtyReleased</strong>()</h4>
+                                <h4>java.util.List&lt;ValidationError&gt; <strong>validateQtyReleased</strong>()</h4>
                                 <p> Validates that the qtyReleased is legal for the given Order.</p>
                             </li>
                         </ul>
@@ -818,7 +818,7 @@ extends java.lang.Object
                         <a name="validateQtyToBuild()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>validateQtyToBuild</strong>()</h4>
+                                <h4>java.util.List&lt;ValidationError&gt; <strong>validateQtyToBuild</strong>()</h4>
                                 <p> Validates that the qtyToBuild is legal for the given Order.</p>
                             </li>
                         </ul>

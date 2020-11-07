@@ -101,19 +101,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>net.sf.jasperreports.engine.export.HtmlResourceHandler</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
+
 <pre>class ReportResourceHandler
 extends java.lang.Object
-
-</pre>
-
-
+implements net.sf.jasperreports.engine.export.HtmlResourceHandler</pre>
 
     <p> Handles the report engine's resource (image) processing suitable for use in a controller.
  This provides the correct resource path/names using a convention for use the
- org.simplemes.eframe.reports.controller.ReportController#image method.
+ <a href='../../../../org/simplemes/eframe/reports/controller/ReportController.html#image' title='ReportController.image'>ReportController.image</a> method.
  The external URI for the resources uses resource ID and the reportPath to make the reference unique.</p>
 
           </li>
@@ -206,7 +206,7 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildUniqueID(java.lang.String)">buildUniqueID</a></strong>(java.lang.String id)</code><br>Builds a semi-unique resource ID from the report path and the given resource ID from the report engine. </td>
+                            <td class="colLast"><code><strong><a href="#buildUniqueID(java.lang.String)">buildUniqueID</a></strong>(java.lang.String id)</code><br>Builds a semi-unique resource ID from the report path and the given resource ID from the report engine.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -220,7 +220,7 @@ extends java.lang.Object
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#handleResource(java.lang.String, [B)">handleResource</a></strong>(java.lang.String id, <a href='../../../../[B.html'>[B</a> data)</code><br>Stores the given resource (image) in a temporary cache so the resource can be server up by the
- ReportController.image method. </td>
+ ReportController.image method.</td>
                         </tr>
                         
                     </table>
@@ -328,7 +328,7 @@ extends java.lang.Object
                         <a name="getResourcePath(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>getResourcePath</strong>(java.lang.String id)</h4>
                                 <p> Provides the resource path to use for the given ID in the report.
  This points to ReportController to serve up the image. <DL><DT><B>Parameters:</B></DT><DD><code>id</code> -  The image ID.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The path to use for the image in the HTML.</DD></DL></p>
@@ -338,7 +338,7 @@ java.lang.String <strong>getResourcePath</strong>(java.lang.String id)</h4>
                         <a name="handleResource(java.lang.String, [B)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>handleResource</strong>(java.lang.String id, <a href='../../../../[B.html'>[B</a> data)</h4>
                                 <p> Stores the given resource (image) in a temporary cache so the resource can be server up by the
  ReportController.image method. <DL><DT><B>Parameters:</B></DT><DD><code>id</code> -  The resource ID within the page.</DD><DD><code>data</code> -  The resource data.</DD></DL></p>

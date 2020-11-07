@@ -101,17 +101,17 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../../org/simplemes/eframe/custom/gui/FieldAdjustmentInterface.html'>FieldAdjustmentInterface</a>, <a href='../../../../../org/simplemes/eframe/json/TypeableJSONInterface.html'>TypeableJSONInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.transform.ToStringToString
-@groovy.transform.EqualsAndHashCodeEqualsAndHashCode
+
+<pre>@groovy.transform.ToString(includePackage: false)
+@groovy.transform.EqualsAndHashCode
 class FieldMoveAdjustment
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../../org/simplemes/eframe/custom/gui/FieldAdjustmentInterface.html'>FieldAdjustmentInterface</a>, <a href='../../../../../org/simplemes/eframe/json/TypeableJSONInterface.html'>TypeableJSONInterface</a></pre>
 
     <p> This holds a single field move adjustment to the field order for a GUI.
 </p>
@@ -229,14 +229,14 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#apply(List)">apply</a></strong>(<a href='../../../../../List.html'>List</a> fieldOrder)</code><br>Applies the field adjustment to the given list of fields. </td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#apply(List)">apply</a></strong>(java.util.List&lt;java.lang.String&gt; fieldOrder)</code><br>Applies the field adjustment to the given list of fields. </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#removeField(java.lang.String)">removeField</a></strong>(java.lang.String fieldName)</code><br>Removes the given field name from this adjustment. </td>
+                            <td class="colLast"><code><strong><a href="#removeField(java.lang.String)">removeField</a></strong>(java.lang.String fieldName)</code><br>Removes the given field name from this adjustment.</td>
                         </tr>
                         
                     </table>
@@ -355,8 +355,8 @@ extends java.lang.Object
                         <a name="apply(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-<a href='../../../../../List.html'>List</a> <strong>apply</strong>(<a href='../../../../../List.html'>List</a> fieldOrder)</h4>
+                                <h4>@java.lang.Override
+java.util.List&lt;java.lang.String&gt; <strong>apply</strong>(java.util.List&lt;java.lang.String&gt; fieldOrder)</h4>
                                 <p> Applies the field adjustment to the given list of fields. Modifies the list in place. <DL><DT><B>Parameters:</B></DT><DD><code>fieldOrder</code> -  The original field order (modified).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The original fieldOrder list (modified).</DD></DL></p>
                             </li>
                         </ul>
@@ -364,7 +364,7 @@ extends java.lang.Object
                         <a name="removeField(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 boolean <strong>removeField</strong>(java.lang.String fieldName)</h4>
                                 <p> Removes the given field name from this adjustment. <DL><DT><B>Parameters:</B></DT><DD><code>fieldName</code> -  The field to remove.</DD></DL><DL><DT><B>Returns:</B></DT><DD>If true, then the entire field adjustment should be removed.</DD></DL></p>
                             </li>

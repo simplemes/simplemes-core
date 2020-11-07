@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../org/simplemes/eframe/search/SearchEngineClientInterface.html'>SearchEngineClientInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.util.logging.Slf4jSlf4j
+
+<pre>@groovy.util.logging.Slf4j
 class SearchEngineClient
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../org/simplemes/eframe/search/SearchEngineClientInterface.html'>SearchEngineClientInterface</a></pre>
 
     <p> This helper encapsulates the search interface to the external search engine (Elastic Search in this case).
  This allows for easier use of the search engine and
@@ -164,7 +164,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;HttpHost&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#hosts">hosts</a></code><br>The list of external search engines that the RestClient will connect to.  </td>
                         </tr>
                         
@@ -224,50 +224,50 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildBulkIndexContent(List, List)">buildBulkIndexContent</a></strong>(<a href='../../../../List.html'>List</a> list, <a href='../../../../List.html'>List</a> archiveReferenceList)</code><br>Builds the bulk index request content for a list of domain objects. </td>
+                            <td class="colLast"><code><strong><a href="#buildBulkIndexContent(java.util.List, List)">buildBulkIndexContent</a></strong>(java.util.List list, java.util.List&lt;java.lang.String&gt; archiveReferenceList)</code><br>Builds the bulk index request content for a list of domain objects.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildURIForIndexRequest(java.lang.Object)">buildURIForIndexRequest</a></strong>(java.lang.Object object)</code><br>Builds the URI needed to send the PUT request to index the object. </td>
+                            <td class="colLast"><code><strong><a href="#buildURIForIndexRequest(java.lang.Object)">buildURIForIndexRequest</a></strong>(java.lang.Object object)</code><br>Builds the URI needed to send the PUT request to index the object.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildURIForSearchRequest(java.lang.Class)">buildURIForSearchRequest</a></strong>(java.lang.Class domainClass)</code><br>Builds the URI needed to make a search request on a domainClass. </td>
+                            <td class="colLast"><code><strong><a href="#buildURIForSearchRequest(java.lang.Class)">buildURIForSearchRequest</a></strong>(java.lang.Class domainClass)</code><br>Builds the URI needed to make a search request on a domainClass.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#bulkIndex(List, List)">bulkIndex</a></strong>(<a href='../../../../List.html'>List</a> objects, <a href='../../../../List.html'>List</a> archiveReferenceList)</code><br>Indexes a single object, waiting for completion.  </td>
+                            <td class="colLast"><code>java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#bulkIndex(java.util.List, List)">bulkIndex</a></strong>(java.util.List objects, java.util.List&lt;java.lang.String&gt; archiveReferenceList)</code><br>Indexes a single object, waiting for completion.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#convertPagingFromToolkitToSearch(Map)">convertPagingFromToolkitToSearch</a></strong>(<a href='../../../../Map.html'>Map</a> params)</code><br>Converts the paging parameters from the toolkit (start,count,sort[name]=asc) to the standard
- search engine protocol (from,size, <DL><DT><B>Parameters:</B></DT><DD>params</DD></DL></td>
+                            <td class="colLast"><code><strong><a href="#convertPagingFromToolkitToSearch(java.util.Map)">convertPagingFromToolkitToSearch</a></strong>(java.util.Map params)</code><br>Converts the paging parameters from the toolkit (start,count,sort[name]=asc) to the standard
+ search engine protocol (from,size,</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#deleteAllIndices()">deleteAllIndices</a></strong>()</code><br>Deletes all Indices in the search engine.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a></code></td>
-                            <td class="colLast"><code><strong><a href="#domainSearch(java.lang.Class, java.lang.String, Map)">domainSearch</a></strong>(java.lang.Class domainClass, java.lang.String query, <a href='../../../../Map.html'>Map</a> params)</code><br>Performs a standard domain search with the query string. </td>
+                            <td class="colLast"><code><strong><a href="#domainSearch(java.lang.Class, java.lang.String, java.util.Map)">domainSearch</a></strong>(java.lang.Class domainClass, java.lang.String query, java.util.Map params)</code><br>Performs a standard domain search with the query string.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#formatForIndex(java.lang.Object)">formatForIndex</a></strong>(java.lang.Object object)</code><br>Formats the given object as JSON for the search engine index requests. </td>
+                            <td class="colLast"><code><strong><a href="#formatForIndex(java.lang.Object)">formatForIndex</a></strong>(java.lang.Object object)</code><br>Formats the given object as JSON for the search engine index requests.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -286,25 +286,25 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a></code></td>
-                            <td class="colLast"><code><strong><a href="#globalSearch(java.lang.String, Map)">globalSearch</a></strong>(java.lang.String query, <a href='../../../../Map.html'>Map</a> params)</code><br>Performs a global search using the given query string. </td>
+                            <td class="colLast"><code><strong><a href="#globalSearch(java.lang.String, java.util.Map)">globalSearch</a></strong>(java.lang.String query, java.util.Map params)</code><br>Performs a global search using the given query string.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#indexObject(java.lang.Object)">indexObject</a></strong>(java.lang.Object object)</code><br>Indexes a single object, waiting for completion.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#removeObjectFromIndex(java.lang.Object)">removeObjectFromIndex</a></strong>(java.lang.Object object)</code><br>Removes a single object from the index. </td>
+                            <td class="colLast"><code>java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#removeObjectFromIndex(java.lang.Object)">removeObjectFromIndex</a></strong>(java.lang.Object object)</code><br>Removes a single object from the index.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;<a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a></code></td>
-                            <td class="colLast"><code><strong><a href="#search(java.lang.String, java.lang.String, Map)">search</a></strong>(java.lang.String uri, java.lang.String query, <a href='../../../../Map.html'>Map</a> params)</code><br>Performs an internal search (global or domain) for the given query string and the given URI. </td>
+                            <td class="colLast"><code><strong><a href="#search(java.lang.String, java.lang.String, java.util.Map)">search</a></strong>(java.lang.String uri, java.lang.String query, java.util.Map params)</code><br>Performs an internal search (global or domain) for the given query string and the given URI.</td>
                         </tr>
                         
                     </table>
@@ -361,7 +361,7 @@ extends java.lang.Object
                         <a name="hosts"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>hosts</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;HttpHost&gt; <strong>hosts</strong></h4>
                                 <p> The list of external search engines that the RestClient will connect to.  Typically, this is defined
  in the application.yml configuration file.
 
@@ -413,10 +413,10 @@ extends java.lang.Object
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="buildBulkIndexContent(List, List)"><!-- --></a>
+                        <a name="buildBulkIndexContent(java.util.List, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>buildBulkIndexContent</strong>(<a href='../../../../List.html'>List</a> list, <a href='../../../../List.html'>List</a> archiveReferenceList)</h4>
+                                <h4>static&nbsp;java.lang.String <strong>buildBulkIndexContent</strong>(java.util.List list, java.util.List&lt;java.lang.String&gt; archiveReferenceList)</h4>
                                 <p> Builds the bulk index request content for a list of domain objects. <DL><DT><B>Parameters:</B></DT><DD><code>list</code> -  The list.</DD><DD><code>archiveReferenceList</code> -  The list of archive references associated with the list of objects.  (Optional).
         This will modify the index used to be the archive index and add the element '_archiveReference' to the
         document indexed.  The list size must match this reference list (if given).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The JSON content in the correct format for a bulk index request.</DD></DL></p>
@@ -439,10 +439,10 @@ extends java.lang.Object
                             </li>
                         </ul>
                     
-                        <a name="bulkIndex(List, List)"><!-- --></a>
+                        <a name="bulkIndex(java.util.List, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>bulkIndex</strong>(<a href='../../../../List.html'>List</a> objects, <a href='../../../../List.html'>List</a> archiveReferenceList)</h4>
+                                <h4>java.util.Map <strong>bulkIndex</strong>(java.util.List objects, java.util.List&lt;java.lang.String&gt; archiveReferenceList)</h4>
                                 <p> Indexes a single object, waiting for completion.  This can be used directly, but is typically called by the request
  queue logic.
  Can log performance as level INFO and values as DEBUG log messages. <DL><DT><B>Parameters:</B></DT><DD><code>objects</code> -  The domain objects to index.  Must be saved.</DD><DD><code>archiveReferenceList</code> -  The list of archive references associated with the list of objects.  (Optional).
@@ -451,10 +451,10 @@ extends java.lang.Object
                             </li>
                         </ul>
                     
-                        <a name="convertPagingFromToolkitToSearch(Map)"><!-- --></a>
+                        <a name="convertPagingFromToolkitToSearch(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>convertPagingFromToolkitToSearch</strong>(<a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4>void <strong>convertPagingFromToolkitToSearch</strong>(java.util.Map params)</h4>
                                 <p> Converts the paging parameters from the toolkit (start,count,sort[name]=asc) to the standard
  search engine protocol (from,size, <DL><DT><B>Parameters:</B></DT><DD>params</DD></DL></p>
                             </li>
@@ -463,17 +463,17 @@ extends java.lang.Object
                         <a name="deleteAllIndices()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-<a href='../../../../Map.html'>Map</a> <strong>deleteAllIndices</strong>()</h4>
+                                <h4>@java.lang.Override
+java.util.Map <strong>deleteAllIndices</strong>()</h4>
                                 <p> Deletes all Indices in the search engine.  This will lose all data there.
  Can log performance as level INFO log messages. <DL><DT><B>Returns:</B></DT><DD>Status of the removal.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="domainSearch(java.lang.Class, java.lang.String, Map)"><!-- --></a>
+                        <a name="domainSearch(java.lang.Class, java.lang.String, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>domainSearch</strong>(java.lang.Class domainClass, java.lang.String query, <a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>domainSearch</strong>(java.lang.Class domainClass, java.lang.String query, java.util.Map params)</h4>
                                 <p> Performs a standard domain search with the query string. <DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The domain class to search.</DD><DD><code>query</code> -  The query string.</DD><DD><code>params</code> -  Optional query parameters.  Supported elements: from and size</DD></DL><DL><DT><B>Returns:</B></DT><DD>The search result, containing the list of values found.</DD></DL></p>
                             </li>
                         </ul>
@@ -489,7 +489,7 @@ extends java.lang.Object
                         <a name="getRestClient()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: CouldBeElvis)
 java.lang.Object <strong>getRestClient</strong>()</h4>
                                 <p> Returns the client used to talk to the search engine.  Will create a shared client and re-use it for
  all requests. <DL><DT><B>Returns:</B></DT><DD>The client.</DD></DL></p>
@@ -505,10 +505,10 @@ java.lang.Object <strong>getRestClient</strong>()</h4>
                             </li>
                         </ul>
                     
-                        <a name="globalSearch(java.lang.String, Map)"><!-- --></a>
+                        <a name="globalSearch(java.lang.String, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>globalSearch</strong>(java.lang.String query, <a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>globalSearch</strong>(java.lang.String query, java.util.Map params)</h4>
                                 <p> Performs a global search using the given query string. <DL><DT><B>Parameters:</B></DT><DD><code>query</code> -  The query string.  If it starts with &#123; then the string is used as the body for the GET request.</DD><DD><code>params</code> -  Optional query parameters.  Supported elements: from and size</DD><DD><code>The</code> -  search results.</DD></DL></p>
                             </li>
                         </ul>
@@ -516,7 +516,7 @@ java.lang.Object <strong>getRestClient</strong>()</h4>
                         <a name="indexObject(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>indexObject</strong>(java.lang.Object object)</h4>
+                                <h4>java.util.Map <strong>indexObject</strong>(java.lang.Object object)</h4>
                                 <p> Indexes a single object, waiting for completion.  This can be used directly, but is typically called by the request
  queue logic.
  Can log performance as level INFO and values as DEBUG log messages. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The domain object to index.  Must be saved.</DD></DL><DL><DT><B>Returns:</B></DT><DD>Status of the index creation.  A Map.</DD></DL></p>
@@ -526,15 +526,15 @@ java.lang.Object <strong>getRestClient</strong>()</h4>
                         <a name="removeObjectFromIndex(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>removeObjectFromIndex</strong>(java.lang.Object object)</h4>
+                                <h4>java.util.Map <strong>removeObjectFromIndex</strong>(java.lang.Object object)</h4>
                                 <p> Removes a single object from the index. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The domain object to remove from the index.  Must have a record id..</DD></DL><DL><DT><B>Returns:</B></DT><DD>Status of the index creation.  A Map.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="search(java.lang.String, java.lang.String, Map)"><!-- --></a>
+                        <a name="search(java.lang.String, java.lang.String, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>search</strong>(java.lang.String uri, java.lang.String query, <a href='../../../../Map.html'>Map</a> params)</h4>
+                                <h4>protected&nbsp;<a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>search</strong>(java.lang.String uri, java.lang.String query, java.util.Map params)</h4>
                                 <p> Performs an internal search (global or domain) for the given query string and the given URI. <DL><DT><B>Parameters:</B></DT><DD><code>uri</code> -  The URI to search on.</DD><DD><code>query</code> -  The query string.  If it starts with &#123; then the string is used as the body for the GET request.</DD><DD><code>params</code> -  Optional query parameters.  Supported elements: from and size.</DD><DD><code>The</code> -  search results.</DD></DL></p>
                             </li>
                         </ul>

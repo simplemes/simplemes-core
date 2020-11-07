@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class NumberUtils
+extends java.lang.Object</pre>
 
     <p> Some general-purpose number utilities.  Provides large number formatting and other utils.
 </p>
@@ -165,38 +171,38 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#determineDecimalSeparator(Locale)">determineDecimalSeparator</a></strong>(<a href='../../../../Locale.html'>Locale</a> locale)</code><br>Returns the decimal separator character for a locale. </td>
+                            <td class="colLast"><code><strong><a href="#determineDecimalSeparator(java.util.Locale)">determineDecimalSeparator</a></strong>(java.util.Locale locale)</code><br>Returns the decimal separator character for a locale.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#determineGroupingSeparator(Locale)">determineGroupingSeparator</a></strong>(<a href='../../../../Locale.html'>Locale</a> locale)</code><br>Returns the grouoping (thousands) separator character for a locale. </td>
+                            <td class="colLast"><code><strong><a href="#determineGroupingSeparator(java.util.Locale)">determineGroupingSeparator</a></strong>(java.util.Locale locale)</code><br>Returns the grouoping (thousands) separator character for a locale.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;int</code></td>
-                            <td class="colLast"><code><strong><a href="#divideRoundingUp(int, int)">divideRoundingUp</a></strong>(int top, int bottom)</code><br>Divides the top by the bottom, round up for any fraction. </td>
+                            <td class="colLast"><code><strong><a href="#divideRoundingUp(int, int)">divideRoundingUp</a></strong>(int top, int bottom)</code><br>Divides the top by the bottom, round up for any fraction.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;long</code></td>
-                            <td class="colLast"><code><strong><a href="#divideRoundingUp(long, int)">divideRoundingUp</a></strong>(long top, int bottom)</code><br>Divides the top by the bottom, round up for any fraction. </td>
+                            <td class="colLast"><code><strong><a href="#divideRoundingUp(long, int)">divideRoundingUp</a></strong>(long top, int bottom)</code><br>Divides the top by the bottom, round up for any fraction.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#formatLargeNumberReadable(long, Locale)">formatLargeNumberReadable</a></strong>(long value, <a href='../../../../Locale.html'>Locale</a> locale)</code><br>Build a human-readable large number with M, K, G, etc.  3,543,725 is displayed as '3.1M' and 54,543,725 is displayed as '54M'.
+                            <td class="colLast"><code><strong><a href="#formatLargeNumberReadable(long, java.util.Locale)">formatLargeNumberReadable</a></strong>(long value, java.util.Locale locale)</code><br>Build a human-readable large number with M, K, G, etc.  3,543,725 is displayed as '3.1M' and 54,543,725 is displayed as '54M'.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#formatNumber(java.lang.Number, Locale, boolean)">formatNumber</a></strong>(java.lang.Number value, <a href='../../../../Locale.html'>Locale</a> locale, boolean groupingUsed)</code><br>Build a human-readable form of the given Number with the specified locale. </td>
+                            <td class="colLast"><code><strong><a href="#formatNumber(java.lang.Number, java.util.Locale, boolean)">formatNumber</a></strong>(java.lang.Number value, java.util.Locale locale, boolean groupingUsed)</code><br>Build a human-readable form of the given Number with the specified locale.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -208,19 +214,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isNumberClass(java.lang.Class)">isNumberClass</a></strong>(java.lang.Class clazz)</code><br>Returns true if the class is a number class (primitive ot sub-class of Number). </td>
+                            <td class="colLast"><code><strong><a href="#isNumberClass(java.lang.Class)">isNumberClass</a></strong>(java.lang.Class clazz)</code><br>Returns true if the class is a number class (primitive ot sub-class of Number).</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.Number</code></td>
-                            <td class="colLast"><code><strong><a href="#parseNumber(java.lang.String, Locale)">parseNumber</a></strong>(java.lang.String stringValue, <a href='../../../../Locale.html'>Locale</a> locale)</code><br>Parses a human-readable form of the given Number with the specified locale. </td>
+                            <td class="colLast"><code><strong><a href="#parseNumber(java.lang.String, java.util.Locale)">parseNumber</a></strong>(java.lang.String stringValue, java.util.Locale locale)</code><br>Parses a human-readable form of the given Number with the specified locale.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#trimTrailingZeros(java.lang.String, Locale)">trimTrailingZeros</a></strong>(java.lang.String s, <a href='../../../../Locale.html'>Locale</a> locale)</code><br>Trims the trailing zeros, after the decimal character. </td>
+                            <td class="colLast"><code><strong><a href="#trimTrailingZeros(java.lang.String, java.util.Locale)">trimTrailingZeros</a></strong>(java.lang.String s, java.util.Locale locale)</code><br>Trims the trailing zeros, after the decimal character.</td>
                         </tr>
                         
                     </table>
@@ -291,18 +297,18 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="determineDecimalSeparator(Locale)"><!-- --></a>
+                        <a name="determineDecimalSeparator(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>determineDecimalSeparator</strong>(<a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>static&nbsp;java.lang.String <strong>determineDecimalSeparator</strong>(java.util.Locale locale)</h4>
                                 <p> Returns the decimal separator character for a locale. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale to use for parsing (<b>Default:</b> Request Locale, or Locale.default).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The separator character.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="determineGroupingSeparator(Locale)"><!-- --></a>
+                        <a name="determineGroupingSeparator(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>determineGroupingSeparator</strong>(<a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>static&nbsp;java.lang.String <strong>determineGroupingSeparator</strong>(java.util.Locale locale)</h4>
                                 <p> Returns the grouoping (thousands) separator character for a locale. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale to use for parsing (<b>Default:</b> Request Locale, or Locale.default).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The separator character.</DD></DL></p>
                             </li>
                         </ul>
@@ -323,10 +329,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="formatLargeNumberReadable(long, Locale)"><!-- --></a>
+                        <a name="formatLargeNumberReadable(long, java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>formatLargeNumberReadable</strong>(long value, <a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>static&nbsp;java.lang.String <strong>formatLargeNumberReadable</strong>(long value, java.util.Locale locale)</h4>
                                 <p> Build a human-readable large number with M, K, G, etc.  3,543,725 is displayed as '3.1M' and 54,543,725 is displayed as '54M'.
  Makes sure at least 2 significant digits are displayed if the whole number is <10.
  Supports K (1000), M, M, G, T (tera).  This method does <b>not</b> round to nearest whole number and uses the
@@ -334,10 +340,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="formatNumber(java.lang.Number, Locale, boolean)"><!-- --></a>
+                        <a name="formatNumber(java.lang.Number, java.util.Locale, boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>formatNumber</strong>(java.lang.Number value, <a href='../../../../Locale.html'>Locale</a> locale, boolean groupingUsed)</h4>
+                                <h4>static&nbsp;java.lang.String <strong>formatNumber</strong>(java.lang.Number value, java.util.Locale locale, boolean groupingUsed)</h4>
                                 <p> Build a human-readable form of the given Number with the specified locale. <DL><DT><B>Parameters:</B></DT><DD><code>value</code> -  The value to format.</DD><DD><code>locale</code> -  The locale to use for formatting (<b>Default:</b> Request Locale, or Locale.default).</DD><DD><code>groupingUsed</code> -  True if the grouping should be used on large numbers (<b>Default:</b> true).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The string. (e.g. 3.1 in German is '3,1').</DD></DL></p>
                             </li>
                         </ul>
@@ -358,18 +364,18 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="parseNumber(java.lang.String, Locale)"><!-- --></a>
+                        <a name="parseNumber(java.lang.String, java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.Number <strong>parseNumber</strong>(java.lang.String stringValue, <a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>static&nbsp;java.lang.Number <strong>parseNumber</strong>(java.lang.String stringValue, java.util.Locale locale)</h4>
                                 <p> Parses a human-readable form of the given Number with the specified locale. <DL><DT><B>Parameters:</B></DT><DD><code>stringValue</code> -  The value to format.</DD><DD><code>locale</code> -  The locale to use for parsing (<b>Default:</b> Request Locale, or Locale.default).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The string. (e.g. 3.1 in German is '3,1').</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="trimTrailingZeros(java.lang.String, Locale)"><!-- --></a>
+                        <a name="trimTrailingZeros(java.lang.String, java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>trimTrailingZeros</strong>(java.lang.String s, <a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>static&nbsp;java.lang.String <strong>trimTrailingZeros</strong>(java.lang.String s, java.util.Locale locale)</h4>
                                 <p> Trims the trailing zeros, after the decimal character. <DL><DT><B>Parameters:</B></DT><DD><code>s</code> -  The string to trim the trailing zeros from.</DD><DD><code>locale</code> -  The locale to use for parsing (<b>Default:</b> Request Locale, or Locale.default).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The trimmed value.</DD></DL></p>
                             </li>
                         </ul>

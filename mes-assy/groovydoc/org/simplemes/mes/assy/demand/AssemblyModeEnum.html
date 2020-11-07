@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@java.lang.SuppressWarnings(value: SerializableClassMustDefineSerialVersionUID)
+final&nbsp;enum AssemblyModeEnum
+extends java.lang.Enum&lt;E&lt;E&gt;&gt;</pre>
 
     <p>  Defines the possible choices for a given operation's assembly mode.</p>
 
@@ -251,7 +258,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getId()">getId</a></strong>()</code><br>The short, internal (DB) ID used for this interval. </td>
+                            <td class="colLast"><code><strong><a href="#getId()">getId</a></strong>()</code><br>The short, internal (DB) ID used for this interval.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -269,7 +276,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toStringLocalized(Locale)">toStringLocalized</a></strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</code><br>Build a human-readable version of this object. </td>
+                            <td class="colLast"><code><strong><a href="#toStringLocalized(java.util.Locale)">toStringLocalized</a></strong>(java.util.Locale locale)</code><br>Build a human-readable version of this object.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -288,24 +295,6 @@ if (location.href.indexOf('is-external=true') == -1) {
                    </ul>
               </li>
             
-            <li class="blockList"><a name="method_summary"><!--   --></a>
-                    <h3>Inherited Methods Summary</h3>
-                    <ul class="blockList">
-                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Inherited Methods Summary table">
-                        <caption><span>Inherited Methods</span><span class="tabEnd">&nbsp;</span></caption>
-                        <tr>
-                            <th class="colFirst" scope="col">Methods inherited from class</th>
-                            <th class="colLast" scope="col">Name</th>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code>class java.lang.Enum</code></td>
-                            <td class="colLast"><code>java.lang.Enum#name(), java.lang.Enum#equals(java.lang.Object), java.lang.Enum#toString(), java.lang.Enum#hashCode(), java.lang.Enum#compareTo(java.lang.Object), java.lang.Enum#compareTo(java.lang.Enum), java.lang.Enum#valueOf(java.lang.Class, java.lang.String), java.lang.Enum#describeConstable(), java.lang.Enum#getDeclaringClass(), java.lang.Enum#ordinal(), java.lang.Enum#wait(long, int), java.lang.Enum#wait(), java.lang.Enum#wait(long), java.lang.Enum#getClass(), java.lang.Enum#notify(), java.lang.Enum#notifyAll()</code></td>
-                        </tr>
-                    </table>
-                   </ul>
-              </li>
-                
         </ul>
         
     </li>
@@ -439,7 +428,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="$INIT([Ljava.lang.Object;)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.Generatedgroovy.transform.Generated
+                                <h4>@groovy.transform.Generated
 static&nbsp;final&nbsp;<a href='../../../../../org/simplemes/mes/assy/demand/AssemblyModeEnum.html'>AssemblyModeEnum</a> <strong>$INIT</strong>( para)</h4>
                                 <p></p>
                             </li>
@@ -456,7 +445,7 @@ static&nbsp;final&nbsp;<a href='../../../../../org/simplemes/mes/assy/demand/Ass
                         <a name="next()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.Generatedgroovy.transform.Generated
+                                <h4>@groovy.transform.Generated
 <a href='../../../../../org/simplemes/mes/assy/demand/AssemblyModeEnum.html'>AssemblyModeEnum</a> <strong>next</strong>()</h4>
                                 <p></p>
                             </li>
@@ -465,16 +454,16 @@ static&nbsp;final&nbsp;<a href='../../../../../org/simplemes/mes/assy/demand/Ass
                         <a name="previous()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.Generatedgroovy.transform.Generated
+                                <h4>@groovy.transform.Generated
 <a href='../../../../../org/simplemes/mes/assy/demand/AssemblyModeEnum.html'>AssemblyModeEnum</a> <strong>previous</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
                     
-                        <a name="toStringLocalized(Locale)"><!-- --></a>
+                        <a name="toStringLocalized(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>toStringLocalized</strong>(<a href='../../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>java.lang.String <strong>toStringLocalized</strong>(java.util.Locale locale)</h4>
                                 <p> Build a human-readable version of this object. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale to display the enum display text.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The human-readable string.</DD></DL></p>
                             </li>
                         </ul>
@@ -482,7 +471,7 @@ static&nbsp;final&nbsp;<a href='../../../../../org/simplemes/mes/assy/demand/Ass
                         <a name="valueOf(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.Generatedgroovy.transform.Generated
+                                <h4>@groovy.transform.Generated
 static&nbsp;<a href='../../../../../org/simplemes/mes/assy/demand/AssemblyModeEnum.html'>AssemblyModeEnum</a> <strong>valueOf</strong>(java.lang.String name)</h4>
                                 <p></p>
                             </li>
@@ -491,7 +480,7 @@ static&nbsp;<a href='../../../../../org/simplemes/mes/assy/demand/AssemblyModeEn
                         <a name="values()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@groovy.transform.Generatedgroovy.transform.Generated
+                                <h4>@groovy.transform.Generated
 static&nbsp;final&nbsp;<a href='../../../../../org/simplemes/mes/assy/demand/AssemblyModeEnum.html'>AssemblyModeEnum</a>[] <strong>values</strong>()</h4>
                                 <p></p>
                             </li>

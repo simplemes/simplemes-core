@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>org.simplemes.eframe.data.EncodedTypeInterface, org.simplemes.eframe.data.ChoiceListInterface, org.simplemes.eframe.data.ChoiceListItemInterface</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.transform.ToStringToString
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false, excludes: [value])
 abstract&nbsp;class OrderStatus
 extends java.lang.Object
-
-</pre>
-
-
+implements org.simplemes.eframe.data.EncodedTypeInterface, org.simplemes.eframe.data.ChoiceListInterface, org.simplemes.eframe.data.ChoiceListItemInterface</pre>
 
     <p> Defines the basic status codes needed for Orders.  This Status controls the overall status of the order.
  Sub-elements of the order may have other states or statuses.
@@ -118,10 +118,10 @@ extends java.lang.Object
  <h3>Core Statuses</h3>
  The core statuses for Orders include:
  <ul>
-   <li>OrderCreatedStatus</li>
-   <li>OrderReadyStatus - <b>Default</b></li>
-   <li>OrderHoldStatus</li>
-   <li>OrderDoneStatus</li>
+   <li><a href='../../../../org/simplemes/mes/demand/OrderCreatedStatus.html' title='OrderCreatedStatus'>OrderCreatedStatus</a></li>
+   <li><a href='../../../../org/simplemes/mes/demand/OrderReadyStatus.html' title='OrderReadyStatus'>OrderReadyStatus</a> - <b>Default</b></li>
+   <li><a href='../../../../org/simplemes/mes/demand/OrderHoldStatus.html' title='OrderHoldStatus'>OrderHoldStatus</a></li>
+   <li><a href='../../../../org/simplemes/mes/demand/OrderDoneStatus.html' title='OrderDoneStatus'>OrderDoneStatus</a></li>
  </ul>
 </p>
 
@@ -178,7 +178,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.List&lt;java.lang.Class&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#coreValues">coreValues</a></code><br>A list of classes that are valid Basic Statuses.</td>
                         </tr>
                         
@@ -238,55 +238,55 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/mes/demand/OrderStatus.html'>OrderStatus</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getDefault()">getDefault</a></strong>()</code><br>Returns the default status. </td>
+                            <td class="colLast"><code><strong><a href="#getDefault()">getDefault</a></strong>()</code><br>Returns the default status.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/mes/demand/OrderStatus.html'>OrderStatus</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getDoneStatus()">getDoneStatus</a></strong>()</code><br>Returns the standard done status. </td>
+                            <td class="colLast"><code><strong><a href="#getDoneStatus()">getDoneStatus</a></strong>()</code><br>Returns the standard done status.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)">getValidValues</a></strong>(org.simplemes.eframe.data.FieldDefinitionInterface fieldDefinition)</code><br>Returns the list of valid values for those formats that use a combobox or similar widget. </td>
+                            <td class="colLast"><code>static&nbsp;java.util.List&lt;ChoiceListItemInterface&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)">getValidValues</a></strong>(org.simplemes.eframe.data.FieldDefinitionInterface fieldDefinition)</code><br>Returns the list of valid values for those formats that use a combobox or similar widget.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#getValue()">getValue</a></strong>()</code><br>Returns the value for the choice list (e.g. a domain record of enum element). </td>
+                            <td class="colLast"><code><strong><a href="#getValue()">getValue</a></strong>()</code><br>Returns the value for the choice list (e.g. a domain record of enum element).</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isDefaultChoice()">isDefaultChoice</a></strong>()</code><br>Returns true if this choice is the default choice in the list. </td>
+                            <td class="colLast"><code><strong><a href="#isDefaultChoice()">isDefaultChoice</a></strong>()</code><br>Returns true if this choice is the default choice in the list.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isDone()">isDone</a></strong>()</code><br>Returns true if this status means that the object is done. </td>
+                            <td class="colLast"><code><strong><a href="#isDone()">isDone</a></strong>()</code><br>Returns true if this status means that the object is done.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#isWorkable()">isWorkable</a></strong>()</code><br>Returns true if this status means that the object is workable. </td>
+                            <td class="colLast"><code><strong><a href="#isWorkable()">isWorkable</a></strong>()</code><br>Returns true if this status means that the object is workable.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toStringLocalized(Locale)">toStringLocalized</a></strong>(<a href='../../../../Locale.html'>Locale</a> locale)</code><br>Returns the localized display value for the choice. </td>
+                            <td class="colLast"><code><strong><a href="#toStringLocalized(java.util.Locale)">toStringLocalized</a></strong>(java.util.Locale locale)</code><br>Returns the localized display value for the choice.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/mes/demand/OrderStatus.html'>OrderStatus</a></code></td>
-                            <td class="colLast"><code><strong><a href="#valueOf(java.lang.String)">valueOf</a></strong>(java.lang.String id)</code><br>Returns the instance for the given DB ID. </td>
+                            <td class="colLast"><code><strong><a href="#valueOf(java.lang.String)">valueOf</a></strong>(java.lang.String id)</code><br>Returns the instance for the given DB ID.</td>
                         </tr>
                         
                     </table>
@@ -353,7 +353,7 @@ extends java.lang.Object
                         <a name="coreValues"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;<a href='../../../../List.html'>List</a> <strong>coreValues</strong></h4>
+                                <h4>private&nbsp;static&nbsp;java.util.List&lt;java.lang.Class&gt; <strong>coreValues</strong></h4>
                                 <p> A list of classes that are valid Basic Statuses.</p>
                             </li>
                         </ul>
@@ -420,7 +420,7 @@ extends java.lang.Object
                         <a name="getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../List.html'>List</a> <strong>getValidValues</strong>(org.simplemes.eframe.data.FieldDefinitionInterface fieldDefinition)</h4>
+                                <h4>static&nbsp;java.util.List&lt;ChoiceListItemInterface&gt; <strong>getValidValues</strong>(org.simplemes.eframe.data.FieldDefinitionInterface fieldDefinition)</h4>
                                 <p> Returns the list of valid values for those formats that use a combobox or similar widget. <DL><DT><B>Parameters:</B></DT><DD><code>fieldDefinition</code> -  The field definition used to define this field (optional, provided additional details such as valid values).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of valid values.</DD></DL></p>
                             </li>
                         </ul>
@@ -428,7 +428,7 @@ extends java.lang.Object
                         <a name="getValue()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.Object <strong>getValue</strong>()</h4>
                                 <p> Returns the value for the choice list (e.g. a domain record of enum element). <DL><DT><B>Returns:</B></DT><DD>The value.</DD></DL></p>
                             </li>
@@ -437,7 +437,7 @@ java.lang.Object <strong>getValue</strong>()</h4>
                         <a name="isDefaultChoice()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 boolean <strong>isDefaultChoice</strong>()</h4>
                                 <p> Returns true if this choice is the default choice in the list. <DL><DT><B>Returns:</B></DT><DD>True if it is the default.</DD></DL></p>
                             </li>
@@ -459,11 +459,11 @@ boolean <strong>isDefaultChoice</strong>()</h4>
                             </li>
                         </ul>
                     
-                        <a name="toStringLocalized(Locale)"><!-- --></a>
+                        <a name="toStringLocalized(java.util.Locale)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-java.lang.String <strong>toStringLocalized</strong>(<a href='../../../../Locale.html'>Locale</a> locale)</h4>
+                                <h4>@java.lang.Override
+java.lang.String <strong>toStringLocalized</strong>(java.util.Locale locale)</h4>
                                 <p> Returns the localized display value for the choice. <DL><DT><B>Parameters:</B></DT><DD><code>locale</code> -  The locale to use for the localized string (<b>Default:</b> default locale).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The display value.</DD></DL></p>
                             </li>
                         </ul>

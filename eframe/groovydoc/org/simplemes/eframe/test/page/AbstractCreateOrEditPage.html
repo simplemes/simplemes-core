@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class AbstractCreateOrEditPage
+extends <a href='../../../../../org/simplemes/eframe/test/page/AbstractPage.html'>AbstractPage</a></pre>
 
     <p> The general base class for create or edit definition pages tested in the framework.
  This defines the elements common to all create/edit pages (Toolbar buttons) and tab panels.
@@ -322,7 +328,8 @@ if (location.href.indexOf('is-external=true') == -1) {
    static at = &#123;
                  checkCreateTitle('order.label')
                &#125;
- </pre> <DL><DT><B>Returns:</B></DT><DD><DL><DT><B>Parameters:</B></DT><DD><code>domainLookupKey</code> -  The key to lookup the label for domain object (e.g. 'order.label').</DD></DL></DD></DL></p>
+ </pre>
+ @return <DL><DT><B>Parameters:</B></DT><DD><code>domainLookupKey</code> -  The key to lookup the label for domain object (e.g. 'order.label').</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -345,7 +352,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="convertToPath(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>convertToPath</strong>(java.lang.Object[] args)</h4>
                                 <p> Generates the path arguments from the arguments.  This sub-class takes a domain object
  and stores it in the 'domainObject' field and the uses the object's uuid for the URL creation. <DL><DT><B>Parameters:</B></DT><DD><code>args</code> -  The 'to' arguments.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The path.</DD></DL></p>

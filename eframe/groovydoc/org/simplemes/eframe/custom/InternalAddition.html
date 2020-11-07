@@ -101,17 +101,17 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../org/simplemes/eframe/custom/AdditionInterface.html'>AdditionInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@javax.inject.SingletonSingleton
-@groovy.transform.ToStringToString
+
+<pre>@groovy.lang.Singleton
+@groovy.transform.ToString(includeNames: true, includePackage: false)
 class InternalAddition
 extends <a href='../../../../org/simplemes/eframe/custom/BaseAddition.html'>BaseAddition</a>
-
-</pre>
-
-
+implements <a href='../../../../org/simplemes/eframe/custom/AdditionInterface.html'>AdditionInterface</a></pre>
 
     <p> Defines an internal addition for the framework that is used to specify some features
  for the framework (e.g. BasicStatus codes, etc).</p>
@@ -145,7 +145,7 @@ extends <a href='../../../../org/simplemes/eframe/custom/BaseAddition.html'>Base
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../AdditionConfiguration.html'>AdditionConfiguration</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;org.simplemes.eframe.custom.AdditionConfiguration</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#addition">addition</a></code><br>Defines the elements needed/provided by this addition.</td>
                         </tr>
                         
@@ -228,7 +228,7 @@ extends <a href='../../../../org/simplemes/eframe/custom/BaseAddition.html'>Base
                         <a name="addition"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../AdditionConfiguration.html'>AdditionConfiguration</a> <strong>addition</strong></h4>
+                                <h4>private&nbsp;org.simplemes.eframe.custom.AdditionConfiguration <strong>addition</strong></h4>
                                 <p> Defines the elements needed/provided by this addition.</p>
                             </li>
                         </ul>

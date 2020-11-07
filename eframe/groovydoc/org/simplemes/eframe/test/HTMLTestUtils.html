@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class HTMLTestUtils
+extends java.lang.Object</pre>
 
     <p> Some utilities for testing generated HTML code.  Basic testing only.
 
@@ -166,20 +172,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#assertOrderInText(java.lang.Object, List)">assertOrderInText</a></strong>(java.lang.Object text, <a href='../../../../List.html'>List</a> matchList)</code><br>Make sure that the given list of strings occur in the same order in the given text.
+                            <td class="colLast"><code><strong><a href="#assertOrderInText(java.lang.Object, List)">assertOrderInText</a></strong>(java.lang.Object text, java.util.List&lt;java.lang.String&gt; matchList)</code><br>Make sure that the given list of strings occur in the same order in the given text.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#assertTagHasClass(java.lang.String, java.lang.String)">assertTagHasClass</a></strong>(java.lang.String tagText, java.lang.String cssClass)</code><br>Parses the given tag text and determines if it has the given class. </td>
+                            <td class="colLast"><code><strong><a href="#assertTagHasClass(java.lang.String, java.lang.String)">assertTagHasClass</a></strong>(java.lang.String tagText, java.lang.String cssClass)</code><br>Parses the given tag text and determines if it has the given class.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#checkHTML(java.lang.String, List)">checkHTML</a></strong>(java.lang.String page, <a href='../../../../List.html'>List</a> ignoreLines)</code><br>Checks the given HTML page text that all tags are balance and properly formed.
+                            <td class="colLast"><code><strong><a href="#checkHTML(java.lang.String, List)">checkHTML</a></strong>(java.lang.String page, java.util.List&lt;java.lang.String&gt; ignoreLines)</code><br>Checks the given HTML page text that all tags are balance and properly formed.
  </td>
                         </tr>
                         
@@ -261,7 +267,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="assertOrderInText(java.lang.Object, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;void <strong>assertOrderInText</strong>(java.lang.Object text, <a href='../../../../List.html'>List</a> matchList)</h4>
+                                <h4>static&nbsp;void <strong>assertOrderInText</strong>(java.lang.Object text, java.util.List&lt;java.lang.String&gt; matchList)</h4>
                                 <p> Make sure that the given list of strings occur in the same order in the given text.
  Used to check order of generate HTML/script. <DL><DT><B>Parameters:</B></DT><DD><code>text</code> -  The text to check for order in.</DD><DD><code>matchList</code> -  The list of strings to check for matches.  Should contain 2 or more entries.</DD></DL></p>
                             </li>
@@ -278,7 +284,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="checkHTML(java.lang.String, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;boolean <strong>checkHTML</strong>(java.lang.String page, <a href='../../../../List.html'>List</a> ignoreLines)</h4>
+                                <h4>static&nbsp;boolean <strong>checkHTML</strong>(java.lang.String page, java.util.List&lt;java.lang.String&gt; ignoreLines)</h4>
                                 <p> Checks the given HTML page text that all tags are balance and properly formed.
  Uses the XML parser, so the HTML code should be XML-compliant. <DL><DT><B>Parameters:</B></DT><DD><code>page</code> -  The HTML Page with the tags.  Can be empty string or null.</DD><DD><code>ignoreLines</code> -  A list of strings used to ignore lines for the HTML check.  This drops the lines that contain this string.
                     Used when the HTML contains Javascript that has embedded HTML in the Javascript.</DD></DL></p>

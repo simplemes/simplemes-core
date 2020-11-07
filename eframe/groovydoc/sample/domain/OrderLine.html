@@ -101,20 +101,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>java.lang.Comparable</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@<a href='../../org/simplemes/eframe/domain/annotation/DomainEntity.html' title='DomainEntity'>DomainEntity</a>DomainEntity
-@io.micronaut.data.annotation.MappedEntityMappedEntity
-@groovy.transform.ToStringToString
-@groovy.transform.EqualsAndHashCodeEqualsAndHashCode
-@java.lang.SuppressWarningsSuppressWarnings
+
+<pre>@<a href='../../org/simplemes/eframe/domain/annotation/DomainEntity.html' title='DomainEntity'>DomainEntity</a>
+@io.micronaut.data.annotation.MappedEntity
+@groovy.transform.ToString(includeNames: true, excludes: [order])
+@groovy.transform.EqualsAndHashCode(includes: [uuid])
+@java.lang.SuppressWarnings(value: unused)
 class OrderLine
 extends java.lang.Object
-
-</pre>
-
-
+implements java.lang.Comparable</pre>
 
     <p> A sample domain class that simulates an order line item.
  Fields include: order, sequence, qty, product, notes</p>
@@ -183,7 +183,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -349,7 +349,7 @@ extends java.lang.Object
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -400,7 +400,7 @@ extends java.lang.Object
                         <a name="compareTo(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 int <strong>compareTo</strong>(java.lang.Object o)</h4>
                                 <p> Compares this object with the specified object for order.  Returns a
  negative integer, zero, or a positive integer as this object is less

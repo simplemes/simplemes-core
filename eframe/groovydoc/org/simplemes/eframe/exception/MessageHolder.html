@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+@com.fasterxml.jackson.databind.annotation.JsonSerialize(using: MessageHolderSerializer)
+class MessageHolder
+extends java.lang.Object</pre>
 
     <p> This class encapsulates multiple response messages (error, etc) and allows controllers to render them
  in a consistent format.  This holder will use the message with highest severity for the top-level
@@ -214,12 +222,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#levelText">levelText</a></code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;<a href='../../../../org/simplemes/eframe/exception/MessageHolder.html' title='MessageHolder'>MessageHolder</a>&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#otherMessages">otherMessages</a></code><br>A list of other messages.</td>
                         </tr>
                         
@@ -257,14 +265,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#MessageHolder(Map)">MessageHolder</a>
-                                (<a href='../../../../Map.html'>Map</a> options)</code><br>Standard Map constructor.</td>
+                                <code><a href="#MessageHolder(java.util.Map)">MessageHolder</a>
+                                (java.util.Map options)</code><br>Standard Map constructor.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst">
                                 <code><a href="#MessageHolder(List)">MessageHolder</a>
-                                (<a href='../../../../List.html'>List</a> errors)</code><br>Builds a message holder with the given messages.  </td>
+                                (java.util.List&lt;ValidationError&gt; errors)</code><br>Builds a message holder with the given messages.  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -297,43 +305,43 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#add(Map)">add</a></strong>(<a href='../../../../Map.html'>Map</a> map)</code><br>Internal add method.  </td>
+                            <td class="colLast"><code><strong><a href="#add(java.util.Map)">add</a></strong>(java.util.Map map)</code><br>Internal add method.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/exception/MessageHolder.html'>MessageHolder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#addError(Map)">addError</a></strong>(<a href='../../../../Map.html'>Map</a> map)</code><br>Adds single error message to the holder. </td>
+                            <td class="colLast"><code><strong><a href="#addError(java.util.Map)">addError</a></strong>(java.util.Map map)</code><br>Adds single error message to the holder.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/exception/MessageHolder.html'>MessageHolder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#addInfo(Map)">addInfo</a></strong>(<a href='../../../../Map.html'>Map</a> map)</code><br>Adds single info message to the holder. </td>
+                            <td class="colLast"><code><strong><a href="#addInfo(java.util.Map)">addInfo</a></strong>(java.util.Map map)</code><br>Adds single info message to the holder.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/exception/MessageHolder.html'>MessageHolder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#addWarn(Map)">addWarn</a></strong>(<a href='../../../../Map.html'>Map</a> map)</code><br>Adds single warning message to the holder. </td>
+                            <td class="colLast"><code><strong><a href="#addWarn(java.util.Map)">addWarn</a></strong>(java.util.Map map)</code><br>Adds single warning message to the holder.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/exception/MessageHolder.html'>MessageHolder</a></code></td>
-                            <td class="colLast"><code><strong><a href="#addWarning(Map)">addWarning</a></strong>(<a href='../../../../Map.html'>Map</a> map)</code><br>Adds single warning message to the holder (convenience method). </td>
+                            <td class="colLast"><code><strong><a href="#addWarning(java.util.Map)">addWarning</a></strong>(java.util.Map map)</code><br>Adds single warning message to the holder (convenience method).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getLevelText()">getLevelText</a></strong>()</code><br>Returns the level (as text). </td>
+                            <td class="colLast"><code><strong><a href="#getLevelText()">getLevelText</a></strong>()</code><br>Returns the level (as text).</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#swap(org.simplemes.eframe.exception.MessageHolder)">swap</a></strong>(<a href='../../../../org/simplemes/eframe/exception/MessageHolder.html'>MessageHolder</a> msg)</code><br>Swaps the given message from the otherMessages list with the main message. </td>
+                            <td class="colLast"><code><strong><a href="#swap(org.simplemes.eframe.exception.MessageHolder)">swap</a></strong>(<a href='../../../../org/simplemes/eframe/exception/MessageHolder.html'>MessageHolder</a> msg)</code><br>Swaps the given message from the otherMessages list with the main message.</td>
                         </tr>
                         
                     </table>
@@ -459,7 +467,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="levelText"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;final&nbsp;<a href='../../../../List.html'>List</a> <strong>levelText</strong></h4>
+                                <h4>private&nbsp;static&nbsp;final&nbsp;java.util.List&lt;java.lang.String&gt; <strong>levelText</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -467,7 +475,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="otherMessages"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../List.html'>List</a> <strong>otherMessages</strong></h4>
+                                <h4>private&nbsp;java.util.List&lt;<a href='../../../../org/simplemes/eframe/exception/MessageHolder.html' title='MessageHolder'>MessageHolder</a>&gt; <strong>otherMessages</strong></h4>
                                 <p> A list of other messages.</p>
                             </li>
                         </ul>
@@ -502,10 +510,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="MessageHolder(Map)"><!-- --></a>
+                        <a name="MessageHolder(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>MessageHolder</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4><strong>MessageHolder</strong>(java.util.Map options)</h4>
                                 <p> Standard Map constructor. <DL><DT><B>Parameters:</B></DT><DD><code>errors</code> -  The validation errors from a domain object that failed validation.</DD></DL></p>
                             </li>
                         </ul>
@@ -513,7 +521,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="MessageHolder(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>MessageHolder</strong>(<a href='../../../../List.html'>List</a> errors)</h4>
+                                <h4><strong>MessageHolder</strong>(java.util.List&lt;ValidationError&gt; errors)</h4>
                                 <p> Builds a message holder with the given messages.  All messages are marked as errors. <DL><DT><B>Parameters:</B></DT><DD><code>errors</code> -  The validation errors from a domain object that failed validation.</DD></DL></p>
                             </li>
                         </ul>
@@ -539,42 +547,42 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="add(Map)"><!-- --></a>
+                        <a name="add(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;java.lang.Object <strong>add</strong>(<a href='../../../../Map.html'>Map</a> map)</h4>
+                                <h4>protected&nbsp;java.lang.Object <strong>add</strong>(java.util.Map map)</h4>
                                 <p> Internal add method.  Used by all of the convenience methods (e.g. addInfo(), etc). <DL><DT><B>Parameters:</B></DT><DD><code>map</code> -  The map with the parameters (text, code and level are supported).</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="addError(Map)"><!-- --></a>
+                        <a name="addError(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../org/simplemes/eframe/exception/MessageHolder.html'>MessageHolder</a> <strong>addError</strong>(<a href='../../../../Map.html'>Map</a> map)</h4>
+                                <h4><a href='../../../../org/simplemes/eframe/exception/MessageHolder.html'>MessageHolder</a> <strong>addError</strong>(java.util.Map map)</h4>
                                 <p> Adds single error message to the holder. <DL><DT><B>Parameters:</B></DT><DD><code>map</code> -  The map with the parameters (text, code and level are supported). (Modified).</DD></DL><DL><DT><B>Returns:</B></DT><DD>This message holder.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="addInfo(Map)"><!-- --></a>
+                        <a name="addInfo(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../org/simplemes/eframe/exception/MessageHolder.html'>MessageHolder</a> <strong>addInfo</strong>(<a href='../../../../Map.html'>Map</a> map)</h4>
+                                <h4><a href='../../../../org/simplemes/eframe/exception/MessageHolder.html'>MessageHolder</a> <strong>addInfo</strong>(java.util.Map map)</h4>
                                 <p> Adds single info message to the holder. <DL><DT><B>Parameters:</B></DT><DD><code>map</code> -  The map with the parameters (text, code and level are supported). (Modified).</DD></DL><DL><DT><B>Returns:</B></DT><DD>This message holder.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="addWarn(Map)"><!-- --></a>
+                        <a name="addWarn(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../org/simplemes/eframe/exception/MessageHolder.html'>MessageHolder</a> <strong>addWarn</strong>(<a href='../../../../Map.html'>Map</a> map)</h4>
+                                <h4><a href='../../../../org/simplemes/eframe/exception/MessageHolder.html'>MessageHolder</a> <strong>addWarn</strong>(java.util.Map map)</h4>
                                 <p> Adds single warning message to the holder. <DL><DT><B>Parameters:</B></DT><DD><code>map</code> -  The map with the parameters (text, code and level are supported). (Modified).</DD></DL><DL><DT><B>Returns:</B></DT><DD>This message holder.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="addWarning(Map)"><!-- --></a>
+                        <a name="addWarning(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../org/simplemes/eframe/exception/MessageHolder.html'>MessageHolder</a> <strong>addWarning</strong>(<a href='../../../../Map.html'>Map</a> map)</h4>
+                                <h4><a href='../../../../org/simplemes/eframe/exception/MessageHolder.html'>MessageHolder</a> <strong>addWarning</strong>(java.util.Map map)</h4>
                                 <p> Adds single warning message to the holder (convenience method). <DL><DT><B>Parameters:</B></DT><DD><code>map</code> -  The map with the parameters (text, code and level are supported). (Modified).</DD></DL><DL><DT><B>Returns:</B></DT><DD>This message holder.</DD></DL></p>
                             </li>
                         </ul>

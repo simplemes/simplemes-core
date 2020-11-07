@@ -101,17 +101,17 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd>org.simplemes.mes.system.service.ScanPoint, org.simplemes.mes.system.service.GetBarcodePrefixPoint</dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.util.logging.Slf4jSlf4j
-@javax.inject.SingletonSingleton
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
 class ScanAssyService
 extends java.lang.Object
-
-</pre>
-
-
+implements org.simplemes.mes.system.service.ScanPoint, org.simplemes.mes.system.service.GetBarcodePrefixPoint</pre>
 
     <p> This service provides business logic used for the Assembly module that
  provides additions to the core Scan service.
@@ -244,26 +244,26 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#assembleComponent(org.simplemes.mes.system.ScanRequestInterface, java.lang.String, org.simplemes.mes.system.ScanResponseInterface)">assembleComponent</a></strong>(org.simplemes.mes.system.ScanRequestInterface scanRequest, java.lang.String componentProduct, org.simplemes.mes.system.ScanResponseInterface result)</code><br>Adds a single component to the order/LSN. </td>
+                            <td class="colLast"><code><strong><a href="#assembleComponent(org.simplemes.mes.system.ScanRequestInterface, java.lang.String, org.simplemes.mes.system.ScanResponseInterface)">assembleComponent</a></strong>(org.simplemes.mes.system.ScanRequestInterface scanRequest, java.lang.String componentProduct, org.simplemes.mes.system.ScanResponseInterface result)</code><br>Adds a single component to the order/LSN.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../../org/simplemes/mes/assy/demand/domain/OrderBOMComponent.html'>OrderBOMComponent</a></code></td>
-                            <td class="colLast"><code><strong><a href="#determineOrderComponent(org.simplemes.mes.system.ScanRequestInterface, java.lang.String)">determineOrderComponent</a></strong>(org.simplemes.mes.system.ScanRequestInterface scanRequest, java.lang.String componentProduct)</code><br>Determines the component from the order/LSN that corresponds to the parsed barcode map. </td>
+                            <td class="colLast"><code><strong><a href="#determineOrderComponent(org.simplemes.mes.system.ScanRequestInterface, java.lang.String)">determineOrderComponent</a></strong>(org.simplemes.mes.system.ScanRequestInterface scanRequest, java.lang.String componentProduct)</code><br>Determines the component from the order/LSN that corresponds to the parsed barcode map.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;OrderBOMComponent&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#findAllMatchingComponents(org.simplemes.mes.demand.domain.Order, java.lang.String)">findAllMatchingComponents</a></strong>(org.simplemes.mes.demand.domain.Order order, java.lang.String product)</code><br>Finds all of the matching OrderComponents for the given product, sorted in ascending BOM
- order. </td>
+ order.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#postGetBarcodePrefixMapping(Map)">postGetBarcodePrefixMapping</a></strong>(<a href='../../../../../../Map.html'>Map</a> coreResponse)</code><br>Post-scan extension method for the getBarcodePrefix() method. </td>
+                            <td class="colLast"><code>java.util.Map&lt;java.lang.String, java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#postGetBarcodePrefixMapping(Map)">postGetBarcodePrefixMapping</a></strong>(java.util.Map&lt;java.lang.String, java.lang.String&gt; coreResponse)</code><br>Post-scan extension method for the getBarcodePrefix() method.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -427,7 +427,7 @@ extends java.lang.Object
                         <a name="assembleComponent(org.simplemes.mes.system.ScanRequestInterface, java.lang.String, org.simplemes.mes.system.ScanResponseInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
 protected&nbsp;void <strong>assembleComponent</strong>(org.simplemes.mes.system.ScanRequestInterface scanRequest, java.lang.String componentProduct, org.simplemes.mes.system.ScanResponseInterface result)</h4>
                                 <p> Adds a single component to the order/LSN. <DL><DT><B>Parameters:</B></DT><DD><code>scanRequest</code> -  The input scan request.  Includes the parsed barcode data.</DD><DD><code>componentProduct</code> -  The product for the component.</DD><DD><code>result</code> -  The scan results from the core method.</DD></DL></p>
                             </li>
@@ -444,7 +444,7 @@ protected&nbsp;void <strong>assembleComponent</strong>(org.simplemes.mes.system.
                         <a name="findAllMatchingComponents(org.simplemes.mes.demand.domain.Order, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../../List.html'>List</a> <strong>findAllMatchingComponents</strong>(org.simplemes.mes.demand.domain.Order order, java.lang.String product)</h4>
+                                <h4>java.util.List&lt;OrderBOMComponent&gt; <strong>findAllMatchingComponents</strong>(org.simplemes.mes.demand.domain.Order order, java.lang.String product)</h4>
                                 <p> Finds all of the matching OrderComponents for the given product, sorted in ascending BOM
  order. <DL><DT><B>Parameters:</B></DT><DD><code>order</code> -  The order to be checked for the scanned component.</DD><DD><code>product</code> -  The the product name to search for.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The matching OrderBOMComponent.</DD></DL></p>
                             </li>
@@ -453,8 +453,8 @@ protected&nbsp;void <strong>assembleComponent</strong>(org.simplemes.mes.system.
                         <a name="postGetBarcodePrefixMapping(Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-<a href='../../../../../../Map.html'>Map</a> <strong>postGetBarcodePrefixMapping</strong>(<a href='../../../../../../Map.html'>Map</a> coreResponse)</h4>
+                                <h4>@java.lang.Override
+java.util.Map&lt;java.lang.String, java.lang.String&gt; <strong>postGetBarcodePrefixMapping</strong>(java.util.Map&lt;java.lang.String, java.lang.String&gt; coreResponse)</h4>
                                 <p> Post-scan extension method for the getBarcodePrefix() method. <DL><DT><B>Parameters:</B></DT><DD><code>coreResponse</code> -  The response from the core method (or from other extensions that provide a response).</DD></DL><DL><DT><B>Returns:</B></DT><DD>Return a new response if your extension needs to return a different value. Return null to use core response.
          You can also modify the coreResponse if it is a POGO that allows modification.</DD></DL></p>
                             </li>
@@ -463,8 +463,8 @@ protected&nbsp;void <strong>assembleComponent</strong>(org.simplemes.mes.system.
                         <a name="postScan(org.simplemes.mes.system.ScanResponseInterface, org.simplemes.mes.system.ScanRequestInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-@javax.transaction.TransactionalTransactional
+                                <h4>@java.lang.Override
+@javax.transaction.Transactional
 org.simplemes.mes.system.ScanResponseInterface <strong>postScan</strong>(org.simplemes.mes.system.ScanResponseInterface coreResponse, org.simplemes.mes.system.ScanRequestInterface scanRequest)</h4>
                                 <p> Post-scan extension method for the scan() method.
  This extension adds ability to handle the scan request for component assembly. <DL><DT><B>Parameters:</B></DT><DD><code>coreResponse</code> -  The response from the core method (or from other extensions that provide a response).</DD><DD><code>scanRequest</code> -  The details of the request .</DD></DL><DL><DT><B>Returns:</B></DT><DD>Return a new response if your extension needs to return a different value. Return null to use core response.
@@ -475,7 +475,7 @@ org.simplemes.mes.system.ScanResponseInterface <strong>postScan</strong>(org.sim
                         <a name="preGetBarcodePrefixMapping()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>preGetBarcodePrefixMapping</strong>()</h4>
                                 <p> Pre-scan extension method for the getBarcodePrefix() method.
  <p>
@@ -486,7 +486,7 @@ void <strong>preGetBarcodePrefixMapping</strong>()</h4>
                         <a name="preScan(org.simplemes.mes.system.ScanRequestInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>preScan</strong>(org.simplemes.mes.system.ScanRequestInterface scanRequest)</h4>
                                 <p> Pre-scan extension method for the scan() method.
  <p>

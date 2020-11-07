@@ -98,6 +98,16 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.security.annotation.Secured(value: MANAGER)
+@io.micronaut.http.annotation.Controller(value: /order)
+@java.lang.SuppressWarnings(value: unused)
+class OrderController
+extends <a href='../../org/simplemes/eframe/controller/BaseCrudRestController.html'>BaseCrudRestController</a></pre>
 
     <p> Handles the controller actions for the Order objects.  Includes CRUD actions on the user.
  <p>
@@ -173,7 +183,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.List&lt;FindComponentResponseDetail&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#componentList">componentList</a></code><br>The dummy component list values.</td>
                         </tr>
                         
@@ -188,7 +198,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.List&lt;java.util.UUID&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#workListUUIDs">workListUUIDs</a></code><br>A static list of UUIDs for the dummy work list.</td>
                         </tr>
                         
@@ -342,7 +352,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="componentList"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;<a href='../../List.html'>List</a> <strong>componentList</strong></h4>
+                                <h4>private&nbsp;static&nbsp;java.util.List&lt;FindComponentResponseDetail&gt; <strong>componentList</strong></h4>
                                 <p> The dummy component list values.</p>
                             </li>
                         </ul>
@@ -366,7 +376,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="workListUUIDs"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;<a href='../../List.html'>List</a> <strong>workListUUIDs</strong></h4>
+                                <h4>private&nbsp;static&nbsp;java.util.List&lt;java.util.UUID&gt; <strong>workListUUIDs</strong></h4>
                                 <p> A static list of UUIDs for the dummy work list.</p>
                             </li>
                         </ul>
@@ -409,9 +419,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="findComponents(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.http.annotation.GetGet
-io.micronaut.http.HttpResponse <strong>findComponents</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+@io.micronaut.http.annotation.Get(value: /findComponents)
+io.micronaut.http.HttpResponse <strong>findComponents</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Returns a list (JSON formatted) that contains a POGO list of values.  Dummy static list. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.</DD><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The data for the list.</DD></DL></p>
                             </li>
                         </ul>
@@ -419,9 +429,9 @@ io.micronaut.http.HttpResponse <strong>findComponents</strong>(io.micronaut.http
                         <a name="findWork(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-@io.micronaut.http.annotation.GetGet
-io.micronaut.http.HttpResponse <strong>findWork</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+@io.micronaut.http.annotation.Get(value: /findWork)
+io.micronaut.http.HttpResponse <strong>findWork</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Returns a list (JSON formatted) that contains a POGO list of values.  Dummy static list. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.</DD><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The data for the list.</DD></DL></p>
                             </li>
                         </ul>
@@ -429,7 +439,7 @@ io.micronaut.http.HttpResponse <strong>findWork</strong>(io.micronaut.http.HttpR
                         <a name="getView(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>getView</strong>(java.lang.String methodName)</h4>
                                 <p> Determines the view to display for the given method.  This can be overridden in your controller class to
  use a different naming scheme.<p>
@@ -440,9 +450,9 @@ java.lang.String <strong>getView</strong>(java.lang.String methodName)</h4>
                         <a name="orderComponentList(java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-@io.micronaut.http.annotation.ProducesProduces
-<a href='../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>orderComponentList</strong>(@javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /orderComponentList)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+<a href='../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>orderComponentList</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -450,9 +460,9 @@ java.lang.String <strong>getView</strong>(java.lang.String methodName)</h4>
                         <a name="orderWorkList(java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-@io.micronaut.http.annotation.ProducesProduces
-<a href='../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>orderWorkList</strong>(@javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /orderWorkList)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+<a href='../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>orderWorkList</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p></p>
                             </li>
                         </ul>

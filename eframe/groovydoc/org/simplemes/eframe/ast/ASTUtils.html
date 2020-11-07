@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@java.lang.SuppressWarnings({"WeakerAccess", "UnusedReturnValue", "SameParameterValue"})
+public&nbsp;class ASTUtils
+extends java.lang.Object</pre>
 
     <p> Common utilities used by most AST (annotation) transformations.
  Provides methods to add fields and methods to a class during compile time.
@@ -279,7 +286,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="invokeGroovyMethod(java.lang.String, java.lang.String, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@com.github.javaparser.ast.expr.SingleMemberAnnotationExprSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings("unchecked")
 public&nbsp;static&nbsp;java.lang.Object <strong>invokeGroovyMethod</strong>(java.lang.String className, java.lang.String methodName, java.lang.Object args)</h4>
                                 <p> Invokes the given groovy class/method with arguments.  This is done to access
  the groovy world from the Java code.  This is needed since the Java source tree is compiled before

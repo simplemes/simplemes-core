@@ -98,13 +98,21 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.EqualsAndHashCode
+@groovy.transform.ToString(includeNames: true, includePackage: false)
+class CompleteRequest
+extends java.lang.Object</pre>
 
     <p> The request argument for Complete.  Defines the input values for the complete() and validateComplete service methods.
  <p/>
  This request must resolve to a specific workable object.  This is usually an order or LSN at a specific
  operation.  The fields actually needed depend on the configuration of data in your system.
  <p/>
- This is a POGO used by the org.simplemes.mes.demand.service.WorkService#complete method.</p>
+ This is a POGO used by the <a href='../../../../org/simplemes/mes/demand/service/WorkService.html#complete' title='WorkService.complete'>WorkService.complete</a> method.</p>
 
           </li>
     </ul>
@@ -140,7 +148,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Date.html'>Date</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#dateTime">dateTime</a></code><br>The date/time this action took place (<b>Default:</b> now).</td>
                         </tr>
                         
@@ -257,7 +265,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dateTime"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Date.html'>Date</a> <strong>dateTime</strong></h4>
+                                <h4>private&nbsp;java.util.Date <strong>dateTime</strong></h4>
                                 <p> The date/time this action took place (<b>Default:</b> now).</p>
                             </li>
                         </ul>

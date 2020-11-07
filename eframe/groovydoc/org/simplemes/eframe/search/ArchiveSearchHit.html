@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includePackage: false, includeNames: true, includeSuper: true)
+class ArchiveSearchHit
+extends <a href='../../../../org/simplemes/eframe/search/SearchHit.html'>SearchHit</a></pre>
 
     <p> A single archive search hit from the search engine.</p>
 
@@ -163,8 +170,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#ArchiveSearchHit(Map)">ArchiveSearchHit</a>
-                                (<a href='../../../../Map.html'>Map</a> jsonMap)</code><br>Convenience constructor that pulls the values from the search result JSON Map from the search engine.</td>
+                                <code><a href="#ArchiveSearchHit(java.util.Map)">ArchiveSearchHit</a>
+                                (java.util.Map jsonMap)</code><br>Convenience constructor that pulls the values from the search result JSON Map from the search engine.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -197,25 +204,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getDisplayValue()">getDisplayValue</a></strong>()</code><br>Builds the display value for this hit. </td>
+                            <td class="colLast"><code><strong><a href="#getDisplayValue()">getDisplayValue</a></strong>()</code><br>Builds the display value for this hit.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getLink()">getLink</a></strong>()</code><br>Builds the link HREF for this search hit. </td>
+                            <td class="colLast"><code><strong><a href="#getLink()">getLink</a></strong>()</code><br>Builds the link HREF for this search hit.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#getObject()">getObject</a></strong>()</code><br>This returns the archive reference since the archive object is not in the DB. </td>
+                            <td class="colLast"><code><strong><a href="#getObject()">getObject</a></strong>()</code><br>This returns the archive reference since the archive object is not in the DB.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#isArchiveHit(Map)">isArchiveHit</a></strong>(<a href='../../../../Map.html'>Map</a> jsonMap)</code><br>Determines if the given hit result is an archived object reference. </td>
+                            <td class="colLast"><code><strong><a href="#isArchiveHit(java.util.Map)">isArchiveHit</a></strong>(java.util.Map jsonMap)</code><br>Determines if the given hit result is an archived object reference.</td>
                         </tr>
                         
                     </table>
@@ -291,11 +298,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="ArchiveSearchHit(Map)"><!-- --></a>
+                        <a name="ArchiveSearchHit(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-<strong>ArchiveSearchHit</strong>(<a href='../../../../Map.html'>Map</a> jsonMap)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+<strong>ArchiveSearchHit</strong>(java.util.Map jsonMap)</h4>
                                 <p> Convenience constructor that pulls the values from the search result JSON Map from the search engine. <DL><DT><B>Parameters:</B></DT><DD><code>jsonMap</code> -  The parsed JSON (as  map) from the search engine.</DD></DL></p>
                             </li>
                         </ul>
@@ -345,11 +352,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="isArchiveHit(Map)"><!-- --></a>
+                        <a name="isArchiveHit(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-static&nbsp;java.lang.Object <strong>isArchiveHit</strong>(<a href='../../../../Map.html'>Map</a> jsonMap)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+static&nbsp;java.lang.Object <strong>isArchiveHit</strong>(java.util.Map jsonMap)</h4>
                                 <p> Determines if the given hit result is an archived object reference. <DL><DT><B>Parameters:</B></DT><DD><code>jsonMap</code> -  The hit details from the search result.</DD></DL></p>
                             </li>
                         </ul>

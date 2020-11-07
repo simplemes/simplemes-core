@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../org/simplemes/mes/system/service/GetBarcodePrefixPoint.html'>GetBarcodePrefixPoint</a>, <a href='../org/simplemes/mes/system/service/ScanPoint.html'>ScanPoint</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@javax.inject.SingletonSingleton
+
+<pre>@groovy.lang.Singleton
 class SampleScanExtension
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../org/simplemes/mes/system/service/GetBarcodePrefixPoint.html'>GetBarcodePrefixPoint</a>, <a href='../org/simplemes/mes/system/service/ScanPoint.html'>ScanPoint</a></pre>
 
     <p> A sample extension to the order release extension point.
  Not shipped with product.</p>
@@ -203,15 +203,15 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../Map.html'>Map</a></code></td>
-                            <td class="colLast"><code><strong><a href="#postGetBarcodePrefixMapping(Map)">postGetBarcodePrefixMapping</a></strong>(<a href='../Map.html'>Map</a> coreResponse)</code><br>Post-scan extension method for the getBarcodePrefix() method.
+                            <td class="colLast"><code>java.util.Map&lt;java.lang.String, java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#postGetBarcodePrefixMapping(Map)">postGetBarcodePrefixMapping</a></strong>(java.util.Map&lt;java.lang.String, java.lang.String&gt; coreResponse)</code><br>Post-scan extension method for the getBarcodePrefix() method.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../org/simplemes/mes/system/ScanResponseInterface.html'>ScanResponseInterface</a></code></td>
-                            <td class="colLast"><code><strong><a href="#postScan(org.simplemes.mes.system.ScanResponseInterface, org.simplemes.mes.system.ScanRequestInterface)">postScan</a></strong>(<a href='../org/simplemes/mes/system/ScanResponseInterface.html'>ScanResponseInterface</a> coreResponse, <a href='../org/simplemes/mes/system/ScanRequestInterface.html'>ScanRequestInterface</a> scanRequest)</code><br>Post-scan extension method for the scan() method. </td>
+                            <td class="colLast"><code><strong><a href="#postScan(org.simplemes.mes.system.ScanResponseInterface, org.simplemes.mes.system.ScanRequestInterface)">postScan</a></strong>(<a href='../org/simplemes/mes/system/ScanResponseInterface.html'>ScanResponseInterface</a> coreResponse, <a href='../org/simplemes/mes/system/ScanRequestInterface.html'>ScanRequestInterface</a> scanRequest)</code><br>Post-scan extension method for the scan() method.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -224,7 +224,7 @@ extends java.lang.Object
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#preScan(org.simplemes.mes.system.ScanRequestInterface)">preScan</a></strong>(<a href='../org/simplemes/mes/system/ScanRequestInterface.html'>ScanRequestInterface</a> scanRequest)</code><br>Pre-scan extension method for the scan() method. </td>
+                            <td class="colLast"><code><strong><a href="#preScan(org.simplemes.mes.system.ScanRequestInterface)">preScan</a></strong>(<a href='../org/simplemes/mes/system/ScanRequestInterface.html'>ScanRequestInterface</a> scanRequest)</code><br>Pre-scan extension method for the scan() method.</td>
                         </tr>
                         
                     </table>
@@ -324,10 +324,10 @@ extends java.lang.Object
                         <a name="postGetBarcodePrefixMapping(Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-<a href='../Map.html'>Map</a> <strong>postGetBarcodePrefixMapping</strong>(<a href='../Map.html'>Map</a> coreResponse)</h4>
+                                <h4>@java.lang.Override
+java.util.Map&lt;java.lang.String, java.lang.String&gt; <strong>postGetBarcodePrefixMapping</strong>(java.util.Map&lt;java.lang.String, java.lang.String&gt; coreResponse)</h4>
                                 <p> Post-scan extension method for the getBarcodePrefix() method.
- See the core method org.simplemes.mes.system.service.ScanService#getBarcodePrefixMapping() for details.
+ See the core method <a href='../org/simplemes/mes/system/service/ScanService.html#getBarcodePrefixMapping()' title='ScanService.getBarcodePrefixMapping'>ScanService.getBarcodePrefixMapping</a> for details.
  <p>
  <b>Note</b>: This method is part of the Stable API. <DL><DT><B>Parameters:</B></DT><DD><code>coreResponse</code> -  The response from the core method (or from other extensions that provide a response).</DD></DL><DL><DT><B>Returns:</B></DT><DD>Return a new response if your extension needs to return a different value. Return null to use core response.
          You can also modify the coreResponse if it is a POGO that allows modification.</DD></DL></p>
@@ -337,7 +337,7 @@ extends java.lang.Object
                         <a name="postScan(org.simplemes.mes.system.ScanResponseInterface, org.simplemes.mes.system.ScanRequestInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 <a href='../org/simplemes/mes/system/ScanResponseInterface.html'>ScanResponseInterface</a> <strong>postScan</strong>(<a href='../org/simplemes/mes/system/ScanResponseInterface.html'>ScanResponseInterface</a> coreResponse, <a href='../org/simplemes/mes/system/ScanRequestInterface.html'>ScanRequestInterface</a> scanRequest)</h4>
                                 <p> Post-scan extension method for the scan() method. <DL><DT><B>Parameters:</B></DT><DD><code>coreResponse</code> -  The response from the core method (or from other extensions that provide a response).</DD><DD><code>scanRequest</code> -  The details of the request .</DD></DL><DL><DT><B>Returns:</B></DT><DD>Return a new response if your extension needs to return a different value. Return null to use core response.
          You can also modify the coreResponse if it is a POGO that allows modification.</DD></DL></p>
@@ -347,10 +347,10 @@ extends java.lang.Object
                         <a name="preGetBarcodePrefixMapping()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>preGetBarcodePrefixMapping</strong>()</h4>
                                 <p> Pre-scan extension method for the getBarcodePrefix() method.
- See the core method org.simplemes.mes.system.service.ScanService#getBarcodePrefixMapping() for details.
+ See the core method <a href='../org/simplemes/mes/system/service/ScanService.html#getBarcodePrefixMapping()' title='ScanService.getBarcodePrefixMapping'>ScanService.getBarcodePrefixMapping</a> for details.
  <p>
  <b>Note</b>: This method is part of the Stable API.</p>
                             </li>
@@ -359,7 +359,7 @@ void <strong>preGetBarcodePrefixMapping</strong>()</h4>
                         <a name="preScan(org.simplemes.mes.system.ScanRequestInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>preScan</strong>(<a href='../org/simplemes/mes/system/ScanRequestInterface.html'>ScanRequestInterface</a> scanRequest)</h4>
                                 <p> Pre-scan extension method for the scan() method. <DL><DT><B>Parameters:</B></DT><DD><code>orderReleaseRequest</code> -  The details of the request.</DD></DL></p>
                             </li>

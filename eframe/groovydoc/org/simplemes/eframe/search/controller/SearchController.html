@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_AUTHENTICATED)
+@io.micronaut.http.annotation.Controller(value: /search)
+class SearchController
+extends <a href='../../../../../org/simplemes/eframe/controller/BaseController.html'>BaseController</a></pre>
 
     <p> Global System control settings.  These control functions/behaviors in the system.
  This controller provides access to the settings.</p>
@@ -211,7 +220,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a></code></td>
-                            <td class="colLast"><code><strong><a href="#admin(java.security.Principal)">admin</a></strong>(java.security.Principal principal)</code><br>Displays the search admin page. </td>
+                            <td class="colLast"><code><strong><a href="#admin(java.security.Principal)">admin</a></strong>(java.security.Principal principal)</code><br>Displays the search admin page.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -223,7 +232,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a></code></td>
-                            <td class="colLast"><code><strong><a href="#index(io.micronaut.http.HttpRequest, java.security.Principal)">index</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Displays the search index page. </td>
+                            <td class="colLast"><code><strong><a href="#index(io.micronaut.http.HttpRequest, java.security.Principal)">index</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Displays the search index page.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -235,7 +244,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/search/SearchStatus.html'>SearchStatus</a></code></td>
-                            <td class="colLast"><code><strong><a href="#status(java.security.Principal)">status</a></strong>(java.security.Principal principal)</code><br>Returns the current search engine status as JSON/XML. </td>
+                            <td class="colLast"><code><strong><a href="#status(java.security.Principal)">status</a></strong>(java.security.Principal principal)</code><br>Returns the current search engine status as JSON/XML.</td>
                         </tr>
                         
                     </table>
@@ -335,10 +344,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="admin(java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>admin</strong>(@javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.security.annotation.Secured(value: [ADMIN])
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /admin)
+<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>admin</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the search admin page. <DL><DT><B>Parameters:</B></DT><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The model/view to display.</DD></DL></p>
                             </li>
                         </ul>
@@ -346,10 +355,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="clearStatistics(java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.PostPost
-@java.lang.SuppressWarningsSuppressWarnings
-io.micronaut.http.HttpResponse <strong>clearStatistics</strong>(@javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.security.annotation.Secured(value: [ADMIN])
+@io.micronaut.http.annotation.Post(value: /clearStatistics)
+@java.lang.SuppressWarnings(value: unused)
+io.micronaut.http.HttpResponse <strong>clearStatistics</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Clears the current statistics.</p>
                             </li>
                         </ul>
@@ -357,9 +366,9 @@ io.micronaut.http.HttpResponse <strong>clearStatistics</strong>(@javax.annotatio
                         <a name="index(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.ProducesProduces
-@io.micronaut.http.annotation.GetGet
-<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>index</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@io.micronaut.http.annotation.Get(value: /)
+<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>index</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the search index page. <DL><DT><B>Parameters:</B></DT><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The model/view to display.</DD></DL></p>
                             </li>
                         </ul>
@@ -367,10 +376,10 @@ io.micronaut.http.HttpResponse <strong>clearStatistics</strong>(@javax.annotatio
                         <a name="startBulkIndex(java.lang.Object, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.PostPost
-@java.lang.SuppressWarningsSuppressWarnings
-io.micronaut.http.HttpResponse <strong>startBulkIndex</strong>(@io.micronaut.http.annotation.BodyBody java.lang.Object bodyParams, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.security.annotation.Secured(value: [ADMIN])
+@io.micronaut.http.annotation.Post(value: /startBulkIndex)
+@java.lang.SuppressWarnings(value: unused)
+io.micronaut.http.HttpResponse <strong>startBulkIndex</strong>(@io.micronaut.http.annotation.Body java.lang.Object bodyParams, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Starts the bulk index request.  This queues up the index requests needed.
  The index delete is run synchronously, then the index request are queued after that. <DL><DT><B>Parameters:</B></DT><DD><code>deleteAllIndices</code> -  If true, then this triggers a delete of all indices before the request is started.</DD></DL></p>
                             </li>
@@ -379,10 +388,10 @@ io.micronaut.http.HttpResponse <strong>startBulkIndex</strong>(@io.micronaut.htt
                         <a name="status(java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.security.annotation.SecuredSecured
-@io.micronaut.http.annotation.GetGet
-@java.lang.SuppressWarningsSuppressWarnings
-<a href='../../../../../org/simplemes/eframe/search/SearchStatus.html'>SearchStatus</a> <strong>status</strong>(@javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.security.annotation.Secured(value: [ADMIN])
+@io.micronaut.http.annotation.Get(value: /status)
+@java.lang.SuppressWarnings(value: unused)
+<a href='../../../../../org/simplemes/eframe/search/SearchStatus.html'>SearchStatus</a> <strong>status</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Returns the current search engine status as JSON/XML. <DL><DT><B>Returns:</B></DT><DD>The status as JSON.</DD></DL></p>
                             </li>
                         </ul>

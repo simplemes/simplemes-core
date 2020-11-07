@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class AssyUnitTestUtils
+extends org.simplemes.mes.test.MESUnitTestUtils</pre>
 
     <p> Convenience utilities for MES Assy module unit tests.  Used to create common data structures.
  Can also be used for GUI/Integration tests with proper transaction settings.
@@ -208,32 +214,32 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#adjustProduct(org.simplemes.mes.product.domain.Product, Map)">adjustProduct</a></strong>(org.simplemes.mes.product.domain.Product product, <a href='../../../../../Map.html'>Map</a> options)</code><br>Allows sub-classes to adjust the Product before it is saved. </td>
+                            <td class="colLast"><code><strong><a href="#adjustProduct(org.simplemes.mes.product.domain.Product, java.util.Map)">adjustProduct</a></strong>(org.simplemes.mes.product.domain.Product product, java.util.Map options)</code><br>Allows sub-classes to adjust the Product before it is saved.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../../org/simplemes/mes/assy/demand/domain/OrderAssembledComponent.html'>OrderAssembledComponent</a></code></td>
-                            <td class="colLast"><code><strong><a href="#assembleComponent(org.simplemes.mes.demand.domain.Order, Map)">assembleComponent</a></strong>(org.simplemes.mes.demand.domain.Order order, <a href='../../../../../Map.html'>Map</a> options)</code><br>Assembles a single component onto the order/LSN.  </td>
+                            <td class="colLast"><code><strong><a href="#assembleComponent(org.simplemes.mes.demand.domain.Order, java.util.Map)">assembleComponent</a></strong>(org.simplemes.mes.demand.domain.Order order, java.util.Map options)</code><br>Assembles a single component onto the order/LSN.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../../Tuple2.html'>Tuple2</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildRequestAndResponse(Map)">buildRequestAndResponse</a></strong>(<a href='../../../../../Map.html'>Map</a> options)</code><br>Builds a parsed, but not resolved scan response/request for the given order with a LOT <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  Contains elements for the response: order/lsn, component and optional lot, vendor.</td>
+                            <td class="colLast"><code>static&nbsp;groovy.lang.Tuple2&lt;ScanRequest, ScanResponse&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#buildRequestAndResponse(Map)">buildRequestAndResponse</a></strong>(java.util.Map&lt;java.lang.String, java.lang.Object&gt; options)</code><br>Builds a parsed, but not resolved scan response/request for the given order with a LOT</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;org.simplemes.mes.demand.domain.Order</code></td>
-                            <td class="colLast"><code><strong><a href="#releaseOrder(Map)">releaseOrder</a></strong>(<a href='../../../../../Map.html'>Map</a> options)</code><br>Create and release a single order, optionally on a routing with or without LSNs.
+                            <td class="colLast"><code><strong><a href="#releaseOrder(java.util.Map)">releaseOrder</a></strong>(java.util.Map options)</code><br>Create and release a single order, optionally on a routing with or without LSNs.
  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#releaseOrders(Map)">releaseOrders</a></strong>(<a href='../../../../../Map.html'>Map</a> options)</code><br>Create and release orders with product components with or without LSNs.</td>
+                            <td class="colLast"><code>static&nbsp;java.util.List&lt;Order&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#releaseOrders(java.util.Map)">releaseOrders</a></strong>(java.util.Map options)</code><br>Create and release orders with product components with or without LSNs.</td>
                         </tr>
                         
                     </table>
@@ -252,7 +258,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class org.simplemes.mes.test.MESUnitTestUtils</code></td>
-                            <td class="colLast"><code>org.simplemes.mes.test.MESUnitTestUtils#getInstance(), org.simplemes.mes.test.MESUnitTestUtils#buildSimpleProductWithRouting(), org.simplemes.mes.test.MESUnitTestUtils#buildSimpleProductWithRouting(java.util.Map), org.simplemes.mes.test.MESUnitTestUtils#buildMasterRouting(java.util.Map), org.simplemes.mes.test.MESUnitTestUtils#buildMasterRouting(), org.simplemes.mes.test.MESUnitTestUtils#releaseOrder(java.util.Map), org.simplemes.mes.test.MESUnitTestUtils#releaseOrder(), org.simplemes.mes.test.MESUnitTestUtils#releaseOrders(), org.simplemes.mes.test.MESUnitTestUtils#releaseOrders(java.util.Map), org.simplemes.mes.test.MESUnitTestUtils#loadOrderInitialDataNeeded(java.util.Map), org.simplemes.mes.test.MESUnitTestUtils#resetCodeSequences(), org.simplemes.mes.test.MESUnitTestUtils#resetSequence(java.lang.Class), org.simplemes.mes.test.MESUnitTestUtils#resetSequence(java.lang.Class, long), org.simplemes.mes.test.MESUnitTestUtils#setLoginUser(), org.simplemes.mes.test.MESUnitTestUtils#clearLoginUser(), org.simplemes.mes.test.MESUnitTestUtils#getOriginalUserOverride(), org.simplemes.mes.test.MESUnitTestUtils#setOriginalUserOverride(java.lang.String), org.simplemes.mes.test.MESUnitTestUtils#setInstance(org.simplemes.mes.test.MESUnitTestUtils), org.simplemes.mes.test.MESUnitTestUtils#getMetaClass(), org.simplemes.mes.test.MESUnitTestUtils#setMetaClass(groovy.lang.MetaClass), org.simplemes.mes.test.MESUnitTestUtils#wait(long, int), org.simplemes.mes.test.MESUnitTestUtils#wait(), org.simplemes.mes.test.MESUnitTestUtils#wait(long), org.simplemes.mes.test.MESUnitTestUtils#equals(java.lang.Object), org.simplemes.mes.test.MESUnitTestUtils#toString(), org.simplemes.mes.test.MESUnitTestUtils#hashCode(), org.simplemes.mes.test.MESUnitTestUtils#getClass(), org.simplemes.mes.test.MESUnitTestUtils#notify(), org.simplemes.mes.test.MESUnitTestUtils#notifyAll(), org.simplemes.mes.test.MESUnitTestUtils#getProperty(java.lang.String), org.simplemes.mes.test.MESUnitTestUtils#setProperty(java.lang.String, java.lang.Object), org.simplemes.mes.test.MESUnitTestUtils#invokeMethod(java.lang.String, java.lang.Object)</code></td>
+                            <td class="colLast"><code>org.simplemes.mes.test.MESUnitTestUtils#getInstance(), org.simplemes.mes.test.MESUnitTestUtils#loadOrderInitialDataNeeded(java.util.Map), org.simplemes.mes.test.MESUnitTestUtils#resetCodeSequences(), org.simplemes.mes.test.MESUnitTestUtils#resetSequence(java.lang.Class, long), org.simplemes.mes.test.MESUnitTestUtils#resetSequence(java.lang.Class), org.simplemes.mes.test.MESUnitTestUtils#setLoginUser(), org.simplemes.mes.test.MESUnitTestUtils#clearLoginUser(), org.simplemes.mes.test.MESUnitTestUtils#getOriginalUserOverride(), org.simplemes.mes.test.MESUnitTestUtils#setOriginalUserOverride(java.lang.String), org.simplemes.mes.test.MESUnitTestUtils#buildSimpleProductWithRouting(), org.simplemes.mes.test.MESUnitTestUtils#buildSimpleProductWithRouting(java.util.Map), org.simplemes.mes.test.MESUnitTestUtils#buildMasterRouting(java.util.Map), org.simplemes.mes.test.MESUnitTestUtils#buildMasterRouting(), org.simplemes.mes.test.MESUnitTestUtils#releaseOrder(java.util.Map), org.simplemes.mes.test.MESUnitTestUtils#releaseOrder(), org.simplemes.mes.test.MESUnitTestUtils#releaseOrders(), org.simplemes.mes.test.MESUnitTestUtils#releaseOrders(java.util.Map), org.simplemes.mes.test.MESUnitTestUtils#setInstance(org.simplemes.mes.test.MESUnitTestUtils), org.simplemes.mes.test.MESUnitTestUtils#getMetaClass(), org.simplemes.mes.test.MESUnitTestUtils#setMetaClass(groovy.lang.MetaClass), org.simplemes.mes.test.MESUnitTestUtils#wait(long, int), org.simplemes.mes.test.MESUnitTestUtils#wait(), org.simplemes.mes.test.MESUnitTestUtils#wait(long), org.simplemes.mes.test.MESUnitTestUtils#equals(java.lang.Object), org.simplemes.mes.test.MESUnitTestUtils#toString(), org.simplemes.mes.test.MESUnitTestUtils#hashCode(), org.simplemes.mes.test.MESUnitTestUtils#getClass(), org.simplemes.mes.test.MESUnitTestUtils#notify(), org.simplemes.mes.test.MESUnitTestUtils#notifyAll(), org.simplemes.mes.test.MESUnitTestUtils#getProperty(java.lang.String), org.simplemes.mes.test.MESUnitTestUtils#setProperty(java.lang.String, java.lang.Object), org.simplemes.mes.test.MESUnitTestUtils#invokeMethod(java.lang.String, java.lang.Object)</code></td>
                         </tr>
                     </table>
                    </ul>
@@ -322,19 +328,19 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="adjustProduct(org.simplemes.mes.product.domain.Product, Map)"><!-- --></a>
+                        <a name="adjustProduct(org.simplemes.mes.product.domain.Product, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-protected&nbsp;void <strong>adjustProduct</strong>(org.simplemes.mes.product.domain.Product product, <a href='../../../../../Map.html'>Map</a> options)</h4>
+                                <h4>@java.lang.Override
+protected&nbsp;void <strong>adjustProduct</strong>(org.simplemes.mes.product.domain.Product product, java.util.Map options)</h4>
                                 <p> Allows sub-classes to adjust the Product before it is saved. <DL><DT><B>Parameters:</B></DT><DD><code>product</code> -  The un-saved product.</DD><DD><code>options</code> -  the options for the order release.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="assembleComponent(org.simplemes.mes.demand.domain.Order, Map)"><!-- --></a>
+                        <a name="assembleComponent(org.simplemes.mes.demand.domain.Order, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../../org/simplemes/mes/assy/demand/domain/OrderAssembledComponent.html'>OrderAssembledComponent</a> <strong>assembleComponent</strong>(org.simplemes.mes.demand.domain.Order order, <a href='../../../../../Map.html'>Map</a> options)</h4>
+                                <h4>static&nbsp;<a href='../../../../../org/simplemes/mes/assy/demand/domain/OrderAssembledComponent.html'>OrderAssembledComponent</a> <strong>assembleComponent</strong>(org.simplemes.mes.demand.domain.Order order, java.util.Map options)</h4>
                                 <p> Assembles a single component onto the order/LSN.  This is designed to be used only in tests.
  <p>
  <b>This method creates a <b>transaction</b> (if needed).</b>.
@@ -360,15 +366,15 @@ protected&nbsp;void <strong>adjustProduct</strong>(org.simplemes.mes.product.dom
                         <a name="buildRequestAndResponse(Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../../Tuple2.html'>Tuple2</a> <strong>buildRequestAndResponse</strong>(<a href='../../../../../Map.html'>Map</a> options)</h4>
+                                <h4>static&nbsp;groovy.lang.Tuple2&lt;ScanRequest, ScanResponse&gt; <strong>buildRequestAndResponse</strong>(java.util.Map&lt;java.lang.String, java.lang.Object&gt; options)</h4>
                                 <p> Builds a parsed, but not resolved scan response/request for the given order with a LOT <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  Contains elements for the response: order/lsn, component and optional lot, vendor.</DD></DL><DL><DT><B>Returns:</B></DT><DD>A scan request and scan response.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="releaseOrder(Map)"><!-- --></a>
+                        <a name="releaseOrder(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;org.simplemes.mes.demand.domain.Order <strong>releaseOrder</strong>(<a href='../../../../../Map.html'>Map</a> options)</h4>
+                                <h4>static&nbsp;org.simplemes.mes.demand.domain.Order <strong>releaseOrder</strong>(java.util.Map options)</h4>
                                 <p> Create and release a single order, optionally on a routing with or without LSNs.
  This is a convenience function that calls <a href='#releaseOrders(java.util.Map)'>releaseOrders(java.util.Map)</a>.
  <p>
@@ -391,10 +397,10 @@ protected&nbsp;void <strong>adjustProduct</strong>(org.simplemes.mes.product.dom
                             </li>
                         </ul>
                     
-                        <a name="releaseOrders(Map)"><!-- --></a>
+                        <a name="releaseOrders(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../../List.html'>List</a> <strong>releaseOrders</strong>(<a href='../../../../../Map.html'>Map</a> options)</h4>
+                                <h4>static&nbsp;java.util.List&lt;Order&gt; <strong>releaseOrders</strong>(java.util.Map options)</h4>
                                 <p> Create and release orders with product components with or without LSNs.
  <p>
  <b>This method creates a <b>transaction</b> (if needed).</b>. <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  See for the <a href='#releaseOrder(java.util.Map)'>releaseOrder(java.util.Map)</a> for details.  (<b>Optional</b>)</DD></DL><DL><DT><B>Returns:</B></DT><DD>The order(s) created and released.</DD></DL></p>

@@ -101,15 +101,15 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../../org/simplemes/eframe/data/format/ConfigurableFormatInterface.html'>ConfigurableFormatInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
+
 <pre>class ConfigurableTypeDomainFormat
 extends <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html'>DomainReferenceFieldFormat</a>
-
-</pre>
-
-
+implements <a href='../../../../../org/simplemes/eframe/data/format/ConfigurableFormatInterface.html'>ConfigurableFormatInterface</a></pre>
 
     <p> Defines the format for a field that is Configurable Type used with a domain such as Flex Type.
  This is a open-ended list of dynamic custom fields that can be configured by the user.</p>
@@ -238,7 +238,7 @@ extends <a href='../../../../../org/simplemes/eframe/data/format/DomainReference
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;FieldDefinitionInterface&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getCurrentFields(java.lang.Object, java.lang.String)">getCurrentFields</a></strong>(java.lang.Object object, java.lang.String fieldName)</code><br>Gets list of fields currently selected for the Configurable Type value.
  </td>
                         </tr>
@@ -251,14 +251,14 @@ extends <a href='../../../../../org/simplemes/eframe/data/format/DomainReference
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)">getValidValues</a></strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Returns the list of valid values for those formats that use a combobox or similar widget. </td>
+                            <td class="colLast"><code>java.util.List&lt;ChoiceListItemInterface&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)">getValidValues</a></strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Returns the list of valid values for those formats that use a combobox or similar widget.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toString()">toString</a></strong>()</code><br>Returns a string representation of the object. </td>
+                            <td class="colLast"><code><strong><a href="#toString()">toString</a></strong>()</code><br>Returns a string representation of the object.</td>
                         </tr>
                         
                     </table>
@@ -277,11 +277,11 @@ extends <a href='../../../../../org/simplemes/eframe/data/format/DomainReference
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html'>DomainReferenceFieldFormat</a></code></td>
-                            <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#convertFromJsonFormat(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)'>convertFromJsonFormat</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#convertToJsonFormat(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)'>convertToJsonFormat</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#decode(java.lang.String, org.simplemes.eframe.data.FieldDefinitionInterface)'>decode</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#encode(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)'>encode</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#format(java.lang.Object, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)'>format</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#getGridEditor(org.simplemes.eframe.data.FieldDefinitionInterface)'>getGridEditor</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#getId()'>getId</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#getType()'>getType</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)'>getValidValues</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#parse(java.lang.String, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)'>parse</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#toString()'>toString</a></code></td>
+                            <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#convertFromJsonFormat(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)'>convertFromJsonFormat</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#convertToJsonFormat(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)'>convertToJsonFormat</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#decode(java.lang.String, org.simplemes.eframe.data.FieldDefinitionInterface)'>decode</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#encode(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)'>encode</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#format(java.lang.Object, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)'>format</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#getGridEditor(org.simplemes.eframe.data.FieldDefinitionInterface)'>getGridEditor</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#getId()'>getId</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#getType()'>getType</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)'>getValidValues</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#parse(java.lang.String, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)'>parse</a>, <a href='../../../../../org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#toString()'>toString</a></code></td>
                         </tr>
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html'>BasicFieldFormat</a></code></td>
-                            <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#convertFromJsonFormat(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)'>convertFromJsonFormat</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#convertToJsonFormat(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)'>convertToJsonFormat</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#findByType(java.lang.Class)'>findByType</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#formatForm(java.lang.Object, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)'>formatForm</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#getGridEditor(org.simplemes.eframe.data.FieldDefinitionInterface)'>getGridEditor</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#getInstance()'>getInstance</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)'>getValidValues</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#getValue()'>getValue</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#isDefaultChoice()'>isDefaultChoice</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#parseForm(java.lang.String, Locale, org.simplemes.eframe.data.FieldDefinitionInterface)'>parseForm</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#toStringLocalized(Locale)'>toStringLocalized</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#valueOf(java.lang.String)'>valueOf</a></code></td>
+                            <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#convertFromJsonFormat(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)'>convertFromJsonFormat</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#convertToJsonFormat(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)'>convertToJsonFormat</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#findByType(java.lang.Class)'>findByType</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#formatForm(java.lang.Object, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)'>formatForm</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#getGridEditor(org.simplemes.eframe.data.FieldDefinitionInterface)'>getGridEditor</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#getInstance()'>getInstance</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)'>getValidValues</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#getValue()'>getValue</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#isDefaultChoice()'>isDefaultChoice</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#parseForm(java.lang.String, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)'>parseForm</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#toStringLocalized(java.util.Locale)'>toStringLocalized</a>, <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html#valueOf(java.lang.String)'>valueOf</a></code></td>
                         </tr>
                     </table>
                    </ul>
@@ -372,8 +372,8 @@ extends <a href='../../../../../org/simplemes/eframe/data/format/DomainReference
                         <a name="getCurrentFields(java.lang.Object, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-<a href='../../../../../List.html'>List</a> <strong>getCurrentFields</strong>(java.lang.Object object, java.lang.String fieldName)</h4>
+                                <h4>@java.lang.Override
+java.util.List&lt;FieldDefinitionInterface&gt; <strong>getCurrentFields</strong>(java.lang.Object object, java.lang.String fieldName)</h4>
                                 <p> Gets list of fields currently selected for the Configurable Type value.
  These are typically treated as normal fields in the GUI and API, but are stored in the
  custom field holder. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The domain object the field is stored in.</DD><DD><code>fieldName</code> -  The name of the configurable field.  Used to find the current value and the fields.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list.</DD></DL></p>
@@ -383,7 +383,7 @@ extends <a href='../../../../../org/simplemes/eframe/data/format/DomainReference
                         <a name="getId()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>getId</strong>()</h4>
                                 <p> The internal ID for the format.  Used as a short name in internal (string) representations of this field.</p>
                             </li>
@@ -392,8 +392,8 @@ java.lang.String <strong>getId</strong>()</h4>
                         <a name="getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-<a href='../../../../../List.html'>List</a> <strong>getValidValues</strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
+                                <h4>@java.lang.Override
+java.util.List&lt;ChoiceListItemInterface&gt; <strong>getValidValues</strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
                                 <p> Returns the list of valid values for those formats that use a combobox or similar widget. <DL><DT><B>Parameters:</B></DT><DD><code>fieldDefinition</code> -  The field definition used to define this field (optional, provided additional details such as valid values).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of valid values.</DD></DL></p>
                             </li>
                         </ul>
@@ -401,7 +401,7 @@ java.lang.String <strong>getId</strong>()</h4>
                         <a name="toString()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>toString</strong>()</h4>
                                 <p> Returns a string representation of the object. <DL><DT><B>Returns:</B></DT><DD>a string representation of the object.</DD></DL></p>
                             </li>

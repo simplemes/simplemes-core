@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.transform.ToString(includeNames: true, includePackage: false)
+class DataGenerator
+extends java.lang.Object</pre>
 
     <p> A simple data generator for test data.  Simplifies the creation of of test data for most
  domain objects that follow a consistent pattern: few required fields, single key field and a title.
@@ -143,7 +151,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../Map.html'>Map</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#_values">_values</a></code><br>Other fields to set in the domain objects.  </td>
                         </tr>
                         
@@ -198,26 +206,26 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FieldExtension.html'>FieldExtension</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildCustomField(Map)">buildCustomField</a></strong>(<a href='../../../../Map.html'>Map</a> options)</code><br>Convenience method to build a custom field for the given domain class. </td>
+                            <td class="colLast"><code><strong><a href="#buildCustomField(java.util.Map)">buildCustomField</a></strong>(java.util.Map options)</code><br>Convenience method to build a custom field for the given domain class.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FieldExtension.html'>FieldExtension</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildCustomField(List)">buildCustomField</a></strong>(<a href='../../../../List.html'>List</a> list)</code><br>Convenience method to build a custom field for the given domain class. </td>
+                            <td class="colLast"><code><strong><a href="#buildCustomField(List)">buildCustomField</a></strong>(java.util.List&lt;java.util.Map&gt; list)</code><br>Convenience method to build a custom field for the given domain class.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FlexType.html'>FlexType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildFlexType(Map)">buildFlexType</a></strong>(<a href='../../../../Map.html'>Map</a> options)</code><br>Builds a flex type with all required fields filled in.
+                            <td class="colLast"><code><strong><a href="#buildFlexType(java.util.Map)">buildFlexType</a></strong>(java.util.Map options)</code><br>Builds a flex type with all required fields filled in.
  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FlexType.html'>FlexType</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildFlexType(List)">buildFlexType</a></strong>(<a href='../../../../List.html'>List</a> fields)</code><br>Builds a flex type with the given list of fields/formats.  </td>
+                            <td class="colLast"><code><strong><a href="#buildFlexType(List)">buildFlexType</a></strong>(java.util.List&lt;java.util.Map&gt; fields)</code><br>Builds a flex type with the given list of fields/formats.  </td>
                         </tr>
                         
                         <tr class="altColor">
@@ -229,31 +237,31 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#count(java.lang.Integer)">count</a></strong>(java.lang.Integer count)</code><br>Sets the number of records to generate (<b>Default:</b> 1). </td>
+                            <td class="colLast"><code><strong><a href="#count(java.lang.Integer)">count</a></strong>(java.lang.Integer count)</code><br>Sets the number of records to generate (<b>Default:</b> 1).</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#doGenerate()">doGenerate</a></strong>()</code><br>Generates the data. </td>
+                            <td class="colLast"><code>java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#doGenerate()">doGenerate</a></strong>()</code><br>Generates the data.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#domain(java.lang.Class)">domain</a></strong>(java.lang.Class domain)</code><br>Sets the domain class to generate record for. </td>
+                            <td class="colLast"><code><strong><a href="#domain(java.lang.Class)">domain</a></strong>(java.lang.Class domain)</code><br>Sets the domain class to generate record for.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#generate(Closure)">generate</a></strong>(<a href='../../../../Closure.html'>Closure</a> config)</code><br>Triggers the generation of the data. </td>
+                            <td class="colLast"><code>static&nbsp;java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#generate(groovy.lang.Closure)">generate</a></strong>(groovy.lang.Closure config)</code><br>Triggers the generation of the data.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#values(Map)">values</a></strong>(<a href='../../../../Map.html'>Map</a> values)</code><br>Other fields to set in the domain objects.  </td>
+                            <td class="colLast"><code><strong><a href="#values(Map)">values</a></strong>(java.util.Map&lt;java.lang.String, java.lang.Object&gt; values)</code><br>Other fields to set in the domain objects.  </td>
                         </tr>
                         
                     </table>
@@ -318,7 +326,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="_values"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../Map.html'>Map</a> <strong>_values</strong></h4>
+                                <h4>private&nbsp;java.util.Map&lt;java.lang.String, java.lang.Object&gt; <strong>_values</strong></h4>
                                 <p> Other fields to set in the domain objects.  Supports g-string like replacement parameters
  such as: 'ABC${i}abc$r'.  <p>
  <b>Note:</b> to use the g-string like parameters, you must use a normal string (e.g. single quotes ').</p>
@@ -360,10 +368,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="buildCustomField(Map)"><!-- --></a>
+                        <a name="buildCustomField(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FieldExtension.html'>FieldExtension</a> <strong>buildCustomField</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FieldExtension.html'>FieldExtension</a> <strong>buildCustomField</strong>(java.util.Map options)</h4>
                                 <p> Convenience method to build a custom field for the given domain class. <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  Contains: domainClass, fieldName, fieldFormat,valueClassName , afterFieldName or a 'list' of these elements.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The first FieldExtension created.</DD></DL></p>
                             </li>
                         </ul>
@@ -371,16 +379,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="buildCustomField(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FieldExtension.html'>FieldExtension</a> <strong>buildCustomField</strong>(<a href='../../../../List.html'>List</a> list)</h4>
+                                <h4>static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FieldExtension.html'>FieldExtension</a> <strong>buildCustomField</strong>(java.util.List&lt;java.util.Map&gt; list)</h4>
                                 <p> Convenience method to build a custom field for the given domain class. <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  Contains: domainClass, fieldName, fieldFormat,valueClassName, afterFieldName or a 'list' of these elements.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The first FieldExtension created.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="buildFlexType(Map)"><!-- --></a>
+                        <a name="buildFlexType(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FlexType.html'>FlexType</a> <strong>buildFlexType</strong>(<a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FlexType.html'>FlexType</a> <strong>buildFlexType</strong>(java.util.Map options)</h4>
                                 <p> Builds a flex type with all required fields filled in.
  <h3>Options</h3>
  <ul>
@@ -392,15 +400,16 @@ static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FlexType.htm
    <li><b>defaultFlexType</b> - The default flex type is set (<b>Default</b>: false). </li>
  </ul>
 
- <b>Note:</b> This method will create its own transaction, if needed. <DL><DT><B>Returns:</B></DT><DD><DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  The options. See above.  Optional.</DD></DL></DD></DL></p>
+ <b>Note:</b> This method will create its own transaction, if needed.
+ @return <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  The options. See above.  Optional.</DD></DL></p>
                             </li>
                         </ul>
                     
                         <a name="buildFlexType(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FlexType.html'>FlexType</a> <strong>buildFlexType</strong>(<a href='../../../../List.html'>List</a> fields)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FlexType.html'>FlexType</a> <strong>buildFlexType</strong>(java.util.List&lt;java.util.Map&gt; fields)</h4>
                                 <p> Builds a flex type with the given list of fields/formats.  The Type is 'FLEX'.
  The list contains Maps with these options:
  <h3>Options</h3>
@@ -410,7 +419,8 @@ static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FlexType.htm
    <li><b>fieldLabel</b> - The field label (<b>Default</b>: null). </li>
  </ul>
 
- <b>Note:</b> This method will create its own transaction, if needed. <DL><DT><B>Returns:</B></DT><DD><DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  The options. See above.  Optional.</DD></DL></DD></DL></p>
+ <b>Note:</b> This method will create its own transaction, if needed.
+ @return <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  The options. See above.  Optional.</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -434,7 +444,7 @@ static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FlexType.htm
                         <a name="doGenerate()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>doGenerate</strong>()</h4>
+                                <h4>java.util.List <strong>doGenerate</strong>()</h4>
                                 <p> Generates the data. <DL><DT><B>Returns:</B></DT><DD>The record(s) created.</DD></DL></p>
                             </li>
                         </ul>
@@ -447,10 +457,10 @@ static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FlexType.htm
                             </li>
                         </ul>
                     
-                        <a name="generate(Closure)"><!-- --></a>
+                        <a name="generate(groovy.lang.Closure)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../List.html'>List</a> <strong>generate</strong>(@DelegatesToDelegatesTo <a href='../../../../Closure.html'>Closure</a> config)</h4>
+                                <h4>static&nbsp;java.util.List <strong>generate</strong>(@groovy.lang.DelegatesTo(value: DataGenerator) groovy.lang.Closure config)</h4>
                                 <p> Triggers the generation of the data. <DL><DT><B>Parameters:</B></DT><DD><code>config</code> -  The configuration.  Elements include: domain (Class), values (Map), count (integer).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The records generated.</DD></DL></p>
                             </li>
                         </ul>
@@ -458,7 +468,7 @@ static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FlexType.htm
                         <a name="values(Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>values</strong>(<a href='../../../../Map.html'>Map</a> values)</h4>
+                                <h4>void <strong>values</strong>(java.util.Map&lt;java.lang.String, java.lang.Object&gt; values)</h4>
                                 <p> Other fields to set in the domain objects.  Supports g-string like replacement parameters
  for string fields such as: 'ABC${i}abc$r'.  <p>
  <b>Note:</b> to use the g-string like parameters, you must use a normal string (e.g. single quotes ').

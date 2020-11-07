@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
+class ExtensionService
+extends java.lang.Object</pre>
 
     <p> Provides access to the extensions that allow user to customize the GUI and application.</p>
 
@@ -171,7 +179,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>int</code></td>
-                            <td class="colLast"><code><strong><a href="#deleteField(java.lang.String)">deleteField</a></strong>(java.lang.String id)</code><br>Deletes a custom field and it use in the field order for the domain. </td>
+                            <td class="colLast"><code><strong><a href="#deleteField(java.lang.String)">deleteField</a></strong>(java.lang.String id)</code><br>Deletes a custom field and it use in the field order for the domain.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -182,15 +190,14 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../Tuple2.html'>Tuple2</a></code></td>
+                            <td class="colLast"><code>groovy.lang.Tuple2&lt;java.util.List&lt;java.util.Map&gt;, java.util.List&lt;java.util.Map&gt;&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getExtensionConfiguration(java.lang.Class)">getExtensionConfiguration</a></strong>(java.lang.Class domainClass)</code><br>Finds the current extension configuration for a given domain. </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#saveFieldOrder(java.lang.Class, List)">saveFieldOrder</a></strong>(java.lang.Class domainClass, <a href='../../../../../List.html'>List</a> newFieldOrder)</code><br>Saves the new field order as configured by the user in the Configuration GUI for a definition page.
- </td>
+                            <td class="colLast"><code><strong><a href="#saveFieldOrder(java.lang.Class, List)">saveFieldOrder</a></strong>(java.lang.Class domainClass, java.util.List&lt;java.lang.String&gt; newFieldOrder)</code><br>Saves the new field order as configured by the user in the Configuration GUI for a definition page.</td>
                         </tr>
                         
                     </table>
@@ -273,7 +280,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="deleteField(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.transaction.TransactionalTransactional
+                                <h4>@javax.transaction.Transactional
 int <strong>deleteField</strong>(java.lang.String id)</h4>
                                 <p> Deletes a custom field and it use in the field order for the domain. <DL><DT><B>Parameters:</B></DT><DD><code>id</code> -  The ID of the FieldExtension record.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The number of FieldExtension records deleted.</DD></DL></p>
                             </li>
@@ -290,8 +297,8 @@ int <strong>deleteField</strong>(java.lang.String id)</h4>
                         <a name="getExtensionConfiguration(java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.transaction.TransactionalTransactional
-<a href='../../../../../Tuple2.html'>Tuple2</a> <strong>getExtensionConfiguration</strong>(java.lang.Class domainClass)</h4>
+                                <h4>@javax.transaction.Transactional
+groovy.lang.Tuple2&lt;java.util.List&lt;java.util.Map&gt;, java.util.List&lt;java.util.Map&gt;&gt; <strong>getExtensionConfiguration</strong>(java.lang.Class domainClass)</h4>
                                 <p> Finds the current extension configuration for a given domain. This returns the
  available and configured list of fields in two lists.
 
@@ -310,8 +317,8 @@ int <strong>deleteField</strong>(java.lang.String id)</h4>
                         <a name="saveFieldOrder(java.lang.Class, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@javax.transaction.TransactionalTransactional
-void <strong>saveFieldOrder</strong>(java.lang.Class domainClass, <a href='../../../../../List.html'>List</a> newFieldOrder)</h4>
+                                <h4>@javax.transaction.Transactional
+void <strong>saveFieldOrder</strong>(java.lang.Class domainClass, java.util.List&lt;java.lang.String&gt; newFieldOrder)</h4>
                                 <p> Saves the new field order as configured by the user in the Configuration GUI for a definition page.
  <DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The domain class to return the current config for.</DD></DL></p>
                             </li>

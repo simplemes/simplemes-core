@@ -98,6 +98,15 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@io.micronaut.security.annotation.Secured(value: [isAuthenticated()])
+@io.micronaut.http.annotation.Controller(value: /report)
+class ReportController
+extends <a href='../../../../../org/simplemes/eframe/controller/BaseController.html'>BaseController</a></pre>
 
     <p> Support for report engine-style reports.  Used to display HTML and PDF reports.</p>
 
@@ -218,7 +227,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;TaskMenuItem&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getTaskMenuItems()">getTaskMenuItems</a></strong>()</code><br></td>
                         </tr>
                         
@@ -239,7 +248,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a></code></td>
-                            <td class="colLast"><code><strong><a href="#reportActivity(io.micronaut.http.HttpRequest, java.security.Principal)">reportActivity</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Displays the report  dashboard activity. </td>
+                            <td class="colLast"><code><strong><a href="#reportActivity(io.micronaut.http.HttpRequest, java.security.Principal)">reportActivity</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Displays the report  dashboard activity.</td>
                         </tr>
                         
                     </table>
@@ -331,9 +340,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="filter(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-@io.micronaut.http.annotation.ProducesProduces
-io.micronaut.http.HttpResponse <strong>filter</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /filter)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+io.micronaut.http.HttpResponse <strong>filter</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the change filter page for the report engine interface.
  This page expects the report parameters on the URL along with the report 'loc'.  See index() above.</p>
                             </li>
@@ -342,10 +351,10 @@ io.micronaut.http.HttpResponse <strong>filter</strong>(io.micronaut.http.HttpReq
                         <a name="filterUpdate(io.micronaut.http.HttpRequest, java.lang.Object, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.PostPost
-@io.micronaut.http.annotation.ConsumesConsumes
-@java.lang.SuppressWarningsSuppressWarnings
-io.micronaut.http.HttpResponse <strong>filterUpdate</strong>(io.micronaut.http.HttpRequest request, @io.micronaut.http.annotation.BodyBody java.lang.Object bodyParams, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Post(value: /filterUpdate)
+@io.micronaut.http.annotation.Consumes(value: MediaType.APPLICATION_FORM_URLENCODED)
+@java.lang.SuppressWarnings(value: unused)
+io.micronaut.http.HttpResponse <strong>filterUpdate</strong>(io.micronaut.http.HttpRequest request, @io.micronaut.http.annotation.Body java.lang.Object bodyParams, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Handles the user's changes to the filter parameters and re-directs to the report display
  with the correct values.  Also re-formats any date/times into ISO format.</p>
                             </li>
@@ -354,7 +363,7 @@ io.micronaut.http.HttpResponse <strong>filterUpdate</strong>(io.micronaut.http.H
                         <a name="getTaskMenuItems()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../../List.html'>List</a> <strong>getTaskMenuItems</strong>()</h4>
+                                <h4>java.util.List&lt;TaskMenuItem&gt; <strong>getTaskMenuItems</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -362,19 +371,19 @@ io.micronaut.http.HttpResponse <strong>filterUpdate</strong>(io.micronaut.http.H
                         <a name="image(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-@java.lang.SuppressWarningsSuppressWarnings
-io.micronaut.http.HttpResponse <strong>image</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /image)
+@java.lang.SuppressWarnings(value: unused)
+io.micronaut.http.HttpResponse <strong>image</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Serves the report images needed for the report engine.
- See org.simplemes.eframe.reports.ReportResourceHandler for details.</p>
+ See <a href='../../../../../org/simplemes/eframe/reports/ReportResourceHandler.html' title='ReportResourceHandler'>ReportResourceHandler</a> for details.</p>
                             </li>
                         </ul>
                     
                         <a name="index(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-io.micronaut.http.HttpResponse <strong>index</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /)
+io.micronaut.http.HttpResponse <strong>index</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays a single report using the third-party report engine.
   <h3>HTTP Parameters</h3>
  <ul>
@@ -390,10 +399,10 @@ io.micronaut.http.HttpResponse <strong>index</strong>(io.micronaut.http.HttpRequ
                         <a name="reportActivity(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.http.annotation.GetGet
-@io.micronaut.http.annotation.ProducesProduces
-@java.lang.SuppressWarningsSuppressWarnings
-<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>reportActivity</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.NullableNullable java.security.Principal principal)</h4>
+                                <h4>@io.micronaut.http.annotation.Get(value: /reportActivity)
+@io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
+@java.lang.SuppressWarnings(value: [unused, UnnecessaryQualifiedReference])
+<a href='../../../../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>reportActivity</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p> Displays the report  dashboard activity. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.</DD><DD><code>principal</code> -  The user.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The page.</DD></DL></p>
                             </li>
                         </ul>

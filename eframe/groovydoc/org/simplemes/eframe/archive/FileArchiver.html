@@ -101,17 +101,17 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../org/simplemes/eframe/archive/ArchiverInterface.html'>ArchiverInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.util.logging.Slf4jSlf4j
-@javax.inject.SingletonSingleton
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
 class FileArchiver
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../org/simplemes/eframe/archive/ArchiverInterface.html'>ArchiverInterface</a></pre>
 
     <p> Archives one or more domain objects to a file and removes them from the database.</p>
 
@@ -148,7 +148,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../File.html'>File</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.io.File</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#jsonFile">jsonFile</a></code></td>
                             <td class="colLast">The JSON File the domain object is written to.</td>
                         </tr>
@@ -160,13 +160,13 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../List.html'>List</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.util.List</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#objectsToDelete">objectsToDelete</a></code></td>
                             <td class="colLast">The list of domain objects to delete when successfully finished writing the archive.</td>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>protected&nbsp;<a href='../../../../Writer.html'>Writer</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;java.io.Writer</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#writer">writer</a></code></td>
                             <td class="colLast">The writer used to write the JSON to the file.</td>
                         </tr>
@@ -260,25 +260,25 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#close()">close</a></strong>()</code><br>Closes the current archive and removes the archived records from the database. </td>
+                            <td class="colLast"><code><strong><a href="#close()">close</a></strong>()</code><br>Closes the current archive and removes the archived records from the database.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#determineArchiveDirectory()">determineArchiveDirectory</a></strong>()</code><br>Determines the archive main directory from the configuration element: org.simplemes.eframe.archive.top. </td>
+                            <td class="colLast"><code><strong><a href="#determineArchiveDirectory()">determineArchiveDirectory</a></strong>()</code><br>Determines the archive main directory from the configuration element: org.simplemes.eframe.archive.top.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#findAllArchives()">findAllArchives</a></strong>()</code><br>Gets a list of archive file references that exist in the active archive area (folder). </td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#findAllArchives()">findAllArchives</a></strong>()</code><br>Gets a list of archive file references that exist in the active archive area (folder).</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#findAllArchives(File, List)">findAllArchives</a></strong>(<a href='../../../../File.html'>File</a> folder, <a href='../../../../List.html'>List</a> list)</code><br>Gets a list of archive file references that exist in the active archive area (folder). </td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#findAllArchives(java.io.File, java.util.List)">findAllArchives</a></strong>(java.io.File folder, java.util.List list)</code><br>Gets a list of archive file references that exist in the active archive area (folder).</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -308,7 +308,7 @@ extends java.lang.Object
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object[]</code></td>
-                            <td class="colLast"><code><strong><a href="#unarchive(java.lang.String, java.lang.Boolean)">unarchive</a></strong>(java.lang.String ref, java.lang.Boolean save)</code><br>Unarchive the given file and save all of the domain objects in the archive. </td>
+                            <td class="colLast"><code><strong><a href="#unarchive(java.lang.String, java.lang.Boolean)">unarchive</a></strong>(java.lang.String ref, java.lang.Boolean save)</code><br>Unarchive the given file and save all of the domain objects in the archive.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -369,7 +369,7 @@ extends java.lang.Object
                         <a name="jsonFile"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../File.html'>File</a> <strong>jsonFile</strong></h4>
+                                <h4>protected&nbsp;java.io.File <strong>jsonFile</strong></h4>
                                 <p> The JSON File the domain object is written to.</p>
                             </li>
                         </ul>
@@ -385,7 +385,7 @@ extends java.lang.Object
                         <a name="objectsToDelete"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../List.html'>List</a> <strong>objectsToDelete</strong></h4>
+                                <h4>protected&nbsp;java.util.List <strong>objectsToDelete</strong></h4>
                                 <p> The list of domain objects to delete when successfully finished writing the archive.</p>
                             </li>
                         </ul>
@@ -393,7 +393,7 @@ extends java.lang.Object
                         <a name="writer"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../Writer.html'>Writer</a> <strong>writer</strong></h4>
+                                <h4>protected&nbsp;java.io.Writer <strong>writer</strong></h4>
                                 <p> The writer used to write the JSON to the file.</p>
                             </li>
                         </ul>
@@ -456,7 +456,7 @@ extends java.lang.Object
                         <a name="archive(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>archive</strong>(java.lang.Object domainObject)</h4>
                                 <p> Adds the given object to the archive.
  This method can be called several times. <DL><DT><B>Parameters:</B></DT><DD><code>domainObject</code> -  The domain object to archive.</DD></DL></p>
@@ -466,7 +466,7 @@ void <strong>archive</strong>(java.lang.Object domainObject)</h4>
                         <a name="cancel()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 void <strong>cancel</strong>()</h4>
                                 <p> Cancels the archive action.  Removes the archive (file) and does not delete the object archived.</p>
                             </li>
@@ -475,7 +475,7 @@ void <strong>cancel</strong>()</h4>
                         <a name="close()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>close</strong>()</h4>
                                 <p> Closes the current archive and removes the archived records from the database. <DL><DT><B>Returns:</B></DT><DD>The archive reference for the saved archive (e.g. a file for the FileArchiver).</DD></DL></p>
                             </li>
@@ -492,15 +492,15 @@ java.lang.String <strong>close</strong>()</h4>
                         <a name="findAllArchives()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>findAllArchives</strong>()</h4>
+                                <h4>java.util.List&lt;java.lang.String&gt; <strong>findAllArchives</strong>()</h4>
                                 <p> Gets a list of archive file references that exist in the active archive area (folder). <DL><DT><B>Returns:</B></DT><DD>The list of file references.</DD></DL></p>
                             </li>
                         </ul>
                     
-                        <a name="findAllArchives(File, List)"><!-- --></a>
+                        <a name="findAllArchives(java.io.File, java.util.List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../List.html'>List</a> <strong>findAllArchives</strong>(<a href='../../../../File.html'>File</a> folder, <a href='../../../../List.html'>List</a> list)</h4>
+                                <h4>protected&nbsp;java.util.List&lt;java.lang.String&gt; <strong>findAllArchives</strong>(java.io.File folder, java.util.List list)</h4>
                                 <p> Gets a list of archive file references that exist in the active archive area (folder). <DL><DT><B>Returns:</B></DT><DD>The list of file references.</DD></DL></p>
                             </li>
                         </ul>
@@ -513,7 +513,7 @@ java.lang.String <strong>close</strong>()</h4>
  filling up a directory with .arc files.  The object's id can be used with this reference base
  to make a legal path name.<p>
  This is a relative path name from the archive topFolder location.
- When used with org.simplemes.eframe.archive.FileArchiver#makePathFromReference(String), the
+ When used with <a href='../../../../org/simplemes/eframe/archive/FileArchiver.html#makePathFromReference(String)' title='FileArchiver.makePathFromReference'>FileArchiver.makePathFromReference</a>, the
  actual file path can be found. <DL><DT><B>Parameters:</B></DT><DD><code>domainObject</code> -  The domain object to build the archive file name from.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The base reference.</DD></DL></p>
                             </li>
                         </ul>
@@ -530,7 +530,7 @@ java.lang.String <strong>close</strong>()</h4>
                         <a name="makeReferenceFromPath(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: ParameterReassignment)
 static&nbsp;java.lang.String <strong>makeReferenceFromPath</strong>(java.lang.String path)</h4>
                                 <p> Creates a archive file's reference from the given path name.  This is only useful for
  file archives. <DL><DT><B>Parameters:</B></DT><DD><code>path</code> -  The path that the archive is stored in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The reference used for the archive.</DD></DL></p>

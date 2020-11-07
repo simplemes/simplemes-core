@@ -98,6 +98,12 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>class JavascriptUtils
+extends java.lang.Object</pre>
 
     <p> Miscellaneous utility methods for generating/using client-side javascript.</p>
 
@@ -164,7 +170,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildJavascriptObject(List)">buildJavascriptObject</a></strong>(<a href='../../../../List.html'>List</a> list)</code><br>Builds a Javascript code fragment from the list of maps with all of the properties. </td>
+                            <td class="colLast"><code><strong><a href="#buildJavascriptObject(List)">buildJavascriptObject</a></strong>(java.util.List&lt;java.util.Map&gt; list)</code><br>Builds a Javascript code fragment from the list of maps with all of the properties.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -191,7 +197,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#formatMultilineHTMLString(java.lang.String)">formatMultilineHTMLString</a></strong>(java.lang.String s)</code><br>Formats the given string as a Javascript string, with multi-line support and double quote escaping. </td>
+                            <td class="colLast"><code><strong><a href="#formatMultilineHTMLString(java.lang.String)">formatMultilineHTMLString</a></strong>(java.lang.String s)</code><br>Formats the given string as a Javascript string, with multi-line support and double quote escaping.</td>
                         </tr>
                         
                     </table>
@@ -265,7 +271,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="buildJavascriptObject(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>buildJavascriptObject</strong>(<a href='../../../../List.html'>List</a> list)</h4>
+                                <h4>static&nbsp;java.lang.String <strong>buildJavascriptObject</strong>(java.util.List&lt;java.util.Map&gt; list)</h4>
                                 <p> Builds a Javascript code fragment from the list of maps with all of the properties. <DL><DT><B>Parameters:</B></DT><DD><code>list</code> -  The list of maps to convert.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The code to build the object array in JS format.</DD></DL></p>
                             </li>
                         </ul>
@@ -292,7 +298,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="formatForObject(java.lang.Object, org.simplemes.eframe.data.format.FieldFormatInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
 static&nbsp;java.lang.String <strong>formatForObject</strong>(java.lang.Object value, <a href='../../../../org/simplemes/eframe/data/format/FieldFormatInterface.html'>FieldFormatInterface</a> format)</h4>
                                 <p> Formats the value for use in a standard javascript object block (e.g. : var o =&#123;name: 'value'&#125;).
  This includes using quotes when needed and escaping HTML/Quotes inside of strings. <DL><DT><B>Parameters:</B></DT><DD><code>value</code> -  The value to format.</DD><DD><code>format</code> -  The field format.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The formatted string suitable for an object definition.  Can be null if value is null.</DD></DL></p>

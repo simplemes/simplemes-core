@@ -101,20 +101,20 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../../org/simplemes/eframe/custom/domain/FieldInterface.html'>FieldInterface</a>, <a href='../../../../../org/simplemes/eframe/custom/domain/FieldTrait.html'>FieldTrait</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@io.micronaut.data.annotation.MappedEntityMappedEntity
-@<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntity.html' title='DomainEntity'>DomainEntity</a>DomainEntity
-@groovy.transform.EqualsAndHashCodeEqualsAndHashCode
-@groovy.transform.ToStringToString
-@java.lang.SuppressWarningsSuppressWarnings
+
+<pre>@io.micronaut.data.annotation.MappedEntity
+@<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntity.html' title='DomainEntity'>DomainEntity</a>
+@groovy.transform.EqualsAndHashCode(includes: [flexType, fieldName])
+@groovy.transform.ToString(includePackage: false, includeNames: true, excludes: [flexType])
+@java.lang.SuppressWarnings(value: unused)
 class FlexField
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../../org/simplemes/eframe/custom/domain/FieldInterface.html'>FieldInterface</a>, <a href='../../../../../org/simplemes/eframe/custom/domain/FieldTrait.html'>FieldTrait</a></pre>
 
     <p> Defines the basic user-defined data field used explicitly in domain class.  This defines the basic type of the field
  and some hints for appearance and validations (list of valid values, etc).
@@ -198,7 +198,7 @@ extends java.lang.Object
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../UUID.html'>UUID</a></strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.UUID</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#uuid">uuid</a></code><br></td>
                         </tr>
                         
@@ -363,7 +363,7 @@ extends java.lang.Object
                         <a name="uuid"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;<a href='../../../../../UUID.html'>UUID</a> <strong>uuid</strong></h4>
+                                <h4>private&nbsp;java.util.UUID <strong>uuid</strong></h4>
                                 <p></p>
                             </li>
                         </ul>

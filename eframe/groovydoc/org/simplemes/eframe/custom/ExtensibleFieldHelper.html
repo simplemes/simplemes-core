@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+class ExtensibleFieldHelper
+extends java.lang.Object</pre>
 
     <p> This class defines methods to access extensible field definitions define by module additions, users
  and flex types.  This ties together data definition and GUI hints.
@@ -215,7 +222,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/data/FieldDefinitions.html'>FieldDefinitions</a></code></td>
-                            <td class="colLast"><code><strong><a href="#addConfigurableTypeFields(org.simplemes.eframe.data.FieldDefinitions, java.lang.Object)">addConfigurableTypeFields</a></strong>(<a href='../../../../org/simplemes/eframe/data/FieldDefinitions.html'>FieldDefinitions</a> fieldDefinitions, java.lang.Object domainObject)</code><br>Find the effective FieldDefinitions for the dynamic Configurable Type field values. </td>
+                            <td class="colLast"><code><strong><a href="#addConfigurableTypeFields(org.simplemes.eframe.data.FieldDefinitions, java.lang.Object)">addConfigurableTypeFields</a></strong>(<a href='../../../../org/simplemes/eframe/data/FieldDefinitions.html'>FieldDefinitions</a> fieldDefinitions, java.lang.Object domainObject)</code><br>Find the effective FieldDefinitions for the dynamic Configurable Type field values.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -227,24 +234,24 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#formatConfigurableTypeValues(java.lang.String, java.lang.Object, Map)">formatConfigurableTypeValues</a></strong>(java.lang.String ctFieldName, java.lang.Object domainObject, <a href='../../../../Map.html'>Map</a> options)</code><br>Formats the Extensible Field name/value pairs for display.  </td>
+                            <td class="colLast"><code><strong><a href="#formatConfigurableTypeValues(java.lang.String, java.lang.Object, java.util.Map)">formatConfigurableTypeValues</a></strong>(java.lang.String ctFieldName, java.lang.Object domainObject, java.util.Map options)</code><br>Formats the Extensible Field name/value pairs for display.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#formatConfigurableTypeValues(java.lang.Object, Map)">formatConfigurableTypeValues</a></strong>(java.lang.Object domainObject, <a href='../../../../Map.html'>Map</a> options)</code><br>Formats all of the Extensible Field name/value pairs for display.  </td>
+                            <td class="colLast"><code><strong><a href="#formatConfigurableTypeValues(java.lang.Object, java.util.Map)">formatConfigurableTypeValues</a></strong>(java.lang.Object domainObject, java.util.Map options)</code><br>Formats all of the Extensible Field name/value pairs for display.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../Map.html'>Map</a></code></td>
+                            <td class="colLast"><code>java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#getComplexHolder(java.lang.Object)">getComplexHolder</a></strong>(java.lang.Object object)</code><br>Gets the complex field holder.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;<a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>static&nbsp;java.util.List&lt;java.util.Map&lt;java.lang.String, java.lang.Object&gt;&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getCustomChildLists(org.simplemes.eframe.domain.annotation.DomainEntityInterface)">getCustomChildLists</a></strong>(<a href='../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object)</code><br>Gets the custom fields that are child object lists.
  </td>
                         </tr>
@@ -252,13 +259,13 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getCustomHolderFieldName(java.lang.Object)">getCustomHolderFieldName</a></strong>(java.lang.Object object)</code><br>Gets the name of the custom field value holder in the domain object. </td>
+                            <td class="colLast"><code><strong><a href="#getCustomHolderFieldName(java.lang.Object)">getCustomHolderFieldName</a></strong>(java.lang.Object object)</code><br>Gets the name of the custom field value holder in the domain object.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getCustomHolderFieldName(java.lang.Class)">getCustomHolderFieldName</a></strong>(java.lang.Class clazz)</code><br>Gets the name of the custom field value holder in the domain object. </td>
+                            <td class="colLast"><code><strong><a href="#getCustomHolderFieldName(java.lang.Class)">getCustomHolderFieldName</a></strong>(java.lang.Class clazz)</code><br>Gets the name of the custom field value holder in the domain object.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -270,9 +277,9 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getEffectiveFieldOrder(java.lang.Class, List)">getEffectiveFieldOrder</a></strong>(java.lang.Class domainClass, <a href='../../../../List.html'>List</a> fieldOrder)</code><br>Determines the effective field order after applying the addition (extension) modules to the domain and then
- the user's adjustments to the static fieldOrder from the domain class. </td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#getEffectiveFieldOrder(java.lang.Class, List)">getEffectiveFieldOrder</a></strong>(java.lang.Class domainClass, java.util.List&lt;java.lang.String&gt; fieldOrder)</code><br>Determines the effective field order after applying the addition (extension) modules to the domain and then
+ the user's adjustments to the static fieldOrder from the domain class.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -302,7 +309,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
-                            <td class="colLast"><code><strong><a href="#hasExtensibleFields(java.lang.Class)">hasExtensibleFields</a></strong>(java.lang.Class clazz)</code><br>Returns true if the given class has extensible fields (<DL><DT><B>ExtensibleFields:</B></DT><DD>annotation).</td>
+                            <td class="colLast"><code><strong><a href="#hasExtensibleFields(java.lang.Class)">hasExtensibleFields</a></strong>(java.lang.Class clazz)</code><br>Returns true if the given class has extensible fields (<DL><DT><B>ExtensibleFields:</B></DT><DD>annotation).</DD></DL> </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -467,10 +474,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="formatConfigurableTypeValues(java.lang.String, java.lang.Object, Map)"><!-- --></a>
+                        <a name="formatConfigurableTypeValues(java.lang.String, java.lang.Object, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>formatConfigurableTypeValues</strong>(java.lang.String ctFieldName, java.lang.Object domainObject, <a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>java.lang.String <strong>formatConfigurableTypeValues</strong>(java.lang.String ctFieldName, java.lang.Object domainObject, java.util.Map options)</h4>
                                 <p> Formats the Extensible Field name/value pairs for display.  Optionally highlights the field name
  with HTML bold notation.
  The<DL><DT><B>ExtensibleFieldHolder:</B></DT><DD>annotation must be used on the domain object.
@@ -483,10 +490,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="formatConfigurableTypeValues(java.lang.Object, Map)"><!-- --></a>
+                        <a name="formatConfigurableTypeValues(java.lang.Object, java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>formatConfigurableTypeValues</strong>(java.lang.Object domainObject, <a href='../../../../Map.html'>Map</a> options)</h4>
+                                <h4>java.lang.String <strong>formatConfigurableTypeValues</strong>(java.lang.Object domainObject, java.util.Map options)</h4>
                                 <p> Formats all of the Extensible Field name/value pairs for display.  Optionally highlights the field name
  with HTML bold notation.
  The<DL><DT><B>ExtensibleFieldHolder:</B></DT><DD>annotation must be used on the domain object.
@@ -502,7 +509,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getComplexHolder(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../Map.html'>Map</a> <strong>getComplexHolder</strong>(java.lang.Object object)</h4>
+                                <h4>java.util.Map <strong>getComplexHolder</strong>(java.lang.Object object)</h4>
                                 <p> Gets the complex field holder.  Creates one if needed. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to get the complex field holder from.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The map.  Never null.</DD></DL></p>
                             </li>
                         </ul>
@@ -510,7 +517,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getCustomChildLists(org.simplemes.eframe.domain.annotation.DomainEntityInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;<a href='../../../../List.html'>List</a> <strong>getCustomChildLists</strong>(<a href='../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object)</h4>
+                                <h4>static&nbsp;java.util.List&lt;java.util.Map&lt;java.lang.String, java.lang.Object&gt;&gt; <strong>getCustomChildLists</strong>(<a href='../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object)</h4>
                                 <p> Gets the custom fields that are child object lists.
  This is exposed as a helper for the DomainEntityHelper (Java) class to avoid too much dependency on
  the groovy world.
@@ -555,7 +562,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getEffectiveFieldOrder(java.lang.Class, List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>getEffectiveFieldOrder</strong>(java.lang.Class domainClass, <a href='../../../../List.html'>List</a> fieldOrder)</h4>
+                                <h4>java.util.List&lt;java.lang.String&gt; <strong>getEffectiveFieldOrder</strong>(java.lang.Class domainClass, java.util.List&lt;java.lang.String&gt; fieldOrder)</h4>
                                 <p> Determines the effective field order after applying the addition (extension) modules to the domain and then
  the user's adjustments to the static fieldOrder from the domain class. <DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The domain class to determine the field order for.</DD><DD><code>fieldOrder</code> -  The original field order to adjust (<b>Optional</b>).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The effective field order list.  This is a single flattened list of field names.</DD></DL></p>
                             </li>

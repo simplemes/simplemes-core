@@ -101,17 +101,17 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../org/simplemes/eframe/system/DemoDataLoaderInterface.html'>DemoDataLoaderInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.util.logging.Slf4jSlf4j
-@javax.inject.SingletonSingleton
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
 class DashboardDemoDataLoader
 extends java.lang.Object
-
-</pre>
-
-
+implements <a href='../../../../org/simplemes/eframe/system/DemoDataLoaderInterface.html'>DemoDataLoaderInterface</a></pre>
 
     <p> Used to test the loading of demo data - Test dashboards using mockup activities.</p>
 
@@ -177,7 +177,7 @@ extends java.lang.Object
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;java.util.Map&lt;java.lang.String, java.lang.Object&gt;&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#loadDemoData()">loadDemoData</a></strong>()</code><br>Loads the demo data.  </td>
                         </tr>
                         
@@ -252,8 +252,8 @@ extends java.lang.Object
                         <a name="loadDemoData()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-<a href='../../../../List.html'>List</a> <strong>loadDemoData</strong>()</h4>
+                                <h4>@java.lang.Override
+java.util.List&lt;java.util.Map&lt;java.lang.String, java.lang.Object&gt;&gt; <strong>loadDemoData</strong>()</h4>
                                 <p> Loads the demo data.  Only loads for the EFrame test application.
 
  <h3>Results Map</h3>

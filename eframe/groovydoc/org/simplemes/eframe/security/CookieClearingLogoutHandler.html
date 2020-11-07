@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.lang.Singleton
+@io.micronaut.context.annotation.Replaces(value: JwtCookieClearerLogoutHandler)
+class CookieClearingLogoutHandler
+extends io.micronaut.security.token.jwt.cookie.JwtCookieClearerLogoutHandler</pre>
 
     <p> A logout handler that clears the JWT and Access cookies upon logout.</p>
 
@@ -169,8 +177,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>io.micronaut.http.MutableHttpResponse</code></td>
-                            <td class="colLast"><code><strong><a href="#logout(io.micronaut.http.HttpRequest)">logout</a></strong>(io.micronaut.http.HttpRequest request)</code><br></td>
+                            <td class="colLast"><code>MutableHttpResponse&lt;?&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#logout(HttpRequest)">logout</a></strong>(HttpRequest&lt;?&gt; request)</code><br></td>
                         </tr>
                         
                     </table>
@@ -249,11 +257,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="logout(io.micronaut.http.HttpRequest)"><!-- --></a>
+                        <a name="logout(HttpRequest)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
-io.micronaut.http.MutableHttpResponse <strong>logout</strong>(io.micronaut.http.HttpRequest request)</h4>
+                                <h4>@java.lang.Override
+MutableHttpResponse&lt;?&gt; <strong>logout</strong>(HttpRequest&lt;?&gt; request)</h4>
                                 <p></p>
                             </li>
                         </ul>

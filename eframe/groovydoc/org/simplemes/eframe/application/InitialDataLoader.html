@@ -98,6 +98,14 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+@groovy.lang.Singleton
+class InitialDataLoader
+extends java.lang.Object</pre>
 
     <p> Loads any initial data records needed for a new system.
  Generally, this just calls each domain's initialDataLoad() method (if defined).
@@ -196,25 +204,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#addLoadersFromAdditions(List)">addLoadersFromAdditions</a></strong>(<a href='../../../../List.html'>List</a> list)</code><br>Adds any non-domain loaders from additions. </td>
+                            <td class="colLast"><code><strong><a href="#addLoadersFromAdditions(List)">addLoadersFromAdditions</a></strong>(java.util.List&lt;java.lang.Class&gt; list)</code><br>Adds any non-domain loaders from additions.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#checkForPrecedence(java.lang.Object, java.lang.String)">checkForPrecedence</a></strong>(java.lang.Object o, java.lang.String fieldName)</code><br>Checks for any precedence static lists in the given object. </td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#checkForPrecedence(java.lang.Object, java.lang.String)">checkForPrecedence</a></strong>(java.lang.Object o, java.lang.String fieldName)</code><br>Checks for any precedence static lists in the given object.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.Class&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#dataLoad()">dataLoad</a></strong>()</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>protected&nbsp;<a href='../../../../List.html'>List</a></code></td>
-                            <td class="colLast"><code><strong><a href="#sortDomainsForLoading(List)">sortDomainsForLoading</a></strong>(<a href='../../../../List.html'>List</a> list)</code><br>Sorts the given list of Maps in the order needed for initial data loading. </td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List&lt;IDL&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#sortDomainsForLoading(List)">sortDomainsForLoading</a></strong>(java.util.List&lt;IDL&gt; list)</code><br>Sorts the given list of Maps in the order needed for initial data loading.</td>
                         </tr>
                         
                     </table>
@@ -288,7 +296,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="addLoadersFromAdditions(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;void <strong>addLoadersFromAdditions</strong>(<a href='../../../../List.html'>List</a> list)</h4>
+                                <h4>protected&nbsp;void <strong>addLoadersFromAdditions</strong>(java.util.List&lt;java.lang.Class&gt; list)</h4>
                                 <p> Adds any non-domain loaders from additions. <DL><DT><B>Parameters:</B></DT><DD><code>list</code> -  The list (modified).</DD></DL></p>
                             </li>
                         </ul>
@@ -296,7 +304,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="checkForPrecedence(java.lang.Object, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../List.html'>List</a> <strong>checkForPrecedence</strong>(java.lang.Object o, java.lang.String fieldName)</h4>
+                                <h4>protected&nbsp;java.util.List <strong>checkForPrecedence</strong>(java.lang.Object o, java.lang.String fieldName)</h4>
                                 <p> Checks for any precedence static lists in the given object. <DL><DT><B>Parameters:</B></DT><DD><code>o</code> -  The domain object.</DD><DD><code>fieldName</code> -  The static field name.  Usually 'initialDataLoadAfter' or 'initialDataLoadBefore'.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of class precedences.</DD></DL></p>
                             </li>
                         </ul>
@@ -304,8 +312,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="dataLoad()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-<a href='../../../../List.html'>List</a> <strong>dataLoad</strong>()</h4>
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+java.util.List&lt;java.lang.Class&gt; <strong>dataLoad</strong>()</h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -313,7 +321,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="sortDomainsForLoading(List)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;<a href='../../../../List.html'>List</a> <strong>sortDomainsForLoading</strong>(<a href='../../../../List.html'>List</a> list)</h4>
+                                <h4>protected&nbsp;java.util.List&lt;IDL&gt; <strong>sortDomainsForLoading</strong>(java.util.List&lt;IDL&gt; list)</h4>
                                 <p> Sorts the given list of Maps in the order needed for initial data loading. <DL><DT><B>Parameters:</B></DT><DD><code>list</code> -  The list.  Contains elements: 'domain' (a Class) and 'after' (a List<String>).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The sorted list.</DD></DL></p>
                             </li>
                         </ul>

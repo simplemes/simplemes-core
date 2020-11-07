@@ -101,16 +101,16 @@ if (location.href.indexOf('is-external=true') == -1) {
                 <dt>All Implemented Interfaces and Traits:</dt>
                 <dd><a href='../../../../org/simplemes/eframe/preference/PreferenceSettingInterface.html'>PreferenceSettingInterface</a></dd>
             </dl>
+    
+
             <!-- todo: direct known subclasses -->
             <hr>
             <br>
-<pre>@groovy.transform.ToStringToString
+
+<pre>@groovy.transform.ToString(includePackage: false, includeNames: true, includeSuper: true)
 class TreeStatePreference
 extends <a href='../../../../org/simplemes/eframe/preference/BasePreferenceSetting.html'>BasePreferenceSetting</a>
-
-</pre>
-
-
+implements <a href='../../../../org/simplemes/eframe/preference/PreferenceSettingInterface.html'>PreferenceSettingInterface</a></pre>
 
     <p> This holds the list of expanded rows from a tree.  This is a simple list of string row IDs.
 </p>
@@ -273,7 +273,7 @@ extends <a href='../../../../org/simplemes/eframe/preference/BasePreferenceSetti
                         <a name="getKey()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.OverrideOverride
+                                <h4>@java.lang.Override
 java.lang.String <strong>getKey</strong>()</h4>
                                 <p> The key for this preference.  This is unique within a single object's setting (string).</p>
                             </li>

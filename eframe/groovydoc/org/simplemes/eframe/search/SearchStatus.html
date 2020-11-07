@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.transform.ToString(includeNames: true, includePackage: false)
+class SearchStatus
+extends java.lang.Object</pre>
 
     <p> This class contains the current search engine status.  This includes basic statistics on the background
  tasks currently queued.</p>
@@ -224,8 +231,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst">
-                                <code><a href="#SearchStatus(Map)">SearchStatus</a>
-                                (<a href='../../../../Map.html'>Map</a> jsonMap)</code><br>Convenience constructor that pulls the status from the search engine.</td>
+                                <code><a href="#SearchStatus(java.util.Map)">SearchStatus</a>
+                                (java.util.Map jsonMap)</code><br>Convenience constructor that pulls the status from the search engine.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -258,25 +265,25 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>int</code></td>
-                            <td class="colLast"><code><strong><a href="#getBulkPercentComplete()">getBulkPercentComplete</a></strong>()</code><br>Calculate the percent complete on the bulk requests. </td>
+                            <td class="colLast"><code><strong><a href="#getBulkPercentComplete()">getBulkPercentComplete</a></strong>()</code><br>Calculate the percent complete on the bulk requests.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getLocalizedBulkIndexStatus()">getLocalizedBulkIndexStatus</a></strong>()</code><br>Localizes the bulk indexing status. </td>
+                            <td class="colLast"><code><strong><a href="#getLocalizedBulkIndexStatus()">getLocalizedBulkIndexStatus</a></strong>()</code><br>Localizes the bulk indexing status.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getLocalizedStatus()">getLocalizedStatus</a></strong>()</code><br>Localizes the overall status. </td>
+                            <td class="colLast"><code><strong><a href="#getLocalizedStatus()">getLocalizedStatus</a></strong>()</code><br>Localizes the overall status.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getStatusCSSClass()">getStatusCSSClass</a></strong>()</code><br>Builds the display CSS class that corresponds to the status color. </td>
+                            <td class="colLast"><code><strong><a href="#getStatusCSSClass()">getStatusCSSClass</a></strong>()</code><br>Builds the display CSS class that corresponds to the status color.</td>
                         </tr>
                         
                     </table>
@@ -448,10 +455,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="SearchStatus(Map)"><!-- --></a>
+                        <a name="SearchStatus(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>SearchStatus</strong>(<a href='../../../../Map.html'>Map</a> jsonMap)</h4>
+                                <h4><strong>SearchStatus</strong>(java.util.Map jsonMap)</h4>
                                 <p> Convenience constructor that pulls the status from the search engine. <DL><DT><B>Parameters:</B></DT><DD><code>jsonMap</code> -  The parsed JSON (as map) from the search engine.</DD></DL></p>
                             </li>
                         </ul>
@@ -480,7 +487,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="getBulkPercentComplete()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
+                                <h4>@java.lang.SuppressWarnings(value: UnnecessaryGetter)
 int <strong>getBulkPercentComplete</strong>()</h4>
                                 <p> Calculate the percent complete on the bulk requests. <DL><DT><B>Returns:</B></DT><DD>The percent complete.</DD></DL></p>
                             </li>

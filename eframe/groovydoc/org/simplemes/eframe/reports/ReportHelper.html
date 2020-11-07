@@ -98,6 +98,13 @@ if (location.href.indexOf('is-external=true') == -1) {
         <li class="blockList">
 
 
+            <!-- todo: direct known subclasses -->
+            <hr>
+            <br>
+
+<pre>@groovy.util.logging.Slf4j
+class ReportHelper
+extends java.lang.Object</pre>
 
     <p> Provides helper methods for finding and using reports from the external report engine.</p>
 
@@ -190,12 +197,12 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/data/FieldDefinitions.html'>FieldDefinitions</a></code></td>
-                            <td class="colLast"><code><strong><a href="#buildFieldDefinitionsFromParameters(org.simplemes.eframe.application.EFrameConfiguration.Report)">buildFieldDefinitionsFromParameters</a></strong>(<a href='../../../../org/simplemes/eframe/application/EFrameConfiguration.Report.html'>EFrameConfiguration.Report</a> report)</code><br>Builds the FieldDefinitions from the list of report parameters.  </td>
+                            <td class="colLast"><code><strong><a href="#buildFieldDefinitionsFromParameters(org.simplemes.eframe.reports.Report)">buildFieldDefinitionsFromParameters</a></strong>(<a href='../../../../org/simplemes/eframe/reports/Report.html'>Report</a> report)</code><br>Builds the FieldDefinitions from the list of report parameters.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../List.html'>List</a></code></td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#determineBuiltinReports()">determineBuiltinReports</a></strong>()</code><br>Finds the list of available built-in reports from the file system and/or the class path.
  </td>
                         </tr>
@@ -208,8 +215,8 @@ if (location.href.indexOf('is-external=true') == -1) {
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code><a href='../../../../InputStream.html'>InputStream</a></code></td>
-                            <td class="colLast"><code><strong><a href="#getInputStream(org.simplemes.eframe.application.EFrameConfiguration.Report)">getInputStream</a></strong>(<a href='../../../../org/simplemes/eframe/application/EFrameConfiguration.Report.html'>EFrameConfiguration.Report</a> reportDetails)</code><br>Opens an input stream for the report's jrxml file.  </td>
+                            <td class="colLast"><code>java.io.InputStream</code></td>
+                            <td class="colLast"><code><strong><a href="#getInputStream(org.simplemes.eframe.reports.Report)">getInputStream</a></strong>(<a href='../../../../org/simplemes/eframe/reports/Report.html'>Report</a> reportDetails)</code><br>Opens an input stream for the report's jrxml file.  </td>
                         </tr>
                         
                     </table>
@@ -306,10 +313,10 @@ if (location.href.indexOf('is-external=true') == -1) {
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="buildFieldDefinitionsFromParameters(org.simplemes.eframe.application.EFrameConfiguration.Report)"><!-- --></a>
+                        <a name="buildFieldDefinitionsFromParameters(org.simplemes.eframe.reports.Report)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../org/simplemes/eframe/data/FieldDefinitions.html'>FieldDefinitions</a> <strong>buildFieldDefinitionsFromParameters</strong>(<a href='../../../../org/simplemes/eframe/application/EFrameConfiguration.Report.html'>EFrameConfiguration.Report</a> report)</h4>
+                                <h4><a href='../../../../org/simplemes/eframe/data/FieldDefinitions.html'>FieldDefinitions</a> <strong>buildFieldDefinitionsFromParameters</strong>(<a href='../../../../org/simplemes/eframe/reports/Report.html'>Report</a> report)</h4>
                                 <p> Builds the FieldDefinitions from the list of report parameters.  This is used for display purposes. <DL><DT><B>Parameters:</B></DT><DD><code>report</code> -  The report.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The FieldDefinitions.</DD></DL></p>
                             </li>
                         </ul>
@@ -317,7 +324,7 @@ if (location.href.indexOf('is-external=true') == -1) {
                         <a name="determineBuiltinReports()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><a href='../../../../List.html'>List</a> <strong>determineBuiltinReports</strong>()</h4>
+                                <h4>java.util.List&lt;java.lang.String&gt; <strong>determineBuiltinReports</strong>()</h4>
                                 <p> Finds the list of available built-in reports from the file system and/or the class path.
  Ignores .jrxml files that start with underscore (_). <DL><DT><B>Returns:</B></DT><DD>The list of location strings.</DD></DL></p>
                             </li>
@@ -332,11 +339,11 @@ if (location.href.indexOf('is-external=true') == -1) {
                             </li>
                         </ul>
                     
-                        <a name="getInputStream(org.simplemes.eframe.application.EFrameConfiguration.Report)"><!-- --></a>
+                        <a name="getInputStream(org.simplemes.eframe.reports.Report)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@java.lang.SuppressWarningsSuppressWarnings
-<a href='../../../../InputStream.html'>InputStream</a> <strong>getInputStream</strong>(<a href='../../../../org/simplemes/eframe/application/EFrameConfiguration.Report.html'>EFrameConfiguration.Report</a> reportDetails)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: JavaIoPackageAccess)
+java.io.InputStream <strong>getInputStream</strong>(<a href='../../../../org/simplemes/eframe/reports/Report.html'>Report</a> reportDetails)</h4>
                                 <p> Opens an input stream for the report's jrxml file.  Supports built-in reports found on the classpath. <DL><DT><B>Parameters:</B></DT><DD><code>reportDetails</code> -  The report details.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The input stream.  Can be null if not found.</DD></DL></p>
                             </li>
                         </ul>
