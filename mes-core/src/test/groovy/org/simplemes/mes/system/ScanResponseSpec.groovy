@@ -1,6 +1,5 @@
 package org.simplemes.mes.system
 
-import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.annotation.Rollback
@@ -20,6 +19,7 @@ import org.simplemes.mes.demand.domain.Order
  */
 class ScanResponseSpec extends BaseSpecification {
 
+  @SuppressWarnings('unused')
   static specNeeds = [SERVER]
 
   def "tests the copy constructor for a ScanRequest"() {
@@ -59,7 +59,7 @@ class ScanResponseSpec extends BaseSpecification {
     then: 'the JSON is correct'
     //println "s = $s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
-    def json = new JsonSlurper().parseText(s)
+    def json = Holders.objectMapper.readValue(s,Map)
     json.scanResponse.barcode == scanRequest.barcode
     json.scanResponse.resolved == scanResponse.resolved
 
@@ -72,7 +72,7 @@ class ScanResponseSpec extends BaseSpecification {
 
     and: 'the undoActions are correct and the internal JSON for undo is correct'
     json.scanResponse.undoActions.size() == 1
-    json.scanResponse.undoActions[0].uri == startUndoAction.URI
+    json.scanResponse.undoActions[0].uri == startUndoAction.getUri()
     def startRequest = (StartRequest) Holders.objectMapper.readValue(json.scanResponse.undoActions[0].json, StartRequest)
     startRequest.operationSequence == 247
     startRequest.qty == 1.2
@@ -100,7 +100,7 @@ class ScanResponseSpec extends BaseSpecification {
     then: 'the JSON is correct'
     //println "s = $s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
-    def json = new JsonSlurper().parseText(s)
+    def json = Holders.objectMapper.readValue(s,Map)
     json.scanResponse.order == 'ABC'
   }
 

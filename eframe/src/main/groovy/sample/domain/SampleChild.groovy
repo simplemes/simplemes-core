@@ -75,9 +75,7 @@ class SampleChild implements Comparable {
 /**
  * A searchable top-level domain.
  */
-  static searchable = {
-    parent = SampleParent
-  }
+  static searchable = [parent: SampleParent]
 
   static fieldOrder = ['key', 'sequence', 'title', 'qty', 'enabled', 'dueDate', 'dateTime', 'format',
                        'reportTimeInterval', 'order']

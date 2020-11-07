@@ -151,9 +151,7 @@ class LSN implements WorkStateTrait, WorkableInterface, DemandObject, Comparable
    * This domain is searchable as part of the parent Order object.  This is marked here
    * to allow save actions to force parent indexing by the search engine.
    */
-  static searchable = {
-    parent = Order
-  }
+  static searchable = [parent: Order]
 
   /**
    * Called before validate happens.

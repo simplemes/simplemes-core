@@ -1,6 +1,5 @@
 package org.simplemes.mes.assy.demand
 
-import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.test.BaseSpecification
@@ -41,7 +40,7 @@ class ComponentRemoveUndoActionSpec extends BaseSpecification {
     undoRequest.sequence == comp.sequence
     undoRequest.order == order
 
-    def json = new JsonSlurper().parseText(action.json)
+    def json = Holders.objectMapper.readValue(action.json,Map)
     json.sequence == comp.sequence
     json.order == order.order
 

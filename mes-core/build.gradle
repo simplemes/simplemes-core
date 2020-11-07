@@ -13,6 +13,8 @@ plugins {
   id "com.bertramlabs.asset-pipeline" version "3.0.10"
   id "org.owasp.dependencycheck" version "4.0.0.1"
   id 'org.asciidoctor.jvm.convert' version '3.1.0'
+  id "com.github.johnrengelman.shadow" version "6.1.0"
+  id "io.micronaut.application" version '1.0.5'
 }
 
 
@@ -30,7 +32,6 @@ version "0.5"
 group "org.simplemes"
 
 
-
 apply plugin: "application"
 apply plugin: "java"
 apply plugin: "groovy"
@@ -38,16 +39,15 @@ apply plugin: "groovy"
 // Common tasks from the overall common.gradle file provides: version, bintrayUpload, maven artifact creation.
 apply from: "../gradle/common.gradle"
 
-
-dependencyManagement {
-  imports {
-    mavenBom "io.micronaut:micronaut-bom:${micronautBomVersion}"
-  }
+micronaut {
+  runtime "netty"
+  testRuntime "spock2"
 }
 
 dependencies {
   compile ("org.simplemes:eframe:0.5")
 
+  testImplementation "org.codehaus.groovy:groovy-test"
   test {
     useJUnitPlatform()  // Forces Junit5 for Spock in Gradle tests.
     jvmArgs = ['-Dnashorn.args="--no-deprecation-warning"']  // Suppress Javascript engine deprecation warning

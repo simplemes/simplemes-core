@@ -4,8 +4,8 @@
 
 package org.simplemes.eframe.test
 
-import groovy.json.JsonSlurper
 import groovy.util.logging.Slf4j
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.dashboard.controller.DashboardTestController
 import org.simplemes.eframe.dashboard.domain.DashboardConfig
 import org.simplemes.eframe.misc.ArgumentUtils
@@ -305,7 +305,7 @@ class BaseDashboardSpecification extends BaseGUISpecification {
     if (event) {
       s = TextUtils.findLine(s, event)
     }
-    return new JsonSlurper().parseText(s)
+    return new Holders().objectMapper.readValue(s, Map)
   }
 
   /**

@@ -11,16 +11,16 @@ import sample.domain.Order
  * Tests.
  */
 class SearchDomainSettingsSpec extends BaseSpecification {
-  def "verify that the closure constructor works"() {
-    given: 'a closure'
-    def closure = {
-      exclude = ['title', 'releaseDate']
-      parent = Order
-      searchable = false
-    }
+  def "verify that the map constructor works"() {
+    given: 'a map'
+    def map = [
+      exclude   : ['title', 'releaseDate'],
+      parent    : Order,
+      searchable: false
+    ]
 
     when: 'the constructor is called'
-    def settings = new SearchDomainSettings(closure)
+    def settings = new SearchDomainSettings(map)
 
     then: 'the settings are correct'
     settings.getExclude() == ['title', 'releaseDate']
@@ -29,13 +29,11 @@ class SearchDomainSettingsSpec extends BaseSpecification {
   }
 
   def "verify that if parent is not null then the searchable is false"() {
-    given: 'a closure'
-    def closure = {
-      parent = Order
-    }
+    given: 'a map'
+    def map = [parent: Order]
 
     when: 'the constructor is called'
-    def settings = new SearchDomainSettings(closure)
+    def settings = new SearchDomainSettings(map)
 
     then: 'the domain is not searchable'
     !settings.searchable

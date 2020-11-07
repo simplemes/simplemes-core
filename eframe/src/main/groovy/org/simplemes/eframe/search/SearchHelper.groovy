@@ -597,7 +597,7 @@ class SearchHelper {
     def o = TypeUtils.getStaticProperty(domainClass, "searchable")
     if (o instanceof Boolean) {
       settings = new SearchDomainSettings(searchable: (Boolean) o)
-    } else if (o instanceof Closure) {
+    } else if (o instanceof Map) {
       settings = new SearchDomainSettings(o)
     }
 

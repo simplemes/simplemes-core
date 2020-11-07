@@ -16,12 +16,13 @@ import org.codehaus.groovy.ast.FieldNode;
 import org.codehaus.groovy.ast.expr.ClosureExpression;
 import org.codehaus.groovy.ast.expr.ConstantExpression;
 import org.codehaus.groovy.ast.expr.Expression;
-import org.codehaus.groovy.ast.stmt.Statement;
+import org.codehaus.groovy.ast.expr.MapExpression;
 import org.codehaus.groovy.control.SourceUnit;
 import org.codehaus.groovy.control.messages.SimpleMessage;
 import org.codehaus.groovy.control.messages.WarningMessage;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Provides validations for Domain Entities that check for search mis-configurations.
@@ -55,8 +56,9 @@ public class SearchValidation {
         return;
       }
       Class fieldClass = getFieldClass(fieldNode);
-      if (!(fieldClass == Boolean.class) && !(fieldClass == Closure.class)) {
-        SimpleMessage message = new SimpleMessage("Domain entity 'searchable' field must be a boolean or a closure in " + classNode, sourceUnit);
+      boolean classOk = (fieldClass == Boolean.class) || (fieldClass == Map.class);
+      if (!classOk) {
+        SimpleMessage message = new SimpleMessage("Domain entity 'searchable' field must be a boolean or a Map in " + classNode, sourceUnit);
         sourceUnit.getErrorCollector().addError(message);
         return;
       }
@@ -85,10 +87,10 @@ public class SearchValidation {
    */
   private static boolean hasExcludedFields(FieldNode searchableNode) {
     Expression expression = searchableNode.getInitialValueExpression();
-    if (expression instanceof ClosureExpression) {
-      Statement closure = ((ClosureExpression) expression).getCode();
+    if (expression instanceof MapExpression) {
+      String text = expression.getText();
       // Uses a simple test on the text.  Could look at the expressions in detail for more robust check.
-      return closure.getText().contains("exclude");
+      return text.contains("exclude");
     }
     return false;
   }
@@ -97,11 +99,14 @@ public class SearchValidation {
    * Returns the effective class of the given searchable element value.
    *
    * @param searchableNode The searchable field.
-   * @return The class type of the value (Object, Boolean or Closure).
+   * @return The class type of the value (Object, Boolean, Map or Closure).
    */
   private static Class getFieldClass(FieldNode searchableNode) {
     Expression expression = searchableNode.getInitialValueExpression();
 
+    if (expression instanceof MapExpression) {
+      return Map.class;
+    }
     if (expression instanceof ClosureExpression) {
       return Closure.class;
     }

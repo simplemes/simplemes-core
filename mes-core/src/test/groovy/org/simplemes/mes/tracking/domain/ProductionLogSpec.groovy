@@ -1,6 +1,6 @@
 package org.simplemes.mes.tracking.domain
 
-import groovy.json.JsonSlurper
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.archive.FileArchiver
 import org.simplemes.eframe.archive.domain.ArchiveLog
 import org.simplemes.eframe.misc.FileFactory
@@ -80,7 +80,7 @@ class ProductionLogSpec extends BaseSpecification {
     and: 'the records are written to the JSON file correctly'
     def s = stringWriter.toString()
     s.size() > 0
-    def json = new JsonSlurper().parseText(s)
+    def json = Holders.objectMapper.readValue(s, List)
 
     and: 'the JSON is correct'
     json[1].action == 'ABC'

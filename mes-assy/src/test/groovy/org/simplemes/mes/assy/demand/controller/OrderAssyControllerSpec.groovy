@@ -1,6 +1,5 @@
 package org.simplemes.mes.assy.demand.controller
 
-import groovy.json.JsonSlurper
 import io.micronaut.http.HttpStatus
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.custom.domain.FlexType
@@ -112,7 +111,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
 
     then: 'the response is valid'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
     json.lsn.lsn == lsn.lsn
     json.workCenter.workCenter == workCenter.workCenter
     json.location == "BIN-27"
@@ -143,7 +142,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
 
     then: 'the response is a bad request with a valid message'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
     UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['component', 'CPU'])
   }
 
@@ -157,7 +156,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
 
     then: 'the response is valid'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
 
     and: 'result content is correct'
     json.total_count == 2
@@ -194,7 +193,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
 
     then: 'the response is valid'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
 
     and: 'result content is correct'
     json.total_count == 2
@@ -225,7 +224,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
 
     then: 'the response is valid'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
 
     and: 'result content is correct'
     json.total_count == 1
@@ -244,7 +243,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
 
     then: 'the response is valid'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
 
     and: 'result content is correct'
     json.total_count == 0
@@ -261,7 +260,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
 
     then: 'the response is valid'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
 
     and: 'result content is correct'
     json.total_count == 0
@@ -288,7 +287,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
 
     then: 'the response is correct'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
 
     json.orderAssembledComponent.sequence == component.sequence
     json.orderAssembledComponent.state == AssembledComponentStateEnum.REMOVED.toString()
@@ -303,7 +302,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     and: 'the undo actions are populated'
     def undoAction = json.undoActions[0]
     undoAction.uri.contains('/orderAssy/undoComponentRemove')
-    def undo = new JsonSlurper().parseText(undoAction.json)
+    def undo = Holders.objectMapper.readValue(undoAction.json,Map)
     undo.order == order.order
     undo.sequence == orderAssembledComponent.sequence
   }
@@ -325,7 +324,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
 
     then: 'the response is correct'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
     UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['order', 'gibberish'])
   }
 
@@ -349,7 +348,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
 
     then: 'the response is correct'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
     UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['Z'])
   }
 
@@ -373,7 +372,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
 
     then: 'the response is correct'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
 
     json.sequence == component.sequence
     json.state == AssembledComponentStateEnum.ASSEMBLED.toString()
@@ -401,7 +400,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
 
     then: 'the response is correct'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
     UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['order', 'gibberish'])
   }
 
@@ -553,7 +552,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
 
     then: 'the response is correct'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
     List components = json.orderAssembledComponents
 
     components[0].sequence == comp1.sequence
@@ -574,7 +573,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     json.undoActions.size() == 2
     def undoAction1 = json.undoActions[0]
     undoAction1.uri.contains('/orderAssy/undoComponentRemove')
-    def undo = new JsonSlurper().parseText(undoAction1.json)
+    def undo = Holders.objectMapper.readValue(undoAction1.json,Map)
     undo.order == order.order
     undo.sequence == orderAssembledComponent1.sequence
   }
@@ -596,7 +595,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
 
     then: 'the response is correct'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
     UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['sequences', 'null'])
   }
 
@@ -621,7 +620,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
 
     then: 'the response is correct'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
     UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['format', 'gibberish'])
   }
 
@@ -647,7 +646,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
 
     then: 'the response is correct'
     //error.10001.message=Could not find component sequence {1} for order {0}.
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
     UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['find', '137', order.order])
   }
 
@@ -668,7 +667,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
 
     then: 'the response is correct'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
     UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['order', 'null'])
   }
 
@@ -690,7 +689,7 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res)}"
 
     then: 'the response is correct'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
     UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['order', 'gibberish'])
   }
 

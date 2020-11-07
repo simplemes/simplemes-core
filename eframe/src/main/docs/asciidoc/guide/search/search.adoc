@@ -296,11 +296,7 @@ When the domain object is indexed, there are other options.
 [source,groovy]
 .Searchable Options
 ----
-static searchable = {
-  exclude = ['title', 'releaseDate']
-  parent = Order
-  searchable = false
-}
+static searchable = [searchable: false, exclude: ['title', 'releaseDate'], parent: Order]
 ----
 
 The following options are allowed in the searchable value:

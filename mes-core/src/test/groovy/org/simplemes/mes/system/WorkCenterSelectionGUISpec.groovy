@@ -1,8 +1,7 @@
 package org.simplemes.mes.system
 
-import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
 import org.openqa.selenium.Keys
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.dashboard.controller.DashboardTestController
 import org.simplemes.eframe.test.BaseDashboardSpecification
 import spock.lang.IgnoreIf
@@ -85,7 +84,7 @@ class WorkCenterSelectionGUISpec extends BaseDashboardSpecification {
 
     and: 'the event is triggered'
     def s = $('#events').text()
-    def json = new JsonSlurper().parseText(s)
+    def json = Holders.objectMapper.readValue(s, Map)
     json.type == 'ORDER_LSN_CHANGED'
     json.source == '/selection/workCenterSelection'
     json.list.size() == 1
@@ -115,7 +114,7 @@ class WorkCenterSelectionGUISpec extends BaseDashboardSpecification {
 
     then: 'the event is triggered and contains the correct values'
     def s = $('#events').text()
-    def json = new JsonSlurper().parseText(s)
+    def json = Holders.objectMapper.readValue(s,Map)
     json.type == 'WORK_CENTER_CHANGED'
     json.source == '/selection/workCenterSelection'
     json.workCenter == 'XYZ'

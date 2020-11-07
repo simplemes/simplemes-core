@@ -1,7 +1,7 @@
 package org.simplemes.mes.demand.controller
 
-import groovy.json.JsonSlurper
 import io.micronaut.http.HttpStatus
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseAPISpecification
 import org.simplemes.eframe.test.ControllerTester
 import org.simplemes.eframe.test.MockPrincipal
@@ -76,7 +76,7 @@ class WorkControllerSpec extends BaseAPISpecification {
     //println "s = ${res.body.get()}"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body.get())}"
     res.status == HttpStatus.OK
-    def json = new JsonSlurper().parseText((String) res.body.get())
+    def json = Holders.objectMapper.readValue(res.body.get() as String,List)
     def startResponse = json[0]
 
     startResponse.order == order.order
@@ -114,7 +114,7 @@ class WorkControllerSpec extends BaseAPISpecification {
     //println "s = ${res.body.get()}"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body.get())}"
     res.status == HttpStatus.OK
-    def json = new JsonSlurper().parseText((String) res.body.get())
+    def json = Holders.objectMapper.readValue(res.body.get() as String,List)
     def completeResponse = json[0]
 
     completeResponse.order == order.order
@@ -152,7 +152,7 @@ class WorkControllerSpec extends BaseAPISpecification {
     //println "s = ${res.body.get()}"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body.get())}"
     res.status == HttpStatus.OK
-    def json = new JsonSlurper().parseText((String) res.body.get())
+    def json = Holders.objectMapper.readValue(res.body.get() as String,List)
     def startResponse = json[0]
 
     startResponse.order == order.order
@@ -189,7 +189,7 @@ class WorkControllerSpec extends BaseAPISpecification {
     def res = sendRequest(uri: '/work/start', method: 'post', content: request)
 
     then: 'the response is valid'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res as String,List)
     def startResponse = json[0]
     startResponse.order == order.order
     startResponse.qty == 1.0
@@ -225,7 +225,7 @@ class WorkControllerSpec extends BaseAPISpecification {
     def res = sendRequest(uri: '/work/start', method: 'post', content: request)
 
     then: 'the response is valid'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res as String,List)
     def startResponse = json[0]
     startResponse.order == order.order
     startResponse.lsn == lsn.lsn
@@ -257,7 +257,7 @@ class WorkControllerSpec extends BaseAPISpecification {
     def res = sendRequest(uri: '/work/start', method: 'post', content: request, status: HttpStatus.BAD_REQUEST)
 
     then: 'the response is valid'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res as String,Map)
     UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['GIBBERISH', 'order'])
   }
 
@@ -285,7 +285,7 @@ class WorkControllerSpec extends BaseAPISpecification {
     def res = sendRequest(uri: '/work/complete', method: 'post', content: request)
 
     then: 'the response is valid'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res as String,List)
     def completeResponse = json[0]
     completeResponse.order == order.order
     completeResponse.qty == 1.0
@@ -324,7 +324,7 @@ class WorkControllerSpec extends BaseAPISpecification {
     def res = sendRequest(uri: '/work/reverseStart', method: 'post', content: request)
 
     then: 'the response is valid'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res as String,List)
     def startResponse = json[0]
     startResponse.order == order.order
     startResponse.qty == 1.0
@@ -369,7 +369,7 @@ class WorkControllerSpec extends BaseAPISpecification {
     //println "s = ${res.body.get()}"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body.get())}"
     res.status == HttpStatus.OK
-    def json = new JsonSlurper().parseText((String) res.body.get())
+    def json = Holders.objectMapper.readValue(res.body.get() as String,List)
     def completeResponse = json[0]
 
     completeResponse.order == order.order
@@ -394,7 +394,7 @@ class WorkControllerSpec extends BaseAPISpecification {
     def res = sendRequest(uri: '/work/reverseComplete', method: 'post', content: request)
 
     then: 'the response is valid'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res as String,List)
     def completeResponse = json[0]
     completeResponse.order == order.order
     completeResponse.qty == 1.0

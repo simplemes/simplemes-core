@@ -1,7 +1,6 @@
 package org.simplemes.mes.system
 
 
-import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseSpecification
 
@@ -28,7 +27,7 @@ class ButtonPressActionSpec extends BaseSpecification {
     then: 'the JSON is correct'
     //println "s = $s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
-    def json = new JsonSlurper().parseText(s)
+    def json = Holders.objectMapper.readValue(s,Map)
     json.type == ButtonPressAction.TYPE_BUTTON_PRESS
     json.button == 'TEST'
   }

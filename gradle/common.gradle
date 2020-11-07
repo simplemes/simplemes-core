@@ -210,8 +210,15 @@ publishing {
       groupId 'org.simplemes'
       artifactId moduleName
       version project.version
+      //println "pom = $pom"
       pom.withXml {
         def root = asNode()
+        // Work around for Duplicated tag: 'dependencyManagement' exception due to extra node for dependencyManagement.
+        // Must remove it manually.
+        def dpmNode = root.children().find {it.name()=='dependencyManagement'}
+        if (dpmNode) {
+          root.remove(dpmNode)
+        }
         root.appendNode('description', moduleDescription)
         root.appendNode('name', moduleDescription)
         root.appendNode('url', 'https://github.com/simplemes/simplemes-core')
@@ -221,6 +228,25 @@ publishing {
   }
 }
 
+/*
+task fixPom {
+  doLast {
+    File file = new File("$buildDir/publications/mavenJava/pom-default.xml")
+    def text = file.text
+    println "text = $text"
+    def pattern = "(?s)(<dependencyManagement>.+?<dependencies>)(.+?)(</dependencies>.+?</dependencyManagement>)"
+    Matcher matcher = text =~ pattern
+    if (matcher.find()) {
+      text = text.replaceFirst(pattern, "")
+      def firstDeps = matcher.group(2)
+      text = text.replaceFirst(pattern, '$1$2' + firstDeps + '$3')
+    }
+    file.write(text)
+  }
+}
+generatePomFileForMavenJavaPublication.finalizedBy fixPom
+
+*/
 
 // Bintray upload setup
 // See https://github.com/bintray/gradle-bintray-plugin#Plugin_DSL for syntax.

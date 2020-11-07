@@ -47,17 +47,6 @@ class SearchDomainSettings {
     }
   }
 
-  /**
-   * Constructor for a closure case.
-   * @param delegate The closure.
-   */
-  SearchDomainSettings(Closure delegate) {
-    delegate.setDelegate(this)
-    delegate.setResolveStrategy(Closure.DELEGATE_FIRST)
-    delegate.call()
-  }
-
-
   void setExclude(@DelegatesTo(SearchDomainSettings) List<String> exclude) {
     this.exclude = exclude
   }

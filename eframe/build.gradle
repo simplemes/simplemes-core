@@ -13,6 +13,8 @@ plugins {
   id "com.jfrog.bintray" version "1.8.4"
   id "com.bertramlabs.asset-pipeline" version "3.0.10"
   id "org.owasp.dependencycheck" version "4.0.0.1"
+  id "com.github.johnrengelman.shadow" version "6.1.0"
+  id "io.micronaut.application" version '1.0.5'
 }
 
 repositories {
@@ -25,30 +27,17 @@ apply plugin: "application"
 apply plugin: "java"
 apply plugin: "groovy"
 
+micronaut {
+  runtime "netty"
+  testRuntime "spock2"
+}
+
 /*
  * Copyright (c) Michael Houston 2020. All rights reserved.
  */
 
 // Common tasks from the overall common.gradle file provides: version, bintrayUpload, maven artifact creation.
 apply from: "../gradle/common.gradle"
-
-// Force some specific versions on all dependencies.
-configurations.all {
-  resolutionStrategy {
-    eachDependency { DependencyResolveDetails details ->
-      // Force Groovy 3.0.3
-      if (details.requested.group == 'org.codehaus.groovy') {
-        details.useVersion('3.0.3')
-      }
-    }
-  }
-}
-
-dependencyManagement {
-  imports {
-    mavenBom "io.micronaut:micronaut-bom:${micronautBomVersion}"
-  }
-}
 
 dependencies {
   compile "io.micronaut:micronaut-http-client"
@@ -67,7 +56,9 @@ dependencies {
   }
   compile "ch.qos.logback:logback-classic:$logbackVersion"
 
-  compile "org.codehaus.groovy:groovy-dateutil:$groovyDateUtilsVersions"
+  compile "org.codehaus.groovy:groovy-templates" // Added for Groovydoc and TextUtils.
+  compile "org.codehaus.groovy:groovy-xml"
+  compile "org.codehaus.groovy:groovy-dateutil"
   compile "io.micronaut.security:micronaut-security-jwt"
   compile ( "com.bertramlabs.plugins:asset-pipeline-micronaut:$assetPipelineVersion") {
     exclude group: "io.micronaut", module: "http-server-netty"
@@ -85,6 +76,8 @@ dependencies {
   // Needed for groovydoc tasks.
   compile ("com.github.javaparser:javaparser-core:3.15.17")
 
+  testImplementation "org.codehaus.groovy:groovy-json"
+  testImplementation "org.codehaus.groovy:groovy-test"
   testImplementation "io.micronaut.test:micronaut-test-spock"
   compile("org.gebish:geb-spock:$gebVersion") {
     exclude group: "org.codehaus.groovy", module: "groovy-all"
@@ -95,21 +88,7 @@ dependencies {
   compile "cglib:cglib-nodep:$cglibVersion"
   compile "org.objenesis:objenesis:$objenesisVersion"
   compile "net.bytebuddy:byte-buddy:$byteBuddyVersion"
-  compileOnly "org.codehaus.groovy:groovy-templates" // Added for Groovydoc
 
-/*
-  // See https://github.com/MachinePublishers/jBrowserDriver
-  testRuntime ("com.machinepublishers:jbrowserdriver:1.1.1") {
-    exclude group:  "org.seleniumhq.selenium"
-    */
-/*
-    um:selenium-api:4.0.0-alpha-2
-     +--- org.seleniumhq.selenium:selenium-remote-driver:4.0.0-alpha-2
-     +--- org.seleniumhq.selenium:selenium-server:4.0.0-alpha-2
-     *//*
-
-  }
-*/
   compile "org.seleniumhq.selenium:selenium-chrome-driver:$webDriversVersion"
   compile "org.seleniumhq.selenium:selenium-firefox-driver:$webDriversVersion"
   compile "org.seleniumhq.selenium:selenium-api:$webDriversVersion"
@@ -118,26 +97,16 @@ dependencies {
   }
 
   
-  // runtime 'mysql:mysql-connector-java:5.1.36 '
   // https://mvnrepository.com/artifact/org.postgresql/postgresql
   compile group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
 
 
-  // For Java code
-  //compile "io.micronaut:micronaut-inject-java"
-  //testCompile "io.micronaut:micronaut-inject-java"
-  //annotationProcessor "io.micronaut:micronaut-inject-java"
-  //testAnnotationProcessor "io.micronaut:micronaut-inject-java"
-
   compile "org.elasticsearch.client:elasticsearch-rest-client:$elasticSearchClient"
-
 
   // The Jasper reports library with PDF support (lowagie) and DejaVu fonts
   compile("net.sf.jasperreports:jasperreports:$jasperreportsVersion"){
     exclude module:'commons-logging'
     exclude module:'olap4j'
-    //exclude module:'jcommon'
-    // exclude module: 'jfreechart' //<-charts
     exclude module: 'itext' //exclude itext:2.1.7js5 which is not available in jcenter or maven central
   }
   compile ("com.lowagie:itext:$lowagieItextVersion") {

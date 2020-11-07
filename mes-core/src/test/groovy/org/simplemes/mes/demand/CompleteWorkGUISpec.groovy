@@ -1,6 +1,6 @@
 package org.simplemes.mes.demand
 
-import groovy.json.JsonSlurper
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.dashboard.controller.DashboardTestController
 import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.misc.TextUtils
@@ -105,7 +105,7 @@ class CompleteWorkGUISpec extends BaseDashboardSpecification {
 
     then: 'the event is triggered and contains the correct values'
     def s = $('#events').text()
-    def json = new JsonSlurper().parseText(TextUtils.findLine(s, 'ORDER_LSN_STATUS_CHANGED'))
+    def json = Holders.objectMapper.readValue(TextUtils.findLine(s, 'ORDER_LSN_STATUS_CHANGED'),Map)
     json.type == 'ORDER_LSN_STATUS_CHANGED'
     json.source == '/work/completeActivity'
     List list = json.list

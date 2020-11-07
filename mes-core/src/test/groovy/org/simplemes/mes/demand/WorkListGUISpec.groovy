@@ -1,7 +1,6 @@
 package org.simplemes.mes.demand
 
-import groovy.json.JsonOutput
-import groovy.json.JsonSlurper
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.dashboard.controller.DashboardTestController
 import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.preference.domain.UserPreference
@@ -108,7 +107,7 @@ class WorkListGUISpec extends BaseDashboardSpecification {
     //     var list = [{order: rowData.order}];
     //    dashboard.sendEvent({type: 'WORK_LIST_SELECTED',source: "/workList/workListActivity",  list: list});
     def s = $('#events').text()
-    def json = new JsonSlurper().parseText(s)
+    def json = Holders.objectMapper.readValue(s, Map)
     json.type == 'WORK_LIST_SELECTED'
     json.source == '/workList/workListActivity'
     json.list.size() == 1

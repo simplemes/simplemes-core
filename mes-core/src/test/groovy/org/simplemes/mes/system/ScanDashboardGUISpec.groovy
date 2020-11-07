@@ -1,6 +1,5 @@
 package org.simplemes.mes.system
 
-import groovy.json.JsonSlurper
 import org.openqa.selenium.Keys
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.dashboard.controller.DashboardTestController
@@ -105,13 +104,13 @@ class ScanDashboardGUISpec extends BaseDashboardSpecification {
 
     then: 'the change event is triggered and contains the correct values'
     def s = $('#events').text()
-    def json = new JsonSlurper().parseText(TextUtils.findLine(s, 'ORDER_LSN_CHANGED'))
+    def json = Holders.objectMapper.readValue(TextUtils.findLine(s, 'ORDER_LSN_CHANGED'),Map)
     json.type == 'ORDER_LSN_CHANGED'
     json.source == ScanService.EVENT_SOURCE
     json.list[0].order == order.order
 
     then: 'the refresh event is triggered and contains the correct values'
-    def json2 = new JsonSlurper().parseText(TextUtils.findLine(s, 'REFRESH_ORDER_STATUS'))
+    def json2 = Holders.objectMapper.readValue(TextUtils.findLine(s, 'REFRESH_ORDER_STATUS'),Map)
     json2.type == 'REFRESH_ORDER_STATUS'
     json2.source == ScanService.EVENT_SOURCE
     json2.order == order.order

@@ -31,7 +31,7 @@ class SearchValidationSpec extends BaseSpecification {
       @ToString(includeNames = true)
       class TestClass {
         UUID uuid
-        static searchable = {exclude = ['uuid']}
+        static searchable = [exclude: ['uuid']]
       }
     """
 
@@ -85,7 +85,7 @@ class SearchValidationSpec extends BaseSpecification {
 
     then: 'the right exception is thrown'
     def ex = thrown(Exception)
-    UnitTestUtils.assertExceptionIsValid(ex, ['searchable', 'boolean', 'closure', 'TestClass'])
+    UnitTestUtils.assertExceptionIsValid(ex, ['searchable', 'boolean', 'map', 'TestClass'])
   }
 
   def "verify that the validation logic allows JsonFilter is correctly configured"() {
@@ -100,7 +100,7 @@ class SearchValidationSpec extends BaseSpecification {
       @JsonFilter("searchableFilter")
       class TestClass {
         UUID uuid
-        static searchable = {exclude = ['uuid']}
+        static searchable = [exclude: ['uuid']]
       }
     """
 

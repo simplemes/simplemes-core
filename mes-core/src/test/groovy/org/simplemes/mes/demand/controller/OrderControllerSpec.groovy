@@ -1,6 +1,5 @@
 package org.simplemes.mes.demand.controller
 
-import groovy.json.JsonSlurper
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
@@ -80,7 +79,7 @@ void setup() {
 
     then: 'the response is valid'
     res.status() == HttpStatus.OK
-    new JsonSlurper().parseText((String) res.getBody().get())
+    Holders.objectMapper.readValue((String) res.getBody().get(),Map)
 
     and: 'the database is updated with the new status'
     def order1 = Order.findByOrder(order.order)
@@ -106,7 +105,7 @@ void setup() {
     def res = sendRequest(uri: '/order/release', method: 'post', content: s)
 
     then: 'the response is valid'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
     json.order.order == order.order
     json.qtyReleased == 1.2
 
@@ -186,7 +185,7 @@ void setup() {
 
     then: 'the response identifies the problem'
     res.status == HttpStatus.BAD_REQUEST
-    def json = new JsonSlurper().parseText((String) res.getBody().get())
+    def json = Holders.objectMapper.readValue((String) res.getBody().get(),Map)
     UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['Empty', 'body'])
   }
 
@@ -204,7 +203,7 @@ void setup() {
     def res = sendRequest(uri: '/order/release', method: 'post', content: request, status: HttpStatus.BAD_REQUEST)
 
     then: 'the response is a bad request with a valid message'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
     UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['gibberish', 'order'])
   }
 
@@ -233,7 +232,7 @@ void setup() {
 
     then: 'the response is valid'
     res.status == HttpStatus.OK
-    def json = new JsonSlurper().parseText((String) res.getBody().get())
+    def json = Holders.objectMapper.readValue((String) res.getBody().get(),List)
 
     and: 'the archive references are returned properly'
     json[0] == 'ABC'
@@ -279,7 +278,7 @@ void setup() {
     def res = sendRequest(uri: '/order/archiveOld', method: 'post', content: request)
 
     then: 'the response is valid'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,List)
     json.size() == 2
     json[0].startsWith('unit/REALLY_OLD')
     json[1].startsWith('unit/REALLY_OLD')
@@ -317,7 +316,7 @@ void setup() {
     def res = sendRequest(uri: '/order/archiveOld', method: 'post', content: request, status: HttpStatus.BAD_REQUEST)
 
     then: 'the response is a bad request with a valid message'
-    def json = new JsonSlurper().parseText(res)
+    def json = Holders.objectMapper.readValue(res,Map)
     UnitTestUtils.assertContainsAllIgnoreCase(json.message.text, ['parse'])
   }
 
@@ -385,7 +384,7 @@ void setup() {
 
     then: 'the response is correct'
     res.status == HttpStatus.OK
-    def json = new JsonSlurper().parseText((String) res.body.get())
+    def json = Holders.objectMapper.readValue((String) res.body.get(),Map)
 
     json.qtyInQueue == 1.2
     json.qtyInWork == 0.0

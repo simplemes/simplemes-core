@@ -1,6 +1,5 @@
 package org.simplemes.mes.system
 
-import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseSpecification
 
@@ -30,7 +29,7 @@ class OrderLSNStatusChangedActionSpec extends BaseSpecification {
     then: 'the JSON is correct'
     //println "s = $s"
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
-    def json = new JsonSlurper().parseText(s)
+    def json = Holders.objectMapper.readValue(s,Map)
     json.type == OrderLSNStatusChangedAction.TYPE_ORDER_LSN_STATUS_CHANGED
     json.list[0].order == 'TEST'
     json.list[0].lsn == 'SN001'

@@ -1,6 +1,5 @@
 package org.simplemes.mes.assy.demand
 
-import groovy.json.JsonSlurper
 import org.openqa.selenium.Keys
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.custom.domain.FlexType
@@ -171,7 +170,7 @@ class OrderAssyActivityGUISpec extends BaseDashboardSpecification {
 
     and: 'the event is triggered'
     def s = TextUtils.findLine($('#events').text(), 'ORDER_COMPONENT_STATUS_CHANGED')
-    def json = new JsonSlurper().parseText(s)
+    def json = Holders.objectMapper.readValue(s,Map)
     json.type == 'ORDER_COMPONENT_STATUS_CHANGED'
     json.source == '/orderAssy/assemblyActivity'
     json.order == order.order
@@ -234,7 +233,7 @@ class OrderAssyActivityGUISpec extends BaseDashboardSpecification {
 
     and: 'the event is triggered'
     def s = TextUtils.findLine($('#events').text(), 'ORDER_COMPONENT_STATUS_CHANGED')
-    def json = new JsonSlurper().parseText(s)
+    def json = Holders.objectMapper.readValue(s,Map)
     json.type == 'ORDER_COMPONENT_STATUS_CHANGED'
     json.source == '/orderAssy/assemblyActivity'
     json.order == order.order

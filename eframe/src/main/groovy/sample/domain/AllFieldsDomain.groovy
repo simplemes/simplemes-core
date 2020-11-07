@@ -107,10 +107,7 @@ class AllFieldsDomain {
   /**
    * A searchable top-level domain.
    */
-  static searchable = {
-    exclude = ['enabled']
-    searchable = true
-  }
+  static searchable = [exclude: ['enabled']]
 
   def validate() {
     def res = []

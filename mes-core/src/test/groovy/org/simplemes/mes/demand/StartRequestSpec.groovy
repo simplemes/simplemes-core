@@ -1,6 +1,5 @@
 package org.simplemes.mes.demand
 
-import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.annotation.Rollback
@@ -38,7 +37,7 @@ class StartRequestSpec extends BaseSpecification {
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
 
     then: 'the request matches'
-    def json = new JsonSlurper().parseText(s)
+    def json = Holders.objectMapper.readValue(s,Map)
     json.order == order.order
     json.lsn == lsn.lsn
 

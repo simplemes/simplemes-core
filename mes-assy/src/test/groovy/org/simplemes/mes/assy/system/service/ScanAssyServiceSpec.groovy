@@ -1,6 +1,5 @@
 package org.simplemes.mes.assy.system.service
 
-import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.exception.MessageHolder
 import org.simplemes.eframe.security.SecurityUtils
@@ -575,7 +574,7 @@ class ScanAssyServiceSpec extends BaseSpecification {
     and: 'the undo action is correct'
     response.undoActions.size() == 1
     def undoAction = response.undoActions[0]
-    def json = new JsonSlurper().parseText(undoAction.json)
+    def json = Holders.objectMapper.readValue(undoAction.json,Map)
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(undoAction.json)}"
     json.sequence == order.assembledComponents[0].sequence
     json.order == order.order

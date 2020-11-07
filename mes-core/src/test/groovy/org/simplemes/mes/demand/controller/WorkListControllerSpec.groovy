@@ -1,6 +1,5 @@
 package org.simplemes.mes.demand.controller
 
-import groovy.json.JsonSlurper
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.test.BaseAPISpecification
 import org.simplemes.eframe.test.ControllerTester
@@ -56,7 +55,7 @@ class WorkListControllerSpec extends BaseAPISpecification {
     def res = controller.findWork(mockRequest([count: '13', start: '26', findInWork: 'false', findInQueue: 'false']), new MockPrincipal('jane', 'OPERATOR'))
 
     then: 'the response is correct'
-    def json = new JsonSlurper().parseText(res.body.get() as String)
+    def json = Holders.objectMapper.readValue(res.body.get() as String,Map)
     json.total_count == 231
   }
 
@@ -81,7 +80,7 @@ class WorkListControllerSpec extends BaseAPISpecification {
     def res = controller.findWork(mockRequest([workCenter: 'ABC']), new MockPrincipal('jane', 'OPERATOR'))
 
     then: 'the response is correct'
-    def json = new JsonSlurper().parseText(res.body.get() as String)
+    def json = Holders.objectMapper.readValue(res.body.get() as String,Map)
     json.total_count == 237
   }
 
@@ -103,7 +102,7 @@ class WorkListControllerSpec extends BaseAPISpecification {
     def res = sendRequest(uri: '/workList/findWork?workCenter=ABC', content: s)
 
     then: 'the released order is in the list'
-    def json = new JsonSlurper().parseText((String) res)
+    def json = Holders.objectMapper.readValue(res as String,Map)
     json.total_count == 1
     json.data.size() == 1
     json.data[0].order == order.order
