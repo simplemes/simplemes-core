@@ -45,12 +45,22 @@ micronaut:
         cookie:
           enabled: true
           loginFailureTargetUrl: /login/auth?failed=true
+          cookie-same-site: 'Strict'
         signatures:
           secret:
             generator:
-              secret: ${eframe_key}    <.>
+              secret: ${eframe.key}  <.>
         generator:
-          access-token-expiration: 1800  # 30 minutes  <.>
+          access-token.expiration: 1800  # 30 minutes  <.>
+          refresh-token:
+            enabled: true
+            base64: true
+            secret: ${eframe.key}
+      refresh:
+        cookie:
+          cookie-path: '/'
+          cookie-max-age: '30d'  <.>
+          cookie-same-site: 'Strict'
     interceptUrlMap:
       - pattern: /assets/**
         httpMethod: GET
@@ -66,11 +76,10 @@ micronaut:
 ---
 eframe:
   security:
-    jwtRefreshMaxAge: 2592000  <.>
     jwtRefreshUseMax: 100  <.>
 
 ----
-<.> This value comes from the environment variable 'eframe_key'.  The JWT encryption
+<.> This value comes from the environment variable 'eframe.key'.  The JWT encryption
     provider requires a 256 bit or longer key (32+ characters).
     See https://docs.micronaut.io/latest/guide/index.html#_included_propertysource_loaders[Micronaut Configuration]
     for more details.
@@ -79,7 +88,7 @@ eframe:
     JWT token will be valid for too long.  This means disabling a user account will not
     take effect until the JWT token has expired.  See <<Security Design>> for details
     on these trade-offs.
-<.> The expiration time for the refresh token (seconds).  Defaults to 30 days (2592000 seconds).
+<.> The expiration time for the refresh token (seconds).  Defaults to 30 days ('30d').
 <.> The number of times a refresh token can be used by the same IP address.  (Default: 100).
     Set this to 1 for strictest security.  1 means that each refresh token can only
     be used once.  This will generate a large number of _REFRESH_TOKEN_ database records.
@@ -93,3 +102,58 @@ It also allows access to some pages/assets without a login.
 ==== Security Setup for Controllers
 
 By default all controller methods must be secured.  See <<Controller Security>> for details.
+
+==== Important Security Options
+
+===== access-token-expiration (micronaut.security...)
+
+Suggested value: 1800 (30 minutes).
+
+This setting defines the number of seconds for the JWT token will live after it is
+created.  This means that any request with this token during that lifetime will
+be allowed.  There will be no check for the User's status or for any other validations.
+
+Making this value larger than 30 minutes means your exposure to security lapses will
+last 30+ minutes.  If someone compromises your network and gets the JWT token,
+they can make requests on the system.  If your JWT tokens expire quickly, then
+the exposure is short.
+
+Making this value less than 5 minutes will force too many expensive refresh requests
+that access the database.
+
+NOTE: If your network or devices are badly compromised, then there is little that
+      the framework can do to prevent issues.  We can detect certain issues such as
+      two users using the same refresh token.
+
+===== micronaut.security.token.refresh.cookie.cookie-max-age
+
+micronaut.security.token.refresh.cookie.cookie-max-age': '10m'
+
+refresh:
+        cookie:
+          cookie-path: '/'
+          cookie-max-age: '13m'
+          cookie-same-site: 'Strict'
+
+Suggested value: 1-14 days.  Defaults to 20days.
+
+This age defines how long a refresh token can be used.  This is similar to the
+traditional session timeout used by older web applications.  This is the time
+when the framework will force the user to login again.
+
+Every time a JWT token expires, the refresh mechanism will usually be triggered.
+This refresh checks the database for the token.  It must be enabled, un-expired
+and never used before.
+The User's setting in the database is also checked.
+
+Setting this value too large means the refresh token can be used a long time.  If
+the refresh token is leaked, then it can be used to provide access to the system for
+longer period of time.
+
+This is mitigated by the fact that the token can only be used once.  The second attempt
+to use the refresh token will disable all tokens for the user.
+This will force the user to re-authenticate by logging in again.
+A message is logged indicating a re-use was attempted.
+
+Setting this value too small means your users will have to login more frequently.
+There is no real downside to this beyond user expectations.

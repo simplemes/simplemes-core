@@ -6,6 +6,7 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<Security Design>>#
 [inline-toc]#<<Security Setup>>#
+[inline-toc]#<<Important Security Options>>#
 [inline-toc]#<<Roles>>#
 [inline-toc]#<<Security GUIs>>#
 

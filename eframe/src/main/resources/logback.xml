@@ -24,6 +24,7 @@
   <logger name="io.micronaut.views" level="warn"/>
   <logger name="io.micronaut.context" level="warn"/> <!--trace for issues creating beans-->
   <logger name="io.micronaut.context.condition" level="warn"/> <!--trace for issues creating beans-->
+  <logger name="io.micronaut.context.env" level="warn"/>  <!--trace for config issues-->
   <logger name="io.micronaut.data" level="warn"/>  <!--debug for SQL, trace for values-->
   <logger name="io.micronaut.security" level="warn"/>
   <logger name="io.micronaut" level="warn"/>

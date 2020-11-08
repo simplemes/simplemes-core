@@ -39,17 +39,10 @@ class WorkArounds {
    * Works around Micronaut Data issue with the JsonCodec wrapping JSONB data in quotes and escaping them.
    *
    * See issue https://github.com/micronaut-projects/micronaut-data/issues/672
+   * Still broken after fix from 2.1.3.
    *
    */
   static boolean workAround672 = true
-
-  /**
-   * Works around Micronaut Security issue that uses the access cookie maxAge for the refresh cookie.
-   *
-   * See issue https://github.com/micronaut-projects/micronaut-security/issues/333
-   *
-   */
-  static boolean workAround333 = true
 
   /**
    * Lists the current work arounds enabled.

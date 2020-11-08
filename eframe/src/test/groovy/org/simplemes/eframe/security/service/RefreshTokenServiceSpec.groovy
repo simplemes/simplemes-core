@@ -18,7 +18,10 @@ import org.simplemes.eframe.security.domain.RefreshToken
 import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.MockAppender
+import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
+
+import java.time.Duration
 
 /**
  * Tests.
@@ -86,7 +89,8 @@ class RefreshTokenServiceSpec extends BaseSpecification {
     refreshToken.refreshToken == uuid
     refreshToken.userName == 'joe'
     refreshToken.enabled
-    refreshToken.expirationDate.time > (System.currentTimeMillis() + (Holders.configuration.security.jwtRefreshMaxAge * 1000) - 1000)
+    def maxAge = service.refreshTokenCookieConfiguration.getCookieMaxAge().orElseGet(() -> Duration.ofDays(30)) as Duration
+    UnitTestUtils.compareDates(refreshToken.expirationDate, new Date(new Date().time + maxAge.toMillis()))
   }
 
   def "verify that getUserDetails always fails"() {
@@ -358,11 +362,13 @@ class RefreshTokenServiceSpec extends BaseSpecification {
     def expiredTokenUsedOnce = createToken('admin')
     def expiredTokenUsedOnceOld = createToken('admin')
     def expiredTokenUsedMultipleTimes = createToken('admin')
+    def maxAge = service.refreshTokenCookieConfiguration.getCookieMaxAge().orElseGet(() -> Duration.ofDays(30)) as Duration
+
 
     and: 'one token is expired but still enabled'
     def record
     record = RefreshToken.findByRefreshToken(getUUID(expiredTokenStillEnabled))
-    record.expirationDate = new Date(System.currentTimeMillis() - 100 * DateUtils.MILLIS_PER_DAY - Holders.configuration.security.jwtRefreshMaxAge * 1000)
+    record.expirationDate = new Date(System.currentTimeMillis() - 100 * DateUtils.MILLIS_PER_DAY - maxAge.toMillis())
     record.save()
 
     and: 'one token is expired and used once - recently'
@@ -374,14 +380,14 @@ class RefreshTokenServiceSpec extends BaseSpecification {
 
     and: 'one token is expired and used once - old'
     record = RefreshToken.findByRefreshToken(getUUID(expiredTokenUsedOnceOld))
-    record.expirationDate = new Date(System.currentTimeMillis() - 100 * DateUtils.MILLIS_PER_DAY - Holders.configuration.security.jwtRefreshMaxAge * 1000)
+    record.expirationDate = new Date(System.currentTimeMillis() - 100 * DateUtils.MILLIS_PER_DAY - maxAge.toMillis())
     record.enabled = false
     record.useAttemptCount = 1
     record.save()
 
     and: 'one token is expired and used multiple times'
     record = RefreshToken.findByRefreshToken(getUUID(expiredTokenUsedMultipleTimes))
-    record.expirationDate = new Date(System.currentTimeMillis() - 100 * DateUtils.MILLIS_PER_DAY - Holders.configuration.security.jwtRefreshMaxAge * 1000)
+    record.expirationDate = new Date(System.currentTimeMillis() - 100 * DateUtils.MILLIS_PER_DAY - maxAge.toMillis())
     record.enabled = false
     record.useAttemptCount = 137
     record.save()

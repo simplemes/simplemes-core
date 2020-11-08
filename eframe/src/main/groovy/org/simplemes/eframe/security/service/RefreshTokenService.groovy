@@ -12,6 +12,7 @@ import io.micronaut.security.errors.IssuingAnAccessTokenErrorCode
 import io.micronaut.security.errors.OauthErrorResponseException
 import io.micronaut.security.token.event.RefreshTokenGeneratedEvent
 import io.micronaut.security.token.generator.RefreshTokenGenerator
+import io.micronaut.security.token.jwt.cookie.RefreshTokenCookieConfiguration
 import io.micronaut.security.token.refresh.RefreshTokenPersistence
 import io.micronaut.security.token.validator.RefreshTokenValidator
 import io.reactivex.Flowable
@@ -25,6 +26,7 @@ import org.simplemes.eframe.security.domain.User
 
 import javax.inject.Singleton
 import javax.transaction.Transactional
+import java.time.Duration
 
 /**
  * Provides services for the JWT refresh tokens.  Implements the refresh token persistence and realted methods.
@@ -47,13 +49,16 @@ class RefreshTokenService implements RefreshTokenPersistence {
 
   protected final RefreshTokenGenerator refreshTokenGenerator
   protected final RefreshTokenValidator refreshTokenValidator
+  protected final RefreshTokenCookieConfiguration refreshTokenCookieConfiguration
 
   /**
    * @param refreshTokenGenerator Refresh Token Generator
    */
-  RefreshTokenService(RefreshTokenGenerator refreshTokenGenerator, RefreshTokenValidator refreshTokenValidator) {
+  RefreshTokenService(RefreshTokenGenerator refreshTokenGenerator, RefreshTokenValidator refreshTokenValidator,
+                      RefreshTokenCookieConfiguration refreshTokenCookieConfiguration) {
     this.refreshTokenGenerator = refreshTokenGenerator
     this.refreshTokenValidator = refreshTokenValidator
+    this.refreshTokenCookieConfiguration = refreshTokenCookieConfiguration
   }
 
 
@@ -69,7 +74,8 @@ class RefreshTokenService implements RefreshTokenPersistence {
     refreshToken.requestSource = getRequestSource(null)
     refreshToken.userName = event.getUserDetails().username
     refreshToken.enabled = true
-    refreshToken.expirationDate = new Date(System.currentTimeMillis() + Holders.configuration.security.jwtRefreshMaxAge * 1000)
+    def maxAge = refreshTokenCookieConfiguration.getCookieMaxAge().orElseGet(() -> Duration.ofDays(30)) as Duration
+    refreshToken.expirationDate = new Date(System.currentTimeMillis() + maxAge.toMillis())
 
     refreshToken.save()
   }

@@ -30,6 +30,7 @@ micronaut:
         cookie:
           enabled: true
           loginFailureTargetUrl: /login/auth?failed=true
+          cookie-same-site: 'Strict'
         signatures:
           secret:
             generator:
@@ -40,8 +41,11 @@ micronaut:
             enabled: true
             base64: true
             secret: ${eframe.key}
-            #refresh-token:
-            #  secret: ${eframe.key}
+      refresh:
+        cookie:
+          cookie-path: '/'
+          cookie-max-age: '31d'
+          cookie-same-site: 'Strict'
     interceptUrlMap:
       - pattern: /assets/**
         httpMethod: GET
@@ -91,6 +95,4 @@ eframe:
   #  factory: org.simplemes.eframe.archive.ArchiverFactory
   #  topFolder: '../archives'
   #  folderName: '#{year}-#{month}-#{day}'
-  security:
-    jwtRefreshMaxAge: 2592000
 
