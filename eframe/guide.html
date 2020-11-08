@@ -3101,7 +3101,7 @@ To avoid issues with the framework, you should use these settings:</p>
 <pre class="CodeRay highlight"><code data-lang="yaml"><span class="head"><span class="head">---</span></span>
 <span class="key">micronaut</span>:
   <span class="key">application</span>:
-    <span class="key">name</span>: <span class="string"><span class="content">???</span></span>
+    <span class="key">name</span>: <span class="string"><span class="content">eframe</span></span>
   <span class="key">session</span>:
     <span class="key">http</span>:
       <span class="key">cookiePath</span>: <span class="string"><span class="content">/</span></span>
@@ -3130,12 +3130,22 @@ To avoid issues with the framework, you should use these settings:</p>
         <span class="key">cookie</span>:
           <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
           <span class="key">loginFailureTargetUrl</span>: <span class="string"><span class="content">/login/auth?failed=true</span></span>
+          <span class="key">cookie-same-site</span>: <span class="string"><span class="content">'Strict'</span></span>
         <span class="key">signatures</span>:
           <span class="key">secret</span>:
             <span class="key">generator</span>:
-              <span class="key">secret</span>: <span class="string"><span class="content">${eframe_key}    </span></span><i class="conum" data-value="1"></i><b>(1)</b>
+              <span class="key">secret</span>: <span class="string"><span class="content">${eframe.key}</span></span>
         <span class="key">generator</span>:
-          <span class="key">access-token-expiration</span>: <span class="string"><span class="content">1800</span></span>  <span class="comment"># 30 minutes</span>
+          <span class="key">access-token.expiration</span>: <span class="string"><span class="content">1800</span></span>
+          <span class="key">refresh-token</span>:
+            <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
+            <span class="key">base64</span>: <span class="string"><span class="content">true</span></span>
+            <span class="key">secret</span>: <span class="string"><span class="content">${eframe.key}</span></span>
+      <span class="key">refresh</span>:
+        <span class="key">cookie</span>:
+          <span class="key">cookie-path</span>: <span class="string"><span class="content">'/'</span></span>
+          <span class="key">cookie-max-age</span>: <span class="string"><span class="content">'30d'</span></span>
+          <span class="key">cookie-same-site</span>: <span class="string"><span class="content">'Strict'</span></span>
     <span class="key">interceptUrlMap</span>:
       - <span class="string"><span class="content">pattern: /assets/**</span></span>
         <span class="key">httpMethod</span>: <span class="string"><span class="content">GET</span></span>
@@ -3147,15 +3157,15 @@ To avoid issues with the framework, you should use these settings:</p>
           - <span class="string"><span class="content">isAnonymous()</span></span>
   <span class="key">server.netty.logLevel</span>: <span class="string"><span class="content">DEBUG</span></span>
   <span class="key">server.thread-selection</span>: <span class="string"><span class="content">AUTO</span></span>
-
 <span class="head"><span class="head">---</span></span>
-<span class="key">datasources</span>:
-  <span class="key">default</span>:
-    <span class="key">url</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">jdbc:postgresql://localhost:5432/eframe_dev</span><span class="delimiter">&quot;</span></span>
-    <span class="key">driverClassName</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">org.postgresql.Driver</span><span class="delimiter">&quot;</span></span>
-    <span class="key">username</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">mph</span><span class="delimiter">&quot;</span></span>
-    <span class="key">password</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">mh1234</span><span class="delimiter">&quot;</span></span>
-    <span class="key">dialect</span>: <span class="string"><span class="content">POSTGRES</span></span>
+<span class="key">dataSource</span>:
+  <span class="key">url</span>: <span class="string"><span class="content">jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE</span></span>
+  <span class="key">dbCreate</span>: <span class="string"><span class="content">create-drop</span></span>
+  <span class="key">pooled</span>: <span class="string"><span class="content">true</span></span>
+  <span class="key">jmxExport</span>: <span class="string"><span class="content">true</span></span>
+  <span class="key">driverClassName</span>: <span class="string"><span class="content">org.h2.Driver</span></span>
+  <span class="key">username</span>: <span class="string"><span class="content">sa</span></span>
+  <span class="key">password</span>: <span class="string"><span class="content">''</span></span>
 
 <span class="head"><span class="head">---</span></span>
 
@@ -3165,7 +3175,9 @@ To avoid issues with the framework, you should use these settings:</p>
       <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
       <span class="key">locations</span>:
         - <span class="string"><span class="content">classpath:db/migration</span></span>
-
+      <span class="comment">#baseline-on-migrate: true</span>
+      <span class="comment">#baseline-version: 0.1</span>
+      <span class="comment">#baseline-description: empty</span>
 <span class="head"><span class="head">---</span></span>
 <span class="key">jackson</span>:
   <span class="key">serialization</span>:
@@ -3178,8 +3190,15 @@ To avoid issues with the framework, you should use these settings:</p>
 
 <span class="head"><span class="head">---</span></span>
 <span class="key">eframe</span>:
-  <span class="key">maxRowLimit</span>: <span class="string"><span class="content">200</span></span></code></pre>
+  <span class="key">maxRowLimit</span>: <span class="string"><span class="content">200</span></span>
+  <span class="key">archive</span>:
+  <span class="comment">#  factory: org.simplemes.eframe.archive.ArchiverFactory</span>
+  <span class="comment">#  topFolder: '../archives'</span>
+  <span class="comment">#  folderName: '#{year}-#{month}-#{day}'</span></code></pre>
 </div>
+</div>
+<div class="paragraph">
+<p>See <a href="#security-setup">Security Setup</a> for specifics on the security elements.</p>
 </div>
 </div>
 <div class="sect3">
@@ -4438,6 +4457,7 @@ class.</p>
 <div class="paragraph">
 <p><span class="inline-toc"><a href="#security-design">Security Design</a></span>
 <span class="inline-toc"><a href="#security-setup">Security Setup</a></span>
+<span class="inline-toc"><a href="#important-security-options">Important Security Options</a></span>
 <span class="inline-toc"><a href="#roles">Roles</a></span>
 <span class="inline-toc"><a href="#security-guis">Security GUIs</a></span></p>
 </div>
@@ -4490,72 +4510,8 @@ User record in the DB for the user&#8217;s status.</p>
 If the values are too small or too large, then performance may suffer or your exposure
 to security lapses may be too large.</p>
 </div>
-<div class="sect4">
-<h5 id="access-token-expiration-micronaut-security"><a class="link" href="#access-token-expiration-micronaut-security">access-token-expiration (micronaut.security&#8230;&#8203;)</a></h5>
 <div class="paragraph">
-<p>Suggested value: 1800 (30 minutes).</p>
-</div>
-<div class="paragraph">
-<p>This setting defines the number of seconds for the JWT token will live after it is
-created.  This means that any request with this token during that lifetime will
-be allowed.  There will be no check for the User&#8217;s status or for any other validations.</p>
-</div>
-<div class="paragraph">
-<p>Making this value larger than 30 minutes means your exposure to security lapses will
-last 30+ minutes.  If someone compromises your network and gets the JWT token,
-they can make requests on the system.  If your JWT tokens expire quickly, then
-the exposure is short.</p>
-</div>
-<div class="paragraph">
-<p>Making this value less than 5 minutes will force too many expensive refresh requests
-that access the database.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-If your network or devices are badly compromised, then there is little that
-      the framework can do to prevent issues.  We can detect certain issues such as
-      two users using the same refresh token.
-</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect4">
-<h5 id="eframe-security-jwtrefreshmaxage"><a class="link" href="#eframe-security-jwtrefreshmaxage">eframe.security.jwtRefreshMaxAge</a></h5>
-<div class="paragraph">
-<p>Suggested value: 1-14 days.</p>
-</div>
-<div class="paragraph">
-<p>This age defines how long a refresh token can be used.  This is similar to the
-traditional session timeout used by older web applications.  This is the time
-when the framework will force the user to login again.</p>
-</div>
-<div class="paragraph">
-<p>Every time a JWT token expires, the refresh mechanism will usually be triggered.
-This refresh checks the database for the token.  It must be enabled, un-expired
-and never used before.
-The User&#8217;s setting in the database is also checked.</p>
-</div>
-<div class="paragraph">
-<p>Setting this value too large means the refresh token can be used a long time.  If
-the refresh token is leaked, then it can be used to provide access to the system for
-longer period of time.</p>
-</div>
-<div class="paragraph">
-<p>This is mitigated by the fact that the token can only be used once.  The second attempt
-to use the refresh token will disable all tokens for the user.
-This will force the user to re-authenticate by logging in again.
-A message is logged indicating a re-use was attempted.</p>
-</div>
-<div class="paragraph">
-<p>Setting this value too small means your users will have to login more frequently.
-There is no real downside to this beyond user expectations.</p>
-</div>
+<p>See <a href="#security-setup">Security Setup</a> for details on setting these timeouts.</p>
 </div>
 </div>
 <div class="sect3">
@@ -4691,12 +4647,22 @@ You should make sure there is at least one user with the <em>ADMIN</em> role in 
         <span class="key">cookie</span>:
           <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
           <span class="key">loginFailureTargetUrl</span>: <span class="string"><span class="content">/login/auth?failed=true</span></span>
+          <span class="key">cookie-same-site</span>: <span class="string"><span class="content">'Strict'</span></span>
         <span class="key">signatures</span>:
           <span class="key">secret</span>:
             <span class="key">generator</span>:
-              <span class="key">secret</span>: <span class="string"><span class="content">${eframe_key}    </span></span><i class="conum" data-value="1"></i><b>(1)</b>
+              <span class="key">secret</span>: <span class="string"><span class="content">${eframe.key}  </span></span><i class="conum" data-value="1"></i><b>(1)</b>
         <span class="key">generator</span>:
-          <span class="key">access-token-expiration</span>: <span class="string"><span class="content">1800</span></span>  <span class="comment"># 30 minutes  </span><i class="conum" data-value="2"></i><b>(2)</b>
+          <span class="key">access-token.expiration</span>: <span class="string"><span class="content">1800</span></span>  <span class="comment"># 30 minutes  </span><i class="conum" data-value="2"></i><b>(2)</b>
+          <span class="key">refresh-token</span>:
+            <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
+            <span class="key">base64</span>: <span class="string"><span class="content">true</span></span>
+            <span class="key">secret</span>: <span class="string"><span class="content">${eframe.key}</span></span>
+      <span class="key">refresh</span>:
+        <span class="key">cookie</span>:
+          <span class="key">cookie-path</span>: <span class="string"><span class="content">'/'</span></span>
+          <span class="key">cookie-max-age</span>: <span class="string"><span class="content">'30d'  </span></span><i class="conum" data-value="3"></i><b>(3)</b>
+          <span class="key">cookie-same-site</span>: <span class="string"><span class="content">'Strict'</span></span>
     <span class="key">interceptUrlMap</span>:
       - <span class="string"><span class="content">pattern: /assets/**</span></span>
         <span class="key">httpMethod</span>: <span class="string"><span class="content">GET</span></span>
@@ -4712,7 +4678,6 @@ You should make sure there is at least one user with the <em>ADMIN</em> role in 
 <span class="head"><span class="head">---</span></span>
 <span class="key">eframe</span>:
   <span class="key">security</span>:
-    <span class="key">jwtRefreshMaxAge</span>: <span class="string"><span class="content">2592000  </span></span><i class="conum" data-value="3"></i><b>(3)</b>
     <span class="key">jwtRefreshUseMax</span>: <span class="string"><span class="content">100  </span></span><i class="conum" data-value="4"></i><b>(4)</b></code></pre>
 </div>
 </div>
@@ -4720,7 +4685,7 @@ You should make sure there is at least one user with the <em>ADMIN</em> role in 
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>This value comes from the environment variable 'eframe_key'.  The JWT encryption
+<td>This value comes from the environment variable 'eframe.key'.  The JWT encryption
 provider requires a 256 bit or longer key (32+ characters).
 See <a href="https://docs.micronaut.io/latest/guide/index.html#_included_propertysource_loaders">Micronaut Configuration</a>
 for more details.</td>
@@ -4735,7 +4700,7 @@ on these trade-offs.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The expiration time for the refresh token (seconds).  Defaults to 30 days (2592000 seconds).</td>
+<td>The expiration time for the refresh token (seconds).  Defaults to 30 days ('30d').</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
@@ -4756,6 +4721,86 @@ It also allows access to some pages/assets without a login.
 <h4 id="security-setup-for-controllers"><a class="link" href="#security-setup-for-controllers">Security Setup for Controllers</a></h4>
 <div class="paragraph">
 <p>By default all controller methods must be secured.  See <a href="#controller-security">Controller Security</a> for details.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="important-security-options"><a class="link" href="#important-security-options">Important Security Options</a></h4>
+<div class="sect4">
+<h5 id="access-token-expiration-micronaut-security"><a class="link" href="#access-token-expiration-micronaut-security">access-token-expiration (micronaut.security&#8230;&#8203;)</a></h5>
+<div class="paragraph">
+<p>Suggested value: 1800 (30 minutes).</p>
+</div>
+<div class="paragraph">
+<p>This setting defines the number of seconds for the JWT token will live after it is
+created.  This means that any request with this token during that lifetime will
+be allowed.  There will be no check for the User&#8217;s status or for any other validations.</p>
+</div>
+<div class="paragraph">
+<p>Making this value larger than 30 minutes means your exposure to security lapses will
+last 30+ minutes.  If someone compromises your network and gets the JWT token,
+they can make requests on the system.  If your JWT tokens expire quickly, then
+the exposure is short.</p>
+</div>
+<div class="paragraph">
+<p>Making this value less than 5 minutes will force too many expensive refresh requests
+that access the database.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If your network or devices are badly compromised, then there is little that
+      the framework can do to prevent issues.  We can detect certain issues such as
+      two users using the same refresh token.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="micronaut-security-token-refresh-cookie-cookie-max-age"><a class="link" href="#micronaut-security-token-refresh-cookie-cookie-max-age">micronaut.security.token.refresh.cookie.cookie-max-age</a></h5>
+<div class="paragraph">
+<p>micronaut.security.token.refresh.cookie.cookie-max-age': '10m'</p>
+</div>
+<div class="paragraph">
+<p>refresh:
+        cookie:
+          cookie-path: '/'
+          cookie-max-age: '13m'
+          cookie-same-site: 'Strict'</p>
+</div>
+<div class="paragraph">
+<p>Suggested value: 1-14 days.  Defaults to 20days.</p>
+</div>
+<div class="paragraph">
+<p>This age defines how long a refresh token can be used.  This is similar to the
+traditional session timeout used by older web applications.  This is the time
+when the framework will force the user to login again.</p>
+</div>
+<div class="paragraph">
+<p>Every time a JWT token expires, the refresh mechanism will usually be triggered.
+This refresh checks the database for the token.  It must be enabled, un-expired
+and never used before.
+The User&#8217;s setting in the database is also checked.</p>
+</div>
+<div class="paragraph">
+<p>Setting this value too large means the refresh token can be used a long time.  If
+the refresh token is leaked, then it can be used to provide access to the system for
+longer period of time.</p>
+</div>
+<div class="paragraph">
+<p>This is mitigated by the fact that the token can only be used once.  The second attempt
+to use the refresh token will disable all tokens for the user.
+This will force the user to re-authenticate by logging in again.
+A message is logged indicating a re-use was attempted.</p>
+</div>
+<div class="paragraph">
+<p>Setting this value too small means your users will have to login more frequently.
+There is no real downside to this beyond user expectations.</p>
+</div>
 </div>
 </div>
 </div>
@@ -19386,7 +19431,7 @@ to the repository.  If you use the repository method directly, then this is not 
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-11-07 23:16:19 UTC
+Last updated 2020-11-08 18:00:35 UTC
 </div>
 </div>
 <style>

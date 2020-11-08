@@ -154,12 +154,18 @@ implements io.micronaut.security.token.refresh.RefreshTokenPersistence</pre>
                         </tr>
                         
                         <tr class="altColor">
+                            <td class="colFirst"><code><strong>protected&nbsp;io.micronaut.security.token.jwt.cookie.RefreshTokenCookieConfiguration</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#refreshTokenCookieConfiguration">refreshTokenCookieConfiguration</a></code></td>
+                            <td class="colLast"></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong>protected&nbsp;io.micronaut.security.token.generator.RefreshTokenGenerator</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#refreshTokenGenerator">refreshTokenGenerator</a></code></td>
                             <td class="colLast"></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong>protected&nbsp;io.micronaut.security.token.validator.RefreshTokenValidator</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#refreshTokenValidator">refreshTokenValidator</a></code></td>
                             <td class="colLast"></td>
@@ -192,8 +198,8 @@ implements io.micronaut.security.token.refresh.RefreshTokenPersistence</pre>
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#RefreshTokenService(io.micronaut.security.token.generator.RefreshTokenGenerator, io.micronaut.security.token.validator.RefreshTokenValidator)">RefreshTokenService</a>
-                                (io.micronaut.security.token.generator.RefreshTokenGenerator refreshTokenGenerator, io.micronaut.security.token.validator.RefreshTokenValidator refreshTokenValidator)</code><br> <DL><DT><B>Parameters:</B></DT><DD><code>refreshTokenGenerator</code> -  Refresh Token Generator</DD></DL></td>
+                                <code><a href="#RefreshTokenService(io.micronaut.security.token.generator.RefreshTokenGenerator, io.micronaut.security.token.validator.RefreshTokenValidator, io.micronaut.security.token.jwt.cookie.RefreshTokenCookieConfiguration)">RefreshTokenService</a>
+                                (io.micronaut.security.token.generator.RefreshTokenGenerator refreshTokenGenerator, io.micronaut.security.token.validator.RefreshTokenValidator refreshTokenValidator, io.micronaut.security.token.jwt.cookie.RefreshTokenCookieConfiguration refreshTokenCookieConfiguration)</code><br> <DL><DT><B>Parameters:</B></DT><DD><code>refreshTokenGenerator</code> -  Refresh Token Generator</DD></DL></td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -342,6 +348,14 @@ implements io.micronaut.security.token.refresh.RefreshTokenPersistence</pre>
                             </li>
                         </ul>
                     
+                        <a name="refreshTokenCookieConfiguration"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;final&nbsp;io.micronaut.security.token.jwt.cookie.RefreshTokenCookieConfiguration <strong>refreshTokenCookieConfiguration</strong></h4>
+                                <p></p>
+                            </li>
+                        </ul>
+                    
                         <a name="refreshTokenGenerator"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -374,10 +388,10 @@ implements io.micronaut.security.token.refresh.RefreshTokenPersistence</pre>
                 </a>
                     <h3>Constructor Detail</h3>
                     
-                        <a name="RefreshTokenService(io.micronaut.security.token.generator.RefreshTokenGenerator, io.micronaut.security.token.validator.RefreshTokenValidator)"><!-- --></a>
+                        <a name="RefreshTokenService(io.micronaut.security.token.generator.RefreshTokenGenerator, io.micronaut.security.token.validator.RefreshTokenValidator, io.micronaut.security.token.jwt.cookie.RefreshTokenCookieConfiguration)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>RefreshTokenService</strong>(io.micronaut.security.token.generator.RefreshTokenGenerator refreshTokenGenerator, io.micronaut.security.token.validator.RefreshTokenValidator refreshTokenValidator)</h4>
+                                <h4><strong>RefreshTokenService</strong>(io.micronaut.security.token.generator.RefreshTokenGenerator refreshTokenGenerator, io.micronaut.security.token.validator.RefreshTokenValidator refreshTokenValidator, io.micronaut.security.token.jwt.cookie.RefreshTokenCookieConfiguration refreshTokenCookieConfiguration)</h4>
                                 <p> <DL><DT><B>Parameters:</B></DT><DD><code>refreshTokenGenerator</code> -  Refresh Token Generator</DD></DL></p>
                             </li>
                         </ul>

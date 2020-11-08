@@ -143,20 +143,15 @@ extends java.lang.Object</pre>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code><strong>private&nbsp;static&nbsp;boolean</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#workAround333">workAround333</a></code><br>Works around Micronaut Security issue that uses the access cookie maxAge for the refresh cookie.</td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;boolean</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#workAround671">workAround671</a></code><br>Works around Micronaut Data issue with updating foreign references (ManyToOne with a targetEntity).</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong>private&nbsp;static&nbsp;boolean</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#workAround672">workAround672</a></code><br>Works around Micronaut Data issue with the JsonCodec wrapping JSONB data in quotes and escaping them.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong>private&nbsp;static&nbsp;boolean</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#workAroundOptimistic">workAroundOptimistic</a></code><br>Workaround for micronaut-data missing optimistic locking.  </td>
                         </tr>
@@ -269,17 +264,6 @@ extends java.lang.Object</pre>
                             </li>
                         </ul>
                     
-                        <a name="workAround333"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;boolean <strong>workAround333</strong></h4>
-                                <p> Works around Micronaut Security issue that uses the access cookie maxAge for the refresh cookie.
-
- See issue https://github.com/micronaut-projects/micronaut-security/issues/333
-</p>
-                            </li>
-                        </ul>
-                    
                         <a name="workAround671"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -298,6 +282,7 @@ extends java.lang.Object</pre>
                                 <p> Works around Micronaut Data issue with the JsonCodec wrapping JSONB data in quotes and escaping them.
 
  See issue https://github.com/micronaut-projects/micronaut-data/issues/672
+ Still broken after fix from 2.1.3.
 </p>
                             </li>
                         </ul>
