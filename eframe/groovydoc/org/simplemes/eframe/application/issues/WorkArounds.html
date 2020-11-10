@@ -156,6 +156,11 @@ extends java.lang.Object</pre>
                             <td class="colLast"><code><a href="#workAroundOptimistic">workAroundOptimistic</a></code><br>Workaround for micronaut-data missing optimistic locking.  </td>
                         </tr>
                         
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;boolean</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#workAroundToolkit1">workAroundToolkit1</a></code><br>Temporary testing work around for the Toolkit sorting using markSorting.  </td>
+                        </tr>
+                        
                     </table>
                    </ul>
                 </li>
@@ -295,6 +300,19 @@ extends java.lang.Object</pre>
  Permanent fix will need help with JDBC changes covered in enhancement:
  https://github.com/micronaut-projects/micronaut-data/issues/299
 </p>
+                            </li>
+                        </ul>
+                    
+                        <a name="workAroundToolkit1"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;static&nbsp;boolean <strong>workAroundToolkit1</strong></h4>
+                                <p> Temporary testing work around for the Toolkit sorting using markSorting.  This approach requires two clicks
+ to change sort order from ascending.  Perhaps the code snippet might help to use a different mechanism for
+ initial sorting:
+ https://snippet.webix.com/cgr5o3os
+
+ This work around does not directly affect the production run-time.  It only helps some tests.</p>
                             </li>
                         </ul>
                     
