@@ -5,6 +5,7 @@
 package org.simplemes.eframe.web.ui.webix.widget
 
 import org.openqa.selenium.Keys
+import org.simplemes.eframe.application.issues.WorkArounds
 import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.test.BaseGUISpecification
@@ -69,6 +70,10 @@ class DefinitionListWidgetGUISpec extends BaseGUISpecification {
     and: 'the list is re-sorted on first column for descending order'
     allFieldsDomainGrid.headers[getColumnIndex(AllFieldsDomain, 'name')].click()
     waitForCompletion()
+    if (WorkArounds.workAroundToolkit1) {
+      allFieldsDomainGrid.headers[getColumnIndex(AllFieldsDomain, 'name')].click()
+      waitForCompletion()
+    }
 
     then: 'the page is sorted in descending order'
     def cell0 = allFieldsDomainGrid.cell(0, getColumnIndex(AllFieldsDomain, 'name'))
@@ -119,6 +124,10 @@ class DefinitionListWidgetGUISpec extends BaseGUISpecification {
     and: 'the list is re-sorted on first column for descending order'
     allFieldsDomainGrid.headers[getColumnIndex(AllFieldsDomain, 'name')].click()
     waitForCompletion()
+    if (WorkArounds.workAroundToolkit1) {
+      allFieldsDomainGrid.headers[getColumnIndex(AllFieldsDomain, 'name')].click()
+      waitForCompletion()
+    }
 
     and: 'the second pager button is clicked'
     allFieldsDomainGrid.pagerButtons[2].click()

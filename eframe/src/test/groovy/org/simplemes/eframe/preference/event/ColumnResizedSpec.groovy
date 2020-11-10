@@ -55,7 +55,6 @@ class ColumnResizedSpec extends BaseSpecification {
     new ColumnResized().handleEvent(params2)
 
     then: 'the final settings are found'
-    println "recs = ${UserPreference.list()}"
     PreferenceHolder preference = PreferenceHolder.find {
       page '/app/testPage'
       user SecurityUtils.TEST_USER

@@ -278,7 +278,6 @@ class RefreshTokenServiceSpec extends BaseSpecification {
       def record = RefreshToken.findByRefreshToken(getUUID(token1))
       record.requestSource = originalAddress
       record.save()
-      println "record = $record"
     }
 
     and: 'a mock appender for Error level only'

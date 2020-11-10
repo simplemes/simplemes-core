@@ -267,6 +267,14 @@ class BaseGUISpecification extends BaseSpecification {
     return $('div.webix_popup').find('div.webix_list_item', webix_l_id: id)
   }
 
+  /**
+   * Returns the given dynamic tooltip (needed for toolkit 8.0 tooltips on buttons).
+   * @param id The button ID (toolkit ID).
+   * @return The tooltip value.
+   */
+  String getTooltip(String id) {
+    return js.exec("return \$\$('$id').config.tooltip.template;")
+  }
 
   /**
    * Clicks a toolkit button with the given view ID.

@@ -36,7 +36,6 @@ class AbstractPage extends Page {
   static content = {
     messages { module(new MessagesModule(divID: 'messages')) }
     button { id -> $('div.webix_el_button', view_id: id) }
-    buttonTooltip { id -> $('div.webix_el_button', view_id: id).find('div').@title }
     textField { id -> module(new TextFieldModule(field: id)) }
     configButton(required: false) { $('div.webix_el_button', view_id: 'configButton') }
     logoutButton(required: false) { $('a', id: 'LogoutLink') }

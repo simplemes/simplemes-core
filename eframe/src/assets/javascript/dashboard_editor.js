@@ -1402,6 +1402,9 @@ efe.dashboardEditor = function () {
       }
       return undefined;
     },
+    // Simple click handler for use with std dashboard.js button.
+    _clickButton: function (id) {
+    },
     // Registers the configuration action needed for this definition page.
     _registerConfigAction: function () {
       ef._registerConfigAction({action: dashboardEditor.openDashboardEditor, title: 'Open Dashboard Editor'});

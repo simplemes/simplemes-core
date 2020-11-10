@@ -4,8 +4,7 @@ Scratch
 
 Tasks
 =====
-JWT Refresh Token support before 1.0?
-  Consider moving to use of status UNAUTHORIZED vs. FORBIDDEN.
+Consider moving to use of status UNAUTHORIZED vs. FORBIDDEN.
 Bug - Expired password needs to re-direct to change password page.
 Bug - Jasper Reports fails from shadowJar on Debian, JDK 14.
 Issue 672 Still broken.  Update project ref-issue to 2.1.3 and verify that it is still broken.

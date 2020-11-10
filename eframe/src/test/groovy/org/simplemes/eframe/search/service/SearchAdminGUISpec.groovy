@@ -62,9 +62,9 @@ class SearchAdminGUISpec extends BaseGUISpecification {
 
     and: 'the buttons have the right labels/tooltips'
     resetButton.button.text() == lookup('searchResetCounters.label')
-    resetButton.title == lookup('searchResetCounters.tooltip')
+    getTooltip('searchResetCounters') == lookup('searchResetCounters.tooltip')
     rebuildAllButton.button.text() == lookup('search.rebuild.label')
-    rebuildAllButton.title == lookup('search.rebuild.tooltip')
+    getTooltip('searchRebuildIndices') == lookup('search.rebuild.tooltip')
 
     and: 'the bulk status is not displayed'
     !bulkIndexSection.displayed

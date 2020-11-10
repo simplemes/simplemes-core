@@ -4,7 +4,7 @@
 
 package org.simplemes.eframe.web.ui.webix.widget
 
-
+import org.simplemes.eframe.application.issues.WorkArounds
 import org.simplemes.eframe.preference.domain.UserPreference
 import org.simplemes.eframe.test.BaseDashboardSpecification
 import org.simplemes.eframe.test.page.GridModule
@@ -71,6 +71,10 @@ class ListWidgetGUISpec extends BaseDashboardSpecification {
     and: 'the list is re-sorted on first column for descending order'
     workList.headers[0].click()
     waitForCompletion()
+    if (WorkArounds.workAroundToolkit1) {
+      workList.headers[0].click()
+      waitForCompletion()
+    }
 
     then: 'the last element is now first'
     workList.cell(0, 0).text() == "M1${sprintf('%03d', OrderController.WORK_RECORD_COUNT)}"

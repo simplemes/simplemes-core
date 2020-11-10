@@ -1,20 +1,17 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 package org.simplemes.eframe.web.ui.webix.freemarker
 
 import asset.pipeline.micronaut.AssetPipelineService
 import ch.qos.logback.classic.Level
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.LogUtils
-import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.system.controller.LoggingController
 import org.simplemes.eframe.test.BaseMarkerSpecification
 import org.simplemes.eframe.test.JavascriptTestUtils
 import org.simplemes.eframe.test.MockBean
-
-/*
- * Copyright Michael Houston 2018. All rights reserved.
- * Original Author: mph
- *
-*/
 
 /**
  * Tests.
@@ -31,25 +28,31 @@ class GUISetupMarkerSpec extends BaseMarkerSpecification {
     when: 'the head section is created'
     def page = execute(source: '<@efGUISetup/>')
 
-    then: 'the right locale is included'
-    def language = locale.language
-    def include = TextUtils.findLine(page, '<script src')
-    include.contains("/assets/i18n/$language-")
-    include.contains('charset="utf-8"')
-
-    and: 'the default locale is set'
-    def htmlLang = locale.toLanguageTag()
-    page.contains("""webix.i18n.setLocale("$htmlLang");""")
+    then: 'the right locale is included in the right order'
+    page.contains("""webix.i18n.setLocale("$expectedLanguage");""")
+    page.indexOf('webix.i18n.setLocale("') < page.indexOf('webix.i18n.setLocale()')
 
     and: 'the override of the date formats is done'
     page.contains('webix.i18n.dateFormat = ')
     page.contains('webix.i18n.fullDateFormat = ')
 
     where:
-    locale         | results
-    Locale.GERMANY | "de_DE"
-    Locale.US      | "en_US"
-    Locale.ENGLISH | "en"
+    // Needs to provide a specific dialect for Webix 8.0 to use the locale.
+    locale                         | expectedLanguage
+    Locale.GERMANY                 | "de-DE"
+    Locale.GERMAN                  | "de-DE"
+    Locale.US                      | "en-US"
+    Locale.ENGLISH                 | "en-US"
+    Locale.forLanguageTag('ru-RU') | "ru-RU"
+    Locale.FRENCH                  | "fr-FR"
+    Locale.CANADA_FRENCH           | "fr-FR"
+    Locale.JAPANESE                | "ja-JP"
+    Locale.forLanguageTag('be-BY') | "be-BY"
+    Locale.forLanguageTag('es-ES') | "es-ES"
+    Locale.ITALIAN                 | "it-IT"
+    Locale.CHINESE                 | "zh-CN"
+    Locale.forLanguageTag('pt-BR') | "pt-BR"
+    Locale.KOREA                   | "ko-KR"  // Not available with toolkit, but just in case it is added later.
   }
 
   def "verify that the marker creates the javascript logger setup logic"() {

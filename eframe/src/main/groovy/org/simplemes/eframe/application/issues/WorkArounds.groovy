@@ -45,6 +45,16 @@ class WorkArounds {
   static boolean workAround672 = true
 
   /**
+   * Temporary testing work around for the Toolkit sorting using markSorting.  This approach requires two clicks
+   * to change sort order from ascending.  Perhaps the code snippet might help to use a different mechanism for
+   * initial sorting:
+   * https://snippet.webix.com/cgr5o3os
+   *
+   * This work around does not directly affect the production run-time.  It only helps some tests.
+   */
+  static boolean workAroundToolkit1 = true
+
+  /**
    * Lists the current work arounds enabled.
    * @return
    */

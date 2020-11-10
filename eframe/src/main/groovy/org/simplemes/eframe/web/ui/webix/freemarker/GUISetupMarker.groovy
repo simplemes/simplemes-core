@@ -24,11 +24,10 @@ class GUISetupMarker extends BaseMarker {
   void execute() {
     def locale = GlobalUtils.getRequestLocale() ?: Locale.default
     def sb = new StringBuilder()
-    def lang = locale?.language ?: 'en'
-    def langHTML = locale?.toLanguageTag() ?: 'en-US'
-    def assetPath = AssetMarker.getAssetPath("/assets/i18n/${lang}.js", this)
-    sb << """<script src="$assetPath" type="text/javascript" charset="utf-8"></script>\n"""
-    sb << """<script type="text/javascript">webix.i18n.setLocale("$langHTML");\n"""
+    def toolkitLang = getToolkitDialectForLocale(locale)
+
+    sb << """<script type="text/javascript">\n"""
+    sb << """  webix.i18n.setLocale("${toolkitLang}");\n"""
     sb << """  webix.i18n.fullDateFormat = "${getFullDateFormat(locale)}";\n"""
     sb << """  webix.i18n.dateFormat = "${getDateFormat(locale)}";\n"""
     sb << """  webix.i18n.parseFormat = "%Y-%m-%d %H:%i:%s";\n"""
@@ -38,6 +37,34 @@ class GUISetupMarker extends BaseMarker {
 
     write(sb.toString())
     //body?.render(environment.getOut())
+  }
+
+  /**
+   * The toolkit-specific language/dialect needed for the given language.
+   */
+  static toolkitLanguages = [en: "en-US",
+                             ru: "ru-RU",
+                             fr: "fr-FR",
+                             ja: "ja-JP",
+                             be: "be-BY",
+                             de: "de-DE",
+                             es: "es-ES",
+                             it: "it-IT",
+                             zh: "zh-CN",
+                             pt: "pt-BR"]
+
+  /**
+   * Gets the full language/dialect for the given locale that works for the toolkit.
+   * @param locale The locale.
+   * @return The lang/dialect (e.g. 'en-US') in toolkit format.
+   */
+  String getToolkitDialectForLocale(Locale locale) {
+    def lang = locale?.language ?: 'en'
+    def s = toolkitLanguages[lang]
+    if (!s) {
+      s = "${locale?.language}-${locale?.country?.toUpperCase()}"
+    }
+    return s
   }
 
   /**

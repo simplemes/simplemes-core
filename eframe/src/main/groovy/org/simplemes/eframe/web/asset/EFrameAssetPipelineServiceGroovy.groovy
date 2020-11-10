@@ -25,8 +25,8 @@ import javax.inject.Singleton
 class EFrameAssetPipelineServiceGroovy extends EFrameAssetPipelineService {
   EFrameAssetPipelineServiceGroovy() {
     super()
-    // Force the .asscache file to the build/ folder in dev mode.
-    if (Holders.environmentDev) {
+    // Force the .asscache file to the build/ folder in dev/test mode.
+    if (Holders.environmentDev || Holders.environmentTest) {
       AssetPipelineConfigHolder.config.put("cacheLocation", "build/.asscache")
     }
   }

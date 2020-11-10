@@ -370,8 +370,8 @@ class ToolkitJSDialogGUISpec extends BaseJSSpecification {
     then: 'the dialog was resized'
     int width2 = dialog0.view.width
     int height2 = dialog0.view.height
-    UnitTestUtils.assertClose(width2, width1 + 100, 'Dialog width after move', 5)
-    UnitTestUtils.assertClose(height2, height1 + 50, 'Dialog height after move', 5)
+    UnitTestUtils.assertClose(width2, width1 + 100, 'Dialog width after move', 10)
+    UnitTestUtils.assertClose(height2, height1 + 50, 'Dialog height after move', 10)
 
     when: 'the user preferences written to the DB'
     waitFor() {

@@ -81,9 +81,9 @@ class DefinitionEditorGUISpec extends BaseDefinitionEditorSpecification {
 
     and: 'the buttons are localized'
     button('save').text() == lookup('save.label')
-    buttonTooltip('save') == lookup('save.tooltip')
+    getTooltip('save') == lookup('save.tooltip')
     button('cancel').text() == lookup('cancel.label')
-    buttonTooltip('cancel') == lookup('cancel.tooltip')
+    getTooltip('cancel') == lookup('cancel.tooltip')
   }
 
   def "verify that editor drag and drop can add a core field to the fieldOrder"() {

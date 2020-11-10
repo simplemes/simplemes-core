@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2020. All rights reserved.
+ */
+
 buildscript {
   repositories {
     mavenLocal()
@@ -17,6 +21,8 @@ plugins {
   id "io.micronaut.application" version '1.0.5'
 }
 
+version "0.5"
+
 repositories {
   mavenLocal()
   mavenCentral()
@@ -31,10 +37,6 @@ micronaut {
   runtime "netty"
   testRuntime "spock2"
 }
-
-/*
- * Copyright (c) Michael Houston 2020. All rights reserved.
- */
 
 // Common tasks from the overall common.gradle file provides: version, bintrayUpload, maven artifact creation.
 apply from: "../gradle/common.gradle"
@@ -116,7 +118,7 @@ dependencies {
   // https://mvnrepository.com/artifact/net.sourceforge.barbecue/barbecue
   compile group: 'net.sourceforge.barbecue', name: 'barbecue', version: barbecueVersion
 
-  compile ("org.simplemes:webix:6.0.9") // { transitive = false}
+  compile ("org.simplemes:webix:8.0.1") // { transitive = false}
 
   test {
     useJUnitPlatform()  // Forces Junit5 for Spock in Gradle tests.
