@@ -38,19 +38,19 @@
           elements: [
             {
               view: "button", id: "_taskMenuButton", width: 40, type: "icon", icon: "fas fa-bars",
-              click: 'tk._taskMenuToggle();', tooltip: 'i18n: Task Menu'
+              click: 'tk._taskMenuToggle();', tooltip: 'i18n: Task Menu', css: 'no-border'
             },
             {view: "label", template: "<span></span>"},
             {
               view: "button", id: 'configButton', width: 40, type: "icon", icon: "fas fa-cogs",
               click: 'ef._triggerConfigAction();',
-              tooltip: '<@efLookup key="configurePage.label"/>'
+              tooltip: '<@efLookup key="configurePage.label"/>', css: 'no-border'
             },
             <#if _loggedIn>
             {
               view: "button", width: 40, type: "icon", icon: "fas fa-power-off",
               click: 'javascript:logoutForm.submit()', tooltip: '<@efLookup key="logout.label"/>',
-              id: "logoutButton"
+              id: "logoutButton", css: 'no-border'
             },
             </#if>
             {

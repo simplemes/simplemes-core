@@ -11,10 +11,6 @@ Issue 672 Still broken.  Update project ref-issue to 2.1.3 and verify that it is
 Reports
   Fix issue with date ranges error by TZ offset?
 Add workaround for update failure: 299.  Remove sop.
-  Check for MN-Data issue 404 fix.  Was in 2.0.  Update row count should be returned?
-  Check for MN issue 1103 - Using trait in with router/method defined.  Seemed to be fixed in Groovy 3.0.  Consider using Traits in mes-core?
-In MN 2.0.2, check on fix for error routing: https://github.com/micronaut-projects/micronaut-core/issues/3834
-  Shows when error is triggered on url: http://localhost:8080/dashboard?dashboardCategory=OPERATOR
 Investigate timezone issues on findAllByDateTimeLessThan(Date) queries.  Seems to be off by 5 hours?  ProductionLog.archive()?
 Version and opt locking (custom JDBCOperations).
 Cascading updates.  Find some way to prevent? - isDirty or save() option?
@@ -34,8 +30,6 @@ Fix mess with efForm.dashboard.  Support type='dashboard', 'buttonHolder' and 'd
   Add E2E test for optimistic locking detection.  In definition GUIs.
   Add Dashboard editor.
   Add splitter position remember in dashboard.
-  Upgrade to Webix 7.X for window close option.  Webix 0.5 vs. 6.0.9 issue on Linux?
-    Look into bug on Search Engine searching and paging.  (Search filter from page 2 is messy).  Fix is to always search filter from page one.  Maybe force refresh ot page 1?
   Reports
     Test in MES app.
   Build check from jenkins with single Repo on GitHub.

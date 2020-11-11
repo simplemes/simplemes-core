@@ -111,7 +111,7 @@ class ButtonWidgetSpec extends BaseWidgetSpecification {
     checkPage(page)
 
     and: 'the basic properties are correct'
-    JavascriptTestUtils.extractProperty(page, 'css') == 'caution-button'
+    JavascriptTestUtils.extractProperty(page, 'css').contains('caution-button')
   }
 
   def "verify that apply generates the button correctly - width passed in as number"() {

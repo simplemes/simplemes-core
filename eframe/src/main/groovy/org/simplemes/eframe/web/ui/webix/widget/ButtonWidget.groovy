@@ -117,19 +117,19 @@ class ButtonWidget extends BaseWidget {
     def type = widgetContext.parameters.type ?: 'icon'
 
     // Override the label to use an HTML link if desired
-    def css = ''
+    def css
     if (widgetContext.parameters.link) {
       type = 'htmlbutton'
       def href = widgetContext.parameters.link
       def a = """<a href="$href" class="toolbar-link" tabindex="-1">"""
       def span1 = """<span class="webix_icon $iconEntryS"></span>"""
       labelS = """label: '$a$span1<span class="toolbar-span"> $label</span></a>',"""
-      css = 'no-border'
 
       // And add a click handler to allow us to take the <a> tag out of the TAB navigation order.
       click = """click: "window.location='$href'", """
     }
 
+    css = 'no-border'
     if (widgetContext.parameters.css) {
       if (css) {
         css += " "

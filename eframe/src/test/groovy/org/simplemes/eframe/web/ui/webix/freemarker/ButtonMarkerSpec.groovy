@@ -120,7 +120,7 @@ class ButtonMarkerSpec extends BaseMarkerSpecification {
     checkPage(page)
 
     and: 'the css is used'
-    JavascriptTestUtils.extractProperty(page, 'css') == """style-abc style-xyz"""
+    JavascriptTestUtils.extractProperty(page, 'css').contains("style-abc style-xyz")
   }
 
   def "verify that the marker handles double-quotes in click script"() {
