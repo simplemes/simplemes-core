@@ -134,7 +134,7 @@ mainClassName = "org.simplemes.eframe.application.Application"
 // Remove some sample/test files from the published jar. 
 jar {
   exclude "logback.xml"
-  exclude "application-test.yml"
+  exclude "application*.yml"
   exclude "/org/simplemes/eframe/application/Application.class"
   exclude "/sample/**"
   exclude "/db/sampleMigration/**"

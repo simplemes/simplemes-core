@@ -30,18 +30,22 @@ micronaut:
         cookie:
           enabled: true
           loginFailureTargetUrl: /login/auth?failed=true
+          cookie-same-site: 'Strict'
         signatures:
           secret:
             generator:
-              secret: ${eframe.key}
+              secret: ${EFRAME_KEY}
         generator:
-          access-token.expiration: 937  #
+          access-token.expiration: 1801  #
           refresh-token:
             enabled: true
             base64: true
-            secret: ${eframe.key}
-            #refresh-token:
-            #  secret: ${eframe.key}
+            secret: ${EFRAME_KEY}
+      refresh:
+        cookie:
+          cookie-path: '/'
+          cookie-max-age: '31d'
+          cookie-same-site: 'Strict'
     interceptUrlMap:
       - pattern: /assets/**
         httpMethod: GET
@@ -54,14 +58,15 @@ micronaut:
   server.netty.logLevel: DEBUG
   server.thread-selection: AUTO
 ---
-dataSource:
-  url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
-  dbCreate: create-drop
-  pooled: true
-  jmxExport: true
-  driverClassName: org.h2.Driver
-  username: sa
-  password: ''
+datasources:
+  default:
+    url: ${DATABASE_URL}
+    #url: "jdbc:postgresql://localhost:5432/mes_dev"
+    username: "mph"
+    password: "mh1234"
+    driverClassName: "org.postgresql.Driver"
+    dialect: POSTGRES
+    maximum-pool-size: 18
 
 ---
 

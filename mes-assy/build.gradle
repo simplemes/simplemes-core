@@ -57,7 +57,7 @@ mainClassName = "org.simplemes.mes.assy.application.Application"
 // Remove some sample/test files from the published jar.
 jar {
   exclude "logback.xml"
-  exclude "application-test.yml"
+  exclude "application*.yml"
   exclude "/sample/**"
   exclude "/org/simplemes/mes/assy/application/Application.class"
   exclude "/reports/sample/**"

@@ -1,3 +1,67 @@
 MES App Tasks
 =============
 
+
+Start local:
+ docker run --env EFRAME_KEY=testKey890123456789012345678901234567890testKey890123456789012345678901234567890 --env JDBC_DATABASE_URL="jdbc:postgresql://192.168.1.77:5432/mes_dev?user=mph&password=mh1234" -p 8080:8080 mes
+ docker run --env EFRAME_KEY=testKey890123456789012345678901234567890testKey890123456789012345678901234567890 --env DATABASE_URL="postgresql://mph:mh1234@192.168.1.77:5432/mes_dev" -p 8080:8080 mes
+
+Kill local:
+  docker stop <imageID>
+  docker system prune // Cleans up old images/containers
+
+Example JDBC_DATABASE_URL
+
+  export DATABASE_URL=postgres://foo:foo@localhost/hellodb?user=<user>&password=<password>
+  export JDBC_DATABASE_URL=jdbc:postgresql://localhost:5432/mes_dev?user=mph&password=mh1234
+
+  Also available: JDBC_DATABASE_USERNAME and JDBC_DATABASE_PASSWORD
+  Real Heroku URL:
+                  user              pwd
+    postgres://esveiqoqmonffs:78b0c1846ba9749c334aca77b6d26e9a8a237271d62c1c7a5f46e344a107d95e@ec2-3-220-98-137.compute-1.amazonaws.com:5432/daul8squ1248oa
+
+
+https://devcenter.heroku.com/articles/container-registry-and-runtime
+https://devcenter.heroku.com/articles/container-registry-and-runtime#pushing-an-existing-image
+
+
+https://developer.okta.com/blog/2020/08/17/micronaut-jhipster-heroku#micronaut-docker-on-heroku
+
+
+Heroku setup
+============
+Download heroku Windows tarball
+Extract.  Add heroku.cmd to bin or PATH
+
+  heroku login
+  heroku container:login
+
+  docker tag db39a0b37572 registry.heroku.com/simplemes-demo/web
+  docker push registry.heroku.com/simplemes-demo/web
+  heroku container:release web -a simplemes-demo
+
+ Startup (runs app, but bash is listed).
+  heroku run -a simplemes-demo bash
+
+Push new build to Heroku
+========================
+  remove old: docker rmi -f  <oldImageID>
+  Update code, run dockerBuild on local.
+  docker tag <imageID> registry.heroku.com/simplemes-demo/web
+  docker push registry.heroku.com/simplemes-demo/web
+  heroku container:release web -a simplemes-demo
+  heroku run -a simplemes-demo bash
+
+Stop
+  heroku ps:kill web.1 -a simplemes-demo
+  heroku logs --tail -a simplemes-demo
+  heroku stop web.1 -a simplemes-demo
+
+
+latest: digest: sha256:097b6a0b729311bcda57247dfab1fb063f5467e91e8d660477dd039e8a87d641 size: 1577
+
+TODO:
+======
+Figure out JWT_REFRESH_TOKEN request_source issue with docker world.
+  Maybe drop request source checking.
+  Maybe use getHeader("X-Request-ID")?  This is unique in Heroku.
