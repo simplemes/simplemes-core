@@ -269,7 +269,7 @@ class RefreshTokenServiceSpec extends BaseSpecification {
                                        'admin', address?.address?.toString(), '/thePath'])
   }
 
-  def "verify that replaceRefreshToken detects IP mis-match and fails"() {
+  def "verify that replaceRefreshToken allows re-use with IP mis-match"() {
     given: 'a refresh token for user is saved'
     def token1 = createToken('admin')
 
@@ -280,28 +280,12 @@ class RefreshTokenServiceSpec extends BaseSpecification {
       record.save()
     }
 
-    and: 'a mock appender for Error level only'
-    def mockAppender = MockAppender.mock(RefreshTokenService, Level.ERROR)
-
     when: 'the token is refreshed and replaced from a different address'
     def address = new InetSocketAddress(InetAddress.localHost, 437)
     def replacementToken = service.replaceRefreshToken(token1, mockRequest(remoteAddress: address, uri: '/thePath'), false)
 
-    then: 'the attempt failed'
-    !replacementToken
-
-    and: 'the original token is disabled'
-    RefreshToken.withTransaction {
-      def record2 = RefreshToken.findByRefreshToken(getUUID(token1))
-      assert !record2.enabled
-      assert record2.useAttemptCount == 1
-      true
-    }
-
-    and: 'the log message is written'
-    def originalAddressString = originalAddress ?: 'null'
-    mockAppender.assertMessageIsValid(['ERROR', 'all', 'tokens', 'revoked', originalAddressString, address.address.toString(),
-                                       'admin', address?.address?.toString(), '/thePath'])
+    then: 'the attempt worked'
+    replacementToken
 
     where:
     originalAddress | _
@@ -405,6 +389,24 @@ class RefreshTokenServiceSpec extends BaseSpecification {
     RefreshToken.findByRefreshToken(getUUID(currentToken))
     RefreshToken.findByRefreshToken(getUUID(expiredTokenUsedOnce))
     RefreshToken.findByRefreshToken(getUUID(expiredTokenUsedMultipleTimes))
+  }
+
+  def "verify that getRequestSource builds a source with the correct values"() {
+    when: 'the token is refreshed and replaced from a different address'
+    def address = new InetSocketAddress(originalAddress, 437)
+    def source = service.getRequestSource(mockRequest(remoteAddress: address, headers: headers))
+    println "source = $source"
+
+    then: 'source contains the expected values'
+    UnitTestUtils.assertContainsAllIgnoreCase(source, results)
+
+    where:
+    originalAddress | headers                    | results
+    '9.9.9.9'       | [:]                        | ['9.9.9.9']
+    '9.9.9.9'       | ['X-Request-ID': 'xyzzy']  | ['9.9.9.9', 'xyzzy']
+    '9.9.9.9'       | ['X-Forwarded-For': 'pdq'] | ['9.9.9.9', 'pdq']
+
+
   }
 
 }

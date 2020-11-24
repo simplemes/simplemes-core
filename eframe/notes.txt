@@ -1,6 +1,11 @@
 Scratch
 =======
 
+TODO:
+======
+Figure out JWT_REFRESH_TOKEN request_source issue with docker world.
+  Maybe drop request source checking.
+  Maybe use getHeader("X-Request-ID") and X-forward? ?  This is unique in Heroku.
 
 Tasks
 =====

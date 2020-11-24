@@ -12,13 +12,7 @@ Kill local:
 
 Example JDBC_DATABASE_URL
 
-  export DATABASE_URL=postgres://foo:foo@localhost/hellodb?user=<user>&password=<password>
-  export JDBC_DATABASE_URL=jdbc:postgresql://localhost:5432/mes_dev?user=mph&password=mh1234
-
-  Also available: JDBC_DATABASE_USERNAME and JDBC_DATABASE_PASSWORD
-  Real Heroku URL:
-                  user              pwd
-    postgres://esveiqoqmonffs:78b0c1846ba9749c334aca77b6d26e9a8a237271d62c1c7a5f46e344a107d95e@ec2-3-220-98-137.compute-1.amazonaws.com:5432/daul8squ1248oa
+  export DATABASE_URL=postgres://user:pw@host:5432/db
 
 
 https://devcenter.heroku.com/articles/container-registry-and-runtime
@@ -45,23 +39,19 @@ Extract.  Add heroku.cmd to bin or PATH
 
 Push new build to Heroku
 ========================
-  remove old: docker rmi -f  <oldImageID>
   Update code, run dockerBuild on local.
-  docker tag <imageID> registry.heroku.com/simplemes-demo/web
+  docker tag mes:latest registry.heroku.com/simplemes-demo/web
   docker push registry.heroku.com/simplemes-demo/web
   heroku container:release web -a simplemes-demo
+
+Start first time
   heroku run -a simplemes-demo bash
 
 Stop
-  heroku ps:kill web.1 -a simplemes-demo
   heroku logs --tail -a simplemes-demo
+  heroku ps:kill web.1 -a simplemes-demo
   heroku stop web.1 -a simplemes-demo
 
 
 latest: digest: sha256:097b6a0b729311bcda57247dfab1fb063f5467e91e8d660477dd039e8a87d641 size: 1577
 
-TODO:
-======
-Figure out JWT_REFRESH_TOKEN request_source issue with docker world.
-  Maybe drop request source checking.
-  Maybe use getHeader("X-Request-ID")?  This is unique in Heroku.

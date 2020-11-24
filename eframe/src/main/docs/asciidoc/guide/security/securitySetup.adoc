@@ -49,13 +49,13 @@ micronaut:
         signatures:
           secret:
             generator:
-              secret: ${eframe.key}  <.>
+              secret: ${EFRAME_KEY}  <.>
         generator:
           access-token.expiration: 1800  # 30 minutes  <.>
           refresh-token:
             enabled: true
             base64: true
-            secret: ${eframe.key}
+            secret: ${EFRAME_KEY}
       refresh:
         cookie:
           cookie-path: '/'
@@ -79,7 +79,7 @@ eframe:
     jwtRefreshUseMax: 100  <.>
 
 ----
-<.> This value comes from the environment variable 'eframe.key'.  The JWT encryption
+<.> This value comes from the environment variable 'EFRAME_KEY'.  The JWT encryption
     provider requires a 256 bit or longer key (32+ characters).
     See https://docs.micronaut.io/latest/guide/index.html#_included_propertysource_loaders[Micronaut Configuration]
     for more details.
@@ -89,10 +89,11 @@ eframe:
     take effect until the JWT token has expired.  See <<Security Design>> for details
     on these trade-offs.
 <.> The expiration time for the refresh token (seconds).  Defaults to 30 days ('30d').
-<.> The number of times a refresh token can be used by the same IP address.  (Default: 100).
+<.> The number of times a refresh token can be used by the user.  (Default: 100).
     Set this to 1 for strictest security.  1 means that each refresh token can only
-    be used once.  This will generate a large number of _REFRESH_TOKEN_ database records.
-    This might be useful in detecting IP address forgery in your network.
+    be used once. This might be useful in detecting IP address forgery in your network.
+    This will generate more _REFRESH_TOKEN_ database records,
+    but they are cleaned up after they have reached their expiration date.
 
 
 This configures JWT Security to force all controller requests to be authenticated.

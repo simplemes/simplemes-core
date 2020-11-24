@@ -69,8 +69,8 @@ in this:
 
 These two beans, along with the
 link:groovydoc/org/simplemes/eframe/security/service/RefreshTokenService.html[RefreshTokenService^] icon:share-square-o[role="link-blue"]
-will only allow the refresh token to be used from the same IP address it was issued to.
-If any mis-matches are detected (IP address or jwtRefreshUseMax violations), then the
+will only allow the refresh token to be used a limited number of times.
+If used too many times, then the
 existing refresh tokens for the user will be disabled and force a new login.
 
 

@@ -37,9 +37,6 @@ Part of the security protocol makes use of a _Limited Use Refresh Token_ instead
 reduces the chance of a refresh token being leaked to un-authorized users.  This should give a good
 user experience without a big compromise of the security.  
 
-If a later attempt is made to re-use a token from a different IP address, then a warning is logged and all tokens for 
-the user are revoked.  
- 
 REST API clients will need to use explicitly request the new access cookie as needed.
 
 ### OAuth /oauth/access_token Endpoint Use

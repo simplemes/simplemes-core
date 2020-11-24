@@ -81,13 +81,23 @@ class RefreshTokenService implements RefreshTokenPersistence {
   }
 
   /**
-   * Returns the request source IP address (as string).
+   * Returns the request source IP address (as string) plus other request-related details (e.g. X-Request-ID
+   * and X-Forwarded-For if available).
    * @param request The request.  If null, uses the Holders.currentRequest.
    * @return The source address.  May be null.
    */
   String getRequestSource(HttpRequest request) {
     request = request ?: Holders.currentRequest
-    return request?.remoteAddress?.address?.toString() ?: 'no IP'
+    def s = request?.remoteAddress?.address?.toString() ?: 'no IP'
+    if (request?.headers) {
+      if (request.headers.get('X-Forwarded-For')) {
+        s = s+ ", fwd="+request.headers.get('X-Forwarded-For')
+      }
+      if (request.headers.get('X-Request-ID')) {
+        s = s+ ", req="+request.headers.get('X-Request-ID')
+      }
+    }
+    return s
   }
 
   /**
@@ -130,8 +140,6 @@ class RefreshTokenService implements RefreshTokenPersistence {
         failureReason = 'disabled token'
       } else if (currentRefreshToken.useAttemptCount > maxUsages) {
         failureReason = "useCount(${currentRefreshToken.useAttemptCount}) > $maxUsages"
-      } else if (currentRefreshToken.requestSource != requestSource) {
-        failureReason = "requestSource mis-match ${currentRefreshToken.requestSource} vs. $requestSource"
       }
       if (currentRefreshToken.expirationDate < new Date()) {
         log.debug("replaceRefreshToken(): Refresh token {} expired for user '{}' from '{}'.",

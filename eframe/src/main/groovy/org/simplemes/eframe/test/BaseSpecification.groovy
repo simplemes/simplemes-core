@@ -9,6 +9,7 @@ import geb.spock.GebSpec
 import groovy.util.logging.Slf4j
 import io.micronaut.context.ApplicationContext
 import io.micronaut.core.convert.ConversionService
+import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpRequest
 import io.micronaut.http.cookie.Cookies
 import io.micronaut.http.netty.cookies.NettyCookie
@@ -352,6 +353,7 @@ class BaseSpecification extends GebSpec {
    *   <li><b>accept</b> - The Accept header for this request. </li>
    *   <li><b>remoteAddress</b> - The InetSocketAddress simulated for this mock request. </li>
    *   <li><b>cookies</b> - A list of cookies simulated for this mock request.  Array of strings in format: ['JWT=abc...','JWT_REFRESH=abc...'] </li>
+   *   <li><b>headers</b> - A list of headers simulated for this mock request.  Map with key = header name. </li>
    * </ul>
    *
    * @param params The parameters (optional).  Special parameters ('uri') are stored in the request itself in the special fields.
@@ -404,6 +406,14 @@ class BaseSpecification extends GebSpec {
         cookies.get(name) >> new NettyCookie(name, value)
       }
       request.getCookies() >> cookies
+    }
+
+    if (params?.headers) {
+      def headers = Mock(HttpHeaders)
+      params.headers.each {String k,v ->
+        headers.get(k) >> v
+      }
+      request.getHeaders() >> headers
     }
 
     Holders.mockRequest = request
