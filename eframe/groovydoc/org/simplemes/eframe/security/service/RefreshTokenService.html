@@ -238,7 +238,7 @@ implements io.micronaut.security.token.refresh.RefreshTokenPersistence</pre>
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getRequestSource(io.micronaut.http.HttpRequest)">getRequestSource</a></strong>(io.micronaut.http.HttpRequest request)</code><br>Returns the request source IP address (as string).</td>
+                            <td class="colLast"><code><strong><a href="#getRequestSource(io.micronaut.http.HttpRequest)">getRequestSource</a></strong>(io.micronaut.http.HttpRequest request)</code><br>Returns the request source IP address (as string) plus other request-related details (e.g. </td>
                         </tr>
                         
                         <tr class="altColor">
@@ -430,7 +430,8 @@ protected&nbsp;void <strong>cleanupOldUserTokens</strong>(java.lang.String userN
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>java.lang.String <strong>getRequestSource</strong>(io.micronaut.http.HttpRequest request)</h4>
-                                <p> Returns the request source IP address (as string). <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.  If null, uses the Holders.currentRequest.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The source address.  May be null.</DD></DL></p>
+                                <p> Returns the request source IP address (as string) plus other request-related details (e.g. X-Request-ID
+ and X-Forwarded-For if available). <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.  If null, uses the Holders.currentRequest.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The source address.  May be null.</DD></DL></p>
                             </li>
                         </ul>
                     

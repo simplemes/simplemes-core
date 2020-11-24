@@ -4583,8 +4583,8 @@ This gets the cookies from the request and puts them
 <div class="paragraph">
 <p>These two beans, along with the
 <a href="groovydoc/org/simplemes/eframe/security/service/RefreshTokenService.html" target="_blank" rel="noopener">RefreshTokenService</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>
-will only allow the refresh token to be used from the same IP address it was issued to.
-If any mis-matches are detected (IP address or jwtRefreshUseMax violations), then the
+will only allow the refresh token to be used a limited number of times.
+If used too many times, then the
 existing refresh tokens for the user will be disabled and force a new login.</p>
 </div>
 </div>
@@ -4651,13 +4651,13 @@ You should make sure there is at least one user with the <em>ADMIN</em> role in 
         <span class="key">signatures</span>:
           <span class="key">secret</span>:
             <span class="key">generator</span>:
-              <span class="key">secret</span>: <span class="string"><span class="content">${eframe.key}  </span></span><i class="conum" data-value="1"></i><b>(1)</b>
+              <span class="key">secret</span>: <span class="string"><span class="content">${EFRAME_KEY}  </span></span><i class="conum" data-value="1"></i><b>(1)</b>
         <span class="key">generator</span>:
           <span class="key">access-token.expiration</span>: <span class="string"><span class="content">1800</span></span>  <span class="comment"># 30 minutes  </span><i class="conum" data-value="2"></i><b>(2)</b>
           <span class="key">refresh-token</span>:
             <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
             <span class="key">base64</span>: <span class="string"><span class="content">true</span></span>
-            <span class="key">secret</span>: <span class="string"><span class="content">${eframe.key}</span></span>
+            <span class="key">secret</span>: <span class="string"><span class="content">${EFRAME_KEY}</span></span>
       <span class="key">refresh</span>:
         <span class="key">cookie</span>:
           <span class="key">cookie-path</span>: <span class="string"><span class="content">'/'</span></span>
@@ -4685,7 +4685,7 @@ You should make sure there is at least one user with the <em>ADMIN</em> role in 
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>This value comes from the environment variable 'eframe.key'.  The JWT encryption
+<td>This value comes from the environment variable 'EFRAME_KEY'.  The JWT encryption
 provider requires a 256 bit or longer key (32+ characters).
 See <a href="https://docs.micronaut.io/latest/guide/index.html#_included_propertysource_loaders">Micronaut Configuration</a>
 for more details.</td>
@@ -4704,10 +4704,11 @@ on these trade-offs.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>The number of times a refresh token can be used by the same IP address.  (Default: 100).
+<td>The number of times a refresh token can be used by the user.  (Default: 100).
 Set this to 1 for strictest security.  1 means that each refresh token can only
-be used once.  This will generate a large number of <em>REFRESH_TOKEN</em> database records.
-This might be useful in detecting IP address forgery in your network.</td>
+be used once. This might be useful in detecting IP address forgery in your network.
+This will generate more <em>REFRESH_TOKEN</em> database records,
+but they are cleaned up after they have reached their expiration date.</td>
 </tr>
 </table>
 </div>
@@ -19431,7 +19432,7 @@ to the repository.  If you use the repository method directly, then this is not 
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-11-23 17:35:47 UTC
+Last updated 2020-11-24 16:43:27 UTC
 </div>
 </div>
 <style>
