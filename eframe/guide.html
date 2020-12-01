@@ -3130,7 +3130,7 @@ To avoid issues with the framework, you should use these settings:</p>
         <span class="key">cookie</span>:
           <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
           <span class="key">loginFailureTargetUrl</span>: <span class="string"><span class="content">/login/auth?failed=true</span></span>
-          <span class="key">cookie-same-site</span>: <span class="string"><span class="content">'Strict'</span></span>
+          <span class="key">cookie-same-site</span>: <span class="string"><span class="content">'Lax'</span></span>
         <span class="key">signatures</span>:
           <span class="key">secret</span>:
             <span class="key">generator</span>:
@@ -3145,7 +3145,7 @@ To avoid issues with the framework, you should use these settings:</p>
         <span class="key">cookie</span>:
           <span class="key">cookie-path</span>: <span class="string"><span class="content">'/'</span></span>
           <span class="key">cookie-max-age</span>: <span class="string"><span class="content">'30d'</span></span>
-          <span class="key">cookie-same-site</span>: <span class="string"><span class="content">'Strict'</span></span>
+          <span class="key">cookie-same-site</span>: <span class="string"><span class="content">'Lax'</span></span>
     <span class="key">interceptUrlMap</span>:
       - <span class="string"><span class="content">pattern: /assets/**</span></span>
         <span class="key">httpMethod</span>: <span class="string"><span class="content">GET</span></span>
@@ -4647,7 +4647,7 @@ You should make sure there is at least one user with the <em>ADMIN</em> role in 
         <span class="key">cookie</span>:
           <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
           <span class="key">loginFailureTargetUrl</span>: <span class="string"><span class="content">/login/auth?failed=true</span></span>
-          <span class="key">cookie-same-site</span>: <span class="string"><span class="content">'Strict'</span></span>
+          <span class="key">cookie-same-site</span>: <span class="string"><span class="content">'Lax'</span></span>
         <span class="key">signatures</span>:
           <span class="key">secret</span>:
             <span class="key">generator</span>:
@@ -4662,7 +4662,7 @@ You should make sure there is at least one user with the <em>ADMIN</em> role in 
         <span class="key">cookie</span>:
           <span class="key">cookie-path</span>: <span class="string"><span class="content">'/'</span></span>
           <span class="key">cookie-max-age</span>: <span class="string"><span class="content">'30d'  </span></span><i class="conum" data-value="3"></i><b>(3)</b>
-          <span class="key">cookie-same-site</span>: <span class="string"><span class="content">'Strict'</span></span>
+          <span class="key">cookie-same-site</span>: <span class="string"><span class="content">'Lax'</span></span>
     <span class="key">interceptUrlMap</span>:
       - <span class="string"><span class="content">pattern: /assets/**</span></span>
         <span class="key">httpMethod</span>: <span class="string"><span class="content">GET</span></span>
@@ -4771,7 +4771,7 @@ If your network or devices are badly compromised, then there is little that
         cookie:
           cookie-path: '/'
           cookie-max-age: '13m'
-          cookie-same-site: 'Strict'</p>
+          cookie-same-site: 'Lax'</p>
 </div>
 <div class="paragraph">
 <p>Suggested value: 1-14 days.  Defaults to 20days.</p>
@@ -15717,6 +15717,11 @@ Only <a href="#json">JSON</a> is supported in these Rest API methods.
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>The authentication is handled by logging in to the <em>'/login'</em> page and then use the response
+cookies (<em>JWT</em> and <em>JWT_REFRESH_TOKEN</em>) in the REST requests for authentication.
+See <a href="#security">Security</a> for details.</p>
+</div>
 <div class="sect3">
 <h4 id="crud"><a class="link" href="#crud">CRUD</a></h4>
 <div class="paragraph">
@@ -16094,9 +16099,9 @@ The JSON format for these references can use the 'id' format:</p>
 <pre class="CodeRay highlight"><code data-lang="json">{
   <span class="key"><span class="delimiter">&quot;</span><span class="content">orderCode</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">10102-23</span><span class="delimiter">&quot;</span></span>,
   <span class="key"><span class="delimiter">&quot;</span><span class="content">product</span><span class="delimiter">&quot;</span></span>: {
-    <span class="key"><span class="delimiter">&quot;</span><span class="content">product</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">BIKE_27  <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">product</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">BIKE_27</span><span class="delimiter">&quot;</span></span>  <i class="conum" data-value="1"></i><b>(1)</b>
   }
-}</span></span></code></pre>
+}</code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -19432,7 +19437,7 @@ to the repository.  If you use the repository method directly, then this is not 
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-11-24 16:43:27 UTC
+Last updated 2020-12-01 16:42:40 UTC
 </div>
 </div>
 <style>
