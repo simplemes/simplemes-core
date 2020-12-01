@@ -44,6 +44,7 @@ Push new build to Heroku
   docker push registry.heroku.com/simplemes-demo/web
   heroku container:release web -a simplemes-demo
 
+
 Start first time
   heroku run -a simplemes-demo bash
 

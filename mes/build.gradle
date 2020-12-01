@@ -62,9 +62,11 @@ jar {
   exclude "/reports/sample/**"
 }
 
+/*
 dockerfile {
   args("-Xmx128m")
 }
+*/
 
 // Force the META-INF/services from each micronaut module to be used in the Fat Jar and combine common .properties
 // from all modules.

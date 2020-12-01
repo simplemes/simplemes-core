@@ -4,7 +4,6 @@ Scratch
 TODO:
 ======
 
-Investigate timezone issues on findAllByDateTimeLessThan(Date) queries.  Seems to be off by 5 hours?  ProductionLog.archive()?
 
 Tasks
 =====
