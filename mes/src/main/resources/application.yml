@@ -30,7 +30,7 @@ micronaut:
         cookie:
           enabled: true
           loginFailureTargetUrl: /login/auth?failed=true
-          cookie-same-site: 'Strict'
+          cookie-same-site: 'Lax'
         signatures:
           secret:
             generator:
@@ -45,7 +45,7 @@ micronaut:
         cookie:
           cookie-path: '/'
           cookie-max-age: '31d'
-          cookie-same-site: 'Strict'
+          cookie-same-site: 'Lax'
     interceptUrlMap:
       - pattern: /assets/**
         httpMethod: GET

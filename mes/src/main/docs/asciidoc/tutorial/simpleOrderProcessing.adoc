@@ -23,7 +23,9 @@ and track how it is processed on ths shop floor.
 
 === Logging In
 
-. Navigate to the home page ("_https://demo.simplemes.org:8080/_" for the public demo server):
+. Navigate to the home page (see
+link:guide.html#demo-server[Demo Server^] icon:share-square-o[role="link-blue"]
+for the public demo server):
 +
 image::guis/home.png[title="Home Page",align="center", width="750"]
 
@@ -110,19 +112,24 @@ actions they are making and to display the order status.
 
 These dashboards are created in a number of ways, but the easiest is to load the demo data.
 
-. In the browser, browse to the URL ("_https://demo.simplemes.org:8080/demoData_" for the
-  public demo server).  This will display the demo data loaded:
+. In the browser, browse to the URL
+  (link:guide.html#demo-server[Demo Server^] icon:share-square-o[role="link-blue"])
+.  This will display the demo data loaded:
 +
 image::guis/demoData.png[title="Demo Data Loader", align="center", width="400"]
 
+
+NOTE: There are two variants of the dashboard: 'Operator' and 'Manager'.  The
+      'Operator' variants are <<Scan Dashboard>> variants.  The 'Manager' variants
+      have a simple input field for the order/LSN input.
 
 === Display the Dashboard
 
 You can start a dashboard in a number ways, but the easiest is to select _Manager Dashboard_
 from the home page.
 
-. In the browser, browse to the home page ("_https://demo.simplemes.org:8080/_" for the
-  public demo server).
+. In the browser, browse to the home page (
+  link:guide.html#demo-server[Demo Server^] icon:share-square-o[role="link-blue"] ).
 
 . Select _Manager Dashboard_ from home page. This will display the _Traditional_ manager
   dashboard:

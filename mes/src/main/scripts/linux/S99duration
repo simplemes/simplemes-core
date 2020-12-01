@@ -1,0 +1,65 @@
+#!/bin/sh
+### BEGIN INIT INFO
+# Provides:          duration
+# Required-Start:    $syslog $time $remote_fs
+# Required-Stop:     $syslog $time $remote_fs
+# Default-Start:     2 3 4 5
+# Default-Stop:      1
+# Short-Description: Simple MES Duration Test
+# Description:       Simple MES Duration Test
+### END INIT INFO
+SERVICE_NAME=Duration
+PATH_TO_JAR=/home/mph/tools/apache-jmeter-5.3/bin/ApacheJMeter.jar
+PID_PATH_NAME=/var/run/DURATION.pid
+LOG_FILE=/home/mph/mes/duration.log
+HOME=/home/mph/mes
+cd $HOME
+# Arguments from the bin/jmeter script provided with jmeter.
+ARGS="-server -Xms512m -Xmx512m -XX:NewSize=128m -XX:MaxNewSize=128m -XX:MaxTenuringThreshold=2 -Dsun.rmi.dgc.client.gcInterval=600000 -Dsun.rmi.dgc.server.gcInterval=600000 -XX:PermSize=64m -XX:MaxPermSize=128m -XX:+HeapDumpOnOutOfMemoryError"
+case $1 in
+    start)
+        echo "Starting $SERVICE_NAME ..."
+        if [ ! -f $PID_PATH_NAME ]; then
+            sudo -u mph nohup java $ARGS -jar $PATH_TO_JAR  -n -t /home/mph/mes/BasicDurationTest2.jmx -Jstartup.delay=60000 2>> $LOG_FILE >> $LOG_FILE &
+            echo $! > $PID_PATH_NAME
+            echo "$SERVICE_NAME started ..."
+            cat $PID_PATH_NAME
+        else
+            echo "$SERVICE_NAME is already running ..."
+        fi
+    ;;
+    stop)
+      /home/mph/mes/jmKill
+      rm $PID_PATH_NAME
+    ;;
+    restart)
+        if [ -f $PID_PATH_NAME ]; then
+            PID=$(cat $PID_PATH_NAME);
+            echo "$SERVICE_NAME stopping $PID ...";
+            kill $PID;
+            echo "$SERVICE_NAME stopped ...";
+            rm $PID_PATH_NAME
+            echo "$SERVICE_NAME starting ..."
+            sudo -u mph nohup java $ARGS -jar $PATH_TO_JAR  -n -t BasicDurationTest2.jmx -Jstartup.delay=60000 2>> $LOG_FILE >> $LOG_FILE &
+            echo $! > $PID_PATH_NAME
+            echo "$SERVICE_NAME started ..."
+        else
+            echo "$SERVICE_NAME is not running ..."
+        fi
+    ;;
+    status)
+      if [ -f $PID_PATH_NAME ]; then
+        PID=`cat $PID_PATH_NAME`
+        if [ -z "`ps axf | grep -w ${PID} | grep -v grep`" ]; then
+            echo "Not running (process dead but pidfile exists)"
+            exit 1
+        else
+            echo "Running [$PID]"
+            exit 0
+        fi
+      else
+        echo "Not running"
+        exit 3
+      fi
+    ;;
+esac

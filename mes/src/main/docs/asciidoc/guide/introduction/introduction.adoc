@@ -14,6 +14,7 @@ The main features are:
 image::guis/dashboard.png[title="Dashboard",align="center", width=50%]
 
 
+See <<Demo Server>> for a live MES server available.
 
 == Introduction
 

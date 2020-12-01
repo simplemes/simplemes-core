@@ -9,7 +9,7 @@ NOTE: This is subject to change and just a general guide.  We (the development t
 === Alpha (0.8 - 2018)
 
 The main goals for the alpha release is to demonstrate the technology and key approaches.
-The main deliverable is a public demo server (http://demo.simplemes.org/) that allows
+The main deliverable is a public <<Demo Server>> that allows
 potential users to work with the system.
 
 The planned features include:
@@ -21,7 +21,6 @@ The planned features include:
 **  Modular structure
 * Deployment
 **  Manual Docker/WAR deployment
-* Live Demo Server
 * Reports
 ** Assembly
 ** Production

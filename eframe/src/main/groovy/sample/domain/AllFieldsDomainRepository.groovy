@@ -22,9 +22,14 @@ interface AllFieldsDomainRepository extends BaseRepository, CrudRepository<AllFi
 
   List<AllFieldsDomain> findAllByName(String name)
 
+  List<AllFieldsDomain> findAllByDateTimeLessThan(Date date)
+
+  List<AllFieldsDomain> findAllByDateTimeGreaterThan(Date date)
+
   Optional<AllFieldsDomain> findByUuid(UUID uuid)
 
   List<AllFieldsDomain> list(Pageable pageable)
+
   List<AllFieldsDomain> list()
 
   // Test that joins the order reference.  This only works for required references.

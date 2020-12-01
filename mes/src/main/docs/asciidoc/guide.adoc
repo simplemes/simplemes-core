@@ -15,8 +15,7 @@ endif::[]
 ifeval::["{backend}" == "pdf"]
 :toclevels: 2
 endif::[]
-ifndef::demo-server[:demo-server: long:8080]
-//:demo-server: long:8080
+ifndef::demo-server[:demo-server: https://simplemes-demo.herokuapp.com/]
 // Document specific and general custom
 // content files are used:
 :docinfo2:
@@ -43,6 +42,8 @@ include::guide/introduction/introduction.adoc[]
 include::guide/philosophy/philosophy.adoc[]
 
 include::guide/roadmap/roadmap.adoc[]
+
+include::guide/introduction/demoServer.adoc[]
 
 .ASCIIDOCTOR Attributes
 |===

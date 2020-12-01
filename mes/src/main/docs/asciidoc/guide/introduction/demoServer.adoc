@@ -1,0 +1,10 @@
+
+== Demo Server
+
+A demo server is hosted on a cloud server (Heroku) for demo purposes.  The database
+is periodically purged.
+
+The server is {demo-server}.  You can log in with the _'admin'_ user with a password of
+_'admin'_.
+
+

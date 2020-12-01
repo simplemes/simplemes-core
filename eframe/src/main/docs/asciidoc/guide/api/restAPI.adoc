@@ -20,6 +20,11 @@ exposed by controllers, but with specific URL endpoints.
 
 NOTE: Only <<JSON>> is supported in these Rest API methods.
 
+The authentication is handled by logging in to the _'/login'_ page and then use the response
+cookies (_JWT_ and _JWT_REFRESH_TOKEN_) in the REST requests for authentication.
+See <<Security>> for details.
+
+
 ==== CRUD
 
 In general, Create, Read, Update, Delete (CRUD) actions are handled by REST-style URLs and

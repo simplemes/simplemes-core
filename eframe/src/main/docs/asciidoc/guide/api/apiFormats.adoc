@@ -110,7 +110,7 @@ You can also use the key fields for these foreign references:
 {
   "orderCode": "10102-23",
   "product": {
-    "product": "BIKE_27  // <1>
+    "product": "BIKE_27"  // <1>
   }
 }
 ----

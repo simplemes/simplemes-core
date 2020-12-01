@@ -109,4 +109,32 @@ class EFrameJdbcRepositoryOperationsSpec extends BaseSpecification {
     comp2_a.product == 'PROD2A'
   }
 
+  @Rollback
+  def "verify that queries with dates work correctly with a timezone - less than"() {
+    given: 'a saved record with a date for now'
+    def date = new Date()
+    new AllFieldsDomain(name: 'AFD1', dateTime: date).save()
+
+    when: 'the query is made'
+    def list = AllFieldsDomain.findAllByDateTimeLessThan(new Date(date.time + 1))
+
+    then: 'the record is found'
+    list.size() == 1
+    list[0].name == 'AFD1'
+  }
+
+  @Rollback
+  def "verify that queries with dates work correctly with a timezone - greater than"() {
+    given: 'a saved record with a date for now'
+    def date = new Date()
+    new AllFieldsDomain(name: 'AFD1', dateTime: date).save()
+
+    when: 'the query is made'
+    def list = AllFieldsDomain.findAllByDateTimeGreaterThan(new Date(date.time - 1))
+
+    then: 'the record is found'
+    list.size() == 1
+    list[0].name == 'AFD1'
+  }
+
 }

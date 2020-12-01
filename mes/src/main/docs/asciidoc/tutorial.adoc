@@ -12,6 +12,7 @@ ifeval::["{backend}" != "pdf"]
 :toclevels: 1
 endif::[]
 :revnumber: {project-version}
+ifndef::demo-server[:demo-server: https://simplemes-demo.herokuapp.com/]
 // Document specific and general custom
 // content files are used:
 :docinfo2:

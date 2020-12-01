@@ -3,9 +3,8 @@ Scratch
 
 TODO:
 ======
-Figure out JWT_REFRESH_TOKEN request_source issue with docker world.
-  Maybe drop request source checking.
-  Maybe use getHeader("X-Request-ID") and X-forward? ?  This is unique in Heroku.
+
+Investigate timezone issues on findAllByDateTimeLessThan(Date) queries.  Seems to be off by 5 hours?  ProductionLog.archive()?
 
 Tasks
 =====
@@ -16,7 +15,6 @@ Issue 672 Still broken.  Update project ref-issue to 2.1.3 and verify that it is
 Reports
   Fix issue with date ranges error by TZ offset?
 Add workaround for update failure: 299.  Remove sop.
-Investigate timezone issues on findAllByDateTimeLessThan(Date) queries.  Seems to be off by 5 hours?  ProductionLog.archive()?
 Version and opt locking (custom JDBCOperations).
 Cascading updates.  Find some way to prevent? - isDirty or save() option?
 Is Repository findByUuid() and findAll() needed?  Use CrudRepository.findById() and .findAll()?
