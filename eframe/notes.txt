@@ -3,6 +3,13 @@ Scratch
 
 TODO:
 ======
+Up-time and request count.  https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/
+  
+Gradle       https://docs.gradle.org/current/userguide/java_plugin.html#sec:java_plugin_and_dependency_management
+             https://tomgregory.com/gradle-implementation-vs-compile-dependencies/
+  compile -> implementation
+  testCompile -> testImplementation
+  runtime -> runtimeOnly
 
 
 Tasks

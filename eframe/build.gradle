@@ -74,6 +74,7 @@ dependencies {
   compile "io.micronaut.data:micronaut-data-jdbc:$micronautDataVersion"
   runtime 'io.micronaut.sql:micronaut-jdbc-hikari'
   implementation("io.micronaut.flyway:micronaut-flyway")
+  implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
 
   // Needed for groovydoc tasks.
   compile ("com.github.javaparser:javaparser-core:3.15.17")

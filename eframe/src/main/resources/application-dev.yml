@@ -36,4 +36,16 @@ eframe:
   cacheStableResources: 120
   search:
     hosts:
-      - {host: localhost, port: 9200, protocol: http}
+      - { host: localhost, port: 9200, protocol: http }
+---
+endpoints:
+  prometheus:
+    sensitive: false
+micronaut:
+  metrics:
+    enabled: true
+    export:
+      prometheus:
+        enabled: true
+        step: PT1M
+        descriptions: false

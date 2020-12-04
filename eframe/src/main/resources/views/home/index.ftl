@@ -2,7 +2,6 @@
 <#assign title><@efLookup key='home.label'/></#assign>
 <#include "../includes/header.ftl" />
 
-<div id="w" class="title"></div>
   <@efForm id="main" >
     <@efHTML height="5%">Setup </@efHTML>
     <@efButtonGroup spacerWidth="5%">
@@ -24,6 +23,7 @@
     </@efButtonGroup>
     <@efHTML height="5%">Admin</@efHTML>
     <@efButtonGroup spacerWidth="5%">
+      <@efButton id="StatusButton" label='Status' click="window.location='/status'"/>
       <@efButton id="LoggingButton" label='Logging' click="window.location='/logging'"/>
       <@efButton id="UserButton" label='Users' click="window.location='/user'"/>
     </@efButtonGroup>

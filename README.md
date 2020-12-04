@@ -5,7 +5,8 @@
 
 **This framework is in a pre-release state.**
 
-See the [documentation](https://simplemes.github.io/simplemes-core/)
+See the [documentation](https://simplemes.github.io/simplemes-core/) and
+[demo server](https://simplemes-demo.herokuapp.com/) (login admin/admin).
 
 SimpleMES (Manufacturing Execution System) Core Modules.  The supported modules include:
 

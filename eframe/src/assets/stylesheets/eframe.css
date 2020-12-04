@@ -256,6 +256,10 @@ div.warning-message {
   color: #1789D6;
 }
 
+.indent {
+  margin-left: 30px;
+}
+
 
 /* Editor styles */
 .editor-selected-state div {

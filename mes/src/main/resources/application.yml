@@ -57,6 +57,17 @@ micronaut:
           - isAnonymous()
   server.netty.logLevel: DEBUG
   server.thread-selection: AUTO
+  metrics:
+    enabled: true
+    export:
+      prometheus:
+        enabled: true
+        step: PT1M
+        descriptions: false
+---
+endpoints:
+  prometheus:
+    sensitive: false
 ---
 datasources:
   default:

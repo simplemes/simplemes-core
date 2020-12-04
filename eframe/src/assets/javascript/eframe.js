@@ -440,6 +440,40 @@ _ef.eframe = function () {
       }
       return undefined;
     },
+    // Formats a (possibly) big number.
+    _formatBigNumber: function (value) {
+      if (value) {
+        // Logic cloned from NumberUtils.java
+        var k = value / 1000.0;
+        var m = value / 1000000.0;
+        var g = value / 1000000000.0;
+        var t = value / 1000000000000.0;
+
+        var units;
+        var displayValue = value;
+        if (t >= 1.0) {
+          units = 'T'
+          displayValue = t
+        } else if (g >= 1.0) {
+          units = 'G'
+          displayValue = g
+        } else if (m >= 1.0) {
+          units = 'M'
+          displayValue = m
+        } else if (k >= 1.0) {
+          units = 'K'
+          displayValue = k
+        } else {
+          return value;
+        }
+        // Truncate to one decimal
+        displayValue = Math.round(displayValue * 10) / 10.0;
+
+        return displayValue + units;
+      } else {
+        return "??";
+      }
+    },
     // reads a single cookie from the response
     _getCookie: function (name) {
       var nameEQ = name + "=";
@@ -558,9 +592,12 @@ _ef.eframe = function () {
       return js;
     },
     // Sets the inner HTML to the given value on the element.
-    _setInnerHTML: function (id, text) {
+    _setInnerHTML: function (id, text, tooltip) {
       var element = document.getElementById(id);
       element.innerHTML = text;
+      if (tooltip) {
+        element.title = tooltip;
+      }
     },
     // Stores a given value in local storage for the current page.
     // The internal storage key is made of the current page with the key appended.

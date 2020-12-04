@@ -19,6 +19,7 @@ class Application {
 
     Micronaut.run(Application)
 
+
     //Environment environment = applicationContext.getEnvironment()
     //println "environment = ${environment.activeNames}"
 

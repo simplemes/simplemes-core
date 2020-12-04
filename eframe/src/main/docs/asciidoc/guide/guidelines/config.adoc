@@ -82,6 +82,17 @@ micronaut:
           - isAnonymous()
   server.netty.logLevel: DEBUG
   server.thread-selection: AUTO
+  metrics:
+    enabled: true
+    export:
+      prometheus:
+        enabled: true
+        step: PT1M
+        descriptions: false
+---
+endpoints:
+  prometheus:
+    sensitive: false
 ---
 dataSource:
   url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
