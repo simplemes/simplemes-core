@@ -3157,6 +3157,17 @@ To avoid issues with the framework, you should use these settings:</p>
           - <span class="string"><span class="content">isAnonymous()</span></span>
   <span class="key">server.netty.logLevel</span>: <span class="string"><span class="content">DEBUG</span></span>
   <span class="key">server.thread-selection</span>: <span class="string"><span class="content">AUTO</span></span>
+  <span class="key">metrics</span>:
+    <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
+    <span class="key">export</span>:
+      <span class="key">prometheus</span>:
+        <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
+        <span class="key">step</span>: <span class="string"><span class="content">PT1M</span></span>
+        <span class="key">descriptions</span>: <span class="string"><span class="content">false</span></span>
+<span class="head"><span class="head">---</span></span>
+<span class="key">endpoints</span>:
+  <span class="key">prometheus</span>:
+    <span class="key">sensitive</span>: <span class="string"><span class="content">false</span></span>
 <span class="head"><span class="head">---</span></span>
 <span class="key">dataSource</span>:
   <span class="key">url</span>: <span class="string"><span class="content">jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE</span></span>
@@ -4674,6 +4685,17 @@ You should make sure there is at least one user with the <em>ADMIN</em> role in 
           - <span class="string"><span class="content">isAnonymous()</span></span>
   <span class="key">server.netty.logLevel</span>: <span class="string"><span class="content">DEBUG</span></span>
   <span class="key">server.thread-selection</span>: <span class="string"><span class="content">AUTO</span></span>
+  <span class="key">metrics</span>:
+    <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
+    <span class="key">export</span>:
+      <span class="key">prometheus</span>:
+        <span class="key">enabled</span>: <span class="string"><span class="content">true</span></span>
+        <span class="key">step</span>: <span class="string"><span class="content">PT1M</span></span>
+        <span class="key">descriptions</span>: <span class="string"><span class="content">false</span></span>
+<span class="head"><span class="head">---</span></span>
+<span class="key">endpoints</span>:
+  <span class="key">prometheus</span>:
+    <span class="key">sensitive</span>: <span class="string"><span class="content">false</span></span>
 
 <span class="head"><span class="head">---</span></span>
 <span class="key">eframe</span>:
@@ -19437,7 +19459,7 @@ to the repository.  If you use the repository method directly, then this is not 
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-12-01 20:09:17 UTC
+Last updated 2020-12-04 19:15:19 UTC
 </div>
 </div>
 <style>
