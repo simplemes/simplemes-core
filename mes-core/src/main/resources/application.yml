@@ -33,13 +33,13 @@ micronaut:
         signatures:
           secret:
             generator:
-              secret: ${eframe.key}
+              secret: ${EFRAME_KEY}
         generator:
           access-token.expiration: 937  #
           refresh-token:
             enabled: true
             base64: true
-            secret: ${eframe.key}
+            secret: ${EFRAME_KEY}
             #refresh-token:
             #  secret: ${eframe.key}
     interceptUrlMap:
@@ -53,6 +53,17 @@ micronaut:
           - isAnonymous()
   server.netty.logLevel: DEBUG
   server.thread-selection: AUTO
+  metrics:
+    enabled: true
+    export:
+      prometheus:
+        enabled: true
+        step: PT1M
+        descriptions: false
+---
+endpoints:
+  prometheus:
+    sensitive: false
 ---
 dataSource:
   url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE

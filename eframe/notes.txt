@@ -3,8 +3,6 @@ Scratch
 
 TODO:
 ======
-Up-time and request count.  https://micronaut-projects.github.io/micronaut-micrometer/latest/guide/
-  
 Gradle       https://docs.gradle.org/current/userguide/java_plugin.html#sec:java_plugin_and_dependency_management
              https://tomgregory.com/gradle-implementation-vs-compile-dependencies/
   compile -> implementation
@@ -14,12 +12,24 @@ Gradle       https://docs.gradle.org/current/userguide/java_plugin.html#sec:java
 
 Tasks
 =====
+Modules on S does not work.
+Browse on LSN/Order in Manager POD.
+  ui.text with suggest with URL parameters.  Dynamic based on Work Center.
+Remember Order/LSN when reports panel is shown.
+Taskmenu refresh logic.
+  Part of page?
+  Does not see Dashboard records in production when demoData loaded later.  Maybe add TaskMenuHelper.clearCache() to be called from demoData,
+         Maybe add timer to TaskMenuHelper caching.
+  First time Error:
+    15:45:23.946 [io-executor-thread-1] ERROR client.status - {"stack":"TypeError: Cannot read property '$count' of undefined\n    at u.open (http://localhost:8080/assets/webix.min-8552d835cbf5b3abaf68708dafab6317.js:54:3610)\n    at Object._taskMenuToggle (http://localhost:8080/assets/eframe_toolkit-3dc5bcb2d6177a3b65bacfddb98b8320.js:35:389)\n    at eval (eval at v (http://localhost:8080/assets/webix.min-8552d835cbf5b3abaf68708dafab6317.js:10:561), <anonymous>:1:4)\n    at eval (<anonymous>)\n    at v (http://localhost:8080/assets/webix.min-8552d835cbf5b3abaf68708dafab6317.js:10:561)\n    at Object.<anonymous> (http://localhost:8080/assets/webix.min-8552d835cbf5b3abaf68708dafab6317.js:18:838)\n    at Object.callEvent (http://localhost:8080/assets/webix.min-8552d835cbf5b3abaf68708dafab6317.js:10:2053)\n    at y (http://localhost:8080/assets/webix.min-8552d835cbf5b3abaf68708dafab6317.js:10:2695)\n    at HTMLBodyElement.<anonymous> (http://localhost:8080/assets/webix.min-8552d835cbf5b3abaf68708dafab6317.js:19:365)","message":"Cannot read property '$count' of undefined","name":"TypeError","logData":{"msg":"Uncaught Exception","errorMsg":"Uncaught TypeError: Cannot read property '$count' of undefined","url":"http://localhost:8080/assets/webix.min-8552d835cbf5b3abaf68708dafab6317.js","line number":54,"column":3610}} ip=/172.17.0.1:42348
+
+
+
+
+Globals - Theme?
+Fix mess with efForm.dashboard.  Support type='dashboard', 'buttonHolder' and 'dialog'.
 Consider moving to use of status UNAUTHORIZED vs. FORBIDDEN.
-Bug - Expired password needs to re-direct to change password page.
-Bug - Jasper Reports fails from shadowJar on Debian, JDK 14.
 Issue 672 Still broken.  Update project ref-issue to 2.1.3 and verify that it is still broken.
-Reports
-  Fix issue with date ranges error by TZ offset?
 Add workaround for update failure: 299.  Remove sop.
 Version and opt locking (custom JDBCOperations).
 Cascading updates.  Find some way to prevent? - isDirty or save() option?
@@ -29,28 +39,24 @@ Support cache in specific use cases:
   UserPreferences - timed, any update for user flushed cache? done in PreferenceHolder?
   FieldExtension/GUI - Already cached at the domainUtils level with FieldGUIExtension via ExtensibleFieldHelper
   Others as needed.
-Fix mess with efForm.dashboard.  Support type='dashboard', 'buttonHolder' and 'dialog'.
 
   Support for MPE?
   Check Search in CrudGUITester and add to definition list logic/controller.
-  CrudGUITester - combobox - Enum, Domain Ref, Option objects.
   Look into Jackson skipping foreign references.  Only need key and ID fields to import.
   Simplify Client.javascript to one per Controller by default -  Add GUI test of logging level in EFrameJSLoggingGUISpec.
   Add E2E test for optimistic locking detection.  In definition GUIs.
-  Add Dashboard editor.
-  Add splitter position remember in dashboard.
   Reports
     Test in MES app.
-  For Assembled App, strip out test utils (e.g. MESUnitTestUtils, Assy, others).
 
   Bugs:
-    Definition List allows changing boolean checkbox and the checkbox is not centered.
-    Definition List shows [Object object] for sub object cases.  User.  Fixable or add -userRoles as supported field list.
+    Definition List boolean checkbox not centered.
     Definition List key field allows HTML un-escaped in it.
     Show Page with name="<script>alert('bad')</script>" fails with Javascript syntax error in SampleParent.
     Edit/Create? page save failures.  Fixing problem and re-saving value gives error (Invalid UUID string: null)
   Look at using https://github.com/apps/whitesource-bolt-for-github for CVE library scanning.
     Others: https://dzone.com/articles/8-free-security-tools-every-developer-should-know
+  Reports
+    Still an issue?  Can't reproduce in simple query.  Fix issue with date ranges error by TZ offset?
 
 
 MES Demo Release Requirements

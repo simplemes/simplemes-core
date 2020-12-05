@@ -269,7 +269,7 @@ class OrderService {
     if (ageDays == -1 && maxOrdersPerTxn == -1 && maxTxns == -1) {
       stableMode = true
       // Handle special case for performance testing.
-      ageDays = 0.0001
+      ageDays = 0.1
       maxTxns = 1
       maxOrdersPerTxn = 50
       if (stableRowCount == null) {

@@ -13,8 +13,6 @@ ext {
 
 }
 
-
-
 // bintray-related properties, common to all modules.
 project.ext.bintrayRepoName = 'simplemes-core'
 project.ext.bintrayUser = 'simplemes'
@@ -43,6 +41,94 @@ if (compositePropFile.exists()) {
 
 //println "in common setup, module = ${moduleName}, version = ${project.version}, micronaut = ${micronautBomVersion}"
 //println "user.dir = ${System.getProperty('user.dir')}, root = ${rootProject.name}"
+
+dependencies {
+  implementation "io.micronaut:micronaut-http-client"
+  implementation "io.micronaut:micronaut-http-server-netty"
+  implementation "io.micronaut.groovy:micronaut-runtime-groovy"
+  implementation "io.micronaut:micronaut-validation"
+  implementation "io.micronaut:micronaut-inject-groovy"
+  implementation "io.micronaut:micronaut-management"
+  implementation "io.micronaut.views:micronaut-views-freemarker"
+  implementation "org.freemarker:freemarker:$freemarkerVersion"
+  implementation "ch.qos.logback:logback-classic:$logbackVersion"
+
+  implementation "io.micronaut.security:micronaut-security-jwt"
+  implementation "org.codehaus.groovy:groovy-templates" // Added for Groovydoc and TextUtils.
+  implementation "org.codehaus.groovy:groovy-xml:$groovyVersion"
+  implementation "org.codehaus.groovy:groovy-dateutil"
+  implementation ( "com.bertramlabs.plugins:asset-pipeline-micronaut:$assetPipelineVersion") {
+    exclude group: "io.micronaut", module: "http-server-netty"
+  }
+  implementation ( "com.bertramlabs.plugins:asset-pipeline-core:$assetPipelineVersion")
+  implementation "org.springframework.security:spring-security-crypto:${springSecurityCryptoVersion}"
+  implementation "commons-logging:commons-logging:1.2"
+
+  implementation "jakarta.persistence:jakarta.persistence-api:${jakartaJPAVersion}"
+  implementation "io.micronaut.data:micronaut-data-processor:$micronautDataVersion"
+  implementation "io.micronaut.data:micronaut-data-jdbc:$micronautDataVersion"
+  runtimeOnly 'io.micronaut.sql:micronaut-jdbc-hikari'
+  implementation("io.micronaut.flyway:micronaut-flyway")
+  implementation("io.micronaut.micrometer:micronaut-micrometer-registry-prometheus")
+
+  // Needed for groovydoc tasks.
+  implementation ("com.github.javaparser:javaparser-core:3.15.17")
+
+  testImplementation "org.codehaus.groovy:groovy-json"
+  testImplementation "org.codehaus.groovy:groovy-test"
+  testImplementation "io.micronaut.test:micronaut-test-spock"
+
+  implementation( "org.spockframework:spock-core") {
+    exclude group: "org.codehaus.groovy", module: "groovy-all"
+  }
+  implementation("org.spockframework:spock-core") {
+    exclude group: "org.codehaus.groovy", module: "groovy-all"
+  }
+  implementation ("org.gebish:geb-spock:$gebVersion") {
+    exclude (group: "org.codehaus.groovy", module: "groovy-all")
+    transitive = true
+  }
+  testImplementation("org.gebish:geb-spock:$gebVersion") {
+    exclude (group: "org.codehaus.groovy", module: "groovy-all")
+    transitive = true
+  }
+  implementation "cglib:cglib-nodep:$cglibVersion"
+  implementation "org.objenesis:objenesis:$objenesisVersion"
+  implementation "net.bytebuddy:byte-buddy:$byteBuddyVersion"
+
+  implementation "org.seleniumhq.selenium:selenium-chrome-driver:$webDriversVersion"
+  implementation "org.seleniumhq.selenium:selenium-firefox-driver:$webDriversVersion"
+  implementation "org.seleniumhq.selenium:selenium-api:$webDriversVersion"
+  implementation ("org.seleniumhq.selenium:selenium-support:$webDriversVersion"){
+    exclude group:  "net.bytebuddy", module: "byte-buddy"  // Conflicts with Spock
+  }
+
+  implementation group: 'org.postgresql', name: 'postgresql', version: '42.2.14'
+
+
+  implementation "org.elasticsearch.client:elasticsearch-rest-client:$elasticSearchClient"
+
+  // The Jasper reports library with PDF support (lowagie) and DejaVu fonts
+  implementation("net.sf.jasperreports:jasperreports:$jasperreportsVersion"){
+    exclude module:'commons-logging'
+    exclude module:'olap4j'
+    exclude module: 'itext' //exclude itext:2.1.7js5 which is not available in jcenter or maven central
+  }
+  implementation ("com.lowagie:itext:$lowagieItextVersion") {
+    exclude group: 'bouncycastle'
+  }
+  implementation("net.sf.jasperreports:jasperreports-fonts:$jasperreportsVersion")
+  // https://mvnrepository.com/artifact/net.sourceforge.barbecue/barbecue
+  implementation group: 'net.sourceforge.barbecue', name: 'barbecue', version: barbecueVersion
+
+  test {
+    useJUnitPlatform()  // Forces Junit5 for Spock in Gradle tests.
+    jvmArgs = ['-Dnashorn.args="--no-deprecation-warning"']  // Suppress Javascript engine deprecation warning
+    // Force STDOUT to echo in github server.
+    testLogging.showStandardStreams = true
+  }
+
+}
 
 
 
