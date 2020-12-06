@@ -9588,6 +9588,7 @@ Chrome DevTools - F12).</p>
 <p><span class="inline-toc"><a href="#activity-uriurl">Activity URI/URL</a></span>
 <span class="inline-toc"><a href="#form-submission-ajax">Form Submission (Ajax)</a></span>
 <span class="inline-toc"><a href="#activity-variable-collisions">Activity Variable Collisions</a></span>
+<span class="inline-toc"><a href="#activity-state-preservation">Activity State Preservation</a></span>
 <span class="inline-toc"><a href="#dashboard-activity-non-gui">Activities with Limited GUIs</a></span>
 <span class="inline-toc"><a href="#debugging-dashboard-activities">Debugging Dashboard Activities</a></span></p>
 </div>
@@ -9820,6 +9821,72 @@ unique names on the page.</p>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>Calls the function.  If on Panel 'B', then the function will be <code>_B.done()</code>.</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="activity-state-preservation"><a class="link" href="#activity-state-preservation">Activity State Preservation</a></h5>
+<div class="paragraph">
+<p>Some activities have a state that needs to be preserved if another activity is display
+in its panel. For example, below is a order selection panel with a <em>Reports</em> button.</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/guis/dashboardWithReports.png" alt="dashboardWithReports" width="600">
+</div>
+</div>
+<div class="paragraph">
+<p>When the <em>Reports</em> button is triggered, it replaces the order selection activity.
+This means the current order may be lost and the user will have to re-select it.
+This is a usability issue for your users.</p>
+</div>
+<div class="paragraph">
+<p>To prevent this issue, you can define two methods to get/restore the activity&#8217;s state:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example - Avoid Javascript Name Collisions</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span class="tag">&lt;script&gt;</span>
+<span class="inline">  <span class="predefined">$</span>{params._variable}.<span class="function">getState</span> =  <span class="keyword">function</span>() {  <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="keyword">return</span> {<span class="key">order</span>: <span class="predefined">$$</span>(<span class="string"><span class="delimiter">'</span><span class="content">order</span><span class="delimiter">'</span></span>).getValue()};
+  }
+  <span class="predefined">$</span>{params._variable}.<span class="function">restoreState</span> = <span class="keyword">function</span>(state) {  <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="keyword">if</span> (state &amp;&amp; state.order) {
+      <span class="predefined">$$</span>(<span class="string"><span class="delimiter">'</span><span class="content">order</span><span class="delimiter">'</span></span>).setValue(state.order);
+    }
+  }
+  &lt;<span class="error">@</span>efForm id=<span class="string"><span class="delimiter">&quot;</span><span class="content">orderSelection</span><span class="delimiter">&quot;</span></span> dashboard=<span class="string"><span class="delimiter">'</span><span class="content">buttonHolder</span><span class="delimiter">'</span></span>&gt;
+    &lt;<span class="error">@</span>efField field=<span class="string"><span class="delimiter">&quot;</span><span class="content">order</span><span class="delimiter">&quot;</span></span> id=<span class="string"><span class="delimiter">&quot;</span><span class="content">order</span><span class="delimiter">&quot;</span></span> label=<span class="string"><span class="delimiter">&quot;</span><span class="content">Order/LSN</span><span class="delimiter">&quot;</span></span> value=<span class="string"><span class="delimiter">&quot;</span><span class="content">M1008</span><span class="delimiter">&quot;</span></span>
+              width=<span class="integer">20</span> labelWidth=<span class="string"><span class="delimiter">'</span><span class="content">35%</span><span class="delimiter">'</span></span>&gt;
+    &lt;<span class="regexp"><span class="delimiter">/</span><span class="content">@efField&gt;
+  &lt;</span><span class="delimiter">/</span></span><span class="error">@</span>efForm&gt;</span>
+<span class="tag">&lt;/script&gt;</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Defines the function to get the activity&#8217;s state.  Returns the current input field value.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Defines the function to restore the activity&#8217;s state.  Sets the input field value.
+This is called after the activity is displayed.  This means this state will probably
+override any default or settings from the URL parameters.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <code>restoreState</code> method is called after any activity <code>postScript</code> logic.
+</td>
 </tr>
 </table>
 </div>
@@ -19459,7 +19526,7 @@ to the repository.  If you use the repository method directly, then this is not 
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-12-06 17:06:49 UTC
+Last updated 2020-12-06 21:04:37 UTC
 </div>
 </div>
 <style>
