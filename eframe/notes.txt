@@ -1,18 +1,9 @@
 Scratch
 =======
 
-TODO:
-======
-Gradle       https://docs.gradle.org/current/userguide/java_plugin.html#sec:java_plugin_and_dependency_management
-             https://tomgregory.com/gradle-implementation-vs-compile-dependencies/
-  compile -> implementation
-  testCompile -> testImplementation
-  runtime -> runtimeOnly
-
 
 Tasks
 =====
-Modules on S does not work.
 Browse on LSN/Order in Manager POD.
   ui.text with suggest with URL parameters.  Dynamic based on Work Center.
 Remember Order/LSN when reports panel is shown.
@@ -64,9 +55,6 @@ MES Demo Release Requirements
   Reports
     WIP
 
-
-MES Core First Pass Predecessors
-  
 
 Task Before MES work
   Dashboards/Questions from nested code

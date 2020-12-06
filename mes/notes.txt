@@ -40,9 +40,7 @@ Extract.  Add heroku.cmd to bin or PATH
 Push new build to Heroku
 ========================
   Update code, run dockerBuild on local.
-  docker tag mes:latest registry.heroku.com/simplemes-demo/web
-  docker push registry.heroku.com/simplemes-demo/web
-  heroku container:release web -a simplemes-demo
+  docker tag mes:latest registry.heroku.com/simplemes-demo/web; docker push registry.heroku.com/simplemes-demo/web; heroku container:release web -a simplemes-demo
 
 
 Start first time

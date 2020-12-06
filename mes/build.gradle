@@ -58,11 +58,40 @@ jar {
   exclude "/reports/sample/**"
 }
 
-/*
-dockerfile {
-  args("-Xmx128m")
+// Move the SimpleMES/framework files to a separate layer for shorter docker image updates.
+task moveJarLayers(type: Copy) {
+  from "$buildDir/layers/libs"
+  include "webix-*.jar","eframe-*.jar","mes-*.jar"
+  into "$buildDir/layers/internal"
 }
-*/
+task removeInternalJars(type: Delete) {
+  delete fileTree("$buildDir/layers/libs").matching {
+    include "webix-*.jar","eframe-*.jar","mes-*.jar"
+  }
+}
+
+// Need build the application.jar ourselves since there appears to be no way to split the libs structure into two
+// folders: libs and internal (simplemes modules).  So we just overwrite the application.jar file with the
+// split libs.
+task rebuildApplicationJar(type: Jar) {
+  archiveFileName= "$buildDir/layers/application.jar"
+  def cp = fileTree("$buildDir/layers/libs").collect { "libs/"+it.getName() }.join(' ')
+  cp += " "+fileTree("$buildDir/layers/internal").collect { "internal/"+it.getName() }.join(' ')
+  cp += " resources/"
+  manifest {
+    attributes(
+      "Class-Path": cp,
+      "Main-Class": mainClassName)
+  }
+  from ("$buildDir/classes/groovy/main")
+  //sources = fileTree("$buildDir/classes/groovy/main")
+}
+dockerBuild.dependsOn  moveJarLayers,removeInternalJars,rebuildApplicationJar
+removeInternalJars.mustRunAfter moveJarLayers
+rebuildApplicationJar.mustRunAfter removeInternalJars
+
+//buildLayers.finalizedBy moveJarLayers,removeInternalJars,printLibs1
+//removeInternalJars.finalizedBy printLibs2
 
 // Force the META-INF/services from each micronaut module to be used in the Fat Jar and combine common .properties
 // from all modules.
