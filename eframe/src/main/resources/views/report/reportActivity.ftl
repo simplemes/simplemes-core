@@ -4,7 +4,6 @@
   <#assign variable = "${params._variable}"/>
 
   ${variable}.clicked = function(reportLoc) {
-    console.log(reportLoc);
     <#if newWindow>
       window.open(reportLoc);
     <#else>

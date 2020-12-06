@@ -51,6 +51,15 @@ ${variable}.handleEvent = function(event) {
     document.getElementById("order").value = order;
   }
 }
+${params._variable}.getState =  function() {
+  return {order: $$('order').getValue()};
+}
+${params._variable}.restoreState =  function(state) {
+  if (state && state.order) {
+    $$('order').setValue(state.order);
+  }
+}
+
 
 <@efForm id="wcSelection" dashboard="buttonHolder">
   <@efField field="LSN.lsn" id="order" label="orderLsn.label" onChange="${variable}.orderLSNChangeByUser(newValue)">
@@ -58,10 +67,10 @@ ${variable}.handleEvent = function(event) {
     </@efHTML>
     <@efButton type='undo' id="undoButton" tooltip='undo.title' click='dashboard.undoAction();'/>
     <@efHTML spacer="before" width="20%">
-      <#--noinspection JSUnresolvedVariable,UnterminatedStatementJS-->
-      <b><span id="workCenterLabel"><@efLookup key="workCenter.label"/></span></b>
-      <#--noinspection JSUnresolvedVariable,UnterminatedStatementJS-->
-      <a href='javascript:${variable}.handleChangeWorkCenter()'><span id="workCenter">${workCenter}</span></a>
+    <#--noinspection JSUnresolvedVariable,UnterminatedStatementJS-->
+    <b><span id="workCenterLabel"><@efLookup key="workCenter.label"/></span></b>
+    <#--noinspection JSUnresolvedVariable,UnterminatedStatementJS-->
+    <a href='javascript:${variable}.handleChangeWorkCenter()'><span id="workCenter">${workCenter}</span></a>
     </@efHTML>
   </@efField>
 </@efForm>

@@ -6,6 +6,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Activity URI/URL>>#
 [inline-toc]#<<Form Submission (Ajax)>>#
 [inline-toc]#<<Activity Variable Collisions>>#
+[inline-toc]#<<Activity State Preservation>>#
 [inline-toc]#<<Activities with Limited GUIs>>#
 [inline-toc]#<<Debugging Dashboard Activities>>#
 
@@ -145,6 +146,46 @@ unique names on the page.
 <.> Defines the a function stored in the `_variable` for use by the dialog.
 <.> Calls the function.  If on Panel 'B', then the function will be `_B.done()`.
 
+
+===== Activity State Preservation
+
+Some activities have a state that needs to be preserved if another activity is display
+in its panel. For example, below is a order selection panel with a _Reports_ button.
+
+image::guis/dashboardWithReports.png[dashboardWithReports,align="center",width=600]
+
+When the _Reports_ button is triggered, it replaces the order selection activity.
+This means the current order may be lost and the user will have to re-select it.
+This is a usability issue for your users.
+
+To prevent this issue, you can define two methods to get/restore the activity's state:
+
+[source,html]
+.Example - Avoid Javascript Name Collisions
+----
+<script>
+  ${params._variable}.getState =  function() {  // <.>
+    return {order: $$('order').getValue()};
+  }
+  ${params._variable}.restoreState = function(state) {  // <.>
+    if (state && state.order) {
+      $$('order').setValue(state.order);
+    }
+  }
+  <@efForm id="orderSelection" dashboard='buttonHolder'>
+    <@efField field="order" id="order" label="Order/LSN" value="M1008"
+              width=20 labelWidth='35%'>
+    </@efField>
+  </@efForm>
+</script>
+----
+<.> Defines the function to get the activity's state.  Returns the current input field value.
+<.> Defines the function to restore the activity's state.  Sets the input field value.
+    This is called after the activity is displayed.  This means this state will probably
+    override any default or settings from the URL parameters.
+
+
+NOTE: The `restoreState` method is called after any activity `postScript` logic.
 
 [[dashboard-activity-non-gui,Activities with Limited GUIs]]
 ===== Activities with Limited GUIs

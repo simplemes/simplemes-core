@@ -109,7 +109,7 @@ The response in JSON format is shown below:
     },
     "scanActions": [   // <3>
       {
-        "type": "REFRESH_ORDER_STATUS",
+        "type": "ORDER_LSN_STATUS_CHANGED",
         "order": "M1001"
       },
       {

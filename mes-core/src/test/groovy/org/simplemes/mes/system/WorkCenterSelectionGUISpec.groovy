@@ -165,7 +165,7 @@ class WorkCenterSelectionGUISpec extends BaseDashboardSpecification {
 
     and: 'the event is triggered'
     def event = [type: 'WORK_LIST_SELECTED', source: 'abc', list: [[order: 'ORDER1']]]
-    textField("eventSource").input.value(JsonOutput.toJson(event))
+    textField("eventSource").input.value(Holders.objectMapper.writeValueAsString(event))
     clickButton('triggerEvent')
     waitFor {
       textField('order').input.value() == 'ORDER1'
@@ -184,7 +184,7 @@ class WorkCenterSelectionGUISpec extends BaseDashboardSpecification {
 
     and: 'the event is triggered'
     def event = [type: 'WORK_LIST_SELECTED', source: 'abc', list: [[order: 'ORDER1'], [order: 'ORDER2']]]
-    textField("eventSource").input.value(JsonOutput.toJson(event))
+    textField("eventSource").input.value(Holders.objectMapper.writeValueAsString(event))
     clickButton('triggerEvent')
     waitFor {
       textField('order').input.value() == lookup('multiplesSelected.label')
@@ -193,5 +193,38 @@ class WorkCenterSelectionGUISpec extends BaseDashboardSpecification {
     then: 'the field is correct'
     textField('order').input.value() == lookup('multiplesSelected.label')
   }
+
+  def "verify that activity state store - restore works"() {
+    given: 'a dashboard with the activity and a second GUI activity'
+    def guiActivity2 = '''
+    <script>
+      <@efForm id="logFailure" dashboard="buttonHolder">  
+        <@efButtonGroup>
+          <@efButton id='doneButton' label="Done" click="dashboard.finished('${params._panel}')"/>  
+        </@efButtonGroup>  
+      </@efForm>
+    </script>
+    '''
+    buildDashboard(defaults: ['/selection/workCenterSelection'], buttons: [guiActivity2])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'a user input is made'
+    $('#order').value('XYZZY')
+
+    and: 'the second activity is displayed'
+    clickDashboardButton(0)
+    waitForCompletion()
+
+    and: 'the second activity is dismissed'
+    clickButton('doneButton')
+    waitForCompletion()
+
+    //sleep(20000)
+    then: 'a user input is restored'
+    $('#order').value() =='XYZZY'
+  }
+
 
 }

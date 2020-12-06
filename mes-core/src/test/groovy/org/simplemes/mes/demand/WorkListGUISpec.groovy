@@ -138,7 +138,7 @@ class WorkListGUISpec extends BaseDashboardSpecification {
 
     and: 'the event is triggered'
     def event = [type: 'ORDER_LSN_STATUS_CHANGED', source: 'abc', list: [[order: order.order]]]
-    textField("eventSource").input.value(JsonOutput.toJson(event))
+    textField("eventSource").input.value(Holders.objectMapper.writeValueAsString(event))
     clickButton('triggerEvent')
     waitForCompletion()
 

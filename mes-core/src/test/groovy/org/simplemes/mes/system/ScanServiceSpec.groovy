@@ -83,7 +83,7 @@ class ScanServiceSpec extends BaseSpecification {
     scanResponse.resolved
     scanResponse.order == order
 
-    and: 'scan action tells the client to refresh the Order status with a type REFRESH_ORDER_STATUS'
+    and: 'scan action tells the client to refresh the Order status with a type ORDER_LSN_STATUS_CHANGED'
     def refreshAction = scanResponse.scanActions.find {
       it.type == OrderLSNStatusChangedAction.TYPE_ORDER_LSN_STATUS_CHANGED
     }
@@ -136,7 +136,7 @@ class ScanServiceSpec extends BaseSpecification {
     scanResponse.resolved
     scanResponse.order == order
 
-    and: 'scan action tells the client to refresh the Order status with a type REFRESH_ORDER_STATUS'
+    and: 'scan action tells the client to refresh the Order status with a type ORDER_LSN_STATUS_CHANGED'
     def refreshAction = scanResponse.scanActions.find {
       it.type == OrderLSNStatusChangedAction.TYPE_ORDER_LSN_STATUS_CHANGED
     }

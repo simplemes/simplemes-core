@@ -204,4 +204,51 @@ class DashboardJSActivityGUISpec extends BaseDashboardSpecification {
     originalJson[1].timeStamp == json[1].timeStamp
   }
 
+  def "verify that activity state store - restore works"() {
+    given: 'a dashboard with a simple gui activity that stores and restores state'
+    def guiActivity1 = '''
+    <script>
+      <@efForm id="logFailure" dashboard="buttonHolder">  
+        <@efField field="serial" value="RMA1001" width=20/>  
+      </@efForm>
+      ${params._variable}.getState = function() {
+        return {serial: $$('serial').getValue()};
+      }
+      ${params._variable}.restoreState = function(state) {
+        if (state && state.serial) {
+          $$('serial').setValue(state.serial);
+        }
+      }
+    </script>
+    '''
+    def guiActivity2 = '''
+    <script>
+      <@efForm id="logFailure" dashboard="buttonHolder">  
+        <@efButtonGroup>
+          <@efButton id='doneButton' label="Done" click="dashboard.finished('${params._panel}')"/>  
+        </@efButtonGroup>  
+      </@efForm>
+    </script>
+    '''
+    buildDashboard(defaults: [guiActivity1], buttons: [guiActivity2])
+
+    when: 'the dashboard is displayed'
+    displayDashboard()
+
+    and: 'a user input is made'
+    $('#serial').value('XYZZY')
+
+    and: 'the second activity is displayed'
+    clickDashboardButton(0)
+    waitForCompletion()
+
+    and: 'the second activity is dismissed'
+    clickButton('doneButton')
+    waitForCompletion()
+
+    //sleep(20000)
+    then: 'a user input is restored'
+    $('#serial').value() == 'XYZZY'
+  }
+
 }

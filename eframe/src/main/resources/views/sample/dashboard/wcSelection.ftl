@@ -12,6 +12,14 @@
   ${variable}.changed = function(newValue) {
     dashboard.sendEvent({type: 'ORDER_LSN_CHANGED', newValue: newValue});
   }
+  ${params._variable}.getState =  function() {
+    return {order: $$('order').getValue()};
+  }
+  ${params._variable}.restoreState =  function(state) {
+    if (state && state.order) {
+      $$('order').setValue(state.order);
+    }
+  }
   // Testbed for dashboard layout work
   <@efForm id="logFailure" dashboard='buttonHolder'>
   <@efField field="order" id="order" label="Order/LSN" value="M1008"

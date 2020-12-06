@@ -110,10 +110,10 @@ class ScanDashboardGUISpec extends BaseDashboardSpecification {
     json.list[0].order == order.order
 
     then: 'the refresh event is triggered and contains the correct values'
-    def json2 = Holders.objectMapper.readValue(TextUtils.findLine(s, 'REFRESH_ORDER_STATUS'),Map)
-    json2.type == 'REFRESH_ORDER_STATUS'
+    def json2 = Holders.objectMapper.readValue(TextUtils.findLine(s, OrderLSNStatusChangedAction.TYPE_ORDER_LSN_STATUS_CHANGED),Map)
+    json2.type == OrderLSNStatusChangedAction.TYPE_ORDER_LSN_STATUS_CHANGED
     json2.source == ScanService.EVENT_SOURCE
-    json2.order == order.order
+    json2.list[0].order == order.order
   }
 
   def "verify that the scan with bad order fails"() {

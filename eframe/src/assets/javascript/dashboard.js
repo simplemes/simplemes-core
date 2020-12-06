@@ -20,6 +20,7 @@ ef.dashboard = function () {
   var pendingExtraParams;  // An arrays of maps contains extra parameters needed for new activities.
   var buttons;             // An Array of Maps with elements that match the DashboardButton fields: [label:'',..,activities[ [url:'page1', panel: 'A'] ]]
   var activityParams = {}; // A map of additional params to send to each activity when loaded.
+  var activityState = {};  // A map of state values for temporarily hidden activities.
   var nonGUIPanels = [];   // An array of panels that are currently executing non-GUI activities.  Index is the panelName.
   //noinspection JSUnusedLocalSymbols
   var currentDashboard; // The name of the current dashboard.
@@ -486,6 +487,8 @@ ef.dashboard = function () {
             nonGUIPanels[panelName] = true;
           }
           try {
+            // Attempt to preserve the activity's current state
+            dashboard._preserveActivityState(sharedVarName, window[sharedVarName]._url);
             window[sharedVarName] = {};  // Clear any previous values from the shared object.
             //console.log(url);
             //console.log(s);
@@ -516,6 +519,7 @@ ef.dashboard = function () {
             $$(parentViewName).addView({view: 'form', type: "clean", borderless: true, id: contentViewName, margin: 0, rows: [content]}, 0);
             dashboard._addButtonsIfNeeded(panelName);
             dashboard._runScriptOrFunction(window[sharedVarName].postScript);
+            dashboard._restoreActivityState(sharedVarName, window[sharedVarName]._url);
           } else {
             // Non-GUI activity.
 
@@ -552,6 +556,16 @@ ef.dashboard = function () {
         }
       }
     },
+    // Attempt to preserve the activity's current state
+    _preserveActivityState: function (variableName, url) {
+      if (url && window[variableName] && window[variableName].getState) {
+        var path = url;
+        if (path.indexOf('?') >= 0) {
+          path = path.substr(0, path.indexOf('?'));
+        }
+        activityState[path] = window[variableName].getState();
+      }
+    },
     _runScriptOrFunction: function (scriptOrFunction) {
       // Runs the given script/function.
       if (scriptOrFunction) {
@@ -566,6 +580,19 @@ ef.dashboard = function () {
       //ef.clearMessages();
       for (var p in panels) {
         this._load(p, panels[p].defaultURL);
+      }
+    },
+    // Attempt to preserve the activity's current state
+    _restoreActivityState: function (variableName, url) {
+      if (url && window[variableName] && window[variableName].restoreState) {
+        var path = url;
+        if (path.indexOf('?') >= 0) {
+          path = path.substr(0, path.indexOf('?'));
+        }
+        var state = activityState[path];
+        if (state) {
+          window[variableName].restoreState(state);
+        }
       }
     },
     _splitterResized: function (element, panel, resizer, vertical) {
