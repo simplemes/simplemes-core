@@ -4,7 +4,7 @@
 <#include "../../includes/definition.ftl" />
 
 <@efForm id="create">
-    <@efCreate />
+    <@efCreate product@suggest="/order/suggestOrder?workCenter=WC_XYZZY"/>
 </@efForm>
 
 <#include "../../includes/footer.ftl" />

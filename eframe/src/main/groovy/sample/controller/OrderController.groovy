@@ -29,7 +29,7 @@ import java.security.Principal
 /**
  * Handles the controller actions for the Order objects.  Includes CRUD actions on the user.
  * <p>
- * Not shipped with the framework.
+ * Not shipped with the framework.  Used for some GUI tests.
  */
 @Slf4j
 @Secured("MANAGER")
@@ -203,6 +203,42 @@ class OrderController extends BaseCrudRestController {
     return HttpResponse.status(HttpStatus.OK).body(json)
   }
 
+  /**
+   * The number of times the suggest url is called.
+   */
+  static int suggestCount = 0
+
+  /**
+   * The most recent parameters for the latest suggest request.
+   */
+  static Map suggestLatestParameters
+
+  /**
+   * Test method for a suggest list.  Also provides an instrumented endpoint for use with suggest API tests. Records
+   * the parameters in the latest request and a count of the calls.
+   * @param request The request.
+   * @param principal The user logged in.
+   * @return The data for the list.
+   */
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  @Get("/suggestOrder")
+  HttpResponse suggestOrder(HttpRequest request, @Nullable Principal principal) {
+    def list = []
+    def params = ControllerUtils.instance.convertToMap(request.parameters)
+    def filter = params["filter[value]"] as String
+    if (filter) {
+      for (i in 1..20) {
+        def order = "${filter.toUpperCase()}1${sprintf("%03d", i)}".toString()
+        list << [value: order, id: "$i".toString()]
+      }
+    }
+    // Record this request for use by GUI tests
+    suggestCount++
+    suggestLatestParameters = params
+
+    def json = Holders.objectMapper.writeValueAsString(list)
+    return HttpResponse.status(HttpStatus.OK).body(json)
+  }
 
   /**
    * Determines the view to display for the given method.  This can be overridden in your controller class to

@@ -395,7 +395,6 @@ class RefreshTokenServiceSpec extends BaseSpecification {
     when: 'the token is refreshed and replaced from a different address'
     def address = new InetSocketAddress(originalAddress, 437)
     def source = service.getRequestSource(mockRequest(remoteAddress: address, headers: headers))
-    println "source = $source"
 
     then: 'source contains the expected values'
     UnitTestUtils.assertContainsAllIgnoreCase(source, results)

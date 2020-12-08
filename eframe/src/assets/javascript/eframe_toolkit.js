@@ -167,6 +167,31 @@ _ef_tk.toolkit = function () {
         console.log('refreshList(): No url defined for ' + listID);
       }
     },
+    // Sets the given text field's suggest uri.
+    setSuggestURI: function (textFieldName, uri) {
+      // Webix forces us to replace the whole suggest list to change the URL.  Uggh!
+      var suggestId = $$(textFieldName).config.suggest;
+      // Remove the default suggest node.
+      if ($$(suggestId)) {
+        $$(suggestId).destructor();
+      }
+      // Remove the dynamic suggestion element if it was created.
+      suggestId = textFieldName + "_suggest";
+      if ($$(suggestId)) {
+        $$(suggestId).destructor();
+      }
+      // Create a new suggest node for the field.
+      webix.ui({
+        view: "suggest",
+        id: suggestId,
+        input: $$(textFieldName),// document.getElementById(textFieldName),
+        body: {
+          dataFeed: uri
+        }
+      });
+
+      //$$(textFieldName).config.suggest = uri;
+    },
     // *************************************
     // Internal Function
     // *************************************

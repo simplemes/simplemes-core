@@ -1,0 +1,34 @@
+
+=== setSuggestURI
+
+.setSuggestURI(textFieldName, uri)
+
+This Javascript function updates the `suggest` URI for the given text field.
+This allows you to dynamically change the <<Text Field Suggest>> URI and parameters
+to reflect changes in the UI.  For example, a user may change the work center they are working
+in.  The suggest mechanism can use the new work center to change how it suggests values.
+
+This function is typically used with the <<Text Field Suggest>> option in the <<efField>>.
+This function is part of the <<eframe_toolkit-js>> library.
+
+The arguments are:
+
+[cols=".^1,1,5"]
+|===
+|Parameter|Type|Description
+
+|textFieldName|String| The text field's name/ID.
+                       Defined by the <<efField>> marker's `id` parameter.  (*Required*).
+|uri|String| The new URI for the suggest feature. (*Required*).
+|===
+
+
+[source,javascript]
+----
+tk.setSuggestURI('order','/workList/validOrders?workCenter=WC1');
+----
+
+
+The URI can contain parameters if needed.
+
+

@@ -17,6 +17,7 @@ import org.simplemes.eframe.i18n.GlobalUtils
  *   <li><b>type</b> - The field type.  Supported values: 'password'. </li>
  *   <li><b>readOnly</b> - If true, then the text field is not editable (<b>default</b>: false). </li>
  *   <li><b>onChange</b> - The javascript to execute when the field is changed (one field exit). </li>
+ *   <li><b>suggest</b> - The server-side URI for the field suggestion values. </li>
  *   <li><b>attributes</b> - The list of attributes to assign to the HTML field.
  *       Formatted as standard Javascript object element (e.g.'autocomplete:"username"'. </li>
  * </ul>
@@ -78,9 +79,13 @@ class TextFieldWidget extends BaseLabeledFieldWidget {
       if (widgetContext.parameters.onChange) {
         change = ",on:{onChange(newValue, oldValue){$widgetContext.parameters.onChange}}"
       }
+      def suggest = widgetContext.parameters.suggest ?: ''
+      if (suggest) {
+        suggest = """,suggest: "${suggest}" """
+      }
 
       def typeS = widgetContext.parameters.type ? """,type: "${type}" """ : ''
-      return """{view: "text", id: "$id", name: "$id", value: "$valueS" $cssS $iWidthS$attrs $typeS $req $change},{},"""
+      return """{view: "text", id: "$id", name: "$id", value: "$valueS" $cssS $iWidthS$attrs $typeS $req $change $suggest},{},"""
       // The spacer above is added to make sure the field won't limit dialog sizes.  The spacer will
       // expand as needed, so the dialog can be any size.
     }
@@ -119,6 +124,13 @@ class TextFieldWidget extends BaseLabeledFieldWidget {
         sb << ','
       }
       sb << attrs
+    }
+
+    if (widgetContext.parameters.suggest) {
+      if (sb.size()) {
+        sb << ','
+      }
+      sb << "autocomplete: 'off'"
     }
 
     if (sb.size()) {
