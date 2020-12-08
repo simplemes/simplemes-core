@@ -3832,6 +3832,11 @@ If this field is used inside of a standard edit/create/show definition page, the
          a delimiter.</p></td>
 </tr>
 <tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>suggest</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The suggest URI for dynamic auto-complete from the server.  Text fields only.
+             See <a href="#text-field-suggest">Text Field Suggest</a> below for details.</p></td>
+</tr>
+<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>attributes</strong></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">Any additional HTML attributes to add to the text field element.  Formatted as
                 standard Javascript object elements (e.g. 'autocomplete:"username",type:"text"')</p></td>
@@ -3854,6 +3859,82 @@ This marker supports the <a href="#inline-grid">Inline Grid</a>.
 </td>
 </tr>
 </table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="text-field-suggest"><a class="link" href="#text-field-suggest">Text Field Suggest</a></h4>
+<div class="paragraph">
+<p>Text input fields support dynamic server-side suggestion lists based on the user&#8217;s input
+as they type.  You enable this by providing a server-side URI for the suggest list:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example - Text Field Suggest</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span class="error">&lt;</span>@efForm id=&quot;selection&quot;<span class="error">&gt;</span>
+  <span class="error">&lt;</span>@efField field=&quot;order&quot; id=&quot;order&quot; label=&quot;Order/LSN&quot;
+    suggest=&quot;/order/suggestOrder?workCenter=WC1&quot; /<span class="error">&gt;</span>
+<span class="error">&lt;</span>@/efForm<span class="error">&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This will disable the normal browser-based auto-complete logic and then query the server
+after every character change in the input field.  The server-side controller must:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Accept the current filter value as the request parameter <code>'filter[value]'</code></p>
+</li>
+<li>
+<p>Provide the values in the right format (see below).</p>
+</li>
+</ol>
+</div>
+<div class="listingblock">
+<div class="title">JSON Response</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">[
+  {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b</span><span class="delimiter">&quot;</span></span>,  <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">PRODUCT_ABC</span><span class="delimiter">&quot;</span></span>,
+  },
+  {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">id</span><span class="delimiter">&quot;</span></span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b</span><span class="delimiter">&quot;</span></span>,
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">value</span><span class="delimiter">&quot;</span></span>:<span class="string"><span class="delimiter">&quot;</span><span class="content">PRODUCT_XYZ</span><span class="delimiter">&quot;</span></span>,
+  },
+  <span class="error">.</span> <span class="error">.</span> <span class="error">.</span>
+]</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Each element must have unique ID.  It can be a simple integer.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The server-side logic must limit the returned list size if needed.  The client-side
+      shows the entire list.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>It is also possible to alter the <code>suggest</code> URI dynamically on the client.  In the example
+above, you might want to change the <code>workCenter</code> base on user inputs.  To do this,
+you can use the method <a href="#setsuggesturi">setSuggestURI</a> (<code>tk.setSuggestURI()</code> from the Javascript Toolkit).</p>
+</div>
+<div class="paragraph">
+<p>This <code>suggest</code> option is one of the options supported by the common
+<a href="guide.html#markers-and-options" target="_blank" rel="noopener">Markers and Options</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>.</p>
 </div>
 </div>
 <div class="sect3">
@@ -6112,7 +6193,7 @@ for the button. See <a href="#efpreloadmessages">efPreloadMessages</a> for how t
 hot-key of Escape.</p>
 </div>
 <div class="paragraph">
-<p>If not <code>focus</code> element is passed in, the last button has the focus.</p>
+<p>If no <code>focus</code> element is passed in, the last button has the focus.</p>
 </div>
 <div class="paragraph">
 <p>A dialog with 3 custom buttons is shown below:</p>
@@ -7281,7 +7362,8 @@ level.</p>
 <span class="inline-toc"><a href="#eframe-toolkit-pw">pw</a></span>
 <span class="inline-toc"><a href="#getgriddata">getGridData</a></span>
 <span class="inline-toc"><a href="#findmaxgridvalue">findMaxGridValue</a></span>
-<span class="inline-toc"><a href="#refreshlist">refreshList</a></span></p>
+<span class="inline-toc"><a href="#refreshlist">refreshList</a></span>
+<span class="inline-toc"><a href="#setsuggesturi">setSuggestURI</a></span></p>
 </div>
 <div class="paragraph">
 <p>The enterprise framework relies on a third-party GUI toolkit for much of the display
@@ -7585,6 +7667,58 @@ function workListRefresh() {
 </div>
 <div class="paragraph">
 <p>This example defines a function that will refresh the list when called.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="setsuggesturi"><a class="link" href="#setsuggesturi">setSuggestURI</a></h3>
+<div class="paragraph">
+<div class="title">setSuggestURI(textFieldName, uri)</div>
+<p>This Javascript function updates the <code>suggest</code> URI for the given text field.
+This allows you to dynamically change the <a href="#text-field-suggest">Text Field Suggest</a> URI and parameters
+to reflect changes in the UI.  For example, a user may change the work center they are working
+in.  The suggest mechanism can use the new work center to change how it suggests values.</p>
+</div>
+<div class="paragraph">
+<p>This function is typically used with the <a href="#text-field-suggest">Text Field Suggest</a> option in the <a href="#effield">efField</a>.
+This function is part of the <a href="#eframe_toolkit-js">eframe_toolkit.js</a> library.</p>
+</div>
+<div class="paragraph">
+<p>The arguments are:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 14.2857%;">
+<col style="width: 14.2857%;">
+<col style="width: 71.4286%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-middle">Parameter</th>
+<th class="tableblock halign-left valign-top">Type</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">textFieldName</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The text field&#8217;s name/ID.
+                       Defined by the <a href="#effield">efField</a> marker&#8217;s <code>id</code> parameter.  (<strong>Required</strong>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-middle"><p class="tableblock">uri</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">String</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The new URI for the suggest feature. (<strong>Required</strong>).</p></td>
+</tr>
+</tbody>
+</table>
+<div class="listingblock">
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">tk.setSuggestURI(<span class="string"><span class="delimiter">'</span><span class="content">order</span><span class="delimiter">'</span></span>,<span class="string"><span class="delimiter">'</span><span class="content">/workList/validOrders?workCenter=WC1</span><span class="delimiter">'</span></span>);</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The URI can contain parameters if needed.</p>
 </div>
 </div>
 </div>
@@ -8303,7 +8437,7 @@ You will normally not need to call this directly.  The dashboard will usually ca
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-12-06 21:04:37 UTC
+Last updated 2020-12-08 17:16:16 UTC
 </div>
 </div>
 <style>

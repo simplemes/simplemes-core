@@ -111,7 +111,7 @@ extends <a href='../../org/simplemes/eframe/controller/BaseCrudRestController.ht
 
     <p> Handles the controller actions for the Order objects.  Includes CRUD actions on the user.
  <p>
- Not shipped with the framework.</p>
+ Not shipped with the framework.  Used for some GUI tests.</p>
 
           </li>
     </ul>
@@ -190,6 +190,16 @@ extends <a href='../../org/simplemes/eframe/controller/BaseCrudRestController.ht
                         <tr class="rowColor">
                             <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.lang.Object</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#domainClass">domainClass</a></code><br></td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;int</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#suggestCount">suggestCount</a></code><br>The number of times the suggest url is called.</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.Map</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#suggestLatestParameters">suggestLatestParameters</a></code><br>The most recent parameters for the latest suggest request.</td>
                         </tr>
                         
                         <tr class="altColor">
@@ -280,6 +290,12 @@ extends <a href='../../org/simplemes/eframe/controller/BaseCrudRestController.ht
                             <td class="colLast"><code><strong><a href="#orderWorkList(java.security.Principal)">orderWorkList</a></strong>(java.security.Principal principal)</code><br></td>
                         </tr>
                         
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>io.micronaut.http.HttpResponse</code></td>
+                            <td class="colLast"><code><strong><a href="#suggestOrder(io.micronaut.http.HttpRequest, java.security.Principal)">suggestOrder</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Test method for a suggest list.  </td>
+                        </tr>
+                        
                     </table>
                    </ul>
               </li>
@@ -362,6 +378,22 @@ extends <a href='../../org/simplemes/eframe/controller/BaseCrudRestController.ht
                             <li class="blockList">
                                 <h4>private&nbsp;static&nbsp;java.lang.Object <strong>domainClass</strong></h4>
                                 <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="suggestCount"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;static&nbsp;int <strong>suggestCount</strong></h4>
+                                <p> The number of times the suggest url is called.</p>
+                            </li>
+                        </ul>
+                    
+                        <a name="suggestLatestParameters"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;static&nbsp;java.util.Map <strong>suggestLatestParameters</strong></h4>
+                                <p> The most recent parameters for the latest suggest request.</p>
                             </li>
                         </ul>
                     
@@ -464,6 +496,17 @@ java.lang.String <strong>getView</strong>(java.lang.String methodName)</h4>
 @io.micronaut.http.annotation.Produces(value: MediaType.TEXT_HTML)
 <a href='../../org/simplemes/eframe/controller/StandardModelAndView.html'>StandardModelAndView</a> <strong>orderWorkList</strong>(@javax.annotation.Nullable java.security.Principal principal)</h4>
                                 <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="suggestOrder(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
+@io.micronaut.http.annotation.Get(value: /suggestOrder)
+io.micronaut.http.HttpResponse <strong>suggestOrder</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
+                                <p> Test method for a suggest list.  Also provides an instrumented endpoint for use with suggest API tests. Records
+ the parameters in the latest request and a count of the calls. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The request.</DD><DD><code>principal</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The data for the list.</DD></DL></p>
                             </li>
                         </ul>
                     
