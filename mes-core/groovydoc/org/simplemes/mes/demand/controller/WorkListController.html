@@ -225,6 +225,12 @@ extends org.simplemes.eframe.controller.BaseController</pre>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>io.micronaut.http.HttpResponse</code></td>
+                            <td class="colLast"><code><strong><a href="#suggest(io.micronaut.http.HttpRequest, java.security.Principal)">suggest</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Provides a suggestion list of active/queued work.  </td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>org.simplemes.eframe.controller.StandardModelAndView</code></td>
                             <td class="colLast"><code><strong><a href="#workListActivity(io.micronaut.http.HttpRequest, java.security.Principal)">workListActivity</a></strong>(io.micronaut.http.HttpRequest request, java.security.Principal principal)</code><br>Displays the core workList activity page.</td>
                         </tr>
@@ -245,7 +251,7 @@ extends org.simplemes.eframe.controller.BaseController</pre>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class org.simplemes.eframe.controller.BaseController</code></td>
-                            <td class="colLast"><code>org.simplemes.eframe.controller.BaseController#error(io.micronaut.http.HttpRequest, java.lang.Throwable), org.simplemes.eframe.controller.BaseController#buildErrorResponse(java.lang.String), org.simplemes.eframe.controller.BaseController#buildOkResponse(java.lang.Object), org.simplemes.eframe.controller.BaseController#buildOkResponse(), org.simplemes.eframe.controller.BaseController#buildDeniedResponse(io.micronaut.http.HttpRequest, java.lang.String, java.security.Principal), org.simplemes.eframe.controller.BaseController#parseBody(io.micronaut.http.HttpRequest, java.lang.Class), org.simplemes.eframe.controller.BaseController#getMetaClass(), org.simplemes.eframe.controller.BaseController#setMetaClass(groovy.lang.MetaClass), org.simplemes.eframe.controller.BaseController#wait(long, int), org.simplemes.eframe.controller.BaseController#wait(), org.simplemes.eframe.controller.BaseController#wait(long), org.simplemes.eframe.controller.BaseController#equals(java.lang.Object), org.simplemes.eframe.controller.BaseController#toString(), org.simplemes.eframe.controller.BaseController#hashCode(), org.simplemes.eframe.controller.BaseController#getClass(), org.simplemes.eframe.controller.BaseController#notify(), org.simplemes.eframe.controller.BaseController#notifyAll(), org.simplemes.eframe.controller.BaseController#getProperty(java.lang.String), org.simplemes.eframe.controller.BaseController#setProperty(java.lang.String, java.lang.Object), org.simplemes.eframe.controller.BaseController#invokeMethod(java.lang.String, java.lang.Object)</code></td>
+                            <td class="colLast"><code>org.simplemes.eframe.controller.BaseController#error(io.micronaut.http.HttpRequest, java.lang.Throwable), org.simplemes.eframe.controller.BaseController#getMetaClass(), org.simplemes.eframe.controller.BaseController#setMetaClass(groovy.lang.MetaClass), org.simplemes.eframe.controller.BaseController#buildErrorResponse(java.lang.String), org.simplemes.eframe.controller.BaseController#buildOkResponse(java.lang.Object), org.simplemes.eframe.controller.BaseController#buildOkResponse(), org.simplemes.eframe.controller.BaseController#buildDeniedResponse(io.micronaut.http.HttpRequest, java.lang.String, java.security.Principal), org.simplemes.eframe.controller.BaseController#parseBody(io.micronaut.http.HttpRequest, java.lang.Class), org.simplemes.eframe.controller.BaseController#wait(long, int), org.simplemes.eframe.controller.BaseController#wait(), org.simplemes.eframe.controller.BaseController#wait(long), org.simplemes.eframe.controller.BaseController#equals(java.lang.Object), org.simplemes.eframe.controller.BaseController#toString(), org.simplemes.eframe.controller.BaseController#hashCode(), org.simplemes.eframe.controller.BaseController#getClass(), org.simplemes.eframe.controller.BaseController#notify(), org.simplemes.eframe.controller.BaseController#notifyAll(), org.simplemes.eframe.controller.BaseController#getProperty(java.lang.String), org.simplemes.eframe.controller.BaseController#setProperty(java.lang.String, java.lang.Object), org.simplemes.eframe.controller.BaseController#invokeMethod(java.lang.String, java.lang.Object)</code></td>
                         </tr>
                     </table>
                    </ul>
@@ -327,6 +333,21 @@ io.micronaut.http.HttpResponse <strong>findWork</strong>(io.micronaut.http.HttpR
  <p>
  <b>Note:</b> The max/offset values are typically overridden by the value(s) passed in as a HTTP URL parameter.
 </p>
+                            </li>
+                        </ul>
+                    
+                        <a name="suggest(io.micronaut.http.HttpRequest, java.security.Principal)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@io.micronaut.http.annotation.Get(value: /suggest)
+io.micronaut.http.HttpResponse <strong>suggest</strong>(io.micronaut.http.HttpRequest request, @javax.annotation.Nullable java.security.Principal principal)</h4>
+                                <p> Provides a suggestion list of active/queued work.  This exposes the
+ <a href='../../../../../org/simplemes/mes/demand/service/WorkListService.html#findWork(org.simplemes.mes.demand.FindWorkRequest)' title='WorkListService.findWork'>WorkListService.findWork</a> method.
+ The response is a JSON form used for suggest lists ([ id: ..., value: ""]
+ Filtering is supported ('filter[value]').
+ <p>
+ <b>Note:</b> Paging (size, from) is supported, but the default is (100 rows from the first page).  Sorting is not supported.
+ <DL><DT><B>Returns:</B></DT><DD>The list of matching work.  LSN or order if the LSN is null.  Returns nothing if the filter is empty/null.</DD></DL></p>
                             </li>
                         </ul>
                     
