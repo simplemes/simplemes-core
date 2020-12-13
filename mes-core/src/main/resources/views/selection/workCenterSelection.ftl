@@ -62,7 +62,7 @@ ${params._variable}.restoreState =  function(state) {
 
 
 <@efForm id="wcSelection" dashboard="buttonHolder">
-  <@efField field="LSN.lsn" id="order" label="orderLsn.label" onChange="${variable}.orderLSNChangeByUser(newValue)">
+  <@efField field="LSN.lsn" id="order" label="orderLsn.label" suggest="/workList/suggest" onChange="${variable}.orderLSNChangeByUser(newValue)">
     <@efHTML spacer="before" width="20%">
     </@efHTML>
     <@efButton type='undo' id="undoButton" tooltip='undo.title' click='dashboard.undoAction();'/>

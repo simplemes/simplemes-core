@@ -64,7 +64,7 @@ class TextFieldWidgetGUISpec extends BaseGUISpecification {
 
     and: 'a value is started'
     product.input.click()
-    sleep(1000)
+    //sleep(1000)
     sendKey('J')
     waitFor {
       $('div.webix_popup', view_id: '$suggest1').displayed

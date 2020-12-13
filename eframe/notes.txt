@@ -17,6 +17,7 @@ Groovy extension GUI with hooks?
 Ask question updating suggest on Webix forums.
 Check out JaCoCo https://www.jacoco.org/jacoco/trunk/doc/ and gradle plugin.
 Add pothole for missing transactionManager (Synch or Asynch) means no DB info in the .yml file.
+Figure out automatic shift to upper case on input.  Which fields?  Toggle?
 
 
 

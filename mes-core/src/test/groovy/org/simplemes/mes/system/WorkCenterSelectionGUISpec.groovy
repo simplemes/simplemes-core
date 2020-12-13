@@ -4,6 +4,13 @@ import org.openqa.selenium.Keys
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.dashboard.controller.DashboardTestController
 import org.simplemes.eframe.test.BaseDashboardSpecification
+import org.simplemes.mes.demand.domain.Order
+import org.simplemes.mes.demand.page.WorkCenterSelectionDashboardPage
+import org.simplemes.mes.floor.domain.WorkCenter
+import org.simplemes.mes.product.domain.Product
+import org.simplemes.mes.test.MESUnitTestUtils
+import org.simplemes.mes.tracking.domain.ActionLog
+import org.simplemes.mes.tracking.domain.ProductionLog
 import spock.lang.IgnoreIf
 
 /*
@@ -18,6 +25,8 @@ import spock.lang.IgnoreIf
 @IgnoreIf({ !sys['geb.env'] })
 class WorkCenterSelectionGUISpec extends BaseDashboardSpecification {
 
+  @SuppressWarnings("unused")
+  static dirtyDomains = [ActionLog, ProductionLog, Order, Product]
 
   def "verify that work center passed on URL is used by activity and the page is localized"() {
     given: 'a dashboard with the activity'
@@ -223,8 +232,31 @@ class WorkCenterSelectionGUISpec extends BaseDashboardSpecification {
 
     //sleep(20000)
     then: 'a user input is restored'
-    $('#order').value() =='XYZZY'
+    $('#order').value() == 'XYZZY'
   }
 
+  def "verify that the suggest on order works"() {
+    given: 'a dashboard with the activity'
+    buildDashboard(defaults: ['/selection/workCenterSelection'])
+
+    and: 'some orders to display in the suggest list'
+    WorkCenter.withTransaction {
+      setCurrentUser()
+      MESUnitTestUtils.releaseOrders(nOrders: 5, spreadQueuedDates: true)
+    }
+
+    when: 'the dashboard is displayed'
+    displayDashboard(page: WorkCenterSelectionDashboardPage)
+
+    and: 'a value is started'
+    orderLSNField.input.click()
+    sendKey('M')
+    waitFor {
+      $('div.webix_popup', view_id: '$suggest1').displayed
+    }
+
+    then: 'suggest works'
+    $('div.webix_popup', view_id: '$suggest1').text().contains('M1002')
+  }
 
 }
