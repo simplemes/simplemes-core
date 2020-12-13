@@ -186,10 +186,14 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Called before validate happens.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/mes/test/MESUnitTestUtils.html#buildMasterRouting(java.util.Map)" title="Method in MESUnitTestUtils">buildMasterRouting(java.util.Map)</a></span> - Method in <a href="org/simplemes/mes/test/MESUnitTestUtils.html">MESUnitTestUtils</a>
 </dt><dd> <div class="block">Build a simple master routing the given operations.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/mes/demand/service/WorkListService.html#buildQueryParameters(org.simplemes.mes.demand.FindWorkRequest, java.lang.Boolean)" title="Method in WorkListService">buildQueryParameters(org.simplemes.mes.demand.FindWorkRequest, java.lang.Boolean)</a></span> - Method in <a href="org/simplemes/mes/demand/service/WorkListService.html">WorkListService</a>
+</dt><dd> <div class="block">Builds a list of parameters for the find work request.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/mes/test/MESUnitTestUtils.html#buildSimpleProductWithRouting(java.util.Map)" title="Method in MESUnitTestUtils">buildSimpleProductWithRouting(java.util.Map)</a></span> - Method in <a href="org/simplemes/mes/test/MESUnitTestUtils.html">MESUnitTestUtils</a>
 </dt><dd> <div class="block">Build a product with a simple 3 operation routing for use in an product.</div></dd>
-<dt><span class="strong"><a href="org/simplemes/mes/demand/service/WorkListService.html#buildSQL(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest)" title="Method in WorkListService">buildSQL(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest)</a></span> - Method in <a href="org/simplemes/mes/demand/service/WorkListService.html">WorkListService</a>
-</dt><dd> <div class="block">Build the FROM...WHERE clause for the given domainClass and work request.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/mes/demand/service/WorkListService.html#buildStandardColumns()" title="Method in WorkListService">buildStandardColumns()</a></span> - Method in <a href="org/simplemes/mes/demand/service/WorkListService.html">WorkListService</a>
+</dt><dd> <div class="block">Builds the standard columns for work queries.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/mes/demand/service/WorkListService.html#buildWhereClause(org.simplemes.mes.demand.FindWorkRequest, java.lang.String)" title="Method in WorkListService">buildWhereClause(org.simplemes.mes.demand.FindWorkRequest, java.lang.String)</a></span> - Method in <a href="org/simplemes/mes/demand/service/WorkListService.html">WorkListService</a>
+</dt><dd> <div class="block">Builds the where clause based on the given filter criteria.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/mes/system/ButtonPressAction.html" title="Class in org.simplemes.mes.system">ButtonPressAction</a></span> - Class in <a href="./org/simplemes/mes/system/package-summary.html">org.simplemes.mes.system</a>
 </dt><dd><div class="block">The suggested client dashboard button press action.
  </div></dd>
@@ -394,6 +398,10 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Provides a list of active/queued work.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/mes/demand/service/WorkListService.html#findWork(org.simplemes.mes.demand.FindWorkRequest)" title="Method in WorkListService">findWork(org.simplemes.mes.demand.FindWorkRequest)</a></span> - Method in <a href="org/simplemes/mes/demand/service/WorkListService.html">WorkListService</a>
 </dt><dd> <div class="block">Finds the active/queued work available based on the request restrictions.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/mes/demand/service/WorkListService.html#findWorkDetails(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest)" title="Method in WorkListService">findWorkDetails(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest)</a></span> - Method in <a href="org/simplemes/mes/demand/service/WorkListService.html">WorkListService</a>
+</dt><dd> <div class="block">Internal method to find the work for a single object.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/mes/demand/service/WorkListService.html#findWorkInternal(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest, boolean)" title="Method in WorkListService">findWorkInternal(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest, boolean)</a></span> - Method in <a href="org/simplemes/mes/demand/service/WorkListService.html">WorkListService</a>
+</dt><dd> <div class="block">Internal method to find the work records or a count.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/mes/demand/FindWorkRequest.html" title="Class in org.simplemes.mes.demand">FindWorkRequest</a></span> - Class in <a href="./org/simplemes/mes/demand/package-summary.html">org.simplemes.mes.demand</a>
 </dt><dd><div class="block">The request argument for the WorkListService.findWork() service method.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/mes/demand/FindWorkRequest.html#FindWorkRequest()" title="Constructor in FindWorkRequest">FindWorkRequest()</a></span> - Constructor in <a href="org/simplemes/mes/demand/FindWorkRequest.html">FindWorkRequest</a>
@@ -408,6 +416,16 @@ if (location.href.indexOf('is-external=true') == -1) {
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/mes/demand/FindWorkResponseDetail.html#FindWorkResponseDetail()" title="Constructor in FindWorkResponseDetail">FindWorkResponseDetail()</a></span> - Constructor in <a href="org/simplemes/mes/demand/FindWorkResponseDetail.html">FindWorkResponseDetail</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/mes/demand/service/WorkListService.html#findWorkTotalCount(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest)" title="Method in WorkListService">findWorkTotalCount(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest)</a></span> - Method in <a href="org/simplemes/mes/demand/service/WorkListService.html">WorkListService</a>
+</dt><dd> <div class="block">Internal method to find the total number of work records available for a single object.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/mes/demand/service/WorkListService.html#findWorkWithSQLForLSN(org.simplemes.mes.demand.FindWorkRequest, boolean)" title="Method in WorkListService">findWorkWithSQLForLSN(org.simplemes.mes.demand.FindWorkRequest, boolean)</a></span> - Method in <a href="org/simplemes/mes/demand/service/WorkListService.html">WorkListService</a>
+</dt><dd> <div class="block">Internal method to find the work for LSNs without routing.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/mes/demand/service/WorkListService.html#findWorkWithSQLForLSNRouting(org.simplemes.mes.demand.FindWorkRequest, boolean)" title="Method in WorkListService">findWorkWithSQLForLSNRouting(org.simplemes.mes.demand.FindWorkRequest, boolean)</a></span> - Method in <a href="org/simplemes/mes/demand/service/WorkListService.html">WorkListService</a>
+</dt><dd> <div class="block">Internal method to find the work for LSNs without routing.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/mes/demand/service/WorkListService.html#findWorkWithSQLForOrder(org.simplemes.mes.demand.FindWorkRequest, boolean)" title="Method in WorkListService">findWorkWithSQLForOrder(org.simplemes.mes.demand.FindWorkRequest, boolean)</a></span> - Method in <a href="org/simplemes/mes/demand/service/WorkListService.html">WorkListService</a>
+</dt><dd> <div class="block">Internal method to find the work for Orders without routing.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/mes/demand/service/WorkListService.html#findWorkWithSQLForOrderRouting(org.simplemes.mes.demand.FindWorkRequest, boolean)" title="Method in WorkListService">findWorkWithSQLForOrderRouting(org.simplemes.mes.demand.FindWorkRequest, boolean)</a></span> - Method in <a href="org/simplemes/mes/demand/service/WorkListService.html">WorkListService</a>
+</dt><dd> <div class="block">Internal method to find the work for Orders with routing.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/mes/demand/service/ResolveService.html#fixLSN(java.lang.Object)" title="Method in ResolveService">fixLSN(java.lang.Object)</a></span> - Method in <a href="org/simplemes/mes/demand/service/ResolveService.html">ResolveService</a>
 </dt><dd> <div class="block">Fixes the LSN/Order combination for the given object.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/mes/test/MESUnitTestUtils.html#forceQtyDone(org.simplemes.mes.demand.domain.Order, BigDecimal)" title="Method in MESUnitTestUtils">forceQtyDone(org.simplemes.mes.demand.domain.Order, BigDecimal)</a></span> - Method in <a href="org/simplemes/mes/test/MESUnitTestUtils.html">MESUnitTestUtils</a>

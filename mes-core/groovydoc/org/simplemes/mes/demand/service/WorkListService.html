@@ -70,11 +70,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;<li><a href="#property_summary">Property</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>
-            Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Field&nbsp;&nbsp;&nbsp;<li><a href="#prop_detail">Property</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
     </div>
     <a name="skip-navbar_top">
@@ -136,6 +136,27 @@ extends java.lang.Object</pre>
 
         <!-- =========== PROPERTY SUMMARY =========== -->
         
+         <ul class="blockList">
+                <li class="blockList"><a name="property_summary"><!--   --></a>
+                    <h3>Properties Summary</h3>
+                    <ul class="blockList">
+                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Properties Summary table, listing nested classes, and an explanation">
+                        <caption><span>Properties</span><span class="tabEnd">&nbsp;</span></caption>
+                        <tr>
+                            <th class="colFirst" scope="col">Type</th>
+                            <th class="colLast" scope="col">Name and description</th>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.lang.String</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#standardWorkStateColumns">standardWorkStateColumns</a></code><br>The comma-delimited list of columns for all 4 queries.</td>
+                        </tr>
+                        
+                    </table>
+                   </ul>
+                </li>
+            </ul>
+        
 
         <!-- =========== ELEMENT SUMMARY =========== -->
         
@@ -181,14 +202,68 @@ extends java.lang.Object</pre>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.lang.Object[]</code></td>
+                            <td class="colLast"><code><strong><a href="#buildQueryParameters(org.simplemes.mes.demand.FindWorkRequest, java.lang.Boolean)">buildQueryParameters</a></strong>(<a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest, java.lang.Boolean needCount)</code><br>Builds a list of parameters for the find work request.  </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#buildSQL(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest)">buildSQL</a></strong>(java.lang.Class domainClass, <a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest)</code><br>Build the FROM...WHERE clause for the given domainClass and work request.</td>
+                            <td class="colLast"><code><strong><a href="#buildStandardColumns()">buildStandardColumns</a></strong>()</code><br>Builds the standard columns for work queries.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.lang.String</code></td>
+                            <td class="colLast"><code><strong><a href="#buildWhereClause(org.simplemes.mes.demand.FindWorkRequest, java.lang.String)">buildWhereClause</a></strong>(<a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest, java.lang.String likeColumnName)</code><br>Builds the where clause based on the given filter criteria.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/mes/demand/FindWorkResponse.html'>FindWorkResponse</a></code></td>
                             <td class="colLast"><code><strong><a href="#findWork(org.simplemes.mes.demand.FindWorkRequest)">findWork</a></strong>(<a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest)</code><br>Finds the active/queued work available based on the request restrictions.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#findWorkDetails(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest)">findWorkDetails</a></strong>(java.lang.Class domainClass, <a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest)</code><br>Internal method to find the work for a single object.</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#findWorkInternal(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest, boolean)">findWorkInternal</a></strong>(java.lang.Class domainClass, <a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest, boolean needCount)</code><br>Internal method to find the work records or a count.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;int</code></td>
+                            <td class="colLast"><code><strong><a href="#findWorkTotalCount(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest)">findWorkTotalCount</a></strong>(java.lang.Class domainClass, <a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest)</code><br>Internal method to find the total number of work records available for a single object.</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#findWorkWithSQLForLSN(org.simplemes.mes.demand.FindWorkRequest, boolean)">findWorkWithSQLForLSN</a></strong>(<a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest, boolean needCount)</code><br>Internal method to find the work for LSNs without routing.  </td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#findWorkWithSQLForLSNRouting(org.simplemes.mes.demand.FindWorkRequest, boolean)">findWorkWithSQLForLSNRouting</a></strong>(<a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest, boolean needCount)</code><br>Internal method to find the work for LSNs without routing.  </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#findWorkWithSQLForOrder(org.simplemes.mes.demand.FindWorkRequest, boolean)">findWorkWithSQLForOrder</a></strong>(<a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest, boolean needCount)</code><br>Internal method to find the work for Orders without routing.  </td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#findWorkWithSQLForOrderRouting(org.simplemes.mes.demand.FindWorkRequest, boolean)">findWorkWithSQLForOrderRouting</a></strong>(<a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest, boolean needCount)</code><br>Internal method to find the work for Orders with routing.  </td>
                         </tr>
                         
                     </table>
@@ -227,6 +302,24 @@ extends java.lang.Object</pre>
             
 
             
+            <!-- =========== PROPERTY DETAIL =========== -->
+            <ul class="blockList">
+                <li class="blockList"><a name="prop_detail">
+                    <!--   -->
+                </a>
+                    <h3>Property Detail</h3>
+                    
+                        <a name="standardWorkStateColumns"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;static&nbsp;final&nbsp;java.lang.String <strong>standardWorkStateColumns</strong></h4>
+                                <p> The comma-delimited list of columns for all 4 queries.</p>
+                            </li>
+                        </ul>
+                    
+                </li>
+            </ul>
+            
 
             
 
@@ -259,11 +352,27 @@ extends java.lang.Object</pre>
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="buildSQL(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest)"><!-- --></a>
+                        <a name="buildQueryParameters(org.simplemes.mes.demand.FindWorkRequest, java.lang.Boolean)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.String <strong>buildSQL</strong>(java.lang.Class domainClass, <a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest)</h4>
-                                <p> Build the FROM...WHERE clause for the given domainClass and work request. <DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The domain class to retrieve the data from.</DD><DD><code>findWorkRequest</code> -  Defines the request restrictions for the search.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The SQL fragment with the FROM..WHERE clauses.</DD></DL></p>
+                                <h4>java.lang.Object[] <strong>buildQueryParameters</strong>(<a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest, java.lang.Boolean needCount)</h4>
+                                <p> Builds a list of parameters for the find work request.  Adds filter and row count limits (if needed). <DL><DT><B>Parameters:</B></DT><DD><code>findWorkRequest</code> -  The request.</DD><DD><code>needCount</code> -  Set to true for count(*) variant (<b>Default</b>: false).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The parameters for the SQL.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="buildStandardColumns()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.lang.String <strong>buildStandardColumns</strong>()</h4>
+                                <p> Builds the standard columns for work queries. <DL><DT><B>Returns:</B></DT><DD>The columns list.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="buildWhereClause(org.simplemes.mes.demand.FindWorkRequest, java.lang.String)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.lang.String <strong>buildWhereClause</strong>(<a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest, java.lang.String likeColumnName)</h4>
+                                <p> Builds the where clause based on the given filter criteria. <DL><DT><B>Parameters:</B></DT><DD><code>findWorkRequest</code> -  The request with filter criteria.</DD><DD><code>likeColumnName</code> -  The name of the like column (if needed for the filter option).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The WHERE clause.</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -273,6 +382,66 @@ extends java.lang.Object</pre>
                                 <h4>@java.lang.SuppressWarnings(value: GroovyAssignabilityCheck)
 <a href='../../../../../org/simplemes/mes/demand/FindWorkResponse.html'>FindWorkResponse</a> <strong>findWork</strong>(<a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest)</h4>
                                 <p> Finds the active/queued work available based on the request restrictions. <DL><DT><B>Parameters:</B></DT><DD><code>findWorkRequest</code> -  Defines the request restrictions for the search.  Null allowed.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of elements that are in work (Orders/LSNs).</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="findWorkDetails(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;java.util.List <strong>findWorkDetails</strong>(java.lang.Class domainClass, <a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest)</h4>
+                                <p> Internal method to find the work for a single object. <DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The class to search for work.</DD><DD><code>findWorkRequest</code> -  Defines the request restrictions for the search.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of matching records.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="findWorkInternal(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest, boolean)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;java.util.List <strong>findWorkInternal</strong>(java.lang.Class domainClass, <a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest, boolean needCount)</h4>
+                                <p> Internal method to find the work records or a count. <DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The class to search for work.</DD><DD><code>findWorkRequest</code> -  Defines the request restrictions for the search.</DD><DD><code>needCount</code> -  If true, then returns a list for the count (element 0).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The raw SQL list (of Maps).</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="findWorkTotalCount(java.lang.Class, org.simplemes.mes.demand.FindWorkRequest)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;int <strong>findWorkTotalCount</strong>(java.lang.Class domainClass, <a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest)</h4>
+                                <p> Internal method to find the total number of work records available for a single object. <DL><DT><B>Parameters:</B></DT><DD><code>domainClass</code> -  The class to search for work.</DD><DD><code>findWorkRequest</code> -  Defines the request restrictions for the search.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The count.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="findWorkWithSQLForLSN(org.simplemes.mes.demand.FindWorkRequest, boolean)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;java.util.List <strong>findWorkWithSQLForLSN</strong>(<a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest, boolean needCount)</h4>
+                                <p> Internal method to find the work for LSNs without routing.  Builds a dynamic SQL query for the right filter
+ and tables. <DL><DT><B>Parameters:</B></DT><DD><code>findWorkRequest</code> -  Defines the request restrictions for the search.</DD><DD><code>needCount</code> -  Set to true for count(*) variant (<b>Default</b>: false).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of matching records.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="findWorkWithSQLForLSNRouting(org.simplemes.mes.demand.FindWorkRequest, boolean)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;java.util.List <strong>findWorkWithSQLForLSNRouting</strong>(<a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest, boolean needCount)</h4>
+                                <p> Internal method to find the work for LSNs without routing.  Builds a dynamic SQL query for the right filter
+ and tables. <DL><DT><B>Parameters:</B></DT><DD><code>findWorkRequest</code> -  Defines the request restrictions for the search.</DD><DD><code>needCount</code> -  Set to true for count(*) variant (<b>Default</b>: false).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of matching records.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="findWorkWithSQLForOrder(org.simplemes.mes.demand.FindWorkRequest, boolean)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;java.util.List <strong>findWorkWithSQLForOrder</strong>(<a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest, boolean needCount)</h4>
+                                <p> Internal method to find the work for Orders without routing.  Builds a dynamic SQL query for the right filter
+ and tables. <DL><DT><B>Parameters:</B></DT><DD><code>findWorkRequest</code> -  Defines the request restrictions for the search.</DD><DD><code>needCount</code> -  Set to true for count(*) variant (<b>Default</b>: false).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of matching records.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="findWorkWithSQLForOrderRouting(org.simplemes.mes.demand.FindWorkRequest, boolean)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;java.util.List <strong>findWorkWithSQLForOrderRouting</strong>(<a href='../../../../../org/simplemes/mes/demand/FindWorkRequest.html'>FindWorkRequest</a> findWorkRequest, boolean needCount)</h4>
+                                <p> Internal method to find the work for Orders with routing.  Builds a dynamic SQL query for the right filter
+ and tables. <DL><DT><B>Parameters:</B></DT><DD><code>findWorkRequest</code> -  Defines the request restrictions for the search.</DD><DD><code>needCount</code> -  Set to true for count(*) variant (<b>Default</b>: false).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of matching records.</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -310,11 +479,11 @@ extends java.lang.Object</pre>
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;<li><a href="#property_summary">Property</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>
-            Field&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Field&nbsp;&nbsp;&nbsp;<li><a href="#prop_detail">Property</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
         </ul>
     </div>
     <p>Groovy Documentation</p>

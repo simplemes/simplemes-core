@@ -187,10 +187,16 @@ extends java.lang.Object</pre>
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#upperCaseFirstLetter(java.lang.String)">upperCaseFirstLetter</a></strong>(java.lang.String s)</code><br>Shifts the first letter of the string to uppercase.</td>
+                            <td class="colLast"><code><strong><a href="#parameterToReadableString(Parameter)">parameterToReadableString</a></strong>(<a href='../../../../Parameter.html'>Parameter</a> parameter)</code><br>Creates a human-readable form of the parameter's name/class.</td>
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
+                            <td class="colLast"><code><strong><a href="#upperCaseFirstLetter(java.lang.String)">upperCaseFirstLetter</a></strong>(java.lang.String s)</code><br>Shifts the first letter of the string to uppercase.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#wrapWithTransaction(boolean, MethodNode, org.codehaus.groovy.control.SourceUnit)">wrapWithTransaction</a></strong>(boolean forceRollback, <a href='../../../../MethodNode.html'>MethodNode</a> method, org.codehaus.groovy.control.SourceUnit sourceUnit)</code><br>Wraps the given method with a closure that is called within a transaction.  </td>
@@ -305,6 +311,15 @@ public&nbsp;static&nbsp;java.lang.Object <strong>invokeGroovyMethod</strong>(jav
                                 <h4>public&nbsp;static&nbsp;boolean <strong>methodExists</strong>(<a href='../../../../ClassNode.html'>ClassNode</a> classNode, java.lang.String getterName, <a href='../../../../Parameter.html'>Parameter</a>[] parameters)</h4>
                                 <p> Determines if the given method already exists in the class node.
     <DL><DT><B>Parameters:</B></DT><DD><code>classNode</code> -   The class to check for the method.</DD><DD><code>getterName</code> -  The method name.</DD><DD><code>parameters</code> -  The method parameters.</DD></DL><DL><DT><B>Returns:</B></DT><DD>True if the method exists.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="parameterToReadableString(Parameter)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;static&nbsp;java.lang.String <strong>parameterToReadableString</strong>(<a href='../../../../Parameter.html'>Parameter</a> parameter)</h4>
+                                <p> Creates a human-readable form of the parameter's name/class.
+    <DL><DT><B>Parameters:</B></DT><DD><code>parameter</code> -  The AST parameter.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The readable form: (e.g. 'paramName:(java.lang.String)').</DD></DL></p>
                             </li>
                         </ul>
                     

@@ -140,6 +140,26 @@ extends java.lang.Object</pre>
                         </tr>
                         
                         <tr class="altColor">
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#dateFirstQueued">dateFirstQueued</a></code><br>The date the qty was first queued.</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#dateFirstStarted">dateFirstStarted</a></code><br>The date the qty was first queued.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#dateQtyQueued">dateQtyQueued</a></code><br>The date the qty was queued.</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>private&nbsp;java.util.Date</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#dateQtyStarted">dateQtyStarted</a></code><br>The date the qty was started.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong>private&nbsp;java.lang.Object</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#id">id</a></code><br>The unique ID of this row.  </td>
                         </tr>
@@ -181,15 +201,20 @@ extends java.lang.Object</pre>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../BigDecimal.html'>BigDecimal</a></strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#qtyInQueue">qtyInQueue</a></code><br>The qty in queue.</td>
+                            <td class="colLast"><code><a href="#qtyDone">qtyDone</a></code><br>The qty done.</td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../BigDecimal.html'>BigDecimal</a></strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#qtyInWork">qtyInWork</a></code><br>The qty in queue.</td>
+                            <td class="colLast"><code><a href="#qtyInQueue">qtyInQueue</a></code><br>The qty in queue.</td>
                         </tr>
                         
                         <tr class="altColor">
+                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../BigDecimal.html'>BigDecimal</a></strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#qtyInWork">qtyInWork</a></code><br>The qty in queue.</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../org/simplemes/mes/floor/domain/WorkCenter.html'>WorkCenter</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#workCenter">workCenter</a></code><br>The work center the unit is in.</td>
                         </tr>
@@ -217,35 +242,17 @@ extends java.lang.Object</pre>
                         
                         <tr class="altColor">
                             <td class="colFirst">
+                                <code><a href="#FindWorkResponseDetail()">FindWorkResponseDetail</a>
+                                ()</code><br>Empty constructor.</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst">
                                 <code><a href="#FindWorkResponseDetail(java.util.Map)">FindWorkResponseDetail</a>
                                 (java.util.Map options)</code><br>Map constructor.  </td>
                         </tr>
                         
-                        <tr class="rowColor">
-                            <td class="colFirst">
-                                <code><a href="#FindWorkResponseDetail(org.simplemes.mes.demand.domain.Order)">FindWorkResponseDetail</a>
-                                (<a href='../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> order)</code><br>Copy constructor.  </td>
-                        </tr>
-                        
                         <tr class="altColor">
-                            <td class="colFirst">
-                                <code><a href="#FindWorkResponseDetail(org.simplemes.mes.demand.domain.LSN)">FindWorkResponseDetail</a>
-                                (<a href='../../../../org/simplemes/mes/demand/domain/LSN.html'>LSN</a> lsn)</code><br>Copy constructor.  </td>
-                        </tr>
-                        
-                        <tr class="rowColor">
-                            <td class="colFirst">
-                                <code><a href="#FindWorkResponseDetail(org.simplemes.mes.demand.domain.OrderOperState)">FindWorkResponseDetail</a>
-                                (<a href='../../../../org/simplemes/mes/demand/domain/OrderOperState.html'>OrderOperState</a> orderOperState)</code><br>Copy constructor.  </td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst">
-                                <code><a href="#FindWorkResponseDetail(org.simplemes.mes.demand.domain.LSNOperState)">FindWorkResponseDetail</a>
-                                (<a href='../../../../org/simplemes/mes/demand/domain/LSNOperState.html'>LSNOperState</a> lsnOperState)</code><br>Copy constructor.  </td>
-                        </tr>
-                        
-                        <tr class="rowColor">
                             <td class="colFirst">
                                 <code><a href="#FindWorkResponseDetail()">FindWorkResponseDetail</a>
                                 ()</code><br></td>
@@ -322,6 +329,38 @@ extends java.lang.Object</pre>
                 </a>
                     <h3>Property Detail</h3>
                     
+                        <a name="dateFirstQueued"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;java.util.Date <strong>dateFirstQueued</strong></h4>
+                                <p> The date the qty was first queued.</p>
+                            </li>
+                        </ul>
+                    
+                        <a name="dateFirstStarted"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;java.util.Date <strong>dateFirstStarted</strong></h4>
+                                <p> The date the qty was first queued.</p>
+                            </li>
+                        </ul>
+                    
+                        <a name="dateQtyQueued"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;java.util.Date <strong>dateQtyQueued</strong></h4>
+                                <p> The date the qty was queued.</p>
+                            </li>
+                        </ul>
+                    
+                        <a name="dateQtyStarted"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;java.util.Date <strong>dateQtyStarted</strong></h4>
+                                <p> The date the qty was started.</p>
+                            </li>
+                        </ul>
+                    
                         <a name="id"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -388,6 +427,14 @@ extends java.lang.Object</pre>
                             </li>
                         </ul>
                     
+                        <a name="qtyDone"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;<a href='../../../../BigDecimal.html'>BigDecimal</a> <strong>qtyDone</strong></h4>
+                                <p> The qty done.</p>
+                            </li>
+                        </ul>
+                    
                         <a name="qtyInQueue"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -426,47 +473,31 @@ extends java.lang.Object</pre>
                 </a>
                     <h3>Constructor Detail</h3>
                     
+                        <a name="FindWorkResponseDetail()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4><strong>FindWorkResponseDetail</strong>()</h4>
+                                <p> Empty constructor.</p>
+                            </li>
+                        </ul>
+                    
                         <a name="FindWorkResponseDetail(java.util.Map)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4><strong>FindWorkResponseDetail</strong>(java.util.Map options)</h4>
-                                <p> Map constructor.  Provides the standard Groovy map constructor. <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  The options map</DD></DL></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="FindWorkResponseDetail(org.simplemes.mes.demand.domain.Order)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4><strong>FindWorkResponseDetail</strong>(<a href='../../../../org/simplemes/mes/demand/domain/Order.html'>Order</a> order)</h4>
-                                <p> Copy constructor.  Used to copy the state from the order into this detail record.
- Copies the top-level qty's and sets the flags as needed. <DL><DT><B>Parameters:</B></DT><DD><code>order</code> -  The order.</DD></DL></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="FindWorkResponseDetail(org.simplemes.mes.demand.domain.LSN)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4><strong>FindWorkResponseDetail</strong>(<a href='../../../../org/simplemes/mes/demand/domain/LSN.html'>LSN</a> lsn)</h4>
-                                <p> Copy constructor.  Used to copy the state from the LSN into this detail record.
- Copies the top-level qty's and sets the flags as needed. <DL><DT><B>Parameters:</B></DT><DD><code>lsn</code> -  The LSN.</DD></DL></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="FindWorkResponseDetail(org.simplemes.mes.demand.domain.OrderOperState)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4><strong>FindWorkResponseDetail</strong>(<a href='../../../../org/simplemes/mes/demand/domain/OrderOperState.html'>OrderOperState</a> orderOperState)</h4>
-                                <p> Copy constructor.  Used to copy the state from the order step state into this detail record.
- Copies the step state qty's and sets the flags as needed. <DL><DT><B>Parameters:</B></DT><DD><code>orderOperState</code> -  The order step state.</DD></DL></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="FindWorkResponseDetail(org.simplemes.mes.demand.domain.LSNOperState)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4><strong>FindWorkResponseDetail</strong>(<a href='../../../../org/simplemes/mes/demand/domain/LSNOperState.html'>LSNOperState</a> lsnOperState)</h4>
-                                <p> Copy constructor.  Used to copy the state from the LSN step state into this detail record.
- Copies the step state qty's and sets the flags as needed. <DL><DT><B>Parameters:</B></DT><DD><code>lsnOperState</code> -  The LSN step state.</DD></DL></p>
+                                <p> Map constructor.  Provides the standard Groovy map constructor.
+ Supports use of SQL column-name versions of the fields (e.g. 'qty_in_queue').
+ <h3>Column Names Supported</h3>
+ <ul>
+   <li><b>qty_in_queue</b></li>
+   <li><b>qty_in_work</b></li>
+   <li><b>sequence</b> - operationSequence</li>
+   <li><b>uuid</b> - The record's UUID.</li>
+   <li><b>lsn</b></li>
+   <li><b>order</b></li>
+   <li><b>lsn_id</b></li>
+   <li><b>order_id</b></li>
+ </ul> <DL><DT><B>Parameters:</B></DT><DD><code>options</code> -  The options map.</DD></DL></p>
                             </li>
                         </ul>
                     
