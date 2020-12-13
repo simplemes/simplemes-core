@@ -13,6 +13,7 @@ import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.controller.BaseController
 import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.controller.StandardModelAndView
+import org.simplemes.eframe.web.ui.webix.ToolkitConstants
 import org.simplemes.mes.demand.FindWorkRequest
 import org.simplemes.mes.demand.service.WorkListService
 import org.simplemes.mes.floor.domain.WorkCenter
@@ -94,6 +95,9 @@ class WorkListController extends BaseController {
       }
       if (params.findInQueue) {
         findWorkRequest.findInQueue = Boolean.valueOf((String) params.findInQueue)
+      }
+      if (params[ToolkitConstants.SUGGEST_FILTER_PARAMETER_NAME]) {
+        findWorkRequest.filter = (String) params[ToolkitConstants.SUGGEST_FILTER_PARAMETER_NAME]
       }
       //println "workListService = $workListService"
       log.debug('findWork() findWorkRequest: {}', findWorkRequest)

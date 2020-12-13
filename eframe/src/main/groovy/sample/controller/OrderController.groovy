@@ -18,6 +18,7 @@ import org.simplemes.eframe.controller.BaseCrudRestController
 import org.simplemes.eframe.controller.ControllerUtils
 import org.simplemes.eframe.controller.StandardModelAndView
 import org.simplemes.eframe.web.task.TaskMenuItem
+import org.simplemes.eframe.web.ui.webix.ToolkitConstants
 import sample.domain.Order
 import sample.pogo.FindComponentResponseDetail
 import sample.pogo.FindWorkResponse
@@ -225,7 +226,7 @@ class OrderController extends BaseCrudRestController {
   HttpResponse suggestOrder(HttpRequest request, @Nullable Principal principal) {
     def list = []
     def params = ControllerUtils.instance.convertToMap(request.parameters)
-    def filter = params["filter[value]"] as String
+    def filter = params[ToolkitConstants.SUGGEST_FILTER_PARAMETER_NAME] as String
     if (filter) {
       for (i in 1..20) {
         def order = "${filter.toUpperCase()}1${sprintf("%03d", i)}".toString()

@@ -27,6 +27,11 @@ class FindWorkRequest {
   WorkCenter workCenter
 
   /**
+   * A filter value for suggest filtering on the client.  Looks for Orders/LSN's that start with the given value.
+   */
+  String filter
+
+  /**
    * If true, then the findWork() method should return active work.
    */
   boolean findInWork = true

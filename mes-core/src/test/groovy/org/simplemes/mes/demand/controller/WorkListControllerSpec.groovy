@@ -6,6 +6,7 @@ import org.simplemes.eframe.test.ControllerTester
 import org.simplemes.eframe.test.MockPrincipal
 import org.simplemes.eframe.test.MockRenderer
 import org.simplemes.eframe.test.annotation.Rollback
+import org.simplemes.eframe.web.ui.webix.ToolkitConstants
 import org.simplemes.mes.demand.FindWorkRequest
 import org.simplemes.mes.demand.FindWorkResponse
 import org.simplemes.mes.demand.domain.Order
@@ -45,17 +46,19 @@ class WorkListControllerSpec extends BaseAPISpecification {
     given: 'a controller with a mocked service'
     def controller = new WorkListController()
     def mockService = Mock(WorkListService)
-    def expectedFindWorkRequest = new FindWorkRequest(max: 13, from: 2, findInWork: false, findInQueue: false)
+    def expectedFindWorkRequest = new FindWorkRequest(max: 13, from: 2, findInWork: false, findInQueue: false, filter: 'xyz')
     def expectedFindWorkResponse = new FindWorkResponse(totalAvailable: 231)
     1 * mockService.findWork(expectedFindWorkRequest) >> expectedFindWorkResponse
     0 * mockService._
     controller.workListService = mockService
 
     when: 'the request is sent to the controller'
-    def res = controller.findWork(mockRequest([count: '13', start: '26', findInWork: 'false', findInQueue: 'false']), new MockPrincipal('jane', 'OPERATOR'))
+    def params = [count: '13', start: '26', findInWork: 'false', findInQueue: 'false']
+    params[ToolkitConstants.SUGGEST_FILTER_PARAMETER_NAME] = 'xyz'
+    def res = controller.findWork(mockRequest(params), new MockPrincipal('jane', 'OPERATOR'))
 
     then: 'the response is correct'
-    def json = Holders.objectMapper.readValue(res.body.get() as String,Map)
+    def json = Holders.objectMapper.readValue(res.body.get() as String, Map)
     json.total_count == 231
   }
 

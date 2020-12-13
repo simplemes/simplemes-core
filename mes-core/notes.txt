@@ -1,18 +1,94 @@
 Scratch
 -------
 
-Dashboards Needed
-  Module     Cat             Dashboard
-  ------     ---             ----------
-  Core/All   OPERATOR        Operator Scan - Scan/WorkList - Start/Complete/Reports
-  Core/All   MANAGER         Manager - WC/WorkList - Start/Complete/ReverseStart/ReverseComplete/Reports
-  Assy/All   OPERATOR_ASSY   Operator Assy Scan - Scan/ComponentList - Start/Complete/Reports
-  Assy/All   MANAGER_ASSY    Manager Assy - WC/ComponentList - Start/Complete/ReverseStart/ReverseComplete/Reports
+Process for new Feature
+=======================
+
+A. Define Requirements/Tutorial/Demo Scenarios
+  Start .adoc for Feature Overview
+B. Design/Prototype Domains
+  Start .adoc for domain (guide and reference).
+C. Design/Prototype API
+  Start .adoc for API (reference and maybe guide)
+D. Build Domains/Repository/DBScripts - With Tests
+E. Build Controllers/Services for API with Tests
+F. Design/Prototype GUIs (dashboard activity).
+  Write .adoc for GUIs (reference for dashboard activities and maybe guide)
+G. Build GUIs with GUI Tests.
+H. Build any End-To-End tests (if needed).
+I. Determine Archiving/Reporting/Perf Testing needs.
+  Include any framework needs (e.g. dashboard activity options).
+J. Finalize .adoc.
 
 
-Micronaut-Data Migration
-========================
+Data Collection (need term (Data/Info/Value) (Collection/Entry/Prompt/Gather/Reminder)).
+  Best Terms
+    Value Entry - Data Value Entry
+    Value Collection
+  Demo/Tutorial Flow:
+    A. Simple collection.
+      1. Collect ad-hoc value(s) for order/LSN.  No pre-definition of DC.
+    B. Define data field to collect
+      1. Define DC record. (Collect at order or LSN, type, range).
+      2. Complete fails with missing data?
+      3. Select Order, press the DC button (opens Dashboard activtiy for DC).
+      4. Enter value, Save.
+      5. Activity shows collected value(s).
+      6. Report shows data collected.
 
+  Stores Name/Value data for Order and/or LSN.
+    Supports single value or multiples.
+    Stores in standard @ExtensibleFieldHolder JSON column along with other custom data.
+    Optionally stores who/what/when/where/how for each data piece collected. (As JSON object or separate DB table?).
+      {
+        voltage: 12.8,
+        voltage_History: [{date:, user:, value:...}],
+      }
+    Is data stored with naming convention in @ExtensibleFieldHolder (e.g. dc_voltage)?
+  API allows collection of any data.
+  GUI designed to prompt/validate/enforce user data collection for Order/LSN.
+    Dashboard activity to prompt user for missing data.
+    Server-side enforcement of data on complete/done/start?
+      Needs generic framework mechanism for configurable enforcement (at step level or just final done?).
+  Data collected are part of order history report.
+  May need ability to set option on dashboard activity (e.g. allow edits).
+  May need display sorting for values collected.  How does this work with some DC and some ad-hoc values.
+
+Quality (Defect or Issue?)
+  Demo/Tutorial Flow:
+    A. Simple defect (nothing pre-defined).
+      1. Press Log Defect button.
+      2. Enter comments, save.
+      3. Activity shows defects.
+      4. Complete fails with open defect.
+    B. Log Defect with picture(s) and Fix.
+      1. Press Log Defect button.
+      2. Enter comments.  Attach picture(s) from phone.
+      3. Activity shows defects.
+      4. Fix defect from activity. Defect is marked as fixed.
+
+  Each Defect is logged as single child record under Order/LSN.
+  Data fields are stored in standard @ExtensibleFieldHolder JSON column
+    History needed (who/what/when/where/how for each change). (As JSON object or separate DB table?).
+  Defect has a state.  Open/Closed/Fixed.
+    An EncodedType.  Modules can add new states.  Has underlying state meanings (Open,Closed).
+    Simple state model controls how the defect is closed/fixed.
+      Two main states: Open/Fixed.  Manual close without fix?
+      State model may be configurable someday (not in DB, but in code in add-on module).
+  Server-side enforcement all defects closed on complete/done/start?
+    Needs generic framework mechanism for configurable enforcement (at step level).
+  No Defect/Repair Code is required.  Optional? or a later release?
+  May need ability to set option on dashboard activity (e.g. allow defect fixing).
+  Defects are part of order history report.
+
+Generic Enforcement Ideas
+  Add extension point that returns flag or throws exception for failure?  Rolls back the txn with error.
+    Also can return an info message with commit or ask question in middle fo txn.
+  Needs configuration at routing step level (e.g. Step 020 enforces all components assembled).
+  Types needed:
+    All components assembled.
+    All defects closed/fixed.
+    All Data Values collected.
 
 
 Tasks

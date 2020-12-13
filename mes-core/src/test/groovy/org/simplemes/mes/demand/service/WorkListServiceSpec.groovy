@@ -67,6 +67,8 @@ class WorkListServiceSpec extends BaseSpecification {
     and: 'the details have the right values'
     def responseDetail = response.list[0]
     responseDetail.order == order.order
+    responseDetail.orderID == order.uuid
+    responseDetail.id == order.uuid
     responseDetail.qtyInQueue == order.qtyInQueue
     responseDetail.qtyInWork == order.qtyInWork
     responseDetail.inQueue
@@ -128,6 +130,8 @@ class WorkListServiceSpec extends BaseSpecification {
     and: 'the result is sorted correctly'
     def list = response.list
     list[0].order == orders[0].order
+    list[0].orderID == orders[0].uuid
+    list[0].id == orders[0].operationStates[0].uuid
     list[0].operationSequence == 3
   }
 
@@ -170,7 +174,10 @@ class WorkListServiceSpec extends BaseSpecification {
     and: 'the details have the right values'
     def responseDetail = response.list[0]
     responseDetail.order == order.order
+    responseDetail.orderID == order.uuid
     responseDetail.lsn == firstLSN.lsn
+    responseDetail.lsnID == firstLSN.uuid
+    responseDetail.id == firstLSN.uuid
     responseDetail.qtyInQueue == firstLSN.qtyInQueue
     responseDetail.qtyInWork == firstLSN.qtyInWork
     responseDetail.inQueue
@@ -425,8 +432,8 @@ class WorkListServiceSpec extends BaseSpecification {
   def "test inWork for LSNs with routing"() {
     given: 'multiple released LSNs'
     MESUnitTestUtils.resetCodeSequences()
-    MESUnitTestUtils.releaseOrder(operations: [3], qty: 5, lsnTrackingOption: LSNTrackingOption.LSN_ONLY,
-                                  qtyInWork: 1.0, spreadQueuedDates: true)
+    def order = MESUnitTestUtils.releaseOrder(operations: [3], qty: 5, lsnTrackingOption: LSNTrackingOption.LSN_ONLY,
+                                              qtyInWork: 1.0, spreadQueuedDates: true)
 
     when: 'a work list is generated'
     FindWorkResponse response = service.findWork(new FindWorkRequest())
@@ -436,9 +443,14 @@ class WorkListServiceSpec extends BaseSpecification {
     response.list.size() == 5
 
     and: 'the result is sorted correctly'
-    def list = response.list
-    list[0].lsn == "SN1000"
-    list[0].operationSequence == 3
+    def responseDetail = response.list[0]
+    responseDetail.lsn == "SN1000"
+    responseDetail.operationSequence == 3
+    responseDetail.order == order.order
+    responseDetail.orderID == order.uuid
+    responseDetail.lsn == order.lsns[0].lsn
+    responseDetail.lsnID == order.lsns[0].uuid
+    responseDetail.id == order.lsns[0].operationStates[0].uuid
   }
 
   @Rollback
@@ -484,4 +496,112 @@ class WorkListServiceSpec extends BaseSpecification {
     list[0].inQueue
     !list[0].inWork
   }
+
+  @Rollback
+  def "verify that filter is applied to results - order with no routing"() {
+    given: 'multiple released orders'
+    def list = MESUnitTestUtils.releaseOrders(nOrders: 15)
+    def order = list.find { it.order == 'M1010' }
+
+    when: 'a work list is generated'
+    FindWorkResponse response = service.findWork(new FindWorkRequest(filter: 'M101'))
+
+    then: 'the right list is returned'
+    response.totalAvailable == 5
+    response.list.size() == 5
+
+    and: 'the result is sorted correctly'
+    def responseDetail = response.list[0]
+    println "response = ${response.list*.order}"
+    println "responseDetail = $responseDetail"
+    responseDetail.order == order.order
+    responseDetail.orderID == order.uuid
+    responseDetail.id == order.uuid
+    responseDetail.qtyInQueue == order.qtyInQueue
+    responseDetail.qtyInWork == order.qtyInWork
+    responseDetail.inQueue
+    !responseDetail.inWork
+  }
+
+  @Rollback
+  def "verify filter is applied - orders with routing"() {
+    given: 'multiple released orders'
+    def orders = MESUnitTestUtils.releaseOrders(nOrders: 5, operations: [3], orderSequenceStart: 1008)
+    def order = orders.find { it.order == 'M1010' }
+
+    when: 'a work list is generated'
+    FindWorkResponse response = service.findWork(new FindWorkRequest(filter: 'M101'))
+
+    then: 'the right list is returned'
+    response.totalAvailable == 3
+    response.list.size() == 3
+
+    and: 'the result is sorted correctly'
+    def responseDetail = response.list[0]
+    responseDetail.order == order.order
+    responseDetail.operationSequence == 3
+    responseDetail.orderID == order.uuid
+    responseDetail.id == order.operationStates[0].uuid
+    responseDetail.qtyInQueue == order.operationStates[0].qtyInQueue
+    responseDetail.qtyInWork == order.operationStates[0].qtyInWork
+    responseDetail.inQueue
+    !responseDetail.inWork
+  }
+
+  @Rollback
+  def "verify that filter is applied to results for LSN - no routing"() {
+    MESUnitTestUtils.resetCodeSequences()
+    def order = MESUnitTestUtils.releaseOrder(qty: 5, lsns: ['SNA2', 'SNA3', 'SNB2', 'SNB1', 'SNA1',],
+                                              lsnTrackingOption: LSNTrackingOption.LSN_ONLY,
+                                              qtyInWork: 1.0, spreadQueuedDates: true)
+    LSN firstLSN = order.lsns.find { it.lsn == 'SNA1' }
+
+    when: 'a work list is generated'
+    FindWorkResponse response = service.findWork(new FindWorkRequest(filter: 'SNA'))
+
+    then: 'the right list is returned'
+    response.totalAvailable == 3
+    response.list.size() == 3
+
+    and: 'the result is sorted correctly'
+    def responseDetail = response.list[0]
+    responseDetail.order == order.order
+    responseDetail.orderID == order.uuid
+    responseDetail.lsn == firstLSN.lsn
+    responseDetail.lsnID == firstLSN.uuid
+    responseDetail.id == firstLSN.uuid
+    responseDetail.qtyInQueue == 0.0
+    responseDetail.qtyInWork == 1.0
+    !responseDetail.inQueue
+    responseDetail.inWork
+  }
+
+  @Rollback
+  def "verify that filter is applied to inQueue LSNs - with routing"() {
+    given: 'a single released order with multiple LSNs'
+    def order = MESUnitTestUtils.releaseOrder(operations: [3], qty: 5, lsns: ['SNA2', 'SNA3', 'SNB2', 'SNB1', 'SNA1'],
+                                              lsnTrackingOption: LSNTrackingOption.LSN_ONLY,
+                                              qtyInWork: 1.0, spreadQueuedDates: true)
+    LSN firstLSN = order.lsns.find { it.lsn == 'SNA1' }
+
+    when: 'a work list is generated'
+    FindWorkResponse response = service.findWork(new FindWorkRequest(filter: 'SNA'))
+
+    then: 'the right list is returned'
+    response.totalAvailable == 3
+    response.list.size() == 3
+
+    and: 'the details have the right values'
+    def responseDetail = response.list[0]
+    responseDetail.order == order.order
+    responseDetail.orderID == order.uuid
+    responseDetail.lsn == firstLSN.lsn
+    responseDetail.lsnID == firstLSN.uuid
+    responseDetail.id == firstLSN.operationStates[0].uuid
+    responseDetail.qtyInQueue == firstLSN.operationStates[0].qtyInQueue
+    responseDetail.qtyInWork == firstLSN.operationStates[0].qtyInWork
+    responseDetail.inQueue
+    !responseDetail.inWork
+  }
+
 }

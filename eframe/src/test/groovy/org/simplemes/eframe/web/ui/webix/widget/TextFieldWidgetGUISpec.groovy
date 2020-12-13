@@ -6,6 +6,7 @@ package org.simplemes.eframe.web.ui.webix.widget
 
 import org.simplemes.eframe.test.BaseGUISpecification
 import org.simplemes.eframe.test.DataGenerator
+import org.simplemes.eframe.web.ui.webix.ToolkitConstants
 import sample.controller.OrderController
 import sample.domain.SampleParent
 import sample.page.OrderCreatePage
@@ -75,7 +76,7 @@ class TextFieldWidgetGUISpec extends BaseGUISpecification {
     and: 'the controller was called with the right URI and only once'
     OrderController.suggestCount == 1
     OrderController.suggestLatestParameters.workCenter == 'WC_XYZZY'
-    OrderController.suggestLatestParameters["filter[value]"] == 'J'
+    OrderController.suggestLatestParameters[ToolkitConstants.SUGGEST_FILTER_PARAMETER_NAME] == 'J'
   }
 
 }
