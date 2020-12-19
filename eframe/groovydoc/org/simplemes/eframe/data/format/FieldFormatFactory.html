@@ -179,6 +179,12 @@ extends java.lang.Object</pre>
                             <td class="colLast"><code><strong><a href="#checkOtherTypes(java.lang.Class, org.simplemes.eframe.domain.PersistentProperty)">checkOtherTypes</a></strong>(java.lang.Class clazz, <a href='../../../../../org/simplemes/eframe/domain/PersistentProperty.html'>PersistentProperty</a> property)</code><br>Check for other, more complex types.</td>
                         </tr>
                         
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;boolean</code></td>
+                            <td class="colLast"><code><strong><a href="#hasExtensibleFields(org.simplemes.eframe.domain.PersistentProperty)">hasExtensibleFields</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/PersistentProperty.html'>PersistentProperty</a> property)</code><br>Checks for extensible field holder in the property's domain class.  </td>
+                        </tr>
+                        
                     </table>
                    </ul>
               </li>
@@ -251,7 +257,7 @@ extends java.lang.Object</pre>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>static&nbsp;<a href='../../../../../org/simplemes/eframe/data/format/FieldFormatInterface.html'>FieldFormatInterface</a> <strong>build</strong>(java.lang.Class clazz, <a href='../../../../../org/simplemes/eframe/domain/PersistentProperty.html'>PersistentProperty</a> property)</h4>
-                                <p> Builds the correct field format for the given class. <DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The clazz to build the format for.  Can be null.</DD><DD><code>property</code> -  The property definition for this field.  Cane be null.</DD></DL></p>
+                                <p> Builds the correct field format for the given class. <DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The clazz to build the format for.  Can be null.</DD><DD><code>property</code> -  The property definition for this field.  Can be null.</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -259,7 +265,15 @@ extends java.lang.Object</pre>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>static&nbsp;<a href='../../../../../org/simplemes/eframe/data/format/FieldFormatInterface.html'>FieldFormatInterface</a> <strong>checkOtherTypes</strong>(java.lang.Class clazz, <a href='../../../../../org/simplemes/eframe/domain/PersistentProperty.html'>PersistentProperty</a> property)</h4>
-                                <p> Check for other, more complex types. <DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class.</DD><DD><code>property</code> -  The property definition for this field.  Cane be null.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The format for the field.</DD></DL></p>
+                                <p> Check for other, more complex types. <DL><DT><B>Parameters:</B></DT><DD><code>clazz</code> -  The class.</DD><DD><code>property</code> -  The property definition for this field.  Can be null.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The format for the field.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="hasExtensibleFields(org.simplemes.eframe.domain.PersistentProperty)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;boolean <strong>hasExtensibleFields</strong>(<a href='../../../../../org/simplemes/eframe/domain/PersistentProperty.html'>PersistentProperty</a> property)</h4>
+                                <p> Checks for extensible field holder in the property's domain class.  Null safe checks. <DL><DT><B>Parameters:</B></DT><DD><code>property</code> -  The property definition for this field.  Can be null.</DD></DL><DL><DT><B>Returns:</B></DT><DD>True if the domain class (declaring class for the property) has extensible fields.</DD></DL></p>
                             </li>
                         </ul>
                     
