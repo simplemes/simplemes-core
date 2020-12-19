@@ -221,7 +221,7 @@ class AdditionFieldConfiguration {
 
   /**
    * GUI Hints to add to the display of these additions.  These
-   * are typically attributes supported but the markers such as efCreate.
+   * are typically attributes supported by markers such as efCreate.
    *
    * @param hints The hints.
    */

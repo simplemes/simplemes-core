@@ -306,7 +306,7 @@ These field extensions provide a lot of configuration options:
               Enumeration and EncodedTypes.
 |fieldOrder | Defines a <<Field Ordering>> entry for the domain (*Optional*).  See below.
 |guiHints | GUI Hints to add to the display of these additions. (*Optional*).  These
-            are typically attributes supported but the <<Markers>> such as <<efCreate>>.
+            are typically attributes supported by <<Markers>> such as <<efCreate>>.
 |===
 
 
