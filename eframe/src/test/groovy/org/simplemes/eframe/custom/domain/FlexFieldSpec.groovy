@@ -54,6 +54,13 @@ class FlexFieldSpec extends BaseSpecification {
     assertValidationFails(field, 209, 'guiHints', ['asd', 'xyz', 'name1="value"', 'near(0)', 'FIELD1'])
   }
 
+  def "verify that valid guiHints are allowed"() {
+    expect: 'the right defaults are used'
+    def flexType = new FlexType(flexType: 'XYZ')
+    FlexField field = new FlexField(flexType: flexType, fieldName: 'FIELD1', guiHints: 'name="value"')
+    !field.validate()
+  }
+
   @Rollback
   def "verify that equals and hash code work"() {
     given: 'a flex type'

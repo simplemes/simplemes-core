@@ -27,8 +27,10 @@ trait FieldTrait {
       } catch (Exception e) {
         ex = e
       }
-      //error.209.message="{1}" is not a valid GUI Hint for field {2}.  The hint must be in the format ''name1="value" name2="value"'' format.  Error: {3}
-      return new ValidationError(209, 'guiHints', guiHints, fieldName, ex.toString())
+      if (ex) {
+        //error.209.message="{1}" is not a valid GUI Hint for field {2}.  The hint must be in the format ''name1="value" name2="value"'' format.  Error: {3}
+        return new ValidationError(209, 'guiHints', guiHints, fieldName, ex.toString())
+      }
     }
     return validateValueClassName()
   }

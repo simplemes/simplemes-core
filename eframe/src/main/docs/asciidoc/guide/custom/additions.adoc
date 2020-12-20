@@ -307,6 +307,8 @@ These field extensions provide a lot of configuration options:
 |fieldOrder | Defines a <<Field Ordering>> entry for the domain (*Optional*).  See below.
 |guiHints | GUI Hints to add to the display of these additions. (*Optional*).  These
             are typically attributes supported by <<Markers>> such as <<efCreate>>.
+            These must be in the form of name/value pairs with quotes.  For
+            example: _name1="value1" name2="value2"_
 |===
 
 
