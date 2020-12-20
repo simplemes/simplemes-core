@@ -15,7 +15,7 @@
   <root level="warn">
     <appender-ref ref="STDOUT"/>
   </root>
-  <logger name="StackTrace" level="error"/>
+  <logger name="StackTrace" level="error"/>  <!--debug all business exception stack traces-->
 
   <!--<logger name="io.micronaut" level="trace"/>-->
   <!--<logger name="io.micronaut.context" level="trace" />-->
