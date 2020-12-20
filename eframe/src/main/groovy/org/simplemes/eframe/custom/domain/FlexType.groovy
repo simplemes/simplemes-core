@@ -121,7 +121,7 @@ class FlexType implements ConfigurableTypeInterface, ChoiceListItemInterface {
   @SuppressWarnings("unused")
   def beforeSave() {
     // Now, auto-assign Sequences to the fields if needed.
-    for (int i = 0; i < fields.size(); i++) {
+    for (int i = 0; i < fields?.size(); i++) {
       if (fields[i].sequence == 0 || fields[i].sequence == null) {
         fields[i].sequence = i + 1
       }

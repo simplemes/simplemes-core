@@ -14,7 +14,44 @@ Add Getting Started section to Domains/GUIS/Controllers/Services.
   Template/Getting Started with Domains?
 TaskMenu without folder disappears.
 GUI with single field.
-Flex Type - GUI Hints in definition GUI with space caused error.  How is it used from GUI?
+
+Custom Field Rework
+--------------------
+Map getFields() - converts from text.
+    save() - serializes to JSON
+SafeMap - no clear?
+API:
+{
+  "rma": "R10102-23",
+  "qty": 12.2,
+  "fields" : {
+    "retailerID": "ACME-101",
+    "returnCode": "DEFECTIVE"
+  }
+}
+
+{
+  "order": "M1001",
+  "lsn": {
+    "lsn": "SN2037"
+  },
+  "component": "CPU",
+  "qty": 47.2,
+  "assemblyData": "VENDOR_AND_LOT",
+  "fields" : {
+    "LOT": "ACME-101",
+    "VENDOR": "ACME"
+  }
+}
+
+In fields, store config for each name field:
+  "fields" : {
+    "_retailerID_config": {"tracking": "ALL_VALUES"},  // ALL_DETAILS - (Who/what/when/where stored in element "_retailerID_history")
+    "retailerID": "ACME-101",
+    "_returnCode_config": {"tracking": "LATEST"},  // Default ALL_VALUES (values only)
+    "returnCode": "DEFECTIVE"
+  }
+
 
 Data Entry
 ==========
@@ -31,7 +68,6 @@ Flex Type setup is for prompting.
 
 Tasks
 =====
-ISSUE: Flex Type with gui hint with spaces causes exception with GUI due to mi
 ISSUE: API: Look at just sending fields jsonb as sub-JSON instead of naming conventions and special logic.
 ISSUE: Support in non-CRUD endpoint with Domain as part of request.
 ISSUE: JSON Mapper ignores invalid fields on input (non-CRUD endpoint).

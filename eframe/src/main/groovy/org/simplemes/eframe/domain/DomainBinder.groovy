@@ -20,6 +20,7 @@ import org.simplemes.eframe.exception.ValidationException
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.TypeUtils
+import org.simplemes.eframe.misc.UUIDUtils
 
 import java.sql.ResultSet
 import java.sql.Types
@@ -376,7 +377,7 @@ class DomainBinder {
         if (fieldDef?.child) {
           // Find the right object to bind into (may be existing row)
           def record = null
-          if (params._dbId) {
+          if (params._dbId && UUIDUtils.isUUID(params._dbId as String)) {
             // Should exist already in the DB, so find it
             def dbId = UUID.fromString((String) params._dbId)
             params.remove('_dbId')
@@ -415,7 +416,7 @@ class DomainBinder {
     // Leaves us with a list of IDs the user removed.
     def idToRemoveList = originalList*.uuid
     for (params in list) {
-      if (params?._dbId) {
+      if (params?._dbId && UUIDUtils.isUUID(params?._dbId as String)) {
         def uuid = UUID.fromString((String) params._dbId)
         idToRemoveList.removeAll { it == uuid }
       }
