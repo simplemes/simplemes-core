@@ -6,6 +6,7 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<Design Decisions>>#
 [inline-toc]#<<Custom Field Design>>#
+[inline-toc]#<<Custom Field Storage>>#
 [inline-toc]#<<Custom Field Usage>>#
 [inline-toc]#<<ExtensibleFieldHolder Annotation>>#
 [inline-toc]#<<Extension Logging>>#
@@ -38,11 +39,13 @@ All of the decisions below are based on a number of assumptions on the use of cu
 * Most use cases will need a few custom fields at any given time (5-10).
 * In extreme cases, users may define a large number of custom fields in each domain (100+).
 * Most use cases will likely be reading the value (80% read, 20% write).
-* Users will sometimes not be able to restart the server to add a custom field.
+* Users will not be able to restart the server to add a custom field.
   Downtime is not allowed.
 * Configuration objects (e.g. Products) and production objects (e.g. Orders) will both
   need user-defined fields added.  The configuration objects will use one type of customizations
   (<<Field Extensions>>) and production objects will tend to use another type (<<Flex Types>>).
+* Users may need to collect custom fields without pre-configuration.
+* Users will want to track all changes made to custom values, record who/what/when/where.
 
 When designing the custom field support, we had hoped to store each custom field value in its own
 database column. Unfortunately, that was not possible with Micronaut Data.  Micronaut Data requires
@@ -100,8 +103,8 @@ endif::[]
                               v       v                   v       v
                          +-----------------------------------------------+
                          |ExtensibleFieldHelper                          |
-                         |  setFieldValue(domain,name,value,prefix)      |
-                         |  getFieldValue(domain,name,prefix)            |
+                         |  setFieldValue(domain,name,value)             |
+                         |  getFieldValue(domain,name)                   |
                          |                                           c4CF|
                          +---------------------+-------------------------+
                                                |
@@ -112,7 +115,7 @@ endif::[]
                                   | fields                   |
                                   | {                        |
                                   | "warehouse" "CENTER",    |
-                                  | "rmaType_location" "SW"  |
+                                  | "location" "SW"          |
                                   | }                        |
                                   |                  {s} c6D6|
                                   +--------------------------+
@@ -123,11 +126,9 @@ endif::[]
 :imagesdir: {imagesdir-src}
 
 All of these types of custom fields store the values in the JSON column `fields`
-in the domain record.
+in the domain record.  See <<>>
 The FieldExtension (user-defined and additions) are stored with the field name as-is.
-The Configurable Types and flex types use a prefix that is the field name for the
-configuration field.  For example,  the FlexType field name of 'rmaType' uses the prefix
-'rmaType _'.
+
 
 
 
@@ -143,6 +144,95 @@ and setters.  Instead, the framework uses the
 link:groovydoc/org/simplemes/eframe/data/FieldDefinitionInterface.html[FieldDefinitionInterface^]
 icon:share-square-o[role="link-blue"] to access the value in the domain.
 
+
+==== Custom Field Storage
+
+Custom fields of all types are stored in a text (JSONB) column in the database for supported
+domain classes.  These use the <<ExtensibleFieldHolder Annotation>> to mark the field as
+the holder for the values. By convention, this field is almost always named `fields`.
+
+This holder field will store these types of fields:
+
+* <<Configurable Types>> - Configurable types such as FlexTypes.
+* <<Field Extensions>> - Fields added by the user or by other modules (see <<Addition>>).
+* Data collected by the Data Entry module (name TBD).
+* Other data added programmatically or via APIs.
+
+===== Custom Field History
+
+It is possible to collect values for a given field name multiple times.  This means you might
+collect the `weight` 3 times during manufacturing.  To keep all these values, the
+Extensible Field support logic can optionally keep the old values.  These old values
+are stored in the same JSON field in an history element.
+
+This is configured at the <<Flex Types>>, <<Field Extensions>> and other
+configuration levels (e.g. the Data Entry module (name TBD)).
+It is off by default.  The tracking options include:
+
+* *Latest Value Only* - Only the latest value is saved (*Default*).
+* *All Values* - All values are saved to a history element, but no context info is saved.
+* *All Data and Values* - All values are saved to a history element, along with
+  who/what/when/where (if possible).
+
+WARNING: Tracking historical values can produce a lot of data, so only enable this
+         tracking when absolutely required.
+
+
+For example, tracking using the *All Data and Values* option would result in a
+`fields` JSON that might look like this:
+
+[source,json]
+.JSON Format for All Data and Values Tracking
+----
+{
+  "rma": "R10102-23",          <.>
+  "qty": 12.2,
+  "fields": {
+    "weight": 2.3,             <.>
+    "_weight_config": {        <.>
+      "tracking": "ALL_VALUES"
+    },
+    "_weight_history": {             <.>
+      history: [
+        {
+          "weight": 2.3,             <.>
+          "user": "PWB",
+          "dateTime": "2009-02-13T18:31:30.000-05:00",
+        },
+        {
+          "weight": 2.2,
+          "user": "MPH",
+          "dateTime": "2009-02-13T18:31:30.000-05:00",
+        },
+        {
+          "weight": 2.1,
+          "user": "RLB",
+          "dateTime": "2009-02-14T17:23:53.000-05:00",
+        }
+      ]
+    }
+  }
+}
+----
+<.> The normal domain fields.
+<.> The latest value for the weight.
+<.> The configuration for the weight.  Set for non-default configuration settings such
+    as this example.
+<.> The history for the weight.  Includes values and date/user/etc.
+<.> The current value is added here when it is set in the `fields`.  Only for Tracking
+    option *All Data and Values*.
+
+
+
+===== Custom Field Name Collisions
+
+These fields are stored in the JSON text as simple name/value pairs.  This means there is a
+chance of name collisions.  Since most of these features won't be used on the same domain,
+the chance is low.  If it is a problem, then we recommend that customers used a field
+name prefix to avoid this issue.  For example, use the prefix _'rmaType_'_ for all
+fields collected for an RMA flex type.
+
+NOTE: Preventing name collisions is the responsibility of the system integrator and users.
 
 
 ===== ExtensibleFieldHolder Annotation

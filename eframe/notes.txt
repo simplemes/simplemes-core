@@ -17,6 +17,14 @@ GUI with single field.
 
 Custom Field Rework
 --------------------
+Tasks
+=====
+  Change when JSON is serialized/deserialized.  Tests when loaded/saved.
+  Remove prefix from set/getFieldValue().
+  Change configType to remove prefix.
+  Add API for adding value to fields.  Supports tracking options.
+    Test with tracking and Rest API updates?
+
 Map getFields() - converts from text.
     save() - serializes to JSON
 SafeMap - no clear?
@@ -51,6 +59,7 @@ In fields, store config for each name field:
     "_returnCode_config": {"tracking": "LATEST"},  // Default ALL_VALUES (values only)
     "returnCode": "DEFECTIVE"
   }
+
 
 
 Data Entry

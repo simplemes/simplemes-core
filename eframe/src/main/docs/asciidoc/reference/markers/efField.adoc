@@ -151,11 +151,11 @@ after every character change in the input field.  The server-side controller mus
 ----
 [
   {
-    "id":"dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b",  <.>
+    "uuid":"dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b",  <.>
     "value":"PRODUCT_ABC",
   },
   {
-    "id":"dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b",
+    "uuid":"dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b",
     "value":"PRODUCT_XYZ",
   },
   . . .

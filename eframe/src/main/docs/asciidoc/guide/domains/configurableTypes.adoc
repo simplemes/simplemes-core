@@ -91,12 +91,8 @@ image::guis/flexTypeCreate.png[title="flexTypeCreate",align="center", width=75%]
 
 ==== Configurable Type Persistent Storage
 
-The current 'type' is typically stored in the domain record field (e.g. the `FlexType` field above).
+The current 'type' is typically stored in the domain record field (e.g. the `FlexType` `rmaType` field above).
 The actual values are stored in the normal custom field location for <<Field Extensions>>.
-The name of the value stored uses a prefix to avoid collisions with
-the customer defined fields at the domain level.
-In the example above, the `FlexType` field name is used (e.g. 'rmaType_address',
-'rmaType_lastName', etc.).
 
 See <<ExtensibleFieldHolder Annotation>> for details on the storage and internal format.
 An example of the raw data stored in the database column is shown below.
@@ -105,8 +101,10 @@ An example of the raw data stored in the database column is shown below.
 .JSON Format Configurable Type Storage
 ----
 {
-  "rmaType_retailerID": "ACME-101",
-  "rmaType_returnCode": "DEFECTIVE"
+  "fields": {
+    "retailerID": "ACME-101",
+    "returnCode": "DEFECTIVE"
+  }
 }
 ----
 
@@ -160,8 +158,10 @@ An example of the JSON format for an RMA is shown below:
 {
   "rma": "R10102-23",
   "qty": 12.2,
-  "rmaType_retailerID": "ACME-101",
-  "rmaType_returnCode": "DEFECTIVE"
+  "fields": {
+    "retailerID": "ACME-101",
+    "returnCode": "DEFECTIVE"
+  }
 }
 ----
 
