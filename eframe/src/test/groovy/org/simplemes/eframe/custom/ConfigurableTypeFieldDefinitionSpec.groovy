@@ -30,7 +30,7 @@ class ConfigurableTypeFieldDefinitionSpec extends BaseSpecification {
 
     then: 'the fields are correct'
     fieldDefinition.configTypeFieldName == 'rmaType'
-    fieldDefinition.name == 'rmaType_rmaID'
+    fieldDefinition.name == 'rmaID'
     fieldDefinition.sequence == 437
     fieldDefinition.format == IntegerFieldFormat.instance
     fieldDefinition.label == 'RMA ID'

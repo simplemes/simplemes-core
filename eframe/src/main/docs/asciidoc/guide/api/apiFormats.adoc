@@ -136,7 +136,7 @@ accessed like this:
 {
   "order": "M10102-23",
   "qty": 12.2,
-  "fields": {
+  "_fields": {
     "promiseDate": "2009-02-13T18:31:30.000-05:00",
     "caseColor": "BLUE"
   }
@@ -167,7 +167,7 @@ class RMA {
 }
 
 ----
-<.> The field `rmaType` will hold the reference to the appropriate flex type.  The acutal
+<.> The field `rmaType` will hold the reference to the appropriate flex type.  The actual
     values will be stored as described in <<Custom Field Storage>>.
 <.> Defines the column that will hold the JSON values of the custom fields.
 
@@ -179,7 +179,7 @@ The API format for this type of data field would be:
 {
   "rma": "R10102-23",
   "qty": 12.2,
-  "fields": {                  <.>
+  "_fields": {                  <.>
     "retailerID": "ACME-101",
     "returnCode": "DEFECTIVE"
   }
@@ -189,3 +189,6 @@ The API format for this type of data field would be:
     (`fields` in this example).
 
 
+NOTE: <<Custom Child List>> will use the API format described in
+      <<Custom Child List Storage>>.  This follows the normal JSON array format, but
+      the element is stored at the top-level, under the name of the custom field.

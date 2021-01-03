@@ -14,7 +14,7 @@ import org.simplemes.eframe.misc.TypeUtils
 /**
  * Holds the basic definition needed for a single field in a configurable type field element.  This provides the
  * basic FieldDefinitionInterface used for configurable types.  This class acts as a bridge from the
- * configurable types such as FlexType to a proper field defintion for the GUIs and API access.
+ * configurable types such as FlexType to a proper field definition for the GUIs and API access.
  *
  */
 @ToString(includePackage = false, includeNames = true, includeSuper = true, includes = ['configTypeFieldName'])
@@ -33,9 +33,6 @@ class ConfigurableTypeFieldDefinition extends SimpleFieldDefinition {
   ConfigurableTypeFieldDefinition(FieldInterface field, String configTypeFieldName = null) {
     super()
     this.name = field.fieldName
-    if (configTypeFieldName) {
-      this.name = "${configTypeFieldName}_${field.fieldName}"
-    }
     this.configTypeFieldName = configTypeFieldName
     this.format = field.fieldFormat
     this.label = field.fieldLabel ?: field.fieldName

@@ -8,10 +8,11 @@ package org.simplemes.eframe.data.format
 import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.domain.annotation.DomainEntityHelper
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
+import org.simplemes.eframe.misc.ArgumentUtils
 
 /**
  * Defines the format for a field that is list of custom child records.  These are domain records that are loosely
- * coupled with the parent object (via a record ID).
+ * coupled with the parent object (via a record ID). These records are stored in a separate, custom database table.
  */
 class CustomChildListFieldFormat extends BasicFieldFormat implements ListFieldLoaderInterface {
   /**
@@ -117,4 +118,44 @@ class CustomChildListFieldFormat extends BasicFieldFormat implements ListFieldLo
   String toString() {
     return 'CustomChildList'
   }
+
+  /**
+   * Parses for custom JSON Child records.  Uses the UUID list to re-read the list.
+   *
+   * @param value The List of string encoded uuid values.  Null is allowed.  Empty strings are treated as null.
+   * @param fieldDefinition The field definition used to define this field (optional, provided additional details such as valid values).
+   * @return The list of values.
+   */
+  List parseJSONForCustomList(List<String> values, FieldDefinitionInterface fieldDefinition) {
+    ArgumentUtils.checkMissing(fieldDefinition, 'fieldDefinitions')
+    if (!values) {
+      return null
+    }
+    def domainClass = fieldDefinition.referenceType
+    def res = []
+    domainClass.withTransaction {
+      for (s in values) {
+        def id = UUID.fromString(s)
+        res << domainClass.findByUuid(id)
+      }
+    }
+    return res
+
+  }
+
+  /**
+   * Formats the given value for display as a string into the correct type for a field.
+   * @param value The object to format for display.  Null is allowed.  Empty strings are treated as null.
+   * @param fieldDefinition The field definition used to define this field (optional).
+   * @return The formatted uuid String values in a list.
+   */
+  List<String> formatCustomListForJSON(Object value, FieldDefinitionInterface fieldDefinition) {
+    def res = []
+    for (record in value) {
+      res << record.uuid.toString()
+    }
+    return res
+  }
+
+
 }

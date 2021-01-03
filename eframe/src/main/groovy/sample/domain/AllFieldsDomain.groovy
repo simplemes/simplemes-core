@@ -65,7 +65,7 @@ class AllFieldsDomain {
   @MappedProperty(type = DataType.TIMESTAMP, definition = 'TIMESTAMP WITH TIME ZONE')
   @Nullable Date dateTime
   @Nullable DateOnly dueDate
-  @Transient String transientField = 'Transient Default'
+  @Nullable @Transient String transientField = 'Transient Default'
   @Nullable String displayOnlyText = 'Display Only'
   @Nullable String notes
   @Nullable String anotherField

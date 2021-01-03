@@ -50,7 +50,7 @@ class ConfigurableTypeFieldWidgetGUISpec extends BaseGUISpecification {
     RMA.withTransaction {
       rma = RMA.findByRma('ABC')
       assert rma.rmaType == flexType
-      assert rma.getRmaTypeValue('FIELD1') == 'VALUE1'
+      assert rma.getFieldValue('FIELD1') == 'VALUE1'
       true
     }
 
@@ -86,7 +86,7 @@ class ConfigurableTypeFieldWidgetGUISpec extends BaseGUISpecification {
     RMA.withTransaction {
       rma = RMA.findByRma('ABC')
       assert rma.rmaType == flexType
-      assert rma.getRmaTypeValue('FIELD1') == 'VALUE1'
+      assert rma.getFieldValue('FIELD1') == 'VALUE1'
       true
     }
   }
@@ -102,7 +102,7 @@ class ConfigurableTypeFieldWidgetGUISpec extends BaseGUISpecification {
     def rma = null
     RMA.withTransaction {
       rma = new RMA(rma: 'ABC', rmaType: flexType2)
-      rma.setRmaTypeValue('FIELD2', 'VALUE2')
+      rma.setFieldValue('FIELD2', 'VALUE2')
       rma.save()
     }
 
@@ -135,7 +135,7 @@ class ConfigurableTypeFieldWidgetGUISpec extends BaseGUISpecification {
     RMA.withTransaction {
       rma2 = RMA.findByRma('ABC')
       assert rma2.rmaType == flexType3
-      assert rma2.getRmaTypeValue('FIELD3') == 'VALUE3'
+      assert rma2.getFieldValue('FIELD3') == 'VALUE3'
       true
     }
 

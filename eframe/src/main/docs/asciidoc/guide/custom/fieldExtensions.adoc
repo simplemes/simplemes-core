@@ -77,8 +77,7 @@ of your application.  The features that are associated with custom fields includ
 These all use the common
 link:groovydoc/org/simplemes/eframe/custom/ExtensibleFieldHelper.html[ExtensibleFieldHelper^]
 icon:share-square-o[role="link-blue"] helper methods to access the field values.
-The <<Configurable Types>> and <<Flex Types>> also create helper methods in the domain class
-(e.g. `setRmaTypeValue()`).
+
 
 
 //workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271  and IDEA plugin dir issue
@@ -130,7 +129,89 @@ in the domain record.  See <<>>
 The FieldExtension (user-defined and additions) are stored with the field name as-is.
 
 
+==== Custom Field - Internal Design
 
+These custom fields are complex.  They can be huge with a large number of fields and
+large values.  Customers may log the data to the object without a pre-defined
+field definition (e.g. without a <<Flex Types>> or <<Configurable Types>>).
+
+The user requirements are covered above in <<Design Decisions>>.  These user
+requirements force us to use this type of implementation:
+
+* A Map front-end to hide the JSON text field from the application code.
+* Added getters/setters to synchronize the Map with the text field.
+* Dirty flags to indicate if the values are out of synch.  Reduces the number
+  of times the JSON os serialized/deserialized.
+
+The implementation uses
+link:groovydoc/org/simplemes/eframe/custom/FieldHolderMapInterface.html[FieldHolderMapInterface^]
+icon:share-square-o[role="link-blue"] and its Groovy implementation
+link:groovydoc/org/simplemes/eframe/custom/FieldHolderMap.html[FieldHolderMap^]
+icon:share-square-o[role="link-blue"].
+This Map works with the
+link:groovydoc/org/simplemes/eframe/custom/ExtensibleFieldHelper.html[ExtensibleFieldHelper^]
+icon:share-square-o[role="link-blue"] to synchronize the Map/Text with the database
+actions (save/retrieve).
+
+To support this, the structure and related methods are shown below.
+
+
+
+
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271  and IDEA plugin dir issue
+:imagesdir: {imagesdir-build}
+ifeval::[{env}==idea]
+:imagesdir-build: .asciidoctor
+:imagesdir: .asciidoctor
+endif::[]
+
+.Custom Field Design
+[ditaa,"customFieldMapDesign"]
+----
+             Domain Object with @ExtensibleFieldHolder Annotation
+             +--------------------------------------------------------+
+             |                                                        |
+
+
+               +-------------------+            +-------------------+
+               | FieldHolderMap    |            | Fields (JSON Text)|
+       get()   | [                 | fromJSON() |                   |             +-----------+
+      <--------|  weight: 2.3      |<-----------| {                 | setFields() | Database  |
+               |  defect: "BAD     |            |  "weight": 2.3,   |<------------|   jsonb   |
+       put()   |  _config: {...}   |   toJSON() |  "defect": "BAD"  |             |           |
+      -------->| ]                 |----------->| }                 | getFields() |        {s}|
+               |                   |            |                   |------------>+-----------+
+               +-------------------+            +-------------------+
+
+----
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+The Map is the primary interface used by
+link:groovydoc/org/simplemes/eframe/custom/ExtensibleFieldHelper.html[ExtensibleFieldHelper^]
+icon:share-square-o[role="link-blue"] to put/get values from the custom fields.
+This Map is synchronized with the JSON text fields using the `set/getFields()` methods
+and with the `to/fromJSON()` methods.
+
+The basic life cycle of these objects is orchestrated by the
+link:groovydoc/org/simplemes/eframe/custom/ExtensibleFieldHelper.html[ExtensibleFieldHelper^]
+icon:share-square-o[role="link-blue"] class:
+
+
+. The domain object is created.  All fields are null.
+. A method calls `put()` to store a custom value into the Map.  The Map is marked as 'dirty'.
+. Some method then calls `save()` on the domain.
+. The `getFields()` method is called to get the string value for the database.
+. This calls the `toJSON()` method.  The record is saved.
+. Later, the record is read from the database.
+. The `setFields()` method is called.  This sets the Map to null, indicating that
+  the JSON needs to be deserialized.
+. A method then calls the `get()` to get the value.  If the Map is null, then
+  the JSON is deserialized into the Map.  The value is returned.
+
+After this, updates to the Map will force the JSON to be re-created before the next save.
 
 
 ==== Custom Field Usage
@@ -157,6 +238,49 @@ This holder field will store these types of fields:
 * <<Field Extensions>> - Fields added by the user or by other modules (see <<Addition>>).
 * Data collected by the Data Entry module (name TBD).
 * Other data added programmatically or via APIs.
+
+Custom child lists are handled somewhat differently.
+
+===== Custom Child List Storage
+
+
+When the custom field is a  <<Custom Child List>> (_CustomChildListFieldFormat_),
+the data is not stored in the holder as JSON.  Instead, it is stored in a custom
+database table.  This means the JSON format is different:
+
+
+[source,json]
+.JSON Format for Custom Child List Storage
+----
+{
+  "rma": "R10102-23",         <.>
+  "qty": 12.2,
+  "customComponents": [       <.>
+     { "product": "BIKE-27", "qty": 1.0 },
+     { "product": "WHEEL", "qty": 2.0 }
+    ]
+  }
+}
+----
+<.> The normal domain fields.
+<.> The list of custom child records.  Stored in another database table.
+    In the domain object itself, these custom records are stored in a
+    special Map.   The values can be accessed with the normal custom field
+    getters/setters: such as `getCustomComponents()`.
+
+    
+
+This is a fairly complex feature that is only supported in a limited number of scenarios
+as described in <<Custom Child List>>.  It is very useful for <<Module Additions>> so
+that a module can add a list of custom values for a core domain object.
+
+Why put these in another element in the JSON?  Because the Jackson JSON mapper automatically
+creates/parses the JSON for the standard <<Custom Field Storage>> mechanism.  To use
+the same storage mechanism, we would have to write a lot of complex logic to
+extract and insert the custom child lists.
+
+This is not ideal, but it is the best compromise.
+
 
 ===== Custom Field History
 
@@ -187,7 +311,7 @@ For example, tracking using the *All Data and Values* option would result in a
 {
   "rma": "R10102-23",          <.>
   "qty": 12.2,
-  "fields": {
+  "_fields": {
     "weight": 2.3,             <.>
     "_weight_config": {        <.>
       "tracking": "ALL_VALUES"
@@ -262,7 +386,8 @@ class SampleDomain {
 <.> The data type is a native JSON type (jsonb in Postgres).  This allows direct queries on
     the custom values.
 <.> The suggested field name is `fields`.  This is a short name for use in complex
-    SQL queries on the custom fields.
+    SQL queries on the custom fields.  Also, this field name will be used for
+    JSON access to the custom fields (e.g. a sub-object _"_fields"_ will be used).
 
 NOTE: You should not change the column name for custom fields on a production database.
       There is no automatic database migration to handle a column name change.
@@ -421,15 +546,12 @@ the transient list of the records.  The actual custom domain objects are saved l
 domain class.  Various portions of the framework support these custom lists of objects:
 
 * JSON Parsing and Formatting.
-* CRUD actions in the controller base classes
-  (e.g. link:groovydoc/org/simplemes/eframe/controller/BaseCrudController.html[BaseCrudController^]
-  icon:share-square-o[role="link-blue"] )
+* CRUD actions in the controller base classes <<Controller Base Classes>>.
 * The GUI tags <<efDefinitionList>>, <<efShow>> , <<efCreate>> and <<efEdit>>.
-* Support for auto save/delete from core domain objects
-  (see link:groovydoc/org/simplemes/eframe/custom/EframePersistenceListener.html[EframePersistenceListener^]
-  icon:share-square[role="link-blue"]).
+* Support for save/delete from core <<Domain Entities>>.
 * Normal custom `getFieldValue()` and `setFieldValue()` access.  The `getFieldValue()` method will
   perform a load of the values.
+* The specific get/set method for the custom field (e.g. `getComponents()`).
 
 This means your core code and custom lists of objects in complex scenarios will work with little or no
 coding in your core application.  A common application of this is in <<Module Additions>>.
@@ -500,6 +622,9 @@ This addition will add an inline grid for these child order line items in the st
 Order definition pages.
 
 When testing using GUI/GEB testing, remember to delete your custom child classes first.
+
+NOTE: See <<Custom Child List Storage>> for details on how these are stored
+      and how the API works.
 
 ==== Custom Child List - Integration/GUI Testing
 

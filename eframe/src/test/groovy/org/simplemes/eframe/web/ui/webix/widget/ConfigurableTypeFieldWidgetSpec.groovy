@@ -56,7 +56,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     and: 'the holder area has the default input field'
     def holder = JavascriptTestUtils.extractBlock(page, 'rows: [')
     def content = JavascriptTestUtils.extractBlock(holder, 'id: "rmaTypeContent",rows: [')
-    def field1Line = TextUtils.findLine(content, 'id: "rmaType_FIELD1"')
+    def field1Line = TextUtils.findLine(content, 'id: "FIELD1"')
     JavascriptTestUtils.extractProperty(field1Line, 'view') == 'text'
 
     and: 'the value for the custom field is empty'
@@ -135,7 +135,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.checkScriptFragment("[$page]")
 
     and: 'the field format is used to build the configurable input fields'
-    def fieldLine = TextUtils.findLine(page, 'id: "rmaType_FIELD1"')
+    def fieldLine = TextUtils.findLine(page, 'id: "FIELD1"')
     JavascriptTestUtils.extractProperty(fieldLine, 'view') == 'datepicker'
   }
 
@@ -162,7 +162,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(mainFieldLine, 'view') == 'label'
 
     and: 'the configurable field is readOnly'
-    def fieldLine = TextUtils.findLine(page, 'id: "rmaType_FIELD1"')
+    def fieldLine = TextUtils.findLine(page, 'id: "FIELD1"')
     JavascriptTestUtils.extractProperty(fieldLine, 'view') == 'label'
   }
 
@@ -192,7 +192,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(mainFieldLine, 'view') == 'label'
 
     and: 'the configurable field is NOT readOnly'
-    def fieldLine = TextUtils.findLine(page, 'id: "rmaType_FIELD1"')
+    def fieldLine = TextUtils.findLine(page, 'id: "FIELD1"')
     JavascriptTestUtils.extractProperty(fieldLine, 'view') == 'datepicker'
   }
 
@@ -203,7 +203,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
 
     and: 'a domain object for the value'
     def rma = new RMA(rmaType: flexType1)
-    rma.setRmaTypeValue('FIELD1', 'abc"123')
+    rma.setFieldValue('FIELD1', 'abc"123')
 
     when: 'the UI element is built'
     def widgetContext = buildWidgetContext(domainObject: rma, name: 'rmaType',
@@ -216,7 +216,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.checkScriptFragment("[$page]")
 
     and: 'the configurable field value is correct and has an escaped quote'
-    def fieldLine = TextUtils.findLine(page, 'id: "rmaType_FIELD1"')
+    def fieldLine = TextUtils.findLine(page, 'id: "FIELD1"')
     fieldLine.contains('value: "abc\\"123"')
   }
 
@@ -239,7 +239,7 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.checkScriptFragment("[$page]")
 
     and: 'default flex type is selected'
-    def field1Line = TextUtils.findLine(page, 'id: "rmaType_FIELD1"')
+    def field1Line = TextUtils.findLine(page, 'id: "FIELD1"')
     JavascriptTestUtils.extractProperty(field1Line, 'view') == 'text'
   }
 

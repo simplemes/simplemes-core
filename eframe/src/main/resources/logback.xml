@@ -38,6 +38,7 @@
   <logger name="org.simplemes.eframe.controller" level="warn"/> <!--trace for exceptions caught by controller-->
   <logger name="org.simplemes.eframe.custom" level="warn"/>
   <logger name="org.simplemes.eframe.domain" level="warn"/>
+  <logger name="org.simplemes.eframe.json" level="warn"/>
   <logger name="org.simplemes.eframe.web.ui" level="warn"/>
   <logger name="org.simplemes.eframe.security" level="warn"/>
   <logger name="org.simplemes.eframe.test" level="warn"/>

@@ -8,6 +8,7 @@ import io.micronaut.core.beans.BeanIntrospection
 import io.micronaut.core.beans.BeanIntrospector
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.Transient
+import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.data.FieldDefinitionFactory
 import org.simplemes.eframe.data.FieldDefinitions
 import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
@@ -188,7 +189,9 @@ class DomainUtils {
    */
   @SuppressWarnings("unused")
   boolean isPropertySpecial(Class c, String propertyName) {
-
+    if (ExtensibleFieldHelper.instance.getCustomHolderFieldName(c) == propertyName) {
+      return true
+    }
     return (specialProperties.contains(propertyName))
   }
 

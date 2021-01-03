@@ -15,7 +15,7 @@ image::guis/menus.png[menus,align="center", width="30%"]
 ----
 <@efForm id="addPanel" dashboard="true">  // <.>
   <@efMenu id="configMenu">
-    <@efMenu key="customFields">  // <.>
+    <@efMenu key="customMenu">  // <.>
       <@efMenuItem key="addCustomField" uri="/order/create"/>     // <.>
       <@efMenuItem key="addPanel" onClick="addPanel();"/>  // <.>
       <@efMenuItem/>  // <.>
@@ -25,8 +25,8 @@ image::guis/menus.png[menus,align="center", width="30%"]
 </@efForm>
 ----
 <.> The menu must be inside of a <<efForm>>.
-<.> First menu has sub-menu items and the label is _"menu.customFields.label"_ and
-    _"menu.customFields.tooltip"_ (if defined).
+<.> First menu has sub-menu items and the label is _"menu.customMenu.label"_ and
+    _"menu.customMenu.tooltip"_ (if defined).
 <.> Sends request to a URI as an HTTP GET request (forces page refresh).
 <.> Executes a local javascript method.
 <.> Displays a separator line in the menu.

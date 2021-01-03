@@ -84,7 +84,7 @@ class DomainBinder {
   /**
    * These are fields that not bound to domain objects.
    */
-  List<String> fieldsToSkipBinding = ['uuid']
+  List<String> fieldsToSkipBinding = ['uuid', 'id']
 
   /**
    * Any errors accumulated during binding.
@@ -197,10 +197,13 @@ class DomainBinder {
         }
       } else if (key.contains('[') && key.contains(']')) {
         // Child objects have been converted to a child list.
-      } else if (fieldsToSkipBinding.contains(key) || key == 'id') {
-        // Skip some important fields like 'uuid' and silently ignore 'id'.
+      } else if (fieldsToSkipBinding.contains(key)) {
+        // Skip some important fields like 'uuid' and 'id'.
+      } else if (ExtensibleFieldHelper.instance.getCustomHolderFieldName(domainClass) == key) {
+        // Make sure the text from the custom field holder is set in the object.
+        object[key] = value.toString()
       } else if (!(key?.startsWith('_'))) {
-        log.warn('bind() Ignoring field {}.  No field definition in {}', key, domainClass)
+        log.warn('bind() Ignoring field {}.  No field definition in {}.  Params {}', key, domainClass, params)
       }
     }
     checkForErrors()

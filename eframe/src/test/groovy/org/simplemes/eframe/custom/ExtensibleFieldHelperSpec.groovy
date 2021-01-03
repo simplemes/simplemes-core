@@ -5,6 +5,7 @@
 package org.simplemes.eframe.custom
 
 import ch.qos.logback.classic.Level
+import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.custom.domain.FieldGUIExtension
 import org.simplemes.eframe.custom.domain.FlexField
@@ -198,7 +199,6 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     fieldOrder.indexOf('title') < fieldOrder.indexOf('custom1')
   }
 
-
   def "verify that set and getFieldValue handles simple cases"() {
     given: 'a domain object with a custom field'
     def src = """
@@ -213,10 +213,14 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
 
     when: 'the value is set'
-    ExtensibleFieldHelper.instance.setFieldValue(object, 'field1', 'ABC')
+    def dateOnly = new DateOnly()
+    ExtensibleFieldHelper.instance.setFieldValue(object, 'field1', dateOnly)
+
+    and: 'a read is simulated - some text to be parsed'
+    object.customFields = Holders.objectMapper.writeValueAsString(ExtensibleFieldHelper.instance.getExtensibleFieldMapNoParse(object))
 
     then: 'the value can be read'
-    ExtensibleFieldHelper.instance.getFieldValue(object as DomainEntityInterface, 'field1') == 'ABC'
+    ExtensibleFieldHelper.instance.getFieldValue(object as DomainEntityInterface, 'field1') == dateOnly
   }
 
   def "verify that set and getFieldValue handles supported field types"() {
@@ -449,13 +453,13 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     when: 'the value is set'
     def rma = new RMA(rma: 'ABC')
     rma.rmaType = flexType
-    rma.setRmaTypeValue('FIELD1', 'XYZ')
+    rma.setFieldValue('FIELD1', 'XYZ')
 
     then: 'the field can be retrieved'
-    rma.getRmaTypeValue('FIELD1') == 'XYZ'
+    rma.getFieldValue('FIELD1') == 'XYZ'
 
     and: 'the value is stored correctly in the custom fields'
-    rma.getRmaTypeValue('FIELD1') == 'XYZ'
+    rma.getFieldValue('FIELD1') == 'XYZ'
   }
 
   @Rollback
@@ -636,7 +640,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     originalFD.size() != newFD.size()
 
     and: 'the flex field is added to the field defs'
-    def fieldDefinition = newFD.rmaType_Field1
+    def fieldDefinition = newFD.Field1
     fieldDefinition
     fieldDefinition instanceof ConfigurableTypeFieldDefinition
   }
@@ -652,11 +656,11 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     and: 'a domain with a configurable type'
     def rma = new RMA(rma: 'ABC')
     rma.rmaType = flexType
-    rma.setRmaTypeValue('Field1', new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS))
+    rma.setFieldValue('Field1', new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS))
     rma.save()
 
     expect: 'the field value is retrieved'
-    rma.getRmaTypeValue('Field1') == new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS)
+    rma.getFieldValue('Field1') == new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS)
   }
 
   @Rollback
@@ -666,10 +670,10 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
 
     when: 'a POGO with the extensible field holder has a value set'
     def pogo = new SamplePOGO(assemblyData: flexType)
-    pogo.setAssemblyDataValue('FIELD1', 'XYZZY')
+    pogo.setFieldValue('FIELD1', 'XYZZY')
 
     then: 'the field value is retrieved'
-    pogo.getAssemblyDataValue('FIELD1') == 'XYZZY'
+    pogo.getFieldValue('FIELD1') == 'XYZZY'
   }
 
   def "verify that formatConfigurableTypeValues handles supported cases"() {
@@ -680,7 +684,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
       object = new RMA(rmaType: flexType)
       for (int i = (fieldCount - 1); i >= 0; i--) {
         // Add the field values in reverse order
-        object.setRmaTypeValue("FIELD${i + 1}", values[i])
+        object.setFieldValue("FIELD${i + 1}", values[i])
       }
     }
 
@@ -712,7 +716,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     given: 'a domain object with the given field values'
     def flexType = DataGenerator.buildFlexType(fieldLabel: 'order.label')
     def object = new RMA(rmaType: flexType)
-    object.setRmaTypeValue("FIELD1", 'XYZ')
+    object.setFieldValue("FIELD1", 'XYZ')
 
     expect: 'the method works'
     ExtensibleFieldHelper.instance.formatConfigurableTypeValues('rmaType', object) == "${lookup('order.label')}: XYZ"
@@ -723,7 +727,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     given: 'a POGO object with the given field values'
     def flexType = DataGenerator.buildFlexType(fieldLabel: 'order.label')
     def object = new SamplePOGO(assemblyData: flexType)
-    object.setAssemblyDataValue("FIELD1", 'XYZ')
+    object.setFieldValue("FIELD1", 'XYZ')
 
     expect: 'the method works'
     ExtensibleFieldHelper.instance.formatConfigurableTypeValues('assemblyData', object) == "${lookup('order.label')}: XYZ"
@@ -834,6 +838,127 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     then: 'the right exception is thrown'
     def ex = thrown(Exception)
     UnitTestUtils.assertExceptionIsValid(ex, ['abc', SampleParent.name])
+  }
+
+  def "verify that setExtensibleFieldsText clears the field holder map to force a re-parse"() {
+    given: 'a domain object with a custom field'
+    def src = """
+      import org.simplemes.eframe.data.annotation.*
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      @DomainEntity
+      class TestClass {
+        @ExtensibleFieldHolder String customFields
+        UUID uuid 
+      }
+    """
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
+
+    and: 'a non-null field holder is is created by the normal get'
+    object.setCustomFields('{"field1": "ABC"}')
+    assert object.getFieldValue('field1') == "ABC"
+    assert ExtensibleFieldHelper.instance.getExtensibleFieldMapNoParse(object as DomainEntityInterface) != null
+
+    when: 'the JSON text is set - Simulates DB read'
+    object.setCustomFields('{"field1": "XYZ"}')
+
+    then: 'the map is cleared'
+    ExtensibleFieldHelper.instance.getExtensibleFieldMapNoParse(object as DomainEntityInterface) == null
+
+    and: 'the new value is return by the get'
+    object.getFieldValue('field1') == "XYZ"
+
+    and: 'the map is populated'
+    ExtensibleFieldHelper.instance.getExtensibleFieldMapNoParse(object as DomainEntityInterface) != null
+
+    when: 'the JSON text is cleared'
+    object.setCustomFields('')
+
+    then: 'an empty map is generated from the empty text'
+    ExtensibleFieldHelper.instance.getExtensibleFieldMap(object as DomainEntityInterface).keySet().size() == 0
+  }
+
+  def "verify that getExtensibleFieldsText re-parses when the holder map is dirty"() {
+    given: 'a domain object with a custom field'
+    def src = """
+      import org.simplemes.eframe.data.annotation.*
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      @DomainEntity
+      class TestClass {
+        @ExtensibleFieldHolder String customFields
+        UUID uuid 
+      }
+    """
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance() as DomainEntityInterface
+
+    and: 'a non-null field holder is is created by the normal get'
+    object.setCustomFields('{"field1": "ABC"}')
+    assert object.getFieldValue('field1') == "ABC"
+    assert ExtensibleFieldHelper.instance.getExtensibleFieldMapNoParse(object) != null
+
+    when: 'the map is marked as dirty by an update'
+    object.setFieldValue('field1', 'XYZ')
+
+    and: 'the text is retrieved from the object - simulates a DB write'
+    def text = object.getCustomFields() as String
+
+    then: 'the text has the new values'
+    def map = Holders.objectMapper.readValue(text, FieldHolderMap)
+    map.field1 == 'XYZ'
+
+    and: 'the map is marked as not-dirty'
+    !ExtensibleFieldHelper.instance.getExtensibleFieldMapNoParse(object).isDirty()
+  }
+
+  def "verify that getExtensibleFieldsText does not re-generate the JSON if the field holder map is not dirty"() {
+    given: 'a domain object with a custom field'
+    def src = """
+      import org.simplemes.eframe.data.annotation.*
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      @DomainEntity
+      class TestClass {
+        @ExtensibleFieldHolder String customFields
+        UUID uuid 
+      }
+    """
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance() as DomainEntityInterface
+
+    and: 'a non-null field holder is is created by the normal get'
+    object.setCustomFields('{"field1": "ABC"}')
+    assert object.getFieldValue('field1') == "ABC"
+    assert ExtensibleFieldHelper.instance.getExtensibleFieldMapNoParse(object) != null
+
+    and: 'the field holder map changed - used to detect re-generation of the JSON'
+    object.setFieldValue('field1', 'XYZ')
+
+    and: 'the field holder map is marked as not-dirty'
+    ExtensibleFieldHelper.instance.getExtensibleFieldMapNoParse(object).setDirty(false)
+
+    when: 'the text it retrieved from the domain - simulates a DB write'
+    def text = object.getCustomFields() as String
+
+    then: 'the text has the old values since the map is not marked as dirty'
+    text.contains('"ABC"')
+    !text.contains('"XYZ"')
+  }
+
+  def "verify that getExtensibleFieldsText gracefully detects missing extensible field holder"() {
+    given: 'a domain object with a custom field'
+    def src = """
+      import org.simplemes.eframe.data.annotation.*
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      @DomainEntity
+      class TestClass {
+        UUID uuid 
+      }
+    """
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance() as DomainEntityInterface
+
+    when: 'the field is accessed'
+    ExtensibleFieldHelper.instance.getExtensibleFieldMapNoParse(object)
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['TestClass'], 131)
   }
 
 }

@@ -33,9 +33,9 @@ class RMACreatePage extends AbstractCreateOrEditPage {
     returnDate { module(new DateFieldModule(field: 'returnDate')) }
 
     // Field(s) added by Flex Type
-    FIELD1 { module(new TextFieldModule(field: 'rmaType_FIELD1')) }
-    FIELD2 { module(new TextFieldModule(field: 'rmaType_FIELD2')) }
-    FIELD3 { module(new TextFieldModule(field: 'rmaType_FIELD3')) }
+    FIELD1 { module(new TextFieldModule(field: 'FIELD1')) }
+    FIELD2 { module(new TextFieldModule(field: 'FIELD2')) }
+    FIELD3 { module(new TextFieldModule(field: 'FIELD3')) }
   }
 
 }

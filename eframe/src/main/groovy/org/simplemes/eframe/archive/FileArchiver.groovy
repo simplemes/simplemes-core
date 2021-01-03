@@ -7,7 +7,10 @@ package org.simplemes.eframe.archive
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.archive.domain.ArchiveLog
+import org.simplemes.eframe.data.format.ChildListFieldFormat
+import org.simplemes.eframe.data.format.CustomChildListFieldFormat
 import org.simplemes.eframe.domain.DomainUtils
+import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.exception.MessageBasedException
 import org.simplemes.eframe.exception.ValidationException
@@ -228,6 +231,7 @@ class FileArchiver implements ArchiverInterface {
       File file = FileFactory.instance.newFile(fName)
       reader = file.newReader()
       def list = TypeableMapper.instance.read(reader)
+      clearUUIDs(list)
       for (o in list) {
         if (save) {
           def errors = DomainUtils.instance.validate(o)
@@ -258,6 +262,27 @@ class FileArchiver implements ArchiverInterface {
     }
 
     return res
+  }
+
+  /**
+   * Clears the UUIDs from the given records.  This prevents attempts to update when old records are unarchived.
+   * Also clears the UUIDs for all child records.
+   * @param records The records.
+   */
+  void clearUUIDs(List<DomainEntityInterface> records) {
+    for (o in records) {
+      o.uuid = null
+      // Now, clear any child records (custom or core) that might have an old UUID in them.
+      def fieldDefs = DomainUtils.instance.getFieldDefinitions(o.getClass())
+      for (fieldDefinition in fieldDefs) {
+        if (fieldDefinition.format == ChildListFieldFormat.instance ||
+          fieldDefinition.format == CustomChildListFieldFormat.instance) {
+          clearUUIDs(o[fieldDefinition.name] as List<DomainEntityInterface>)
+        }
+      }
+
+    }
+
   }
 
   /**

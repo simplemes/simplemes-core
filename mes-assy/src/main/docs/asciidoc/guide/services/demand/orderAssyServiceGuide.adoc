@@ -52,18 +52,17 @@ The JSON content passed to the controller contain the component to add:
   "lsn": {
     "lsn": "SN2037"
   },
-  "component": "CPU",                         // <.>
+  "component": "CPU",            // <.>
   "location": "BIN 47",
   "workCenter": "CELL_17",
   "qty": 47.2,
-  "assemblyData": "VENDOR",                   // <.>
-  "assemblyData_LOT": "ACME-101"              // <.>
+  "assemblyData": "VENDOR",      // <.>
+  "LOT": "ACME-101"              // <.>
 }
 ----
 <.> The component is a reference to a product domain record.
 <.> `assemblyData` is a Flex Type.  This must come before the field values.
-<.> The LOT assembly flex type supports a single data field 'LOT'.  The JSON field name
-    needs to be formatted like this.
+<.> The LOT assembly flex type supports a single data field 'LOT'.  
 
 
 [[order-assy-find-component-assembly-state,OrderAssyService.findComponentAssemblyState()]]

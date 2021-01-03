@@ -115,12 +115,6 @@ flyway:
       #baseline-version: 0.1
       #baseline-description: empty
 ---
-jackson:
-  serialization:
-    indentOutput: false
-    useEqualityForObjectID: true
-
----
 assets:
   mapping: assets
 

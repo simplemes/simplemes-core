@@ -101,7 +101,7 @@ An example of the raw data stored in the database column is shown below.
 .JSON Format Configurable Type Storage
 ----
 {
-  "fields": {
+  "_fields": {
     "retailerID": "ACME-101",
     "returnCode": "DEFECTIVE"
   }
@@ -138,11 +138,11 @@ Programmatic access to these values is provided by accessor methods based on the
 .Example Access to Configurable Type Values
 ----
   def rma = new RMA()
-  rma.setRmaTypeValue('address','P.O. Box 8675309')
+  rma.setFieldValue('address','P.O. Box 8675309')
 
   . . .
 
-  def lastName = rma.getRmaTypeValue('lastName')
+  def lastName = rma.getFieldValue('lastName')
 
 ----
 
@@ -158,7 +158,7 @@ An example of the JSON format for an RMA is shown below:
 {
   "rma": "R10102-23",
   "qty": 12.2,
-  "fields": {
+  "_fields": {
     "retailerID": "ACME-101",
     "returnCode": "DEFECTIVE"
   }

@@ -80,7 +80,7 @@ class ScanAssyDashboardGUISpec extends BaseDashboardSpecification {
     assembledComponents[0].qty == 1.0
     assembledComponents[0].userName == 'admin'
     assembledComponents[0].state == AssembledComponentStateEnum.ASSEMBLED
-    assembledComponents[0].getAssemblyDataValue('LOT') == '87929459'
+    assembledComponents[0].getFieldValue('LOT') == '87929459'
 
     and: 'the message is displayed with the correct values'
     UnitTestUtils.assertContainsAllIgnoreCase(messages.text(), [order.order, 'WHEEL'])
@@ -207,7 +207,7 @@ class ScanAssyDashboardGUISpec extends BaseDashboardSpecification {
     assembledComponents[0].qty == 1.0
     assembledComponents[0].userName == 'admin'
     assembledComponents[0].state == AssembledComponentStateEnum.ASSEMBLED
-    assembledComponents[0].getAssemblyDataValue('FIELD1') == '768349034'
+    assembledComponents[0].getFieldValue('FIELD1') == '768349034'
   }
 
 

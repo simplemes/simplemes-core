@@ -74,8 +74,7 @@ icon:share-square-o[role="link-blue"] created for this request.
 
 NOTE: To handle assembly data values from the flex type, you must provide the assemblyData element
       in the JSON input (via the controller) first.
-      This can be the flexType key field or its UUID.  If not given first, then the 'assemblyData_'
-      values will be ignored.
+      This can be the flexType key field or its UUID.
 
 [[order-assy-add-component-example]]
 ===== JSON Example
@@ -94,18 +93,17 @@ The JSON content passed to the controller contain the component to add:
   "lsn": {
     "lsn": "SN2037"
   },
-  "component": "CPU",                         // <.>
+  "component": "CPU",            // <.>
   "location": "BIN 47",
   "workCenter": "CELL_17",
   "qty": 47.2,
-  "assemblyData": "VENDOR",                   // <.>
-  "assemblyData_LOT": "ACME-101"              // <.>
+  "assemblyData": "VENDOR",      // <.>
+  "LOT": "ACME-101"              // <.>
 }
 ----
 <.> The component is a reference to a product domain record.
 <.> `assemblyData` is a Flex Type.  This must come before the field values.
-<.> The LOT assembly flex type supports a single data field 'LOT'.  The JSON field name
-    needs to be formatted like this.
+<.> The LOT assembly flex type supports a single data field 'LOT'.
 
 
 [[order-assy-find-component-assembly-state,OrderAssyService.findComponentAssemblyState()]]
@@ -201,7 +199,7 @@ The response is a map with the total number of rows available and a list of the 
       "canBeAssembled": false,
       "_complexCustomFields": null,
       "_fields": null,
-      "assemblyData_VENDOR": "RRRR"
+      "VENDOR": "RRRR"
     }
   ]
 }

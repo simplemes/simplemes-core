@@ -4,6 +4,7 @@
 
 package org.simplemes.eframe.application
 
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.databind.ser.FilterProvider
@@ -107,7 +108,11 @@ class StartupHandler {
    * @param mapper The mapper.
    */
   static void configureJacksonObjectMapper(ObjectMapper mapper) {
+    mapper.disable(SerializationFeature.INDENT_OUTPUT)
     mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+    mapper.enable(SerializationFeature.USE_EQUALITY_FOR_OBJECT_ID)
+    mapper.enable(DeserializationFeature.USE_BIG_DECIMAL_FOR_FLOATS)
+    mapper.enable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
     def format = new EFrameDateFormat()
     format.setTimeZone(Holders.globals.timeZone)
     mapper.setDateFormat(format)

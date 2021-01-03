@@ -250,7 +250,7 @@ StandardModelAndView logRMADialog(HttpRequest request, @Nullable Principal princ
      . . .
 
   def defaultRMA = new RMA(rmaType: flexType) // <.>
-  defaultRMA.setRmaTypeValue('returnDate', new Date())
+  defaultRMA.setFieldValue('returnDate', new Date())
   
   modelAndView['rmaDataModel'] = defaultRMA   // <.>
 

@@ -20,14 +20,74 @@ Custom Field Rework
 Tasks
 =====
   Change when JSON is serialized/deserialized.  Tests when loaded/saved.
-  Remove prefix from set/getFieldValue().
+  Simplify ExtensibleFieldTransform:
+    Remove prefix/config type support.
+    Add Map holder field (_fields) for fields.  Tracks if dirty or not.
+      This Map is used for most actions.
+      String getFields() will serialize the Map contents if dirty, otherwise use value from field..
+  Remove prefix from ExtensibleFieldHelper.set/getFieldValue().
   Change configType to remove prefix.
+    Update Assembly docs with assemblyData prefix in examples.
   Add API for adding value to fields.  Supports tracking options.
     Test with tracking and Rest API updates?
+    Update docs for mes-core, assy with API custom examples.
+  Dirty Map ready for saving.
+    FieldHolderMap - put() marks as dirty.  Has Text ready for saving.  Dirty= changedSinceLastJsonSerialize.
+      new method put(name,value,CustomFieldConfig).
+  REST API - Disable _config export/import by default.  Some mechanism to enable it on get?
+    Add URI with UUID for the get responses?
+  Archive works - full history preserved.
+  FieldHolderMap - Prevent storing unsupported types?
+  Option to force Flex Type/DE/FE field definitions before collection?
 
-Map getFields() - converts from text.
-    save() - serializes to JSON
-SafeMap - no clear?
+  CustomFieldConfig - interface
+    CustomFieldTracking tracking - enum
+    format - FieldFormat - null if type can be inferred from JSON (String, Number/DigDecimal, Boolean).
+  Fix adocs to match impl: fieldExtension.adoc:184 history/type/config example.
+  Add fix for undetected missed update. See  https://github.com/micronaut-projects/micronaut-data/issues/299
+  Add validation on Custom Field creation that prevents save if the name matches a core field.  Do in FieldExtension?
+
+Domain/POGO:
+  setFields(Map)
+  setFields(String json)
+  Map getFields()
+  Test Scenarios
+    Set value on empty map, save
+      With and without config (e.g. FlexType or FieldExtension).
+    Set value on populated map, save
+      With and without config (e.g. FlexType or FieldExtension).
+    Overwrite value on populated map, save
+      With and without config (e.g. FlexType or FieldExtension).
+
+    Read record, get value.
+    Read record, update value, get value, save.
+      With and without config (e.g. FlexType or FieldExtension).
+
+    Round-trip - with types (DateOnly, Date, DomainRef, Enum, EncodedValue,ConfigurableType?).
+    Round-trip - Update with value only history.
+    Round-trip - Update with value details history.
+    Round-trip - With config change (no history to full history).
+
+
+FieldHolderMapInterface: Front-end to JSON-backed text.  Retains type and tracking info.  Tracks history.
+  isDirty/setDirty - If Map has changes since last parseJSON()
+  parseJSON() - converts from text.
+  toJSON() - serializes to JSON
+  put()/get() - retains type info, track details option.
+  setTracking(name, value='L' (A/V/L))
+  setType(name, format)
+  getFieldsMap() - Delegates to helper.  Parse JSON if text is available.
+  no clear?
+  JSONAwareMapConfig - Holds config and history or just a simple Map with logic in JSONAwareMap?
+  Transform needs:
+   x map field with lazy getter/setter?  ExtensibleFieldHelper.getMap()/setMap()
+  ExtensibleFieldHelper needs:
+   change to getFieldValue to support map.
+   parses JSON on first get() with pending json
+   text field setFields() will null out map to indicate pending.  Called by JDBC.
+   text field getFields() will serialize dirty Map.  Called by JDBC.
+
+
 API:
 {
   "rma": "R10102-23",
@@ -54,12 +114,79 @@ API:
 
 In fields, store config for each name field:
   "fields" : {
-    "_retailerID_config": {"tracking": "ALL_VALUES"},  // ALL_DETAILS - (Who/what/when/where stored in element "_retailerID_history")
+    "_retailerID_config": {"tracking": "ALL_VALUES", "type": "D"},  // ALL_DETAILS - (Who/what/when/where stored in element "_retailerID_history")
     "retailerID": "ACME-101",
     "_returnCode_config": {"tracking": "LATEST"},  // Default ALL_VALUES (values only)
     "returnCode": "DEFECTIVE"
   }
-
+  Option 2 - 3 top-level arrays.
+  "fields": {
+    "retailerID": "ACME-101",
+    "returnCode": "DEFECTIVE",
+    "_types": [
+      {
+        "retailerID": "D",
+        "returnCode": "R"
+      }
+    ],
+    "_tracking": [
+      {
+        "retailerID": "A",
+        "returnCode": "V"
+      }
+    ],
+    "_history": {
+      "weight": [
+        {
+          "weight": 2.3,
+          "user": "PWB",
+          "dateTime": "2009-02-13T18:31:30.000-05:00"
+        },
+        {
+          "weight": 2.2,
+          "user": "MPH",
+          "dateTime": "2009-02-13T18:31:30.000-05:00"
+        },
+        {
+          "weight": 2.1,
+          "user": "RLB",
+          "dateTime": "2009-02-14T17:23:53.000-05:00"
+        }
+      ]
+    }
+  }
+  Option 3 - One map of config values.
+    "fields": {
+      "color": "123A",
+      "returnCode": "DEFECTIVE",
+      "_config": {
+        "color": {
+          "type": "S",
+          "tracking": "A",
+          "valueClassName": "o.s....",  // Domain Reference, enum, EncodedValue
+          "history": {
+            "color": [
+              {
+                "color": "122B",
+                "user": "PWB",
+                "dateTime": "2009-02-13T18:31:30.000-05:00"
+              },
+              {
+                "color": "121A",
+                "user": "MPH",
+                "dateTime": "2009-02-13T18:31:30.000-05:00"
+              },
+              {
+                "color": "123C",
+                "user": "RLB",
+                "dateTime": "2009-02-14T17:23:53.000-05:00"
+              }
+            ]
+          }
+        },
+        "returnCode": {}
+      }
+    }
 
 
 Data Entry

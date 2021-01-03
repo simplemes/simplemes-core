@@ -500,7 +500,7 @@ class WorkListServiceSpec extends BaseSpecification {
   @Rollback
   def "verify that filter is applied to results - order with no routing"() {
     given: 'multiple released orders'
-    def list = MESUnitTestUtils.releaseOrders(nOrders: 15)
+    def list = MESUnitTestUtils.releaseOrders(nOrders: 15, spreadQueuedDates: true)
     def order = list.find { it.order == 'M1010' }
 
     when: 'a work list is generated'
@@ -512,8 +512,8 @@ class WorkListServiceSpec extends BaseSpecification {
 
     and: 'the result is sorted correctly'
     def responseDetail = response.list[0]
-    println "response = ${response.list*.order}"
-    println "responseDetail = $responseDetail"
+    //println "response = ${response.list*.order}"
+    //println "responseDetail = $responseDetail"
     responseDetail.order == order.order
     responseDetail.orderID == order.uuid
     responseDetail.id == order.uuid
@@ -526,7 +526,8 @@ class WorkListServiceSpec extends BaseSpecification {
   @Rollback
   def "verify filter is applied - orders with routing"() {
     given: 'multiple released orders'
-    def orders = MESUnitTestUtils.releaseOrders(nOrders: 5, operations: [3], orderSequenceStart: 1008)
+    def orders = MESUnitTestUtils.releaseOrders(nOrders: 5, operations: [3],
+                                                orderSequenceStart: 1008, spreadQueuedDates: true)
     def order = orders.find { it.order == 'M1010' }
 
     when: 'a work list is generated'

@@ -4,6 +4,7 @@
 
 package org.simplemes.eframe.data.annotation;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import org.codehaus.groovy.ast.*;
 import org.codehaus.groovy.ast.expr.*;
@@ -17,7 +18,7 @@ import org.codehaus.groovy.control.messages.SimpleMessage;
 import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.simplemes.eframe.ast.ASTUtils;
-import org.simplemes.eframe.domain.annotation.DomainEntity;
+import org.simplemes.eframe.custom.BaseFieldHolderMap;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -37,7 +38,6 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
   /**
    * Basic Constructor.
    */
-  @SuppressWarnings("unused")
   public ExtensibleFieldHolderTransformation() {
   }
 
@@ -50,33 +50,19 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
       if (astNode instanceof FieldNode) {
         FieldNode fieldNode = (FieldNode) astNode;
         ClassNode classNode = fieldNode.getDeclaringClass();
-        //validateUsage(classNode, sourceUnit);
         addComplexFieldHolder(classNode, sourceUnit);
+        addFieldHolderMap(fieldNode.getName(), classNode, sourceUnit);
+        addFieldHolderGetter(fieldNode.getName(), classNode, sourceUnit);
+        addFieldHolderSetter(fieldNode.getName(), classNode, sourceUnit);
         addCustomFieldName(fieldNode.getName(), classNode, sourceUnit);
-        addJsonProperty(fieldNode, sourceUnit);
+        addJsonIgnore(fieldNode, sourceUnit);
         addValueSetter(classNode, sourceUnit);
         addValueGetter(classNode, sourceUnit);
-        addConfigurableTypeAccessors(classNode, sourceUnit);
         addPropertyMissingSetter(classNode, sourceUnit);
         addPropertyMissingGetter(classNode, sourceUnit);
       }
     }
   }
-
-  /**
-   * Validates the annotation was used correctly.
-   *
-   * @param classNode  The class this annotation was used in.
-   * @param sourceUnit The source location.
-   */
-  private void validateUsage(ClassNode classNode, SourceUnit sourceUnit) {
-    List<AnnotationNode> annotations = classNode.getAnnotations(new ClassNode(DomainEntity.class));
-    if (annotations.size() <= 0) {
-      SimpleMessage message = new SimpleMessage("@ExtensibleFieldHolder must be used in class marked with @DomainEntity" + classNode, sourceUnit);
-      sourceUnit.getErrorCollector().addError(message);
-    }
-  }
-
 
   /**
    * Adds a static property to the clazz that defines the field name.
@@ -87,45 +73,36 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
    */
   private void addCustomFieldName(String customFieldName, ClassNode node, SourceUnit sourceUnit) {
     Expression initialValue = new ConstantExpression(customFieldName);
-    ASTUtils.addField(ExtensibleFieldHolder.HOLDER_FIELD_NAME, Object.class, Modifier.PUBLIC | Modifier.STATIC,
+    List<ASTNode> nodes = ASTUtils.addField(ExtensibleFieldHolder.HOLDER_FIELD_NAME, Object.class, Modifier.PUBLIC | Modifier.STATIC,
         initialValue, node, sourceUnit);
+    if (nodes.get(0) instanceof FieldNode) {
+      addJsonIgnore((FieldNode) nodes.get(0), sourceUnit);
+    }
   }
 
   /**
-   * Adds the Jackson JsonProperty annotation to the custom field holder so that it is serialized with a special name
-   * that is ignored on de-serialization.
+   * Adds the Jackson JsonProperty annotation to the custom field holder so that it is serialized with the given name.
+   *
+   * @param fieldNode    The field to add the property annotation to.
+   * @param propertyName The name of the JSON property.
+   * @param sourceUnit   The source.
+   */
+  private void addJsonProperty(FieldNode fieldNode, String propertyName, @SuppressWarnings("unused") SourceUnit sourceUnit) {
+    AnnotationNode annotationNode = new AnnotationNode(new ClassNode(JsonProperty.class));
+    annotationNode.addMember("value", new ConstantExpression(propertyName));
+    fieldNode.addAnnotation(annotationNode);
+  }
+
+  /**
+   * Adds the Jackson JsonIgnore annotation to the given field so that Jackson will ignore it.
    *
    * @param fieldNode  The field to add the property annotation to.
    * @param sourceUnit The source.
    */
-  private void addJsonProperty(FieldNode fieldNode, SourceUnit sourceUnit) {
-    String fieldName = fieldNode.getName();
-
-    // Adds a getter for the field to specify the JsonProperty name on just the getter.
-    MethodNode getterNode = ASTUtils.addGetter(fieldNode, fieldNode.getDeclaringClass(), Modifier.PUBLIC, sourceUnit);
-
+  private void addJsonIgnore(FieldNode fieldNode, @SuppressWarnings("unused") SourceUnit sourceUnit) {
     // Add the Jackson annotation to rename the field.  This will prevent overlaying the holder value during imports.
-    AnnotationNode annotationNode = new AnnotationNode(new ClassNode(JsonProperty.class));
-    annotationNode.addMember("value", new ConstantExpression("_" + fieldName));
-    getterNode.addAnnotation(annotationNode);
-  }
-
-  /**
-   * Adds the Configurable Type accessors for any properties that are Configurable Types.
-   *
-   * @param node       The node for the class itself.
-   * @param sourceUnit The source unit being processed.
-   */
-  private void addConfigurableTypeAccessors(ClassNode node, SourceUnit sourceUnit) {
-    for (FieldNode fieldNode : node.getFields()) {
-      for (ClassNode interfaceNode : fieldNode.getType().getInterfaces()) {
-        if (interfaceNode.getName().equals("org.simplemes.eframe.data.ConfigurableTypeInterface")) {
-          addValueSetter(node, sourceUnit, fieldNode.getName());
-          addValueGetter(node, sourceUnit, fieldNode.getName());
-        }
-      }
-    }
-
+    AnnotationNode annotationNode = new AnnotationNode(new ClassNode(JsonIgnore.class));
+    fieldNode.addAnnotation(annotationNode);
   }
 
   /**
@@ -136,25 +113,10 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
    * @param sourceUnit The compiler source unit being processed (used to errors).
    */
   private void addValueGetter(ClassNode classNode, SourceUnit sourceUnit) {
-    addValueGetter(classNode, sourceUnit, null);
-  }
-
-  /**
-   * Adds the value getter to the annotated class.  This allows generic access to the custom fields by the caller.
-   * Adds the getFieldValue() method.
-   *
-   * @param classNode  The class to add the method to.
-   * @param sourceUnit The compiler source unit being processed (used to errors).
-   * @param prefix     The field prefix to use for the getter (e.g. prefix='rmaType' will use a prefix of 'rmaType_').
-   */
-  private void addValueGetter(ClassNode classNode, SourceUnit sourceUnit, String prefix) {
     String getterName = "getFieldValue";
     Parameter[] parameters = {
         new Parameter(new ClassNode(String.class), "fieldName")
     };
-    if (prefix != null) {
-      getterName = "get" + ASTUtils.upperCaseFirstLetter(prefix) + "Value";
-    }
 
     // Make sure the method doesn't exist already
     if (ASTUtils.methodExists(classNode, getterName, parameters)) {
@@ -165,9 +127,6 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
     ArgumentListExpression argumentListExpression = new ArgumentListExpression();
     argumentListExpression.addExpression(new VariableExpression("this"));
     argumentListExpression.addExpression(new VariableExpression("fieldName"));
-    if (prefix != null) {
-      argumentListExpression.addExpression(new ConstantExpression(prefix));
-    }
 
     PropertyExpression instanceExpression = new PropertyExpression(
         new ClassExpression(new ClassNode("org.simplemes.eframe.custom.ExtensibleFieldHelper", Modifier.PUBLIC, null)),
@@ -193,28 +152,11 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
    * @param sourceUnit The compiler source unit being processed (used to errors).
    */
   private void addValueSetter(ClassNode classNode, SourceUnit sourceUnit) {
-    addValueSetter(classNode, sourceUnit, null);
-  }
-
-  /**
-   * Adds the value setter to the annotated class.  This allows generic access to the field by the caller.
-   * Adds the setFieldValue() method.
-   *
-   * @param classNode  The class to add the method to.
-   * @param sourceUnit The compiler source unit being processed (used to errors).
-   * @param prefix     The field prefix to use for the getter (e.g. prefix='rmaType' will use a prefix of 'rmaType_').
-   */
-  private void addValueSetter(ClassNode classNode, SourceUnit sourceUnit, String prefix) {
-    // Someday, we may want to let the IDE see the set/getFieldValue() methods.  Looks like a plugin is needed:
-    // https://youtrack.jetbrains.com/issue/IDEA-217030?_ga=2.21253177.348530212.1568915239-1388074175.1566386790
     String setterName = "setFieldValue";
     Parameter[] parameters = {
         new Parameter(new ClassNode(String.class), "fieldName"),
         new Parameter(new ClassNode(Object.class), "value")
     };
-    if (prefix != null) {
-      setterName = "set" + ASTUtils.upperCaseFirstLetter(prefix) + "Value";
-    }
 
     // Make sure the method doesn't exist already
     if (ASTUtils.methodExists(classNode, setterName, parameters)) {
@@ -225,9 +167,6 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
     argumentListExpression.addExpression(new VariableExpression("this"));
     argumentListExpression.addExpression(new VariableExpression("fieldName"));
     argumentListExpression.addExpression(new VariableExpression("value"));
-    if (prefix != null) {
-      argumentListExpression.addExpression(new ConstantExpression(prefix));
-    }
 
     PropertyExpression instanceExpression = new PropertyExpression(
         new ClassExpression(new ClassNode("org.simplemes.eframe.custom.ExtensibleFieldHelper", Modifier.PUBLIC, null)),
@@ -271,6 +210,144 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
         fieldNode.addAnnotation(new AnnotationNode(new ClassNode(io.micronaut.data.annotation.Transient.class)));
       }
     }
+  }
+
+  /**
+   * Adds a FieldHolderMapInterface field to the domain class to hold the Map that fronts the JSON text
+   * holder field.  This mostly delegates to the ExtensibleFieldHelper class.
+   * This is a transient field that is not persisted directly.
+   *
+   * @param fieldName  The name of the holder field.
+   * @param classNode  The node for the class itself.
+   * @param sourceUnit The source unit being processed.
+   */
+  private void addFieldHolderMap(String fieldName, ClassNode classNode, SourceUnit sourceUnit) {
+    List<ASTNode> list = ASTUtils.addField(fieldName + "Map", BaseFieldHolderMap.class,
+        Modifier.PUBLIC | Modifier.TRANSIENT, false, null, classNode, sourceUnit);
+    for (ASTNode n : list) {
+      if (n instanceof FieldNode) {
+        // Make it transient
+        FieldNode fieldNode = (FieldNode) n;
+        fieldNode.addAnnotation(new AnnotationNode(new ClassNode(io.micronaut.data.annotation.Transient.class)));
+        addJsonProperty((FieldNode) n, "_" + fieldName, sourceUnit);
+      }
+    }
+    addMapGetter(fieldName, classNode, sourceUnit);
+  }
+
+  /**
+   * Adds the Map getter to the annotated class.  This delegates to the ExtensibleFieldHelper.
+   *
+   * @param fieldName  The name of the holder field.
+   * @param classNode  The class to add the method to.
+   * @param sourceUnit The compiler source unit being processed (used to errors).
+   */
+  private void addMapGetter(String fieldName, ClassNode classNode, SourceUnit sourceUnit) {
+    String getterName = "get" + ASTUtils.upperCaseFirstLetter(fieldName) + "Map";
+    Parameter[] parameters = {};
+
+    // Make sure the method doesn't exist already
+    if (ASTUtils.methodExists(classNode, getterName, parameters)) {
+      sourceUnit.getErrorCollector().addError(new SimpleMessage(getterName + "() already exists in " + classNode, sourceUnit));
+      return;
+    }
+
+    ArgumentListExpression argumentListExpression = new ArgumentListExpression();
+    argumentListExpression.addExpression(new VariableExpression("this"));
+
+    PropertyExpression instanceExpression = new PropertyExpression(
+        new ClassExpression(new ClassNode("org.simplemes.eframe.custom.ExtensibleFieldHelper", Modifier.PUBLIC, null)),
+        "instance");
+
+    MethodCallExpression method = new MethodCallExpression(
+        instanceExpression,
+        "getExtensibleFieldMap", argumentListExpression);
+    BlockStatement methodBody = new BlockStatement(new Statement[]{new ExpressionStatement(method)}, new VariableScope());
+
+    classNode.addMethod(getterName,
+        Modifier.PUBLIC,
+        ClassHelper.make(BaseFieldHolderMap.class),
+        parameters,
+        null, methodBody);
+  }
+
+  /**
+   * Adds the fields hold Text getter to the annotated class.  This delegates to the ExtensibleFieldHelper.
+   * This is used to intercept the normal getter when the text field value is needed (e.g. for DB save()).
+   *
+   * @param fieldName  The name of the holder field.
+   * @param classNode  The class to add the method to.
+   * @param sourceUnit The compiler source unit being processed (used to errors).
+   */
+  private void addFieldHolderGetter(String fieldName, ClassNode classNode, SourceUnit sourceUnit) {
+    String getterName = "get" + ASTUtils.upperCaseFirstLetter(fieldName);
+    Parameter[] parameters = {};
+
+    // Make sure the method doesn't exist already
+    if (ASTUtils.methodExists(classNode, getterName, parameters)) {
+      sourceUnit.getErrorCollector().addError(new SimpleMessage(getterName + "() already exists in " + classNode, sourceUnit));
+      return;
+    }
+
+    ArgumentListExpression argumentListExpression = new ArgumentListExpression();
+    argumentListExpression.addExpression(new VariableExpression("this"));
+    argumentListExpression.addExpression(new ConstantExpression(fieldName));
+
+    PropertyExpression instanceExpression = new PropertyExpression(
+        new ClassExpression(new ClassNode("org.simplemes.eframe.custom.ExtensibleFieldHelper", Modifier.PUBLIC, null)),
+        "instance");
+
+    MethodCallExpression method = new MethodCallExpression(
+        instanceExpression,
+        "getExtensibleFieldsText", argumentListExpression);
+    BlockStatement methodBody = new BlockStatement(new Statement[]{new ExpressionStatement(method)}, new VariableScope());
+
+    classNode.addMethod(getterName,
+        Modifier.PUBLIC,
+        ClassHelper.make(String.class),
+        parameters,
+        null, methodBody);
+  }
+
+  /**
+   * Adds the fields hold Text setter to the annotated class.  This delegates to the ExtensibleFieldHelper.
+   * This is used to intercept the normal setter when the text field value is set (e.g. for DB retrieves).
+   *
+   * @param fieldName  The name of the holder field.
+   * @param classNode  The class to add the method to.
+   * @param sourceUnit The compiler source unit being processed (used to errors).
+   */
+  private void addFieldHolderSetter(String fieldName, ClassNode classNode, SourceUnit sourceUnit) {
+    String setterName = "set" + ASTUtils.upperCaseFirstLetter(fieldName);
+    Parameter[] parameters = {
+        new Parameter(new ClassNode(String.class), "value")
+    };
+
+    // Make sure the method doesn't exist already
+    if (ASTUtils.methodExists(classNode, setterName, parameters)) {
+      sourceUnit.getErrorCollector().addError(new SimpleMessage(setterName + "() already exists in " + classNode, sourceUnit));
+      return;
+    }
+
+    ArgumentListExpression argumentListExpression = new ArgumentListExpression();
+    argumentListExpression.addExpression(new VariableExpression("this"));
+    argumentListExpression.addExpression(new ConstantExpression(fieldName));
+    argumentListExpression.addExpression(new VariableExpression("value"));
+
+    PropertyExpression instanceExpression = new PropertyExpression(
+        new ClassExpression(new ClassNode("org.simplemes.eframe.custom.ExtensibleFieldHelper", Modifier.PUBLIC, null)),
+        "instance");
+
+    MethodCallExpression method = new MethodCallExpression(
+        instanceExpression,
+        "setExtensibleFieldsText", argumentListExpression);
+    BlockStatement methodBody = new BlockStatement(new Statement[]{new ExpressionStatement(method)}, new VariableScope());
+
+    classNode.addMethod(setterName,
+        Modifier.PUBLIC,
+        ClassHelper.VOID_TYPE,
+        parameters,
+        null, methodBody);
   }
 
   /**

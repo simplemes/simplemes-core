@@ -35,11 +35,11 @@ class ConfigurableTypeDomainFormatSpec extends BaseSpecification {
 
     when: 'a record with the Configurable Type is saved'
     def rma = new RMA(rma: 'ABC', rmaType: flexType)
-    rma.setRmaTypeValue('Field1', 'XYZZY')
+    rma.setFieldValue('Field1', 'XYZZY')
     rma.save()
 
     then: 'the fields values are pulled from storage'
-    rma.getRmaTypeValue('Field1') == 'XYZZY'
+    rma.getFieldValue('Field1') == 'XYZZY'
   }
 
   @Rollback

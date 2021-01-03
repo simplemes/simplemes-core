@@ -60,8 +60,8 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
       "order": "$order.order",
       "component": "CPU",
       "assemblyData": "$flexType.flexType",
-      "assemblyData_FIELD1": "ACME-101",
-      "assemblyData_FIELD2": "ACME-102"
+      "FIELD1": "ACME-101",
+      "FIELD2": "ACME-102"
     }
     """
 
@@ -79,8 +79,8 @@ class OrderAssyControllerSpec extends BaseAPISpecification {
     OrderAssembledComponent.withTransaction {
       def comp2 = OrderAssembledComponent.findByUuid(orderAssembledComponent.uuid)
       assert comp2.order == order
-      assert comp2.getAssemblyDataValue('FIELD1') == 'ACME-101'
-      assert comp2.getAssemblyDataValue('FIELD2') == 'ACME-102'
+      assert comp2.getFieldValue('FIELD1') == 'ACME-101'
+      assert comp2.getFieldValue('FIELD2') == 'ACME-102'
       true
     }
   }

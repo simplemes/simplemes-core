@@ -6,12 +6,14 @@ package org.simplemes.eframe.data.format
 
 
 import org.simplemes.eframe.data.CustomFieldDefinition
+import org.simplemes.eframe.data.SimpleFieldDefinition
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.annotation.Rollback
 import sample.domain.Order
 import sample.domain.OrderLine
+import sample.domain.SampleParent
 
 /**
  * Tests.
@@ -92,12 +94,12 @@ class CustomCustomChildListFieldFormatSpec extends BaseSpecification {
                                                     type: List, referenceType: OrderLine)
 
     and: 'the records for the parent and child list'
-    def order = null
+    Order order = null
     Order.withTransaction {
       def orders = DataGenerator.generate {
         domain Order
       }
-      order = orders[0]
+      order = orders[0] as Order
       DataGenerator.generate {
         domain OrderLine
         values order: order, sequence: 0, product: 'PRODUCT-$i', qty: 1.2
@@ -106,10 +108,10 @@ class CustomCustomChildListFieldFormatSpec extends BaseSpecification {
 
     when: 'the values are read via the format and changed in a different transaction'
     Order.withTransaction {
-      def list = (List) CustomChildListFieldFormat.instance.readList(order, fieldDefinition)
+      def list = (List) CustomChildListFieldFormat.instance.readList(order as DomainEntityInterface, fieldDefinition)
 
       list[0].product = 'NEW PRODUCT'
-      CustomChildListFieldFormat.instance.saveList(order, list, fieldDefinition)
+      CustomChildListFieldFormat.instance.saveList(order as DomainEntityInterface, list, fieldDefinition)
     }
 
     then: 'the DB list contains the value'
@@ -119,6 +121,40 @@ class CustomCustomChildListFieldFormatSpec extends BaseSpecification {
       assert list2[0].product == 'NEW PRODUCT'
       true
     }
+  }
+
+  @Rollback
+  def "verify that the formatCustomListForJSON method creates the proper JSON"() {
+    given: 'a domain object reference and field definition'
+    def sampleParent1 = new SampleParent(name: 'ABC1').save()
+    def sampleParent2 = new SampleParent(name: 'ABC2').save()
+    def fieldDefinition = new SimpleFieldDefinition(format: CustomChildListFieldFormat.instance, type: SampleParent)
+
+    when: 'the values are formatted for JSON'
+    def list = (List) CustomChildListFieldFormat.instance.formatCustomListForJSON([sampleParent1, sampleParent2], fieldDefinition)
+
+    then: 'the list contains the values'
+    list.size() == 2
+    list[0] == sampleParent1.uuid.toString()
+    list[1] == sampleParent2.uuid.toString()
+  }
+
+  @Rollback
+  def "verify that the parseJSONForCustomList method creates the proper records"() {
+    given: 'a domain object reference and field definition'
+    def sampleParent1 = new SampleParent(name: 'ABC1').save()
+    def sampleParent2 = new SampleParent(name: 'ABC2').save()
+    def fieldDefinition = new SimpleFieldDefinition(format: CustomChildListFieldFormat.instance,
+                                                    type: SampleParent, referenceType: SampleParent)
+
+    when: 'the values are formatted for JSON'
+    def list = (List) CustomChildListFieldFormat.instance.parseJSONForCustomList([sampleParent1.uuid.toString(), sampleParent2.uuid.toString()],
+                                                                                 fieldDefinition)
+
+    then: 'the list contains the values'
+    list.size() == 2
+    list[0] == sampleParent1
+    list[1] == sampleParent2
   }
 
 }

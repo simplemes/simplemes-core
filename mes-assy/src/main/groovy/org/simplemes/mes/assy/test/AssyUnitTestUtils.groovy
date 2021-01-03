@@ -181,7 +181,7 @@ class AssyUnitTestUtils extends MESUnitTestUtils {
         }
         def assemblyDataValues = options.assemblyDataValues
         assemblyDataValues?.each() { key, value ->
-          orderAssembledComponent.setAssemblyDataValue(key, value)
+          orderAssembledComponent.setFieldValue(key, value)
         }
         //println "orderAssembledComponent = $orderAssembledComponent"
         order.assembledComponents << orderAssembledComponent

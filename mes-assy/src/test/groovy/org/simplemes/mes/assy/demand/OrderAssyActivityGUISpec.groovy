@@ -161,7 +161,7 @@ class OrderAssyActivityGUISpec extends BaseDashboardSpecification {
     orderAssembledComponent.component.product == 'MOTHERBOARD'
     orderAssembledComponent.bomSequence == 20
     orderAssembledComponent.qty == 1.2
-    orderAssembledComponent.getAssemblyDataValue('FIELD1') == 'XYZZY'
+    orderAssembledComponent.getFieldValue('FIELD1') == 'XYZZY'
 
     and: 'the list is updated'
     waitFor {

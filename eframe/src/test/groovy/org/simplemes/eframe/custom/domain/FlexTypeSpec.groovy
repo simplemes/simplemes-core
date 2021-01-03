@@ -178,10 +178,10 @@ class FlexTypeSpec extends BaseSpecification {
 
     then: 'the fields are correct'
     fieldDefinitions.size() == 2
-    fieldDefinitions[0].name == 'rmaType_NUMBER'
+    fieldDefinitions[0].name == 'NUMBER'
     fieldDefinitions[0].configTypeFieldName == 'rmaType'
     fieldDefinitions[0].format == BigDecimalFieldFormat.instance
-    fieldDefinitions[1].name == 'rmaType_Boolean'
+    fieldDefinitions[1].name == 'Boolean'
     fieldDefinitions[1].configTypeFieldName == 'rmaType'
     fieldDefinitions[1].format == BooleanFieldFormat.instance
   }
