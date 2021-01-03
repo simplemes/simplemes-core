@@ -426,6 +426,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd><div class="block">The failure listener for Spock specifications.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseFailureListener.html#BaseFailureListener()" title="Constructor in BaseFailureListener">BaseFailureListener()</a></span> - Constructor in <a href="org/simplemes/eframe/test/BaseFailureListener.html">BaseFailureListener</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/BaseFieldHolderMap.html" title="Class in org.simplemes.eframe.custom">BaseFieldHolderMap</a></span> - Class in <a href="./org/simplemes/eframe/custom/package-summary.html">org.simplemes.eframe.custom</a>
+</dt><dd><div class="block">A simple parent class for the Groovy FieldHolderMap class.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseGUISpecification.html" title="Class in org.simplemes.eframe.test">BaseGUISpecification</a></span> - Class in <a href="./org/simplemes/eframe/test/package-summary.html">org.simplemes.eframe.test</a>
 </dt><dd><div class="block">This is the common Spock specification base class for GUI/GEB tests.
  </div></dd>
@@ -1070,6 +1072,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Clears the current statistics.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/search/service/SearchService.html#clearStatistics()" title="Method in SearchService">clearStatistics()</a></span> - Method in <a href="org/simplemes/eframe/search/service/SearchService.html">SearchService</a>
 </dt><dd> <div class="block">Clears the current statistics.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/archive/FileArchiver.html#clearUUIDs(List<DomainEntityInterface>)" title="Method in FileArchiver">clearUUIDs(List&lt;DomainEntityInterface&gt;)</a></span> - Method in <a href="org/simplemes/eframe/archive/FileArchiver.html">FileArchiver</a>
+</dt><dd> <div class="block">Clears the UUIDs from the given records.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/page/ButtonModule.html#click()" title="Method in ButtonModule">click()</a></span> - Method in <a href="org/simplemes/eframe/test/page/ButtonModule.html">ButtonModule</a>
 </dt><dd> <div class="block">Clicks the button.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseGUISpecification.html#clickButton(java.lang.String)" title="Method in BaseGUISpecification">clickButton(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/test/BaseGUISpecification.html">BaseGUISpecification</a>
@@ -1270,6 +1274,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Converts the given value to a format suitable for JSON storage.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/controller/ControllerUtils.html#convertToMap(io.micronaut.http.HttpParameters)" title="Method in ControllerUtils">convertToMap(io.micronaut.http.HttpParameters)</a></span> - Method in <a href="org/simplemes/eframe/controller/ControllerUtils.html">ControllerUtils</a>
 </dt><dd> <div class="block">Converts the given http request parameters to a true map.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#convertToOriginalType(java.lang.Object, java.lang.Object)" title="Method in FieldHolderMap">convertToOriginalType(java.lang.Object, java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block">Converts the given value to the correct type, if it is a String and has a defined element type in the _config.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/FileUtils.html#convertToOSPath(java.lang.String)" title="Method in FileUtils">convertToOSPath(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/misc/FileUtils.html">FileUtils</a>
 </dt><dd> <div class="block">Converts the OS-independent path to OS-dependent.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/page/AbstractCreateOrEditPage.html#convertToPath(java.lang.Object)" title="Method in AbstractCreateOrEditPage">convertToPath(java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/test/page/AbstractCreateOrEditPage.html">AbstractCreateOrEditPage</a>
@@ -1342,10 +1348,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd><div class="block">A field definition for custom fields created by user or addition modules.
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/data/CustomFieldDefinition.html#CustomFieldDefinition()" title="Constructor in CustomFieldDefinition">CustomFieldDefinition()</a></span> - Constructor in <a href="org/simplemes/eframe/data/CustomFieldDefinition.html">CustomFieldDefinition</a>
-</dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/json/CustomFieldSerializer.html" title="Class in org.simplemes.eframe.json">CustomFieldSerializer</a></span> - Class in <a href="./org/simplemes/eframe/json/package-summary.html">org.simplemes.eframe.json</a>
-</dt><dd><div class="block">A serializer for writing custom fields to a JSON output.</div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/json/CustomFieldSerializer.html#CustomFieldSerializer()" title="Constructor in CustomFieldSerializer">CustomFieldSerializer()</a></span> - Constructor in <a href="org/simplemes/eframe/json/CustomFieldSerializer.html">CustomFieldSerializer</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="sample/domain/CustomOrderComponent.html" title="Class in sample.domain">CustomOrderComponent</a></span> - Class in <a href="./sample/domain/package-summary.html">sample.domain</a>
 </dt><dd><div class="block">A sample domain class that simulates an custom order component record.
@@ -1589,6 +1591,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Converts an object key to a domain object.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/preference/PreferenceDeserializer.html#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext)" title="Method in PreferenceDeserializer">deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext)</a></span> - Method in <a href="org/simplemes/eframe/preference/PreferenceDeserializer.html">PreferenceDeserializer</a>
 </dt><dd> <div class="block">Method to deserialize a Preference from JSON.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/json/DeserializationProblemHandler.html#deserializeConfigurableTypes(java.lang.String, org.simplemes.eframe.data.FieldDefinitions, java.lang.Object, com.fasterxml.jackson.core.JsonParser)" title="Method in DeserializationProblemHandler">deserializeConfigurableTypes(java.lang.String, org.simplemes.eframe.data.FieldDefinitions, java.lang.Object, com.fasterxml.jackson.core.JsonParser)</a></span> - Method in <a href="org/simplemes/eframe/json/DeserializationProblemHandler.html">DeserializationProblemHandler</a>
+</dt><dd> <div class="block">Will de-serialize a field from a configurable type.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/json/DeserializationProblemHandler.html#deserializeCustomList(java.lang.Object, com.fasterxml.jackson.databind.JsonNode, org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in DeserializationProblemHandler">deserializeCustomList(java.lang.Object, com.fasterxml.jackson.databind.JsonNode, org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/json/DeserializationProblemHandler.html">DeserializationProblemHandler</a>
 </dt><dd> <div class="block">Deserialize the given custom child list for the given bean node.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/dashboard/controller/DashboardConfigController.html#detailsDialog(java.security.Principal)" title="Method in DashboardConfigController">detailsDialog(java.security.Principal)</a></span> - Method in <a href="org/simplemes/eframe/dashboard/controller/DashboardConfigController.html">DashboardConfigController</a>
@@ -1658,6 +1662,8 @@ if (location.href.indexOf('is-external=true') == -1) {
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/preference/DialogPreference.html#DialogPreference()" title="Constructor in DialogPreference">DialogPreference()</a></span> - Constructor in <a href="org/simplemes/eframe/preference/DialogPreference.html">DialogPreference</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#dirty" title="Field in FieldHolderMap">dirty</a></span> - Field in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block">True if the Map has changed since the last time the JSON was generated (toJSON()).</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/system/DisabledStatus.html" title="Class in org.simplemes.eframe.system">DisabledStatus</a></span> - Class in <a href="./org/simplemes/eframe/system/package-summary.html">org.simplemes.eframe.system</a>
 </dt><dd><div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/system/DisabledStatus.html#DisabledStatus()" title="Constructor in DisabledStatus">DisabledStatus()</a></span> - Constructor in <a href="org/simplemes/eframe/system/DisabledStatus.html">DisabledStatus</a>
@@ -2185,6 +2191,14 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd><div class="block">The FieldGUIExtension repository base interface.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/domain/FieldGUIExtensionRepository.html#FieldGUIExtensionRepository()" title="Constructor in FieldGUIExtensionRepository">FieldGUIExtensionRepository()</a></span> - Constructor in <a href="org/simplemes/eframe/custom/domain/FieldGUIExtensionRepository.html">FieldGUIExtensionRepository</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html" title="Class in org.simplemes.eframe.custom">FieldHolderMap</a></span> - Class in <a href="./org/simplemes/eframe/custom/package-summary.html">org.simplemes.eframe.custom</a>
+</dt><dd><div class="block">Defines the Map used to hide the ExtensibleFieldHolder extensions to the Map logic.
+ </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#FieldHolderMap()" title="Constructor in FieldHolderMap">FieldHolderMap()</a></span> - Constructor in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMapInterface.html" title="Interface in org.simplemes.eframe.custom">FieldHolderMapInterface</a></span> - Interface in <a href="./org/simplemes/eframe/custom/package-summary.html">org.simplemes.eframe.custom</a>
+</dt><dd><div class="block">Defines the Map interface used to hide the ExtensibleFieldHolder extensions to the Map logic.
+ </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/gui/FieldInsertAdjustment.html" title="Class in org.simplemes.eframe.custom.gui">FieldInsertAdjustment</a></span> - Class in <a href="./org/simplemes/eframe/custom/gui/package-summary.html">org.simplemes.eframe.custom.gui</a>
 </dt><dd><div class="block">This holds a single Insert adjustment to the field order for a GUI.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/gui/FieldInsertAdjustment.html#FieldInsertAdjustment()" title="Constructor in FieldInsertAdjustment">FieldInsertAdjustment()</a></span> - Constructor in <a href="org/simplemes/eframe/custom/gui/FieldInsertAdjustment.html">FieldInsertAdjustment</a>
@@ -2435,6 +2449,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/SQLUtils.html#fixInClauseArray(java.lang.String, java.lang.Object)" title="Method in SQLUtils">fixInClauseArray(java.lang.String, java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/domain/SQLUtils.html">SQLUtils</a>
 </dt><dd> <div class="block">Fixes the IN(?) </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#fixSpecialCasesForPut(java.lang.Object, java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in FieldHolderMap">fixSpecialCasesForPut(java.lang.Object, java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block">Fixes some special cases that need to be stored in non-standard format (e.g. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/CRUDGUITester.html#fixValueToForceFailure(java.lang.String, java.lang.Object)" title="Method in CRUDGUITester">fixValueToForceFailure(java.lang.String, java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/test/CRUDGUITester.html">CRUDGUITester</a>
 </dt><dd> <div class="block">Fixes the value to intentionally trigger a test error.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/controller/StandardModelAndView.html#FLASH_DETAILS" title="Field in StandardModelAndView">FLASH_DETAILS</a></span> - Field in <a href="org/simplemes/eframe/controller/StandardModelAndView.html">StandardModelAndView</a>
@@ -2505,6 +2521,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Formats the given value for display as a string into the correct type for a field.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html#formatConfigurableTypeValues(java.lang.Object, java.util.Map)" title="Method in ExtensibleFieldHelper">formatConfigurableTypeValues(java.lang.Object, java.util.Map)</a></span> - Method in <a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html">ExtensibleFieldHelper</a>
 </dt><dd> <div class="block">Formats all of the Extensible Field name/value pairs for display.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/data/format/CustomChildListFieldFormat.html#formatCustomListForJSON(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in CustomChildListFieldFormat">formatCustomListForJSON(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/data/format/CustomChildListFieldFormat.html">CustomChildListFieldFormat</a>
+</dt><dd> <div class="block">Formats the given value for display as a string into the correct type for a field.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/date/DateUtils.html#formatDate(org.simplemes.eframe.date.DateOnly, java.util.Locale)" title="Method in DateUtils">formatDate(org.simplemes.eframe.date.DateOnly, java.util.Locale)</a></span> - Method in <a href="org/simplemes/eframe/date/DateUtils.html">DateUtils</a>
 </dt><dd> <div class="block">Formats the given DateOnly for GUI display.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/date/DateUtils.html#formatElapsedTime(long, java.util.Locale, java.lang.String)" title="Method in DateUtils">formatElapsedTime(long, java.util.Locale, java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/date/DateUtils.html">DateUtils</a>
@@ -2580,6 +2598,8 @@ if (location.href.indexOf('is-external=true') == -1) {
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/view/FreemarkerWrapper.html#FreemarkerWrapper()" title="Constructor in FreemarkerWrapper">FreemarkerWrapper()</a></span> - Constructor in <a href="org/simplemes/eframe/web/view/FreemarkerWrapper.html">FreemarkerWrapper</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#fromJSON(java.lang.String)" title="Method in FieldHolderMap">fromJSON(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block">Parses the given JSON text into this Map.  </div></dd>
 </dl>
 
     
@@ -2591,6 +2611,9 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Returns the final UI text and adds the closing text values as needed.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/DataGenerator.html#generate(groovy.lang.Closure)" title="Method in DataGenerator">generate(groovy.lang.Closure)</a></span> - Method in <a href="org/simplemes/eframe/test/DataGenerator.html">DataGenerator</a>
 </dt><dd> <div class="block">Triggers the generation of the data.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#get(java.lang.Object)" title="Method in FieldHolderMap">get(java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block">Returns the value to which the specified key is mapped,
+ or <CODE>null</CODE> if this map contains no mapping for the key.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/MockPreferenceHolder.html#get(java.lang.String)" title="Method in MockPreferenceHolder">get(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/test/MockPreferenceHolder.html">MockPreferenceHolder</a>
 </dt><dd> <div class="block">Returns the appropriate bean implementation, if needed.</div></dd>
 <dt><span class="strong"><a href="sample/domain/OrderRepository.html#get(java.util.UUID)" title="Method in OrderRepository">get(java.util.UUID)</a></span> - Method in <a href="sample/domain/OrderRepository.html">OrderRepository</a>
@@ -2691,6 +2714,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Finds the complex custom fields holder for given domain object.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html#getComplexHolder(java.lang.Object)" title="Method in ExtensibleFieldHelper">getComplexHolder(java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html">ExtensibleFieldHelper</a>
 </dt><dd> <div class="block">Gets the complex field holder.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#getConfigMap()" title="Method in FieldHolderMap">getConfigMap()</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block">Returns the master config Map from this map.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/view/EFrameFreemarkerFactory.html#getConfiguration(io.micronaut.views.freemarker.FreemarkerViewsRendererConfiguration, io.micronaut.views.ViewsConfiguration, io.micronaut.context.env.Environment)" title="Method in EFrameFreemarkerFactory">getConfiguration(io.micronaut.views.freemarker.FreemarkerViewsRendererConfiguration, io.micronaut.views.ViewsConfiguration, io.micronaut.context.env.Environment)</a></span> - Method in <a href="org/simplemes/eframe/web/view/EFrameFreemarkerFactory.html">EFrameFreemarkerFactory</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/controller/ControllerUtils.html#getControllerByName(java.lang.String)" title="Method in ControllerUtils">getControllerByName(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/controller/ControllerUtils.html">ControllerUtils</a>
@@ -2789,6 +2814,12 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Returns the list of encoded field types that data layer will support.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/search/MockRestClient.MockResponse.html#getEntity()" title="Method in MockRestClient.MockResponse">getEntity()</a></span> - Method in <a href="org/simplemes/eframe/search/MockRestClient.MockResponse.html">MockRestClient.MockResponse</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html#getExtensibleFieldMap(java.lang.Object)" title="Method in ExtensibleFieldHelper">getExtensibleFieldMap(java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html">ExtensibleFieldHelper</a>
+</dt><dd> <div class="block">Gets the field holder front-end Map.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html#getExtensibleFieldMapNoParse(java.lang.Object)" title="Method in ExtensibleFieldHelper">getExtensibleFieldMapNoParse(java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html">ExtensibleFieldHelper</a>
+</dt><dd> <div class="block">Gets the field holder front-end Map.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html#getExtensibleFieldsText(java.lang.Object, java.lang.String)" title="Method in ExtensibleFieldHelper">getExtensibleFieldsText(java.lang.Object, java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html">ExtensibleFieldHelper</a>
+</dt><dd> <div class="block">Gets the field holder text.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/service/ExtensionService.html#getExtensionConfiguration(java.lang.Class)" title="Method in ExtensionService">getExtensionConfiguration(java.lang.Class)</a></span> - Method in <a href="org/simplemes/eframe/custom/service/ExtensionService.html">ExtensionService</a>
 </dt><dd> <div class="block">Finds the current extension configuration for a given domain. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/reports/HyperlinkProducerFactory.html#getExtensions(Class<T>)" title="Method in HyperlinkProducerFactory">getExtensions(Class&lt;T&gt;)</a></span> - Method in <a href="org/simplemes/eframe/reports/HyperlinkProducerFactory.html">HyperlinkProducerFactory</a>
@@ -2807,6 +2838,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/domain/FieldInterface.html#getFieldLabel()" title="Method in FieldInterface">getFieldLabel()</a></span> - Method in <a href="org/simplemes/eframe/custom/domain/FieldInterface.html">FieldInterface</a>
 </dt><dd> <div class="block">The label to use when displaying or prompting for this field value.
  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#getFieldMap(java.lang.String, boolean)" title="Method in FieldHolderMap">getFieldMap(java.lang.String, boolean)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block">Returns the field config Map for the given field.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/PersistentProperty.html#getFieldMaxLength(java.lang.reflect.Field)" title="Method in PersistentProperty">getFieldMaxLength(java.lang.reflect.Field)</a></span> - Method in <a href="org/simplemes/eframe/domain/PersistentProperty.html">PersistentProperty</a>
 </dt><dd> <div class="block">Finds the max length of the given field, from the<DL><DT><B>Column:</B></DT><DD>and</DD></DL><DL><DT><B>MappedProperty:</B></DT><DD>settings.</DD></DL> </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/domain/FieldInterface.html#getFieldName()" title="Method in FieldInterface">getFieldName()</a></span> - Method in <a href="org/simplemes/eframe/custom/domain/FieldInterface.html">FieldInterface</a>
@@ -3067,6 +3100,9 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Determines the 'open' top-level entries in the tree from the user preferences.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/security/AutoRefreshTokenFilter.html#getOrder()" title="Method in AutoRefreshTokenFilter">getOrder()</a></span> - Method in <a href="org/simplemes/eframe/security/AutoRefreshTokenFilter.html">AutoRefreshTokenFilter</a>
 </dt><dd> <div class="block">  <DL><DT><B>Returns:</B></DT><DD>The order of the object.</DD></DL></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#getOriginalFieldDefinition(java.lang.Object)" title="Method in FieldHolderMap">getOriginalFieldDefinition(java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block">Gets the original field definition of the given field (if found) from the internal config map.
+ </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/system/controller/LoggingController.html#getOtherLevels(java.lang.String)" title="Method in LoggingController">getOtherLevels(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/system/controller/LoggingController.html">LoggingController</a>
 </dt><dd> <div class="block">Determines the 'other' logger levels the user cares about.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/webix/widget/ListWidget.html#getPageSize()" title="Method in ListWidget">getPageSize()</a></span> - Method in <a href="org/simplemes/eframe/web/ui/webix/widget/ListWidget.html">ListWidget</a>
@@ -3411,8 +3447,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/simplemes/eframe/preference/event/TreeStateChanged.html#handleEvent(java.util.Map)" title="Method in TreeStateChanged">handleEvent(java.util.Map)</a></span> - Method in <a href="org/simplemes/eframe/preference/event/TreeStateChanged.html">TreeStateChanged</a>
 </dt><dd> <div class="block">Handles the list column resized event.
  </div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html#handleMethodMissing(java.lang.Object, java.lang.String, java.lang.Object)" title="Method in ExtensibleFieldHelper">handleMethodMissing(java.lang.Object, java.lang.String, java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html">ExtensibleFieldHelper</a>
-</dt><dd> <div class="block">Handles the methodMissing calls for the given object.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/search/SearchHelper.html#handlePersistenceChange(org.simplemes.eframe.domain.annotation.DomainEntityInterface)" title="Method in SearchHelper">handlePersistenceChange(org.simplemes.eframe.domain.annotation.DomainEntityInterface)</a></span> - Method in <a href="org/simplemes/eframe/search/SearchHelper.html">SearchHelper</a>
 </dt><dd> <div class="block">Handles the persistence update/create for domains.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/search/SearchHelper.html#handlePersistenceDelete(org.simplemes.eframe.domain.annotation.DomainEntityInterface)" title="Method in SearchHelper">handlePersistenceDelete(org.simplemes.eframe.domain.annotation.DomainEntityInterface)</a></span> - Method in <a href="org/simplemes/eframe/search/SearchHelper.html">SearchHelper</a>
@@ -3632,6 +3666,10 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Returns true if this choice is the default choice in the list.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/MockFile.html#isDirectory()" title="Method in MockFile">isDirectory()</a></span> - Method in <a href="org/simplemes/eframe/test/MockFile.html">MockFile</a>
 </dt><dd> <div class="block">Mock method to simulate a real directory, when needed.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#isDirty()" title="Method in FieldHolderMap">isDirty()</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMapInterface.html#isDirty()" title="Method in FieldHolderMapInterface">isDirty()</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMapInterface.html">FieldHolderMapInterface</a>
+</dt><dd> <div class="block">Returns true if the Map has changed since the last time the JSON was generated (toJSON()).</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/NameUtils.html#isDisplayFieldNameForJSON(java.lang.String)" title="Method in NameUtils">isDisplayFieldNameForJSON(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/misc/NameUtils.html">NameUtils</a>
 </dt><dd> <div class="block">Determines if the given field name is a display field name (e.g. </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/webix/widget/DateFieldWidget.html#isDisplayingTime()" title="Method in DateFieldWidget">isDisplayingTime()</a></span> - Method in <a href="org/simplemes/eframe/web/ui/webix/widget/DateFieldWidget.html">DateFieldWidget</a>
@@ -3674,6 +3712,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Determines if the given string is a legal Java identifier.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/TypeUtils.html#isMock(java.lang.Object)" title="Method in TypeUtils">isMock(java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/misc/TypeUtils.html">TypeUtils</a>
 </dt><dd> <div class="block">Determines if the given object is a mock.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#isNativeJSONType(org.simplemes.eframe.data.format.FieldFormatInterface)" title="Method in FieldHolderMap">isNativeJSONType(org.simplemes.eframe.data.format.FieldFormatInterface)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block">Determines if the given format is one of the native JSON types that is supported.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/PersistentProperty.html#isNullable()" title="Method in PersistentProperty">isNullable()</a></span> - Method in <a href="org/simplemes/eframe/domain/PersistentProperty.html">PersistentProperty</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/NumberUtils.html#isNumber(java.lang.String)" title="Method in NumberUtils">isNumber(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/misc/NumberUtils.html">NumberUtils</a>
@@ -3690,6 +3730,11 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">If true, then this field is a reference the parent entity.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/PersistentProperty.html#isParentReference" title="Field in PersistentProperty">isParentReference</a></span> - Field in <a href="org/simplemes/eframe/domain/PersistentProperty.html">PersistentProperty</a>
 </dt><dd> <div class="block">Defines if this property is parent reference in a child for a parent/child relationship.
+ </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#isParsingFromJSON()" title="Method in FieldHolderMap">isParsingFromJSON()</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMapInterface.html#isParsingFromJSON()" title="Method in FieldHolderMapInterface">isParsingFromJSON()</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMapInterface.html">FieldHolderMapInterface</a>
+</dt><dd> <div class="block">Returns True if the Map has changed since the last time the JSON was generated (toJSON()).
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/reports/Report.html#isPdf()" title="Method in Report">isPdf()</a></span> - Method in <a href="org/simplemes/eframe/reports/Report.html">Report</a>
 </dt><dd> <div class="block">Returns true if the report output in PDF is requested.</div></dd>
@@ -4499,10 +4544,15 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/simplemes/eframe/data/format/FieldFormatInterface.html#parseForm(java.lang.String, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in FieldFormatInterface">parseForm(java.lang.String, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/data/format/FieldFormatInterface.html">FieldFormatInterface</a>
 </dt><dd> <div class="block">Parses the given value from a string using the form submission format.
  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/data/format/CustomChildListFieldFormat.html#parseJSONForCustomList(List<String>, org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in CustomChildListFieldFormat">parseJSONForCustomList(List&lt;String&gt;, org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/data/format/CustomChildListFieldFormat.html">CustomChildListFieldFormat</a>
+</dt><dd> <div class="block">Parses for custom JSON Child records.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/TextUtils.html#parseNameValuePairs(java.lang.String)" title="Method in TextUtils">parseNameValuePairs(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/misc/TextUtils.html">TextUtils</a>
 </dt><dd> <div class="block">Parses the name/value pairs in a string into a Map.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/NumberUtils.html#parseNumber(java.lang.String, java.util.Locale)" title="Method in NumberUtils">parseNumber(java.lang.String, java.util.Locale)</a></span> - Method in <a href="org/simplemes/eframe/misc/NumberUtils.html">NumberUtils</a>
 </dt><dd> <div class="block">Parses a human-readable form of the given Number with the specified locale.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#parsingFromJSON" title="Field in FieldHolderMap">parsingFromJSON</a></span> - Field in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block">True if the Map has changed since the last time the JSON was generated (toJSON()).
+ </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/search/PassAllJacksonFilter.html" title="Class in org.simplemes.eframe.search">PassAllJacksonFilter</a></span> - Class in <a href="./org/simplemes/eframe/search/package-summary.html">org.simplemes.eframe.search</a>
 </dt><dd><div class="block">Defines a filter that allows all fields to be serialized.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/search/PassAllJacksonFilter.html#PassAllJacksonFilter()" title="Constructor in PassAllJacksonFilter">PassAllJacksonFilter()</a></span> - Constructor in <a href="org/simplemes/eframe/search/PassAllJacksonFilter.html">PassAllJacksonFilter</a>
@@ -4625,6 +4675,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Handles the propertyMissing (setter) calls for the given object.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html#propertyMissingSetter(java.lang.Object, java.lang.String, java.lang.Object)" title="Method in ExtensibleFieldHelper">propertyMissingSetter(java.lang.Object, java.lang.String, java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html">ExtensibleFieldHelper</a>
 </dt><dd> <div class="block">Handles the propertyMissing calls for the given object.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#put(java.lang.Object, java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in FieldHolderMap">put(java.lang.Object, java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block">Puts the given value, with the given field definition.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/ShortTermCacheMap.html#put(java.lang.Object, java.lang.Object)" title="Method in ShortTermCacheMap">put(java.lang.Object, java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/misc/ShortTermCacheMap.html">ShortTermCacheMap</a>
 </dt><dd> <div class="block">Associates the specified value with the specified key in this map.
  </div></dd>
@@ -5120,8 +5172,6 @@ if (location.href.indexOf('is-external=true') == -1) {
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/json/ComplexCustomFieldSerializer.html#serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)" title="Method in ComplexCustomFieldSerializer">serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)</a></span> - Method in <a href="org/simplemes/eframe/json/ComplexCustomFieldSerializer.html">ComplexCustomFieldSerializer</a>
 </dt><dd> <div class="block">Serializes the domain record reference using the short string (e.g. primary key field).</div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/json/CustomFieldSerializer.html#serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)" title="Method in CustomFieldSerializer">serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)</a></span> - Method in <a href="org/simplemes/eframe/json/CustomFieldSerializer.html">CustomFieldSerializer</a>
-</dt><dd> <div class="block">Serializes the domain record's custom fields.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/json/DateOnlySerializer.html#serialize(org.simplemes.eframe.date.DateOnly, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)" title="Method in DateOnlySerializer">serialize(org.simplemes.eframe.date.DateOnly, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)</a></span> - Method in <a href="org/simplemes/eframe/json/DateOnlySerializer.html">DateOnlySerializer</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/json/EncodedTypeSerializer.html#serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)" title="Method in EncodedTypeSerializer">serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)</a></span> - Method in <a href="org/simplemes/eframe/json/EncodedTypeSerializer.html">EncodedTypeSerializer</a>
@@ -5175,12 +5225,18 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/data/SimpleFieldDefinition.html#setDefaultValues()" title="Method in SimpleFieldDefinition">setDefaultValues()</a></span> - Method in <a href="org/simplemes/eframe/data/SimpleFieldDefinition.html">SimpleFieldDefinition</a>
 </dt><dd> <div class="block">Sets the default values (e.g. for the label), if none are provided.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#setDirty(boolean)" title="Method in FieldHolderMap">setDirty(boolean)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMapInterface.html#setDirty(boolean)" title="Method in FieldHolderMapInterface">setDirty(boolean)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMapInterface.html">FieldHolderMapInterface</a>
+</dt><dd> <div class="block">Sets the dirty flag.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/annotation/DomainEntityHelper.html#setDomainSettingValue(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String, java.lang.Object)" title="Method in DomainEntityHelper">setDomainSettingValue(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String, java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/domain/annotation/DomainEntityHelper.html">DomainEntityHelper</a>
 </dt><dd> <div class="block">Sets a value in the domain settings in the given object.   </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/preference/PreferenceHolder.html#setElement(java.lang.String)" title="Method in PreferenceHolder">setElement(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/preference/PreferenceHolder.html">PreferenceHolder</a>
 </dt><dd> <div class="block">Returns the list of element names.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/search/SearchDomainSettings.html#setExclude(List<String>)" title="Method in SearchDomainSettings">setExclude(List&lt;String&gt;)</a></span> - Method in <a href="org/simplemes/eframe/search/SearchDomainSettings.html">SearchDomainSettings</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html#setExtensibleFieldsText(java.lang.Object, java.lang.String, java.lang.String)" title="Method in ExtensibleFieldHelper">setExtensibleFieldsText(java.lang.Object, java.lang.String, java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html">ExtensibleFieldHelper</a>
+</dt><dd> <div class="block">Sets the field holder text.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/PersistentProperty.html#setField(java.lang.reflect.Field)" title="Method in PersistentProperty">setField(java.lang.reflect.Field)</a></span> - Method in <a href="org/simplemes/eframe/domain/PersistentProperty.html">PersistentProperty</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/domain/FieldInterface.html#setFieldFormat(org.simplemes.eframe.data.format.BasicFieldFormat)" title="Method in FieldInterface">setFieldFormat(org.simplemes.eframe.data.format.BasicFieldFormat)</a></span> - Method in <a href="org/simplemes/eframe/custom/domain/FieldInterface.html">FieldInterface</a>
@@ -5237,6 +5293,11 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/PersistentProperty.html#setParentReference(boolean)" title="Method in PersistentProperty">setParentReference(boolean)</a></span> - Method in <a href="org/simplemes/eframe/domain/PersistentProperty.html">PersistentProperty</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#setParsingFromJSON(boolean)" title="Method in FieldHolderMap">setParsingFromJSON(boolean)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMapInterface.html#setParsingFromJSON(boolean)" title="Method in FieldHolderMapInterface">setParsingFromJSON(boolean)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMapInterface.html">FieldHolderMapInterface</a>
+</dt><dd> <div class="block">RSet to True if the Map has changed since the last time the JSON was generated (toJSON()).
+ </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/MockPreferenceHolder.html#setPreference(org.simplemes.eframe.preference.PreferenceSettingInterface)" title="Method in MockPreferenceHolder">setPreference(org.simplemes.eframe.preference.PreferenceSettingInterface)</a></span> - Method in <a href="org/simplemes/eframe/test/MockPreferenceHolder.html">MockPreferenceHolder</a>
 </dt><dd> <div class="block">Internal method to set/update the preference.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/preference/PreferenceHolder.html#setPreference(org.simplemes.eframe.preference.PreferenceSettingInterface)" title="Method in PreferenceHolder">setPreference(org.simplemes.eframe.preference.PreferenceSettingInterface)</a></span> - Method in <a href="org/simplemes/eframe/preference/PreferenceHolder.html">PreferenceHolder</a>
@@ -5273,6 +5334,8 @@ if (location.href.indexOf('is-external=true') == -1) {
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/PersistentProperty.html#setType(java.lang.Class)" title="Method in PersistentProperty">setType(java.lang.Class)</a></span> - Method in <a href="org/simplemes/eframe/domain/PersistentProperty.html">PersistentProperty</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#setTypeInConfig(java.lang.Object, java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in FieldHolderMap">setTypeInConfig(java.lang.Object, java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block">Records the type in the config element, if needed for JSON deserialization.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseGUISpecification.html#setup()" title="Method in BaseGUISpecification">setup()</a></span> - Method in <a href="org/simplemes/eframe/test/BaseGUISpecification.html">BaseGUISpecification</a>
 </dt><dd> <div class="block">Initializes the GUI, if needed.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseSpecification.html#setup()" title="Method in BaseSpecification">setup()</a></span> - Method in <a href="org/simplemes/eframe/test/BaseSpecification.html">BaseSpecification</a>
@@ -5566,6 +5629,10 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Build human readable version of this object's full contents.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/task/TaskMenuFolder.html#toFullString(java.lang.Integer)" title="Method in TaskMenuFolder">toFullString(java.lang.Integer)</a></span> - Method in <a href="org/simplemes/eframe/web/task/TaskMenuFolder.html">TaskMenuFolder</a>
 </dt><dd> <div class="block">Build human readable version of this object's full contents.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#toJSON()" title="Method in FieldHolderMap">toJSON()</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block">Serializes this Map to JSON.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMapInterface.html#toJSON()" title="Method in FieldHolderMapInterface">toJSON()</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMapInterface.html">FieldHolderMapInterface</a>
+</dt><dd> <div class="block">Serializes this Map to JSON.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html#tokenConfiguration" title="Field in AutoRefreshAuthenticationFetcher">tokenConfiguration</a></span> - Field in <a href="org/simplemes/eframe/security/AutoRefreshAuthenticationFetcher.html">AutoRefreshAuthenticationFetcher</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/misc/NameUtils.html#toLegalIdentifier(java.lang.String)" title="Method in NameUtils">toLegalIdentifier(java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/misc/NameUtils.html">NameUtils</a>

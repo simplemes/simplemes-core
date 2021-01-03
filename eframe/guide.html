@@ -3190,12 +3190,6 @@ To avoid issues with the framework, you should use these settings:</p>
       <span class="comment">#baseline-version: 0.1</span>
       <span class="comment">#baseline-description: empty</span>
 <span class="head"><span class="head">---</span></span>
-<span class="key">jackson</span>:
-  <span class="key">serialization</span>:
-    <span class="key">indentOutput</span>: <span class="string"><span class="content">false</span></span>
-    <span class="key">useEqualityForObjectID</span>: <span class="string"><span class="content">true</span></span>
-
-<span class="head"><span class="head">---</span></span>
 <span class="key">assets</span>:
   <span class="key">mapping</span>: <span class="string"><span class="content">assets</span></span>
 
@@ -6890,7 +6884,7 @@ An example of the raw data stored in the database column is shown below.</p>
 <div class="title">JSON Format Configurable Type Storage</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json">{
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">fields</span><span class="delimiter">&quot;</span></span>: {
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">_fields</span><span class="delimiter">&quot;</span></span>: {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">retailerID</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ACME-101</span><span class="delimiter">&quot;</span></span>,
     <span class="key"><span class="delimiter">&quot;</span><span class="content">returnCode</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">DEFECTIVE</span><span class="delimiter">&quot;</span></span>
   }
@@ -6945,11 +6939,11 @@ type.  The
 <div class="title">Example Access to Configurable Type Values</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="groovy">  <span class="keyword">def</span> rma = <span class="keyword">new</span> RMA()
-  rma.setRmaTypeValue(<span class="string"><span class="delimiter">'</span><span class="content">address</span><span class="delimiter">'</span></span>,<span class="string"><span class="delimiter">'</span><span class="content">P.O. Box 8675309</span><span class="delimiter">'</span></span>)
+  rma.setFieldValue(<span class="string"><span class="delimiter">'</span><span class="content">address</span><span class="delimiter">'</span></span>,<span class="string"><span class="delimiter">'</span><span class="content">P.O. Box 8675309</span><span class="delimiter">'</span></span>)
 
   . . .
 
-  def lastName = rma.getRmaTypeValue(<span class="string"><span class="delimiter">'</span><span class="content">lastName</span><span class="delimiter">'</span></span>)</code></pre>
+  def lastName = rma.getFieldValue(<span class="string"><span class="delimiter">'</span><span class="content">lastName</span><span class="delimiter">'</span></span>)</code></pre>
 </div>
 </div>
 <div class="paragraph">
@@ -6963,7 +6957,7 @@ An example of the JSON format for an RMA is shown below:</p>
 <pre class="CodeRay highlight"><code data-lang="json">{
   <span class="key"><span class="delimiter">&quot;</span><span class="content">rma</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">R10102-23</span><span class="delimiter">&quot;</span></span>,
   <span class="key"><span class="delimiter">&quot;</span><span class="content">qty</span><span class="delimiter">&quot;</span></span>: <span class="float">12.2</span>,
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">fields</span><span class="delimiter">&quot;</span></span>: {
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">_fields</span><span class="delimiter">&quot;</span></span>: {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">retailerID</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ACME-101</span><span class="delimiter">&quot;</span></span>,
     <span class="key"><span class="delimiter">&quot;</span><span class="content">returnCode</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">DEFECTIVE</span><span class="delimiter">&quot;</span></span>
   }
@@ -12440,7 +12434,7 @@ can trigger controller actions or Javascript functions.  The menus can be nested
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="html"><span class="error">&lt;</span>@efForm id=&quot;addPanel&quot; dashboard=&quot;true&quot;<span class="error">&gt;</span>  <i class="conum" data-value="1"></i><b>(1)</b>
   <span class="error">&lt;</span>@efMenu id=&quot;configMenu&quot;<span class="error">&gt;</span>
-    <span class="error">&lt;</span>@efMenu key=&quot;customFields&quot;<span class="error">&gt;</span>  <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="error">&lt;</span>@efMenu key=&quot;customMenu&quot;<span class="error">&gt;</span>  <i class="conum" data-value="2"></i><b>(2)</b>
       <span class="error">&lt;</span>@efMenuItem key=&quot;addCustomField&quot; uri=&quot;/order/create&quot;/<span class="error">&gt;</span>     <i class="conum" data-value="3"></i><b>(3)</b>
       <span class="error">&lt;</span>@efMenuItem key=&quot;addPanel&quot; onClick=&quot;addPanel();&quot;/<span class="error">&gt;</span>  <i class="conum" data-value="4"></i><b>(4)</b>
       <span class="error">&lt;</span>@efMenuItem/<span class="error">&gt;</span>  <i class="conum" data-value="5"></i><b>(5)</b>
@@ -12458,8 +12452,8 @@ can trigger controller actions or Javascript functions.  The menus can be nested
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>First menu has sub-menu items and the label is <em>"menu.customFields.label"</em> and
-<em>"menu.customFields.tooltip"</em> (if defined).</td>
+<td>First menu has sub-menu items and the label is <em>"menu.customMenu.label"</em> and
+<em>"menu.customMenu.tooltip"</em> (if defined).</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -16253,7 +16247,7 @@ accessed like this:</p>
 <pre class="CodeRay highlight"><code data-lang="json">{
   <span class="key"><span class="delimiter">&quot;</span><span class="content">order</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">M10102-23</span><span class="delimiter">&quot;</span></span>,
   <span class="key"><span class="delimiter">&quot;</span><span class="content">qty</span><span class="delimiter">&quot;</span></span>: <span class="float">12.2</span>,
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">fields</span><span class="delimiter">&quot;</span></span>: {
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">_fields</span><span class="delimiter">&quot;</span></span>: {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">promiseDate</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2009-02-13T18:31:30.000-05:00</span><span class="delimiter">&quot;</span></span>,
     <span class="key"><span class="delimiter">&quot;</span><span class="content">caseColor</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">BLUE</span><span class="delimiter">&quot;</span></span>
   }
@@ -16290,7 +16284,7 @@ might look like this:</p>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The field <code>rmaType</code> will hold the reference to the appropriate flex type.  The acutal
+<td>The field <code>rmaType</code> will hold the reference to the appropriate flex type.  The actual
 values will be stored as described in <a href="#custom-field-storage">Custom Field Storage</a>.</td>
 </tr>
 <tr>
@@ -16308,7 +16302,7 @@ values will be stored as described in <a href="#custom-field-storage">Custom Fie
 <pre class="CodeRay highlight"><code data-lang="json">{
   <span class="key"><span class="delimiter">&quot;</span><span class="content">rma</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">R10102-23</span><span class="delimiter">&quot;</span></span>,
   <span class="key"><span class="delimiter">&quot;</span><span class="content">qty</span><span class="delimiter">&quot;</span></span>: <span class="float">12.2</span>,
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">fields</span><span class="delimiter">&quot;</span></span>: {                  <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">_fields</span><span class="delimiter">&quot;</span></span>: {                  <i class="conum" data-value="1"></i><b>(1)</b>
     <span class="key"><span class="delimiter">&quot;</span><span class="content">retailerID</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ACME-101</span><span class="delimiter">&quot;</span></span>,
     <span class="key"><span class="delimiter">&quot;</span><span class="content">returnCode</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">DEFECTIVE</span><span class="delimiter">&quot;</span></span>
   }
@@ -16321,6 +16315,20 @@ values will be stored as described in <a href="#custom-field-storage">Custom Fie
 <td><i class="conum" data-value="1"></i><b>1</b></td>
 <td>The fields are stored with the <a href="#custom-field-storage">Custom Field Storage</a> location
 (<code>fields</code> in this example).</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+<a href="#custom-child-list">Custom Child List</a> will use the API format described in
+      <a href="#custom-child-list-storage">Custom Child List Storage</a>.  This follows the normal JSON array format, but
+      the element is stored at the top-level, under the name of the custom field.
+</td>
 </tr>
 </table>
 </div>
@@ -17260,9 +17268,7 @@ of your application.  The features that are associated with custom fields includ
 <div class="paragraph">
 <p>These all use the common
 <a href="groovydoc/org/simplemes/eframe/custom/ExtensibleFieldHelper.html" target="_blank" rel="noopener">ExtensibleFieldHelper</a>
-<span class="icon link-blue"><i class="fa fa-share-square-o"></i></span> helper methods to access the field values.
-The <a href="#configurable-types">Configurable Types</a> and <a href="#flex-types">Flex Types</a> also create helper methods in the domain class
-(e.g. <code>setRmaTypeValue()</code>).</p>
+<span class="icon link-blue"><i class="fa fa-share-square-o"></i></span> helper methods to access the field values.</p>
 </div>
 <div class="imageblock">
 <div class="content">
@@ -17274,6 +17280,97 @@ The <a href="#configurable-types">Configurable Types</a> and <a href="#flex-type
 <p>All of these types of custom fields store the values in the JSON column <code>fields</code>
 in the domain record.  See &lt;&lt;&gt;&gt;
 The FieldExtension (user-defined and additions) are stored with the field name as-is.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="custom-field-internal-design"><a class="link" href="#custom-field-internal-design">Custom Field - Internal Design</a></h4>
+<div class="paragraph">
+<p>These custom fields are complex.  They can be huge with a large number of fields and
+large values.  Customers may log the data to the object without a pre-defined
+field definition (e.g. without a <a href="#flex-types">Flex Types</a> or <a href="#configurable-types">Configurable Types</a>).</p>
+</div>
+<div class="paragraph">
+<p>The user requirements are covered above in <a href="#design-decisions">Design Decisions</a>.  These user
+requirements force us to use this type of implementation:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>A Map front-end to hide the JSON text field from the application code.</p>
+</li>
+<li>
+<p>Added getters/setters to synchronize the Map with the text field.</p>
+</li>
+<li>
+<p>Dirty flags to indicate if the values are out of synch.  Reduces the number
+of times the JSON os serialized/deserialized.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The implementation uses
+<a href="groovydoc/org/simplemes/eframe/custom/FieldHolderMapInterface.html" target="_blank" rel="noopener">FieldHolderMapInterface</a>
+<span class="icon link-blue"><i class="fa fa-share-square-o"></i></span> and its Groovy implementation
+<a href="groovydoc/org/simplemes/eframe/custom/FieldHolderMap.html" target="_blank" rel="noopener">FieldHolderMap</a>
+<span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>.
+This Map works with the
+<a href="groovydoc/org/simplemes/eframe/custom/ExtensibleFieldHelper.html" target="_blank" rel="noopener">ExtensibleFieldHelper</a>
+<span class="icon link-blue"><i class="fa fa-share-square-o"></i></span> to synchronize the Map/Text with the database
+actions (save/retrieve).</p>
+</div>
+<div class="paragraph">
+<p>To support this, the structure and related methods are shown below.</p>
+</div>
+<div class="imageblock">
+<div class="content">
+<img src="images/customFieldMapDesign.png" alt="customFieldMapDesign" width="990" height="252">
+</div>
+<div class="title">Figure 35. Custom Field Design</div>
+</div>
+<div class="paragraph">
+<p>The Map is the primary interface used by
+<a href="groovydoc/org/simplemes/eframe/custom/ExtensibleFieldHelper.html" target="_blank" rel="noopener">ExtensibleFieldHelper</a>
+<span class="icon link-blue"><i class="fa fa-share-square-o"></i></span> to put/get values from the custom fields.
+This Map is synchronized with the JSON text fields using the <code>set/getFields()</code> methods
+and with the <code>to/fromJSON()</code> methods.</p>
+</div>
+<div class="paragraph">
+<p>The basic life cycle of these objects is orchestrated by the
+<a href="groovydoc/org/simplemes/eframe/custom/ExtensibleFieldHelper.html" target="_blank" rel="noopener">ExtensibleFieldHelper</a>
+<span class="icon link-blue"><i class="fa fa-share-square-o"></i></span> class:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The domain object is created.  All fields are null.</p>
+</li>
+<li>
+<p>A method calls <code>put()</code> to store a custom value into the Map.  The Map is marked as 'dirty'.</p>
+</li>
+<li>
+<p>Some method then calls <code>save()</code> on the domain.</p>
+</li>
+<li>
+<p>The <code>getFields()</code> method is called to get the string value for the database.</p>
+</li>
+<li>
+<p>This calls the <code>toJSON()</code> method.  The record is saved.</p>
+</li>
+<li>
+<p>Later, the record is read from the database.</p>
+</li>
+<li>
+<p>The <code>setFields()</code> method is called.  This sets the Map to null, indicating that
+the JSON needs to be deserialized.</p>
+</li>
+<li>
+<p>A method then calls the <code>get()</code> to get the value.  If the Map is null, then
+the JSON is deserialized into the Map.  The value is returned.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>After this, updates to the Map will force the JSON to be re-created before the next save.</p>
 </div>
 </div>
 <div class="sect3">
@@ -17315,6 +17412,60 @@ the holder for the values. By convention, this field is almost always named <cod
 <p>Other data added programmatically or via APIs.</p>
 </li>
 </ul>
+</div>
+<div class="paragraph">
+<p>Custom child lists are handled somewhat differently.</p>
+</div>
+<div class="sect4">
+<h5 id="custom-child-list-storage"><a class="link" href="#custom-child-list-storage">Custom Child List Storage</a></h5>
+<div class="paragraph">
+<p>When the custom field is a  <a href="#custom-child-list">Custom Child List</a> (<em>CustomChildListFieldFormat</em>),
+the data is not stored in the holder as JSON.  Instead, it is stored in a custom
+database table.  This means the JSON format is different:</p>
+</div>
+<div class="listingblock">
+<div class="title">JSON Format for Custom Child List Storage</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">rma</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">R10102-23</span><span class="delimiter">&quot;</span></span>,         <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">qty</span><span class="delimiter">&quot;</span></span>: <span class="float">12.2</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">customComponents</span><span class="delimiter">&quot;</span></span>: [       <i class="conum" data-value="2"></i><b>(2)</b>
+     { <span class="key"><span class="delimiter">&quot;</span><span class="content">product</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">BIKE-27</span><span class="delimiter">&quot;</span></span>, <span class="key"><span class="delimiter">&quot;</span><span class="content">qty</span><span class="delimiter">&quot;</span></span>: <span class="float">1.0</span> },
+     { <span class="key"><span class="delimiter">&quot;</span><span class="content">product</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">WHEEL</span><span class="delimiter">&quot;</span></span>, <span class="key"><span class="delimiter">&quot;</span><span class="content">qty</span><span class="delimiter">&quot;</span></span>: <span class="float">2.0</span> }
+    ]
+  }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The normal domain fields.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The list of custom child records.  Stored in another database table.
+In the domain object itself, these custom records are stored in a
+special Map.   The values can be accessed with the normal custom field
+getters/setters: such as <code>getCustomComponents()</code>.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This is a fairly complex feature that is only supported in a limited number of scenarios
+as described in <a href="#custom-child-list">Custom Child List</a>.  It is very useful for <a href="#module-additions">Module Additions</a> so
+that a module can add a list of custom values for a core domain object.</p>
+</div>
+<div class="paragraph">
+<p>Why put these in another element in the JSON?  Because the Jackson JSON mapper automatically
+creates/parses the JSON for the standard <a href="#custom-field-storage">Custom Field Storage</a> mechanism.  To use
+the same storage mechanism, we would have to write a lot of complex logic to
+extract and insert the custom child lists.</p>
+</div>
+<div class="paragraph">
+<p>This is not ideal, but it is the best compromise.</p>
+</div>
 </div>
 <div class="sect4">
 <h5 id="custom-field-history"><a class="link" href="#custom-field-history">Custom Field History</a></h5>
@@ -17366,7 +17517,7 @@ Tracking historical values can produce a lot of data, so only enable this
 <pre class="CodeRay highlight"><code data-lang="json">{
   <span class="key"><span class="delimiter">&quot;</span><span class="content">rma</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">R10102-23</span><span class="delimiter">&quot;</span></span>,          <i class="conum" data-value="1"></i><b>(1)</b>
   <span class="key"><span class="delimiter">&quot;</span><span class="content">qty</span><span class="delimiter">&quot;</span></span>: <span class="float">12.2</span>,
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">fields</span><span class="delimiter">&quot;</span></span>: {
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">_fields</span><span class="delimiter">&quot;</span></span>: {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">weight</span><span class="delimiter">&quot;</span></span>: <span class="float">2.3</span>,             <i class="conum" data-value="2"></i><b>(2)</b>
     <span class="key"><span class="delimiter">&quot;</span><span class="content">_weight_config</span><span class="delimiter">&quot;</span></span>: {        <i class="conum" data-value="3"></i><b>(3)</b>
       <span class="key"><span class="delimiter">&quot;</span><span class="content">tracking</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ALL_VALUES</span><span class="delimiter">&quot;</span></span>
@@ -17485,7 +17636,8 @@ the custom values.</td>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
 <td>The suggested field name is <code>fields</code>.  This is a short name for use in complex
-SQL queries on the custom fields.</td>
+SQL queries on the custom fields.  Also, this field name will be used for
+JSON access to the custom fields (e.g. a sub-object <em>"_fields"</em> will be used).</td>
 </tr>
 </table>
 </div>
@@ -17754,21 +17906,20 @@ domain class.  Various portions of the framework support these custom lists of o
 <p>JSON Parsing and Formatting.</p>
 </li>
 <li>
-<p>CRUD actions in the controller base classes
-(e.g. <a href="groovydoc/org/simplemes/eframe/controller/BaseCrudController.html" target="_blank" rel="noopener">BaseCrudController</a>
-<span class="icon link-blue"><i class="fa fa-share-square-o"></i></span> )</p>
+<p>CRUD actions in the controller base classes <a href="#controller-base-classes">Controller Base Classes</a>.</p>
 </li>
 <li>
 <p>The GUI tags <a href="#efdefinitionlist">efDefinitionList</a>, <a href="#efshow">efShow</a> , <a href="#efcreate">efCreate</a> and <a href="#efedit">efEdit</a>.</p>
 </li>
 <li>
-<p>Support for auto save/delete from core domain objects
-(see <a href="groovydoc/org/simplemes/eframe/custom/EframePersistenceListener.html" target="_blank" rel="noopener">EframePersistenceListener</a>
-<span class="icon link-blue"><i class="fa fa-share-square"></i></span>).</p>
+<p>Support for save/delete from core <a href="#domain-entities">Domain Entities</a>.</p>
 </li>
 <li>
 <p>Normal custom <code>getFieldValue()</code> and <code>setFieldValue()</code> access.  The <code>getFieldValue()</code> method will
 perform a load of the values.</p>
+</li>
+<li>
+<p>The specific get/set method for the custom field (e.g. <code>getComponents()</code>).</p>
 </li>
 </ul>
 </div>
@@ -17859,6 +18010,19 @@ Order definition pages.</p>
 </div>
 <div class="paragraph">
 <p>When testing using GUI/GEB testing, remember to delete your custom child classes first.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+See <a href="#custom-child-list-storage">Custom Child List Storage</a> for details on how these are stored
+      and how the API works.
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect3">
@@ -18025,7 +18189,7 @@ diagram below for the example customizations above:</p>
 <div class="content">
 <img src="images/fieldOrderCustomization.png" alt="fieldOrderCustomization" width="880" height="280">
 </div>
-<div class="title">Figure 35. Data Field Layout</div>
+<div class="title">Figure 36. Data Field Layout</div>
 </div>
 <div class="paragraph">
 <p>The FieldGUIExtension is created for the domain class to be customized (User in this case).
@@ -18043,7 +18207,7 @@ relationships are shown below:</p>
 <div class="content">
 <img src="images/FieldGUIExtension.png" alt="FieldGUIExtension" width="649" height="250">
 </div>
-<div class="title">Figure 36. Class Relationships - FieldGUIExtension</div>
+<div class="title">Figure 37. Class Relationships - FieldGUIExtension</div>
 </div>
 <div class="paragraph">
 <p>Other GUI field placement actions are allowed:</p>
@@ -18105,7 +18269,7 @@ Flex types allow you to define this order type and make the data fields dependen
 <div class="content">
 <img src="images/guis/flexTypeCreate.png" alt="flexTypeCreate" width="75%">
 </div>
-<div class="title">Figure 37. Flex Type Create</div>
+<div class="title">Figure 38. Flex Type Create</div>
 </div>
 <div class="sect3">
 <h4 id="flex-type-field-names-uppercase-or-lowercase"><a class="link" href="#flex-type-field-names-uppercase-or-lowercase">Flex Type Field Names - Uppercase or Lowercase?</a></h4>
@@ -18218,7 +18382,7 @@ are defined as Micronaut beans. This is handled by the
 <div class="content">
 <img src="images/extensionPointDesign.png" alt="extensionPointDesign" width="890" height="252">
 </div>
-<div class="title">Figure 38. Custom Field Design</div>
+<div class="title">Figure 39. Custom Field Design</div>
 </div>
 <div class="paragraph">
 <p>The core <code>release()</code> method is marked as an <em>@ExtensionPoint</em>.  There are two additions
@@ -19724,7 +19888,7 @@ to the repository.  If you use the repository method directly, then this is not 
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-12-21 17:05:36 UTC
+Last updated 2021-01-03 18:09:44 UTC
 </div>
 </div>
 <style>

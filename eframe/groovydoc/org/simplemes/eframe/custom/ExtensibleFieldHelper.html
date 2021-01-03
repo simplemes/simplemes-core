@@ -157,8 +157,8 @@ extends java.lang.Object</pre>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>java.lang.Object</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#fieldValue">fieldValue</a></code><br></td>
+                            <td class="colFirst"><code><strong>java.lang.String</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#extensibleFieldsText">extensibleFieldsText</a></code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -284,8 +284,20 @@ extends java.lang.Object</pre>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#getFieldValue(java.lang.Object, java.lang.String, java.lang.String)">getFieldValue</a></strong>(java.lang.Object object, java.lang.String fieldName, java.lang.String prefix)</code><br>Gets the value in a custom field holder.  </td>
+                            <td class="colLast"><code><a href='../../../../org/simplemes/eframe/custom/FieldHolderMap.html'>FieldHolderMap</a></code></td>
+                            <td class="colLast"><code><strong><a href="#getExtensibleFieldMap(java.lang.Object)">getExtensibleFieldMap</a></strong>(java.lang.Object object)</code><br>Gets the field holder front-end Map.  </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;<a href='../../../../org/simplemes/eframe/custom/FieldHolderMap.html'>FieldHolderMap</a></code></td>
+                            <td class="colLast"><code><strong><a href="#getExtensibleFieldMapNoParse(java.lang.Object)">getExtensibleFieldMapNoParse</a></strong>(java.lang.Object object)</code><br>Gets the field holder front-end Map.  </td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.lang.String</code></td>
+                            <td class="colLast"><code><strong><a href="#getExtensibleFieldsText(java.lang.Object, java.lang.String)">getExtensibleFieldsText</a></strong>(java.lang.Object object, java.lang.String fieldName)</code><br>Gets the field holder text.  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -302,35 +314,29 @@ extends java.lang.Object</pre>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>java.lang.Object</code></td>
-                            <td class="colLast"><code><strong><a href="#handleMethodMissing(java.lang.Object, java.lang.String, java.lang.Object)">handleMethodMissing</a></strong>(java.lang.Object object, java.lang.String name, java.lang.Object[] args)</code><br>Handles the methodMissing calls for the given object.  </td>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
                             <td class="colLast"><code><strong><a href="#hasExtensibleFields(java.lang.Class)">hasExtensibleFields</a></strong>(java.lang.Class clazz)</code><br>Returns true if the given class has extensible fields (<DL><DT><B>ExtensibleFields:</B></DT><DD>annotation).</DD></DL> </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#propertyMissingGetter(java.lang.Object, java.lang.String)">propertyMissingGetter</a></strong>(java.lang.Object object, java.lang.String name)</code><br>Handles the propertyMissing (setter) calls for the given object.  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#propertyMissingSetter(java.lang.Object, java.lang.String, java.lang.Object)">propertyMissingSetter</a></strong>(java.lang.Object object, java.lang.String name, java.lang.Object value)</code><br>Handles the propertyMissing calls for the given object.  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setFieldValue(java.lang.Object, java.lang.String, java.lang.Object, java.lang.String)">setFieldValue</a></strong>(java.lang.Object object, java.lang.String fieldName, java.lang.Object value, java.lang.String prefix)</code><br>Sets the value in a custom field holder.  </td>
+                            <td class="colLast"><code><strong><a href="#setExtensibleFieldsText(java.lang.Object, java.lang.String, java.lang.String)">setExtensibleFieldsText</a></strong>(java.lang.Object object, java.lang.String fieldName, java.lang.String value)</code><br>Sets the field holder text.  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#setFieldValue(java.lang.Object, java.lang.String, java.lang.Object)">setFieldValue</a></strong>(java.lang.Object object, java.lang.String fieldName, java.lang.Object value)</code><br>Sets the value in a custom field holder.  </td>
@@ -396,10 +402,10 @@ extends java.lang.Object</pre>
                             </li>
                         </ul>
                     
-                        <a name="fieldValue"><!-- --></a>
+                        <a name="extensibleFieldsText"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.Object <strong>fieldValue</strong></h4>
+                                <h4>java.lang.String <strong>extensibleFieldsText</strong></h4>
                                 <p></p>
                             </li>
                         </ul>
@@ -568,11 +574,31 @@ extends java.lang.Object</pre>
                             </li>
                         </ul>
                     
-                        <a name="getFieldValue(java.lang.Object, java.lang.String, java.lang.String)"><!-- --></a>
+                        <a name="getExtensibleFieldMap(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>java.lang.Object <strong>getFieldValue</strong>(java.lang.Object object, java.lang.String fieldName, java.lang.String prefix)</h4>
-                                <p> Gets the value in a custom field holder.  Uses JSON as the internal format. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to get the custom value from.</DD><DD><code>fieldName</code> -  The name of the field.</DD><DD><code>prefix</code> -  The field prefix to use for the getter call (e.g. prefix='rmaType' will use a prefix of 'rmaType_').</DD></DL><DL><DT><B>Returns:</B></DT><DD>The value.</DD></DL></p>
+                                <h4>@groovy.transform.CompileStatic
+<a href='../../../../org/simplemes/eframe/custom/FieldHolderMap.html'>FieldHolderMap</a> <strong>getExtensibleFieldMap</strong>(java.lang.Object object)</h4>
+                                <p> Gets the field holder front-end Map.  Creates one if needed and will deserialize from the field holder JSON text
+ if needed. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to get the field holder Map from.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The map.  Never null.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getExtensibleFieldMapNoParse(java.lang.Object)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@groovy.transform.CompileStatic
+protected&nbsp;<a href='../../../../org/simplemes/eframe/custom/FieldHolderMap.html'>FieldHolderMap</a> <strong>getExtensibleFieldMapNoParse</strong>(java.lang.Object object)</h4>
+                                <p> Gets the field holder front-end Map.  Does not attempt to create it or re-parse the text value. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to get the field holder Map from.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The map.  Can be null.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getExtensibleFieldsText(java.lang.Object, java.lang.String)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@groovy.transform.CompileStatic
+java.lang.String <strong>getExtensibleFieldsText</strong>(java.lang.Object object, java.lang.String fieldName)</h4>
+                                <p> Gets the field holder text.  Will serialize the field holder front-end Map if it is dirty (contains new data). <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to get the field holder text from.</DD><DD><code>fieldName</code> -  The name of the custom field holder.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The JSON value.  Can be null.</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -591,14 +617,6 @@ extends java.lang.Object</pre>
                                 <p> Gets the value from the short-term cache in the domain object.  This is a short-term cache (<1 second)
  to avoid repeated generation of expensive objects.
  If the domain does not support Extensible Fields, then this does nothing. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to store the cache in.</DD><DD><code>cacheKey</code> -  The key to store the value in the short term cache.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The value from the cache.</DD></DL></p>
-                            </li>
-                        </ul>
-                    
-                        <a name="handleMethodMissing(java.lang.Object, java.lang.String, java.lang.Object)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>java.lang.Object <strong>handleMethodMissing</strong>(java.lang.Object object, java.lang.String name, java.lang.Object[] args)</h4>
-                                <p> Handles the methodMissing calls for the given object.  Checks the custom fields for the given field name. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to check for custom fields.</DD><DD><code>name</code> -  The custom field name.</DD><DD><code>args</code> -  The arguments.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The result.</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -626,18 +644,21 @@ extends java.lang.Object</pre>
                             </li>
                         </ul>
                     
-                        <a name="setFieldValue(java.lang.Object, java.lang.String, java.lang.Object, java.lang.String)"><!-- --></a>
+                        <a name="setExtensibleFieldsText(java.lang.Object, java.lang.String, java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>setFieldValue</strong>(java.lang.Object object, java.lang.String fieldName, java.lang.Object value, java.lang.String prefix)</h4>
-                                <p> Sets the value in a custom field holder.  Uses JSON as the internal format. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to store the value in.</DD><DD><code>fieldName</code> -  The name of the field.</DD><DD><code>value</code> -  The value.</DD><DD><code>prefix</code> -  The field prefix to use for the getter (e.g. prefix='rmaType' will use a prefix of 'rmaType_').</DD></DL></p>
+                                <h4>@groovy.transform.CompileStatic
+void <strong>setExtensibleFieldsText</strong>(java.lang.Object object, java.lang.String fieldName, java.lang.String value)</h4>
+                                <p> Sets the field holder text.  Will null out the field holder front-end Map to force a new deserialize on
+ first use of the map. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to set the field holder text on.</DD><DD><code>fieldName</code> -  The name of the custom field holder.</DD><DD><code>value</code> -  The value.</DD></DL></p>
                             </li>
                         </ul>
                     
                         <a name="setFieldValue(java.lang.Object, java.lang.String, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>void <strong>setFieldValue</strong>(java.lang.Object object, java.lang.String fieldName, java.lang.Object value)</h4>
+                                <h4>@groovy.transform.CompileStatic
+void <strong>setFieldValue</strong>(java.lang.Object object, java.lang.String fieldName, java.lang.Object value)</h4>
                                 <p> Sets the value in a custom field holder.  Uses JSON as the internal format. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to store the value in.</DD><DD><code>fieldName</code> -  The name of the field.</DD><DD><code>value</code> -  The value.</DD></DL></p>
                             </li>
                         </ul>

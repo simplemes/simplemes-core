@@ -112,7 +112,7 @@ extends <a href='../../../../../org/simplemes/eframe/data/format/BasicFieldForma
 implements <a href='../../../../../org/simplemes/eframe/data/format/ListFieldLoaderInterface.html'>ListFieldLoaderInterface</a></pre>
 
     <p> Defines the format for a field that is list of custom child records.  These are domain records that are loosely
- coupled with the parent object (via a record ID).</p>
+ coupled with the parent object (via a record ID). These records are stored in a separate, custom database table.</p>
 
           </li>
     </ul>
@@ -239,14 +239,26 @@ implements <a href='../../../../../org/simplemes/eframe/data/format/ListFieldLoa
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getId()">getId</a></strong>()</code><br>The internal ID for the format.  </td>
+                            <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#formatCustomListForJSON(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)">formatCustomListForJSON</a></strong>(java.lang.Object value, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Formats the given value for display as a string into the correct type for a field.</td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.lang.String</code></td>
+                            <td class="colLast"><code><strong><a href="#getId()">getId</a></strong>()</code><br>The internal ID for the format.  </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#parse(java.lang.String, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)">parse</a></strong>(java.lang.String value, java.util.Locale locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Parses the given value from a string into the correct type for a field.  </td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#parseJSONForCustomList(List, org.simplemes.eframe.data.FieldDefinitionInterface)">parseJSONForCustomList</a></strong>(java.util.List&lt;java.lang.String&gt; values, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Parses for custom JSON Child records.  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -399,6 +411,14 @@ java.lang.String <strong>format</strong>(java.lang.Object value, java.util.Local
                             </li>
                         </ul>
                     
+                        <a name="formatCustomListForJSON(java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.util.List&lt;java.lang.String&gt; <strong>formatCustomListForJSON</strong>(java.lang.Object value, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
+                                <p> Formats the given value for display as a string into the correct type for a field. <DL><DT><B>Parameters:</B></DT><DD><code>value</code> -  The object to format for display.  Null is allowed.  Empty strings are treated as null.</DD><DD><code>fieldDefinition</code> -  The field definition used to define this field (optional).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The formatted uuid String values in a list.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
                         <a name="getId()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -415,6 +435,14 @@ java.lang.String <strong>getId</strong>()</h4>
 java.lang.Object <strong>parse</strong>(java.lang.String value, java.util.Locale locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
                                 <p> Parses the given value from a string into the correct type for a field.  This method will fail with various format exceptions
  if the string is not valid for the type. <DL><DT><B>Parameters:</B></DT><DD><code>value</code> -  The string encoded value.  Null is allowed.  Empty strings are treated as null.</DD><DD><code>locale</code> -  The locale to parse from (default: The request locale).</DD><DD><code>fieldDefinition</code> -  The field definition used to define this field (optional, provided additional details such as valid values).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The value.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="parseJSONForCustomList(List, org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.util.List <strong>parseJSONForCustomList</strong>(java.util.List&lt;java.lang.String&gt; values, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
+                                <p> Parses for custom JSON Child records.  Uses the UUID list to re-read the list. <DL><DT><B>Parameters:</B></DT><DD><code>value</code> -  The List of string encoded uuid values.  Null is allowed.  Empty strings are treated as null.</DD><DD><code>fieldDefinition</code> -  The field definition used to define this field (optional, provided additional details such as valid values).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of values.</DD></DL></p>
                             </li>
                         </ul>
                     

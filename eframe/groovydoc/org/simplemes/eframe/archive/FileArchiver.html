@@ -259,59 +259,65 @@ implements <a href='../../../../org/simplemes/eframe/archive/ArchiverInterface.h
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#clearUUIDs(List)">clearUUIDs</a></strong>(java.util.List&lt;DomainEntityInterface&gt; records)</code><br>Clears the UUIDs from the given records.  </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#close()">close</a></strong>()</code><br>Closes the current archive and removes the archived records from the database.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#determineArchiveDirectory()">determineArchiveDirectory</a></strong>()</code><br>Determines the archive main directory from the configuration element: org.simplemes.eframe.archive.top.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.List&lt;java.lang.String&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#findAllArchives()">findAllArchives</a></strong>()</code><br>Gets a list of archive file references that exist in the active archive area (folder).</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.util.List&lt;java.lang.String&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#findAllArchives(java.io.File, java.util.List)">findAllArchives</a></strong>(java.io.File folder, java.util.List list)</code><br>Gets a list of archive file references that exist in the active archive area (folder).</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#makeArchiveRefBase(java.lang.Object)">makeArchiveRefBase</a></strong>(java.lang.Object domainObject)</code><br>Build the archive basic reference name.  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#makePathFromReference(java.lang.String)">makePathFromReference</a></strong>(java.lang.String ref)</code><br>Creates a archive file's path name using the given reference.  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#makeReferenceFromPath(java.lang.String)">makeReferenceFromPath</a></strong>(java.lang.String path)</code><br>Creates a archive file's reference from the given path name.  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#setupFile(java.lang.Object)">setupFile</a></strong>(java.lang.Object domainObject)</code><br>Builds an archiver for a given domain object.  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object[]</code></td>
                             <td class="colLast"><code><strong><a href="#unarchive(java.lang.String, java.lang.Boolean)">unarchive</a></strong>(java.lang.String ref, java.lang.Boolean save)</code><br>Unarchive the given file and save all of the domain objects in the archive.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#verifyArchive(java.lang.String)">verifyArchive</a></strong>(java.lang.String ref)</code><br>Verify that the given archive file was written correctly and contains valid XML.  </td>
@@ -469,6 +475,15 @@ void <strong>archive</strong>(java.lang.Object domainObject)</h4>
                                 <h4>@java.lang.Override
 void <strong>cancel</strong>()</h4>
                                 <p> Cancels the archive action.  Removes the archive (file) and does not delete the object archived.</p>
+                            </li>
+                        </ul>
+                    
+                        <a name="clearUUIDs(List)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>void <strong>clearUUIDs</strong>(java.util.List&lt;DomainEntityInterface&gt; records)</h4>
+                                <p> Clears the UUIDs from the given records.  This prevents attempts to update when old records are unarchived.
+ Also clears the UUIDs for all child records. <DL><DT><B>Parameters:</B></DT><DD><code>records</code> -  The records.</DD></DL></p>
                             </li>
                         </ul>
                     

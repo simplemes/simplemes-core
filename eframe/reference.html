@@ -4021,7 +4021,7 @@ is normally set by the controller (see below).</td>
      . . .
 
   def defaultRMA = <span class="keyword">new</span> RMA(<span class="key">rmaType</span>: flexType) <i class="conum" data-value="1"></i><b>(1)</b>
-  defaultRMA.setRmaTypeValue(<span class="string"><span class="delimiter">'</span><span class="content">returnDate</span><span class="delimiter">'</span></span>, <span class="keyword">new</span> <span class="predefined-type">Date</span>())
+  defaultRMA.setFieldValue(<span class="string"><span class="delimiter">'</span><span class="content">returnDate</span><span class="delimiter">'</span></span>, <span class="keyword">new</span> <span class="predefined-type">Date</span>())
 
   modelAndView[<span class="string"><span class="delimiter">'</span><span class="content">rmaDataModel</span><span class="delimiter">'</span></span>] = defaultRMA   <i class="conum" data-value="2"></i><b>(2)</b>
 
@@ -5031,7 +5031,7 @@ dynamically loaded from <em>.ftl</em> pages.</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="html"><span class="error">&lt;</span>@efForm id=&quot;addPanel&quot; dashboard=&quot;true&quot;<span class="error">&gt;</span>  <i class="conum" data-value="1"></i><b>(1)</b>
   <span class="error">&lt;</span>@efMenu id=&quot;configMenu&quot;<span class="error">&gt;</span>
-    <span class="error">&lt;</span>@efMenu key=&quot;customFields&quot;<span class="error">&gt;</span>  <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="error">&lt;</span>@efMenu key=&quot;customMenu&quot;<span class="error">&gt;</span>  <i class="conum" data-value="2"></i><b>(2)</b>
       <span class="error">&lt;</span>@efMenuItem key=&quot;addCustomField&quot; uri=&quot;/order/create&quot;/<span class="error">&gt;</span>     <i class="conum" data-value="3"></i><b>(3)</b>
       <span class="error">&lt;</span>@efMenuItem key=&quot;addPanel&quot; onClick=&quot;addPanel();&quot;/<span class="error">&gt;</span>  <i class="conum" data-value="4"></i><b>(4)</b>
       <span class="error">&lt;</span>@efMenuItem/<span class="error">&gt;</span>  <i class="conum" data-value="5"></i><b>(5)</b>
@@ -5049,8 +5049,8 @@ dynamically loaded from <em>.ftl</em> pages.</p>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>First menu has sub-menu items and the label is <em>"menu.customFields.label"</em> and
-<em>"menu.customFields.tooltip"</em> (if defined).</td>
+<td>First menu has sub-menu items and the label is <em>"menu.customMenu.label"</em> and
+<em>"menu.customMenu.tooltip"</em> (if defined).</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -5119,7 +5119,7 @@ The <code>&lt;@efMenuItem&gt;</code> marker is typically used in conjunction wit
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="html"><span class="error">&lt;</span>@efForm id=&quot;addPanel&quot; dashboard=&quot;true&quot;<span class="error">&gt;</span>  <i class="conum" data-value="1"></i><b>(1)</b>
   <span class="error">&lt;</span>@efMenu id=&quot;configMenu&quot;<span class="error">&gt;</span>
-    <span class="error">&lt;</span>@efMenu key=&quot;customFields&quot;<span class="error">&gt;</span>  <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="error">&lt;</span>@efMenu key=&quot;customMenu&quot;<span class="error">&gt;</span>  <i class="conum" data-value="2"></i><b>(2)</b>
       <span class="error">&lt;</span>@efMenuItem key=&quot;addCustomField&quot; uri=&quot;/order/create&quot;/<span class="error">&gt;</span>     <i class="conum" data-value="3"></i><b>(3)</b>
       <span class="error">&lt;</span>@efMenuItem key=&quot;addPanel&quot; onClick=&quot;addPanel();&quot;/<span class="error">&gt;</span>  <i class="conum" data-value="4"></i><b>(4)</b>
       <span class="error">&lt;</span>@efMenuItem/<span class="error">&gt;</span>  <i class="conum" data-value="5"></i><b>(5)</b>
@@ -5137,8 +5137,8 @@ The <code>&lt;@efMenuItem&gt;</code> marker is typically used in conjunction wit
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>First menu has sub-menu items and the label is <em>"menu.customFields.label"</em> and
-<em>"menu.customFields.tooltip"</em> (if defined).</td>
+<td>First menu has sub-menu items and the label is <em>"menu.customMenu.label"</em> and
+<em>"menu.customMenu.tooltip"</em> (if defined).</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
@@ -8437,7 +8437,7 @@ You will normally not need to call this directly.  The dashboard will usually ca
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-12-21 17:05:36 UTC
+Last updated 2021-01-03 18:09:44 UTC
 </div>
 </div>
 <style>

@@ -2897,8 +2897,7 @@ The <a href="groovydoc/org/simplemes/mes/assy/demand/OrderAssembledComponent.htm
 <td class="content">
 To handle assembly data values from the flex type, you must provide the assemblyData element
       in the JSON input (via the controller) first.
-      This can be the flexType key field or its UUID.  If not given first, then the 'assemblyData_'
-      values will be ignored.
+      This can be the flexType key field or its UUID.
 </td>
 </tr>
 </table>
@@ -2922,12 +2921,12 @@ To handle assembly data values from the flex type, you must provide the assembly
   <span class="key"><span class="delimiter">&quot;</span><span class="content">lsn</span><span class="delimiter">&quot;</span></span>: {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">lsn</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">SN2037</span><span class="delimiter">&quot;</span></span>
   },
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">component</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">CPU</span><span class="delimiter">&quot;</span></span>,                         <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">component</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">CPU</span><span class="delimiter">&quot;</span></span>,            <i class="conum" data-value="1"></i><b>(1)</b>
   <span class="key"><span class="delimiter">&quot;</span><span class="content">location</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">BIN 47</span><span class="delimiter">&quot;</span></span>,
   <span class="key"><span class="delimiter">&quot;</span><span class="content">workCenter</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">CELL_17</span><span class="delimiter">&quot;</span></span>,
   <span class="key"><span class="delimiter">&quot;</span><span class="content">qty</span><span class="delimiter">&quot;</span></span>: <span class="float">47.2</span>,
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">assemblyData</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">VENDOR</span><span class="delimiter">&quot;</span></span>,                   <i class="conum" data-value="2"></i><b>(2)</b>
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">assemblyData_LOT</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ACME-101</span><span class="delimiter">&quot;</span></span>              <i class="conum" data-value="3"></i><b>(3)</b>
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">assemblyData</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">VENDOR</span><span class="delimiter">&quot;</span></span>,      <i class="conum" data-value="2"></i><b>(2)</b>
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">LOT</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ACME-101</span><span class="delimiter">&quot;</span></span>              <i class="conum" data-value="3"></i><b>(3)</b>
 }</code></pre>
 </div>
 </div>
@@ -2943,8 +2942,7 @@ To handle assembly data values from the flex type, you must provide the assembly
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The LOT assembly flex type supports a single data field 'LOT'.  The JSON field name
-needs to be formatted like this.</td>
+<td>The LOT assembly flex type supports a single data field 'LOT'.</td>
 </tr>
 </table>
 </div>
@@ -3060,7 +3058,7 @@ of display values, that are localized by the request&#8217;s locale.</p>
       <span class="key"><span class="delimiter">&quot;</span><span class="content">canBeAssembled</span><span class="delimiter">&quot;</span></span>: <span class="value">false</span>,
       <span class="key"><span class="delimiter">&quot;</span><span class="content">_complexCustomFields</span><span class="delimiter">&quot;</span></span>: <span class="value">null</span>,
       <span class="key"><span class="delimiter">&quot;</span><span class="content">_fields</span><span class="delimiter">&quot;</span></span>: <span class="value">null</span>,
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">assemblyData_VENDOR</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">RRRR</span><span class="delimiter">&quot;</span></span>
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">VENDOR</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">RRRR</span><span class="delimiter">&quot;</span></span>
     }
   ]
 }</code></pre>
@@ -3371,7 +3369,7 @@ The new barcode prefixes added for assembly include:</p>
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2020-12-21 17:05:37 UTC
+Last updated 2021-01-03 18:09:44 UTC
 </div>
 </div>
 <style>

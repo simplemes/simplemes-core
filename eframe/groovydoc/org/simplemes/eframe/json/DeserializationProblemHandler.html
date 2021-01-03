@@ -195,11 +195,17 @@ extends com.fasterxml.jackson.databind.deser.DeserializationProblemHandler</pre>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>boolean</code></td>
+                            <td class="colLast"><code><strong><a href="#deserializeConfigurableTypes(java.lang.String, org.simplemes.eframe.data.FieldDefinitions, java.lang.Object, com.fasterxml.jackson.core.JsonParser)">deserializeConfigurableTypes</a></strong>(java.lang.String propertyName, <a href='../../../../org/simplemes/eframe/data/FieldDefinitions.html'>FieldDefinitions</a> fieldDefinitions, java.lang.Object beanOrClass, com.fasterxml.jackson.core.JsonParser p)</code><br>Will de-serialize a field from a configurable type.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#deserializeCustomList(java.lang.Object, com.fasterxml.jackson.databind.JsonNode, org.simplemes.eframe.data.FieldDefinitionInterface)">deserializeCustomList</a></strong>(java.lang.Object beanOrClass, com.fasterxml.jackson.databind.JsonNode node, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Deserialize the given custom child list for the given bean node.  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
                             <td class="colLast"><code><strong><a href="#handleUnknownProperty(com.fasterxml.jackson.databind.DeserializationContext, com.fasterxml.jackson.core.JsonParser, JsonDeserializer, java.lang.Object, java.lang.String)">handleUnknownProperty</a></strong>(com.fasterxml.jackson.databind.DeserializationContext ctxt, com.fasterxml.jackson.core.JsonParser p, JsonDeserializer&lt;?&gt; deserializer, java.lang.Object beanOrClass, java.lang.String propertyName)</code><br>Method called when a JSON Object property with an unrecognized
@@ -278,8 +284,17 @@ extends com.fasterxml.jackson.databind.deser.DeserializationProblemHandler</pre>
                         <a name="convertNode(java.lang.Object, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;java.lang.Object <strong>convertNode</strong>(java.lang.Object key, java.lang.Object node)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+protected&nbsp;java.lang.Object <strong>convertNode</strong>(java.lang.Object key, java.lang.Object node)</h4>
                                 <p> Converts the given node to text or a Map as needed. <DL><DT><B>Parameters:</B></DT><DD><code>node</code> -  The node.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The text or map.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="deserializeConfigurableTypes(java.lang.String, org.simplemes.eframe.data.FieldDefinitions, java.lang.Object, com.fasterxml.jackson.core.JsonParser)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>boolean <strong>deserializeConfigurableTypes</strong>(java.lang.String propertyName, <a href='../../../../org/simplemes/eframe/data/FieldDefinitions.html'>FieldDefinitions</a> fieldDefinitions, java.lang.Object beanOrClass, com.fasterxml.jackson.core.JsonParser p)</h4>
+                                <p> Will de-serialize a field from a configurable type. <DL><DT><B>Parameters:</B></DT><DD><code>propertyName</code> -  The propertyName</DD><DD><code>fieldDefinitions</code> -  The object's field definitions.</DD><DD><code>beanOrClass</code> -  The object to deserialize into.</DD><DD><code>p</code> -  The parser.</DD></DL><DL><DT><B>Returns:</B></DT><DD>True if the field is part of a configurable type and the value was parsed into the object.</DD></DL></p>
                             </li>
                         </ul>
                     
