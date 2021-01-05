@@ -68,7 +68,7 @@ To work around this, you can use the withTransaction closure on a domain (see <<
 
 ==== Key (xyz)=(xyz) is still referenced from table "abc".
 
-This is a 'chicken of egg' scenario in some tests that triggers the 'still referenced' errors.
+This is a 'chicken or egg' scenario in some tests that triggers the 'still referenced' errors.
 See <<Multiple Record References>> for details.
 
 [source,text]
