@@ -251,7 +251,24 @@ class TextFieldWidgetSpec extends BaseWidgetSpecification {
 
     then: 'the onChange script is used'
     def fieldLine = TextUtils.findLine(page, 'id: "aField"')
-    fieldLine.contains("""on:{onChange(newValue, oldValue){someChangeLogic}}}""")
+    fieldLine.contains("""on:{onChange(newValue, oldValue){someChangeLogic}}""")
+  }
+
+  def "verify that the suggest URI can be passed in"() {
+    when: 'the UI element is built'
+    def widgetContext = buildWidgetContext(parameters: [suggest: '/abc?id=1'])
+    def page = new TextFieldWidget(widgetContext).build().toString()
+
+    then: 'the page is valid'
+    JavascriptTestUtils.checkScriptFragment(page)
+
+    and: 'the suggest is used'
+    def fieldLine = TextUtils.findLine(page, 'id: "aField"')
+    JavascriptTestUtils.extractProperty(fieldLine, 'suggest') == '/abc?id=1'
+
+    and: 'standard HTML autocomplete is disabled'
+    def attributesBlock = JavascriptTestUtils.extractBlock(fieldLine, 'attributes: {')
+    JavascriptTestUtils.extractProperty(attributesBlock, 'autocomplete').contains('off')
   }
 
   // GUI tests

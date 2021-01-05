@@ -107,16 +107,6 @@ contribute(allContext) {
       method name: 'setFieldValue', params: [fieldName: String, value: Object], type: void
       property name: '_customFieldName', type: String, static: true
 
-      // Find any configurable types .
-      classType?.fields?.each { field ->
-        def superTypes = field.type.superTypes*.canonicalText
-        //new File('c:\\tmp\\out.log') << "A${field.name} ${superTypes}\n"
-        if (superTypes.contains('org.simplemes.eframe.data.ConfigurableTypeInterface')) {
-          def fieldName = Verifier.capitalize(field.name)
-          method name: 'get' + fieldName + 'Value', params: [fieldName: String], type: Object
-          method name: 'set' + fieldName + 'Value', params: [fieldName: String, value: Object], type: void
-        }
-      }
 
     }
   }

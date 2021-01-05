@@ -7,6 +7,7 @@ package org.simplemes.eframe.custom.domain
 import org.simplemes.eframe.data.format.EnumFieldFormat
 import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.misc.NameUtils
+import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.misc.TypeUtils
 
 /**
@@ -18,6 +19,18 @@ trait FieldTrait {
     if (fieldName && !NameUtils.isLegalIdentifier(fieldName)) {
       //error.201.message="{1}" is not a legal custom field name.  Must be a legal Java variable name.
       return new ValidationError(201, 'fieldName', fieldName)
+    }
+    if (guiHints) {
+      def ex = null
+      try {
+        TextUtils.parseNameValuePairs(guiHints)
+      } catch (Exception e) {
+        ex = e
+      }
+      if (ex) {
+        //error.209.message="{1}" is not a valid GUI Hint for field {2}.  The hint must be in the format ''name1="value" name2="value"'' format.  Error: {3}
+        return new ValidationError(209, 'guiHints', guiHints, fieldName, ex.toString())
+      }
     }
     return validateValueClassName()
   }

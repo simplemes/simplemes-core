@@ -299,7 +299,7 @@ class ScanAssyService implements ScanPoint, GetBarcodePrefixPoint {
       def foundCounter = 0
       scanResponse.parsedBarcode.each { k, v ->
         if (fieldNameLC == k.toLowerCase()) {
-          addRequest.setAssemblyDataValue(fieldName, scanResponse?.parsedBarcode[(String) k])
+          addRequest.setFieldValue(fieldName, scanResponse?.parsedBarcode[(String) k])
           foundCounter++
         }
       }

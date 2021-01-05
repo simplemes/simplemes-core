@@ -317,7 +317,7 @@ class OrderAssyServiceSpec extends BaseSpecification {
     and: 'a request to add a component'
     def request = new AddOrderAssembledComponentRequest(order: order, component: component1,
                                                         assemblyData: flexType)
-    request.setAssemblyDataValue('FIELD1', 'Vendor237')
+    request.setFieldValue('FIELD1', 'Vendor237')
 
     when: 'the component is added'
     setCurrentUser()
@@ -325,10 +325,10 @@ class OrderAssyServiceSpec extends BaseSpecification {
 
     then: 'the record is saved in the DB'
     def orderAssembledComponent = OrderAssembledComponent.findByUuid(res.uuid)
-    orderAssembledComponent.getAssemblyDataValue('FIELD1') == 'Vendor237'
+    orderAssembledComponent.getFieldValue('FIELD1') == 'Vendor237'
 
     and: 'the method response is valid'
-    res.getAssemblyDataValue('FIELD1') == 'Vendor237'
+    res.getFieldValue('FIELD1') == 'Vendor237'
   }
 
   @Rollback
@@ -1233,11 +1233,11 @@ class OrderAssyServiceSpec extends BaseSpecification {
 
     where:
     query            | result
-    'lot:abc*'       | 'assembledComponents.assemblyData_LOT:abc*'
-    'LOT:abc*'       | 'assembledComponents.assemblyData_LOT:abc*'
-    'assy.lot:abc*'  | 'assembledComponents.assemblyData_LOT:abc*'
-    'ASSY.lot:abc*'  | 'assembledComponents.assemblyData_LOT:abc*'
-    'assy.LOT:abc'   | 'assembledComponents.assemblyData_LOT:abc*'
+    'lot:abc*'       | 'assembledComponents.LOT:abc*'
+    'LOT:abc*'       | 'assembledComponents.LOT:abc*'
+    'assy.lot:abc*'  | 'assembledComponents.LOT:abc*'
+    'ASSY.lot:abc*'  | 'assembledComponents.LOT:abc*'
+    'assy.LOT:abc'   | 'assembledComponents.LOT:abc*'
     '"complex"'      | '"complex"'
     'notLot'         | 'notLot*'
     'defect.LOT:abc' | 'defect.LOT:abc*'

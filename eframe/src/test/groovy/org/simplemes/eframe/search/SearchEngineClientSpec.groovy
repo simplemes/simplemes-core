@@ -771,7 +771,7 @@ class SearchEngineClientSpec extends BaseSpecification {
 
     then: 'the JSON contents are correct'
     json.order == "ABC"
-    json.custom1 == 'XYZ'
+    json._customFields.custom1 == 'XYZ'
   }
 
 

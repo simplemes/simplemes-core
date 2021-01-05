@@ -4,8 +4,6 @@ import groovy.util.logging.Slf4j
 import io.micronaut.data.model.Pageable
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.domain.SQLUtils
-import org.simplemes.eframe.domain.annotation.DomainEntityHelper
-import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.mes.demand.FindWorkRequest
 import org.simplemes.mes.demand.FindWorkResponse
 import org.simplemes.mes.demand.FindWorkResponseDetail
@@ -59,29 +57,29 @@ class WorkListService {
 
     //  A Orders with no routing.
     long timeA = System.currentTimeMillis()
-    findWorkDetails(Order, findWorkRequest).each { Order order ->
-      details << new FindWorkResponseDetail(order)
+    findWorkDetails(Order, findWorkRequest).each { Map map ->
+      details << new FindWorkResponseDetail(map)
     }
     totalAvailable += findWorkTotalCount(Order, findWorkRequest)
 
     //  B Orders with a routing.
     long timeB = System.currentTimeMillis()
-    findWorkDetails(OrderOperState, findWorkRequest).each { OrderOperState orderOperState ->
-      details << new FindWorkResponseDetail(orderOperState)
+    findWorkDetails(OrderOperState, findWorkRequest).each { Map map ->
+      details << new FindWorkResponseDetail(map)
     }
     totalAvailable += findWorkTotalCount(OrderOperState, findWorkRequest)
 
     //  C LSNs with no routing.
     long timeC = System.currentTimeMillis()
-    findWorkDetails(LSN, findWorkRequest).each { LSN lsn ->
-      details << new FindWorkResponseDetail(lsn)
+    findWorkDetails(LSN, findWorkRequest).each { Map map ->
+      details << new FindWorkResponseDetail(map)
     }
     totalAvailable += findWorkTotalCount(LSN, findWorkRequest)
 
     //  D LSNs with a routing.
     long timeD = System.currentTimeMillis()
-    findWorkDetails(LSNOperState, findWorkRequest).each { LSNOperState lsnOperState ->
-      details << new FindWorkResponseDetail(lsnOperState)
+    findWorkDetails(LSNOperState, findWorkRequest).each { Map map ->
+      details << new FindWorkResponseDetail(map)
     }
     totalAvailable += findWorkTotalCount(LSNOperState, findWorkRequest)
 
@@ -101,11 +99,8 @@ class WorkListService {
    * @param findWorkRequest Defines the request restrictions for the search.
    * @return The list of matching records.
    */
-  private List findWorkDetails(Class domainClass, FindWorkRequest findWorkRequest) {
-    def sql = "SELECT * ${buildSQL(domainClass, findWorkRequest)}" +
-      " ORDER BY ${NameUtils.toColumnName('dateFirstQueued')} ASC "
-
-    return SQLUtils.instance.executeQuery(sql, domainClass, Pageable.from(findWorkRequest.from, findWorkRequest.max))
+  protected List findWorkDetails(Class domainClass, FindWorkRequest findWorkRequest) {
+    return findWorkInternal(domainClass, findWorkRequest, false)
   }
 
   /**
@@ -114,34 +109,192 @@ class WorkListService {
    * @param findWorkRequest Defines the request restrictions for the search.
    * @return The count.
    */
-  private int findWorkTotalCount(Class domainClass, FindWorkRequest findWorkRequest) {
-    def sql = "SELECT COUNT(*) as count ${buildSQL(domainClass, findWorkRequest)}"
-    def list = SQLUtils.instance.executeQuery(sql, Map)
+  protected int findWorkTotalCount(Class domainClass, FindWorkRequest findWorkRequest) {
+    def list = findWorkInternal(domainClass, findWorkRequest, true)
     return list[0].count as int
   }
 
   /**
-   * Build the FROM...WHERE clause for the given domainClass and work request.
-   * @param domainClass The domain class to retrieve the data from.
+   * Internal method to find the work records or a count.
+   * @param domainClass The class to search for work.
    * @param findWorkRequest Defines the request restrictions for the search.
-   * @return The SQL fragment with the FROM..WHERE clauses.
+   * @param needCount If true, then returns a list for the count (element 0).
+   * @return The raw SQL list (of Maps).
    */
-  String buildSQL(Class domainClass, FindWorkRequest findWorkRequest) {
-    def tableName = DomainEntityHelper.instance.getTableName(domainClass)
-    def sb = new StringBuilder()
-    sb << "FROM $tableName WHERE "
-    if (findWorkRequest.findInQueue) {
-      sb << " ${NameUtils.toColumnName('qtyInQueue')} > 0.0"
+  protected List findWorkInternal(Class domainClass, FindWorkRequest findWorkRequest, boolean needCount = false) {
+    def list = []
+    if (domainClass == Order) {
+      list = findWorkWithSQLForOrder(findWorkRequest, needCount)
+    } else if (domainClass == OrderOperState) {
+      list = findWorkWithSQLForOrderRouting(findWorkRequest, needCount)
+    } else if (domainClass == LSN) {
+      list = findWorkWithSQLForLSN(findWorkRequest, needCount)
+    } else if (domainClass == LSNOperState) {
+      list = findWorkWithSQLForLSNRouting(findWorkRequest, needCount)
     }
-    if (findWorkRequest.findInQueue && findWorkRequest.findInWork) {
-      sb << " OR "
-    }
-    if (findWorkRequest.findInWork) {
-      sb << " ${NameUtils.toColumnName('qtyInWork')} > 0.0"
-    }
-    return sb.toString()
+    return list
   }
 
+
+  /**
+   * Internal method to find the work for Orders without routing.  Builds a dynamic SQL query for the right filter
+   * and tables.
+   * @param findWorkRequest Defines the request restrictions for the search.
+   * @param needCount Set to true for count(*) variant (<b>Default</b>: false).
+   * @return The list of matching records.
+   */
+  protected List findWorkWithSQLForOrder(FindWorkRequest findWorkRequest, boolean needCount = false) {
+    log.trace('findWorkWithSQLForOrder():  request={}', findWorkRequest)
+
+    def columnList
+    def orderBy = ''
+    if (needCount) {
+      columnList = "COUNT (*)"
+    } else {
+      columnList = "m.uuid,m.uuid as order_id,m.ordr,${buildStandardColumns()}"
+      orderBy = 'ORDER BY m.date_first_queued ASC'
+    }
+    def whereClause = buildWhereClause(findWorkRequest, findWorkRequest.filter ? 'm.ordr' : '')
+
+    def sql = "SELECT $columnList FROM ordr m $whereClause $orderBy"
+
+    return SQLUtils.instance.executeQuery(sql, Map, buildQueryParameters(findWorkRequest, needCount))
+  }
+
+  /**
+   * Internal method to find the work for Orders with routing.  Builds a dynamic SQL query for the right filter
+   * and tables.
+   * @param findWorkRequest Defines the request restrictions for the search.
+   * @param needCount Set to true for count(*) variant (<b>Default</b>: false).
+   * @return The list of matching records.
+   */
+  protected List findWorkWithSQLForOrderRouting(FindWorkRequest findWorkRequest, boolean needCount = false) {
+    log.trace('findWorkWithSQLForOrderRouting():  request={}', findWorkRequest)
+
+    def columnList
+    def orderBy = ''
+    if (needCount) {
+      columnList = "COUNT (*)"
+    } else {
+      columnList = "m.uuid,m.order_id,o.ordr,m.sequence,${buildStandardColumns()}"
+      orderBy = 'ORDER BY m.date_first_queued ASC'
+    }
+    def whereClause = buildWhereClause(findWorkRequest, findWorkRequest.filter ? 'o.ordr' : '')
+
+    def sql = "SELECT $columnList FROM order_oper_state m INNER JOIN ordr o ON m.order_id=o.uuid $whereClause $orderBy"
+    return SQLUtils.instance.executeQuery(sql, Map, buildQueryParameters(findWorkRequest, needCount))
+  }
+
+  /**
+   * Internal method to find the work for LSNs without routing.  Builds a dynamic SQL query for the right filter
+   * and tables.
+   * @param findWorkRequest Defines the request restrictions for the search.
+   * @param needCount Set to true for count(*) variant (<b>Default</b>: false).
+   * @return The list of matching records.
+   */
+  protected List findWorkWithSQLForLSN(FindWorkRequest findWorkRequest, boolean needCount = false) {
+    log.trace('findWorkWithSQLForLSN():  request={}', findWorkRequest)
+
+    def columnList
+    def orderBy = ''
+    if (needCount) {
+      columnList = "COUNT (*)"
+    } else {
+      columnList = "m.uuid,m.order_id as order_id,m.uuid as lsn_id,m.lsn,o.ordr,${buildStandardColumns()}"
+      orderBy = 'ORDER BY m.date_first_queued ASC'
+    }
+    def whereClause = buildWhereClause(findWorkRequest, findWorkRequest.filter ? 'm.lsn' : '')
+
+    def sql = "SELECT $columnList FROM lsn m INNER JOIN ordr o ON m.order_id=o.uuid $whereClause $orderBy"
+    return SQLUtils.instance.executeQuery(sql, Map, buildQueryParameters(findWorkRequest, needCount))
+  }
+
+  /**
+   * Internal method to find the work for LSNs without routing.  Builds a dynamic SQL query for the right filter
+   * and tables.
+   * @param findWorkRequest Defines the request restrictions for the search.
+   * @param needCount Set to true for count(*) variant (<b>Default</b>: false).
+   * @return The list of matching records.
+   */
+  protected List findWorkWithSQLForLSNRouting(FindWorkRequest findWorkRequest, boolean needCount = false) {
+    log.trace('findWorkWithSQLForLSNRouting():  request={}', findWorkRequest)
+
+    def columnList
+    def orderBy = ''
+    if (needCount) {
+      columnList = "COUNT (*)"
+    } else {
+      columnList = "m.uuid,l.order_id as order_id,l.uuid as lsn_id,o.ordr,l.lsn,m.sequence,${buildStandardColumns()}"
+      orderBy = 'ORDER BY m.date_first_queued ASC'
+    }
+    def whereClause = buildWhereClause(findWorkRequest, findWorkRequest.filter ? 'l.lsn' : '')
+
+    def sql = "SELECT $columnList FROM lsn_oper_state m INNER JOIN lsn l ON m.lsn_id=l.uuid INNER JOIN ordr o ON l.order_id=o.uuid $whereClause $orderBy"
+
+    return SQLUtils.instance.executeQuery(sql, Map, buildQueryParameters(findWorkRequest, needCount))
+  }
+
+  /**
+   * The comma-delimited list of columns for all 4 queries.
+   */
+  static final String standardWorkStateColumns = 'm.qty_in_queue,m.qty_in_work,m.qty_done,m.date_qty_queued,m.date_qty_started,m.date_first_queued,m.date_first_started'
+  /**
+   * Builds the standard columns for work queries.
+   * @return The columns list.
+   */
+  String buildStandardColumns() {
+    return standardWorkStateColumns
+  }
+
+  /**
+   * Builds the where clause based on the given filter criteria.
+   * @param findWorkRequest The request with filter criteria.
+   * @param likeColumnName The name of the like column (if needed for the filter option).
+   * @return The WHERE clause.
+   */
+  String buildWhereClause(FindWorkRequest findWorkRequest, String likeColumnName = null) {
+    def qtyCheck = findWorkRequest.findInQueue || findWorkRequest.findInWork
+    if (qtyCheck || findWorkRequest.filter) {
+      def sb = new StringBuilder()
+      sb << (qtyCheck ? "(" : '')
+      if (findWorkRequest.findInQueue) {
+        sb << " m.qty_in_queue>0.0"
+      }
+      if (findWorkRequest.findInWork) {
+        if (sb && findWorkRequest.findInQueue) {
+          sb << " OR "
+        }
+        sb << "m.qty_in_work>0.0"
+      }
+      sb << (qtyCheck ? ")" : '')
+      if (findWorkRequest.filter) {
+        if (sb) {
+          sb << " AND "
+        }
+        sb << "$likeColumnName ilike ?"
+      }
+      return "WHERE $sb"
+    }
+
+    return ''
+  }
+
+  /**
+   * Builds a list of parameters for the find work request.  Adds filter and row count limits (if needed).
+   * @param findWorkRequest The request.
+   * @param needCount Set to true for count(*) variant (<b>Default</b>: false).
+   * @return The parameters for the SQL.
+   */
+  Object[] buildQueryParameters(FindWorkRequest findWorkRequest, Boolean needCount) {
+    List args = []
+    if (!needCount) {
+      args << Pageable.from(findWorkRequest.from, findWorkRequest.max) as Object
+    }
+    if (findWorkRequest.filter) {
+      args << "${findWorkRequest.filter}%"
+    }
+    return args as Object[]
+  }
 }
 
 

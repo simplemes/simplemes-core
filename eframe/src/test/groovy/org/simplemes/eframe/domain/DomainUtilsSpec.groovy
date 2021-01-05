@@ -141,6 +141,9 @@ class DomainUtilsSpec extends BaseSpecification {
 
     then: 'the complex custom data holder field is not in the list'
     !fieldDefs[ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME]
+
+    and: 'the custom data holder field is not in the list'
+    !fieldDefs['customFields']
   }
 
   def "verify that getFieldDefinitions works for POGO class"() {

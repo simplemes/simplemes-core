@@ -7,6 +7,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<getGridData>>#
 [inline-toc]#<<findMaxGridValue>>#
 [inline-toc]#<<refreshList>>#
+[inline-toc]#<<setSuggestURI>>#
 
 endif::[]
 
@@ -33,3 +34,5 @@ include::getGridData.adoc[]
 include::findMaxGridValue.adoc[]
 
 include::refreshList.adoc[]
+
+include::setSuggestURI.adoc[]

@@ -31,9 +31,9 @@ class RMAShowPage extends AbstractShowPage {
     returnDate { module(new ReadOnlyFieldModule(field: 'returnDate')) }
 
     // Field(s) added by Flex Type
-    FIELD1 { module(new ReadOnlyFieldModule(field: 'rmaType_FIELD1')) }
-    FIELD2 { module(new ReadOnlyFieldModule(field: 'rmaType_FIELD2')) }
-    FIELD3 { module(new ReadOnlyFieldModule(field: 'rmaType_FIELD3')) }
+    FIELD1 { module(new ReadOnlyFieldModule(field: 'FIELD1')) }
+    FIELD2 { module(new ReadOnlyFieldModule(field: 'FIELD2')) }
+    FIELD3 { module(new ReadOnlyFieldModule(field: 'FIELD3')) }
   }
 
 }

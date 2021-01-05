@@ -1,19 +1,227 @@
 Scratch
 =======
 
+Questions
+---------
+No default dashboard found.  Maybe add link on error message to run demoData?
+Enum need varying in DB?  All limited length fields need varchar()?  Maybe length too short?
+Add pothole for missing transactionManager (Synch or Asynch) means no DB info in the .yml file.
+TaskMenu - Refresh with dev mode?
+How are keys defined in domains?  fieldOrder then keys.
+No fieldOrder, find by key on CRUDRest does a 'find by null()'.
+  Keys has field name that does not exist, gives ugly message.
+Add Getting Started section to Domains/GUIS/Controllers/Services.
+  Template/Getting Started with Domains?
+TaskMenu without folder disappears.
+GUI with single field.
+
+Custom Field Rework
+--------------------
+Tasks
+=====
+  Change when JSON is serialized/deserialized.  Tests when loaded/saved.
+  Simplify ExtensibleFieldTransform:
+    Remove prefix/config type support.
+    Add Map holder field (_fields) for fields.  Tracks if dirty or not.
+      This Map is used for most actions.
+      String getFields() will serialize the Map contents if dirty, otherwise use value from field..
+  Remove prefix from ExtensibleFieldHelper.set/getFieldValue().
+  Change configType to remove prefix.
+    Update Assembly docs with assemblyData prefix in examples.
+  Add API for adding value to fields.  Supports tracking options.
+    Test with tracking and Rest API updates?
+    Update docs for mes-core, assy with API custom examples.
+  Dirty Map ready for saving.
+    FieldHolderMap - put() marks as dirty.  Has Text ready for saving.  Dirty= changedSinceLastJsonSerialize.
+      new method put(name,value,CustomFieldConfig).
+  REST API - Disable _config export/import by default.  Some mechanism to enable it on get?
+    Add URI with UUID for the get responses?
+  Archive works - full history preserved.
+  FieldHolderMap - Prevent storing unsupported types?
+  Option to force Flex Type/DE/FE field definitions before collection?
+
+  CustomFieldConfig - interface
+    CustomFieldTracking tracking - enum
+    format - FieldFormat - null if type can be inferred from JSON (String, Number/DigDecimal, Boolean).
+  Fix adocs to match impl: fieldExtension.adoc:184 history/type/config example.
+  Add fix for undetected missed update. See  https://github.com/micronaut-projects/micronaut-data/issues/299
+  Add validation on Custom Field creation that prevents save if the name matches a core field.  Do in FieldExtension?
+
+Domain/POGO:
+  setFields(Map)
+  setFields(String json)
+  Map getFields()
+  Test Scenarios
+    Set value on empty map, save
+      With and without config (e.g. FlexType or FieldExtension).
+    Set value on populated map, save
+      With and without config (e.g. FlexType or FieldExtension).
+    Overwrite value on populated map, save
+      With and without config (e.g. FlexType or FieldExtension).
+
+    Read record, get value.
+    Read record, update value, get value, save.
+      With and without config (e.g. FlexType or FieldExtension).
+
+    Round-trip - with types (DateOnly, Date, DomainRef, Enum, EncodedValue,ConfigurableType?).
+    Round-trip - Update with value only history.
+    Round-trip - Update with value details history.
+    Round-trip - With config change (no history to full history).
+
+
+FieldHolderMapInterface: Front-end to JSON-backed text.  Retains type and tracking info.  Tracks history.
+  isDirty/setDirty - If Map has changes since last parseJSON()
+  parseJSON() - converts from text.
+  toJSON() - serializes to JSON
+  put()/get() - retains type info, track details option.
+  setTracking(name, value='L' (A/V/L))
+  setType(name, format)
+  getFieldsMap() - Delegates to helper.  Parse JSON if text is available.
+  no clear?
+  JSONAwareMapConfig - Holds config and history or just a simple Map with logic in JSONAwareMap?
+  Transform needs:
+   x map field with lazy getter/setter?  ExtensibleFieldHelper.getMap()/setMap()
+  ExtensibleFieldHelper needs:
+   change to getFieldValue to support map.
+   parses JSON on first get() with pending json
+   text field setFields() will null out map to indicate pending.  Called by JDBC.
+   text field getFields() will serialize dirty Map.  Called by JDBC.
+
+
+API:
+{
+  "rma": "R10102-23",
+  "qty": 12.2,
+  "fields" : {
+    "retailerID": "ACME-101",
+    "returnCode": "DEFECTIVE"
+  }
+}
+
+{
+  "order": "M1001",
+  "lsn": {
+    "lsn": "SN2037"
+  },
+  "component": "CPU",
+  "qty": 47.2,
+  "assemblyData": "VENDOR_AND_LOT",
+  "fields" : {
+    "LOT": "ACME-101",
+    "VENDOR": "ACME"
+  }
+}
+
+In fields, store config for each name field:
+  "fields" : {
+    "_retailerID_config": {"tracking": "ALL_VALUES", "type": "D"},  // ALL_DETAILS - (Who/what/when/where stored in element "_retailerID_history")
+    "retailerID": "ACME-101",
+    "_returnCode_config": {"tracking": "LATEST"},  // Default ALL_VALUES (values only)
+    "returnCode": "DEFECTIVE"
+  }
+  Option 2 - 3 top-level arrays.
+  "fields": {
+    "retailerID": "ACME-101",
+    "returnCode": "DEFECTIVE",
+    "_types": [
+      {
+        "retailerID": "D",
+        "returnCode": "R"
+      }
+    ],
+    "_tracking": [
+      {
+        "retailerID": "A",
+        "returnCode": "V"
+      }
+    ],
+    "_history": {
+      "weight": [
+        {
+          "weight": 2.3,
+          "user": "PWB",
+          "dateTime": "2009-02-13T18:31:30.000-05:00"
+        },
+        {
+          "weight": 2.2,
+          "user": "MPH",
+          "dateTime": "2009-02-13T18:31:30.000-05:00"
+        },
+        {
+          "weight": 2.1,
+          "user": "RLB",
+          "dateTime": "2009-02-14T17:23:53.000-05:00"
+        }
+      ]
+    }
+  }
+  Option 3 - One map of config values.
+    "fields": {
+      "color": "123A",
+      "returnCode": "DEFECTIVE",
+      "_config": {
+        "color": {
+          "type": "S",
+          "tracking": "A",
+          "valueClassName": "o.s....",  // Domain Reference, enum, EncodedValue
+          "history": {
+            "color": [
+              {
+                "color": "122B",
+                "user": "PWB",
+                "dateTime": "2009-02-13T18:31:30.000-05:00"
+              },
+              {
+                "color": "121A",
+                "user": "MPH",
+                "dateTime": "2009-02-13T18:31:30.000-05:00"
+              },
+              {
+                "color": "123C",
+                "user": "RLB",
+                "dateTime": "2009-02-14T17:23:53.000-05:00"
+              }
+            ]
+          }
+        },
+        "returnCode": {}
+      }
+    }
+
+
+Data Entry
+==========
+Always allow data to be logged via API without setup.
+Define DE fields to be collected at specific places/events against order/LSN.
+Flag to trace all values collected (Latest Value Only, All Values, All Data (Who/what/when/where).
+Events:
+  Pre/Post Start/Complete/Done
+  For Product
+  For Specific Steps.
+Add to Traveller and Order History Reports.
+Flex Type setup is for prompting.
+
 
 Tasks
 =====
-Browse on LSN/Order in Manager POD.
-  ui.text with suggest with URL parameters.  Dynamic based on Work Center.
-Remember Order/LSN when reports panel is shown.
+ISSUE: API: Look at just sending fields jsonb as sub-JSON instead of naming conventions and special logic.
+ISSUE: Support in non-CRUD endpoint with Domain as part of request.
+ISSUE: JSON Mapper ignores invalid fields on input (non-CRUD endpoint).
+
+Scan Dashboard - Input field for use with phone keyboard.
+Traveller report shows M1001 not current order.
+Call generateExtensionDoc (e.g. generateExtensionDocAll) in main .gradle and in gradle.yml
 Taskmenu refresh logic.
   Part of page?
   Does not see Dashboard records in production when demoData loaded later.  Maybe add TaskMenuHelper.clearCache() to be called from demoData,
          Maybe add timer to TaskMenuHelper caching.
   First time Error:
     15:45:23.946 [io-executor-thread-1] ERROR client.status - {"stack":"TypeError: Cannot read property '$count' of undefined\n    at u.open (http://localhost:8080/assets/webix.min-8552d835cbf5b3abaf68708dafab6317.js:54:3610)\n    at Object._taskMenuToggle (http://localhost:8080/assets/eframe_toolkit-3dc5bcb2d6177a3b65bacfddb98b8320.js:35:389)\n    at eval (eval at v (http://localhost:8080/assets/webix.min-8552d835cbf5b3abaf68708dafab6317.js:10:561), <anonymous>:1:4)\n    at eval (<anonymous>)\n    at v (http://localhost:8080/assets/webix.min-8552d835cbf5b3abaf68708dafab6317.js:10:561)\n    at Object.<anonymous> (http://localhost:8080/assets/webix.min-8552d835cbf5b3abaf68708dafab6317.js:18:838)\n    at Object.callEvent (http://localhost:8080/assets/webix.min-8552d835cbf5b3abaf68708dafab6317.js:10:2053)\n    at y (http://localhost:8080/assets/webix.min-8552d835cbf5b3abaf68708dafab6317.js:10:2695)\n    at HTMLBodyElement.<anonymous> (http://localhost:8080/assets/webix.min-8552d835cbf5b3abaf68708dafab6317.js:19:365)","message":"Cannot read property '$count' of undefined","name":"TypeError","logData":{"msg":"Uncaught Exception","errorMsg":"Uncaught TypeError: Cannot read property '$count' of undefined","url":"http://localhost:8080/assets/webix.min-8552d835cbf5b3abaf68708dafab6317.js","line number":54,"column":3610}} ip=/172.17.0.1:42348
-
+Groovy extension GUI with hooks?
+Ask question updating suggest on Webix forums.
+Check out JaCoCo https://www.jacoco.org/jacoco/trunk/doc/ and gradle plugin.
+Figure out automatic shift to upper case on input.  Which fields?  Toggle?
+Support JWT as Authorization header with std OAuth access token support.
 
 
 

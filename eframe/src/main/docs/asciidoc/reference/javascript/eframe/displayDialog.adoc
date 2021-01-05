@@ -68,7 +68,7 @@ The first button has a hot-key of enter and the last button has a hot-key of Esc
 If no buttons are passed to the dialog, then a single 'ok' button is generated, which has a
 hot-key of Escape.
 
-If not `focus` element is passed in, the last button has the focus.
+If no `focus` element is passed in, the last button has the focus.
 
 A dialog with 3 custom buttons is shown below:
 

@@ -21,8 +21,6 @@ efe.dashboardEditor = function () {
   var panelSizes = [];          // The size of each panel.  (can be height or width).
   var selectedElement;        // The currently selected element.
   var selectedStateClass = 'editor-selected-state';  // The CSS class to use for selected elements.
-  var jsonSplitterClass = 'org.simplemes.eframe.web.dashboard.DashboardPanelSplitter';  // The class name for a splitter, as needed for the JSON interface.
-  var jsonPanelClass = 'org.simplemes.eframe.web.dashboard.DashboardPanel';  // The class name for a splitter, as needed for the JSON interface.
   var defaultCategory;        // The default category for a new dashboard.
 
   var editorDialog;           // The editor's dialog.
@@ -425,7 +423,7 @@ efe.dashboardEditor = function () {
         newDefaultConfig = defaultCfg;
       }
       var onePanel;
-      onePanel = {panel: 'A', defaultURL: '', class: jsonPanelClass};
+      onePanel = {panel: 'A', defaultURL: ''};
       dashboardConfig = {dashboard: 'NEW', title: '', defaultConfig: newDefaultConfig, category: defaultCategory};
       dashboardConfig.dashboardPanels = [onePanel];
       dashboardConfig.buttons = [];

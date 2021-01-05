@@ -1,24 +1,29 @@
 Scratch
 -------
 
-Dashboards Needed
-  Module     Cat             Dashboard
-  ------     ---             ----------
-  Core/All   OPERATOR        Operator Scan - Scan/WorkList - Start/Complete/Reports
-  Core/All   MANAGER         Manager - WC/WorkList - Start/Complete/ReverseStart/ReverseComplete/Reports
-  Assy/All   OPERATOR_ASSY   Operator Assy Scan - Scan/ComponentList - Start/Complete/Reports
-  Assy/All   MANAGER_ASSY    Manager Assy - WC/ComponentList - Start/Complete/ReverseStart/ReverseComplete/Reports
+Process for new Feature
+=======================
 
-
-Micronaut-Data Migration
-========================
-
+A. Define Requirements/Tutorial/Demo Scenarios
+  Start .adoc for Feature Overview
+B. Design/Prototype Domains
+  Start .adoc for domain (guide and reference).
+C. Design/Prototype API
+  Start .adoc for API (reference and maybe guide)
+D. Build Domains/Repository/DBScripts - With Tests
+E. Build Controllers/Services for API with Tests
+F. Design/Prototype GUIs (dashboard activity).
+  Write .adoc for GUIs (reference for dashboard activities and maybe guide)
+G. Build GUIs with GUI Tests.
+H. Build any End-To-End tests (if needed).
+I. Determine Archiving/Reporting/Perf Testing needs.
+  Include any framework needs (e.g. dashboard activity options).
+J. Finalize .adoc.
 
 
 Tasks
 =====
-Bugs
-  wcSelection activity does not restore the order after the Reports Activity finishes.
+Work center support in dashboard?
 Delete of Order should delete action log.
   Need to allow delete() implementation?
 Migrate Start/Complete/UndoStart

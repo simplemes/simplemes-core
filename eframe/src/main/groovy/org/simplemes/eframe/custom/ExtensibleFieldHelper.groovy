@@ -4,6 +4,7 @@
 
 package org.simplemes.eframe.custom
 
+import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.custom.domain.FieldExtension
@@ -25,6 +26,8 @@ import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.ShortTermCacheMap
 import org.simplemes.eframe.misc.TextUtils
+
+import java.lang.reflect.Field
 
 /**
  * This class defines methods to access extensible field definitions define by module additions, users
@@ -228,32 +231,11 @@ class ExtensibleFieldHelper {
    * @param object The object to store the value in.
    * @param fieldName The name of the field.
    * @param value The value.
-   * @param prefix The field prefix to use for the getter (e.g. prefix='rmaType' will use a prefix of 'rmaType_').
    */
-  void setFieldValue(Object object, String fieldName, Object value, String prefix) {
-    if (prefix) {
-      fieldName = "${prefix}_$fieldName"
-    }
-    setFieldValue(object, fieldName, value)
-  }
-
-  /**
-   * Sets the value in a custom field holder.  Uses JSON as the internal format.
-   * @param object The object to store the value in.
-   * @param fieldName The name of the field.
-   * @param value The value.
-   */
+  @CompileStatic
   void setFieldValue(Object object, String fieldName, Object value) {
-    // Build a Map from the current values
-    String holderName = getCustomHolderFieldName(object)
-    def clazz = object.getClass()
-    if (!holderName) {
-      //error.131.message=The domain class {0} does not support extensible fields. Add @ExtensibleFieldHolder.
-      throw new BusinessException(131, [clazz.name])
-    }
-    String text = object[holderName]
-
     // See if we need to process the value.
+    def clazz = object.getClass()
     def fieldDefinitions = addConfigurableTypeFields(getEffectiveFieldDefinitions(clazz, object), object)
     def fieldDefinition = fieldDefinitions[fieldName]
 
@@ -263,34 +245,10 @@ class ExtensibleFieldHelper {
       map[fieldName] = value
       log.trace('setFieldValue(): {} value = {} to object {}', fieldName, value, object)
     } else {
-      // A simple field type, stored in the JSON text in the holder.
-      def map
-      if (text) {
-        map = Holders.objectMapper.readValue(text, Map)
-      } else {
-        map = [:]
-      }
-      if (fieldDefinition) {
-        value = fieldDefinition.format.convertToJsonFormat(value, fieldDefinition)
-      }
-      map[fieldName] = value
-      object[holderName] = Holders.objectMapper.writeValueAsString(map)
+      def map = getExtensibleFieldMap(object)
+      map.put(fieldName, value, fieldDefinition)
       log.trace('setFieldValue(): {} value = {} to object {}', fieldName, value, object)
     }
-  }
-
-  /**
-   * Gets the value in a custom field holder.  Uses JSON as the internal format.
-   * @param object The object to get the custom value from.
-   * @param fieldName The name of the field.
-   * @param prefix The field prefix to use for the getter call (e.g. prefix='rmaType' will use a prefix of 'rmaType_').
-   * @return The value.
-   */
-  Object getFieldValue(Object object, String fieldName, String prefix) {
-    if (prefix) {
-      fieldName = "${prefix}_$fieldName"
-    }
-    return getFieldValue(object, fieldName)
   }
 
   /**
@@ -306,13 +264,8 @@ class ExtensibleFieldHelper {
       //error.131.message=The domain class {0} does not support extensible fields. Add @ExtensibleFieldHolder.
       throw new BusinessException(131, [clazz.name])
     }
-    String text = object[holderName]
     def fieldDefinitions = addConfigurableTypeFields(getEffectiveFieldDefinitions(clazz, object), object)
     def fieldDefinition = fieldDefinitions[fieldName]
-    //if (!fieldDefinition && prefix) {
-    // Not a top-level element, so check for a Configurable Type element
-    //fieldDefinitions["${prefix}_${fieldName}"]
-    //}
     //println "fieldDefinitions($fieldName) = $fieldDefinitions"
     if (fieldDefinition?.format instanceof ListFieldLoaderInterface) {
       // A list of children, so attempt to read values, if not already read.
@@ -328,22 +281,11 @@ class ExtensibleFieldHelper {
       log.trace('getFieldValue(): {} List = {} from object {}', fieldName, list, object)
       return list
     } else {
-      if (text) {
-        // A simple field type, so try to convert from JSON.
-        def map = Holders.objectMapper.readValue(text, Map)
-        def value = map[fieldName]
-        log.trace('getFieldValue(): {} value = {} from object {}', fieldName, value, object)
-        //println "  format = ${fieldDefinition?.format}"
-        // See if we need to convert the type.
-        if (!fieldDefinition) {
-          // Return as-is if the definition is now missing.
-          return value
-        }
-        return fieldDefinition.format.convertFromJsonFormat(value, fieldDefinition)
-      }
+      def map = getExtensibleFieldMap(object)
+      def res = map.get(fieldName)
+      log.trace('getFieldValue(): {} value = {} from object {}', fieldName, res, object)
+      return res
     }
-
-    return null
   }
 
   /**
@@ -379,6 +321,110 @@ class ExtensibleFieldHelper {
     return null
   }
 
+
+  /**
+   * Gets the field holder front-end Map.  Creates one if needed and will deserialize from the field holder JSON text
+   * if needed.
+   * @param object The object to get the field holder Map from.
+   * @return The map.  Never null.
+   */
+  @CompileStatic
+  FieldHolderMap getExtensibleFieldMap(Object object) {
+    // Build a Map from the current values
+    String holderName = getCustomHolderFieldName(object)
+    def clazz = object.getClass()
+    if (!holderName) {
+      //error.131.message=The domain class {0} does not support extensible fields. Add @ExtensibleFieldHolder.
+      throw new BusinessException(131, [clazz.name])
+    }
+    String text = object[holderName]
+
+    def fieldName = "${holderName}Map"
+    def field = clazz.getDeclaredField(fieldName)
+    if (!field) {
+      //error.131.message=The domain class {0} does not support extensible fields. Add @ExtensibleFieldHolder.
+      throw new BusinessException(131, [clazz.name])
+    }
+    def map = field.get(object)
+    if (text) {
+      if (map == null) {
+        map = FieldHolderMap.fromJSON(text)
+        field.set(object, map)
+      }
+    } else {
+      // No JSON, so use an empty map.
+      map = new FieldHolderMap(parsingFromJSON: false)
+      field.set(object, map)
+    }
+
+    return map as FieldHolderMap
+  }
+
+  /**
+   * Gets the field holder front-end Map.  Does not attempt to create it or re-parse the text value.
+   * @param object The object to get the field holder Map from.
+   * @return The map.  Can be null.
+   */
+  @CompileStatic
+  protected FieldHolderMap getExtensibleFieldMapNoParse(Object object) {
+    String holderName = getCustomHolderFieldName(object)
+    def clazz = object.getClass()
+
+    def fieldName = "${holderName}Map"
+    try {
+      return clazz.getDeclaredField(fieldName).get(object) as FieldHolderMap
+    } catch (NoSuchFieldException ignored) {
+      //error.131.message=The domain class {0} does not support extensible fields. Add @ExtensibleFieldHolder.
+      throw new BusinessException(131, [clazz.name])
+    }
+  }
+
+  /**
+   * Gets the field holder text.  Will serialize the field holder front-end Map if it is dirty (contains new data).
+   * @param object The object to get the field holder text from.
+   * @param fieldName The name of the custom field holder.
+   * @return The JSON value.  Can be null.
+   */
+  @CompileStatic
+  String getExtensibleFieldsText(Object object, String fieldName) {
+    // Need to have direct access to avoid infinite loop.  If setAccessible() is no longer allowed, then we can change
+    // the modifiers in the ExtensibleFieldHolderTransform class.
+    Field field = object.class.getDeclaredField(fieldName)
+    field.setAccessible(true)
+
+    def map = getExtensibleFieldMapNoParse(object)
+    if (map?.isDirty()) {
+      // Front-end map changed, so force a JSON creation.
+      def s = Holders.objectMapper.writeValueAsString(map)
+      field.set(object, s)
+      map.setDirty(false)
+      return s
+    } else {
+      // No changes to the front-end map, so return original.
+      return field.get(object)
+    }
+  }
+
+  /**
+   * Sets the field holder text.  Will null out the field holder front-end Map to force a new deserialize on
+   * first use of the map.
+   * @param object The object to set the field holder text on.
+   * @param fieldName The name of the custom field holder.
+   * @param value The value.
+   */
+  @CompileStatic
+  void setExtensibleFieldsText(Object object, String fieldName, String value) {
+    // Need to have direct access to avoid infinite loop.  If setAccessible() is no longer allowed, then we can change
+    // the modifiers in the ExtensibleFieldHolderTransform class.
+    Field field = object.class.getDeclaredField(fieldName)
+    field.setAccessible(true)
+    field.set(object, value)
+
+    // Clear the map to indicate a parse is needed.
+    Field mapField = object.class.getDeclaredField(fieldName + "Map")
+    mapField.setAccessible(true)
+    mapField.set(object, null)
+  }
 
   /**
    * Returns true if the given class has extensible fields (@ExtensibleFields annotation).
@@ -512,18 +558,6 @@ class ExtensibleFieldHelper {
     }
 
     return sb.toString()
-  }
-
-  /**
-   * Handles the methodMissing calls for the given object.  Checks the custom fields for the given field name.
-   * @param object The object to check for custom fields.
-   * @param name The custom field name.
-   * @param args The arguments.
-   * @return The result.
-   */
-  Object handleMethodMissing(Object object, String name, Object... args) {
-    throw new MissingMethodException(name, object.getClass(), args)
-    //return null
   }
 
   /**

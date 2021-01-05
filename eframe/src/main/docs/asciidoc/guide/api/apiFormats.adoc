@@ -95,7 +95,7 @@ The JSON format for these references can use the 'id' format:
 {
   "orderCode": "10102-23",
   "customer": {
-    "id": "dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b"  // <1>
+    "uuid": "dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b"  // <1>
   }
 }
 ----
@@ -116,6 +116,9 @@ You can also use the key fields for these foreign references:
 ----
 <1> The primary key of the foreign record to reference.
 
+NOTE: Some POGOs may use the <<json-by-key,@JSONByKey>> annotation which will use
+      a shorter format (e.g. just _"product": "BIKE_27"_).  This is up to the
+      developer.
 
 
 ==== Custom Fields
@@ -133,8 +136,10 @@ accessed like this:
 {
   "order": "M10102-23",
   "qty": 12.2,
-  "promiseDate": "2009-02-13T18:31:30.000-05:00",
-  "caseColor": "BLUE"
+  "_fields": {
+    "promiseDate": "2009-02-13T18:31:30.000-05:00",
+    "caseColor": "BLUE"
+  }
 }
 ----
 
@@ -162,8 +167,8 @@ class RMA {
 }
 
 ----
-<.> The field `rmaType` will hold the reference to the appropriate flex type.  The acutal
-    values will be stored as described in <<Configurable Type Persistent Storage>>.
+<.> The field `rmaType` will hold the reference to the appropriate flex type.  The actual
+    values will be stored as described in <<Custom Field Storage>>.
 <.> Defines the column that will hold the JSON values of the custom fields.
 
 The API format for this type of data field would be:
@@ -174,10 +179,16 @@ The API format for this type of data field would be:
 {
   "rma": "R10102-23",
   "qty": 12.2,
-  "rmaType_retailerID": "ACME-101",  <.>
-  "rmaType_returnCode": "DEFECTIVE"
+  "_fields": {                  <.>
+    "retailerID": "ACME-101",
+    "returnCode": "DEFECTIVE"
+  }
 }
 ----
-<.> The fields are stored with the <<Configurable Type Persistent Storage>> location with
-    the prefix of `'rmaType_'`.
+<.> The fields are stored with the <<Custom Field Storage>> location
+    (`fields` in this example).
 
+
+NOTE: <<Custom Child List>> will use the API format described in
+      <<Custom Child List Storage>>.  This follows the normal JSON array format, but
+      the element is stored at the top-level, under the name of the custom field.

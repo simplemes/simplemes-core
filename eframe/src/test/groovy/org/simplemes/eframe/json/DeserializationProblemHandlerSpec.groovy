@@ -67,8 +67,8 @@ class DeserializationProblemHandlerSpec extends BaseSpecification {
     and: 'the json for a flex type field value'
     def request = """{
       "rmaType": {"uuid": "$flexType.uuid"},
-      "rmaType_FIELD1": "ACME-101",
-      "rmaType_FIELD2": "ACME-102"
+      "FIELD1": "ACME-101",
+      "FIELD2": "ACME-102"
     }
     """
 
@@ -76,8 +76,8 @@ class DeserializationProblemHandlerSpec extends BaseSpecification {
     def rma = Holders.objectMapper.readValue(request, RMA)
 
     then: 'the object is correct'
-    rma.getRmaTypeValue('FIELD1') == 'ACME-101'
-    rma.getRmaTypeValue('FIELD2') == 'ACME-102'
+    rma.getFieldValue('FIELD1') == 'ACME-101'
+    rma.getFieldValue('FIELD2') == 'ACME-102'
   }
 
   def "verify that deserialize of configurable type fields works - supported field types"() {
@@ -88,7 +88,7 @@ class DeserializationProblemHandlerSpec extends BaseSpecification {
     def valueString = JavascriptUtils.formatForObject(value, (FieldFormatInterface) format.instance)
     def request = """{
       "rmaType": {"uuid": "$flexType.uuid"},
-      "rmaType_FIELD1": $valueString
+      "FIELD1": $valueString
     }
     """
 
@@ -96,7 +96,7 @@ class DeserializationProblemHandlerSpec extends BaseSpecification {
     def rma = Holders.objectMapper.readValue(request, RMA)
 
     then: 'the object is correct'
-    rma.getRmaTypeValue('FIELD1') == result
+    rma.getFieldValue('FIELD1') == result
 
     where:
     value                                           | format                | result

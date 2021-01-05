@@ -278,7 +278,7 @@ class ScanAssyServiceSpec extends BaseSpecification {
     assembledComponents[0].state == AssembledComponentStateEnum.ASSEMBLED
 
     and: 'the assembly data is correct'
-    assembledComponents[0].getAssemblyDataValue('LOT') == '12345'
+    assembledComponents[0].getFieldValue('LOT') == '12345'
 
     and: 'the scan was resolved'
     response.resolved
@@ -359,7 +359,7 @@ class ScanAssyServiceSpec extends BaseSpecification {
     def assembledComponents2 = order.assembledComponents as List<OrderAssembledComponent>
     assembledComponents2.size() == 2
     assembledComponents2[1].bomSequence == 30
-    assembledComponents2[1].getAssemblyDataValue('LOT') == '45678'
+    assembledComponents2[1].getFieldValue('LOT') == '45678'
 
     and: 'the scan was resolved'
     response.resolved
@@ -389,7 +389,7 @@ class ScanAssyServiceSpec extends BaseSpecification {
     assembledComponents[0].lsn == lsn
 
     and: 'the assembly data is correct'
-    assembledComponents[0].getAssemblyDataValue('LOT') == '12345'
+    assembledComponents[0].getFieldValue('LOT') == '12345'
 
     and: 'the scan was resolved'
     response.resolved

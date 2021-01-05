@@ -55,6 +55,7 @@ class SQLUtilsSpec extends BaseSpecification {
     order.color = 'Blue'
     order.save()
 
+
     when: 'the query is executed'
     def list = SQLUtils.instance.executeQuery("SELECT * FROM ORDR where uuid=?", Order, order.uuid)
 

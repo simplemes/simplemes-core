@@ -177,7 +177,7 @@ class FileArchiverSpec extends BaseSpecification {
   }
 
   def "verify that the archiver can unarchive using the original formatting logic"() {
-    given: 'JSON in the original framework 1.0 format'
+    given: 'JSON in the original framework 1.0 format with children records'
     def s = """ [
       "sample.domain.SampleParent",
       {
@@ -190,9 +190,13 @@ class FileArchiverSpec extends BaseSpecification {
           "allFieldsDomain": null,
           "allFieldsDomains": null,
           "sampleChildren": [
-              
+            {
+              "key": "456",
+              "sequence": 10,
+              "uuid": "49687a74-f6f5-4b80-8f3a-a06b818e04ca"
+            }              
           ],
-          "id": 3
+          "uuid" : "bcf50818-cbd9-45d5-b6c0-146332e19045"
       },
       "sample.domain.AllFieldsDomain",
       {
@@ -204,7 +208,7 @@ class FileArchiverSpec extends BaseSpecification {
           "dateTime": "${UnitTestUtils.SAMPLE_ISO_TIME_STRING}",
           "dueDate": "${UnitTestUtils.SAMPLE_ISO_DATE_ONLY_STRING}",
           "dateUpdated": "2019-01-02T09:48:16.406-0500",
-          "id": 247
+          "uuid" : "bcf50818-cbd9-46d5-b6c0-146332e19045"
       }
     ]
     """
@@ -224,10 +228,15 @@ class FileArchiverSpec extends BaseSpecification {
     and: 'the related records are created'
     SampleParent.withTransaction {
       assert SampleParent.count() == 1
+      assert SampleChild.count() == 1
       assert AllFieldsDomain.count() == 1
 
       def p = SampleParent.findByName('SAMPLE')
       p.title == 'Sample'
+
+      def c = SampleChild.findAllBySampleParent(p)
+      c[0].key == '456'
+      c[0].sequence == 10
 
       def afd = AllFieldsDomain.findByName('A-SAMPLE')
       afd.title == 'a-sample'

@@ -139,7 +139,7 @@ class TextUtils {
       // Find end of the current parameter name (=)
       def nameEnd = s.indexOf('=', loc)
       if (nameEnd < 0) {
-        throw new IllegalArgumentException("parseNameValuePairs() badly formed name/value pair near($loc). '=' not found. Source = $s")
+        throw new IllegalArgumentException("Badly formed name/value pair near($loc). '=' not found. Source = $s")
       }
       def name = s[loc..(nameEnd - 1)]
       loc = nameEnd + 1
@@ -148,7 +148,7 @@ class TextUtils {
       loc++
       def valueEnd = s.indexOf(quote, loc)
       if (valueEnd < 0) {
-        throw new IllegalArgumentException("parseNameValuePairs() badly formed name/value pair near($loc). End quote not found. Source = $s")
+        throw new IllegalArgumentException("Badly formed name/value pair near($loc). End quote not found. Source = $s")
       }
 
       def value = s[loc..(valueEnd - 1)]

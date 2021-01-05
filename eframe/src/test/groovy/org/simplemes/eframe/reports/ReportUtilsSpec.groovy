@@ -28,14 +28,13 @@ class ReportUtilsSpec extends BaseSpecification {
 
     and: 'the data formatted for JSON'
     def values = [:]
-    def name = 'assemblyDataType'
     fields.each { k, v ->
-      values["${name}_$k"] = v
+      values[k] = v
     }
     def json = Holders.objectMapper.writeValueAsString(values)
 
     expect: 'the format works'
-    ReportUtils.formatFields(json, flexType.uuid.toString(), name, highlight, max) == result
+    ReportUtils.formatFields(json, flexType.uuid.toString(), 'assemblyDataType', highlight, max) == result
 
     where:
     fields                        | highlight | max | result
@@ -49,18 +48,11 @@ class ReportUtilsSpec extends BaseSpecification {
     def flexType = DataGenerator.buildFlexType([[fieldName: 'FIELD1', fieldLabel: 'actions.label', fieldFormat: StringFieldFormat.instance]])
 
     and: 'the data formatted for JSON'
-    def values = [:]
     def name = 'assemblyDataType'
-    fields.each { k, v ->
-      values["${name}_$k"] = v
-    }
-    def json = Holders.objectMapper.writeValueAsString(values)
+    def json = Holders.objectMapper.writeValueAsString([FIELD1: "value1"])
 
     expect: 'the format works'
-    ReportUtils.formatFields(json, flexType.uuid.toString(), name, highlight, max) == result
+    ReportUtils.formatFields(json, flexType.uuid.toString(), name, true, 50) == "<b>${lookup('actions.label')}</b>: value1"
 
-    where:
-    fields             | highlight | max | result
-    [FIELD1: "value1"] | true      | 50  | "<b>${lookup('actions.label')}</b>: value1"
   }
 }

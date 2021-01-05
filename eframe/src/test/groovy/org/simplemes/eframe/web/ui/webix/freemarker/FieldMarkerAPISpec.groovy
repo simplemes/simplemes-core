@@ -43,7 +43,7 @@ class FieldMarkerAPISpec extends BaseMarkerSpecification {
     and: 'the holder area has the default input field'
     def holder = JavascriptTestUtils.extractBlock(page, 'rows: [')
     def content = JavascriptTestUtils.extractBlock(holder, 'id: "rmaTypeContent",rows: [')
-    def field1Line = TextUtils.findLine(content, 'id: "rmaType_FIELD1"')
+    def field1Line = TextUtils.findLine(content, 'id: "FIELD1"')
     JavascriptTestUtils.extractProperty(field1Line, 'view') == 'text'
 
   }

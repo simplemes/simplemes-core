@@ -46,6 +46,21 @@ class FlexFieldSpec extends BaseSpecification {
     assertValidationFails(field, 201, 'fieldName', ['legal', ' 2BAD'])
   }
 
+  def "verify that invalid guiHints are detected"() {
+    expect: 'the right defaults are used'
+    def flexType = new FlexType(flexType: 'XYZ')
+    FlexField field = new FlexField(flexType: flexType, fieldName: 'FIELD1', guiHints: 'asd; xyz')
+    //error.209.message="{1}" is not a valid GUI Hint for field {2}.  The hint must be in the format ''name1="value" name2="value"'' format.  Error: {3}
+    assertValidationFails(field, 209, 'guiHints', ['asd', 'xyz', 'name1="value"', 'near(0)', 'FIELD1'])
+  }
+
+  def "verify that valid guiHints are allowed"() {
+    expect: 'the right defaults are used'
+    def flexType = new FlexType(flexType: 'XYZ')
+    FlexField field = new FlexField(flexType: flexType, fieldName: 'FIELD1', guiHints: 'name="value"')
+    !field.validate()
+  }
+
   @Rollback
   def "verify that equals and hash code work"() {
     given: 'a flex type'

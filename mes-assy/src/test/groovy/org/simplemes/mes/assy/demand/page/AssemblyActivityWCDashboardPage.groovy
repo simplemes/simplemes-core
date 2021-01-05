@@ -26,8 +26,8 @@ class AssemblyActivityWCDashboardPage extends WorkCenterSelectionDashboardPage {
 
     // Elements on the add component dialog (dialog0)
     addQtyField { module(new TextFieldModule(field: 'qty')) }
-    addField1 { module(new TextFieldModule(field: 'assemblyData_FIELD1')) }
-    addField2 { module(new TextFieldModule(field: 'assemblyData_FIELD2')) }
+    addField1 { module(new TextFieldModule(field: 'FIELD1')) }
+    addField2 { module(new TextFieldModule(field: 'FIELD2')) }
     addCancelButton { $('div', view_id: 'dialog0-cancel') }
     addAssembleButton { $('div', view_id: 'dialog0-assemble') }
 

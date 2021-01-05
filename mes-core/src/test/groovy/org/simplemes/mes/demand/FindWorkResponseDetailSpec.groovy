@@ -1,14 +1,6 @@
 package org.simplemes.mes.demand
 
 import org.simplemes.eframe.test.BaseSpecification
-import org.simplemes.eframe.test.annotation.Rollback
-import org.simplemes.mes.demand.domain.LSN
-import org.simplemes.mes.demand.domain.LSNOperState
-import org.simplemes.mes.demand.domain.Order
-import org.simplemes.mes.demand.domain.OrderOperState
-import org.simplemes.mes.product.domain.Product
-import org.simplemes.mes.tracking.domain.ActionLog
-import org.simplemes.mes.tracking.domain.ProductionLog
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.
@@ -21,84 +13,8 @@ import org.simplemes.mes.tracking.domain.ProductionLog
  */
 class FindWorkResponseDetailSpec extends BaseSpecification {
 
-  @SuppressWarnings("unused")
-  static dirtyDomains = [ActionLog, ProductionLog, Order, Product]
-
-  @Rollback
-  def "test order copy constructor"() {
-    given: 'an order'
-    def order = new Order(order: 'ABC', qtyInQueue: 23.2, qtyInWork: 14.2).save()
-
-    when: 'the detail is created from the order'
-    def detail = new FindWorkResponseDetail(order)
-
-    then: 'the qty/order is copied'
-    detail.order == order.order
-    detail.orderID == order.uuid
-    detail.qtyInQueue == order.qtyInQueue
-    detail.qtyInWork == order.qtyInWork
-    detail.id == order.uuid
-  }
-
-  @Rollback
-  def "test LSN copy constructor"() {
-    given: 'an LSN'
-    def order = new Order(order: 'ABC', qtyInQueue: 23.2, qtyInWork: 14.2).save()
-    def lsn = new LSN(lsn: 'SN237', order: order, qtyInQueue: 33.2, qtyInWork: 74.2).save()
-
-    when: 'the detail is created from the order'
-    def detail = new FindWorkResponseDetail(lsn)
-
-    then: 'the qty is copied'
-    detail.lsn == lsn.lsn
-    detail.lsnID == lsn.uuid
-    detail.order == lsn.order.order
-    detail.orderID == lsn.order.uuid
-    detail.qtyInQueue == lsn.qtyInQueue
-    detail.qtyInWork == lsn.qtyInWork
-    detail.id == lsn.uuid
-  }
-
-  @Rollback
-  def "test OrderOperState copy constructor"() {
-    given: 'an order with a step state'
-    def order = new Order(order: 'ABC', qtyInQueue: 23.2, qtyInWork: 14.2).save()
-    def orderOperState = new OrderOperState(sequence: 3, qtyInQueue: 27.2, qtyInWork: 38.4, order: order).save()
-    order.operationStates = [orderOperState]
-
-    when: 'the detail is created from the order'
-    def detail = new FindWorkResponseDetail(orderOperState)
-
-    then: 'the qty/operation is copied'
-    detail.order == order.order
-    detail.orderID == order.uuid
-    detail.qtyInQueue == orderOperState.qtyInQueue
-    detail.qtyInWork == orderOperState.qtyInWork
-    detail.operationSequence == orderOperState.sequence
-    detail.id == orderOperState.uuid
-  }
-
-  @Rollback
-  def "test LSNOperState copy constructor"() {
-    given: 'an LSN/Order with a step state'
-    def order = new Order(order: 'ABC', qtyInQueue: 23.2, qtyInWork: 14.2).save()
-    def lsn = new LSN(lsn: 'SN001', order: order).save()
-    def lsnOperState = new LSNOperState(sequence: 3, qtyInQueue: 27.2, qtyInWork: 38.4, lsn: lsn).save()
-    lsn.operationStates = [lsnOperState]
-
-    when: 'the detail is created from the lsn oper state'
-    def detail = new FindWorkResponseDetail(lsnOperState)
-
-    then: 'the qty/operation is copied'
-    detail.lsn == lsn.lsn
-    detail.lsnID == lsn.uuid
-    detail.order == lsn.order.order
-    detail.orderID == lsn.order.uuid
-    detail.qtyInQueue == lsnOperState.qtyInQueue
-    detail.qtyInWork == lsnOperState.qtyInWork
-    detail.operationSequence == lsnOperState.sequence
-    detail.id == lsnOperState.uuid
-  }
+  //@SuppressWarnings("unused")
+  //static dirtyDomains = [ActionLog, ProductionLog, Order, Product]
 
   def "test common constructor status tests"() {
     given: 'a detail record'
@@ -118,4 +34,56 @@ class FindWorkResponseDetailSpec extends BaseSpecification {
     0.0        | 34.2      | false   | true
     0.0        | 0.0       | false   | false
   }
+
+  def "test map constructor with just order column names"() {
+    given: 'some values to set'
+    def map = [uuid    : UUID.randomUUID(),
+               order_id: UUID.randomUUID(),
+               ordr    : 'M1001']
+    when: 'the detail is created from the map with column names'
+    def detail = new FindWorkResponseDetail(map)
+
+    then: 'the qty/operation is copied'
+    detail.order == map.ordr
+    detail.orderID == map.order_id
+    detail.id == map.uuid
+  }
+
+  def "test map constructor with all column names"() {
+    given: 'some values to set'
+    def date = new Date()
+    def map = [qty_in_queue   : 23.7,
+               qty_in_work    : 33.7,
+               qty_done       : 13.7,
+               sequence       : 237,
+               uuid           : UUID.randomUUID(),
+               lsn            : 'SN001',
+               lsn_id         : UUID.randomUUID(),
+               ordr           : 'M1001',
+               order_id       : UUID.randomUUID(),
+               dateQtyQueued  : date, dateQtyStarted: new Date(date.time + 1000),
+               dateFirstQueued: new Date(date.time + 2000), dateFirstStarted: new Date(date.time + 3000)]
+    when: 'the detail is created from the map with column names'
+    def detail = new FindWorkResponseDetail(map)
+
+    then: 'the qty/operation is copied'
+    detail.order == map.ordr
+    detail.orderID == map.order_id
+    detail.lsn == map.lsn
+    detail.lsnID == map.lsn_id
+    detail.qtyInQueue == map.qty_in_queue
+    detail.qtyInWork == map.qty_in_work
+    detail.qtyDone == map.qty_done
+    detail.operationSequence == map.sequence
+    detail.id == map.uuid
+    detail.dateQtyQueued == map.dateQtyQueued
+    detail.dateQtyStarted == map.dateQtyStarted
+    detail.dateFirstQueued == map.dateFirstQueued
+    detail.dateFirstStarted == map.dateFirstStarted
+
+    and: 'the inWork/inQueue flags work'
+    detail.inQueue
+    detail.inWork
+  }
+
 }

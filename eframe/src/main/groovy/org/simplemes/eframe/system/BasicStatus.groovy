@@ -1,5 +1,6 @@
 package org.simplemes.eframe.system
 
+
 import groovy.transform.ToString
 import org.simplemes.eframe.data.ChoiceListInterface
 import org.simplemes.eframe.data.ChoiceListItemInterface

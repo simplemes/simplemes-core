@@ -13,12 +13,15 @@ micronaut:
         enabled: true
       logout:
         enabled: true
-    session:
-      enabled: true
-      login-success-target-url: /
-      login-failure-target-url: /login/authFailed
-      #unauthorized-target-url: /login/auth
-      #forbidden-target-url: /login/denied
+    reject-not-found: false
+    redirect:
+      forbidden:
+        enabled: true
+        url: /login/auth
+      prior-to-login: true
+      unauthorized:
+        enabled: true
+        url: /login/auth
     token:
       jwt:
         enabled: true
@@ -26,13 +29,23 @@ micronaut:
           enabled: false
         cookie:
           enabled: true
-          loginFailureTargetUrl: /login/authFailed
+          loginFailureTargetUrl: /login/auth?failed=true
+          cookie-same-site: 'Strict'
         signatures:
           secret:
             generator:
               secret: ${eframe.key}
         generator:
-          access-token.expiration: 1209600  # TODO: 14 days, 1.0.1 Check fix when RedirectRejectionHandler released (https://github.com/micronaut-projects/micronaut-core/pull/893)
+          access-token.expiration: 937  #
+          refresh-token:
+            enabled: true
+            base64: true
+            secret: ${eframe.key}
+      refresh:
+        cookie:
+          cookie-path: '/'
+          cookie-max-age: '31d'
+          cookie-same-site: 'Strict'
     interceptUrlMap:
       - pattern: /assets/**
         httpMethod: GET
@@ -44,16 +57,13 @@ micronaut:
           - isAnonymous()
   server.netty.logLevel: DEBUG
   server.thread-selection: AUTO
-
----
-dataSource:
-  url: jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
-  dbCreate: create-drop
-  pooled: true
-  jmxExport: true
-  driverClassName: org.h2.Driver
-  username: sa
-  password: ''
+  metrics:
+    enabled: true
+    export:
+      prometheus:
+        enabled: true
+        step: PT1M
+        descriptions: false
 
 ---
 
@@ -67,12 +77,6 @@ flyway:
       baseline-on-migrate: true
       baseline-version: 1.0.3
       baseline-description: empty
-
----
-jackson:
-  serialization:
-    indentOutput: false
-    useEqualityForObjectID: true
 
 ---
 assets:

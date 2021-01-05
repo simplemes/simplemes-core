@@ -149,7 +149,7 @@ public class ExtensionPointTransformation implements ASTTransformation {
     String methodReturnType = methodNode.getReturnType().getName();
     if (!postMethodReturnType.equals(methodReturnType)) {
       SimpleMessage message = new SimpleMessage("Interface '" + interfaceType.getName() + "' post method '" + postMethodName +
-          "' does return the correct type " +
+          "' does not return the correct type " +
           " for the @ExtensionPoint on method " + methodNode.getName() + ". Found: " + postMethodReturnType + ", expected: " +
           methodReturnType, sourceUnit);
       sourceUnit.getErrorCollector().addError(message);
@@ -190,7 +190,8 @@ public class ExtensionPointTransformation implements ASTTransformation {
         String names = parameters2.get(i).getName() + "/" + parameters1.get(i).getName();
         SimpleMessage message = new SimpleMessage("Interface '" + interfaceType.getName() + "' method '" + methodName1 +
             "' has different parameters than the @ExtensionPoint method " + methodName2 +
-            ".  Parameter class mismatch on " + names + ": " + className1 + "" + " vs. " + className2 + "",
+            ".  Parameter class mismatch on parameter "+(i+1)+". Expected: " + ASTUtils.parameterToReadableString(parameters1.get(i)) +
+            ". Found: " + ASTUtils.parameterToReadableString(parameters2.get(i)) + ".",
             sourceUnit);
         sourceUnit.getErrorCollector().addError(message);
         return false;

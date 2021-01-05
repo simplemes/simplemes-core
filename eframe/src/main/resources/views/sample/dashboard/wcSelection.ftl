@@ -22,14 +22,15 @@
   }
   // Testbed for dashboard layout work
   <@efForm id="logFailure" dashboard='buttonHolder'>
-  <@efField field="order" id="order" label="Order/LSN" value="M1008"
+  <@efField field="order" id="order" label="Order/LSN" value="M1008" suggest="/order/suggestOrder?workCenter=WC1"
             width=20 labelWidth='35%' onChange="${variable}.changed(newValue)">
     <@efButton type='undo' id="undoButton" tooltip='undo.title' click='dashboard.undoAction();'/>
     <#--noinspection UnterminatedStatementJS-->
-    <@efHTML><a href='./'>link</a>
+    <@efHTML><a onclick="tk.setSuggestURI('order','/order/suggestOrder?workCenter=WC1&ts='+new Date().getTime())">link</a>
     </@efHTML>
   </@efField>
   </@efForm>
 
+  ${params._variable}.postScript = 'ef.focus("order")';
 
 </script>

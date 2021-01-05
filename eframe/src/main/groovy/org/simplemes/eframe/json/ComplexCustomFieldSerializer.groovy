@@ -18,7 +18,6 @@ import org.simplemes.eframe.data.format.CustomChildListFieldFormat
  *   <b>Note:</b> This serializer depends on the _complexCustomFields Map added to all extensible field domains.
  */
 class ComplexCustomFieldSerializer extends JsonSerializer<Object> {
-
   /**
    * The domain class to serialize the custom fields from.
    */

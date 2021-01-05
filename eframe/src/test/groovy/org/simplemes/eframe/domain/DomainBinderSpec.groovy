@@ -498,6 +498,46 @@ class DomainBinderSpec extends BaseSpecification {
   }
 
   @Rollback
+  def "verify that one level child bindings works on create when the dbID is the string null"() {
+    // Special case for when validation fails and save is attempted again.  The id is 'null' (a string value),
+    // not a proper UUID.  This happens with this scenario:
+    /*
+      Create new Flex Type record
+      Put characters 'ddd' in sequence field
+      Press Create Button
+      Error on invalid value - "Parse error on fields.sequence. Invalid value ddd."
+      Press Create Button
+      Error - "java.lang.IllegalArgumentException: Invalid UUID string: null"
+     */
+    when: 'the object params are bound'
+    def o = new SampleParent()
+    DomainBinder.build().bind(o, [name                        : 'ABC',
+                                  'sampleChildren[0].id'      : 'null',
+                                  'sampleChildren[0]._dbId'   : 'null',
+                                  'sampleChildren[0].key'     : 'ABC',
+                                  'sampleChildren[0].title'   : 'abc',
+                                  'sampleChildren[0].sequence': '247'], true)
+
+    and: 'the top-level record is saved'
+    o.save()
+
+    then: 'the child object has the right values'
+    o.sampleChildren.size() == 1
+    SampleChild child = (SampleChild) o.sampleChildren[0]
+    child.key == 'ABC'
+    child.title == 'abc'
+    child.sequence == 247
+
+    and: 'the record can be read from the DB'
+    def record = SampleParent.findByName('ABC')
+    record.sampleChildren.size() == 1
+    SampleChild child2 = (SampleChild) record.sampleChildren[0]
+    child2.key == 'ABC'
+    child2.title == 'abc'
+    child2.sequence == 247
+  }
+
+  @Rollback
   def "verify that one level child bindings works with sparse list"() {
     def record = new SampleParent()
     // Mixed up order of the parameters is intentional.  Tests the index sorting for the rows.
@@ -652,7 +692,7 @@ class DomainBinderSpec extends BaseSpecification {
     def order = null
     Order.withTransaction {
       order = new Order()
-      DomainBinder.build().bind(order, [order     : 'ABC',
+      DomainBinder.build().bind(order, [order           : 'ABC',
                                         customComponents: [
                                           [sequence: 1, product: 'PROD1', qty: 12.2],
                                           [sequence: 2, product: 'PROD2', qty: 22.2]
@@ -693,7 +733,7 @@ class DomainBinderSpec extends BaseSpecification {
     when: 'the object params are bound'
     Order.withTransaction {
       order = new Order()
-      DomainBinder.build().bind(order, [order     : 'ABC',
+      DomainBinder.build().bind(order, [order           : 'ABC',
                                         customComponents: [
                                           [sequence: 11, product: 'PROD1A', qty: 32.2],
                                           [sequence: 12, product: 'PROD2A', qty: 42.2]
@@ -725,10 +765,10 @@ class DomainBinderSpec extends BaseSpecification {
 
     when: 'the object params are bound'
     def rma = new RMA()
-    DomainBinder.build().bind(rma, [rma: 'ABC', rmaType: flexType.id.toString(), rmaType_FIELD1: 'custom value 1'])
+    DomainBinder.build().bind(rma, [rma: 'ABC', rmaType: flexType.id.toString(), FIELD1: 'custom value 1'])
 
     then: 'the domain has the right values'
-    rma.getRmaTypeValue('FIELD1') == 'custom value 1'
+    rma.getFieldValue('FIELD1') == 'custom value 1'
   }
 
   @Rollback
@@ -847,6 +887,36 @@ class DomainBinderSpec extends BaseSpecification {
     order2.version == 237
   }
 
+  @SuppressWarnings('GroovyUnusedAssignment')
+  @Rollback
+  def "verify that bind supports JDBC ResultSet - custom field case"() {
+    given: 'populate raw table for the query'
+    def order1 = new Order(order: 'M1001', version: 237, customFields: '{"color": "Blue"}').save()
+
+    when: 'an SQL query result set is created'
+    PreparedStatement ps = null
+    ResultSet rs = null
+    Order order2 = null
+    try {
+      ps = getPreparedStatement("SELECT *  from ordr")
+      ps.execute()
+      rs = ps.getResultSet()
+      while (rs.next()) {
+        order2 = DomainBinder.bindResultSet(rs, Order) as Order
+      }
+    } finally {
+      if (ps != null) {
+        ps.close()
+      }
+      if (rs != null) {
+        rs.close()
+      }
+    }
+
+    then: 'the custom fields are populated'
+    order2.customFields == order1.customFields
+  }
+
   @Rollback
   def "verify that bind supports JDBC ResultSet - domain reference case"() {
     given: 'populate raw table for the query'
@@ -859,6 +929,20 @@ class DomainBinderSpec extends BaseSpecification {
     then: 'record fields are populated'
     list.size() == 1
     list[0].order == order
+  }
+
+  def "verify that the custom field holder is not logged as an ignored field"() {
+    given: 'a mock appender for one level only'
+    def mockAppender = MockAppender.mock(DomainBinder, Level.WARN)
+
+    and: 'a domain object to bind to'
+    def o = new SampleParent()
+
+    when: 'the object params are bound'
+    DomainBinder.build().bind(o, [name: 'ABC', customFields: '{}'])
+
+    then: 'no warning message is written'
+    !mockAppender.message
   }
 
   // remove foreign domain from list.

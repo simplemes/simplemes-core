@@ -8,7 +8,6 @@ import groovy.transform.ToString
 import org.simplemes.eframe.data.format.FieldFormatFactory
 import org.simplemes.eframe.data.format.FieldFormatInterface
 import org.simplemes.eframe.domain.PersistentProperty
-import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.misc.ArgumentUtils
 
 import java.lang.reflect.Field
@@ -129,14 +128,7 @@ class SimpleFieldDefinition implements FieldDefinitionInterface {
    * @param field The field.
    */
   SimpleFieldDefinition(Field field) {
-    ArgumentUtils.checkMissing(field, 'field')
-    name = field.name
-    type = field.type
-    if (DomainEntityInterface.isAssignableFrom(type)) {
-      referenceType = field.type
-      reference = (type != null)
-    }
-    setDefaultValues()
+    this(new PersistentProperty(field))
   }
 
   /**

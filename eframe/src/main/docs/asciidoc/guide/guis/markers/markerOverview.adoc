@@ -131,6 +131,12 @@ The markers that support this sub-field processing include:
 * <<efCreate>>
 * <<efEdit>>
 
+Some of the common options include:
+
+* *@suggest* - link:reference.html#text-field-suggest[Text Field Suggest^] icon:share-square-o[role="link-blue"].
+* *@readOnly* - If true, then the input field is not editable.
+* *@width* - The field width.
+* *@attributes* - Additional HTML element attributes (e.g. _'autocomplete:"username"'_).
 
 ===== Adding to the HTML Head
 

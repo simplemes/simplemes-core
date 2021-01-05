@@ -91,7 +91,7 @@
     var title = ef.lookup('addComponent.title',titleArgs);
     var focusField = '';
     if (rowData.firstAssemblyDataField) {
-      focusField = 'assemblyData_'+rowData.firstAssemblyDataField;
+      focusField = rowData.firstAssemblyDataField;
     }
 
     //console.log(uri);

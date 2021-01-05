@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.node.ObjectNode
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
 import org.simplemes.eframe.data.ConfigurableTypeInterface
 import org.simplemes.eframe.data.FieldDefinitionInterface
+import org.simplemes.eframe.data.FieldDefinitions
+import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.data.format.ConfigurableTypeDomainFormat
 import org.simplemes.eframe.data.format.ListFieldLoaderInterface
 import org.simplemes.eframe.domain.DomainBinder
@@ -59,6 +61,11 @@ class DeserializationProblemHandler extends com.fasterxml.jackson.databind.deser
       return true
     }
 
+    if (propertyName == ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME) {
+      // The complex field holder will be in all extensible objects, so ignore it.  It is always null.
+      return true
+    }
+
     // Check for a custom field
     def fieldDefinitions = ExtensibleFieldHelper.instance.getEffectiveFieldDefinitions(beanOrClass.class)
     def fieldDefinition = fieldDefinitions[propertyName]
@@ -70,34 +77,44 @@ class DeserializationProblemHandler extends com.fasterxml.jackson.databind.deser
       } else {
         // Let the field field format convert the value to be saved
         def value = fieldDefinition.format.convertFromJsonFormat(p.getText(), fieldDefinition)
+        //println "value ($fieldDefinition.name,$fieldDefinition.format) = ${p.currentName()} $value $p ${p.getText()}"
         fieldDefinition.setFieldValue(beanOrClass, value)
         return true
       }
     } else {
-      for (field in fieldDefinitions) {
-        if (propertyName.startsWith("${field.name}_") && field.format == ConfigurableTypeDomainFormat.instance) {
-          // This is probably a configurable type field value, so we can save it in the new object.
-          // Need to convert it to the right type
-          def configType = beanOrClass[field.name]
-          if (configType instanceof ConfigurableTypeInterface) {
-            // Use the field type in the Configurable type to convert from string to the right type.
-            def configFields = configType.determineInputFields(field.name)
-            def jsonValue = p.getText()
-            FieldDefinitionInterface configField = configFields.find { it.name == propertyName } as FieldDefinitionInterface
-            if (configField) {
-              jsonValue = configField.format.convertFromJsonFormat(p.getText(), configField)
+      // See if the property is a configurable type field name
+      return deserializeConfigurableTypes(propertyName, fieldDefinitions, beanOrClass, p)
+    }
+  }
+
+  /**
+   * Will de-serialize a field from a configurable type.
+   * @param propertyName The propertyName
+   * @param fieldDefinitions The object's field definitions.
+   * @param beanOrClass The object to deserialize into.
+   * @param p The parser.
+   * @return True if the field is part of a configurable type and the value was parsed into the object.
+   */
+  boolean deserializeConfigurableTypes(String propertyName, FieldDefinitions fieldDefinitions, Object beanOrClass, JsonParser p) {
+    for (fieldDefinition in fieldDefinitions) {
+      if (fieldDefinition.format == ConfigurableTypeDomainFormat.instance) {
+        def configType = beanOrClass[fieldDefinition.name]
+        if (configType instanceof ConfigurableTypeInterface) {
+          def configFields = configType.determineInputFields(fieldDefinition.name)
+          for (configField in configFields) {
+            if (configField.name == propertyName) {
+              def jsonValue = configField.format.convertFromJsonFormat(p.getText(), configField)
+              //println "no field found. propertyName = $propertyName for $jsonValue ${jsonValue.getClass()}"
+              ExtensibleFieldHelper.instance.setFieldValue(beanOrClass, propertyName, jsonValue)
+              return true
             }
-            //println "no field found. propertyName = $propertyName for $jsonValue ${jsonValue.getClass()}"
-            ExtensibleFieldHelper.instance.setFieldValue(beanOrClass, propertyName, jsonValue)
-            break
           }
         }
       }
     }
-
     return false
-  }
 
+  }
 
   /**
    * Deserialize the given custom child list for the given bean node.  Stores the values in the complex custom field holder.
@@ -128,6 +145,7 @@ class DeserializationProblemHandler extends com.fasterxml.jackson.databind.deser
    * @param node The node.
    * @return The text or map.
    */
+  @SuppressWarnings("unused")
   protected Object convertNode(Object key, Object node) {
     if (node instanceof ObjectNode) {
       def map = [:]

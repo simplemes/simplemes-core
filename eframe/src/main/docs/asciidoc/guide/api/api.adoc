@@ -6,6 +6,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<JSON>>#
 [inline-toc]#<<Rest API>>#
 [inline-toc]#<<API Formats>>#
+[inline-toc]#<<custom-fields,API Formats - Custom Fields>>#
 [inline-toc]#<<API Actions - Non-CRUD>>#
 [inline-toc]#<<API Error Handling>>#
 

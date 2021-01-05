@@ -306,6 +306,16 @@ public class ASTUtils {
   }
 
   /**
+   * Creates a human-readable form of the parameter's name/class.
+   *
+   * @param parameter The AST parameter.
+   * @return The readable form: (e.g. 'paramName:(java.lang.String)').
+   */
+  public static String parameterToReadableString(Parameter parameter) {
+    return parameter.getName()+"("+parameter.getType().getName()+")";
+  }
+
+  /**
    * Invokes the given groovy class/method with arguments.  This is done to access
    * the groovy world from the Java code.  This is needed since the Java source tree is compiled before
    * the groovy code is compiled.

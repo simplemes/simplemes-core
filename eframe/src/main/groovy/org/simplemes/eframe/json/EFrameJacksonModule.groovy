@@ -82,7 +82,7 @@ class EFrameJacksonModule extends SimpleModule {
    * @return True if the field is the custom field holder.
    */
   static boolean isCustomFieldHolder(Class domainClass, String fieldName) {
-    def customFieldHolderName = '_' + ExtensibleFieldHelper.instance.getCustomHolderFieldName(domainClass)
+    def customFieldHolderName = ExtensibleFieldHelper.instance.getCustomHolderFieldName(domainClass)
     return (customFieldHolderName == fieldName)
   }
 
@@ -198,7 +198,7 @@ class EFrameBeanSerializerModifier extends BeanSerializerModifier {
         continue
       }
       def fieldDef = fieldDefinitions?.get(fieldName)
-      //println "  fieldDef = $fieldName $fieldDef"
+      //println "  fieldDef = $fieldName $fieldDef ${beanDesc.classInfo}"
       if (fieldDef?.isReference()) {
         if (fieldDef.parentReference) {
           // Never serialize a parent reference
@@ -214,8 +214,8 @@ class EFrameBeanSerializerModifier extends BeanSerializerModifier {
         w.assignSerializer(new EnumSerializer(fieldName))
       } else if (fieldDef?.format == EncodedTypeFieldFormat.instance) {
         w.assignSerializer(new EncodedTypeSerializer(fieldName))
-      } else if (EFrameJacksonModule.isCustomFieldHolder(clazz, fieldName)) {
-        w.assignSerializer(new CustomFieldSerializer(clazz))
+        //} else if (EFrameJacksonModule.isCustomFieldHolder(clazz, fieldName)) {
+        //  fieldsToRemove << fieldName
       } else if (EFrameJacksonModule.isComplexCustomFieldHolder(fieldName)) {
         w.assignSerializer(new ComplexCustomFieldSerializer(clazz))
       } else {

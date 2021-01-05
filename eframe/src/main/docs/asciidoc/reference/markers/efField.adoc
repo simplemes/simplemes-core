@@ -71,6 +71,8 @@ The main parameters/body supported are:
                 (*Default:* false).
 |*css* | The css class(es) to add to the field.  Multiple classes are supported, using space as
          a delimiter.
+|*suggest* | The suggest URI for dynamic auto-complete from the server.  Text fields only.
+             See <<Text Field Suggest>> below for details.
 |*attributes* | Any additional HTML attributes to add to the text field element.  Formatted as
                 standard Javascript object elements (e.g. 'autocomplete:"username",type:"text"')
 
@@ -122,6 +124,54 @@ link:guide.html#markers-and-options[Markers and Options^] icon:share-square-o[ro
 This includes labels and sizes.
 
 NOTE: This marker supports the <<Inline Grid>>.
+
+
+==== Text Field Suggest
+
+Text input fields support dynamic server-side suggestion lists based on the user's input
+as they type.  You enable this by providing a server-side URI for the suggest list:
+
+[source,html]
+.Example - Text Field Suggest
+----
+<@efForm id="selection">
+  <@efField field="order" id="order" label="Order/LSN"
+    suggest="/order/suggestOrder?workCenter=WC1" />
+<@/efForm>
+----
+
+This will disable the normal browser-based auto-complete logic and then query the server
+after every character change in the input field.  The server-side controller must:
+
+. Accept the current filter value as the request parameter `'filter[value]'`
+. Provide the values in the right format (see below).
+
+[source,json]
+.JSON Response
+----
+[
+  {
+    "uuid":"dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b",  <.>
+    "value":"PRODUCT_ABC",
+  },
+  {
+    "uuid":"dbb0c868-3ae5-4fd1-a0a4-e0ddda375e2b",
+    "value":"PRODUCT_XYZ",
+  },
+  . . .
+]
+----
+<.> Each element must have unique ID.  It can be a simple integer.
+
+NOTE: The server-side logic must limit the returned list size if needed.  The client-side
+      shows the entire list.
+
+It is also possible to alter the `suggest` URI dynamically on the client.  In the example
+above, you might want to change the `workCenter` base on user inputs.  To do this,
+you can use the method <<setSuggestURI>> (`tk.setSuggestURI()` from the Javascript Toolkit).
+
+This `suggest` option is one of the options supported by the common
+link:guide.html#markers-and-options[Markers and Options^] icon:share-square-o[role="link-blue"].
 
 
 ==== Field Examples
@@ -200,7 +250,7 @@ StandardModelAndView logRMADialog(HttpRequest request, @Nullable Principal princ
      . . .
 
   def defaultRMA = new RMA(rmaType: flexType) // <.>
-  defaultRMA.setRmaTypeValue('returnDate', new Date())
+  defaultRMA.setFieldValue('returnDate', new Date())
   
   modelAndView['rmaDataModel'] = defaultRMA   // <.>
 

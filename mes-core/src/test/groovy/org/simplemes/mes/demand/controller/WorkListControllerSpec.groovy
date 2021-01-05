@@ -6,6 +6,7 @@ import org.simplemes.eframe.test.ControllerTester
 import org.simplemes.eframe.test.MockPrincipal
 import org.simplemes.eframe.test.MockRenderer
 import org.simplemes.eframe.test.annotation.Rollback
+import org.simplemes.eframe.web.ui.webix.ToolkitConstants
 import org.simplemes.mes.demand.FindWorkRequest
 import org.simplemes.mes.demand.FindWorkResponse
 import org.simplemes.mes.demand.domain.Order
@@ -52,10 +53,12 @@ class WorkListControllerSpec extends BaseAPISpecification {
     controller.workListService = mockService
 
     when: 'the request is sent to the controller'
-    def res = controller.findWork(mockRequest([count: '13', start: '26', findInWork: 'false', findInQueue: 'false']), new MockPrincipal('jane', 'OPERATOR'))
+    def params = [count: '13', start: '26', findInWork: 'false', findInQueue: 'false']
+    params[ToolkitConstants.SUGGEST_FILTER_PARAMETER_NAME] = 'xyz'
+    def res = controller.findWork(mockRequest(params), new MockPrincipal('jane', 'OPERATOR'))
 
     then: 'the response is correct'
-    def json = Holders.objectMapper.readValue(res.body.get() as String,Map)
+    def json = Holders.objectMapper.readValue(res.body.get() as String, Map)
     json.total_count == 231
   }
 
@@ -102,10 +105,65 @@ class WorkListControllerSpec extends BaseAPISpecification {
     def res = sendRequest(uri: '/workList/findWork?workCenter=ABC', content: s)
 
     then: 'the released order is in the list'
-    def json = Holders.objectMapper.readValue(res as String,Map)
+    def json = Holders.objectMapper.readValue(res as String, Map)
     json.total_count == 1
     json.data.size() == 1
     json.data[0].order == order.order
+  }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that suggest handles the simple filter case - via HTTP API "() {
+    given: 'a released order'
+    def order = null
+    WorkCenter.withTransaction {
+      setCurrentUser()
+      order = MESUnitTestUtils.releaseOrder([:])
+    }
+
+    when: ''
+    login()
+    def res = sendRequest(uri: '/workList/suggest?filter[value]=M')
+
+    then: 'the released order is in the list'
+    def json = Holders.objectMapper.readValue(res as String, List)
+    json.size() == 1
+    json[0].value == order.order
+    json[0].id == order.uuid.toString()
+  }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that suggest handles the empty filter case - via HTTP API "() {
+    given: 'a released order'
+    def order = null
+    WorkCenter.withTransaction {
+      setCurrentUser()
+      order = MESUnitTestUtils.releaseOrder([:])
+    }
+
+    when: ''
+    login()
+    def res = sendRequest(uri: '/workList/suggest')
+
+    then: 'the released order is in the list'
+    def json = Holders.objectMapper.readValue(res as String, List)
+    json.size() == 0
+  }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that suggest supports row limits - via HTTP API "() {
+    given: 'a released order'
+    WorkCenter.withTransaction {
+      setCurrentUser()
+      MESUnitTestUtils.releaseOrders(nOrders: 12, spreadQueuedDates: true)
+    }
+
+    when: ''
+    login()
+    def res = sendRequest(uri: '/workList/suggest?filter[value]=M&size=6')
+
+    then: 'the released order is in the list'
+    def json = Holders.objectMapper.readValue(res as String, List)
+    json.size() == 6
   }
 
   def "verify index creates the correct model and view"() {

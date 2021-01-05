@@ -181,7 +181,7 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     res.status() == HttpStatus.OK
     //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
     def json = new JsonSlurper().parseText((String) res.body())
-    json.custom1 == 'xyzzy'
+    json._otherCustomFields.custom1 == 'xyzzy'
   }
 
   @Rollback
