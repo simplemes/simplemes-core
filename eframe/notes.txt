@@ -1,6 +1,34 @@
 Scratch
 =======
 
+Issues 299
+----------
+  Add fix for undetected missed update. See  https://github.com/micronaut-projects/micronaut-data/issues/299
+  Two options:
+    1) Sub-class 3 elements and store the row count somewhere (in the domain?).
+           TransactionOperations<Connection> 
+           AbstractSynchronousTransactionManager.executeWrite()  (subclass DataSourceTransactionManager)
+             TransactionStatus.getConnection()   (subclass DefaultTransactionStatus)
+               Connection.prepareStatement()     (HikariProxyConnection)
+                 Statement.execute()             (HikariProxyPreparedStatement.executeUpdate())
+       Need to create wrapper classes to override the right methods.
+       These wrappers need to keep references to the real class
+
+    2) Execute query with where clause before the real query.  Fail if updates 0 rows.
+    3) Replace Hikari connection manager?
+         Replace DatasourceFactory with sub-class.
+           Overrides dataSource() method to return wrapper class.
+         Sub-class of HikariDataSource() provides wrapped HikariProxyConnection
+         Sub-class of HikariProxyConnection provides wrapped Prepared Statement.
+           Prepared statement.executeUpdate() stores res (count) where?
+    4) Clone the updateOne() from source and keep it synched manually.
+       Remove logic at line 560 - call to persistOne().  Throw exception?
+    5) Drop MN-Data?  Replace with:
+         BaseRepository methods:
+           find(), list(), count(), get(), update(), delete()
+         Transaction support.  Still use micronaut-data-tx?
+         Need way to define specific SQL in Repository.
+
 Questions
 ---------
 No default dashboard found.  Maybe add link on error message to run demoData?
@@ -14,6 +42,7 @@ Add Getting Started section to Domains/GUIS/Controllers/Services.
   Template/Getting Started with Domains?
 TaskMenu without folder disappears.
 GUI with single field.
+Add option on get
 
 Custom Field Rework
 --------------------
