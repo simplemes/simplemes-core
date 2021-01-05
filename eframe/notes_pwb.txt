@@ -5,3 +5,5 @@ On index.ftl files for domain class spaces between columns are not allowed. It a
 - <@efDefinitionList columns="defectCode, title, type,defectData "/>
 
 Second comment
+
+Pull request test
