@@ -1,0 +1,5 @@
+Comments & Issues:
+
+On index.ftl files for domain class spaces between columns are not allowed. It also puts spaces when looking up labels:
+- <@efDefinitionList columns="defectCode,title,type,defectData"/>
+- <@efDefinitionList columns="defectCode, title, type,defectData "/>
