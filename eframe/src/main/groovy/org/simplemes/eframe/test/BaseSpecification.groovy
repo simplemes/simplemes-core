@@ -218,6 +218,33 @@ class BaseSpecification extends GebSpec {
     cleanupMockedUtilityClasses()
     MockAppender.cleanup()
     doOtherCleanups()
+    checkForDBConnectionLeaks()
+  }
+
+  /**
+   * Records the latest DB connection idle count.
+   */
+  static latestConnectionIdleCount
+
+  /**
+   * Checks for any DB leaks.   Monitors the idle connection pool size and notes any differences.
+   */
+  void checkForDBConnectionLeaks() {
+    def dataSource = Holders.getBean(DataSource)?.targetDataSource
+    if (dataSource) {
+      def idleCount = dataSource?.getHikariPoolMXBean()?.getPoolStats()?.idleConnections
+      if (idleCount != null) {
+        if (latestConnectionIdleCount != null) {
+          if (idleCount < latestConnectionIdleCount) {
+            def s = "DB Connection Pool Idle Count (was $latestConnectionIdleCount, is now $idleCount) dropped since last test.  Current test: ${this.class.simpleName}. "
+            log.error(s)
+            throw new IllegalStateException(s)
+          }
+        }
+        latestConnectionIdleCount = idleCount
+        log.trace("Database Connection Idle Count = {}", idleCount)
+      }
+    }
   }
 
   /**

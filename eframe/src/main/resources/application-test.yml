@@ -20,6 +20,7 @@ datasources:
     username: "mph"
     password: "mh1234"
     dialect: POSTGRES
+    maximum-pool-size: 18
 
 ---
 flyway:
