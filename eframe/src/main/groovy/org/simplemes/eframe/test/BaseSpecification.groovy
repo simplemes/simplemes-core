@@ -211,6 +211,10 @@ class BaseSpecification extends GebSpec {
         checkForLeftoverRecords()
       }
     }
+
+//    def dataSource = Holders.getDataSource()
+//    println "idle = ${dataSource.getHikariPoolMXBean().getPoolStats().idleConnections}"
+
     cleanupMockedUtilityClasses()
     MockAppender.cleanup()
     doOtherCleanups()
