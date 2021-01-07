@@ -5,15 +5,15 @@ ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<Groovydoc>>#
 [inline-toc]#<<Source Code Format>>#
-[inline-toc]#<<ENUMs>>#
+[inline-toc]#<<Value Typing>>#
 [inline-toc]#<<ENUMs>>#
 [inline-toc]#<<Class/Method Design (Fluid API)>>#
-[inline-toc]#<<ENUMs>>#
 [inline-toc]#<<Current User>>#
 [inline-toc]#<<Exceptions>>#
 [inline-toc]#<<Info/Warning Messages to Clients>>#
 [inline-toc]#<<Static Methods>>#
 [inline-toc]#<<Multiple Return Values>>#
+[inline-toc]#<<Groovy Features to Use or Avoid>>#
 [inline-toc]#<<ASCIIDoctor Standards>>#
 
 endif::[]
@@ -43,6 +43,13 @@ Using a consistent format helps identify the 'real' changes between versions.  T
 * Use brackets for one line if statements.  Suggested.
 
 
+==== Value Typing
+
+Groovy allows untyped fields/variables in your classes.  This is great for internal uses.
+However, all APIs should use proper Java-style typing where possible.  This means method
+parameters should not use *def* or *Object* when a real type is known.
+
+Internal variables in methods can use the *def* syntax.
 
 [[class-method-design,Class/Method Design (Fluid API)]]
 ==== Class/Method Design (Fluid API)
@@ -270,6 +277,38 @@ The general rule: if any method in the *Utils class needs to be mocked easily, t
 class should use the _.instance_ approach.
 
 include::multiReturn.adoc[]
+
+==== Groovy Features to Use or Avoid
+
+Groovy is sometimes called 'a better Java'.  It has a lot of features that we use to enhance
+clarity.  It does have some features that we avoid because they are not very clear:
+
+.Groovy Features to Avoid
+* Method pointers (e.g. *&methodName*).
+* Operator overloading.
+* The optional *return* keyword.  We always use an explicit *return* for clarity.
+* The *with* statement.
+
+
+
+There are also many features we try to use because they enhance clarity:
+
+.Groovy Features to Use
+* Automatic getters/setters.
+* Untyped variables (use of *def*).
+* Null-safe dereferences (*object?.method()?.value*).
+* Default operator *?:* (Elvis operator).
+* List/Map syntax, including add to list *<<*.
+* Simple loops (*for value in list {...}*).
+* String index with special case values (*s[5..-1]* to get from character 5 to end of string).
+* Apply method to all elements on a list ( *list**.method()* )
+* GStrings ("Order: ${order}").
+
+These are just a few of the useful features that make things clear in Groovy.
+There is an excellent series of blog posts
+link:https://blog.mrhaki.com/search/label/Groovy[Groovy Goodness] that covers many of
+the features of Groovy.
+
 
 ==== ASCIIDoctor Standards
 

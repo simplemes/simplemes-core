@@ -5,6 +5,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Enterprise App?>>#
 [inline-toc]#<<Philosophy>>#
 [inline-toc]#<<Architecture>>#
+[inline-toc]#<<Why Groovy?>>#
 [inline-toc]#<<Document Conventions>>#
 [inline-toc]#<<Folder Conventions>>#
 [inline-toc]#<<Naming Conventions>>#

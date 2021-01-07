@@ -92,3 +92,62 @@ beans that implement the _OrderReleasedInterface_.  This interface has the metho
 
 These extension methods can perform database actions and even rollback the transaction as
 needed.
+
+==== Why Groovy?
+
+Why choose Groovy over Java or Kotlin?  One simple reason: clarity.
+
+The biggest cost of successful software is the cost of maintaining the code for years or
+decades after you have written it.  Clarity becomes critical when looking at code that
+was written a long time ago.  For that reason, all decisions on this framework
+and application are driven by the need to appear simple to the user and to
+minimize the complexity for the application developer.
+
+Groovy is clearer because:
+
+* Reduced boiler-plate code.
+* Reduction in if nesting due to the null-safe access to methods/properties.
+* The default value operator ?: .
+* List and Map usage simplifications.
+* The excellent link:http://spockframework.org/spock/docs/1.3/index.html[Spock^] test system
+* Easy ability to modify the byte-code at compile time to add features
+  (see <<Domain Entities>>).
+* Many other features.  See
+  link:https://dev.to/jcoelho/10-reasons-to-use-groovy-in-2019-431f[10 Reasons].
+* Null safe equality.
+* No need for checked exceptions on methods.
+
+We don't want to write a 10 page summary of why Groovy is clearer, but here is a short
+example using a pattern often seen in application code.  We need to call methods
+on a nested set of objects that may return null.
+
+[source,groovy]
+.Example - Domain Entity - Groovy
+----
+  def routing = order?.product?.determineEffectiveRouting() ?: defaultRouting
+----
+
+
+[source,java]
+.Example - Domain Entity - Java
+----
+  Routing routing = defaultRouting;
+  if (order != null) {
+    if (order.getProduct() != null) {
+      if (order.getProduct.determineEffectiveRouting() != null) {
+        routing = order.getProduct.determineEffectiveRouting()
+      }
+    }
+  }
+
+----
+
+Using just two Groovy features reduces the code complexity significantly.  Later versions
+of Java help in some areas (e.g. use of *var*), but the overall code clarity still suffers
+in Java (see Streams).
+
+One caveat: Groovy has some terse and cryptic syntax.  We have chosen to avoid those
+types of features that are not clear to the user.  Features such as method pointers
+are wonderfully short, but not very clear.  See <<Groovy Features to Use or Avoid>> for
+details.
+

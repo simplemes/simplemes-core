@@ -70,6 +70,13 @@ endpoints:
     sensitive: false
 
 ---
+datasources:
+  default:
+    url: ${DATABASE_URL}
+    driverClassName: "org.postgresql.Driver"
+    dialect: POSTGRES
+
+---
 flyway:
   datasources:
     default:

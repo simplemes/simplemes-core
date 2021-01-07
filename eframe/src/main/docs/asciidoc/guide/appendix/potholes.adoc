@@ -391,3 +391,18 @@ To fix this, use the object (Boolean) instead of the primitive (boolean).
 This is caused by logic in the enterprise framework that delegates static method calls on the domain
 to the repository.  If you use the repository method directly, then this is not a problem.
 
+==== Forbidden (403) Response from Controller
+
+When you make an HTTP request to the controller, it returns 403 (Forbidden).  This can
+be caused by many reasons:
+
+* No _@Secure_ annotation.
+* User does not have the require Role specific in the _@Secured_ annotation.
+* Method is not correct (Get vs. Post).
+* The controller is not deployed as a bean (e.g. no _@Singleton_ annotation or
+  wrong import.  Always use: '_import javax.inject.Singleton_' ).
+
+You can turn on TRACE logging for _io.micronaut.http_ or _io.micronaut.routing_ to help
+debug this.  You can also turn on TRACE for _io.micronaut_.
+
+
