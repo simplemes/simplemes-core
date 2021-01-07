@@ -2325,6 +2325,7 @@ ul.sectlevel1 {
 <span class="inline-toc"><a href="#enterprise-app">Enterprise App?</a></span>
 <span class="inline-toc"><a href="#philosophy">Philosophy</a></span>
 <span class="inline-toc"><a href="#architecture">Architecture</a></span>
+<span class="inline-toc"><a href="#why-groovy">Why Groovy?</a></span>
 <span class="inline-toc"><a href="#document-conventions">Document Conventions</a></span>
 <span class="inline-toc"><a href="#folder-conventions">Folder Conventions</a></span>
 <span class="inline-toc"><a href="#naming-conventions">Naming Conventions</a></span>
@@ -2529,6 +2530,90 @@ beans that implement the <em>OrderReleasedInterface</em>.  This interface has th
 <div class="paragraph">
 <p>These extension methods can perform database actions and even rollback the transaction as
 needed.</p>
+</div>
+<div class="sect3">
+<h4 id="why-groovy"><a class="link" href="#why-groovy">Why Groovy?</a></h4>
+<div class="paragraph">
+<p>Why choose Groovy over Java or Kotlin?  One simple reason: clarity.</p>
+</div>
+<div class="paragraph">
+<p>The biggest cost of successful software is the cost of maintaining the code for years or
+decades after you have written it.  Clarity becomes critical when looking at code that
+was written a long time ago.  For that reason, all decisions on this framework
+and application are driven by the need to appear simple to the user and to
+minimize the complexity for the application developer.</p>
+</div>
+<div class="paragraph">
+<p>Groovy is clearer because:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>Reduced boiler-plate code.</p>
+</li>
+<li>
+<p>Reduction in if nesting due to the null-safe access to methods/properties.</p>
+</li>
+<li>
+<p>The default value operator ?: .</p>
+</li>
+<li>
+<p>List and Map usage simplifications.</p>
+</li>
+<li>
+<p>The excellent <a href="http://spockframework.org/spock/docs/1.3/index.html" target="_blank" rel="noopener">Spock</a> test system</p>
+</li>
+<li>
+<p>Easy ability to modify the byte-code at compile time to add features
+(see <a href="#domain-entities">Domain Entities</a>).</p>
+</li>
+<li>
+<p>Many other features.  See
+<a href="https://dev.to/jcoelho/10-reasons-to-use-groovy-in-2019-431f">10 Reasons</a>.</p>
+</li>
+<li>
+<p>Null safe equality.</p>
+</li>
+<li>
+<p>No need for checked exceptions on methods.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>We don&#8217;t want to write a 10 page summary of why Groovy is clearer, but here is a short
+example using a pattern often seen in application code.  We need to call methods
+on a nested set of objects that may return null.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example - Domain Entity - Groovy</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">  <span class="keyword">def</span> routing = order?.product?.determineEffectiveRouting() ?: defaultRouting</code></pre>
+</div>
+</div>
+<div class="listingblock">
+<div class="title">Example - Domain Entity - Java</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="java">  Routing routing = defaultRouting;
+  <span class="keyword">if</span> (order != <span class="predefined-constant">null</span>) {
+    <span class="keyword">if</span> (order.getProduct() != <span class="predefined-constant">null</span>) {
+      <span class="keyword">if</span> (order.getProduct.determineEffectiveRouting() != <span class="predefined-constant">null</span>) {
+        routing = order.getProduct.determineEffectiveRouting()
+      }
+    }
+  }</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Using just two Groovy features reduces the code complexity significantly.  Later versions
+of Java help in some areas (e.g. use of <strong>var</strong>), but the overall code clarity still suffers
+in Java (see Streams).</p>
+</div>
+<div class="paragraph">
+<p>One caveat: Groovy has some terse and cryptic syntax.  We have chosen to avoid those
+types of features that are not clear to the user.  Features such as method pointers
+are wonderfully short, but not very clear.  See <a href="#groovy-features-to-use-or-avoid">Groovy Features to Use or Avoid</a> for
+details.</p>
+</div>
 </div>
 </div>
 <div class="sect2">
@@ -3169,6 +3254,12 @@ To avoid issues with the framework, you should use these settings:</p>
   <span class="key">prometheus</span>:
     <span class="key">sensitive</span>: <span class="string"><span class="content">false</span></span>
 <span class="head"><span class="head">---</span></span>
+<span class="key">datasources</span>:
+  <span class="key">default</span>:
+    <span class="key">url</span>: <span class="string"><span class="content">${DATABASE_URL}</span></span>
+    <span class="key">driverClassName</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">org.postgresql.Driver</span><span class="delimiter">&quot;</span></span>
+    <span class="key">dialect</span>: <span class="string"><span class="content">POSTGRES</span></span>
+<span class="head"><span class="head">---</span></span>
 <span class="key">dataSource</span>:
   <span class="key">url</span>: <span class="string"><span class="content">jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE</span></span>
   <span class="key">dbCreate</span>: <span class="string"><span class="content">create-drop</span></span>
@@ -3218,15 +3309,15 @@ To avoid issues with the framework, you should use these settings:</p>
 <div class="paragraph">
 <p><span class="inline-toc"><a href="#groovydoc">Groovydoc</a></span>
 <span class="inline-toc"><a href="#source-code-format">Source Code Format</a></span>
-<span class="inline-toc"><a href="#enums">ENUMs</a></span>
+<span class="inline-toc"><a href="#value-typing">Value Typing</a></span>
 <span class="inline-toc"><a href="#enums">ENUMs</a></span>
 <span class="inline-toc"><a href="#class-method-design">Class/Method Design (Fluid API)</a></span>
-<span class="inline-toc"><a href="#enums">ENUMs</a></span>
 <span class="inline-toc"><a href="#current-user">Current User</a></span>
 <span class="inline-toc"><a href="#exceptions">Exceptions</a></span>
 <span class="inline-toc"><a href="#infowarning-messages-to-clients">Info/Warning Messages to Clients</a></span>
 <span class="inline-toc"><a href="#static-methods">Static Methods</a></span>
 <span class="inline-toc"><a href="#multiple-return-values">Multiple Return Values</a></span>
+<span class="inline-toc"><a href="#groovy-features-to-use-or-avoid">Groovy Features to Use or Avoid</a></span>
 <span class="inline-toc"><a href="#asciidoctor-standards">ASCIIDoctor Standards</a></span></p>
 </div>
 <div class="paragraph">
@@ -3281,6 +3372,17 @@ Using a consistent format helps identify the 'real' changes between versions.  T
 <p>Use brackets for one line if statements.  Suggested.</p>
 </li>
 </ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="value-typing"><a class="link" href="#value-typing">Value Typing</a></h4>
+<div class="paragraph">
+<p>Groovy allows untyped fields/variables in your classes.  This is great for internal uses.
+However, all APIs should use proper Java-style typing where possible.  This means method
+parameters should not use <strong>def</strong> or <strong>Object</strong> when a real type is known.</p>
+</div>
+<div class="paragraph">
+<p>Internal variables in methods can use the <strong>def</strong> syntax.</p>
 </div>
 </div>
 <div class="sect3">
@@ -3727,6 +3829,71 @@ IDEs can also use the type information to help a lot with code completion.</p>
 <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>
 can handle this reasonable well.</p>
 </div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="groovy-features-to-use-or-avoid"><a class="link" href="#groovy-features-to-use-or-avoid">Groovy Features to Use or Avoid</a></h4>
+<div class="paragraph">
+<p>Groovy is sometimes called 'a better Java'.  It has a lot of features that we use to enhance
+clarity.  It does have some features that we avoid because they are not very clear:</p>
+</div>
+<div class="ulist">
+<div class="title">Groovy Features to Avoid</div>
+<ul>
+<li>
+<p>Method pointers (e.g. <strong>&amp;methodName</strong>).</p>
+</li>
+<li>
+<p>Operator overloading.</p>
+</li>
+<li>
+<p>The optional <strong>return</strong> keyword.  We always use an explicit <strong>return</strong> for clarity.</p>
+</li>
+<li>
+<p>The <strong>with</strong> statement.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>There are also many features we try to use because they enhance clarity:</p>
+</div>
+<div class="ulist">
+<div class="title">Groovy Features to Use</div>
+<ul>
+<li>
+<p>Automatic getters/setters.</p>
+</li>
+<li>
+<p>Untyped variables (use of <strong>def</strong>).</p>
+</li>
+<li>
+<p>Null-safe dereferences (<strong>object?.method()?.value</strong>).</p>
+</li>
+<li>
+<p>Default operator <strong>?:</strong> (Elvis operator).</p>
+</li>
+<li>
+<p>List/Map syntax, including add to list <strong>&lt;&lt;</strong>.</p>
+</li>
+<li>
+<p>Simple loops (<strong>for value in list {&#8230;&#8203;}</strong>).</p>
+</li>
+<li>
+<p>String index with special case values (<strong>s[5..-1]</strong> to get from character 5 to end of string).</p>
+</li>
+<li>
+<p>Apply method to all elements on a list ( <strong>list</strong>*.method()* )</p>
+</li>
+<li>
+<p>GStrings ("Order: ${order}").</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>These are just a few of the useful features that make things clear in Groovy.
+There is an excellent series of blog posts
+<a href="https://blog.mrhaki.com/search/label/Groovy">Groovy Goodness</a> that covers many of
+the features of Groovy.</p>
 </div>
 </div>
 <div class="sect3">
@@ -19839,6 +20006,34 @@ you will get the exception.  For example:</p>
 <p>This is caused by logic in the enterprise framework that delegates static method calls on the domain
 to the repository.  If you use the repository method directly, then this is not a problem.</p>
 </div>
+</div>
+<div class="sect3">
+<h4 id="forbidden-403-response-from-controller"><a class="link" href="#forbidden-403-response-from-controller">Forbidden (403) Response from Controller</a></h4>
+<div class="paragraph">
+<p>When you make an HTTP request to the controller, it returns 403 (Forbidden).  This can
+be caused by many reasons:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>No <em>@Secure</em> annotation.</p>
+</li>
+<li>
+<p>User does not have the require Role specific in the <em>@Secured</em> annotation.</p>
+</li>
+<li>
+<p>Method is not correct (Get vs. Post).</p>
+</li>
+<li>
+<p>The controller is not deployed as a bean (e.g. no <em>@Singleton</em> annotation or
+wrong import.  Always use: '<em>import javax.inject.Singleton</em>' ).</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>You can turn on TRACE logging for <em>io.micronaut.http</em> or <em>io.micronaut.routing</em> to help
+debug this.  You can also turn on TRACE for <em>io.micronaut</em>.</p>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 8. ASCIIDOCTOR Attributes</caption>
 <colgroup>
@@ -19888,7 +20083,7 @@ to the repository.  If you use the repository method directly, then this is not 
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-01-06 15:57:16 UTC
+Last updated 2021-01-07 19:03:04 UTC
 </div>
 </div>
 <style>
