@@ -5972,6 +5972,10 @@ Pessimistic locking is possible with a specific query annotation.</p>
 to increment the version during the update.  This means an exception will be thrown if a
 version field is not given or the record was updated by another user.</p>
 </div>
+<div class="paragraph">
+<p>This optimistic locking check is done on every update of a single record that has a
+<code>version</code> field.  An exception will be thrown if another user has updated the record.</p>
+</div>
 </div>
 <div class="sect4">
 <h5 id="pessimistic-locking"><a class="link" href="#pessimistic-locking">Pessimistic Locking</a></h5>
@@ -20034,6 +20038,26 @@ wrong import.  Always use: '<em>import javax.inject.Singleton</em>' ).</p>
 <p>You can turn on TRACE logging for <em>io.micronaut.http</em> or <em>io.micronaut.routing</em> to help
 debug this.  You can also turn on TRACE for <em>io.micronaut</em>.</p>
 </div>
+</div>
+<div class="sect3">
+<h4 id="nashorn"><a class="link" href="#nashorn">Nashorn</a></h4>
+<div class="paragraph">
+<p>Some tests will use the built-in Javascript engine to validate the generated Javascript.
+This results in this warning message every time it is used:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>Warning: Nashorn engine is planned to be removed from a future JDK release</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>To avoid this warning, run your tests with this option:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre>-Dnashorn.args="--no-deprecation-warning"</pre>
+</div>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 8. ASCIIDOCTOR Attributes</caption>
 <colgroup>
@@ -20083,7 +20107,7 @@ debug this.  You can also turn on TRACE for <em>io.micronaut</em>.</p>
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-01-08 18:21:55 UTC
+Last updated 2021-01-08 20:18:39 UTC
 </div>
 </div>
 <style>
