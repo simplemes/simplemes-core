@@ -4,8 +4,8 @@
 
 package org.simplemes.eframe.domain
 
-
 import org.simplemes.eframe.exception.BusinessException
+import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
@@ -18,7 +18,7 @@ import sample.domain.Order
  */
 class EFrameJdbcRepositoryOperationsSpec extends BaseSpecification {
   @SuppressWarnings("unused")
-  static dirtyDomains = [Order]
+  static dirtyDomains = [Order, AllFieldsDomain]
 
   void saveWithTransaction(boolean fail) {
     Order.withTransaction {
@@ -135,6 +135,53 @@ class EFrameJdbcRepositoryOperationsSpec extends BaseSpecification {
     then: 'the record is found'
     list.size() == 1
     list[0].name == 'AFD1'
+  }
+
+  def "verify that update record by uuid fails if the record is not found - optimistic locking scenario"() {
+    given: 'a record'
+    def afd = null
+    AllFieldsDomain.withTransaction {
+      afd = new AllFieldsDomain(name: 'AFD1', version: 437).save()
+    }
+
+    and: 'another process has updated the record'
+    AllFieldsDomain.withTransaction {
+      def afd2 = AllFieldsDomain.findByUuid(afd.uuid)
+      afd2.save()
+    }
+
+    when: 'the update on the original record is attempted'
+    AllFieldsDomain.withTransaction {
+      afd.save()
+    }
+
+    then: 'the right exception is thrown'
+    def ex = thrown(OptimisticLockException)
+    //error.210.message=Record updated by another user.  {0}: {1}, version: {2}.
+    UnitTestUtils.assertExceptionIsValid(ex, ['update', 'another', 'AFD1', '438', AllFieldsDomain.simpleName])
+
+    and: 'the toShortString logic is used for the message'
+    !ex.toString().contains('title:')
+  }
+
+  def "verify that update record by uuid fails if the record is not found - no version field"() {
+    given: 'a record with a UUID that does not exist'
+    def order = null
+    Order.withTransaction {
+      order = new Order(order: 'SAMPLE1').save()
+    }
+    def orderComponent = new CustomOrderComponent(order: order, sequence: 537)
+    orderComponent.uuid = UUID.randomUUID()
+
+    when: 'the update is attempted'
+    CustomOrderComponent.withTransaction {
+      orderComponent.save()
+    }
+
+    then: 'the right exception is thrown'
+    def ex = thrown(OptimisticLockException)
+    //error.211.message=Record updated by another user.  {0}: {1}.
+    UnitTestUtils.assertExceptionIsValid(ex, ['update', 'another', TypeUtils.toShortString(orderComponent), CustomOrderComponent.simpleName])
   }
 
 }

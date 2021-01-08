@@ -13,6 +13,7 @@ Issues 299
                  Statement.execute()             (HikariProxyPreparedStatement.executeUpdate())
        Need to create wrapper classes to override the right methods.
        These wrappers need to keep references to the real class
+    1a) Replace connection
 
     2) Execute query with where clause before the real query.  Fail if updates 0 rows.
     3) Replace Hikari connection manager?
@@ -48,6 +49,8 @@ Custom Field Rework
 --------------------
 Tasks
 =====
+Look at mes-assy Assemble Dialog use of buttons.  The .ftl file does not define the Ok/Cancel button logic.
+Look at Large BOM/Defect list affect on basic read/update of Order. Cascade updates.
   Change when JSON is serialized/deserialized.  Tests when loaded/saved.
   Simplify ExtensibleFieldTransform:
     Remove prefix/config type support.

@@ -16,7 +16,6 @@ import io.micronaut.core.annotation.AnnotationMetadata
 import io.micronaut.data.annotation.Query
 import io.micronaut.data.exceptions.DataAccessException
 import io.micronaut.data.jdbc.mapper.JdbcQueryStatement
-import io.micronaut.data.jdbc.operations.DefaultJdbcRepositoryOperations
 import io.micronaut.data.model.DataType
 import io.micronaut.data.model.runtime.InsertOperation
 import io.micronaut.data.model.runtime.PreparedQuery
@@ -52,7 +51,7 @@ import java.util.concurrent.ExecutorService
 @Slf4j
 @CompileStatic
 @EachBean(DataSource.class)
-class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
+class EFrameJdbcRepositoryOperations extends EFrameJdbcRepositoryOperationsJava {
 
   /**
    * Keep a local copy of the operations so we can use this to check for existing txn on the current thread.
@@ -81,15 +80,15 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
     //println "value = $value"
 
     if (WorkArounds.workAround671) {
-      def clazz = getClass().superclass.superclass
+      def clazz = getClass().superclass.superclass.superclass
       def field = clazz.getDeclaredField('preparedStatementWriter')
-      field.setAccessible(true)
+      field.setAccessible(true)  // Allowed only if the field is in the un-named Java module.
       field.set(this, new WorkaroundJdbcQueryStatement())
     }
     if (WorkArounds.workAround672) {
-      def clazz = getClass().superclass.superclass
+      def clazz = getClass().superclass.superclass.superclass
       def field2 = clazz.getDeclaredField('jsonCodec')
-      field2.setAccessible(true)
+      field2.setAccessible(true)  // Allowed only if the field is in the un-named Java module.
       field2.set(this, null)
     }
   }
@@ -131,12 +130,14 @@ class EFrameJdbcRepositoryOperations extends DefaultJdbcRepositoryOperations {
       //operation.entity.version = operation.entity.version + 1
       //println "update2() operation = $operation ${operation.entity} ${operation.method}"
       //println "operation = $operation"
-      return super.update(new AlterableUpdateOperation(operation))
+      try {
+        return super.update(new AlterableUpdateOperation(operation))
+      } catch (UpdateFailedException ex) {
+        throw new OptimisticLockException(ex)
+      }
     } else {
       return super.update(operation)
     }
-
-
   }
 
   /**

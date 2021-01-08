@@ -14,11 +14,24 @@ class WorkArounds {
 
   /**
    * Workaround for micronaut-data missing optimistic locking.  Probably will be permanent.
-   * Permanent fix will need help with JDBC changes covered in enhancement:
+   * Permanent fix will need help with JDBC changes covered in issue:
    * https://github.com/micronaut-projects/micronaut-data/issues/299
    *
    */
   static boolean workAroundOptimistic = true
+
+  /**
+   * Workaround for micronaut-data cannot detect failed update issue.  Probably will be permanent.
+   * Permanent fix will need help with JDBC changes covered in issue:
+   * https://github.com/micronaut-projects/micronaut-data/issues/299
+   * <p>
+   * Note this is tightly linked with the fix workAroundOptimistic.
+   * Also, the EFrameJdbcRepositoryOperationsJava class will reference this workAround299 flag through
+   * reflection.  Not through a direct reference.
+   *
+   */
+  @SuppressWarnings('unused')
+  static public boolean workAround299 = true
 
   /**
    * Works around use of deprecated constructor in the AssetPipelineService.

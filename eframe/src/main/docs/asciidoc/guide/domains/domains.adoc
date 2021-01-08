@@ -537,6 +537,9 @@ Optimistic locking is handled by altering the update queries to add _'and versio
 to increment the version during the update.  This means an exception will be thrown if a
 version field is not given or the record was updated by another user.
 
+This optimistic locking check is done on every update of a single record that has a
+`version` field.  An exception will be thrown if another user has updated the record.
+
 ===== Pessimistic Locking
 
 Pessimistic locking is handled by using an explicit SQL query in your repository.

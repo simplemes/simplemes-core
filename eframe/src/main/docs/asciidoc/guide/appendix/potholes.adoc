@@ -406,3 +406,17 @@ You can turn on TRACE logging for _io.micronaut.http_ or _io.micronaut.routing_ 
 debug this.  You can also turn on TRACE for _io.micronaut_.
 
 
+==== Nashorn
+
+Some tests will use the built-in Javascript engine to validate the generated Javascript.
+This results in this warning message every time it is used:
+
+----
+Warning: Nashorn engine is planned to be removed from a future JDK release
+----
+
+To avoid this warning, run your tests with this option:
+
+----
+-Dnashorn.args="--no-deprecation-warning"
+----
