@@ -22,6 +22,7 @@ import com.fasterxml.jackson.databind.ser.BeanSerializerModifier
 import com.fasterxml.jackson.databind.type.MapType
 import groovy.util.logging.Slf4j
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
+import org.simplemes.eframe.custom.FieldHolderMapInterface
 import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.data.format.EncodedTypeFieldFormat
 import org.simplemes.eframe.date.DateOnly
@@ -69,7 +70,9 @@ class EFrameJacksonModule extends SimpleModule {
     def serializers = new SimpleSerializers()
     def deserializers = new SimpleDeserializers()
     serializers.addSerializer(DateOnly, new DateOnlySerializer())
+    serializers.addSerializer(FieldHolderMapInterface, new FieldHolderMapSerializer())
     deserializers.addDeserializer(DateOnly, new DateOnlyDeserializer())
+    deserializers.addDeserializer(FieldHolderMapInterface, new FieldHolderMapDeserializer())
 
     context.addSerializers(serializers)
     context.addDeserializers(deserializers)
@@ -135,7 +138,9 @@ class EFrameBeanDeserializerModifier extends BeanDeserializerModifier {
     }
 
     // Remove any problem properties.
-    log.debug("updateProperties(): Removing JSON properties {}", fieldsToRemove)
+    if (fieldsToRemove) {
+      log.debug("updateProperties(): Removing JSON properties {} for {}", fieldsToRemove, clazz)
+    }
     for (fieldToRemove in fieldsToRemove) {
       propDefs.removeAll { it.name == fieldToRemove }
     }
@@ -231,7 +236,9 @@ class EFrameBeanSerializerModifier extends BeanSerializerModifier {
     }
 
     // Remove any problem properties.
-    log.debug("changeProperties(): Removing JSON properties {}", fieldsToRemove)
+    if (fieldsToRemove) {
+      log.debug("changeProperties(): Removing JSON properties {} for {}", fieldsToRemove, clazz)
+    }
     for (fieldToRemove in fieldsToRemove) {
       beanProperties.removeAll { it.name == fieldToRemove }
     }

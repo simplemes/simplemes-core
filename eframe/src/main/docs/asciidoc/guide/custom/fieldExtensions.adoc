@@ -239,47 +239,36 @@ This holder field will store these types of fields:
 * Data collected by the Data Entry module (name TBD).
 * Other data added programmatically or via APIs.
 
-Custom child lists are handled somewhat differently.
-
-===== Custom Child List Storage
-
-
-When the custom field is a  <<Custom Child List>> (_CustomChildListFieldFormat_),
-the data is not stored in the holder as JSON.  Instead, it is stored in a custom
-database table.  This means the JSON format is different:
-
+Custom child lists are handled somewhat differently.  The JSON format of these fields
+looks like this:
 
 [source,json]
-.JSON Format for Custom Child List Storage
+.JSON Format for All Data and Values Tracking
 ----
 {
-  "rma": "R10102-23",         <.>
+  "rma": "R10102-23",          <.>
   "qty": 12.2,
-  "customComponents": [       <.>
-     { "product": "BIKE-27", "qty": 1.0 },
-     { "product": "WHEEL", "qty": 2.0 }
-    ]
+  "_fields": {
+    "weight": 2.3,             <.>
+    "_config": {               <.>
+      "weight": {
+        "type": "I",
+        "tracking": "A",
+        "history": [           <.>
+          . . .
+        ]
+      }
+    },
   }
 }
 ----
 <.> The normal domain fields.
-<.> The list of custom child records.  Stored in another database table.
-    In the domain object itself, these custom records are stored in a
-    special Map.   The values can be accessed with the normal custom field
-    getters/setters: such as `getCustomComponents()`.
+<.> The latest value for the `weight` custom field.
+<.> The configuration for the fields.  This is only used when non-standard JSON types are
+    used (e.g. dates) or if tracking is needed. The type and tracking option is stored
+    here when needed.
+<.> The history for the weight.  See <<Custom Field History>> for details.
 
-    
-
-This is a fairly complex feature that is only supported in a limited number of scenarios
-as described in <<Custom Child List>>.  It is very useful for <<Module Additions>> so
-that a module can add a list of custom values for a core domain object.
-
-Why put these in another element in the JSON?  Because the Jackson JSON mapper automatically
-creates/parses the JSON for the standard <<Custom Field Storage>> mechanism.  To use
-the same storage mechanism, we would have to write a lot of complex logic to
-extract and insert the custom child lists.
-
-This is not ideal, but it is the best compromise.
 
 
 ===== Custom Field History
@@ -313,38 +302,75 @@ For example, tracking using the *All Data and Values* option would result in a
   "qty": 12.2,
   "_fields": {
     "weight": 2.3,             <.>
-    "_weight_config": {        <.>
-      "tracking": "ALL_VALUES"
+    "_config": {               <.>
+      "weight": {
+        "type": "I",
+        "tracking": "A",
+        "history": [           <.>
+          {
+            "weight": 2.3,
+            "user": "PWB",
+            "dateTime": "2009-02-13T18:31:30.000-05:00"
+          },
+          {
+            "weight": 2.1,
+            "user": "RLB",
+            "dateTime": "2009-02-14T17:23:53.000-05:00"
+          }
+        ]
+      }
     },
-    "_weight_history": {             <.>
-      history: [
-        {
-          "weight": 2.3,             <.>
-          "user": "PWB",
-          "dateTime": "2009-02-13T18:31:30.000-05:00",
-        },
-        {
-          "weight": 2.2,
-          "user": "MPH",
-          "dateTime": "2009-02-13T18:31:30.000-05:00",
-        },
-        {
-          "weight": 2.1,
-          "user": "RLB",
-          "dateTime": "2009-02-14T17:23:53.000-05:00",
-        }
-      ]
-    }
   }
 }
 ----
 <.> The normal domain fields.
-<.> The latest value for the weight.
-<.> The configuration for the weight.  Set for non-default configuration settings such
+<.> The latest value for the `weight` custom field.
+<.> The configuration for the fields.  Set for non-default configuration settings such
     as this example.
-<.> The history for the weight.  Includes values and date/user/etc.
-<.> The current value is added here when it is set in the `fields`.  Only for Tracking
+<.> The history for the weight, if configured to track the history.  Includes values and date/user/etc.
+    The current value is added here when it is set in the `fields`.  Only for Tracking
     option *All Data and Values*.
+
+===== Custom Child List Storage
+
+
+When the custom field is a  <<Custom Child List>> (_CustomChildListFieldFormat_),
+the data is not stored in the holder as JSON.  Instead, it is stored in a custom
+database table.  This means the JSON format is different:
+
+
+[source,json]
+.JSON Format for Custom Child List Storage
+----
+{
+  "rma": "R10102-23",         <.>
+  "qty": 12.2,
+  "customComponents": [       <.>
+     { "product": "BIKE-27", "qty": 1.0 },
+     { "product": "WHEEL", "qty": 2.0 }
+    ]
+  }
+}
+----
+<.> The normal domain fields.
+<.> The list of custom child records.  Stored in another database table.
+    In the domain object itself, these custom records are stored in a
+    special Map.   The values can be accessed with the normal custom field
+    getters/setters: such as `getCustomComponents()`.
+
+
+
+This is a fairly complex feature that is only supported in a limited number of scenarios
+as described in <<Custom Child List>>.  It is very useful for <<Module Additions>> so
+that a module can add a list of custom values for a core domain object.
+
+Why put these in another element in the JSON?  Because the Jackson JSON mapper automatically
+creates/parses the JSON for the standard <<Custom Field Storage>> mechanism.  To use
+the same storage mechanism, we would have to write a lot of complex logic to
+extract and insert the custom child lists.
+
+This is not ideal, but it is the best compromise.
+
 
 
 

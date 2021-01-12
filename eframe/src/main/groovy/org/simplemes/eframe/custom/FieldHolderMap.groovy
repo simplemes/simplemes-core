@@ -18,6 +18,7 @@ import org.simplemes.eframe.data.format.CustomChildListFieldFormat
 import org.simplemes.eframe.data.format.DomainReferenceFieldFormat
 import org.simplemes.eframe.data.format.FieldFormatInterface
 import org.simplemes.eframe.data.format.StringFieldFormat
+import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.TypeUtils
 
@@ -31,13 +32,9 @@ import org.simplemes.eframe.misc.TypeUtils
  * <p>
  * Extra elements are added to the map to retain the data type for values, the history and configuration data
  * in case the definitions change (e.g. FlexType changes).
- * <p>
- * This Groovy class is sub-classed from the {@link BaseFieldHolderMap} class because Groovy is cleaner.
- * A Java base-class is used so the {@link org.simplemes.eframe.data.annotation.ExtensibleFieldHolderTransformation}
- * can reference it in the Java source tree.
  */
 @Slf4j
-class FieldHolderMap extends BaseFieldHolderMap implements FieldHolderMapInterface {
+class FieldHolderMap extends HashMap implements FieldHolderMapInterface {
 
   /**
    * The name of the top-level element in the map that holds the config.  Value: <b>'_config'</b>.
@@ -253,7 +250,7 @@ class FieldHolderMap extends BaseFieldHolderMap implements FieldHolderMapInterfa
     if (!isNativeJSONType(format)) {
       def fieldMap = getFieldMap(key as String, true)
       fieldMap[TYPE_ELEMENT_NAME] = format.id
-      if (fieldDefinition) {
+      if (fieldDefinition && fieldDefinition.type) {
         fieldMap[VALUE_CLASS_ELEMENT_NAME] = fieldDefinition?.type?.name
       }
     }
@@ -304,6 +301,47 @@ class FieldHolderMap extends BaseFieldHolderMap implements FieldHolderMapInterfa
       configMap[fieldName] = fieldMap
     }
     return fieldMap
+  }
+
+  /**
+   * Merges the given map into this map.  Preserves the _config element and may add to the history, if
+   * configured.
+   * @param src The source Map.
+   * @param context The place that triggered this.  Usually a domain entity.  Used for errors.
+   */
+  void mergeMap(FieldHolderMapInterface src, Object context) {
+    def originalParsingFromJSON = parsingFromJSON
+    parsingFromJSON = true
+    src?.each() { k, v ->
+      if (k != CONFIG_ELEMENT_NAME) {
+        put(k, v)
+      } else {
+        mergeConfig(v as Map, context)
+      }
+    }
+    parsingFromJSON = originalParsingFromJSON
+    log.trace("mergeMap(): Merge Results: {}.  Src: {}", this, src)
+  }
+
+  /**
+   * Merges the given _config map into this map.  Preserves the details.  Attempt to update and existing
+   * field will fail with an exception (BusinessException 212).
+   * @param src The source Map.
+   * @param context The place that triggered this.  Usually a domain entity.  Used for errors.
+   */
+  protected void mergeConfig(Map src, Object context) {
+    def dest = this.get(CONFIG_ELEMENT_NAME) as Map
+    // Copy each element over, if it does not exist already.
+    src?.each() { k, v ->
+      if (!dest.get(k)) {
+        dest.put(k, v)
+      } else {
+        def s = "${context?.class?.simpleName} ${TypeUtils.toShortString(context)}"
+        //error.212.message=Cannot change custom field ({0}) type with existing values in {1}.
+        throw new BusinessException(212, [k, s])
+      }
+    }
+
   }
 
 

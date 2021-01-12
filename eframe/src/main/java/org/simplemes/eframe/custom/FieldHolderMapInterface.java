@@ -56,4 +56,14 @@ public interface FieldHolderMapInterface extends Map {
    */
   String toJSON();
 
+  /**
+   * Merges the given map into this map.  Preserves the _config element and may add to the history, if
+   * configured.
+   *
+   * @param src     The source Map.
+   * @param context The place that triggered this.  Usually a domain entity.  Used for errors.
+   */
+  void mergeMap(FieldHolderMapInterface src, Object context);
+
+
 }

@@ -961,4 +961,29 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['TestClass'], 131)
   }
 
+  def "verify that setExtensibleFieldMap works correctly"() {
+    given: 'a domain record'
+    def object = new SampleParent()
+
+    and: 'a holder map with some value'
+    def map = new FieldHolderMap(parsingFromJSON: false)
+    map.put('field1', 'xyzzy')
+    map.setDirty(false)
+
+    when: 'the map is set'
+    ExtensibleFieldHelper.instance.setExtensibleFieldMap(object, map)
+
+    then: 'the map is correct'
+    def map2 = ExtensibleFieldHelper.instance.getExtensibleFieldMap(object)
+    map2.field1 == 'xyzzy'
+  }
+
+  def "verify that setExtensibleFieldMap gracefully detects no extensible fields"() {
+    when: 'the map is set'
+    ExtensibleFieldHelper.instance.setExtensibleFieldMap("dummy", new FieldHolderMap(parsingFromJSON: false))
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['String'], 131)
+  }
 }

@@ -8,7 +8,9 @@ import groovy.json.JsonSlurper
 import io.micronaut.http.HttpResponse
 import io.micronaut.http.HttpStatus
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.date.ISODate
+import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.test.BaseAPISpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.DataGenerator
@@ -913,7 +915,9 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
 
     and: 'an existing record'
     def record1 = new AllFieldsDomain(name: 'ABC-021')
+    def dateOnly = new DateOnly()
     record1.setFieldValue('custom1', 'original')
+    record1.setFieldValue('customDateOnly', dateOnly)
     record1.save()
 
     and: 'custom field values'
@@ -924,7 +928,9 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
       {
         "title" : "abc-001",
         "qty" : 1221.00,
-        "custom1" : "xyzzy"
+        "_otherCustomFields": {
+          "custom1" : "xyzzy"
+        }
       }
       """
 
@@ -939,10 +945,126 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
     and: 'the record is created in the DB'
     AllFieldsDomain record = AllFieldsDomain.findByName('ABC-021')
     record.getFieldValue('custom1') == 'xyzzy'
+    record.getFieldValue('customDateOnly') == dateOnly
 
     and: 'the JSON is valid'
     def record2 = Holders.objectMapper.readValue((String) res.getBody().get(), AllFieldsDomain)
     record2.getFieldValue('custom1') == 'xyzzy'
+  }
+
+  @Rollback
+  def "verify restPut can update a record with custom fields - add a custom field without definition"() {
+    given: 'a controller for the base class for a domain'
+    Class clazz = buildAllFieldsDomainController()
+
+    and: 'an existing record'
+    def record1 = new AllFieldsDomain(name: 'ABC-021')
+    record1.setFieldValue('custom1', 'original')
+    record1.save()
+
+    and: 'custom field values'
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: AllFieldsDomain)
+
+    and: 'the source JSON'
+    def src = """
+      {
+        "title" : "abc-001",
+        "qty" : 1221.00,
+        "_otherCustomFields": {
+          "custom2" : "xyzzy"
+        }
+      }
+      """
+
+    when: 'the put is called'
+    def controller = clazz.getConstructor().newInstance()
+    HttpResponse res = controller.restPut(record1.uuid.toString(), mockRequest([body: src]), null)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
+
+    then: 'the JSON is valid'
+    res.status() == HttpStatus.OK
+
+    and: 'the record is correct in the DB'
+    AllFieldsDomain record = AllFieldsDomain.findByName('ABC-021')
+    record.getFieldValue('custom2') == 'xyzzy'
+    record.getFieldValue('custom1') == 'original'
+
+    and: 'the JSON is valid'
+    def record2 = Holders.objectMapper.readValue((String) res.getBody().get(), AllFieldsDomain)
+    record2.getFieldValue('custom1') == 'original'
+    record2.getFieldValue('custom2') == 'xyzzy'
+  }
+
+  @Rollback
+  def "verify restPut can update a record with empty custom fields - add a custom field without definition"() {
+    given: 'a controller for the base class for a domain'
+    Class clazz = buildAllFieldsDomainController()
+
+    and: 'an existing record'
+    def record1 = new AllFieldsDomain(name: 'ABC-021')
+    record1.save()
+
+    and: 'custom field values'
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: AllFieldsDomain)
+
+    and: 'the source JSON'
+    def src = """
+      {
+        "title" : "abc-001",
+        "qty" : 1221.00,
+        "_otherCustomFields": {
+          "custom2" : "xyzzy"
+        }
+      }
+      """
+
+    when: 'the put is called'
+    def controller = clazz.getConstructor().newInstance()
+    HttpResponse res = controller.restPut(record1.uuid.toString(), mockRequest([body: src]), null)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.getBody().get())}"
+
+    then: 'the JSON is valid'
+    res.status() == HttpStatus.OK
+
+    and: 'the record is correct in the DB'
+    AllFieldsDomain record = AllFieldsDomain.findByName('ABC-021')
+    record.getFieldValue('custom2') == 'xyzzy'
+
+    and: 'the JSON is valid'
+    def record2 = Holders.objectMapper.readValue((String) res.getBody().get(), AllFieldsDomain)
+    record2.getFieldValue('custom2') == 'xyzzy'
+  }
+
+  @Rollback
+  def "verify restPut will gracefully detect attempt to change custom field type"() {
+    given: 'a controller for the base class for a domain'
+    Class clazz = buildAllFieldsDomainController()
+
+    and: 'an existing record with one type of custom field added'
+    def record = new AllFieldsDomain(name: 'ABC-021')
+    record.setFieldValue('custom1', new DateOnly())
+    record.save()
+
+    and: 'the JSON to change the type'
+    def src = """
+      "_fields": {
+          "custom1": "2021-01-31",   
+          "_config": {
+            "custom1": {
+              "type": "T"        
+            }
+          },
+        }
+    """
+
+    when: 'the put is called'
+    def controller = clazz.getConstructor().newInstance()
+    controller.restPut(record.uuid.toString(), mockRequest([body: src]), null)
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, [TypeUtils.toShortString(record), record.class.simpleName], 212)
+
   }
 
   @Rollback

@@ -139,9 +139,15 @@ accessed like this:
   "_fields": {
     "promiseDate": "2009-02-13T18:31:30.000-05:00",
     "caseColor": "BLUE"
+    "_config": {
+      . . .   <.>
+    }
   }
 }
 ----
+<.> The custom field configurations.  This is stored with the field values to allow
+    the definitions to change without los of data/type information.
+    See <<Custom Field Storage>> for more details.
 
 These will be stored in the normal storage location for <<Field Extensions>>.
 
@@ -192,3 +198,39 @@ The API format for this type of data field would be:
 NOTE: <<Custom Child List>> will use the API format described in
       <<Custom Child List Storage>>.  This follows the normal JSON array format, but
       the element is stored at the top-level, under the name of the custom field.
+
+Updates are allowed for the `_fields` element, but the `_config` element
+(<<Custom Field Storage>>) are ignored.
+
+===== Custom Fields - Provide Type via CRUD API
+
+Creations and updates via the <<Rest API>> can define the field type on creation.
+This is normally not needed for the normal JSON field types (string, number, boolean).
+For example, if you need to create a custom field that is a DateOnly
+type, you can specify the field type in the JSON.  The format is identical to the
+<<Custom Field Storage>> format. You can create these types using the JSON below:
+
+[source,json]
+.JSON Format - Types for Custom Fields
+----
+{
+  "rma": "R10102-23",
+  "qty": 12.2,
+  "_fields": {
+    "dueDate": "2021-01-31",   <.>
+    "_config": {               
+      "dueDate": {
+        "type": "D",           <.>
+        "tracking": "A"        <.>
+      }
+    },
+  }
+}
+----
+<.> The value for the `dueDate` custom field.  ISO Date formatted string.
+<.> The custom field type.  This type is defined as the DB value in <<Field Types>>.
+<.> The history tracking option.  See <<Custom Field History>> for details.
+
+NOTE: Any changes to the type are not allowed on existing fields.
+      The update will fail if the type is changed.
+

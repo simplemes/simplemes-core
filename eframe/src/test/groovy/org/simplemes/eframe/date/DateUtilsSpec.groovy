@@ -144,7 +144,7 @@ class DateUtilsSpec extends BaseSpecification {
     deltaDays == 365
   }
 
-  def "verify that subtractDays works"() {
+  def "verify that subtractDays works for Dates"() {
     expect: 'works with whole numbers'
     Date now = new Date()
     Date d1 = DateUtils.subtractDays(now, 1.0)
@@ -153,6 +153,13 @@ class DateUtilsSpec extends BaseSpecification {
     and: 'works with fractions'
     Date d2 = DateUtils.subtractDays(now, 1.2)
     assert now.time - d2.time == 103680000
+  }
+
+  def "verify that subtractDays works for DateOnly"() {
+    expect: 'works with whole numbers'
+    DateOnly now = new DateOnly()
+    DateOnly d1 = DateUtils.subtractDays(now, 1)
+    assert now.time - d1.time == 86400000
   }
 
   def "verify that formatElapsedTime handles supported cases"() {

@@ -18,7 +18,7 @@ import org.codehaus.groovy.control.messages.SimpleMessage;
 import org.codehaus.groovy.transform.ASTTransformation;
 import org.codehaus.groovy.transform.GroovyASTTransformation;
 import org.simplemes.eframe.ast.ASTUtils;
-import org.simplemes.eframe.custom.BaseFieldHolderMap;
+import org.simplemes.eframe.custom.FieldHolderMapInterface;
 
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -222,7 +222,7 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
    * @param sourceUnit The source unit being processed.
    */
   private void addFieldHolderMap(String fieldName, ClassNode classNode, SourceUnit sourceUnit) {
-    List<ASTNode> list = ASTUtils.addField(fieldName + "Map", BaseFieldHolderMap.class,
+    List<ASTNode> list = ASTUtils.addField(fieldName + "Map", FieldHolderMapInterface.class,
         Modifier.PUBLIC | Modifier.TRANSIENT, false, null, classNode, sourceUnit);
     for (ASTNode n : list) {
       if (n instanceof FieldNode) {
@@ -266,7 +266,7 @@ public class ExtensibleFieldHolderTransformation implements ASTTransformation {
 
     classNode.addMethod(getterName,
         Modifier.PUBLIC,
-        ClassHelper.make(BaseFieldHolderMap.class),
+        ClassHelper.make(FieldHolderMapInterface.class),
         parameters,
         null, methodBody);
   }

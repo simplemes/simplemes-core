@@ -5,6 +5,7 @@
 package org.simplemes.eframe.test
 
 import ch.qos.logback.classic.Level
+import com.fasterxml.jackson.databind.ObjectMapper
 import geb.spock.GebSpec
 import groovy.util.logging.Slf4j
 import io.micronaut.context.ApplicationContext
@@ -27,6 +28,7 @@ import org.simplemes.eframe.custom.domain.FieldGUIExtension
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.domain.annotation.DomainEntityHelper
 import org.simplemes.eframe.i18n.GlobalUtils
+import org.simplemes.eframe.json.EFrameJacksonModule
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.LogUtils
 import org.simplemes.eframe.misc.TypeUtils
@@ -777,4 +779,27 @@ class BaseSpecification extends GebSpec {
     return JavascriptTestUtils.checkScript("var x = [ $page ];")
   }
 
+  /**
+   * An object mapper configured as the framework needs it.
+   */
+  static ObjectMapper objectMapper
+
+  /**
+   * Gets or builds an object mapper that is configured for the eframe testing.
+   * This avoids using the embedded server if possible.
+   * @return A configured mapper.
+   */
+  ObjectMapper getObjectMapper() {
+    if (!objectMapper) {
+      // Use the one from Micronaut if the embedded server is running.
+      objectMapper = Holders.objectMapper
+      if (!objectMapper) {
+        // No embedded server, so just build one a use it.
+        objectMapper = new ObjectMapper()
+        objectMapper.registerModule(new EFrameJacksonModule())
+        StartupHandler.configureJacksonObjectMapper(objectMapper)
+      }
+    }
+    return objectMapper
+  }
 }

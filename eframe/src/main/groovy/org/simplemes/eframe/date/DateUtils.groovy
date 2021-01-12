@@ -275,17 +275,30 @@ class DateUtils {
     return new Date(millis)
   }
 
-/**
- * Build a human-readable elapsed time string from the given elapsed time (ms), but only shows one number
- * to make it readable.  Use this in scenarios when super-precise display is not needed.
- * Supports seconds, minutes, days and years.  This method does <b>not</b> round to nearest whole number when precision is
- * set to LOW (default).<p/>
- * This method ignores leap years. All years are assumed to be 365 days.
- * @param elapsedTimeMS The elapsed time (ms).
- * @param locale The locale to use for the elapsed time string (<b>Default:</b> Request Locale, or Locale.default).
- * @param precision The precision to display. (<b>Default:</b> PRECISION_LOW).
- * @return The string. (e.g. for 70 seconds, returns "1 minute").
- */
+  /**
+   * Subtract the given number of days from the given date.  Supports only whole days.
+   * Subtract the given number of days from the given date.  Supports only whole days.
+   *
+   * @param date The date to subtract from.
+   * @param days The number of days to subtract.
+   * @return The new date.
+   */
+  static DateOnly subtractDays(DateOnly date, int days) {
+    long millis = (long) (date.time - days * MILLIS_PER_DAY)
+    return new DateOnly(millis)
+  }
+
+  /**
+   * Build a human-readable elapsed time string from the given elapsed time (ms), but only shows one number
+   * to make it readable.  Use this in scenarios when super-precise display is not needed.
+   * Supports seconds, minutes, days and years.  This method does <b>not</b> round to nearest whole number when precision is
+   * set to LOW (default).<p/>
+   * This method ignores leap years. All years are assumed to be 365 days.
+   * @param elapsedTimeMS The elapsed time (ms).
+   * @param locale The locale to use for the elapsed time string (<b>Default:</b> Request Locale, or Locale.default).
+   * @param precision The precision to display. (<b>Default:</b> PRECISION_LOW).
+   * @return The string. (e.g. for 70 seconds, returns "1 minute").
+   */
   static String formatElapsedTime(long elapsedTimeMS, Locale locale, String precision = PRECISION_LOW) {
     // Calculate the actual values with decimals for the units we support.
     BigDecimal seconds = elapsedTimeMS / 1000.0

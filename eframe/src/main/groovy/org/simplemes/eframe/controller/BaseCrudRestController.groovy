@@ -18,6 +18,8 @@ import io.micronaut.http.annotation.Put
 import io.micronaut.security.annotation.Secured
 import io.micronaut.security.rules.SecurityRule
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.custom.ExtensibleFieldHelper
+import org.simplemes.eframe.custom.FieldHolderMap
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.exception.MessageHolder
@@ -200,7 +202,25 @@ abstract class BaseCrudRestController extends BaseCrudController {
       DomainUtils.instance.loadChildRecords(record)  // Force the child records to be loaded for updates.
       def originalUUID = record?.uuid
       if (record) {
+        // Preserve the older custom fields on update.
+        def originalCustomFields = null
+        def domainClass = record.getClass()
+        def hasExtensibleFields = ExtensibleFieldHelper.instance.hasExtensibleFields(domainClass)
+        if (hasExtensibleFields) {
+          originalCustomFields = ExtensibleFieldHelper.instance.getExtensibleFieldMap(record) ?: new FieldHolderMap()
+        }
         Holders.objectMapper.readerForUpdating(record).readValue(body)
+        if (hasExtensibleFields) {
+          // Record now has the new values from the JSON.  We need to merge it into the original map
+          // to preserve the original settings and history.
+          def updatedCustomFields = ExtensibleFieldHelper.instance.getExtensibleFieldMap(record)
+          if (updatedCustomFields) {
+            // Some custom data was provided in the JSON, so merge it
+            originalCustomFields.mergeMap(updatedCustomFields, record)
+          }
+          // And force the updated fields into the the record.
+          ExtensibleFieldHelper.instance.setExtensibleFieldMap(record, originalCustomFields)
+        }
         // Restore the original UUID in case the JSON changed it.
         record.uuid = originalUUID
         try {

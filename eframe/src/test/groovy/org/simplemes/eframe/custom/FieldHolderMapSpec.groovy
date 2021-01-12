@@ -8,10 +8,13 @@ import ch.qos.logback.classic.Level
 import org.simplemes.eframe.data.SimpleFieldDefinition
 import org.simplemes.eframe.data.format.ChildListFieldFormat
 import org.simplemes.eframe.data.format.CustomChildListFieldFormat
+import org.simplemes.eframe.data.format.DateFieldFormat
+import org.simplemes.eframe.data.format.DateOnlyFieldFormat
 import org.simplemes.eframe.data.format.DomainReferenceFieldFormat
 import org.simplemes.eframe.data.format.EncodedTypeFieldFormat
 import org.simplemes.eframe.data.format.EnumFieldFormat
 import org.simplemes.eframe.date.DateOnly
+import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.system.EnabledStatus
 import org.simplemes.eframe.test.BaseSpecification
@@ -212,4 +215,118 @@ class FieldHolderMapSpec extends BaseSpecification {
     mockAppender.assertMessageIsValid(['WARN', 'parsingFromJSON', 'isParsingFromJSON()', 'get()'])
   }
 
+  def "verify that mergeMap preserves original values - config is in original"() {
+    given: 'a map with some old values - one with config'
+    def origMap = new FieldHolderMap(parsingFromJSON: false)
+    def fieldDefinition = new SimpleFieldDefinition(name: 'field1', format: DateOnlyFieldFormat.instance)
+    def dateOnly = DateUtils.subtractDays(new DateOnly(), 2)
+    origMap.put('field1', dateOnly, fieldDefinition)
+    origMap.put('field2', 'xyz')
+    origMap.put('field4', new DateOnly(), fieldDefinition)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(origMap.toJSON())}"
+
+    and: 'a second map to be merged into the original'
+    def updatedDateOnly = DateUtils.subtractDays(new DateOnly(), 237)
+    def src = """
+      {
+        "field2" : "xyz",
+        "field3" : "pdq",
+        "field4" : "${updatedDateOnly.toString()}"
+      }
+      """
+    def map = FieldHolderMap.fromJSON(src)
+
+    when: 'the map is merged'
+    origMap.mergeMap(map, 'xyzzy')
+
+    then: 'the map contains all of the values'
+    origMap.field1 == dateOnly
+    origMap.field2 == 'xyz'
+    origMap.field3 == 'pdq'
+    origMap.field4 == updatedDateOnly
+
+    origMap[FieldHolderMap.CONFIG_ELEMENT_NAME] != null
+    origMap[FieldHolderMap.CONFIG_ELEMENT_NAME].field1 != null
+  }
+
+  def "verify that mergeMap will merge config values from input"() {
+    given: 'a map with some old values - one with config'
+    def origMap = new FieldHolderMap(parsingFromJSON: false)
+    def fieldDefinition = new SimpleFieldDefinition(name: 'field1', format: DateOnlyFieldFormat.instance)
+    def dateOnly = DateUtils.subtractDays(new DateOnly(), 4)
+    origMap.put('field1', dateOnly, fieldDefinition)
+    origMap.put('field2', 'xyz')
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(origMap.toJSON())}"
+
+    and: 'a second map to be merged into the original'
+    def map = new FieldHolderMap(parsingFromJSON: false)
+    map.put('newField', ReportTimeIntervalEnum.LAST_7_DAYS,
+            new SimpleFieldDefinition(format: EnumFieldFormat.instance, type: ReportTimeIntervalEnum))
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(map.toJSON())}"
+
+    when: 'the map is merged'
+    origMap.mergeMap(map, 'xyz')
+
+    then: 'the map contains all of the values'
+    origMap.field1 == dateOnly
+    origMap.field2 == 'xyz'
+    origMap.newField == ReportTimeIntervalEnum.LAST_7_DAYS
+    origMap.newField.class == ReportTimeIntervalEnum.LAST_7_DAYS.class
+
+    and: 'the config is correct'
+    origMap[FieldHolderMap.CONFIG_ELEMENT_NAME] != null
+    origMap[FieldHolderMap.CONFIG_ELEMENT_NAME].field1 != null
+    origMap[FieldHolderMap.CONFIG_ELEMENT_NAME].newField != null
+  }
+
+  def "verify that mergeMap combines values with no overlap"() {
+    given: 'a map with config for one field'
+    def origMap = new FieldHolderMap(parsingFromJSON: false)
+    def dateOnly = DateUtils.subtractDays(new DateOnly(), 4)
+    origMap.put('field1', dateOnly)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(origMap.toJSON())}"
+
+    and: 'a second map to be merged into the original'
+    def date = new Date()
+    def map = new FieldHolderMap(parsingFromJSON: false)
+    map.put('newField', date)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(map.toJSON())}"
+
+    when: 'the map is merged'
+    origMap.mergeMap(map, 'xyz')
+
+    then: 'the map contains all of the values'
+    origMap.field1 == dateOnly
+    origMap.newField == date
+
+    and: 'the config is correct'
+    origMap[FieldHolderMap.CONFIG_ELEMENT_NAME].newField != null
+    origMap[FieldHolderMap.CONFIG_ELEMENT_NAME].newField.type == DateFieldFormat.instance.id
+  }
+
+  def "verify that mergeMap detects change in type and fails gracefully"() {
+    given: 'a map with config for one field'
+    def origMap = new FieldHolderMap(parsingFromJSON: false)
+    def dateOnly = DateUtils.subtractDays(new DateOnly(), 4)
+    origMap.put('field1', dateOnly)
+    //println "Orig JSON = ${groovy.json.JsonOutput.prettyPrint(origMap.toJSON())}"
+
+    and: 'a second map to be merged into the original'
+    def map = new FieldHolderMap(parsingFromJSON: false)
+    map.put('field1', new Date())
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(map.toJSON())}"
+
+    when: 'the map is merged'
+    origMap.mergeMap(map, 'xyzzy')
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['field1', 'xyzzy'], 212)
+  }
+
+  // mergeConfig - changes type - no change
+
+  // mergeMap Config is not overwritten if conflicting values are passed in as src.
+  // mergeMap Config can be updated from src if there are no conflicts.
+  // TODO: Support history on mergeMap
 }

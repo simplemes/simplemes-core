@@ -1,35 +1,6 @@
 Scratch
 =======
 
-Issues 299
-----------
-  Add fix for undetected missed update. See  https://github.com/micronaut-projects/micronaut-data/issues/299
-  Two options:
-    1) Sub-class 3 elements and store the row count somewhere (in the domain?).
-           TransactionOperations<Connection> 
-           AbstractSynchronousTransactionManager.executeWrite()  (subclass DataSourceTransactionManager)
-             TransactionStatus.getConnection()   (subclass DefaultTransactionStatus)
-               Connection.prepareStatement()     (HikariProxyConnection)
-                 Statement.execute()             (HikariProxyPreparedStatement.executeUpdate())
-       Need to create wrapper classes to override the right methods.
-       These wrappers need to keep references to the real class
-    1a) Replace connection
-
-    2) Execute query with where clause before the real query.  Fail if updates 0 rows.
-    3) Replace Hikari connection manager?
-         Replace DatasourceFactory with sub-class.
-           Overrides dataSource() method to return wrapper class.
-         Sub-class of HikariDataSource() provides wrapped HikariProxyConnection
-         Sub-class of HikariProxyConnection provides wrapped Prepared Statement.
-           Prepared statement.executeUpdate() stores res (count) where?
-    4) Clone the updateOne() from source and keep it synched manually.
-       Remove logic at line 560 - call to persistOne().  Throw exception?
-    5) Drop MN-Data?  Replace with:
-         BaseRepository methods:
-           find(), list(), count(), get(), update(), delete()
-         Transaction support.  Still use micronaut-data-tx?
-         Need way to define specific SQL in Repository.
-
 Questions
 ---------
 No default dashboard found.  Maybe add link on error message to run demoData?
@@ -49,25 +20,16 @@ Custom Field Rework
 --------------------
 Tasks
 =====
-Look at mes-assy Assemble Dialog use of buttons.  The .ftl file does not define the Ok/Cancel button logic.
-Look at Large BOM/Defect list affect on basic read/update of Order. Cascade updates.
-  Change when JSON is serialized/deserialized.  Tests when loaded/saved.
-  Simplify ExtensibleFieldTransform:
-    Remove prefix/config type support.
-    Add Map holder field (_fields) for fields.  Tracks if dirty or not.
-      This Map is used for most actions.
-      String getFields() will serialize the Map contents if dirty, otherwise use value from field..
-  Remove prefix from ExtensibleFieldHelper.set/getFieldValue().
-  Change configType to remove prefix.
-    Update Assembly docs with assemblyData prefix in examples.
   Add API for adding value to fields.  Supports tracking options.
     Test with tracking and Rest API updates?
     Update docs for mes-core, assy with API custom examples.
-  Dirty Map ready for saving.
-    FieldHolderMap - put() marks as dirty.  Has Text ready for saving.  Dirty= changedSinceLastJsonSerialize.
-      new method put(name,value,CustomFieldConfig).
+  x Dirty Map ready for saving.
+    x FieldHolderMap - put() marks as dirty.  Has Text ready for saving.  Dirty= changedSinceLastJsonSerialize.
+      x new method put(name,value,CustomFieldConfig).
   REST API - Disable _config export/import by default.  Some mechanism to enable it on get?
-    Add URI with UUID for the get responses?
+    Add URI with UUID for the get responses? (e.g. _uri: http.../UUID).
+    Check on update of fields.  Should add to the list?
+    Test update of fields in GUI preserves older custom field values.
   Archive works - full history preserved.
   FieldHolderMap - Prevent storing unsupported types?
   Option to force Flex Type/DE/FE field definitions before collection?
@@ -80,114 +42,14 @@ Look at Large BOM/Defect list affect on basic read/update of Order. Cascade upda
   Add validation on Custom Field creation that prevents save if the name matches a core field.  Do in FieldExtension?
 
 Domain/POGO:
-  setFields(Map)
-  setFields(String json)
-  Map getFields()
   Test Scenarios
-    Set value on empty map, save
-      With and without config (e.g. FlexType or FieldExtension).
-    Set value on populated map, save
-      With and without config (e.g. FlexType or FieldExtension).
-    Overwrite value on populated map, save
-      With and without config (e.g. FlexType or FieldExtension).
 
-    Read record, get value.
-    Read record, update value, get value, save.
-      With and without config (e.g. FlexType or FieldExtension).
-
-    Round-trip - with types (DateOnly, Date, DomainRef, Enum, EncodedValue,ConfigurableType?).
     Round-trip - Update with value only history.
     Round-trip - Update with value details history.
     Round-trip - With config change (no history to full history).
 
 
-FieldHolderMapInterface: Front-end to JSON-backed text.  Retains type and tracking info.  Tracks history.
-  isDirty/setDirty - If Map has changes since last parseJSON()
-  parseJSON() - converts from text.
-  toJSON() - serializes to JSON
-  put()/get() - retains type info, track details option.
-  setTracking(name, value='L' (A/V/L))
-  setType(name, format)
-  getFieldsMap() - Delegates to helper.  Parse JSON if text is available.
-  no clear?
-  JSONAwareMapConfig - Holds config and history or just a simple Map with logic in JSONAwareMap?
-  Transform needs:
-   x map field with lazy getter/setter?  ExtensibleFieldHelper.getMap()/setMap()
-  ExtensibleFieldHelper needs:
-   change to getFieldValue to support map.
-   parses JSON on first get() with pending json
-   text field setFields() will null out map to indicate pending.  Called by JDBC.
-   text field getFields() will serialize dirty Map.  Called by JDBC.
-
-
-API:
-{
-  "rma": "R10102-23",
-  "qty": 12.2,
-  "fields" : {
-    "retailerID": "ACME-101",
-    "returnCode": "DEFECTIVE"
-  }
-}
-
-{
-  "order": "M1001",
-  "lsn": {
-    "lsn": "SN2037"
-  },
-  "component": "CPU",
-  "qty": 47.2,
-  "assemblyData": "VENDOR_AND_LOT",
-  "fields" : {
-    "LOT": "ACME-101",
-    "VENDOR": "ACME"
-  }
-}
-
-In fields, store config for each name field:
-  "fields" : {
-    "_retailerID_config": {"tracking": "ALL_VALUES", "type": "D"},  // ALL_DETAILS - (Who/what/when/where stored in element "_retailerID_history")
-    "retailerID": "ACME-101",
-    "_returnCode_config": {"tracking": "LATEST"},  // Default ALL_VALUES (values only)
-    "returnCode": "DEFECTIVE"
-  }
-  Option 2 - 3 top-level arrays.
-  "fields": {
-    "retailerID": "ACME-101",
-    "returnCode": "DEFECTIVE",
-    "_types": [
-      {
-        "retailerID": "D",
-        "returnCode": "R"
-      }
-    ],
-    "_tracking": [
-      {
-        "retailerID": "A",
-        "returnCode": "V"
-      }
-    ],
-    "_history": {
-      "weight": [
-        {
-          "weight": 2.3,
-          "user": "PWB",
-          "dateTime": "2009-02-13T18:31:30.000-05:00"
-        },
-        {
-          "weight": 2.2,
-          "user": "MPH",
-          "dateTime": "2009-02-13T18:31:30.000-05:00"
-        },
-        {
-          "weight": 2.1,
-          "user": "RLB",
-          "dateTime": "2009-02-14T17:23:53.000-05:00"
-        }
-      ]
-    }
-  }
-  Option 3 - One map of config values.
+ Option 3 - One map of config values.
     "fields": {
       "color": "123A",
       "returnCode": "DEFECTIVE",
@@ -225,13 +87,22 @@ Data Entry
 ==========
 Always allow data to be logged via API without setup.
 Define DE fields to be collected at specific places/events against order/LSN.
+  What triggers are needed?  Through events back to dashboard?  Similar to scan events?
+Need required field on DEField.
+  Required at DE Level too?  Collect at Start/Complete, etc feature?
+  Need common field definition handling for FlexField, FieldExtension, DEField.
 Flag to trace all values collected (Latest Value Only, All Values, All Data (Who/what/when/where).
 Events:
   Pre/Post Start/Complete/Done
-  For Product
-  For Specific Steps.
+  For (Order, Product, Routing/Oper, WorkCenter, WorkType) - Multiples.
 Add to Traveller and Order History Reports.
-Flex Type setup is for prompting.
+Use Flex Type setup is for prompting?  or Just copy field properties to DEField?
+Link To objects (Order, Product, Routing/Oper, WorkCenter, WorkType).  Needs to support future W/I, tools,etc.
+  Primary display is for a single link.  Can be switched to list mode if needed.
+  Always stored in another table.
+    DE
+      DEField
+      DELink (Order,Product...) as id? or ask key field only?
 
 
 Tasks
@@ -239,6 +110,9 @@ Tasks
 ISSUE: API: Look at just sending fields jsonb as sub-JSON instead of naming conventions and special logic.
 ISSUE: Support in non-CRUD endpoint with Domain as part of request.
 ISSUE: JSON Mapper ignores invalid fields on input (non-CRUD endpoint).
+
+Look at mes-assy Assemble Dialog use of buttons.  The .ftl file does not define the Ok/Cancel button logic.
+Look at Large BOM/Defect list affect on basic read/update of Order. Cascade updates.
 
 Scan Dashboard - Input field for use with phone keyboard.
 Traveller report shows M1001 not current order.

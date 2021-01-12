@@ -361,6 +361,26 @@ class ExtensibleFieldHelper {
   }
 
   /**
+   * Sets the field holder front-end Map.  Will mark the map as dirty to force a new serialization to JSON for saving.
+   * @param object The object to get the field holder Map from.
+   * @param map The map.
+   */
+  @CompileStatic
+  void setExtensibleFieldMap(Object object, FieldHolderMap map) {
+    // Build a Map from the current values
+    String holderName = getCustomHolderFieldName(object)
+    def clazz = object.getClass()
+    if (!holderName) {
+      //error.131.message=The domain class {0} does not support extensible fields. Add @ExtensibleFieldHolder.
+      throw new BusinessException(131, [clazz.name])
+    }
+    def mapName = holderName + "Map"
+    object[mapName] = map
+    map.setDirty(true)
+  }
+
+
+  /**
    * Gets the field holder front-end Map.  Does not attempt to create it or re-parse the text value.
    * @param object The object to get the field holder Map from.
    * @return The map.  Can be null.

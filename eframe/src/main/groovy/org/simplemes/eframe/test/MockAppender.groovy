@@ -98,6 +98,12 @@ class MockAppender extends AppenderBase {
       assert testStringLC.contains(s.toLowerCase())
     }
 
+    // Remove some common custom fields used in JSON.  JSON with empty custom fields
+    // results in the string '{}' in the messages sometimes.  Attempt to remove them so the
+    // check for missing parameters will not fail.
+    testStringLC = testStringLC.replaceAll('lds\":\\{\\}', '')
+
+    // Check for missing parameters in messages.
     assert !testStringLC.contains('{}'), "'${testStringLC}' is missing a replaceable parameter"
 
     return true
