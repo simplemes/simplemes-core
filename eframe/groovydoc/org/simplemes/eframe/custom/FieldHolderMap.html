@@ -91,7 +91,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li>org.simplemes.eframe.custom.FieldHolderMap
+<li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li>org.simplemes.eframe.custom.FieldHolderMap
 </ul>
 <div class="description">
     <ul class="blockList">
@@ -109,7 +109,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 
 <pre>@groovy.util.logging.Slf4j
 class FieldHolderMap
-extends <a href='../../../../org/simplemes/eframe/custom/BaseFieldHolderMap.html'>BaseFieldHolderMap</a>
+extends java.util.HashMap
 implements <a href='../../../../org/simplemes/eframe/custom/FieldHolderMapInterface.html'>FieldHolderMapInterface</a></pre>
 
     <p> Defines the Map used to hide the ExtensibleFieldHolder extensions to the Map logic.
@@ -120,11 +120,7 @@ implements <a href='../../../../org/simplemes/eframe/custom/FieldHolderMapInterf
  <a href='../../../../org/simplemes/eframe/custom/ExtensibleFieldHelper.html' title='ExtensibleFieldHelper'>ExtensibleFieldHelper</a> classes to convert the Map to/from JSON upon use.
  <p>
  Extra elements are added to the map to retain the data type for values, the history and configuration data
- in case the definitions change (e.g. FlexType changes).
- <p>
- This Groovy class is sub-classed from the <a href='../../../../org/simplemes/eframe/custom/BaseFieldHolderMap.html' title='BaseFieldHolderMap'>BaseFieldHolderMap</a> class because Groovy is cleaner.
- A Java base-class is used so the <a href='../../../../org/simplemes/eframe/data/annotation/ExtensibleFieldHolderTransformation.html' title='ExtensibleFieldHolderTransformation'>ExtensibleFieldHolderTransformation</a>
- can reference it in the Java source tree.</p>
+ in case the definitions change (e.g. FlexType changes).</p>
 
           </li>
     </ul>
@@ -322,6 +318,18 @@ implements <a href='../../../../org/simplemes/eframe/custom/FieldHolderMapInterf
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;void</code></td>
+                            <td class="colLast"><code><strong><a href="#mergeConfig(java.util.Map, java.lang.Object)">mergeConfig</a></strong>(java.util.Map src, java.lang.Object context)</code><br>Merges the given _config map into this map.  </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#mergeMap(org.simplemes.eframe.custom.FieldHolderMapInterface, java.lang.Object)">mergeMap</a></strong>(<a href='../../../../org/simplemes/eframe/custom/FieldHolderMapInterface.html'>FieldHolderMapInterface</a> src, java.lang.Object context)</code><br>Merges the given map into this map.  </td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#put(java.lang.Object, java.lang.Object)">put</a></strong>(java.lang.Object key, java.lang.Object value)</code><br>Associates the specified value with the specified key in this map.
  </td>
@@ -361,6 +369,24 @@ implements <a href='../../../../org/simplemes/eframe/custom/FieldHolderMapInterf
                    </ul>
               </li>
             
+            <li class="blockList"><a name="method_summary"><!--   --></a>
+                    <h3>Inherited Methods Summary</h3>
+                    <ul class="blockList">
+                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Inherited Methods Summary table">
+                        <caption><span>Inherited Methods</span><span class="tabEnd">&nbsp;</span></caption>
+                        <tr>
+                            <th class="colFirst" scope="col">Methods inherited from class</th>
+                            <th class="colLast" scope="col">Name</th>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code>class java.util.HashMap</code></td>
+                            <td class="colLast"><code>java.util.HashMap#remove(java.lang.Object, java.lang.Object), java.util.HashMap#remove(java.lang.Object), java.util.HashMap#get(java.lang.Object), java.util.HashMap#put(java.lang.Object, java.lang.Object), java.util.HashMap#values(), java.util.HashMap#clone(), java.util.HashMap#clear(), java.util.HashMap#isEmpty(), java.util.HashMap#replace(java.lang.Object, java.lang.Object), java.util.HashMap#replace(java.lang.Object, java.lang.Object, java.lang.Object), java.util.HashMap#replaceAll(java.util.function.BiFunction), java.util.HashMap#size(), java.util.HashMap#merge(java.lang.Object, java.lang.Object, java.util.function.BiFunction), java.util.HashMap#entrySet(), java.util.HashMap#putAll(java.util.Map), java.util.HashMap#putIfAbsent(java.lang.Object, java.lang.Object), java.util.HashMap#compute(java.lang.Object, java.util.function.BiFunction), java.util.HashMap#forEach(java.util.function.BiConsumer), java.util.HashMap#containsKey(java.lang.Object), java.util.HashMap#computeIfAbsent(java.lang.Object, java.util.function.Function), java.util.HashMap#keySet(), java.util.HashMap#containsValue(java.lang.Object), java.util.HashMap#getOrDefault(java.lang.Object, java.lang.Object), java.util.HashMap#computeIfPresent(java.lang.Object, java.util.function.BiFunction), java.util.HashMap#equals(java.lang.Object), java.util.HashMap#toString(), java.util.HashMap#hashCode(), java.util.HashMap#wait(long, int), java.util.HashMap#wait(), java.util.HashMap#wait(long), java.util.HashMap#getClass(), java.util.HashMap#notify(), java.util.HashMap#notifyAll()</code></td>
+                        </tr>
+                    </table>
+                   </ul>
+              </li>
+                
         </ul>
         
     </li>
@@ -582,6 +608,24 @@ key.equals(k) )</CODE>, then this method returns <CODE>v</CODE>; otherwise
                             <li class="blockList">
                                 <h4>boolean <strong>isParsingFromJSON</strong>()</h4>
                                 <p></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="mergeConfig(java.util.Map, java.lang.Object)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;void <strong>mergeConfig</strong>(java.util.Map src, java.lang.Object context)</h4>
+                                <p> Merges the given _config map into this map.  Preserves the details.  Attempt to update and existing
+ field will fail with an exception (BusinessException 212). <DL><DT><B>Parameters:</B></DT><DD><code>src</code> -  The source Map.</DD><DD><code>context</code> -  The place that triggered this.  Usually a domain entity.  Used for errors.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="mergeMap(org.simplemes.eframe.custom.FieldHolderMapInterface, java.lang.Object)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>void <strong>mergeMap</strong>(<a href='../../../../org/simplemes/eframe/custom/FieldHolderMapInterface.html'>FieldHolderMapInterface</a> src, java.lang.Object context)</h4>
+                                <p> Merges the given map into this map.  Preserves the _config element and may add to the history, if
+ configured. <DL><DT><B>Parameters:</B></DT><DD><code>src</code> -  The source Map.</DD><DD><code>context</code> -  The place that triggered this.  Usually a domain entity.  Used for errors.</DD></DL></p>
                             </li>
                         </ul>
                     

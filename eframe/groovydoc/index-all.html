@@ -426,8 +426,6 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd><div class="block">The failure listener for Spock specifications.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseFailureListener.html#BaseFailureListener()" title="Constructor in BaseFailureListener">BaseFailureListener()</a></span> - Constructor in <a href="org/simplemes/eframe/test/BaseFailureListener.html">BaseFailureListener</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/custom/BaseFieldHolderMap.html" title="Class in org.simplemes.eframe.custom">BaseFieldHolderMap</a></span> - Class in <a href="./org/simplemes/eframe/custom/package-summary.html">org.simplemes.eframe.custom</a>
-</dt><dd><div class="block">A simple parent class for the Groovy FieldHolderMap class.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseGUISpecification.html" title="Class in org.simplemes.eframe.test">BaseGUISpecification</a></span> - Class in <a href="./org/simplemes/eframe/test/package-summary.html">org.simplemes.eframe.test</a>
 </dt><dd><div class="block">This is the common Spock specification base class for GUI/GEB tests.
  </div></dd>
@@ -1589,6 +1587,12 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/json/DateOnlyDeserializer.html#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext)" title="Method in DateOnlyDeserializer">deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext)</a></span> - Method in <a href="org/simplemes/eframe/json/DateOnlyDeserializer.html">DateOnlyDeserializer</a>
 </dt><dd> <div class="block">Deserialize into a DateOnly field.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/json/FieldHolderMapDeserializer.html#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext, org.simplemes.eframe.custom.FieldHolderMapInterface)" title="Method in FieldHolderMapDeserializer">deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext, org.simplemes.eframe.custom.FieldHolderMapInterface)</a></span> - Method in <a href="org/simplemes/eframe/json/FieldHolderMapDeserializer.html">FieldHolderMapDeserializer</a>
+</dt><dd> <div class="block">Alternate deserialization method (compared to the most commonly
+ used, <a href='#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext)'>deserialize(JsonParser, DeserializationContext)</a>),
+ which takes in initialized value instance, to be
+ configured and/or populated by deserializer.
+ </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/json/JSONByIDDeserializer.html#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext)" title="Method in JSONByIDDeserializer">deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext)</a></span> - Method in <a href="org/simplemes/eframe/json/JSONByIDDeserializer.html">JSONByIDDeserializer</a>
 </dt><dd> <div class="block">Converts an object ID to a domain object.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/json/JSONByKeyDeserializer.html#deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext)" title="Method in JSONByKeyDeserializer">deserialize(com.fasterxml.jackson.core.JsonParser, com.fasterxml.jackson.databind.DeserializationContext)</a></span> - Method in <a href="org/simplemes/eframe/json/JSONByKeyDeserializer.html">JSONByKeyDeserializer</a>
@@ -2205,9 +2209,18 @@ if (location.href.indexOf('is-external=true') == -1) {
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#FieldHolderMap()" title="Constructor in FieldHolderMap">FieldHolderMap()</a></span> - Constructor in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/json/FieldHolderMapDeserializer.html" title="Class in org.simplemes.eframe.json">FieldHolderMapDeserializer</a></span> - Class in <a href="./org/simplemes/eframe/json/package-summary.html">org.simplemes.eframe.json</a>
+</dt><dd><div class="block">A deserializer for read a FieldHolderMap from JSON.
+ </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/json/FieldHolderMapDeserializer.html#FieldHolderMapDeserializer()" title="Constructor in FieldHolderMapDeserializer">FieldHolderMapDeserializer()</a></span> - Constructor in <a href="org/simplemes/eframe/json/FieldHolderMapDeserializer.html">FieldHolderMapDeserializer</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMapInterface.html" title="Interface in org.simplemes.eframe.custom">FieldHolderMapInterface</a></span> - Interface in <a href="./org/simplemes/eframe/custom/package-summary.html">org.simplemes.eframe.custom</a>
 </dt><dd><div class="block">Defines the Map interface used to hide the ExtensibleFieldHolder extensions to the Map logic.
  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/json/FieldHolderMapSerializer.html" title="Class in org.simplemes.eframe.json">FieldHolderMapSerializer</a></span> - Class in <a href="./org/simplemes/eframe/json/package-summary.html">org.simplemes.eframe.json</a>
+</dt><dd><div class="block">A serializer for writing a The FieldHolderMap to JSON output.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/json/FieldHolderMapSerializer.html#FieldHolderMapSerializer()" title="Constructor in FieldHolderMapSerializer">FieldHolderMapSerializer()</a></span> - Constructor in <a href="org/simplemes/eframe/json/FieldHolderMapSerializer.html">FieldHolderMapSerializer</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/gui/FieldInsertAdjustment.html" title="Class in org.simplemes.eframe.custom.gui">FieldInsertAdjustment</a></span> - Class in <a href="./org/simplemes/eframe/custom/gui/package-summary.html">org.simplemes.eframe.custom.gui</a>
 </dt><dd><div class="block">This holds a single Insert adjustment to the field order for a GUI.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/gui/FieldInsertAdjustment.html#FieldInsertAdjustment()" title="Constructor in FieldInsertAdjustment">FieldInsertAdjustment()</a></span> - Constructor in <a href="org/simplemes/eframe/custom/gui/FieldInsertAdjustment.html">FieldInsertAdjustment</a>
@@ -3103,6 +3116,9 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">This returns the archive reference since the archive object is not in the DB.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/search/SearchHit.html#getObject()" title="Method in SearchHit">getObject()</a></span> - Method in <a href="org/simplemes/eframe/search/SearchHit.html">SearchHit</a>
 </dt><dd> <div class="block">This will read the actual domain object from the DB.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/test/BaseSpecification.html#getObjectMapper()" title="Method in BaseSpecification">getObjectMapper()</a></span> - Method in <a href="org/simplemes/eframe/test/BaseSpecification.html">BaseSpecification</a>
+</dt><dd> <div class="block">Gets or builds an object mapper that is configured for the eframe testing.
+ </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/application/Holders.html#getObjectMapper()" title="Method in Holders">getObjectMapper()</a></span> - Method in <a href="org/simplemes/eframe/application/Holders.html">Holders</a>
 </dt><dd> <div class="block">Returns the object mapper in use for this server.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html#getObjectWrapper()" title="Method in BaseMarker">getObjectWrapper()</a></span> - Method in <a href="org/simplemes/eframe/web/ui/webix/freemarker/BaseMarker.html">BaseMarker</a>
@@ -4211,6 +4227,12 @@ if (location.href.indexOf('is-external=true') == -1) {
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/webix/freemarker/MenuMarker.html#MenuMarker()" title="Constructor in MenuMarker">MenuMarker()</a></span> - Constructor in <a href="org/simplemes/eframe/web/ui/webix/freemarker/MenuMarker.html">MenuMarker</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#mergeConfig(java.util.Map, java.lang.Object)" title="Method in FieldHolderMap">mergeConfig(java.util.Map, java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block">Merges the given _config map into this map.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#mergeMap(org.simplemes.eframe.custom.FieldHolderMapInterface, java.lang.Object)" title="Method in FieldHolderMap">mergeMap(org.simplemes.eframe.custom.FieldHolderMapInterface, java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block">Merges the given map into this map.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMapInterface.html#mergeMap(org.simplemes.eframe.custom.FieldHolderMapInterface, java.lang.Object)" title="Method in FieldHolderMapInterface">mergeMap(org.simplemes.eframe.custom.FieldHolderMapInterface, java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMapInterface.html">FieldHolderMapInterface</a>
+</dt><dd> <div class="block">Merges the given map into this map.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/exception/MessageBasedException.html" title="Class in org.simplemes.eframe.exception">MessageBasedException</a></span> - Class in <a href="./org/simplemes/eframe/exception/package-summary.html">org.simplemes.eframe.exception</a>
 </dt><dd><div class="block">A general-purpose message exception that uses error numbers and messages from the .properties file
  to localize the message.  </div></dd>
@@ -5193,6 +5215,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Serializes the enum using the toString() and adding a display value.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/json/EnumSerializer.html#serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)" title="Method in EnumSerializer">serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)</a></span> - Method in <a href="org/simplemes/eframe/json/EnumSerializer.html">EnumSerializer</a>
 </dt><dd> <div class="block">Serializes the enum using the toString() and adding a display value.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/json/FieldHolderMapSerializer.html#serialize(org.simplemes.eframe.custom.FieldHolderMapInterface, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)" title="Method in FieldHolderMapSerializer">serialize(org.simplemes.eframe.custom.FieldHolderMapInterface, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)</a></span> - Method in <a href="org/simplemes/eframe/json/FieldHolderMapSerializer.html">FieldHolderMapSerializer</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/json/ForeignReferenceSerializer.html#serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)" title="Method in ForeignReferenceSerializer">serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)</a></span> - Method in <a href="org/simplemes/eframe/json/ForeignReferenceSerializer.html">ForeignReferenceSerializer</a>
 </dt><dd> <div class="block">Serializes the domain record reference using the short string (e.g. primary key field).</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/json/JSONByIDSerializer.html#serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)" title="Method in JSONByIDSerializer">serialize(java.lang.Object, com.fasterxml.jackson.core.JsonGenerator, com.fasterxml.jackson.databind.SerializerProvider)</a></span> - Method in <a href="org/simplemes/eframe/json/JSONByIDSerializer.html">JSONByIDSerializer</a>
@@ -5250,6 +5274,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Returns the list of element names.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/search/SearchDomainSettings.html#setExclude(List<String>)" title="Method in SearchDomainSettings">setExclude(List&lt;String&gt;)</a></span> - Method in <a href="org/simplemes/eframe/search/SearchDomainSettings.html">SearchDomainSettings</a>
 </dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html#setExtensibleFieldMap(java.lang.Object, org.simplemes.eframe.custom.FieldHolderMap)" title="Method in ExtensibleFieldHelper">setExtensibleFieldMap(java.lang.Object, org.simplemes.eframe.custom.FieldHolderMap)</a></span> - Method in <a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html">ExtensibleFieldHelper</a>
+</dt><dd> <div class="block">Sets the field holder front-end Map.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html#setExtensibleFieldsText(java.lang.Object, java.lang.String, java.lang.String)" title="Method in ExtensibleFieldHelper">setExtensibleFieldsText(java.lang.Object, java.lang.String, java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/custom/ExtensibleFieldHelper.html">ExtensibleFieldHelper</a>
 </dt><dd> <div class="block">Sets the field holder text.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/PersistentProperty.html#setField(java.lang.reflect.Field)" title="Method in PersistentProperty">setField(java.lang.reflect.Field)</a></span> - Method in <a href="org/simplemes/eframe/domain/PersistentProperty.html">PersistentProperty</a>
@@ -5528,8 +5554,8 @@ if (location.href.indexOf('is-external=true') == -1) {
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/DomainReference.html#SUB_OBJECT_DELIMITER" title="Field in DomainReference">SUB_OBJECT_DELIMITER</a></span> - Field in <a href="org/simplemes/eframe/domain/DomainReference.html">DomainReference</a>
 </dt><dd> <div class="block">The delimiter used to denote a sub-object reference (e.g. flexType.fields).</div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/date/DateUtils.html#subtractDays(java.util.Date, BigDecimal)" title="Method in DateUtils">subtractDays(java.util.Date, BigDecimal)</a></span> - Method in <a href="org/simplemes/eframe/date/DateUtils.html">DateUtils</a>
-</dt><dd> <div class="block">Subtract the given number of days from the given date/time.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/date/DateUtils.html#subtractDays(org.simplemes.eframe.date.DateOnly, int)" title="Method in DateUtils">subtractDays(org.simplemes.eframe.date.DateOnly, int)</a></span> - Method in <a href="org/simplemes/eframe/date/DateUtils.html">DateUtils</a>
+</dt><dd> <div class="block">Subtract the given number of days from the given date.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/webix/ToolkitConstants.html#SUGGEST_FILTER_PARAMETER_NAME" title="Field in ToolkitConstants">SUGGEST_FILTER_PARAMETER_NAME</a></span> - Field in <a href="org/simplemes/eframe/web/ui/webix/ToolkitConstants.html">ToolkitConstants</a>
 </dt><dd> <div class="block">The name of the parameter on the suggest server-side requests for the filter field value.
  </div></dd>

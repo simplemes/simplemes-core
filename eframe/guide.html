@@ -6548,7 +6548,7 @@ class must provide a list of valid values for the sub-classes defined in the cor
 </div>
 <div class="imageblock text-center">
 <div class="content">
-<img src="images/encodedTypeExample.png" alt="encodedTypeExample" width="629" height="371">
+<img src="images/encodedTypeExample.png" alt="encodedTypeExample" width="307" height="210">
 </div>
 <div class="title">Figure 9. EncodedTypeList and EncodedType Classes</div>
 </div>
@@ -9345,7 +9345,7 @@ details.  The model is shown below:</p>
 </div>
 <div class="imageblock text-center">
 <div class="content">
-<img src="images/preferencesERD.png" alt="preferencesERD" width="574" height="396">
+<img src="images/preferencesERD.png" alt="preferencesERD" width="307" height="210">
 </div>
 </div>
 <div class="paragraph">
@@ -16421,9 +16421,22 @@ accessed like this:</p>
   <span class="key"><span class="delimiter">&quot;</span><span class="content">_fields</span><span class="delimiter">&quot;</span></span>: {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">promiseDate</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2009-02-13T18:31:30.000-05:00</span><span class="delimiter">&quot;</span></span>,
     <span class="key"><span class="delimiter">&quot;</span><span class="content">caseColor</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">BLUE</span><span class="delimiter">&quot;</span></span>
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">_config</span><span class="delimiter">&quot;</span></span>: {
+      <span class="error">.</span> <span class="error">.</span> <span class="error">.</span>   <i class="conum" data-value="1"></i><b>(1)</b>
+    }
   }
 }</code></pre>
 </div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The custom field configurations.  This is stored with the field values to allow
+the definitions to change without los of data/type information.
+See <a href="#custom-field-storage">Custom Field Storage</a> for more details.</td>
+</tr>
+</table>
 </div>
 <div class="paragraph">
 <p>These will be stored in the normal storage location for <a href="#field-extensions">Field Extensions</a>.</p>
@@ -16502,6 +16515,67 @@ values will be stored as described in <a href="#custom-field-storage">Custom Fie
 </td>
 </tr>
 </table>
+</div>
+<div class="paragraph">
+<p>Updates are allowed for the <code>_fields</code> element, but the <code>_config</code> element
+(<a href="#custom-field-storage">Custom Field Storage</a>) are ignored.</p>
+</div>
+<div class="sect4">
+<h5 id="custom-fields-provide-type-via-crud-api"><a class="link" href="#custom-fields-provide-type-via-crud-api">Custom Fields - Provide Type via CRUD API</a></h5>
+<div class="paragraph">
+<p>Creations and updates via the <a href="#rest-api">Rest API</a> can define the field type on creation.
+This is normally not needed for the normal JSON field types (string, number, boolean).
+For example, if you need to create a custom field that is a DateOnly
+type, you can specify the field type in the JSON.  The format is identical to the
+<a href="#custom-field-storage">Custom Field Storage</a> format. You can create these types using the JSON below:</p>
+</div>
+<div class="listingblock">
+<div class="title">JSON Format - Types for Custom Fields</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">rma</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">R10102-23</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">qty</span><span class="delimiter">&quot;</span></span>: <span class="float">12.2</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">_fields</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">dueDate</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2021-01-31</span><span class="delimiter">&quot;</span></span>,   <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">_config</span><span class="delimiter">&quot;</span></span>: {
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">dueDate</span><span class="delimiter">&quot;</span></span>: {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">D</span><span class="delimiter">&quot;</span></span>,           <i class="conum" data-value="2"></i><b>(2)</b>
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">tracking</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">A</span><span class="delimiter">&quot;</span></span>        <i class="conum" data-value="3"></i><b>(3)</b>
+      }
+    },
+  }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The value for the <code>dueDate</code> custom field.  ISO Date formatted string.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The custom field type.  This type is defined as the DB value in <a href="#field-types">Field Types</a>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The history tracking option.  See <a href="#custom-field-history">Custom Field History</a> for details.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Any changes to the type are not allowed on existing fields.
+      The update will fail if the type is changed.
+</td>
+</tr>
+</table>
+</div>
 </div>
 </div>
 <div class="sect3">
@@ -17585,25 +17659,26 @@ the holder for the values. By convention, this field is almost always named <cod
 </ul>
 </div>
 <div class="paragraph">
-<p>Custom child lists are handled somewhat differently.</p>
-</div>
-<div class="sect4">
-<h5 id="custom-child-list-storage"><a class="link" href="#custom-child-list-storage">Custom Child List Storage</a></h5>
-<div class="paragraph">
-<p>When the custom field is a  <a href="#custom-child-list">Custom Child List</a> (<em>CustomChildListFieldFormat</em>),
-the data is not stored in the holder as JSON.  Instead, it is stored in a custom
-database table.  This means the JSON format is different:</p>
+<p>Custom child lists are handled somewhat differently.  The JSON format of these fields
+looks like this:</p>
 </div>
 <div class="listingblock">
-<div class="title">JSON Format for Custom Child List Storage</div>
+<div class="title">JSON Format for All Data and Values Tracking</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="json">{
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">rma</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">R10102-23</span><span class="delimiter">&quot;</span></span>,         <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">rma</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">R10102-23</span><span class="delimiter">&quot;</span></span>,          <i class="conum" data-value="1"></i><b>(1)</b>
   <span class="key"><span class="delimiter">&quot;</span><span class="content">qty</span><span class="delimiter">&quot;</span></span>: <span class="float">12.2</span>,
-  <span class="key"><span class="delimiter">&quot;</span><span class="content">customComponents</span><span class="delimiter">&quot;</span></span>: [       <i class="conum" data-value="2"></i><b>(2)</b>
-     { <span class="key"><span class="delimiter">&quot;</span><span class="content">product</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">BIKE-27</span><span class="delimiter">&quot;</span></span>, <span class="key"><span class="delimiter">&quot;</span><span class="content">qty</span><span class="delimiter">&quot;</span></span>: <span class="float">1.0</span> },
-     { <span class="key"><span class="delimiter">&quot;</span><span class="content">product</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">WHEEL</span><span class="delimiter">&quot;</span></span>, <span class="key"><span class="delimiter">&quot;</span><span class="content">qty</span><span class="delimiter">&quot;</span></span>: <span class="float">2.0</span> }
-    ]
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">_fields</span><span class="delimiter">&quot;</span></span>: {
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">weight</span><span class="delimiter">&quot;</span></span>: <span class="float">2.3</span>,             <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">_config</span><span class="delimiter">&quot;</span></span>: {               <i class="conum" data-value="3"></i><b>(3)</b>
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">weight</span><span class="delimiter">&quot;</span></span>: {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">I</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">tracking</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">A</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">history</span><span class="delimiter">&quot;</span></span>: [           <i class="conum" data-value="4"></i><b>(4)</b>
+          <span class="error">.</span> <span class="error">.</span> <span class="error">.</span>
+        ]
+      }
+    },
   }
 }</code></pre>
 </div>
@@ -17616,27 +17691,19 @@ database table.  This means the JSON format is different:</p>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The list of custom child records.  Stored in another database table.
-In the domain object itself, these custom records are stored in a
-special Map.   The values can be accessed with the normal custom field
-getters/setters: such as <code>getCustomComponents()</code>.</td>
+<td>The latest value for the <code>weight</code> custom field.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The configuration for the fields.  This is only used when non-standard JSON types are
+used (e.g. dates) or if tracking is needed. The type and tracking option is stored
+here when needed.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The history for the weight.  See <a href="#custom-field-history">Custom Field History</a> for details.</td>
 </tr>
 </table>
-</div>
-<div class="paragraph">
-<p>This is a fairly complex feature that is only supported in a limited number of scenarios
-as described in <a href="#custom-child-list">Custom Child List</a>.  It is very useful for <a href="#module-additions">Module Additions</a> so
-that a module can add a list of custom values for a core domain object.</p>
-</div>
-<div class="paragraph">
-<p>Why put these in another element in the JSON?  Because the Jackson JSON mapper automatically
-creates/parses the JSON for the standard <a href="#custom-field-storage">Custom Field Storage</a> mechanism.  To use
-the same storage mechanism, we would have to write a lot of complex logic to
-extract and insert the custom child lists.</p>
-</div>
-<div class="paragraph">
-<p>This is not ideal, but it is the best compromise.</p>
-</div>
 </div>
 <div class="sect4">
 <h5 id="custom-field-history"><a class="link" href="#custom-field-history">Custom Field History</a></h5>
@@ -17690,28 +17757,24 @@ Tracking historical values can produce a lot of data, so only enable this
   <span class="key"><span class="delimiter">&quot;</span><span class="content">qty</span><span class="delimiter">&quot;</span></span>: <span class="float">12.2</span>,
   <span class="key"><span class="delimiter">&quot;</span><span class="content">_fields</span><span class="delimiter">&quot;</span></span>: {
     <span class="key"><span class="delimiter">&quot;</span><span class="content">weight</span><span class="delimiter">&quot;</span></span>: <span class="float">2.3</span>,             <i class="conum" data-value="2"></i><b>(2)</b>
-    <span class="key"><span class="delimiter">&quot;</span><span class="content">_weight_config</span><span class="delimiter">&quot;</span></span>: {        <i class="conum" data-value="3"></i><b>(3)</b>
-      <span class="key"><span class="delimiter">&quot;</span><span class="content">tracking</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">ALL_VALUES</span><span class="delimiter">&quot;</span></span>
+    <span class="key"><span class="delimiter">&quot;</span><span class="content">_config</span><span class="delimiter">&quot;</span></span>: {               <i class="conum" data-value="3"></i><b>(3)</b>
+      <span class="key"><span class="delimiter">&quot;</span><span class="content">weight</span><span class="delimiter">&quot;</span></span>: {
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">type</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">I</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">tracking</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">A</span><span class="delimiter">&quot;</span></span>,
+        <span class="key"><span class="delimiter">&quot;</span><span class="content">history</span><span class="delimiter">&quot;</span></span>: [           <i class="conum" data-value="4"></i><b>(4)</b>
+          {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">weight</span><span class="delimiter">&quot;</span></span>: <span class="float">2.3</span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">user</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">PWB</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">dateTime</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2009-02-13T18:31:30.000-05:00</span><span class="delimiter">&quot;</span></span>
+          },
+          {
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">weight</span><span class="delimiter">&quot;</span></span>: <span class="float">2.1</span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">user</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">RLB</span><span class="delimiter">&quot;</span></span>,
+            <span class="key"><span class="delimiter">&quot;</span><span class="content">dateTime</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2009-02-14T17:23:53.000-05:00</span><span class="delimiter">&quot;</span></span>
+          }
+        ]
+      }
     },
-    <span class="key"><span class="delimiter">&quot;</span><span class="content">_weight_history</span><span class="delimiter">&quot;</span></span>: {             <i class="conum" data-value="4"></i><b>(4)</b>
-      <span class="error">h</span><span class="error">i</span><span class="error">s</span><span class="error">t</span><span class="error">o</span><span class="error">r</span><span class="error">y</span>: [
-        {
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">weight</span><span class="delimiter">&quot;</span></span>: <span class="float">2.3</span>,             <i class="conum" data-value="5"></i><b>(5)</b>
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">user</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">PWB</span><span class="delimiter">&quot;</span></span>,
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">dateTime</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2009-02-13T18:31:30.000-05:00</span><span class="delimiter">&quot;</span></span>,
-        },
-        {
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">weight</span><span class="delimiter">&quot;</span></span>: <span class="float">2.2</span>,
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">user</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">MPH</span><span class="delimiter">&quot;</span></span>,
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">dateTime</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2009-02-13T18:31:30.000-05:00</span><span class="delimiter">&quot;</span></span>,
-        },
-        {
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">weight</span><span class="delimiter">&quot;</span></span>: <span class="float">2.1</span>,
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">user</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">RLB</span><span class="delimiter">&quot;</span></span>,
-          <span class="key"><span class="delimiter">&quot;</span><span class="content">dateTime</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">2009-02-14T17:23:53.000-05:00</span><span class="delimiter">&quot;</span></span>,
-        }
-      ]
-    }
   }
 }</code></pre>
 </div>
@@ -17724,23 +17787,71 @@ Tracking historical values can produce a lot of data, so only enable this
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The latest value for the weight.</td>
+<td>The latest value for the <code>weight</code> custom field.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The configuration for the weight.  Set for non-default configuration settings such
+<td>The configuration for the fields.  Set for non-default configuration settings such
 as this example.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>The history for the weight.  Includes values and date/user/etc.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>The current value is added here when it is set in the <code>fields</code>.  Only for Tracking
+<td>The history for the weight, if configured to track the history.  Includes values and date/user/etc.
+The current value is added here when it is set in the <code>fields</code>.  Only for Tracking
 option <strong>All Data and Values</strong>.</td>
 </tr>
 </table>
+</div>
+</div>
+<div class="sect4">
+<h5 id="custom-child-list-storage"><a class="link" href="#custom-child-list-storage">Custom Child List Storage</a></h5>
+<div class="paragraph">
+<p>When the custom field is a  <a href="#custom-child-list">Custom Child List</a> (<em>CustomChildListFieldFormat</em>),
+the data is not stored in the holder as JSON.  Instead, it is stored in a custom
+database table.  This means the JSON format is different:</p>
+</div>
+<div class="listingblock">
+<div class="title">JSON Format for Custom Child List Storage</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">rma</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">R10102-23</span><span class="delimiter">&quot;</span></span>,         <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">qty</span><span class="delimiter">&quot;</span></span>: <span class="float">12.2</span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">customComponents</span><span class="delimiter">&quot;</span></span>: [       <i class="conum" data-value="2"></i><b>(2)</b>
+     { <span class="key"><span class="delimiter">&quot;</span><span class="content">product</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">BIKE-27</span><span class="delimiter">&quot;</span></span>, <span class="key"><span class="delimiter">&quot;</span><span class="content">qty</span><span class="delimiter">&quot;</span></span>: <span class="float">1.0</span> },
+     { <span class="key"><span class="delimiter">&quot;</span><span class="content">product</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">WHEEL</span><span class="delimiter">&quot;</span></span>, <span class="key"><span class="delimiter">&quot;</span><span class="content">qty</span><span class="delimiter">&quot;</span></span>: <span class="float">2.0</span> }
+    ]
+  }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The normal domain fields.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The list of custom child records.  Stored in another database table.
+In the domain object itself, these custom records are stored in a
+special Map.   The values can be accessed with the normal custom field
+getters/setters: such as <code>getCustomComponents()</code>.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>This is a fairly complex feature that is only supported in a limited number of scenarios
+as described in <a href="#custom-child-list">Custom Child List</a>.  It is very useful for <a href="#module-additions">Module Additions</a> so
+that a module can add a list of custom values for a core domain object.</p>
+</div>
+<div class="paragraph">
+<p>Why put these in another element in the JSON?  Because the Jackson JSON mapper automatically
+creates/parses the JSON for the standard <a href="#custom-field-storage">Custom Field Storage</a> mechanism.  To use
+the same storage mechanism, we would have to write a lot of complex logic to
+extract and insert the custom child lists.</p>
+</div>
+<div class="paragraph">
+<p>This is not ideal, but it is the best compromise.</p>
 </div>
 </div>
 <div class="sect4">
@@ -18376,7 +18487,7 @@ relationships are shown below:</p>
 </div>
 <div class="imageblock text-center">
 <div class="content">
-<img src="images/FieldGUIExtension.png" alt="FieldGUIExtension" width="649" height="250">
+<img src="images/FieldGUIExtension.png" alt="FieldGUIExtension" width="307" height="210">
 </div>
 <div class="title">Figure 37. Class Relationships - FieldGUIExtension</div>
 </div>
@@ -20107,7 +20218,7 @@ This results in this warning message every time it is used:</p>
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-01-08 20:18:39 UTC
+Last updated 2021-01-12 17:27:33 UTC
 </div>
 </div>
 <style>

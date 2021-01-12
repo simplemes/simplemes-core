@@ -303,11 +303,17 @@ extends java.lang.Object</pre>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;<a href='../../../../org/simplemes/eframe/date/DateOnly.html'>DateOnly</a></code></td>
+                            <td class="colLast"><code><strong><a href="#subtractDays(org.simplemes.eframe.date.DateOnly, int)">subtractDays</a></strong>(<a href='../../../../org/simplemes/eframe/date/DateOnly.html'>DateOnly</a> date, int days)</code><br>Subtract the given number of days from the given date.  </td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.util.Date</code></td>
                             <td class="colLast"><code><strong><a href="#truncate(java.util.Date, java.time.temporal.ChronoUnit, java.util.TimeZone)">truncate</a></strong>(java.util.Date date, java.time.temporal.ChronoUnit field, java.util.TimeZone timeZone)</code><br>Truncate the given date/time to nearest (lower) value of the given field.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.util.Date</code></td>
                             <td class="colLast"><code><strong><a href="#truncateSeconds(java.util.Date)">truncateSeconds</a></strong>(java.util.Date date)</code><br>Truncate the given date/time to nearest minute.</td>
@@ -550,6 +556,15 @@ extends java.lang.Object</pre>
                             <li class="blockList">
                                 <h4>static&nbsp;java.util.Date <strong>subtractDays</strong>(java.util.Date date, <a href='../../../../BigDecimal.html'>BigDecimal</a> days)</h4>
                                 <p> Subtract the given number of days from the given date/time.  Supports partial days. <DL><DT><B>Parameters:</B></DT><DD><code>date</code> -  The date to subtract from.</DD><DD><code>days</code> -  The number of days to subtract.  Fractions allowed.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The new date/time.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="subtractDays(org.simplemes.eframe.date.DateOnly, int)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;<a href='../../../../org/simplemes/eframe/date/DateOnly.html'>DateOnly</a> <strong>subtractDays</strong>(<a href='../../../../org/simplemes/eframe/date/DateOnly.html'>DateOnly</a> date, int days)</h4>
+                                <p> Subtract the given number of days from the given date.  Supports only whole days.
+ Subtract the given number of days from the given date.  Supports only whole days. <DL><DT><B>Parameters:</B></DT><DD><code>date</code> -  The date to subtract from.</DD><DD><code>days</code> -  The number of days to subtract.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The new date.</DD></DL></p>
                             </li>
                         </ul>
                     

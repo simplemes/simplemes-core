@@ -223,21 +223,26 @@ extends geb.spock.GebSpec</pre>
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;com.fasterxml.jackson.databind.ObjectMapper</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#objectMapper">objectMapper</a></code><br>An object mapper configured as the framework needs it.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong>private&nbsp;java.util.List&lt;java.lang.Class&gt;</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#otherDirtyDomains">otherDirtyDomains</a></code><br>A list of other domain classes that need cleanup.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong>private&nbsp;static&nbsp;int</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#reportScreenShotCount">reportScreenShotCount</a></code><br>A running counter to make sure we don't have screen shot name collisions.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong>private&nbsp;java.lang.Object</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#utilityClassesToCheck">utilityClassesToCheck</a></code><br>The common utility classes to check for a mocked instance.  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong>private&nbsp;static&nbsp;boolean</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#wroteTime">wroteTime</a></code><br>Used to track if a new time is needed for the tests.txt output.</td>
                         </tr>
@@ -391,112 +396,119 @@ extends geb.spock.GebSpec</pre>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>com.fasterxml.jackson.databind.ObjectMapper</code></td>
+                            <td class="colLast"><code><strong><a href="#getObjectMapper()">getObjectMapper</a></strong>()</code><br>Gets or builds an object mapper that is configured for the eframe testing.
+ </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.sql.PreparedStatement</code></td>
                             <td class="colLast"><code><strong><a href="#getPreparedStatement(java.lang.String)">getPreparedStatement</a></strong>(java.lang.String sql)</code><br>Creates a prepared SQL statement.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#lookup(java.lang.String, java.util.Locale, java.lang.Object)">lookup</a></strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</code><br>Convenience method for general message.properties lookup.
  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#lookupRequired(java.lang.String, java.util.Locale, java.lang.Object)">lookupRequired</a></strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</code><br>Convenience method for general message.properties lookup for fields marked as required.
  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#mockFieldExtension(java.util.Map)">mockFieldExtension</a></strong>(java.util.Map options)</code><br>Mocks a specific field extension.  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>io.micronaut.http.HttpRequest</code></td>
                             <td class="colLast"><code><strong><a href="#mockRequest(java.util.Map)">mockRequest</a></strong>(java.util.Map params)</code><br>Mocks a request with the given parameters.  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
                             <td class="colLast"><code><strong><a href="#needs(java.lang.String)">needs</a></strong>(java.lang.String need)</code><br>Determines if this test class needs a given feature.  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
                             <td class="colLast"><code><strong><a href="#needsServer()">needsServer</a></strong>()</code><br>Determines if this test class needs the servers started.
  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#propertyMissing(java.lang.String)">propertyMissing</a></strong>(java.lang.String name)</code><br>The missing property handler.   </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#registerAutoCleanup(org.simplemes.eframe.test.AutoCleanupMockInterface)">registerAutoCleanup</a></strong>(<a href='../../../../org/simplemes/eframe/test/AutoCleanupMockInterface.html'>AutoCleanupMockInterface</a> acm)</code><br>Registers an auto cleanup task with this test.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#report(java.lang.String)">report</a></strong>(java.lang.String methodName)</code><br>Writes the screen shot to the reports directory.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#reportFailure(java.lang.String)">reportFailure</a></strong>(java.lang.String methodName)</code><br>This method is called when the report fails.   </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#setCurrentUser(java.lang.String)">setCurrentUser</a></strong>(java.lang.String userName)</code><br>Temporarily sets the current user for this test.
  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#setTraceLogLevel(java.lang.Class)">setTraceLogLevel</a></strong>(java.lang.Class clazz)</code><br>Temporarily sets the log level to trace for the given class.
  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#setup()">setup</a></strong>()</code><br>Sets up the Spock test.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#setupSpec()">setupSpec</a></strong>()</code><br>The setup method.  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#startServerIfNeeded()">startServerIfNeeded</a></strong>()</code><br>Starts an embedded server, if needed.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#waitForInitialDataLoad()">waitForInitialDataLoad</a></strong>()</code><br>Waits for the initial data load finishes.  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#waitForRecordChange(java.lang.Object)">waitForRecordChange</a></strong>(java.lang.Object record)</code><br>Wait for a record to change in the database.  </td>
@@ -518,7 +530,7 @@ extends geb.spock.GebSpec</pre>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code>class geb.spock.GebSpec</code></td>
-                            <td class="colLast"><code>geb.spock.GebSpec#getProperty(java.lang.String), geb.spock.GebSpec#setProperty(java.lang.String, java.lang.Object), geb.spock.GebSpec#propertyMissing(java.lang.String, java.lang.Object), geb.spock.GebSpec#propertyMissing(java.lang.String), geb.spock.GebSpec#methodMissing(java.lang.String, java.lang.Object), geb.spock.GebSpec#getGebConfEnv(), geb.spock.GebSpec#createConf(), geb.spock.GebSpec#createBrowser(), geb.spock.GebSpec#getBrowser(), geb.spock.GebSpec#resetBrowser(), geb.spock.GebSpec#get_browser(), geb.spock.GebSpec#set_browser(geb.Browser), geb.spock.GebSpec#setGebConfEnv(java.lang.String), geb.spock.GebSpec#getGebConfScript(), geb.spock.GebSpec#setGebConfScript(java.lang.String), geb.spock.GebSpec#get$spock_sharedField__browser(), geb.spock.GebSpec#set$spock_sharedField__browser(geb.Browser), geb.spock.GebSpec#invokeMethod(java.lang.String, java.lang.Object), geb.spock.GebSpec#getMetaClass(), geb.spock.GebSpec#setMetaClass(groovy.lang.MetaClass), geb.spock.GebSpec#old(java.lang.Object), geb.spock.GebSpec#with(java.lang.Object, groovy.lang.Closure), geb.spock.GebSpec#with(java.lang.Object, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#thrown(java.lang.Class), geb.spock.GebSpec#thrown(), geb.spock.GebSpec#noExceptionThrown(), geb.spock.GebSpec#verifyAll(groovy.lang.Closure), geb.spock.GebSpec#verifyAll(java.lang.Object, groovy.lang.Closure), geb.spock.GebSpec#verifyAll(java.lang.Object, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#notThrown(java.lang.Class), geb.spock.GebSpec#interaction(groovy.lang.Closure), geb.spock.GebSpec#Mock(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#Mock(groovy.lang.Closure), geb.spock.GebSpec#Mock(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Mock(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Mock(), geb.spock.GebSpec#Mock(java.util.Map), geb.spock.GebSpec#Mock(java.lang.Class), geb.spock.GebSpec#Mock(java.util.Map, java.lang.Class), geb.spock.GebSpec#Stub(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#Stub(groovy.lang.Closure), geb.spock.GebSpec#Stub(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Stub(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Stub(), geb.spock.GebSpec#Stub(java.util.Map), geb.spock.GebSpec#Stub(java.lang.Class), geb.spock.GebSpec#Stub(java.util.Map, java.lang.Class), geb.spock.GebSpec#Spy(groovy.lang.Closure), geb.spock.GebSpec#Spy(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#Spy(java.util.Map, java.lang.Class), geb.spock.GebSpec#Spy(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Spy(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Spy(), geb.spock.GebSpec#Spy(java.util.Map), geb.spock.GebSpec#Spy(java.lang.Class), geb.spock.GebSpec#Spy(java.lang.Object), geb.spock.GebSpec#Spy(java.lang.Object, groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(), geb.spock.GebSpec#GroovyMock(java.util.Map), geb.spock.GebSpec#GroovyMock(java.lang.Class), geb.spock.GebSpec#GroovyMock(java.util.Map, java.lang.Class), geb.spock.GebSpec#GroovyStub(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#GroovyStub(groovy.lang.Closure), geb.spock.GebSpec#GroovyStub(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovyStub(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovyStub(), geb.spock.GebSpec#GroovyStub(java.util.Map), geb.spock.GebSpec#GroovyStub(java.lang.Class), geb.spock.GebSpec#GroovyStub(java.util.Map, java.lang.Class), geb.spock.GebSpec#GroovySpy(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#GroovySpy(groovy.lang.Closure), geb.spock.GebSpec#GroovySpy(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovySpy(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovySpy(), geb.spock.GebSpec#GroovySpy(java.util.Map), geb.spock.GebSpec#GroovySpy(java.lang.Class), geb.spock.GebSpec#GroovySpy(java.util.Map, java.lang.Class), geb.spock.GebSpec#getSpecificationContext(), geb.spock.GebSpec#createMock(java.lang.String, java.lang.reflect.Type, org.spockframework.mock.MockNature, org.spockframework.mock.MockImplementation, java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#createMock(java.lang.String, java.lang.Object, java.lang.reflect.Type, org.spockframework.mock.MockNature, org.spockframework.mock.MockImplementation, java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#wait(long, int), geb.spock.GebSpec#wait(), geb.spock.GebSpec#wait(long), geb.spock.GebSpec#equals(java.lang.Object), geb.spock.GebSpec#toString(), geb.spock.GebSpec#hashCode(), geb.spock.GebSpec#getClass(), geb.spock.GebSpec#notify(), geb.spock.GebSpec#notifyAll()</code></td>
+                            <td class="colLast"><code>geb.spock.GebSpec#getProperty(java.lang.String), geb.spock.GebSpec#setProperty(java.lang.String, java.lang.Object), geb.spock.GebSpec#createConf(), geb.spock.GebSpec#createBrowser(), geb.spock.GebSpec#getBrowser(), geb.spock.GebSpec#resetBrowser(), geb.spock.GebSpec#get_browser(), geb.spock.GebSpec#set_browser(geb.Browser), geb.spock.GebSpec#setGebConfEnv(java.lang.String), geb.spock.GebSpec#getGebConfScript(), geb.spock.GebSpec#setGebConfScript(java.lang.String), geb.spock.GebSpec#get$spock_sharedField__browser(), geb.spock.GebSpec#set$spock_sharedField__browser(geb.Browser), geb.spock.GebSpec#propertyMissing(java.lang.String, java.lang.Object), geb.spock.GebSpec#propertyMissing(java.lang.String), geb.spock.GebSpec#methodMissing(java.lang.String, java.lang.Object), geb.spock.GebSpec#getGebConfEnv(), geb.spock.GebSpec#invokeMethod(java.lang.String, java.lang.Object), geb.spock.GebSpec#getMetaClass(), geb.spock.GebSpec#setMetaClass(groovy.lang.MetaClass), geb.spock.GebSpec#old(java.lang.Object), geb.spock.GebSpec#with(java.lang.Object, groovy.lang.Closure), geb.spock.GebSpec#with(java.lang.Object, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#thrown(), geb.spock.GebSpec#thrown(java.lang.Class), geb.spock.GebSpec#verifyAll(java.lang.Object, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#verifyAll(java.lang.Object, groovy.lang.Closure), geb.spock.GebSpec#verifyAll(groovy.lang.Closure), geb.spock.GebSpec#notThrown(java.lang.Class), geb.spock.GebSpec#noExceptionThrown(), geb.spock.GebSpec#interaction(groovy.lang.Closure), geb.spock.GebSpec#Mock(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#Mock(groovy.lang.Closure), geb.spock.GebSpec#Mock(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Mock(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Mock(), geb.spock.GebSpec#Mock(java.util.Map), geb.spock.GebSpec#Mock(java.lang.Class), geb.spock.GebSpec#Mock(java.util.Map, java.lang.Class), geb.spock.GebSpec#Stub(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#Stub(groovy.lang.Closure), geb.spock.GebSpec#Stub(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Stub(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Stub(), geb.spock.GebSpec#Stub(java.util.Map), geb.spock.GebSpec#Stub(java.lang.Class), geb.spock.GebSpec#Stub(java.util.Map, java.lang.Class), geb.spock.GebSpec#Spy(groovy.lang.Closure), geb.spock.GebSpec#Spy(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#Spy(java.util.Map, java.lang.Class), geb.spock.GebSpec#Spy(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Spy(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#Spy(), geb.spock.GebSpec#Spy(java.util.Map), geb.spock.GebSpec#Spy(java.lang.Class), geb.spock.GebSpec#Spy(java.lang.Object), geb.spock.GebSpec#Spy(java.lang.Object, groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovyMock(), geb.spock.GebSpec#GroovyMock(java.util.Map), geb.spock.GebSpec#GroovyMock(java.lang.Class), geb.spock.GebSpec#GroovyMock(java.util.Map, java.lang.Class), geb.spock.GebSpec#GroovyStub(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#GroovyStub(groovy.lang.Closure), geb.spock.GebSpec#GroovyStub(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovyStub(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovyStub(), geb.spock.GebSpec#GroovyStub(java.util.Map), geb.spock.GebSpec#GroovyStub(java.lang.Class), geb.spock.GebSpec#GroovyStub(java.util.Map, java.lang.Class), geb.spock.GebSpec#GroovySpy(java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#GroovySpy(groovy.lang.Closure), geb.spock.GebSpec#GroovySpy(java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovySpy(java.util.Map, java.lang.Class, groovy.lang.Closure), geb.spock.GebSpec#GroovySpy(), geb.spock.GebSpec#GroovySpy(java.util.Map), geb.spock.GebSpec#GroovySpy(java.lang.Class), geb.spock.GebSpec#GroovySpy(java.util.Map, java.lang.Class), geb.spock.GebSpec#getSpecificationContext(), geb.spock.GebSpec#createMock(java.lang.String, java.lang.reflect.Type, org.spockframework.mock.MockNature, org.spockframework.mock.MockImplementation, java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#createMock(java.lang.String, java.lang.Object, java.lang.reflect.Type, org.spockframework.mock.MockNature, org.spockframework.mock.MockImplementation, java.util.Map, groovy.lang.Closure), geb.spock.GebSpec#wait(long, int), geb.spock.GebSpec#wait(), geb.spock.GebSpec#wait(long), geb.spock.GebSpec#equals(java.lang.Object), geb.spock.GebSpec#toString(), geb.spock.GebSpec#hashCode(), geb.spock.GebSpec#getClass(), geb.spock.GebSpec#notify(), geb.spock.GebSpec#notifyAll()</code></td>
                         </tr>
                     </table>
                    </ul>
@@ -606,6 +618,14 @@ extends geb.spock.GebSpec</pre>
                             <li class="blockList">
                                 <h4>private&nbsp;static&nbsp;java.lang.Object <strong>latestConnectionIdleCount</strong></h4>
                                 <p> Records the latest DB connection idle count.</p>
+                            </li>
+                        </ul>
+                    
+                        <a name="objectMapper"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;static&nbsp;com.fasterxml.jackson.databind.ObjectMapper <strong>objectMapper</strong></h4>
+                                <p> An object mapper configured as the framework needs it.</p>
                             </li>
                         </ul>
                     
@@ -808,6 +828,15 @@ void <strong>deleteAllRecords</strong>(java.lang.Class domainClass, java.lang.Bo
                                 <h4>@java.lang.SuppressWarnings(value: unused)
 void <strong>enableSQLTrace</strong>(boolean includeParams)</h4>
                                 <p> Enable SQL trace.  Used mainly in debugging of SQL without enabling it during startup. <DL><DT><B>Parameters:</B></DT><DD><code>includeParams</code> -  If true, then parameters are logged too.  (<b>Default</b>: false).</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getObjectMapper()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>com.fasterxml.jackson.databind.ObjectMapper <strong>getObjectMapper</strong>()</h4>
+                                <p> Gets or builds an object mapper that is configured for the eframe testing.
+ This avoids using the embedded server if possible. <DL><DT><B>Returns:</B></DT><DD>A configured mapper.</DD></DL></p>
                             </li>
                         </ul>
                     

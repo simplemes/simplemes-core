@@ -169,17 +169,23 @@ extends java.util.Map</pre>
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setDirty(boolean)">setDirty</a></strong>(boolean dirty)</code><br>Sets the dirty flag.</td>
+                            <td class="colLast"><code><strong><a href="#mergeMap(org.simplemes.eframe.custom.FieldHolderMapInterface, java.lang.Object)">mergeMap</a></strong>(<a href='../../../../org/simplemes/eframe/custom/FieldHolderMapInterface.html'>FieldHolderMapInterface</a> src, java.lang.Object context)</code><br>Merges the given map into this map.  </td>
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#setDirty(boolean)">setDirty</a></strong>(boolean dirty)</code><br>Sets the dirty flag.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#setParsingFromJSON(boolean)">setParsingFromJSON</a></strong>(boolean dirty)</code><br>RSet to True if the Map has changed since the last time the JSON was generated (toJSON()).
  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#toJSON()">toJSON</a></strong>()</code><br>Serializes this Map to JSON.</td>
@@ -251,6 +257,16 @@ extends java.util.Map</pre>
                                 <p> Returns True if the Map has changed since the last time the JSON was generated (toJSON()).
  Defaults to true to work around issues with JSON parser.
     <DL><DT><B>Returns:</B></DT><DD>True if dirty.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="mergeMap(org.simplemes.eframe.custom.FieldHolderMapInterface, java.lang.Object)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;void <strong>mergeMap</strong>(<a href='../../../../org/simplemes/eframe/custom/FieldHolderMapInterface.html'>FieldHolderMapInterface</a> src, java.lang.Object context)</h4>
+                                <p> Merges the given map into this map.  Preserves the _config element and may add to the history, if
+ configured.
+    <DL><DT><B>Parameters:</B></DT><DD><code>src</code> -      The source Map.</DD><DD><code>context</code> -  The place that triggered this.  Usually a domain entity.  Used for errors.</DD></DL></p>
                             </li>
                         </ul>
                     

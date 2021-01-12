@@ -157,16 +157,21 @@ extends java.lang.Object</pre>
                         </tr>
                         
                         <tr class="altColor">
+                            <td class="colFirst"><code><strong><a href='../../../../org/simplemes/eframe/custom/FieldHolderMap.html'>FieldHolderMap</a></strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#extensibleFieldMap">extensibleFieldMap</a></code><br></td>
+                        </tr>
+                        
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong>java.lang.String</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#extensibleFieldsText">extensibleFieldsText</a></code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong>java.lang.Object</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#fieldValue">fieldValue</a></code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong>private&nbsp;static&nbsp;<a href='../../../../org/simplemes/eframe/custom/ExtensibleFieldHelper.html'>ExtensibleFieldHelper</a></strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#instance">instance</a></code><br>A singleton, used for simplified unit testing with a mocked class.</td>
                         </tr>
@@ -333,10 +338,16 @@ extends java.lang.Object</pre>
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setExtensibleFieldsText(java.lang.Object, java.lang.String, java.lang.String)">setExtensibleFieldsText</a></strong>(java.lang.Object object, java.lang.String fieldName, java.lang.String value)</code><br>Sets the field holder text.  </td>
+                            <td class="colLast"><code><strong><a href="#setExtensibleFieldMap(java.lang.Object, org.simplemes.eframe.custom.FieldHolderMap)">setExtensibleFieldMap</a></strong>(java.lang.Object object, <a href='../../../../org/simplemes/eframe/custom/FieldHolderMap.html'>FieldHolderMap</a> map)</code><br>Sets the field holder front-end Map.  </td>
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#setExtensibleFieldsText(java.lang.Object, java.lang.String, java.lang.String)">setExtensibleFieldsText</a></strong>(java.lang.Object object, java.lang.String fieldName, java.lang.String value)</code><br>Sets the field holder text.  </td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#setFieldValue(java.lang.Object, java.lang.String, java.lang.Object)">setFieldValue</a></strong>(java.lang.Object object, java.lang.String fieldName, java.lang.Object value)</code><br>Sets the value in a custom field holder.  </td>
@@ -399,6 +410,14 @@ extends java.lang.Object</pre>
                             <li class="blockList">
                                 <h4>private&nbsp;static&nbsp;final&nbsp;java.lang.String <strong>SHORT_TERM_CACHE_NAME</strong></h4>
                                 <p> The name of the short-term cache stored in the complex custom fields for performance caching.</p>
+                            </li>
+                        </ul>
+                    
+                        <a name="extensibleFieldMap"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4><a href='../../../../org/simplemes/eframe/custom/FieldHolderMap.html'>FieldHolderMap</a> <strong>extensibleFieldMap</strong></h4>
+                                <p></p>
                             </li>
                         </ul>
                     
@@ -641,6 +660,15 @@ java.lang.String <strong>getExtensibleFieldsText</strong>(java.lang.Object objec
                             <li class="blockList">
                                 <h4>java.lang.Object <strong>propertyMissingSetter</strong>(java.lang.Object object, java.lang.String name, java.lang.Object value)</h4>
                                 <p> Handles the propertyMissing calls for the given object.  Checks the custom fields for the given field name. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to check for custom fields.</DD><DD><code>name</code> -  The custom field name.</DD><DD><code>value</code> -  The value to set.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The result.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="setExtensibleFieldMap(java.lang.Object, org.simplemes.eframe.custom.FieldHolderMap)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@groovy.transform.CompileStatic
+void <strong>setExtensibleFieldMap</strong>(java.lang.Object object, <a href='../../../../org/simplemes/eframe/custom/FieldHolderMap.html'>FieldHolderMap</a> map)</h4>
+                                <p> Sets the field holder front-end Map.  Will mark the map as dirty to force a new serialization to JSON for saving. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to get the field holder Map from.</DD><DD><code>map</code> -  The map.</DD></DL></p>
                             </li>
                         </ul>
                     
