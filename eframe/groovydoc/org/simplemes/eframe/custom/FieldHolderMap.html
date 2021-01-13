@@ -188,6 +188,16 @@ implements <a href='../../../../org/simplemes/eframe/custom/FieldHolderMapInterf
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.lang.Object</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#HISTORY_ELEMENT_NAME">HISTORY_ELEMENT_NAME</a></code><br>The name of the element in the '_config' map that holds the history (format encoding). </td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.lang.Object</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#TRACKING_ELEMENT_NAME">TRACKING_ELEMENT_NAME</a></code><br>The name of the element in the '_config' map that holds the tracking configuration (format encoding). </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.lang.Object</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#TYPE_ELEMENT_NAME">TYPE_ELEMENT_NAME</a></code><br>The name of the element in the '_config' map that holds the type ID (format encoding). </td>
                         </tr>
                         
@@ -319,47 +329,53 @@ implements <a href='../../../../org/simplemes/eframe/custom/FieldHolderMapInterf
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
-                            <td class="colLast"><code><strong><a href="#mergeConfig(java.util.Map, java.lang.Object)">mergeConfig</a></strong>(java.util.Map src, java.lang.Object context)</code><br>Merges the given _config map into this map.  </td>
+                            <td class="colLast"><code><strong><a href="#mergeConfig(java.util.Map, java.lang.Object)">mergeConfig</a></strong>(java.util.Map srcConfig, java.lang.Object context)</code><br>Merges the given _config map into this map.  </td>
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;void</code></td>
+                            <td class="colLast"><code><strong><a href="#mergeFieldConfig(java.lang.Object, java.util.Map, java.util.Map, java.lang.Object)">mergeFieldConfig</a></strong>(java.lang.Object fieldName, java.util.Map destConfig, java.util.Map srcConfig, java.lang.Object context)</code><br>Merges the given _config map for a single field into the dest config map, if allowed.  </td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#mergeMap(org.simplemes.eframe.custom.FieldHolderMapInterface, java.lang.Object)">mergeMap</a></strong>(<a href='../../../../org/simplemes/eframe/custom/FieldHolderMapInterface.html'>FieldHolderMapInterface</a> src, java.lang.Object context)</code><br>Merges the given map into this map.  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#put(java.lang.Object, java.lang.Object)">put</a></strong>(java.lang.Object key, java.lang.Object value)</code><br>Associates the specified value with the specified key in this map.
  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#put(java.lang.Object, java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)">put</a></strong>(java.lang.Object key, java.lang.Object value, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Puts the given value, with the given field definition.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#setDirty(boolean)">setDirty</a></strong>(boolean dirty)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#setParsingFromJSON(boolean)">setParsingFromJSON</a></strong>(boolean parsingFromJSON)</code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#setTypeInConfig(java.lang.Object, java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)">setTypeInConfig</a></strong>(java.lang.Object key, java.lang.Object value, <a href='../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Records the type in the config element, if needed for JSON deserialization.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#toJSON()">toJSON</a></strong>()</code><br>Serializes this Map to JSON.</td>
@@ -442,6 +458,23 @@ implements <a href='../../../../org/simplemes/eframe/custom/FieldHolderMapInterf
                             <li class="blockList">
                                 <h4>private&nbsp;static&nbsp;final&nbsp;java.lang.Object <strong>CONFIG_ELEMENT_NAME</strong></h4>
                                 <p> The name of the top-level element in the map that holds the config.  Value: <b>'_config'</b>.</p>
+                            </li>
+                        </ul>
+                    
+                        <a name="HISTORY_ELEMENT_NAME"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;static&nbsp;final&nbsp;java.lang.Object <strong>HISTORY_ELEMENT_NAME</strong></h4>
+                                <p> The name of the element in the '_config' map that holds the history (format encoding). Value: <b>'history'</b>.</p>
+                            </li>
+                        </ul>
+                    
+                        <a name="TRACKING_ELEMENT_NAME"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;static&nbsp;final&nbsp;java.lang.Object <strong>TRACKING_ELEMENT_NAME</strong></h4>
+                                <p> The name of the element in the '_config' map that holds the tracking configuration (format encoding). Value: <b>'tracking'</b>.
+ See CustomFieldTrackingEnum.</p>
                             </li>
                         </ul>
                     
@@ -614,9 +647,19 @@ key.equals(k) )</CODE>, then this method returns <CODE>v</CODE>; otherwise
                         <a name="mergeConfig(java.util.Map, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;void <strong>mergeConfig</strong>(java.util.Map src, java.lang.Object context)</h4>
-                                <p> Merges the given _config map into this map.  Preserves the details.  Attempt to update and existing
- field will fail with an exception (BusinessException 212). <DL><DT><B>Parameters:</B></DT><DD><code>src</code> -  The source Map.</DD><DD><code>context</code> -  The place that triggered this.  Usually a domain entity.  Used for errors.</DD></DL></p>
+                                <h4>protected&nbsp;void <strong>mergeConfig</strong>(java.util.Map srcConfig, java.lang.Object context)</h4>
+                                <p> Merges the given _config map into this map.  Preserves the details.  Attempt to update an existing
+ field will fail with an exception (BusinessException 212). <DL><DT><B>Parameters:</B></DT><DD><code>srcConfig</code> -  The source _config Map.</DD><DD><code>context</code> -  The place that triggered this.  Usually a domain entity.  Used for errors.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="mergeFieldConfig(java.lang.Object, java.util.Map, java.util.Map, java.lang.Object)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;void <strong>mergeFieldConfig</strong>(java.lang.Object fieldName, java.util.Map destConfig, java.util.Map srcConfig, java.lang.Object context)</h4>
+                                <p> Merges the given _config map for a single field into the dest config map, if allowed.  Preserves the details.
+ Attempt to change key settings will fail with an exception (BusinessException 212).
+ Changes to 'type' are not allowed. <DL><DT><B>Parameters:</B></DT><DD><code>fieldName</code> -  The field config to copy (if in src).</DD><DD><code>destMap</code> -  The dest _config Map.</DD><DD><code>srcConfig</code> -  The source _config Map.</DD><DD><code>context</code> -  The place that triggered this.  Usually a domain entity.  Used for errors.</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -625,7 +668,7 @@ key.equals(k) )</CODE>, then this method returns <CODE>v</CODE>; otherwise
                             <li class="blockList">
                                 <h4>void <strong>mergeMap</strong>(<a href='../../../../org/simplemes/eframe/custom/FieldHolderMapInterface.html'>FieldHolderMapInterface</a> src, java.lang.Object context)</h4>
                                 <p> Merges the given map into this map.  Preserves the _config element and may add to the history, if
- configured. <DL><DT><B>Parameters:</B></DT><DD><code>src</code> -  The source Map.</DD><DD><code>context</code> -  The place that triggered this.  Usually a domain entity.  Used for errors.</DD></DL></p>
+ configured.  Can fail if the src map attempts to change important info in the _config. <DL><DT><B>Parameters:</B></DT><DD><code>src</code> -  The source Map.</DD><DD><code>context</code> -  The place that triggered this.  Usually a domain entity.  Used for errors.</DD></DL></p>
                             </li>
                         </ul>
                     
