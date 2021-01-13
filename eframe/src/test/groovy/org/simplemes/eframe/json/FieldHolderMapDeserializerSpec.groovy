@@ -167,8 +167,6 @@ class FieldHolderMapDeserializerSpec extends BaseSpecification {
   }
 
 
-  // DateOnly type detected from JSON text on new element?  How configured.
-
   // preserves unchanged values
   // preserves history?
 }

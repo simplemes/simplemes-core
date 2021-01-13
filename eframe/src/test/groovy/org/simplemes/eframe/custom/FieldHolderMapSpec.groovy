@@ -324,6 +324,36 @@ class FieldHolderMapSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['field1', 'xyzzy'], 212)
   }
 
+  def "verify that mergeMap allows the data type in the config without failure"() {
+    given: 'a map with config for one field'
+    def origMap = new FieldHolderMap(parsingFromJSON: false)
+    def dateOnly1 = DateUtils.subtractDays(new DateOnly(), 1)
+    def dateOnly2 = DateUtils.subtractDays(new DateOnly(), 2)
+    origMap.put('field1', dateOnly1)
+
+    and: 'some other normal config elements'
+    origMap._config.tracking = "N"
+    origMap._config.history = [[value: dateOnly2]]
+    //println "Orig JSON = ${groovy.json.JsonOutput.prettyPrint(origMap.toJSON())}"
+
+    and: 'a second map to be merged into the original'
+    def map = new FieldHolderMap(parsingFromJSON: false)
+    map.put('field1', dateOnly2)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(map.toJSON())}"
+
+    when: 'the map is merged'
+    origMap.mergeMap(map, 'xyzzy')
+
+    then: 'the merge happened'
+    origMap.get('field1') == dateOnly2
+
+    and: "the other config info is unchanged"
+    origMap._config.tracking == "N"
+    List history = origMap._config.history
+    history[0] == [value: dateOnly2]
+
+  }
+
   // mergeConfig - changes type - no change
 
   // mergeMap Config is not overwritten if conflicting values are passed in as src.

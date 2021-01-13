@@ -1047,14 +1047,16 @@ class BaseCrudRestControllerSpec extends BaseAPISpecification {
 
     and: 'the JSON to change the type'
     def src = """
-      "_fields": {
+      { "title": "abc",
+        "_otherCustomFields": {
           "custom1": "2021-01-31",   
           "_config": {
             "custom1": {
               "type": "T"        
             }
-          },
+          }
         }
+      }  
     """
 
     when: 'the put is called'

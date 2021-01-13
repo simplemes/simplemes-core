@@ -986,4 +986,29 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     def ex = thrown(Exception)
     UnitTestUtils.assertExceptionIsValid(ex, ['String'], 131)
   }
+
+  @Rollback
+  def "verify that custom fields are no serialized and deserialized for simple record read and save"() {
+    given: 'a domain with a custom field'
+    def sampleParent = new SampleParent(name: 'ABC')
+    sampleParent.setFieldValue('field1', 'xyz')
+    sampleParent.save()
+
+    and: 'a Field accessor to get the FieldHolderMap as-is - bypassing the getter'
+    def field = sampleParent.class.getDeclaredField('customFieldsMap')
+    field.setAccessible(true)
+
+    when: 'the record is read'
+    def sampleParent2 = SampleParent.findByUuid(sampleParent.uuid)
+
+    then: 'the map has not be created from the JSON'
+    field.get(sampleParent2) == null
+
+    when: 'the domain is saved again'
+    sampleParent2.save()
+
+    then: 'the map was not serialized to JSON'
+    field.get(sampleParent2) == null
+  }
+
 }

@@ -215,7 +215,7 @@ class BaseSpecification extends GebSpec {
     }
 
 //    def dataSource = Holders.getDataSource()
-//    println "idle = ${dataSource.getHikariPoolMXBean().getPoolStats().idleConnections}"
+//    //println "idle = ${dataSource.getHikariPoolMXBean().getPoolStats().idleConnections}"
 
     cleanupMockedUtilityClasses()
     MockAppender.cleanup()

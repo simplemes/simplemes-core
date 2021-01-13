@@ -52,6 +52,17 @@ class FieldHolderMap extends HashMap implements FieldHolderMapInterface {
   static final VALUE_CLASS_ELEMENT_NAME = "valueClassName"
 
   /**
+   * The name of the element in the '_config' map that holds the tracking configuration (format encoding). Value: <b>'tracking'</b>.
+   * See {@link CustomFieldTrackingEnum}.
+   */
+  static final TRACKING_ELEMENT_NAME = "tracking"
+
+  /**
+   * The name of the element in the '_config' map that holds the history (format encoding). Value: <b>'history'</b>.
+   */
+  static final HISTORY_ELEMENT_NAME = "history"
+
+  /**
    * True if the Map has changed since the last time the JSON was generated (toJSON()).
    *
    */
@@ -69,6 +80,7 @@ class FieldHolderMap extends HashMap implements FieldHolderMapInterface {
    * @param text The JSON text.
    */
   static FieldHolderMapInterface fromJSON(String text) {
+    log.trace("fromJSON(): Parsing {}", text)
     def map = Holders.objectMapper.readValue(text, FieldHolderMap)
     map?.parsingFromJSON = false  // Finished mapping from JSON
     map?.dirty = false
@@ -81,7 +93,9 @@ class FieldHolderMap extends HashMap implements FieldHolderMapInterface {
    */
   @Override
   String toJSON() {
-    return Holders.objectMapper.writeValueAsString(this)
+    def text = Holders.objectMapper.writeValueAsString(this)
+    log.trace("toJSON(): Created JSON {}", text)
+    return text
   }
 
   /**
@@ -305,7 +319,7 @@ class FieldHolderMap extends HashMap implements FieldHolderMapInterface {
 
   /**
    * Merges the given map into this map.  Preserves the _config element and may add to the history, if
-   * configured.
+   * configured.  Can fail if the src map attempts to change important info in the _config.
    * @param src The source Map.
    * @param context The place that triggered this.  Usually a domain entity.  Used for errors.
    */
@@ -324,26 +338,65 @@ class FieldHolderMap extends HashMap implements FieldHolderMapInterface {
   }
 
   /**
-   * Merges the given _config map into this map.  Preserves the details.  Attempt to update and existing
+   * Merges the given _config map into this map.  Preserves the details.  Attempt to update an existing
    * field will fail with an exception (BusinessException 212).
-   * @param src The source Map.
+   * @param srcConfig The source _config Map.
    * @param context The place that triggered this.  Usually a domain entity.  Used for errors.
    */
-  protected void mergeConfig(Map src, Object context) {
-    def dest = this.get(CONFIG_ELEMENT_NAME) as Map
-    // Copy each element over, if it does not exist already.
-    src?.each() { k, v ->
-      if (!dest.get(k)) {
-        dest.put(k, v)
-      } else {
-        def s = "${context?.class?.simpleName} ${TypeUtils.toShortString(context)}"
-        //error.212.message=Cannot change custom field ({0}) type with existing values in {1}.
-        throw new BusinessException(212, [k, s])
-      }
+  protected void mergeConfig(Map srcConfig, Object context) {
+    def destConfig = this.get(CONFIG_ELEMENT_NAME) as Map
+    // Merge any legal changes to existing elements
+    for (fieldName in srcConfig.keySet()) {
+      mergeFieldConfig(fieldName, destConfig, srcConfig, context)
     }
-
   }
 
+  /**
+   * Merges the given _config map for a single field into the dest config map, if allowed.  Preserves the details.
+   * Attempt to change key settings will fail with an exception (BusinessException 212).
+   * Changes to 'type' are not allowed.
+   * @param fieldName The field config to copy (if in src).
+   * @param destMap The dest _config Map.
+   * @param srcConfig The source _config Map.
+   * @param context The place that triggered this.  Usually a domain entity.  Used for errors.
+   */
+  protected void mergeFieldConfig(Object fieldName, Map destConfig, Map srcConfig, Object context) {
+    if (!srcConfig) {
+      // Nothing to copy
+      return
+    }
+    def src = srcConfig[fieldName]
+    def dest = destConfig[fieldName]
+
+    if (dest) {
+      // Already exists, so make sure client did not try to change the type.
+      def srcType = src[TYPE_ELEMENT_NAME]
+      def destType = dest[TYPE_ELEMENT_NAME]
+      if (srcType != destType) {
+        def s = "${context?.class?.simpleName} ${TypeUtils.toShortString(context)}"
+        //error.212.message=Cannot change custom field ({0}) type with existing values in {1}.
+        throw new BusinessException(212, [fieldName, s])
+      }
+    } else {
+      // No value in the dest, so just copy the important pieces over.
+      dest = [:]
+      destConfig[fieldName] = dest
+
+      // Test are copied over one element at a time to avoid bad inputs polluting the persistent storage of types.
+      if (src[TYPE_ELEMENT_NAME]) {
+        dest[TYPE_ELEMENT_NAME] = src[TYPE_ELEMENT_NAME]
+      }
+      if (src[VALUE_CLASS_ELEMENT_NAME]) {
+        dest[VALUE_CLASS_ELEMENT_NAME] = src[VALUE_CLASS_ELEMENT_NAME]
+      }
+      if (src[TRACKING_ELEMENT_NAME]) {
+        dest[TRACKING_ELEMENT_NAME] = src[TRACKING_ELEMENT_NAME]
+      }
+      if (src[HISTORY_ELEMENT_NAME]) {
+        dest[HISTORY_ELEMENT_NAME] = src[HISTORY_ELEMENT_NAME]
+      }
+    }
+  }
 
   boolean isDirty() {
     return dirty
