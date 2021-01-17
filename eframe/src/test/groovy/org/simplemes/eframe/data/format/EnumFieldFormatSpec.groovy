@@ -2,9 +2,9 @@ package org.simplemes.eframe.data.format
 
 import org.simplemes.eframe.data.SimpleFieldDefinition
 import org.simplemes.eframe.i18n.GlobalUtils
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.MockFieldDefinitions
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.

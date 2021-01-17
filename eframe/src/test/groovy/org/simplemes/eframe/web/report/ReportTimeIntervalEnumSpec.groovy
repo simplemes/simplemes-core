@@ -4,6 +4,7 @@ import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.date.DateRange
 import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.i18n.GlobalUtils
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.UnitTestUtils
 

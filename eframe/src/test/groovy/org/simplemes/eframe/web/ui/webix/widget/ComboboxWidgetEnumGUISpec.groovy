@@ -1,9 +1,8 @@
 package org.simplemes.eframe.web.ui.webix.widget
 
-
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import org.simplemes.eframe.test.BaseGUISpecification
 import org.simplemes.eframe.test.DataGenerator
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
 import sample.page.AllFieldsDomainEditPage
 import sample.page.AllFieldsDomainShowPage

@@ -26,6 +26,7 @@ import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.domain.SQLUtils
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.exception.BusinessException
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.system.DisabledStatus
 import org.simplemes.eframe.test.BaseSpecification
@@ -35,7 +36,6 @@ import org.simplemes.eframe.test.MockAdditionHelper
 import org.simplemes.eframe.test.MockAppender
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
 import sample.domain.CustomOrderComponent
 import sample.domain.Order

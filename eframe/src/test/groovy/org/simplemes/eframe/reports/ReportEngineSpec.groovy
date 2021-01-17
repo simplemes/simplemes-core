@@ -19,7 +19,6 @@ import org.simplemes.eframe.test.MockPreferenceHolder
 import org.simplemes.eframe.test.MockPrincipal
 import org.simplemes.eframe.test.MockSecurityUtils
 import org.simplemes.eframe.test.UnitTestUtils
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
 import java.sql.Timestamp
 

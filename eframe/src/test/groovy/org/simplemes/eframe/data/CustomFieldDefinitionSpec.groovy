@@ -18,13 +18,13 @@ import org.simplemes.eframe.data.format.LongFieldFormat
 import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.date.ISODate
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.system.DisabledStatus
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
 import sample.domain.SampleParent
 

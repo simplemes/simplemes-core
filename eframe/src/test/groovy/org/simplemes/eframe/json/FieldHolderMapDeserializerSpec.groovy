@@ -4,12 +4,11 @@
 
 package org.simplemes.eframe.json
 
-
 import org.simplemes.eframe.custom.FieldHolderMap
 import org.simplemes.eframe.custom.FieldHolderMapInterface
 import org.simplemes.eframe.date.DateOnly
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import org.simplemes.eframe.test.BaseSpecification
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
 /**
  *  Tests.

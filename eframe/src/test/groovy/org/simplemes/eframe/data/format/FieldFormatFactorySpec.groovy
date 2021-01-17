@@ -7,10 +7,10 @@ package org.simplemes.eframe.data.format
 import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.DomainUtils
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
 import sample.domain.RMA
 import sample.domain.SampleParent

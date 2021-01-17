@@ -17,12 +17,12 @@ import org.simplemes.eframe.data.format.IntegerFieldFormat
 import org.simplemes.eframe.data.format.LongFieldFormat
 import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.misc.TextUtils
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.JavascriptTestUtils
 import org.simplemes.eframe.test.MockDomainUtils
 import org.simplemes.eframe.test.MockFieldDefinitions
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import org.simplemes.eframe.web.ui.webix.widget.TextFieldWidget
 import org.simplemes.eframe.web.ui.webix.widget.WidgetContext
 import sample.domain.AllFieldsDomain

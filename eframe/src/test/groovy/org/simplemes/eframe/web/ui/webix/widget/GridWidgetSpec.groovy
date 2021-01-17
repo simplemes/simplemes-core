@@ -4,19 +4,18 @@
 
 package org.simplemes.eframe.web.ui.webix.widget
 
-
 import org.simplemes.eframe.data.format.ChildListFieldFormat
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.date.ISODate
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.preference.ColumnPreference
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import org.simplemes.eframe.test.BaseWidgetSpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.JavascriptTestUtils
 import org.simplemes.eframe.test.MockPreferenceHolder
 import org.simplemes.eframe.test.UnitTestUtils
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import org.simplemes.eframe.web.ui.webix.DomainToolkitUtils
 import sample.domain.SampleChild
 

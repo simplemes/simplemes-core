@@ -12,6 +12,7 @@ import org.simplemes.eframe.data.format.IntegerFieldFormat
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.exception.ValidationException
 import org.simplemes.eframe.i18n.GlobalUtils
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import org.simplemes.eframe.system.DisabledStatus
 import org.simplemes.eframe.system.EnabledStatus
 import org.simplemes.eframe.test.BaseSpecification
@@ -20,7 +21,6 @@ import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.MockAppender
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
 import sample.domain.CustomOrderComponent
 import sample.domain.Order

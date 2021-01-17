@@ -11,8 +11,8 @@ import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.misc.TypeUtils
 
 /**
- * Defines common logic used for the generic fields (e.g. FlexField and FieldExtension).
- * Only valid in a domain that implements FieldInterface.
+ * Defines common logic used for the generic fields (e.g. {@link FlexField} and {@link FieldExtension}).
+ * Only valid in a domain that implements {@link FieldInterface}.
  */
 trait FieldTrait {
   def validate() {

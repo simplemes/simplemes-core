@@ -13,10 +13,10 @@ import org.simplemes.eframe.data.format.EncodedTypeFieldFormat
 import org.simplemes.eframe.data.format.EnumFieldFormat
 import org.simplemes.eframe.data.format.LongFieldFormat
 import org.simplemes.eframe.date.DateOnly
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.system.EnabledStatus
 import org.simplemes.eframe.test.BaseSpecification
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
 /**
  * Tests.

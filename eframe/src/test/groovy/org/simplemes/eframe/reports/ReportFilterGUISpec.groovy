@@ -15,7 +15,6 @@ import org.simplemes.eframe.reports.page.ReportFilterPage
 import org.simplemes.eframe.reports.page.ReportPage
 import org.simplemes.eframe.test.BaseGUISpecification
 import org.simplemes.eframe.test.UnitTestUtils
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
 import spock.lang.IgnoreIf
 

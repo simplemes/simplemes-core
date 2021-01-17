@@ -1,11 +1,10 @@
 package org.simplemes.eframe.web.ui.webix.widget
 
-
 import org.simplemes.eframe.data.format.EnumFieldFormat
 import org.simplemes.eframe.misc.TextUtils
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import org.simplemes.eframe.test.BaseWidgetSpecification
 import org.simplemes.eframe.test.JavascriptTestUtils
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.

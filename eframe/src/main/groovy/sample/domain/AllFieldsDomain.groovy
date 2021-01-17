@@ -19,9 +19,9 @@ import org.simplemes.eframe.data.annotation.ExtensibleFieldHolder
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.domain.validate.ValidationError
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.system.EnabledStatus
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
 import javax.annotation.Nullable
 import javax.persistence.Column

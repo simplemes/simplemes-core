@@ -31,7 +31,6 @@ import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.HTMLUtils
 import org.simplemes.eframe.security.SecurityUtils
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
 /**
  * Provides low-level access to the external report engine.  This is designed to be replaced by a mock

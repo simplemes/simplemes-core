@@ -8,7 +8,7 @@ import ch.qos.logback.classic.Level
 import org.simplemes.eframe.data.format.EnumFieldFormat
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.DomainUtils
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
 import sample.domain.Order
 import sample.domain.SampleChild

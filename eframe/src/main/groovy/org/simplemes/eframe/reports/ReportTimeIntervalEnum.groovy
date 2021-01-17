@@ -1,15 +1,14 @@
-package org.simplemes.eframe.web.report
+/*
+ * Copyright (c) Michael Houston 2021. All rights reserved.
+ */
+
+package org.simplemes.eframe.reports
 
 import org.simplemes.eframe.date.DateRange
 import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.i18n.GlobalUtils
 
 import java.time.temporal.ChronoUnit
-
-/*
- * Copyright Michael Houston. All rights reserved.
- *
-*/
 
 /**
  *

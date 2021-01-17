@@ -10,7 +10,6 @@ import org.simplemes.eframe.data.format.FieldFormatInterface
 import org.simplemes.eframe.date.ISODate
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.ArgumentUtils
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 
 /*
  * Copyright (c) 2018 Simple MES, LLC.  All rights reserved.  See license.txt for license terms.

@@ -11,13 +11,13 @@ import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.date.ISODate
 import org.simplemes.eframe.misc.TypeUtils
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import org.simplemes.eframe.test.BaseAPISpecification
 import org.simplemes.eframe.test.CompilerTestUtils
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.MockSecurityUtils
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.controller.AllFieldsDomainController
 import sample.controller.OrderController
 import sample.controller.SampleParentController

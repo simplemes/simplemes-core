@@ -19,6 +19,7 @@ import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.misc.NumberUtils
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.system.DisabledStatus
 import org.simplemes.eframe.test.DataGenerator
@@ -28,7 +29,6 @@ import org.simplemes.eframe.test.page.ComboboxModule
 import org.simplemes.eframe.test.page.DateFieldModule
 import org.simplemes.eframe.test.page.ReadOnlyFieldModule
 import org.simplemes.eframe.test.page.TextFieldModule
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
 import sample.domain.SampleParent
 import sample.page.SampleParentCreatePage

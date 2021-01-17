@@ -1,6 +1,21 @@
 Scratch
 =======
 
+FieldTrait
+-----------------------
+Needs these values:
+  fieldName
+  fieldLabel
+  fieldFormat
+  maxLength
+  sequence
+  valueClassName
+  required
+  historyTracking (Added to CustomFieldDefinition).
+  guiHints
+
+
+
 Questions
 ---------
 No default dashboard found.  Maybe add link on error message to run demoData?
@@ -91,6 +106,17 @@ Define DE fields to be collected at specific places/events against order/LSN.
 Need required field on DEField.
   Required at DE Level too?  Collect at Start/Complete, etc feature?
   Need common field definition handling for FlexField, FieldExtension, DEField.
+  Required flag in FlexField, FieldExtension, DEField.
+    Enforced at collection.
+Trigger collection at:
+  Dashboard button press  1.0
+  After scan.   Later Release?
+  After start/complete. Later Release?
+Can disable check to avoid performance hit.
+How is collection configured?
+  In Dashboard Editor?
+  At routing operation?
+  Link with dedicated columns or JSON structure.
 Flag to trace all values collected (Latest Value Only, All Values, All Data (Who/what/when/where).
 Events:
   Pre/Post Start/Complete/Done
@@ -162,6 +188,39 @@ Support cache in specific use cases:
     Others: https://dzone.com/articles/8-free-security-tools-every-developer-should-know
   Reports
     Still an issue?  Can't reproduce in simple query.  Fix issue with date ranges error by TZ offset?
+
+Multi-tenant
+------------
+Unique DB for each customer running under one server.
+Master DB that defines all tenants for a given DB/server cluster.
+  Defines connection info for all tenants - encrypted.
+  Connection pool created upon startup or on demand with flyway triggered?  Consider Liquibase instead?
+  Liquibase - Module support?
+    resources/db/mes-assy/V1.0.0.sql
+Request always has tenant ID in URL as sub-domain: https://acme.simplemes.org/
+Replacement for Micronaut-Data required.
+  Provide a connection pool for each tenant.
+    Connection pool wrapped with security to limit access to other pools.
+    Immutable while request is being processed.
+    Use Hikari Pool.
+Convert from Netty to Jetty to simplify run-time environment.
+Module/addition is on master toggle in JVM. Secondary check on tenant.
+  Dynamic execution based on tenant.
+  Custom fields defined in DB.  Re-loaded for each tenant.  Cached distributed cache.
+Need isolated archive storage by tenant.
+Need JWT to encode tenant in JWT/Refresh tokens?
+Create new tenant with single push button:
+  Creates new DB in server.
+  Sets up sub-domain.
+  Support move of tenant: DB move with some config move.  May be slow.
+
+Main Tasks - Multi-tenancy
+--------------------------
+Replace MN Data - Use JTA and HikariCP
+Convert to Jetty
+Archive Storage
+Sub-domain support.
+
 
 
 MES Demo Release Requirements

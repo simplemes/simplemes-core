@@ -15,7 +15,7 @@ import org.simplemes.eframe.data.format.BasicFieldFormat
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.domain.annotation.DomainEntity
 import org.simplemes.eframe.domain.validate.ValidationError
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 
 import javax.annotation.Nullable
 import javax.persistence.Column

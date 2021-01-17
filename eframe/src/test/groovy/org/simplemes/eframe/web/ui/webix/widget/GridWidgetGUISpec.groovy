@@ -12,10 +12,10 @@ import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.preference.domain.UserPreference
+import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import org.simplemes.eframe.test.BaseGUISpecification
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.UnitTestUtils
-import org.simplemes.eframe.web.report.ReportTimeIntervalEnum
 import sample.domain.AllFieldsDomain
 import sample.domain.Order
 import sample.domain.SampleChild
