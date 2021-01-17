@@ -47,7 +47,6 @@ org.simplemes.eframe.test.annotation
 org.simplemes.eframe.test.page
 org.simplemes.eframe.web
 org.simplemes.eframe.web.asset
-org.simplemes.eframe.web.report
 org.simplemes.eframe.web.task
 org.simplemes.eframe.web.task.controller
 org.simplemes.eframe.web.ui
