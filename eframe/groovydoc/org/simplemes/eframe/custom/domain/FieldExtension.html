@@ -179,14 +179,24 @@ implements <a href='../../../../../org/simplemes/eframe/custom/domain/FieldInter
                         </tr>
                         
                         <tr class="altColor">
+                            <td class="colFirst"><code><strong>private&nbsp;<a href='../../../../../org/simplemes/eframe/custom/HistoryTracking.html'>HistoryTracking</a></strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#historyTracking">historyTracking</a></code><br>The option for tracking historical values for this field.</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.lang.Object</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#keys">keys</a></code><br>The primary keys for this object.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code><strong>private&nbsp;java.lang.Integer</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#maxLength">maxLength</a></code><br>The maximum length of the custom value (Strings only).
  0 or null means no limit (except for column limitations).</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code><strong>private&nbsp;java.lang.Boolean</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#required">required</a></code><br>If true, then this field is considered required.  </td>
                         </tr>
                         
                         <tr class="altColor">
@@ -358,6 +368,14 @@ implements <a href='../../../../../org/simplemes/eframe/custom/domain/FieldInter
                             </li>
                         </ul>
                     
+                        <a name="historyTracking"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;<a href='../../../../../org/simplemes/eframe/custom/HistoryTracking.html'>HistoryTracking</a> <strong>historyTracking</strong></h4>
+                                <p> The option for tracking historical values for this field.</p>
+                            </li>
+                        </ul>
+                    
                         <a name="keys"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -372,6 +390,15 @@ implements <a href='../../../../../org/simplemes/eframe/custom/domain/FieldInter
                                 <h4>private&nbsp;java.lang.Integer <strong>maxLength</strong></h4>
                                 <p> The maximum length of the custom value (Strings only).
  0 or null means no limit (except for column limitations).</p>
+                            </li>
+                        </ul>
+                    
+                        <a name="required"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;java.lang.Boolean <strong>required</strong></h4>
+                                <p> If true, then this field is considered required.  The enforcement of this flag depends on
+ the API and user case.</p>
                             </li>
                         </ul>
                     

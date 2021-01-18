@@ -353,6 +353,12 @@ extends java.lang.Object</pre>
                             <td class="colLast"><code><strong><a href="#setFieldValue(java.lang.Object, java.lang.String, java.lang.Object)">setFieldValue</a></strong>(java.lang.Object object, java.lang.String fieldName, java.lang.Object value)</code><br>Sets the value in a custom field holder.  </td>
                         </tr>
                         
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.util.List&lt;ValidationError&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#validateConfigurableTypes(java.lang.Object, java.lang.String)">validateConfigurableTypes</a></strong>(java.lang.Object object, java.lang.String configTypeFieldName)</code><br>Validates the required fields for configurable types.</td>
+                        </tr>
+                        
                     </table>
                    </ul>
               </li>
@@ -688,6 +694,14 @@ void <strong>setExtensibleFieldsText</strong>(java.lang.Object object, java.lang
                                 <h4>@groovy.transform.CompileStatic
 void <strong>setFieldValue</strong>(java.lang.Object object, java.lang.String fieldName, java.lang.Object value)</h4>
                                 <p> Sets the value in a custom field holder.  Uses JSON as the internal format. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to store the value in.</DD><DD><code>fieldName</code> -  The name of the field.</DD><DD><code>value</code> -  The value.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="validateConfigurableTypes(java.lang.Object, java.lang.String)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.util.List&lt;ValidationError&gt; <strong>validateConfigurableTypes</strong>(java.lang.Object object, java.lang.String configTypeFieldName)</h4>
+                                <p> Validates the required fields for configurable types. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The domain record to check values for.</DD><DD><code>configTypeFieldName</code> -  The configurable type field that defines what fields are collected and which are required.</DD></DL></p>
                             </li>
                         </ul>
                     
