@@ -4,6 +4,7 @@
 
 package org.simplemes.eframe.custom.domain
 
+import org.simplemes.eframe.custom.HistoryTracking
 import org.simplemes.eframe.data.format.BasicFieldFormat
 
 /**
@@ -70,6 +71,26 @@ interface FieldInterface {
    * <b>(Default: 0)</b>
    */
   void setSequence(Integer sequence)
+
+  /**
+   * True if the field is considered required.
+   */
+  Boolean getRequired()
+
+  /**
+   * True if the field is considered required.
+   */
+  void setRequired(Boolean required)
+
+  /**
+   * The history tracking setting.
+   */
+  HistoryTracking getHistoryTracking()
+
+  /**
+   * The history tracking setting.
+   */
+  void setHistoryTracking(HistoryTracking historyTracking)
 
   /**
    * The class that provides the field values.  Provides support for custom fields that are Enumerations,

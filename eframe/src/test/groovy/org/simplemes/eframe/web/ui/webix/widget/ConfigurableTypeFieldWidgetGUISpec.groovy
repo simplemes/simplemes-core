@@ -8,6 +8,7 @@ import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.test.BaseGUISpecification
 import org.simplemes.eframe.test.DataGenerator
+import org.simplemes.eframe.test.UnitTestUtils
 import sample.domain.RMA
 import sample.page.RMACreatePage
 import sample.page.RMAEditPage
@@ -89,6 +90,28 @@ class ConfigurableTypeFieldWidgetGUISpec extends BaseGUISpecification {
       assert rma.getFieldValue('FIELD1') == 'VALUE1'
       true
     }
+  }
+
+  def "verify that the widget supports a required field - display and enforcement"() {
+    given: 'a value for the drop-down'
+    DataGenerator.buildFlexType(defaultFlexType: true, required: true)
+
+    when: 'a page is displayed with the widget'
+    login()
+    to RMACreatePage
+
+    then: 'the field is marked as required'
+    FIELD1.required
+
+    when: 'the record is saved'
+    rma.input.value('ABC')
+    createButton.click()
+    waitFor {
+      messages.text()
+    }
+
+    then: 'an error is displayed'
+    UnitTestUtils.assertContainsAllIgnoreCase(messages.text(), ['FIELD1', 'missing'])
   }
 
 

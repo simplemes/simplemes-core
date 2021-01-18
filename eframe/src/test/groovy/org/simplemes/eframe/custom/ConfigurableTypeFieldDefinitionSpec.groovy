@@ -23,7 +23,7 @@ class ConfigurableTypeFieldDefinitionSpec extends BaseSpecification {
     given: 'a flex field'
     def flexField = new FlexField(fieldName: 'rmaID', fieldFormat: IntegerFieldFormat.instance,
                                   fieldLabel: 'RMA ID', maxLength: 237, sequence: 437,
-                                  valueClassName: String.name)
+                                  valueClassName: String.name, required: true, historyTracking: HistoryTracking.VALUES)
 
     when: 'the field definition is created'
     def fieldDefinition = new ConfigurableTypeFieldDefinition(flexField, 'rmaType')
@@ -36,6 +36,8 @@ class ConfigurableTypeFieldDefinitionSpec extends BaseSpecification {
     fieldDefinition.label == 'RMA ID'
     fieldDefinition.maxLength == 237
     fieldDefinition.type == String
+    fieldDefinition.historyTracking == HistoryTracking.VALUES
+    fieldDefinition.required
     fieldDefinition.guiHints == TextUtils.parseNameValuePairs(flexField.guiHints)
   }
 

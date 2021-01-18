@@ -446,7 +446,7 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
   }
 
   @Rollback
-  def "verify that set and getFieldValue handles prefix option"() {
+  def "verify that set and getFieldValue handles configurable type fields"() {
     given: 'a flex type with a field'
     def flexType = DataGenerator.buildFlexType()
 
@@ -1009,6 +1009,42 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
 
     then: 'the map was not serialized to JSON'
     field.get(sampleParent2) == null
+  }
+
+  @Rollback
+  def "verify that validate detects missing required fields in configurable types"() {
+    given: 'a flex type with a field'
+    def flexType = DataGenerator.buildFlexType(required: true)
+
+    when: 'the value is set'
+    def rma = new RMA(rma: 'ABC')
+    rma.rmaType = flexType
+    def errors = ExtensibleFieldHelper.instance.validateConfigurableTypes(rma, 'rmaType')
+
+    then: 'the validation error is correct'
+    errors.size() == 1
+    errors[0].code == 101
+    errors[0].fieldName == 'FIELD1'
+  }
+
+  @Rollback
+  def "verify that validate handles invalid field name"() {
+    when: 'the value is set'
+    ExtensibleFieldHelper.instance.validateConfigurableTypes(new Order(), 'rmaType')
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['rmaType'])
+  }
+
+  @Rollback
+  def "verify that validate handles non-configurable type"() {
+    when: 'the value is set'
+    ExtensibleFieldHelper.instance.validateConfigurableTypes(new Order(), 'order')
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['order'])
   }
 
 }

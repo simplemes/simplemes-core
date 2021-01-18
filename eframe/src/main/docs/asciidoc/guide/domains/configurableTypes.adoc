@@ -4,6 +4,7 @@
 ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<Configurable Type Persistent Storage>>#
+[inline-toc]#<<Domain Validation>>#
 [inline-toc]#<<GUI Marker Support>>#
 [inline-toc]#<<Controller Support>>#
 [inline-toc]#<<Configurable Type API Access>>#
@@ -87,6 +88,46 @@ in the display/editing of the <<Report Filter Panel>> mechanism.
 The flex type definition will look something like this:
 
 image::guis/flexTypeCreate.png[title="flexTypeCreate",align="center", width=75%]
+
+==== Domain Validation
+
+Your domain will need to handle most validations on the values entered for the configurable
+type.  For enforcement of the simple `required` flag on the field, you can use the
+link:groovydoc/org/simplemes/eframe/custom/ExtensibleFieldHelper.html[ExtensibleFieldHelper^]
+icon:share-square-o[role="link-blue"] method `validateConfigurableTypes()` to validate the added field(s).
+For example:
+
+[source,groovy]
+.Configurable Type - Validation in Domain
+----
+@MappedEntity
+@DomainEntity
+class RMA {
+  String rma
+
+  @Nullable
+  @ManyToOne(targetEntity = FlexType)
+  @MappedProperty(type = DataType.UUID)
+  FlexType rmaType                       <.>
+
+  @Nullable
+  @ExtensibleFieldHolder
+  @MappedProperty(type = DataType.JSON)
+  String fields                          <.>
+
+  . . .
+
+  void validate() {   <.>
+    return ExtensibleFieldHelper.instance.validateConfigurableTypes(this,'rmaType')  <.>
+  }
+
+}
+
+----
+<.> The Configurable type (Flex Type) that user may select in a GUI.
+<.> The field that custom fields are stored (as JSON).
+<.> The standard domain validate method.
+<.> The helper method that validates required configurable type fields.
 
 
 ==== Configurable Type Persistent Storage

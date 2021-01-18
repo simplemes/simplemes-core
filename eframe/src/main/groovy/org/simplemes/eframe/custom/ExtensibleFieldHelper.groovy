@@ -21,6 +21,7 @@ import org.simplemes.eframe.data.format.ListFieldLoaderInterface
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.domain.annotation.DomainEntityHelper
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
+import org.simplemes.eframe.domain.validate.ValidationError
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.NameUtils
@@ -611,4 +612,33 @@ class ExtensibleFieldHelper {
       throw new MissingPropertyException(name, object.getClass())
     }
   }
+
+  /**
+   * Validates the required fields for configurable types.
+   * @param object The domain record to check values for.
+   * @param configTypeFieldName The configurable type field that defines what fields are collected and which are required.
+   */
+  List<ValidationError> validateConfigurableTypes(Object object, String configTypeFieldName) {
+    def res = null
+    def fieldDefinitions = instance.getEffectiveFieldDefinitions(object.getClass())
+    def fieldDef = fieldDefinitions[configTypeFieldName]
+    if (!fieldDef) {
+      throw new IllegalArgumentException("Field $configTypeFieldName not found in domain class ${object.getClass()}")
+    }
+    if (fieldDef.format == ConfigurableTypeDomainFormat.instance) {
+      def ctValue = object[configTypeFieldName]
+      for (field in ctValue?.determineInputFields(configTypeFieldName)) {
+        if (field.required && (!getFieldValue(object, field.name))) {
+          //error.101.message=Domain object {1} is missing {0}.
+          res = res ?: []
+          res << new ValidationError(101, field.name, object.getClass().simpleName)
+        }
+      }
+    } else {
+      throw new IllegalArgumentException("Field $configTypeFieldName is not a configurable type in domain class ${object.getClass()}")
+    }
+
+    return res
+  }
+
 }

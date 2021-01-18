@@ -1,7 +1,7 @@
 Scratch
 =======
 
-FieldTrait
+FieldTrait (FlexField, FieldExtension, CustomFieldDefinition)
 -----------------------
 Needs these values:
   fieldName
@@ -14,7 +14,11 @@ Needs these values:
   historyTracking (Added to CustomFieldDefinition).
   guiHints
 
-
+Tasks for History Tracking
+--------------------------
+FlexField - Required enforcement and tracking
+  GUI Tests.
+FieldExtensions - Required enforcement and tracking
 
 Questions
 ---------

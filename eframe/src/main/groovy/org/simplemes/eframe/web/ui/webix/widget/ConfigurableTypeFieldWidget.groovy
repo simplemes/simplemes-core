@@ -156,7 +156,7 @@ class ConfigurableTypeFieldWidget extends BaseWidget {
       def w = new WidgetContext(widgetContext, (Map) widgetContext.parameters.clone())
       w.object = widgetContext.object
       w.fieldDefinition = field
-      w.parameters.required = false
+      w.parameters.required = field.required
       w.parameters.id = field.name
       def widget = WidgetFactory.instance.build(w)
       if (widgetScript) {

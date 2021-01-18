@@ -147,6 +147,7 @@ class DataGenerator {
    *   <li><b>fieldName</b> - The field name for the first field in the flex type (<b>Default</b>: 'FIELD1'). </li>
    *   <li><b>fieldFormat</b> - The field format for the first field in the flex type (<b>Default</b>: StringFieldFormat.instance). </li>
    *   <li><b>fieldLabel</b> - The field label (<b>Default</b>: null). </li>
+   *   <li><b>required</b> - The required flag for the flex field (<b>Default</b>: false). </li>
    *   <li><b>fieldCount</b> - The number of fields to generate (<b>Default</b>: 1). Do not use with fieldName</li>
    *   <li><b>defaultFlexType</b> - The default flex type is set (<b>Default</b>: false). </li>
    * </ul>
@@ -168,6 +169,7 @@ class DataGenerator {
         flexType.fields << new FlexField(fieldName: options?.fieldName ?: "FIELD${i + 1}",
                                          fieldFormat: format,
                                          fieldLabel: label,
+                                         required: options?.required ?: false,
                                          sequence: (10 + i * 10))
       }
       flexType.save()

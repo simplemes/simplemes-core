@@ -117,4 +117,8 @@ class RMA {
     rmaSummary = ExtensibleFieldHelper.instance.formatConfigurableTypeValues('rmaType', this)
     return rmaSummary
   }
+
+  def validate() {
+    return ExtensibleFieldHelper.instance.validateConfigurableTypes(this, 'rmaType')
+  }
 }

@@ -267,4 +267,31 @@ class ConfigurableTypeFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(noteLine, 'label') == lookup('selectConfigType.label', lookup("rmaType.label"))
   }
 
+  @Rollback
+  def "verify that the widget supports the required flag"() {
+    given: 'a flex type'
+    DataGenerator.buildFlexType(defaultFlexType: true, required: true)
+
+    and: 'a domain object for the value'
+    def rma = new RMA()
+
+    when: 'the UI element is built'
+    def widgetContext = buildWidgetContext(domainObject: rma, name: 'rmaType',
+                                           format: ConfigurableTypeDomainFormat.instance,
+                                           type: FlexType, referenceType: FlexType)
+    def page = new ConfigurableTypeFieldWidget(widgetContext).build().toString()
+    def post = widgetContext.markerCoordinator.postscript
+
+
+    then: 'the page fragment is valid'
+    JavascriptTestUtils.checkScriptFragment("[$page]")
+
+    and: 'field is flagged as required'
+    def fieldLine = TextUtils.findLine(page, 'id: "FIELD1"')
+    JavascriptTestUtils.extractProperty(fieldLine, 'required') == 'true'
+
+    and: 'list of combo-box choices flags the field as required'
+    post.contains("required: true")
+  }
+
 }

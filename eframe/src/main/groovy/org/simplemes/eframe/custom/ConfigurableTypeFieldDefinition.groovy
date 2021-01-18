@@ -26,6 +26,11 @@ class ConfigurableTypeFieldDefinition extends SimpleFieldDefinition {
   String configTypeFieldName
 
   /**
+   * The history tracking option.
+   */
+  HistoryTracking historyTracking = HistoryTracking.NONE
+
+  /**
    * Constructor for a persisted field definition.
    * @param field The field definition. Copies properties such as type, field, label, etc.
    * @param configTypeFieldName The name of the Configurable Type that this field belongs to.
@@ -38,6 +43,8 @@ class ConfigurableTypeFieldDefinition extends SimpleFieldDefinition {
     this.label = field.fieldLabel ?: field.fieldName
     this.maxLength = field.maxLength
     this.sequence = field.sequence
+    this.required = field.required
+    this.historyTracking = field.historyTracking
     if (field.valueClassName) {
       this.type = TypeUtils.loadClass(field.valueClassName)
     }

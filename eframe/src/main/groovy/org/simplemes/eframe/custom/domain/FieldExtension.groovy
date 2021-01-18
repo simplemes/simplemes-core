@@ -11,6 +11,7 @@ import io.micronaut.data.annotation.Id
 import io.micronaut.data.annotation.MappedEntity
 import io.micronaut.data.annotation.MappedProperty
 import io.micronaut.data.model.DataType
+import org.simplemes.eframe.custom.HistoryTracking
 import org.simplemes.eframe.data.format.BasicFieldFormat
 import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.domain.annotation.DomainEntity
@@ -81,6 +82,19 @@ class FieldExtension implements FieldInterface, FieldTrait {
   @Column(length = FieldSizes.MAX_NOTES_LENGTH, nullable = true)
   String guiHints
 
+  /**
+   * The option for tracking historical values for this field.
+   */
+  @Column(length = FieldSizes.MAX_CODE_LENGTH, nullable = true)
+  HistoryTracking historyTracking = HistoryTracking.NONE
+
+  /**
+   * If true, then this field is considered required.  The enforcement of this flag depends on
+   * the API and user case.
+   */
+  @Column(nullable = true)
+  Boolean required = false
+
   Integer version = 0
 
   @Id @AutoPopulated
@@ -91,7 +105,7 @@ class FieldExtension implements FieldInterface, FieldTrait {
    * Defines the order the fields are shown in the edit/show/etc GUIs.
    */
   @SuppressWarnings("unused")
-  static fieldOrder = ['sequence', 'fieldName', 'fieldLabel', 'fieldFormat', 'maxLength', 'valueClassName', 'guiHints']
+  static fieldOrder = ['sequence', 'fieldName', 'fieldLabel', 'fieldFormat', 'maxLength', 'required', 'historyTracking', 'valueClassName', 'guiHints']
 
   /**
    * The primary keys for this object.
