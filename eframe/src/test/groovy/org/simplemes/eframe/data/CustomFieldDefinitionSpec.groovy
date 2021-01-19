@@ -4,6 +4,7 @@
 
 package org.simplemes.eframe.data
 
+import org.simplemes.eframe.custom.HistoryTracking
 import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.custom.domain.FieldGUIExtension
 import org.simplemes.eframe.data.format.BigDecimalFieldFormat
@@ -40,7 +41,8 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
   def "verify that FieldExtension constructor works"() {
     given: 'a custom field on a domain'
     def fieldExtension = new FieldExtension(fieldName: 'abc', domainClassName: SampleParent.name,
-                                            fieldFormat: BigDecimalFieldFormat.instance).save()
+                                            fieldFormat: BigDecimalFieldFormat.instance,
+                                            required: true, historyTracking: HistoryTracking.ALL_DATA_AND_VALUES).save()
 
     when: 'the constructor is used'
     def field = new CustomFieldDefinition(fieldExtension)
@@ -51,6 +53,8 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
     field.format == BigDecimalFieldFormat.instance
     field.fieldExtensionUuid == fieldExtension.uuid
     field.label == "abc"
+    field.required
+    field.historyTracking == HistoryTracking.ALL_DATA_AND_VALUES
   }
 
   @Rollback

@@ -641,4 +641,26 @@ class ExtensibleFieldHelper {
     return res
   }
 
+  /**
+   * Validates the required fields for custom fields.
+   * @param object The domain record to check values for.
+   * @param configTypeFieldName The configurable type field that defines what fields are collected and which are required.
+   */
+  static List<ValidationError> validateCustomFields(DomainEntityInterface object) {
+    def res = []
+    if (!ExtensibleFieldHelper.instance.hasExtensibleFields(object.getClass())) {
+      return res
+    }
+    def fieldDefinitions = instance.getEffectiveFieldDefinitions(object.getClass())
+    for (field in fieldDefinitions) {
+      if (field instanceof CustomFieldDefinition && field.required) {
+        if (!object.getFieldValue(field.name)) {
+          //error.1.message=Required value is missing "{0}" ({1}).
+          res.add(new ValidationError(1, field.name, object.getClass().getSimpleName()))
+        }
+      }
+    }
+    return res
+  }
+
 }

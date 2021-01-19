@@ -235,6 +235,35 @@ class DomainBinderSpec extends BaseSpecification {
     Locale.GERMANY | _
   }
 
+  def "verify that ui mode works on bind - integer for boolean scenario"() {
+    given: 'a simple POGO with several field types'
+    def src = """
+    package sample
+    import org.simplemes.eframe.date.DateOnly
+    
+    class SampleClass {
+      Date dateTime
+      DateOnly dueDate
+      boolean enabled
+    }
+    """
+    def o = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
+
+    and: 'the locale is set'
+    GlobalUtils.defaultLocale = locale
+
+    when: 'the params are bound using a locale-independent date format'
+    DomainBinder.build().bind(o, [enabled: 1], true)
+
+    then: 'the correct values are set'
+    o.enabled
+
+    where:
+    locale         | _
+    Locale.US      | _
+    Locale.GERMANY | _
+  }
+
   def "verify that bind gracefully handles parse errors in the top-level object"() {
     given: 'a simple Domain class with a date field'
     def src = """

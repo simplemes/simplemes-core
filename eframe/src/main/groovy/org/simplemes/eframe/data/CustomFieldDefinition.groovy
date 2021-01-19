@@ -6,6 +6,7 @@ package org.simplemes.eframe.data
 
 import groovy.transform.ToString
 import org.simplemes.eframe.custom.ExtensibleFieldHelper
+import org.simplemes.eframe.custom.HistoryTracking
 import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.misc.TypeUtils
 
@@ -20,6 +21,11 @@ class CustomFieldDefinition extends SimpleFieldDefinition {
    * The record ID for the field extension record that this field def represents.
    */
   UUID fieldExtensionUuid
+
+  /**
+   * The history tracking option.
+   */
+  HistoryTracking historyTracking = HistoryTracking.NONE
 
   /**
    * Basic constructor.
@@ -51,6 +57,8 @@ class CustomFieldDefinition extends SimpleFieldDefinition {
     fieldExtensionUuid = fieldExtension.uuid
     label = fieldExtension.fieldLabel ?: name
     custom = true
+    required = fieldExtension.required
+    historyTracking = fieldExtension.historyTracking
   }
 
   /**

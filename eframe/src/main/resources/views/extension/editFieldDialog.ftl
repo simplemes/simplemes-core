@@ -12,6 +12,8 @@
     <@efField field="FlexField.fieldLabel" />
     <@efField field="FlexField.fieldFormat" />
     <@efField field="FlexField.maxLength" />
+    <@efField field="FlexField.required" />
+    <@efField field="FlexField.historyTracking" />
     <@efField field="FlexField.valueClassName" />
     <@efButtonGroup>
       <@efButton id='saveField' label="definitionEditor.saveField.label" click="efd._editorFieldSave()" />

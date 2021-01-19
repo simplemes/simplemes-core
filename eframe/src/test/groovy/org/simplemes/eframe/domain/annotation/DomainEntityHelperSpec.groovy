@@ -749,6 +749,23 @@ class DomainEntityHelperSpec extends BaseSpecification {
     errors[0].args[0] == 'TestClass'
   }
 
+  @Rollback
+  def "verify that validate detects missing value in required custom fields"() {
+    given: 'a domain with custom field'
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: SampleParent, required: true)
+    def object = new SampleParent(name: 'ABC')
+
+    when: 'the object is validated'
+    def errors = DomainEntityHelper.instance.validate((DomainEntityInterface) object)
+
+    then: 'the validation error is correct'
+    //error.1.message=Required value is missing "{0}" ({1}).
+    errors.size() == 1
+    errors[0].code == 1
+    errors[0].fieldName == 'custom1'
+    errors[0].args[0] == 'SampleParent'
+  }
+
   def "verify that validate detects blank string values in non-nullable fields"() {
     given: 'a domain'
     def src = """

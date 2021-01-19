@@ -190,6 +190,8 @@ class DomainBinder {
             }
           } else if (isToStringAllowed(value)) {
             object[key] = value.toString()
+          } else if (value instanceof Integer && (propertyClass == boolean || propertyClass == Boolean)) {
+            object[key] = (value == 1)
           } else {
             def s = "Invalid value type ${value.getClass()}, value: ${value}. Expected String or ${propertyClass}. Property $key in object $object"
             throw new UnsupportedOperationException(s)

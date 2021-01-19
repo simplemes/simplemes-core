@@ -233,4 +233,31 @@ class CreateMarkerSpec extends BaseMarkerSpecification {
     page.indexOf('id: "title"') < page.indexOf('id: "custom1"')
   }
 
+  def "verify that custom fields with required value is supported"() {
+    given: 'a mocked FieldDefinitions for the domain'
+    new MockDomainUtils(this, new MockFieldDefinitions(['name', 'title'])).install()
+    mockFieldExtension(domainClass: SampleParent, fieldName: 'custom1', afterFieldName: 'title', required: true)
+
+    when: 'the marker is built'
+    def src = """
+      <@efForm id="create">
+        <@efCreate fields="name,title"/>
+      </@efForm>
+    """
+
+    def page = execute(source: src, controllerClass: SampleParentController,
+                       domainObject: new SampleParent(), uri: '/sampleParent/show/5')
+
+    then: 'the javascript is legal'
+    checkPage(page)
+
+    and: 'custom field is created in the right place'
+    def labelLine = TextUtils.findLine(page, 'id: "custom1Label"')
+    JavascriptTestUtils.extractProperty(labelLine, 'label') == '*custom1'
+
+    and: 'the field value is flagged as required'
+    def fieldLine = TextUtils.findLine(page, 'id: "custom1"')
+    JavascriptTestUtils.extractProperty(fieldLine, 'required') == 'true'
+  }
+
 }

@@ -139,7 +139,7 @@ class FieldExtensionE2ESpec extends BaseDefinitionEditorSpecification {
     given: 'a custom field for the domain'
     DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: SampleParent)
 
-    when: 'the edit page is shown'
+    when: 'the create page is shown'
     login()
     to SampleParentCreatePage
 
@@ -208,6 +208,62 @@ class FieldExtensionE2ESpec extends BaseDefinitionEditorSpecification {
     EnumFieldFormat            | ReportTimeIntervalEnum | ReportTimeIntervalEnum.YESTERDAY
     EncodedTypeFieldFormat     | BasicStatus            | DisabledStatus.instance
     DomainReferenceFieldFormat | AllFieldsDomain        | AllFieldsDomain.name
+  }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that the required flag is enforced on save - create"() {
+    given: 'a custom field for the domain'
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: SampleParent, required: true)
+
+    when: 'the create page is shown'
+    login()
+    to SampleParentCreatePage
+
+    then: 'the field is marked as required'
+    getFieldLabel('custom1') == '*custom1'
+
+    when: 'the record is saved'
+    name.input.value('ABC')
+    createButton.click()
+    waitFor {
+      messages.text()
+    }
+
+    then: 'an error is displayed'
+    UnitTestUtils.assertContainsAllIgnoreCase(messages.text(), ['custom1', 'missing'])
+  }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that the required flag allows a non-null value to be saved - edit"() {
+    given: 'a custom field for the domain'
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: SampleParent, required: true)
+
+    and: 'a domain record is available to edit'
+    def sampleParent = null
+    SampleParent.withTransaction {
+      sampleParent = new SampleParent(name: 'abc')
+      sampleParent.setFieldValue('custom1', 'c1')
+      sampleParent.save()
+    }
+
+    when: 'the edit page is shown'
+    login()
+    to SampleParentEditPage, sampleParent
+
+    then: 'the field is marked as required'
+    getFieldLabel('custom1') == '*custom1'
+
+    when: 'the record is saved with a value'
+    setFieldValue('custom1', 'XYZ')
+    updateButton.click()
+    waitForRecordChange(sampleParent)
+
+    then: 'the record is updated'
+    SampleParent.withTransaction {
+      def sp = SampleParent.findByName('abc')
+      assert sp.getFieldValue('custom1') == 'XYZ'
+      true
+    }
   }
 
 

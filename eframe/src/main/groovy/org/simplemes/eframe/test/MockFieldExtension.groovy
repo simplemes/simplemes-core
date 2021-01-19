@@ -129,6 +129,10 @@ class MockFieldExtension implements AutoCleanupMockInterface, IDefaultResponse {
         String name = option.fieldName
         FieldFormatInterface format = (FieldFormatInterface) option.format ?: StringFieldFormat.instance
         fieldDefinitions[name] = new CustomFieldDefinition(name: name, format: format, label: option.label)
+        if (option.required) {
+          fieldDefinitions[name].required = option.required
+        }
+        fieldDefinitions[name].historyTracking = option.historyTracking ?: fieldDefinitions[name].historyTracking
       }
     }
     return fieldDefinitions

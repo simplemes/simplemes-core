@@ -16,9 +16,9 @@ Needs these values:
 
 Tasks for History Tracking
 --------------------------
-FlexField - Required enforcement and tracking
-  GUI Tests.
-FieldExtensions - Required enforcement and tracking
+ConfigTypeFields - History Tracking
+FieldExtensions - Tracking
+FieldHolderMap - put() records history, if needed.
 
 Questions
 ---------

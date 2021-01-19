@@ -1047,4 +1047,56 @@ class ExtensibleFieldHelperSpec extends BaseSpecification {
     UnitTestUtils.assertExceptionIsValid(ex, ['order'])
   }
 
+  @Rollback
+  @SuppressWarnings('GroovyAssignabilityCheck')
+  def "verify that validateCustomFields detects missing required custom fields"() {
+    given: 'a custom field'
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: RMA, required: true)
+
+    when: 'the value is set'
+    def rma = new RMA(rma: 'ABC')
+    def errors = ExtensibleFieldHelper.validateCustomFields(rma)
+
+    then: 'the validation error is correct'
+    errors.size() == 1
+    errors[0].code == 1
+    errors[0].fieldName == 'custom1'
+  }
+
+  @Rollback
+  @SuppressWarnings('GroovyAssignabilityCheck')
+  def "verify that validateCustomFields allows save when require custom field is given"() {
+    given: 'a custom field'
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: RMA, required: true)
+
+    when: 'the value is set'
+    def rma = new RMA(rma: 'ABC')
+    rma.setFieldValue('custom1', 'c1')
+    def errors = ExtensibleFieldHelper.validateCustomFields(rma)
+
+    then: 'there is no validation error'
+    errors.size() == 0
+  }
+
+  @Rollback
+  @SuppressWarnings('GroovyAssignabilityCheck')
+  def "verify that validateCustomFields handles non-extensible domain classes"() {
+    given: 'a domain object with no custom fields holder'
+    def src = """
+      import org.simplemes.eframe.data.annotation.*
+      import org.simplemes.eframe.domain.annotation.DomainEntity
+      @DomainEntity
+      class TestClass {
+        UUID uuid 
+      }
+    """
+
+    when: 'the value is set'
+    def object = CompilerTestUtils.compileSource(src).getConstructor().newInstance()
+    def errors = ExtensibleFieldHelper.validateCustomFields(object)
+
+    then: 'there is no validation error'
+    errors.size() == 0
+  }
+
 }

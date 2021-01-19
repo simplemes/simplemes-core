@@ -257,8 +257,9 @@ class DataGenerator {
       for (field in list) {
         def fieldName = field.fieldName ?: 'custom1'
         def fieldFormat = field.fieldFormat ?: StringFieldFormat.instance
+        def required = field.required ?: false
         def fe = new FieldExtension(fieldName: fieldName, domainClassName: field.domainClass.name,
-                                    fieldFormat: (BasicFieldFormat) fieldFormat,
+                                    fieldFormat: (BasicFieldFormat) fieldFormat, required: required,
                                     valueClassName: field.valueClassName).save()
         domainList << field.domainClass
         res = res ?: fe

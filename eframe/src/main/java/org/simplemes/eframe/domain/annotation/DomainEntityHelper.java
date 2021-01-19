@@ -1103,6 +1103,10 @@ public class DomainEntityHelper {
     executeDomainMethod(object, "beforeValidate");
 
     List<ValidationErrorInterface> res = validateColumns(object);
+    List<ValidationErrorInterface> res2 = validateCustomFields(object);
+    if (res2.size() > 0) {
+      res.addAll(res2);
+    }
     try {
       Method validateMethod = object.getClass().getDeclaredMethod("validate");
       Object methodRes = validateMethod.invoke(object);
@@ -1118,6 +1122,7 @@ public class DomainEntityHelper {
         throw new IllegalArgumentException(object.getClass().getName() + ".validate() must return a ValidationErrorInterface, null or list.");
       }
     } catch (NoSuchMethodException ignored) {
+      // The method is not required in a domain object, so we just ignore this exception.
     }
 
     return res;
@@ -1186,6 +1191,19 @@ public class DomainEntityHelper {
       }
     }
     return res;
+  }
+
+  /**
+   * Performs the custom field validations on the given domain object and returns a list of errors related to the problem.
+   *
+   * @param object The domain object.
+   * @return The list of validation errors.  Never null.
+   */
+  @SuppressWarnings("unchecked")
+  protected List<ValidationErrorInterface> validateCustomFields(DomainEntityInterface object) {
+    return (List<ValidationErrorInterface>) ASTUtils.invokeGroovyMethod(
+        "org.simplemes.eframe.custom.ExtensibleFieldHelper",
+        "validateCustomFields", object);
   }
 
   /**
