@@ -427,6 +427,12 @@ extends java.lang.Object</pre>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/domain/validate/ValidationErrorInterface.html' title='ValidationErrorInterface'>ValidationErrorInterface</a>&gt;</code></td>
+                            <td class="colLast"><code><strong><a href="#validateCustomFields(org.simplemes.eframe.domain.annotation.DomainEntityInterface)">validateCustomFields</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object)</code><br>Performs the custom field validations on the given domain object and returns a list of errors related to the problem.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#validateForSave(org.simplemes.eframe.domain.annotation.DomainEntityInterface)">validateForSave</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object)</code><br>Validates the domain object before a save.</td>
                         </tr>
@@ -858,6 +864,16 @@ public&nbsp;void <strong>storeIdsLoadedForChildList</strong>(<a href='../../../.
                             <li class="blockList">
                                 <h4>protected&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/domain/validate/ValidationErrorInterface.html' title='ValidationErrorInterface'>ValidationErrorInterface</a>&gt; <strong>validateColumns</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object)</h4>
                                 <p> Performs the validations on the given domain object and returns a list of errors related to the problem.
+    <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The domain object.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of validation errors.  Never null.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="validateCustomFields(org.simplemes.eframe.domain.annotation.DomainEntityInterface)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@java.lang.SuppressWarnings("unchecked")
+protected&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/domain/validate/ValidationErrorInterface.html' title='ValidationErrorInterface'>ValidationErrorInterface</a>&gt; <strong>validateCustomFields</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object)</h4>
+                                <p> Performs the custom field validations on the given domain object and returns a list of errors related to the problem.
     <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The domain object.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of validation errors.  Never null.</DD></DL></p>
                             </li>
                         </ul>
