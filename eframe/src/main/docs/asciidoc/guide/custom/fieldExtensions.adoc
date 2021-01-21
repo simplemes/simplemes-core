@@ -253,7 +253,7 @@ looks like this:
     "_config": {               <.>
       "weight": {
         "type": "I",
-        "tracking": "A",
+        "tracking": "ALL",
         "history": [           <.>
           . . .
         ]
@@ -305,7 +305,7 @@ For example, tracking using the *All Data and Values* option would result in a
     "_config": {               <.>
       "weight": {
         "type": "I",
-        "tracking": "A",
+        "tracking": "ALL",
         "history": [           <.>
           {
             "weight": 2.3,

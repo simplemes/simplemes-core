@@ -28,7 +28,7 @@ class FieldHolderMapDeserializerSpec extends BaseSpecification {
         "_config": {               
           "weight": {
             "type": "I",
-            "tracking": "A",
+            "tracking": "ALL",
             "history": [           
             ]
           }
@@ -54,7 +54,7 @@ class FieldHolderMapDeserializerSpec extends BaseSpecification {
     def config = map._config
     config.weight
     config.weight.type == 'I'
-    config.weight.tracking == 'A'
+    config.weight.tracking == 'ALL'
     config.weight.history != null
   }
 
@@ -68,7 +68,7 @@ class FieldHolderMapDeserializerSpec extends BaseSpecification {
         "_config": {               
           "weight": {
             "type": "I",
-            "tracking": "A",
+            "tracking": "ALL",
             "history": [
               {
                 "weight": 2.3,
@@ -108,7 +108,7 @@ class FieldHolderMapDeserializerSpec extends BaseSpecification {
     def config = map._config
     config.weight
     config.weight.type == 'I'
-    config.weight.tracking == 'A'
+    config.weight.tracking == 'ALL'
     config.weight.history.size() == 2
   }
 
@@ -121,7 +121,7 @@ class FieldHolderMapDeserializerSpec extends BaseSpecification {
         "_config": {
           "field1": {
             "type": "E",
-            "tracking": "A",
+            "tracking": "ALL",
             "valueClassName": "${ReportTimeIntervalEnum.name}"
           }
         }
@@ -148,7 +148,7 @@ class FieldHolderMapDeserializerSpec extends BaseSpecification {
         "_config": {
           "field1": {
             "type": "E",
-            "tracking": "A",
+            "tracking": "ALL",
             "valueClassName": "${ReportTimeIntervalEnum.name}"
           }
         }

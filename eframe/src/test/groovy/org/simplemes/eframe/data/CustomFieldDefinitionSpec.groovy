@@ -42,7 +42,7 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
     given: 'a custom field on a domain'
     def fieldExtension = new FieldExtension(fieldName: 'abc', domainClassName: SampleParent.name,
                                             fieldFormat: BigDecimalFieldFormat.instance,
-                                            required: true, historyTracking: HistoryTracking.ALL_DATA_AND_VALUES).save()
+                                            required: true, historyTracking: HistoryTracking.ALL).save()
 
     when: 'the constructor is used'
     def field = new CustomFieldDefinition(fieldExtension)
@@ -54,7 +54,7 @@ class CustomFieldDefinitionSpec extends BaseSpecification {
     field.fieldExtensionUuid == fieldExtension.uuid
     field.label == "abc"
     field.required
-    field.historyTracking == HistoryTracking.ALL_DATA_AND_VALUES
+    field.historyTracking == HistoryTracking.ALL
   }
 
   @Rollback

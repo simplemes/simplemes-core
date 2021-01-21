@@ -5,6 +5,7 @@
 package org.simplemes.eframe.custom
 
 import ch.qos.logback.classic.Level
+import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.data.SimpleFieldDefinition
 import org.simplemes.eframe.data.format.ChildListFieldFormat
 import org.simplemes.eframe.data.format.CustomChildListFieldFormat
@@ -15,13 +16,17 @@ import org.simplemes.eframe.data.format.EncodedTypeFieldFormat
 import org.simplemes.eframe.data.format.EnumFieldFormat
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.date.DateUtils
+import org.simplemes.eframe.date.ISODate
 import org.simplemes.eframe.reports.ReportTimeIntervalEnum
+import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.system.EnabledStatus
 import org.simplemes.eframe.test.BaseSpecification
+import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.MockAppender
 import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
+import sample.domain.RMA
 import sample.domain.SampleParent
 
 /**
@@ -44,7 +49,8 @@ class FieldHolderMapSpec extends BaseSpecification {
     def map2 = FieldHolderMap.fromJSON(s)
 
     then: 'the deserialized works'
-    map == map2
+    map.pdq == map2.pdq
+    map.abc == map2.abc
 
     and: 'the map is not the same object'
     !map.is(map2)
@@ -165,6 +171,116 @@ class FieldHolderMapSpec extends BaseSpecification {
     map2.isDirty()
     !map2.isParsingFromJSON()
   }
+
+  @Rollback
+  def "verify that put passes tracks the history - Configurable Type scenario"() {
+    given: 'a flex type and a domain to use it'
+    def flexType = DataGenerator.buildFlexType(defaultFlexType: true, required: true, historyTracking: HistoryTracking.ALL)
+    def rma = new RMA(rmaType: flexType)
+
+    and: 'a dummy user'
+    setCurrentUser()
+
+    when: 'the field is saved twice'
+    rma.setFieldValue('FIELD1', 'ABC')
+    rma.setFieldValue('FIELD1', 'XYZ')
+
+    then: 'the holder map config element is correct'
+    def map = ExtensibleFieldHelper.instance.getExtensibleFieldMapNoParse(rma)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(map.toJSON())}"
+    def field1Config = map[FieldHolderMap.CONFIG_ELEMENT_NAME].FIELD1
+    field1Config[FieldHolderMap.TRACKING_ELEMENT_NAME] == HistoryTracking.ALL.id
+
+    and: 'the first entry in the history is correct'
+    field1Config[FieldHolderMap.HISTORY_ELEMENT_NAME].size() == 2
+    def history = field1Config[FieldHolderMap.HISTORY_ELEMENT_NAME] as List
+    history[0].FIELD1 == 'ABC'
+    history[0].user == SecurityUtils.TEST_USER
+    UnitTestUtils.dateIsCloseToNow(ISODate.parse(history[0].dateTime))
+
+    and: 'the second entry in the history is correct'
+    history[1].FIELD1 == 'XYZ'
+    history[1].user == SecurityUtils.TEST_USER
+    UnitTestUtils.dateIsCloseToNow(ISODate.parse(history[1].dateTime))
+  }
+
+  @Rollback
+  def "verify that put passes tracks the history - Custom Fields scenario"() {
+    given: 'a custom field'
+    DataGenerator.buildCustomField(domainClass: SampleParent, historyTracking: HistoryTracking.ALL,
+                                   fieldFormat: DateOnlyFieldFormat.instance)
+    def sampleParent = new SampleParent()
+
+    and: 'a dummy user'
+    setCurrentUser()
+
+    when: 'the field is saved twice'
+    def dateOnly = new DateOnly()
+    sampleParent.setFieldValue('custom1', dateOnly)
+
+    then: 'the holder map config element is correct'
+    def map = ExtensibleFieldHelper.instance.getExtensibleFieldMapNoParse(sampleParent)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(map.toJSON())}"
+    def field1Config = map[FieldHolderMap.CONFIG_ELEMENT_NAME].custom1
+    field1Config[FieldHolderMap.TRACKING_ELEMENT_NAME] == HistoryTracking.ALL.id
+
+    and: 'the first entry in the history is correct'
+    field1Config[FieldHolderMap.HISTORY_ELEMENT_NAME].size() == 1
+    def history = field1Config[FieldHolderMap.HISTORY_ELEMENT_NAME] as List
+    history[0].custom1 == dateOnly
+    history[0].user == SecurityUtils.TEST_USER
+    UnitTestUtils.dateIsCloseToNow(ISODate.parse(history[0].dateTime))
+  }
+
+  @Rollback
+  def "verify that put passes ignores reduction history tracking level - Configurable Type scenario"() {
+    given: 'a flex type and a domain to use it'
+    def flexType = DataGenerator.buildFlexType(defaultFlexType: true, required: true, historyTracking: HistoryTracking.ALL)
+    def rma = new RMA(rmaType: flexType)
+
+    and: 'a dummy user'
+    setCurrentUser()
+
+    when: 'the field is saved once'
+    rma.setFieldValue('FIELD1', 'ABC')
+
+    and: 'the level is reduces in the field definition'
+    flexType.fields[0].historyTracking = HistoryTracking.VALUES
+    flexType.save()
+
+    and: 'the flex type is re-read to clear any cached field definitions'
+    rma.rmaType = FlexType.findByUuid(flexType.uuid)
+
+    and: 'a new value is saved'
+    rma.setFieldValue('FIELD1', 'XYZ')
+
+    then: 'the holder map config element is still tracking at the ALL level'
+    def map = ExtensibleFieldHelper.instance.getExtensibleFieldMapNoParse(rma)
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(map.toJSON())}"
+    def field1Config = map[FieldHolderMap.CONFIG_ELEMENT_NAME].FIELD1
+    field1Config[FieldHolderMap.TRACKING_ELEMENT_NAME] == HistoryTracking.ALL.id
+
+    and: 'both entries have full details'
+    field1Config[FieldHolderMap.HISTORY_ELEMENT_NAME].size() == 2
+    def history = field1Config[FieldHolderMap.HISTORY_ELEMENT_NAME] as List
+    history[0].user == SecurityUtils.TEST_USER
+    history[1].user == SecurityUtils.TEST_USER
+  }
+
+  @Rollback
+  def "verify that put detects tracking and no user and throws exception - Configurable Type scenario"() {
+    given: 'a flex type and a domain to use it'
+    def flexType = DataGenerator.buildFlexType(defaultFlexType: true, required: true, historyTracking: HistoryTracking.ALL)
+    def rma = new RMA(rmaType: flexType)
+
+    when: 'the field is saved once'
+    rma.setFieldValue('FIELD1', 'ABC')
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['FIELD1'])
+  }
+
 
   def "verify that put fails on child list field format"() {
     given: 'a map'

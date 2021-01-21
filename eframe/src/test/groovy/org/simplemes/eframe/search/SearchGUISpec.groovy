@@ -5,9 +5,8 @@
 package org.simplemes.eframe.search
 
 import org.apache.http.HttpHost
-import org.elasticsearch.client.Request
-import org.elasticsearch.client.RestClient
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.search.page.SearchIndexPage
 import org.simplemes.eframe.test.BaseGUISpecification
@@ -15,7 +14,6 @@ import org.simplemes.eframe.test.DataGenerator
 import sample.domain.RMA
 import sample.domain.SampleParent
 import spock.lang.IgnoreIf
-import spock.lang.Shared
 
 /**
  * Tests.
@@ -202,11 +200,14 @@ class SearchGUISpec extends BaseGUISpecification {
     SearchHelper.instance.searchEngineClient = new SearchEngineClient(hosts: [new HttpHost('localhost', 9200)])
     SearchEnginePoolExecutor.startPool()
 
-    and: 'a domain that is searchable'
+    and: 'a domain that is searchable with a custom field'
     def uniqueName = "TestName${System.currentTimeMillis()}"
-    def (SampleParent sampleParent1) = DataGenerator.generate {
-      domain SampleParent
-      values name: uniqueName
+    def sampleParent1 = null
+    SampleParent.withTransaction {
+      sampleParent1 = new SampleParent(name: uniqueName)
+      sampleParent1.setFieldValue('custom1', new DateOnly())
+      sampleParent1.setFieldValue('custom2', "XYZZY_ABC${System.currentTimeMillis()}".toString())
+      sampleParent1.save()
     }
 
     when: 'the search page is displayed and a search is started'

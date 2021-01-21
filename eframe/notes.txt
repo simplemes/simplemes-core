@@ -19,6 +19,7 @@ Tasks for History Tracking
 ConfigTypeFields - History Tracking
 FieldExtensions - Tracking
 FieldHolderMap - put() records history, if needed.
+Does Elastic search and queries still work?
 
 Questions
 ---------
@@ -75,7 +76,7 @@ Domain/POGO:
       "_config": {
         "color": {
           "type": "S",
-          "tracking": "A",
+          "tracking": "ALL",
           "valueClassName": "o.s....",  // Domain Reference, enum, EncodedValue
           "history": {
             "color": [

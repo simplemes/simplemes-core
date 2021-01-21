@@ -634,7 +634,7 @@ class BaseSpecification extends GebSpec {
   /**
    * Temporarily sets the current user for this test.
    * Will be reset to null on test finish.
-   * @param userName The user to set the current user to.  <b>Default: </b>'TEST'.
+   * @param userName The user to set the current user to.  <b>Default: </b>SecurityUtils.TEST_USER ('TEST').
    */
   void setCurrentUser(String userName = SecurityUtils.TEST_USER) {
     SecurityUtils.currentUserOverride = userName

@@ -18,9 +18,11 @@ import org.simplemes.eframe.data.format.CustomChildListFieldFormat
 import org.simplemes.eframe.data.format.DomainReferenceFieldFormat
 import org.simplemes.eframe.data.format.FieldFormatInterface
 import org.simplemes.eframe.data.format.StringFieldFormat
+import org.simplemes.eframe.date.ISODate
 import org.simplemes.eframe.exception.BusinessException
 import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.TypeUtils
+import org.simplemes.eframe.security.SecurityUtils
 
 /**
  * Defines the Map used to hide the ExtensibleFieldHolder extensions to the Map logic.
@@ -53,7 +55,7 @@ class FieldHolderMap extends HashMap implements FieldHolderMapInterface {
 
   /**
    * The name of the element in the '_config' map that holds the tracking configuration (format encoding). Value: <b>'tracking'</b>.
-   * See {@link CustomFieldTrackingEnum}.
+   * See {@link HistoryTracking}.
    */
   static final TRACKING_ELEMENT_NAME = "tracking"
 
@@ -208,10 +210,38 @@ class FieldHolderMap extends HashMap implements FieldHolderMapInterface {
     dirty = true
     if (!parsingFromJSON) {
       // Only set config type when not called from the JSON parser.
-      setTypeInConfig(key, value, fieldDefinition)
+      def historyTracking = setDetailsInConfig(key, value, fieldDefinition)
       fixSpecialCasesForPut(key, value, fieldDefinition)
+      trackHistory(key, historyTracking)
     }
     return res
+  }
+
+  /**
+   * Track the history, if needed for the new value.
+   * @param key The field name.
+   * @param value The value.
+   * @param historyTracking The current history tracking of for the field.
+   */
+  @SuppressWarnings('GroovyAssignabilityCheck')
+  protected void trackHistory(Object key, HistoryTracking historyTracking) {
+    if (historyTracking == HistoryTracking.NONE) {
+      return
+    }
+    def fieldMap = getFieldMap(key as String, true)
+    def history = fieldMap[FieldHolderMap.HISTORY_ELEMENT_NAME]
+    if (history == null) {
+      history = []
+      fieldMap[FieldHolderMap.HISTORY_ELEMENT_NAME] = history
+    }
+    def entry = [dateTime: ISODate.format(new Date())]
+    // Store the value in the format needed for JSON (e.g. dates are stored as strings).
+    entry[key] = super.get(key)
+    entry.user = SecurityUtils.currentUserName
+    if (!entry.user) {
+      throw new IllegalStateException("Can't save history data for $key. Track history set to ALL and no current user found.  This is normally set by the HTTP request.")
+    }
+    history << entry
   }
 
   /**
@@ -241,14 +271,16 @@ class FieldHolderMap extends HashMap implements FieldHolderMapInterface {
   }
 
   /**
-   * Records the type in the config element, if needed for JSON deserialization.
+   * Records the type and related info into the config element, if needed for JSON deserialization.
    * @param key The field name.
    * @param value The value.
    * @param fieldDefinition The field definition for this element.  Optional.
+   * @return The value used for th history tracking (if any).
    */
-  protected void setTypeInConfig(Object key, Object value, FieldDefinitionInterface fieldDefinition) {
+  protected HistoryTracking setDetailsInConfig(Object key, Object value, FieldDefinitionInterface fieldDefinition) {
+    def currentTrackingValue = HistoryTracking.NONE
     if (!value) {
-      return
+      return currentTrackingValue
     }
     def format = BasicFieldFormat.findByType(value.class)
     if (!format) {
@@ -261,13 +293,30 @@ class FieldHolderMap extends HashMap implements FieldHolderMapInterface {
       }
     }
 
+    def fieldMap = getFieldMap(key as String, true)
+    if (fieldMap[TRACKING_ELEMENT_NAME]) {
+      currentTrackingValue = HistoryTracking.valueOf(HistoryTracking, fieldMap[TRACKING_ELEMENT_NAME] as String)
+    }
     if (!isNativeJSONType(format)) {
-      def fieldMap = getFieldMap(key as String, true)
       fieldMap[TYPE_ELEMENT_NAME] = format.id
       if (fieldDefinition && fieldDefinition.type) {
         fieldMap[VALUE_CLASS_ELEMENT_NAME] = fieldDefinition?.type?.name
       }
     }
+    if (fieldDefinition.hasProperty('historyTracking')) {
+      def historyTracking = fieldDefinition.historyTracking as HistoryTracking
+      if (historyTracking && (historyTracking != HistoryTracking.NONE)) {
+        if (historyTracking != currentTrackingValue) {
+          // Store the value, unless it is a reduction in detail
+          if (historyTracking.detailLevel >= currentTrackingValue.detailLevel) {
+            fieldMap[TRACKING_ELEMENT_NAME] = historyTracking.name()
+            currentTrackingValue = historyTracking
+          }
+        }
+      }
+    }
+
+    return currentTrackingValue
   }
 
   /**

@@ -10,6 +10,7 @@ import org.simplemes.eframe.application.EFrameConfiguration
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.archive.domain.ArchiveLog
 import org.simplemes.eframe.date.DateOnly
+import org.simplemes.eframe.date.ISODate
 import org.simplemes.eframe.misc.FileFactory
 import org.simplemes.eframe.misc.FileUtils
 import org.simplemes.eframe.misc.TypeUtils
@@ -174,6 +175,36 @@ class FileArchiverSpec extends BaseSpecification {
       assert AllFieldsDomain.count() == 0
       true
     }
+  }
+
+  @SuppressWarnings("GroovyAssignabilityCheck")
+  def "verify that archive works with custom fields"() {
+    given: 'a domain with some custom field value and a _config element'
+    def dateOnly = new DateOnly()
+    def sampleParent1 = null
+    SampleParent.withTransaction {
+      sampleParent1 = new SampleParent(name: 'SAMPLE', title: 'Sample')
+      sampleParent1.setFieldValue('custom2', "XYZZY${new Date().time}".toString())
+      sampleParent1.setFieldValue('custom1', dateOnly)
+      sampleParent1.save()
+    }
+
+    when: 'the top-level is archived'
+    SampleParent.withTransaction {
+      def archiver = new FileArchiver()
+      archiver.archive(sampleParent1)
+      archiver.close()
+    }
+
+    then: 'the file content is created with the correct values'
+    def s = stringWriter.toString()
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+    def json = new JsonSlurper().parse(s.bytes)
+
+    and: 'the custom field and definitions are in the JSON correctly'
+    def customFields = json[1]._customFields
+    customFields.custom1 == ISODate.format(dateOnly)
+    customFields._config.custom1.type == 'D'
   }
 
   def "verify that the archiver can unarchive using the original formatting logic"() {

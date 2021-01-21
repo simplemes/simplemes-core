@@ -19,17 +19,17 @@ enum HistoryTracking implements Comparable {
   /**
    * None.
    */
-  NONE('N'),
+  NONE('NONE', 0),
 
   /**
    * The values are retained (no user or date info).
    */
-  VALUES('V'),
+  VALUES('VALUES', 1),
 
   /**
    * All Data is retained, including user and date/time.
    */
-  ALL_DATA_AND_VALUES('A')
+  ALL('ALL', 2)
 
   /**
    * The standardized field type associated with this field format.
@@ -37,11 +37,18 @@ enum HistoryTracking implements Comparable {
   final String id
 
   /**
+   * The level of detail (as a numeric relative value).
+   */
+  final int detailLevel
+
+  /**
    * Convenience constructor for an interval.
    * @param id The stored value in the DB.
+   * @param detailLevel The relative detail level (0- lowest).
    */
-  HistoryTracking(String id) {
+  HistoryTracking(String id, int detailLevel) {
     this.id = id
+    this.detailLevel = detailLevel
   }
 
   /**
@@ -52,6 +59,5 @@ enum HistoryTracking implements Comparable {
   String toStringLocalized(Locale locale = null) {
     return GlobalUtils.lookup("historyTracking.${name()}.label", null, locale)
   }
-
 
 }

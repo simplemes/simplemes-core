@@ -148,6 +148,7 @@ class DataGenerator {
    *   <li><b>fieldFormat</b> - The field format for the first field in the flex type (<b>Default</b>: StringFieldFormat.instance). </li>
    *   <li><b>fieldLabel</b> - The field label (<b>Default</b>: null). </li>
    *   <li><b>required</b> - The required flag for the flex field (<b>Default</b>: false). </li>
+   *   <li><b>historyTracking</b> - The {@link org.simplemes.eframe.custom.HistoryTracking} option (<b>Default</b>: null). </li>
    *   <li><b>fieldCount</b> - The number of fields to generate (<b>Default</b>: 1). Do not use with fieldName</li>
    *   <li><b>defaultFlexType</b> - The default flex type is set (<b>Default</b>: false). </li>
    * </ul>
@@ -170,6 +171,7 @@ class DataGenerator {
                                          fieldFormat: format,
                                          fieldLabel: label,
                                          required: options?.required ?: false,
+                                         historyTracking: options?.historyTracking ?: null,
                                          sequence: (10 + i * 10))
       }
       flexType.save()
@@ -238,7 +240,8 @@ class DataGenerator {
 
   /**
    * Convenience method to build a custom field for the given domain class.
-   * @param options Contains: domainClass, fieldName, fieldFormat,valueClassName , afterFieldName or a 'list' of these elements.
+   * @param options Contains: domainClass, fieldName (default: 'custom1'), fieldFormat,valueClassName, required, historyTracking,
+   *                afterFieldName or a 'list' of these elements.
    * @return The first FieldExtension created.
    */
   static FieldExtension buildCustomField(Map options) {
@@ -247,9 +250,11 @@ class DataGenerator {
 
   /**
    * Convenience method to build a custom field for the given domain class.
-   * @param options Contains: domainClass, fieldName, fieldFormat,valueClassName, afterFieldName or a 'list' of these elements.
+   * @param options Contains: domainClass, fieldName, fieldFormat,valueClassName, required, historyTracking,
+   *                afterFieldName or a 'list' of these elements.
    * @return The first FieldExtension created.
    */
+  @SuppressWarnings('GroovyAssignabilityCheck')
   static FieldExtension buildCustomField(List<Map> list) {
     def res = null
     FieldExtension.withTransaction {
@@ -260,6 +265,7 @@ class DataGenerator {
         def required = field.required ?: false
         def fe = new FieldExtension(fieldName: fieldName, domainClassName: field.domainClass.name,
                                     fieldFormat: (BasicFieldFormat) fieldFormat, required: required,
+                                    historyTracking: field.historyTracking,
                                     valueClassName: field.valueClassName).save()
         domainList << field.domainClass
         res = res ?: fe

@@ -17,7 +17,7 @@ import org.simplemes.eframe.misc.TypeUtils
  * configurable types such as FlexType to a proper field definition for the GUIs and API access.
  *
  */
-@ToString(includePackage = false, includeNames = true, includeSuper = true, includes = ['configTypeFieldName'])
+@ToString(includePackage = false, includeNames = true, includeSuper = true, includes = ['configTypeFieldName', 'historyTracking'])
 class ConfigurableTypeFieldDefinition extends SimpleFieldDefinition {
 
   /**
