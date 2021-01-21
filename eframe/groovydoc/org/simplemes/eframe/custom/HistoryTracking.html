@@ -144,7 +144,7 @@ implements java.lang.Comparable</pre>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code><strong>static&nbsp;<a href='../../../../org/simplemes/eframe/custom/HistoryTracking.html'>HistoryTracking</a></strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#ALL_DATA_AND_VALUES">ALL_DATA_AND_VALUES</a></code></td>
+                            <td class="colLast"><code><a href="#ALL">ALL</a></code></td>
                             <td class="colLast">All Data is retained, including user and date/time.</td>
                         </tr>
                         
@@ -193,6 +193,11 @@ implements java.lang.Comparable</pre>
                         </tr>
                         
                         <tr class="altColor">
+                            <td class="colFirst"><code><strong>private&nbsp;int</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#detailLevel">detailLevel</a></code><br>The level of detail (as a numeric relative value).</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong>private&nbsp;java.lang.String</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#id">id</a></code><br>The standardized field type associated with this field format.</td>
                         </tr>
@@ -220,8 +225,8 @@ implements java.lang.Comparable</pre>
                         
                         <tr class="altColor">
                             <td class="colFirst">
-                                <code><a href="#HistoryTracking(java.lang.String)">HistoryTracking</a>
-                                (java.lang.String id)</code><br>Convenience constructor for an interval.</td>
+                                <code><a href="#HistoryTracking(java.lang.String, int)">HistoryTracking</a>
+                                (java.lang.String id, int detailLevel)</code><br>Convenience constructor for an interval.</td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -310,10 +315,10 @@ implements java.lang.Comparable</pre>
                 </a>
                     <h3>Field Detail</h3>
                     
-                        <a name="ALL_DATA_AND_VALUES"><!-- --></a>
+                        <a name="ALL"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;static&nbsp;final&nbsp;<a href='../../../../org/simplemes/eframe/custom/HistoryTracking.html'>HistoryTracking</a> <strong>ALL_DATA_AND_VALUES</strong></h4>
+                                <h4>public&nbsp;static&nbsp;final&nbsp;<a href='../../../../org/simplemes/eframe/custom/HistoryTracking.html'>HistoryTracking</a> <strong>ALL</strong></h4>
                                 <p> All Data is retained, including user and date/time.</p>
                             </li>
                         </ul>
@@ -362,6 +367,14 @@ implements java.lang.Comparable</pre>
                 </a>
                     <h3>Property Detail</h3>
                     
+                        <a name="detailLevel"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;final&nbsp;int <strong>detailLevel</strong></h4>
+                                <p> The level of detail (as a numeric relative value).</p>
+                            </li>
+                        </ul>
+                    
                         <a name="id"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -384,11 +397,11 @@ implements java.lang.Comparable</pre>
                 </a>
                     <h3>Constructor Detail</h3>
                     
-                        <a name="HistoryTracking(java.lang.String)"><!-- --></a>
+                        <a name="HistoryTracking(java.lang.String, int)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4><strong>HistoryTracking</strong>(java.lang.String id)</h4>
-                                <p> Convenience constructor for an interval. <DL><DT><B>Parameters:</B></DT><DD><code>id</code> -  The stored value in the DB.</DD></DL></p>
+                                <h4><strong>HistoryTracking</strong>(java.lang.String id, int detailLevel)</h4>
+                                <p> Convenience constructor for an interval. <DL><DT><B>Parameters:</B></DT><DD><code>id</code> -  The stored value in the DB.</DD><DD><code>detailLevel</code> -  The relative detail level (0- lowest).</DD></DL></p>
                             </li>
                         </ul>
                     

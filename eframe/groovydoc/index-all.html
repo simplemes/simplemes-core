@@ -256,7 +256,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Displays the search admin page.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/search/SearchEnginePoolExecutor.html#afterExecute(java.lang.Runnable, java.lang.Throwable)" title="Method in SearchEnginePoolExecutor">afterExecute(java.lang.Runnable, java.lang.Throwable)</a></span> - Method in <a href="org/simplemes/eframe/search/SearchEnginePoolExecutor.html">SearchEnginePoolExecutor</a>
 </dt><dd> <div class="block">This afterExecute hook mainly detects exceptions and logs them.</div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/custom/HistoryTracking.html#ALL_DATA_AND_VALUES" title="Field in HistoryTracking">ALL_DATA_AND_VALUES</a></span> - Field in <a href="org/simplemes/eframe/custom/HistoryTracking.html">HistoryTracking</a>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/HistoryTracking.html#ALL" title="Field in HistoryTracking">ALL</a></span> - Field in <a href="org/simplemes/eframe/custom/HistoryTracking.html">HistoryTracking</a>
 </dt><dd> <div class="block">All Data is retained, including user and date/time.</div></dd>
 <dt><span class="strong"><a href="sample/domain/AllFieldsDomain.html" title="Class in sample.domain">AllFieldsDomain</a></span> - Class in <a href="./sample/domain/package-summary.html">sample.domain</a>
 </dt><dd><div class="block">A test/Sample domain class with all field types as optional fields.</div></dd>
@@ -5287,6 +5287,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/data/SimpleFieldDefinition.html#setDefaultValues()" title="Method in SimpleFieldDefinition">setDefaultValues()</a></span> - Method in <a href="org/simplemes/eframe/data/SimpleFieldDefinition.html">SimpleFieldDefinition</a>
 </dt><dd> <div class="block">Sets the default values (e.g. for the label), if none are provided.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#setDetailsInConfig(java.lang.Object, java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in FieldHolderMap">setDetailsInConfig(java.lang.Object, java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block">Records the type and related info into the config element, if needed for JSON deserialization.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#setDirty(boolean)" title="Method in FieldHolderMap">setDirty(boolean)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMapInterface.html#setDirty(boolean)" title="Method in FieldHolderMapInterface">setDirty(boolean)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMapInterface.html">FieldHolderMapInterface</a>
@@ -5402,8 +5404,6 @@ if (location.href.indexOf('is-external=true') == -1) {
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/PersistentProperty.html#setType(java.lang.Class)" title="Method in PersistentProperty">setType(java.lang.Class)</a></span> - Method in <a href="org/simplemes/eframe/domain/PersistentProperty.html">PersistentProperty</a>
 </dt><dd> <div class="block"></div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#setTypeInConfig(java.lang.Object, java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in FieldHolderMap">setTypeInConfig(java.lang.Object, java.lang.Object, org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
-</dt><dd> <div class="block">Records the type in the config element, if needed for JSON deserialization.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseGUISpecification.html#setup()" title="Method in BaseGUISpecification">setup()</a></span> - Method in <a href="org/simplemes/eframe/test/BaseGUISpecification.html">BaseGUISpecification</a>
 </dt><dd> <div class="block">Initializes the GUI, if needed.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseSpecification.html#setup()" title="Method in BaseSpecification">setup()</a></span> - Method in <a href="org/simplemes/eframe/test/BaseSpecification.html">BaseSpecification</a>
@@ -5834,6 +5834,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Returns the localized display value for the choice.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/exception/ValidationException.html#toStringLocalized(java.util.Locale)" title="Method in ValidationException">toStringLocalized(java.util.Locale)</a></span> - Method in <a href="org/simplemes/eframe/exception/ValidationException.html">ValidationException</a>
 </dt><dd> <div class="block">Build a human-readable version of this exception.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#trackHistory(java.lang.Object, org.simplemes.eframe.custom.HistoryTracking)" title="Method in FieldHolderMap">trackHistory(java.lang.Object, org.simplemes.eframe.custom.HistoryTracking)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>
+</dt><dd> <div class="block">Track the history, if needed for the new value.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/annotation/DomainEntityHelper.TransactionCallbackWrapper.html#TransactionCallbackWrapper(Closure<Object>)" title="Constructor in DomainEntityHelper.TransactionCallbackWrapper">TransactionCallbackWrapper(Closure&lt;Object&gt;)</a></span> - Constructor in <a href="org/simplemes/eframe/domain/annotation/DomainEntityHelper.TransactionCallbackWrapper.html">DomainEntityHelper.TransactionCallbackWrapper</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/system/controller/LoggingController.html#TREE_STATE_ELEMENT" title="Field in LoggingController">TREE_STATE_ELEMENT</a></span> - Field in <a href="org/simplemes/eframe/system/controller/LoggingController.html">LoggingController</a>
