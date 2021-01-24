@@ -103,6 +103,7 @@ Link To objects (Order, Product, Routing/Oper, WorkCenter, WorkType).  Needs to 
 
 Tasks
 =====
+ISSUE: Blanks in search string fail.  Needs URL encoding.
 ISSUE: API: Look at just sending fields jsonb as sub-JSON instead of naming conventions and special logic.
 ISSUE: Support in non-CRUD endpoint with Domain as part of request.
 ISSUE: JSON Mapper ignores invalid fields on input (non-CRUD endpoint).

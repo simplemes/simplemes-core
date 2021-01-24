@@ -292,7 +292,7 @@ abstract class BaseDefinitionPageMarker extends BaseMarker {
   protected List<String> getFieldsToDisplay(Class clazz, String parameterName = 'fields') {
     def originalList = null
     if (parameters[parameterName]) {
-      originalList = unwrap(parameters[parameterName]).tokenize(',')
+      originalList = unwrap(parameters[parameterName]).tokenize(', ')
     }
     return ExtensibleFieldHelper.instance.getEffectiveFieldOrder(clazz, originalList)
   }

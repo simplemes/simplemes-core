@@ -163,7 +163,7 @@ class ListWidget extends BaseWidget {
    * @return The effective list of columns.
    */
   private List<String> getColumns(Map parameters, Class domainClass) {
-    def columns = parameters?.columns?.tokenize(',')
+    def columns = parameters?.columns?.tokenize(', ')
     def fields = columns ?: DomainUtils.instance.getStaticFieldOrder(domainClass)
     if (!fields) {
       def s = "A valid column list must be defined. This must be passed in options.columns or a static fieldOrder in the domain ${domainClass} "

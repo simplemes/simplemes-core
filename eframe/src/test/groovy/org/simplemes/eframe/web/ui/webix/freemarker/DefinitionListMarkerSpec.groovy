@@ -19,7 +19,7 @@ class DefinitionListMarkerSpec extends BaseMarkerSpecification {
 
   def "verify that this marker uses the columns option correctly"() {
     when: 'the marker is built'
-    def page = execute(source: '<@efDefinitionList id="dummyID" columns="name,title"/>', controllerClass: SampleParentController)
+    def page = execute(source: '<@efDefinitionList id="dummyID" columns="name, title"/>', controllerClass: SampleParentController)
 
     then: 'the page is valid'
     checkPage(page)

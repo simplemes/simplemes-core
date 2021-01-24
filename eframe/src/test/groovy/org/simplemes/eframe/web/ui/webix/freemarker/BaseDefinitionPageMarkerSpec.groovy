@@ -210,7 +210,7 @@ class BaseDefinitionPageMarkerSpec extends BaseMarkerSpecification {
     when: 'the marker is built'
     def src = """
       <@efForm id="show">
-        <@efShow fields="name,title" title@id="customID"/>
+        <@efShow fields="name, title" title@id="customID"/>
       </@efForm>
     """
 

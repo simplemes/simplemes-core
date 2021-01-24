@@ -227,6 +227,22 @@ class SearchEngineClientSpec extends BaseSpecification {
     res.hits[1].className == SampleParent.name
   }
 
+  def "verify that search encodes teh query string with URL Encoding"() {
+    given: 'a mock search rest client and response'
+    def uuid1 = UUID.randomUUID()
+    def uuid2 = UUID.randomUUID()
+    def mockRestClient = new MockRestClient(method: 'GET', uri: '/_search?q=abc+def*',
+                                            response: [took: '13', _index: 'sample-parent',
+                                                       hits: [[code: 'abc1', uuid: uuid1], [code: 'abc2', uuid: uuid2]]])
+    def searchEngineClient = new SearchEngineClient(restClient: mockRestClient)
+
+    when: 'the search is performed'
+    def res = searchEngineClient.globalSearch('abc def*')
+
+    then: 'the result is correct'
+    res.totalHits == 2
+  }
+
   def "verify that globalSearch passes from and size works with simple query string"() {
     given: 'a mock search rest client and response'
     def uuid1 = UUID.randomUUID()

@@ -263,7 +263,7 @@ class SearchEngineClient implements SearchEngineClientInterface {
         entity = new NStringEntity(query, ContentType.APPLICATION_JSON)
       } else {
         // simple query string
-        uri += "?q=$query"
+        uri += "?q=${URLEncoder.encode(query, 'UTF-8')}"
       }
 
       if (params?.size) {
@@ -273,6 +273,7 @@ class SearchEngineClient implements SearchEngineClientInterface {
         from = ArgumentUtils.convertToInteger(params.from)
       }
       uri = URLUtils.addParametersToURI(uri, [size: params?.size?.toString(), from: params?.from?.toString()])
+
 
       log.debug('search: GET {}, content = {}', uri, query)
       def request = new Request("GET", uri)
