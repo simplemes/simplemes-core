@@ -9611,14 +9611,14 @@ will.
 <h3 id="dashboards"><a class="link" href="#dashboards">Dashboards</a></h3>
 <div class="paragraph">
 <p><span class="inline-toc"><a href="#interactive-dashboard-flow">Interactive Dashboard Flow</a></span>
-<span class="inline-toc"><a href="#custom-dashboard-page">Custom Dashboard Page</a></span>
 <span class="inline-toc"><a href="#debugging-dashboard-activities">Debugging Dashboard Activities</a></span>
 <span class="inline-toc"><a href="#dashboard-activities">Dashboard Activities</a></span>
 <span class="inline-toc"><a href="#dashboard-configuration">Dashboard Configuration</a></span>
 <span class="inline-toc"><a href="#dashboard-api">Dashboard API</a></span>
 <span class="inline-toc"><a href="#undo">Undo</a></span>
 <span class="inline-toc"><a href="#dashboard-reports">Dashboard Reports</a></span>
-<span class="inline-toc"><a href="#dashboard-activity-testing">Dashboard Activity Testing</a></span></p>
+<span class="inline-toc"><a href="#dashboard-activity-testing">Dashboard Activity Testing</a></span>
+<span class="inline-toc"><a href="#custom-dashboard-page">Custom Dashboard Page</a></span></p>
 </div>
 <div class="paragraph">
 <p>A dashboard is an instrument panel that gives your users information and allows them to interact
@@ -13404,7 +13404,8 @@ engine is only made when it is first used.</p>
 <span class="inline-toc"><a href="#index-options">Index Options</a></span>
 <span class="inline-toc"><a href="#excluded-fields">Excluded Fields</a></span>
 <span class="inline-toc"><a href="#indices-created">Indices Created</a></span>
-<span class="inline-toc"><a href="#default-mapping">Default Mapping</a></span></p>
+<span class="inline-toc"><a href="#default-mapping">Default Mapping</a></span>
+<span class="inline-toc"><a href="#search-and-child-record-updates">Search and Child Record Updates</a></span></p>
 </div>
 <div class="sect3">
 <h4 id="index-example"><a class="link" href="#index-example">Index Example</a></h4>
@@ -13576,6 +13577,50 @@ the index <em>order</em>.</p>
 <p>The default mapping is the same as for the <a href="#api-formats">API Formats</a>.  This means child records will be indexed fully.
 Foreign references to other domains will be indexed with only their key fields.  This means you can search for
 domains that have a foreign reference to the FlexType <em>'SERIAL'</em> and the global search will find them.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="search-and-child-record-updates"><a class="link" href="#search-and-child-record-updates">Search and Child Record Updates</a></h4>
+<div class="paragraph">
+<p>It is very common for the application to update a child record without updating the parent
+record.  For example, an Order might have some order line item records.  If one of those
+child records is updated without updating the parent, then the search engine logic
+won&#8217;t be automatically called.</p>
+</div>
+<div class="paragraph">
+<p>Instead, you should explicitly let the framework know that you updated the child record.
+This is done for assembly records using logic like this:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example - Update Child Record without Parent Update</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">  OrderAssembledComponent addComponent(AddOrderAssembledComponentRequest request) {
+
+    . . .    <i class="conum" data-value="1"></i><b>(1)</b>
+
+    def orderAssembledComponent = <span class="keyword">new</span> OrderAssembledComponent()
+    orderAssembledComponent.save()                                <i class="conum" data-value="2"></i><b>(2)</b>
+    DomainEntityHelper.instance.childRecordUpdated(order, orderAssembledComponent)  <i class="conum" data-value="3"></i><b>(3)</b>
+    <span class="keyword">return</span> orderAssembledComponent
+  }</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Application logic to allow building the child OrderAssembledComponent record.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The child record is saved without saving the parent order for performance reasons.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Notify the framework and search engine that the order has changed.  This normally
+triggers a re-indexing of the parent record.</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -20227,6 +20272,56 @@ This results in this warning message every time it is used:</p>
 <pre>-Dnashorn.args="--no-deprecation-warning"</pre>
 </div>
 </div>
+</div>
+<div class="sect3">
+<h4 id="nosuchbeanexception-synchronoustransactionmanager-bean-cannot-be-created"><a class="link" href="#nosuchbeanexception-synchronoustransactionmanager-bean-cannot-be-created">NoSuchBeanException - SynchronousTransactionManager Bean Cannot be Created</a></h4>
+<div class="paragraph">
+<p>The exception is:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>io.micronaut.context.exceptions.NoSuchBeanException: No bean of type [io.micronaut.transaction.SynchronousTransactionManager] exists. Make sure the bean is not disabled by bean requirements (enable trace logging for 'io.micronaut.context.condition' to check) and if the bean is enabled then ensure the class is declared a bean and annotation processing is enabled (for Java and Kotlin the 'micronaut-inject-java' dependency should be configured as an annotation processor).</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This exception is caused when the datasources section in the <em>application.yml</em> file
+is not found.  The SynchronousTransactionManager bean is created for each datasource listed in the
+<em>application.yml</em> file.  If there is no section or the fiel can&#8217;t be found, then
+the bean won&#8217;t be created.</p>
+</div>
+<div class="paragraph">
+<p>The possible causes include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>No <em>application.yml</em> file defined.</p>
+</li>
+<li>
+<p>The resources folder is not on the class path.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>If running from IDEA as an application, then the output resources folder must be on the
+classpath.  Normally, performing a Gradle resynch in IDEA solves the problem.</p>
+</div>
+<div class="paragraph">
+<p>Sometimes, you will have to manually add the output folder&#8217;s class path
+to the dependencies.  This is done in the Modules part of the 'Project Structure' dialog.</p>
+</div>
+<div class="paragraph">
+<p>By default, you would add this folder as a Classes directory:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>simplemes-core\eframe\out\production\resources</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This assumes you have IDEA handling the build (not gradle) and the output path is
+<em>simplemes-core\eframe\out</em>.</p>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 8. ASCIIDOCTOR Attributes</caption>
 <colgroup>
@@ -20276,7 +20371,7 @@ This results in this warning message every time it is used:</p>
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-01-21 18:22:58 UTC
+Last updated 2021-01-24 17:56:19 UTC
 </div>
 </div>
 <style>

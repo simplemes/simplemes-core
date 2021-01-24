@@ -7727,10 +7727,6 @@ This function is part of the <a href="#eframe_toolkit-js">eframe_toolkit.js</a> 
 <h2 id="dashboard-js"><a class="link" href="#dashboard-js">Dashboard JS</a></h2>
 <div class="sectionbody">
 <div class="paragraph">
-<p><span class="inline-toc-header">Examples</span>
-<span class="inline-toc"><a href="#dashboard-usage">Dashboard Usage</a></span></p>
-</div>
-<div class="paragraph">
 <p><span class="inline-toc-header">Functions</span>
 <span class="inline-toc"><a href="#check-for-undo-actions">checkForUndoActions</a></span>
 <span class="inline-toc"><a href="#dashboard-click-button">clickButton</a></span>
@@ -7742,113 +7738,15 @@ This function is part of the <a href="#eframe_toolkit-js">eframe_toolkit.js</a> 
 <span class="inline-toc"><a href="#undo-actions">undoAction</a></span></p>
 </div>
 <div class="paragraph">
+<p><span class="inline-toc-header">Marker Usage</span>
+<span class="inline-toc"><a href="#custom-dashboard-usage">Custom Dashboard Usage</a></span></p>
+</div>
+<div class="paragraph">
 <p>A <a href="guide.html#dashboards">dashboard</a> is an instrument panel that gives your users information and
 allows them to control some parts of your application.  Typically, this dashboard allows
 configuration so that your users can tailor the display and behavior to their needs.
 These dashboards can display one or more pages in a resizable set of
 panels so that a lot of information can be visible to your users to operate on.</p>
-</div>
-<div class="sect2">
-<h3 id="dashboard-usage"><a class="link" href="#dashboard-usage">Dashboard Usage</a></h3>
-<div class="paragraph">
-<p>This dashboard library is used with the <a href="#efdashboard">efDashboard</a> tag to handle the complex interactions
-between the dashboard and its related activities.  The example below shows the basic usage of
-the dashboard logic. The key methods are documented in this section.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-Any methods that start with and underscore (eg. <em>_checkMissing</em>) are internal methods
-      and are subject to change.
-</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>The standard dashboard .ftl file page is shown below.</p>
-</div>
-<div class="listingblock">
-<div class="title">Dashboard index.ftl</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="html"><span class="error">&lt;</span>#assign title<span class="error">&gt;</span><span class="error">&lt;</span>@efTitle type='main'/<span class="error">&gt;</span><span class="tag">&lt;/</span>#assign<span class="error">&gt;</span>
-<span class="error">&lt;</span>#assign head<span class="error">&gt;</span>
-  <span class="tag">&lt;script</span> <span class="attribute-name">src</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">&lt;@efAsset uri=</span><span class="delimiter">&quot;</span></span><span class="attribute-name">dashboard.js</span><span class="error">&quot;</span><span class="tag">/&gt;</span>&quot; type=&quot;text/javascript&quot;<span class="error">&gt;</span><span class="tag">&lt;/script&gt;</span> <i class="conum" data-value="1"></i><b>(1)</b>
-<span class="tag">&lt;/</span>#assign<span class="error">&gt;</span>
-
-<span class="error">&lt;</span>#include &quot;../includes/header.ftl&quot; /<span class="error">&gt;</span>
-<span class="error">&lt;</span>#include &quot;../includes/definition.ftl&quot; /<span class="error">&gt;</span>
-
-<span class="error">&lt;</span>@efDashboard category=&quot;${params.category!'OPERATOR'}&quot;    <i class="conum" data-value="2"></i><b>(2)</b>
-              dashboard=&quot;${params.dashboard}!''&quot; /<span class="error">&gt;</span>
-
-<span class="error">&lt;</span>#include &quot;../includes/footer.ftl&quot; /<span class="error">&gt;</span></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The <a href="#dashboard-js">Dashboard JS</a> library asset is loaded for the page.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The <code>&lt;@efDashboard&gt;</code> tag displays the dashboard based on the passed in category or
-dashboard name (with default value).</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>A simple dashboard activity page is shown below.</p>
-</div>
-<div class="listingblock">
-<div class="title">Avoid Javascript Name Collisions</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="html"><span class="error">&lt;</span>#assign panel = &quot;${params._panel}&quot;/<span class="error">&gt;</span>  <i class="conum" data-value="1"></i><b>(1)</b>
-<span class="tag">&lt;div</span> <span class="attribute-name">id</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">Header${panel}</span><span class="delimiter">&quot;</span></span><span class="tag">&gt;</span>
-  <span class="error">&lt;</span>@efField field=&quot;rmaNumber&quot; required=&quot;false&quot; label=&quot;Code&quot;/<span class="error">&gt;</span>   <i class="conum" data-value="2"></i><b>(2)</b>
-  <span class="error">&lt;</span>@efField field=&quot;description&quot; label=&quot;Description&quot;/<span class="error">&gt;</span>
-  <span class="error">&lt;</span>@efButtonGroup<span class="error">&gt;</span>
-    <span class="error">&lt;</span>@efButton label=&quot;Close&quot; click=&quot;done${panel}();&quot;/<span class="error">&gt;</span>
-  <span class="tag">&lt;/</span>@efButtonGroup<span class="error">&gt;</span>
-
-  <span class="tag">&lt;script&gt;</span>
-<span class="inline">    <span class="keyword">function</span> <span class="predefined">done$</span>{panel}() {  <i class="conum" data-value="3"></i><b>(3)</b>
-      dashboard.finished(<span class="string"><span class="delimiter">'</span><span class="content">${panel}</span><span class="delimiter">'</span></span>);
-    }</span>
-  <span class="tag">&lt;/script&gt;</span>
-<span class="tag">&lt;/div&gt;</span></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Defines the unique ID for this activity.  Used in many elements to make the HTML ID unique.
-Note the parameter name is <code>_panel</code>, but this assigns it to a shorter variable <code>panel</code>
-for simpler code.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The content: Two fields and a button.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>A function to notify the dashboard that the activity is done.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>This results in a dashboard with one displayed activity that looks like this:</p>
-</div>
-<div class="imageblock text-center">
-<div class="content">
-<img src="images/guis/dashboardLogFailure.png" alt="DashboardLogFailure">
-</div>
-</div>
 </div>
 <div class="sect2">
 <h3 id="check-for-undo-actions"><a class="link" href="#check-for-undo-actions">checkForUndoActions</a></h3>
@@ -8389,6 +8287,61 @@ You will normally not need to call this directly.  The dashboard will usually ca
 </tr>
 </table>
 </div>
+</div>
+<div class="sect2">
+<h3 id="custom-dashboard-usage"><a class="link" href="#custom-dashboard-usage">Custom Dashboard Usage</a></h3>
+<div class="paragraph">
+<p>This dashboard library is used with the <a href="#efdashboard">efDashboard</a> tag to handle the complex interactions
+between the dashboard and its related activities.  The example below shows the basic usage of
+the dashboard logic. The key methods are documented in this section.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Any methods that start with and underscore (eg. <em>_checkMissing</em>) are internal methods
+      and are subject to change.
+</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The standard dashboard .ftl file page is shown below.  Most applications won&#8217;t need to
+use this.  The default index.ftl file should work for most scenarios.</p>
+</div>
+<div class="listingblock">
+<div class="title">Dashboard index.ftl</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="html"><span class="error">&lt;</span>#assign title<span class="error">&gt;</span><span class="error">&lt;</span>@efTitle type='main'/<span class="error">&gt;</span><span class="tag">&lt;/</span>#assign<span class="error">&gt;</span>
+<span class="error">&lt;</span>#assign head<span class="error">&gt;</span>
+  <span class="tag">&lt;script</span> <span class="attribute-name">src</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">&lt;@efAsset uri=</span><span class="delimiter">&quot;</span></span><span class="attribute-name">dashboard.js</span><span class="error">&quot;</span><span class="tag">/&gt;</span>&quot; type=&quot;text/javascript&quot;<span class="error">&gt;</span><span class="tag">&lt;/script&gt;</span> <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="tag">&lt;/</span>#assign<span class="error">&gt;</span>
+
+<span class="error">&lt;</span>#include &quot;../includes/header.ftl&quot; /<span class="error">&gt;</span>
+<span class="error">&lt;</span>#include &quot;../includes/definition.ftl&quot; /<span class="error">&gt;</span>
+
+<span class="error">&lt;</span>@efDashboard category=&quot;${params.category!'OPERATOR'}&quot;    <i class="conum" data-value="2"></i><b>(2)</b>
+              dashboard=&quot;${params.dashboard}!''&quot; /<span class="error">&gt;</span>
+
+<span class="error">&lt;</span>#include &quot;../includes/footer.ftl&quot; /<span class="error">&gt;</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <a href="#dashboard-js">Dashboard JS</a> library asset is loaded for the page.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The <code>&lt;@efDashboard&gt;</code> tag displays the dashboard based on the passed in category or
+dashboard name (with default value).</td>
+</tr>
+</table>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 43. Attributes</caption>
 <colgroup>
@@ -8437,7 +8390,7 @@ You will normally not need to call this directly.  The dashboard will usually ca
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-01-21 18:22:58 UTC
+Last updated 2021-01-24 17:56:19 UTC
 </div>
 </div>
 <style>

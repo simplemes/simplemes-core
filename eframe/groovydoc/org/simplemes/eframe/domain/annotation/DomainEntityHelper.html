@@ -244,194 +244,201 @@ extends java.lang.Object</pre>
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#clearCaches()">clearCaches</a></strong>()</code><br>Clear any internal caches used to speed up execution.   </td>
+                            <td class="colLast"><code><strong><a href="#childRecordUpdated(org.simplemes.eframe.domain.annotation.DomainEntityInterface, org.simplemes.eframe.domain.annotation.DomainEntityInterface)">childRecordUpdated</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> parent, <a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> child)</code><br>Notifies the framework that a child record was updated directly without updating the parent.
+ </td>
                         </tr>
                         
                         <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#clearCaches()">clearCaches</a></strong>()</code><br>Clear any internal caches used to speed up execution.   </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#executeDomainMethod(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String)">executeDomainMethod</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.lang.String methodName)</code><br>Executes the domain's XYZ method, if defined.
  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#executeWrite(io.micronaut.transaction.TransactionCallback)">executeWrite</a></strong>(io.micronaut.transaction.TransactionCallback closure)</code><br>Start a transaction and rollback when finished.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#executeWriteClosure(java.lang.Class, Closure)">executeWriteClosure</a></strong>(java.lang.Class delegate, groovy.lang.Closure&lt;java.lang.Object&gt; closure)</code><br>Start a transaction and rollback when finished.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a></code></td>
                             <td class="colLast"><code><strong><a href="#findByUuid(java.lang.Class, java.util.UUID)">findByUuid</a></strong>(java.lang.Class clazz, java.util.UUID uuid)</code><br>Reads the given record from the database.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>io.micronaut.context.ApplicationContext</code></td>
                             <td class="colLast"><code><strong><a href="#getApplicationContext()">getApplicationContext</a></strong>()</code><br>Get the application context from the holders.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#getColumnName(java.lang.Class, java.lang.String)">getColumnName</a></strong>(java.lang.Class domainClass, java.lang.String fieldName)</code><br>Returns the column name for the given field in the domain entity.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.Map&lt;java.lang.String, java.lang.Object&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getComplexHolder(java.lang.Object)">getComplexHolder</a></strong>(java.lang.Object object)</code><br>Finds the complex custom fields holder for given domain object.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#getDomainSettingValue(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String)">getDomainSettingValue</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.lang.String settingName)</code><br>Gets a value from the domain settings in the given object.   </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityHelper.html'>DomainEntityHelper</a></code></td>
                             <td class="colLast"><code><strong><a href="#getInstance()">getInstance</a></strong>()</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.List&lt;<a href='../../../../../org/simplemes/eframe/domain/PersistentProperty.html' title='PersistentProperty'>PersistentProperty</a>&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getPersistentProperties(java.lang.Class)">getPersistentProperties</a></strong>(java.lang.Class domainClass)</code><br>Returns the list of persistent properties (columns) for the given domain class.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.sql.PreparedStatement</code></td>
                             <td class="colLast"><code><strong><a href="#getPreparedStatement(java.lang.String)">getPreparedStatement</a></strong>(java.lang.String sql)</code><br>Creates a prepared SQL statement.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.lang.Class</code></td>
                             <td class="colLast"><code><strong><a href="#getRepositoryFromAnnotation(java.lang.Class)">getRepositoryFromAnnotation</a></strong>(java.lang.Class clazz)</code><br>Determine the repository from the<DL><DT><B>DomainEntity:</B></DT><DD>annotation.</DD></DL> </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#getTableName(java.lang.Class)">getTableName</a></strong>(java.lang.Class domainClass)</code><br>Returns the table name for the given domain entity.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>io.micronaut.transaction.SynchronousTransactionManager&lt;java.sql.Connection&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#getTransactionManager()">getTransactionManager</a></strong>()</code><br>Get the current transaction manager.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;boolean</code></td>
                             <td class="colLast"><code><strong><a href="#ignoreFieldForValidation(org.simplemes.eframe.domain.PersistentProperty)">ignoreFieldForValidation</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/PersistentProperty.html'>PersistentProperty</a> property)</code><br>Determines if the given field should be ignored from the core validations (e.g. null and length).
  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
                             <td class="colLast"><code><strong><a href="#isEnvironmentDev()">isEnvironmentDev</a></strong>()</code><br>Determines if the current run environment is the test environment.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
                             <td class="colLast"><code><strong><a href="#isEnvironmentTest()">isEnvironmentTest</a></strong>()</code><br>Determines if the current run environment is the test environment.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.List</code></td>
                             <td class="colLast"><code><strong><a href="#lazyChildLoad(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String, java.lang.String, java.lang.Class)">lazyChildLoad</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.lang.String fieldName, java.lang.String mappedByFieldName, java.lang.Class childDomainClazz)</code><br>Performs the lazy load of the given field from the child domain class using the given mapped by
  field name.  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.List</code></td>
                             <td class="colLast"><code><strong><a href="#lazyRefListLoad(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String, java.lang.String, java.lang.Class)">lazyRefListLoad</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.lang.String fieldName, java.lang.String mappedBy, java.lang.Class childDomainClazz)</code><br>Performs the lazy load of the given field from the mapping table.
  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a></code></td>
                             <td class="colLast"><code><strong><a href="#lazyReferenceLoad(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String, org.simplemes.eframe.domain.annotation.DomainEntityInterface)">lazyReferenceLoad</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> parentObject, java.lang.String fieldName, <a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> referencedObject)</code><br>Performs the lazy read of the given domain object, if it has not already been loaded.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.List&lt;java.lang.Object&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#list(java.lang.Class)">list</a></strong>(java.lang.Class domainClazz)</code><br>Executes the list() method on the domain object's repository.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.List&lt;<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html' title='DomainEntityInterface'>DomainEntityInterface</a>&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#loadChildRecords(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.Class, java.lang.String)">loadChildRecords</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> parentObject, java.lang.Class childClass, java.lang.String parentFieldName)</code><br>Loads a list of child records for the given parent domain object.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#saveChildList(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.util.List, java.lang.String, java.lang.Class, java.lang.String)">saveChildList</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.util.List list, java.lang.String fieldName, java.lang.Class childClass, java.lang.String parentFieldName)</code><br>Saves the given child list of records.  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#setDomainSettingValue(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String, java.lang.Object)">setDomainSettingValue</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.lang.String settingName, java.lang.Object value)</code><br>Sets a value in the domain settings in the given object.   </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#setInstance(org.simplemes.eframe.domain.annotation.DomainEntityHelper)">setInstance</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityHelper.html'>DomainEntityHelper</a> instance)</code><br></td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#staticMethodMissingHandler(java.lang.Class, java.lang.String, java.lang.Object)">staticMethodMissingHandler</a></strong>(java.lang.Class domainClazz, java.lang.String methodName, java.lang.Object[] args)</code><br>Handles missing static methods in a<DL><DT><B>DomainEntity.:</B></DT><DD></DD></DL> </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#storeIdsLoadedForChildList(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.lang.String, java.util.List)">storeIdsLoadedForChildList</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.lang.String fieldName, java.util.List list)</code><br>Stores the list of uuid's loaded for a child list.  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.List&lt;<a href='../../../../../org/simplemes/eframe/domain/validate/ValidationErrorInterface.html' title='ValidationErrorInterface'>ValidationErrorInterface</a>&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#validate(org.simplemes.eframe.domain.annotation.DomainEntityInterface)">validate</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object)</code><br>Performs the validations on the given domain object and returns a list of errors related to the problem.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/domain/validate/ValidationErrorInterface.html' title='ValidationErrorInterface'>ValidationErrorInterface</a>&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#validateColumns(org.simplemes.eframe.domain.annotation.DomainEntityInterface)">validateColumns</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object)</code><br>Performs the validations on the given domain object and returns a list of errors related to the problem.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.util.List&lt;<a href='../../../../../org/simplemes/eframe/domain/validate/ValidationErrorInterface.html' title='ValidationErrorInterface'>ValidationErrorInterface</a>&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#validateCustomFields(org.simplemes.eframe.domain.annotation.DomainEntityInterface)">validateCustomFields</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object)</code><br>Performs the custom field validations on the given domain object and returns a list of errors related to the problem.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#validateForSave(org.simplemes.eframe.domain.annotation.DomainEntityInterface)">validateForSave</a></strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object)</code><br>Validates the domain object before a save.</td>
@@ -574,6 +581,16 @@ extends java.lang.Object</pre>
                                 <p> Makes sure there is an active transaction for this thread.
  This is used to make sure there is no connection leak since a
    </p>
+                            </li>
+                        </ul>
+                    
+                        <a name="childRecordUpdated(org.simplemes.eframe.domain.annotation.DomainEntityInterface, org.simplemes.eframe.domain.annotation.DomainEntityInterface)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;void <strong>childRecordUpdated</strong>(<a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> parent, @java.lang.SuppressWarnings("unused") <a href='../../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> child)</h4>
+                                <p> Notifies the framework that a child record was updated directly without updating the parent.
+ This is mainly used to force an indexing of object in the SearchEngine.
+    <DL><DT><B>Parameters:</B></DT><DD><code>parent</code> -  The parent domain record.</DD><DD><code>child</code> -   The child domain record.</DD></DL></p>
                             </li>
                         </ul>
                     

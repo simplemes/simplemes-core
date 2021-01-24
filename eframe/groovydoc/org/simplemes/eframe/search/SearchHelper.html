@@ -159,7 +159,7 @@ extends java.lang.Object</pre>
                         </tr>
                         
                         <tr class="rowColor">
-                            <td class="colFirst"><code><strong>static&nbsp;java.lang.String</strong></code>&nbsp;</td>
+                            <td class="colFirst"><code><strong>protected&nbsp;static&nbsp;java.lang.String</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#SETTINGS_SEARCH_REQUEST_SENT">SETTINGS_SEARCH_REQUEST_SENT</a></code></td>
                             <td class="colLast">The name of the element in the domain settings holder that will contain flag that the domain has
  been sent for search engine marking.  </td>
@@ -332,164 +332,170 @@ extends java.lang.Object</pre>
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#clearStatistics()">clearStatistics</a></strong>()</code><br>Clears the current statistics.</td>
+                            <td class="colLast"><code><strong><a href="#clearRequestSent(org.simplemes.eframe.domain.annotation.DomainEntityInterface)">clearRequestSent</a></strong>(<a href='../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object)</code><br>Clears the request sent flag for the given domain index.  </td>
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#clearStatistics()">clearStatistics</a></strong>()</code><br>Clears the current statistics.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.List&lt;HttpHost&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#determineHosts()">determineHosts</a></strong>()</code><br>Determines the search hosts to be contacted.  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a></code></td>
                             <td class="colLast"><code><strong><a href="#domainSearch(java.lang.Class, java.lang.String, java.util.Map)">domainSearch</a></strong>(java.lang.Class domainClass, java.lang.String query, java.util.Map params)</code><br>Performs a standard domain search with the query string using the external search engine.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a></code></td>
                             <td class="colLast"><code><strong><a href="#domainSearchInDB(java.lang.Class, java.lang.String, java.util.Map)">domainSearchInDB</a></strong>(java.lang.Class domainClass, java.lang.String search, java.util.Map params)</code><br>Performs a domain search via SQL with the query string.  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#finishedBulkRequest(int)">finishedBulkRequest</a></strong>(int errorsFound)</code><br>This is called when a bulk request is finished.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#finishedRequest()">finishedRequest</a></strong>()</code><br>Notifies the helper that a request was added.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Class</code></td>
                             <td class="colLast"><code><strong><a href="#getDomainClassForIndex(java.lang.String)">getDomainClassForIndex</a></strong>(java.lang.String indexName)</code><br>Get the domain class associated with the given index name.
  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>int</code></td>
                             <td class="colLast"><code><strong><a href="#getFailureCount()">getFailureCount</a></strong>()</code><br>Returns the current failure count.
  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>int</code></td>
                             <td class="colLast"><code><strong><a href="#getFinishedRequestCount()">getFinishedRequestCount</a></strong>()</code><br>Returns the current request count.
  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#getIndexNameForDomain(java.lang.Class)">getIndexNameForDomain</a></strong>(java.lang.Class domainClass)</code><br>Get the index name for the given domain class.
  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/search/SearchDomainSettings.html'>SearchDomainSettings</a></code></td>
                             <td class="colLast"><code><strong><a href="#getSearchDomainSettings(java.lang.Class)">getSearchDomainSettings</a></strong>(java.lang.Class domainClass)</code><br>Returns the effective search settings for the given class.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/search/SearchEngineClientInterface.html'>SearchEngineClientInterface</a></code></td>
                             <td class="colLast"><code><strong><a href="#getSearchEngineClient()">getSearchEngineClient</a></strong>()</code><br></td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/search/SearchStatus.html'>SearchStatus</a></code></td>
                             <td class="colLast"><code><strong><a href="#getStatus()">getStatus</a></strong>()</code><br>Returns the status of the search engine's cluster.  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code><a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a></code></td>
                             <td class="colLast"><code><strong><a href="#globalSearch(java.lang.String, java.util.Map)">globalSearch</a></strong>(java.lang.String query, java.util.Map params)</code><br>Performs a standard global search with the query string.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#handlePersistenceChange(org.simplemes.eframe.domain.annotation.DomainEntityInterface)">handlePersistenceChange</a></strong>(<a href='../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object)</code><br>Handles the persistence update/create for domains.  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#handlePersistenceDelete(org.simplemes.eframe.domain.annotation.DomainEntityInterface)">handlePersistenceDelete</a></strong>(<a href='../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object)</code><br>Handles the persistence delete for domains.  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#indexObject(java.lang.Object)">indexObject</a></strong>(java.lang.Object object)</code><br>Indexes a single object, waiting for completion.  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
                             <td class="colLast"><code><strong><a href="#isDomainSearchable(java.lang.Class)">isDomainSearchable</a></strong>(java.lang.Class domainClass)</code><br>Determines if the given domain is searchable and if the search engine is configured for this application.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
                             <td class="colLast"><code><strong><a href="#isSearchDisabled()">isSearchDisabled</a></strong>()</code><br>Determines if the search engine is configured and enabled.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
                             <td class="colLast"><code><strong><a href="#isSearchable(java.lang.Class)">isSearchable</a></strong>(java.lang.Class domainClass)</code><br>Determines if the given class is searchable.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;boolean</code></td>
                             <td class="colLast"><code><strong><a href="#isSimpleQueryString(java.lang.String)">isSimpleQueryString</a></strong>(java.lang.String queryString)</code><br>Determines if this query string is simple.  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#removeObjectFromIndex(java.lang.Object)">removeObjectFromIndex</a></strong>(java.lang.Object object)</code><br>Removes a single object from the index.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;void</code></td>
+                            <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#requestBackgroundIndexObject(java.lang.Object)">requestBackgroundIndexObject</a></strong>(java.lang.Object object)</code><br>Will create and submit an indexObject request to the search engine.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>static&nbsp;void</code></td>
+                            <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#requestBackgroundObjectRemoval(java.lang.Object)">requestBackgroundObjectRemoval</a></strong>(java.lang.Object object)</code><br>Will create and submit a deleteObject request to the search engine.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#requestFailed()">requestFailed</a></strong>()</code><br>Notifies the helper that a request failed.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#resetCounts()">resetCounts</a></strong>()</code><br>Resets the request counters.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#startBulkIndexRequest(java.lang.Boolean)">startBulkIndexRequest</a></strong>(java.lang.Boolean deleteAllIndices)</code><br>Starts the bulk index request.  </td>
@@ -547,7 +553,7 @@ extends java.lang.Object</pre>
                         <a name="SETTINGS_SEARCH_REQUEST_SENT"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>public&nbsp;static&nbsp;final&nbsp;java.lang.String <strong>SETTINGS_SEARCH_REQUEST_SENT</strong></h4>
+                                <h4>protected&nbsp;static&nbsp;final&nbsp;java.lang.String <strong>SETTINGS_SEARCH_REQUEST_SENT</strong></h4>
                                 <p> The name of the element in the domain settings holder that will contain flag that the domain has
  been sent for search engine marking.  The setting is a Boolean.</p>
                             </li>
@@ -756,6 +762,16 @@ void <strong>buildAndSubmitBulkIndexRequests</strong>()</h4>
                             </li>
                         </ul>
                     
+                        <a name="clearRequestSent(org.simplemes.eframe.domain.annotation.DomainEntityInterface)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>void <strong>clearRequestSent</strong>(<a href='../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object)</h4>
+                                <p> Clears the request sent flag for the given domain index.  This is used mainly by
+ tests that make several updates to the object.  The test wants the object indexed by
+ the search engine multiple times. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to clear the flag on.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
                         <a name="clearStatistics()"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -952,7 +968,8 @@ void <strong>handlePersistenceDelete</strong>(<a href='../../../../org/simplemes
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>static&nbsp;boolean <strong>isSimpleQueryString</strong>(java.lang.String queryString)</h4>
-                                <p> Determines if this query string is simple.  This means it does no contain logic or quotes. <DL><DT><B>Parameters:</B></DT><DD><code>queryString</code> -  The string to check.</DD></DL><DL><DT><B>Returns:</B></DT><DD>True if simple.</DD></DL></p>
+                                <p> Determines if this query string is simple.  This means it does no contain logic or quotes.
+ This should stay a statuic method to avoid issues with Spock Mocks. <DL><DT><B>Parameters:</B></DT><DD><code>queryString</code> -  The string to check.</DD></DL><DL><DT><B>Returns:</B></DT><DD>True if simple.</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -967,7 +984,7 @@ void <strong>handlePersistenceDelete</strong>(<a href='../../../../org/simplemes
                         <a name="requestBackgroundIndexObject(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;void <strong>requestBackgroundIndexObject</strong>(java.lang.Object object)</h4>
+                                <h4>void <strong>requestBackgroundIndexObject</strong>(java.lang.Object object)</h4>
                                 <p> Will create and submit an indexObject request to the search engine. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to index.  Only searchable domain objects will be indexed.</DD></DL></p>
                             </li>
                         </ul>
@@ -975,7 +992,7 @@ void <strong>handlePersistenceDelete</strong>(<a href='../../../../org/simplemes
                         <a name="requestBackgroundObjectRemoval(java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;void <strong>requestBackgroundObjectRemoval</strong>(java.lang.Object object)</h4>
+                                <h4>void <strong>requestBackgroundObjectRemoval</strong>(java.lang.Object object)</h4>
                                 <p> Will create and submit a deleteObject request to the search engine. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object remove from the index.  Only searchable domain objects will be removed from the index.</DD></DL></p>
                             </li>
                         </ul>

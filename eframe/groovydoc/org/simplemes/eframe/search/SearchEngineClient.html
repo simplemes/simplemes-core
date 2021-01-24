@@ -307,6 +307,13 @@ implements <a href='../../../../org/simplemes/eframe/search/SearchEngineClientIn
                             <td class="colLast"><code><strong><a href="#search(java.lang.String, java.lang.String, java.util.Map)">search</a></strong>(java.lang.String uri, java.lang.String query, java.util.Map params)</code><br>Performs an internal search (global or domain) for the given query string and the given URI.</td>
                         </tr>
                         
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;static&nbsp;void</code></td>
+                            <td class="colLast"><code><strong><a href="#setUnderscoreOnCustomFields(java.lang.Object, boolean)">setUnderscoreOnCustomFields</a></strong>(java.lang.Object object, boolean useUnderscore)</code><br>Set or clear the underscore flag on the fieldHolderMap in the given object and all children objects.
+ </td>
+                        </tr>
+                        
                     </table>
                    </ul>
               </li>
@@ -536,6 +543,15 @@ java.lang.Object <strong>getRestClient</strong>()</h4>
                             <li class="blockList">
                                 <h4>protected&nbsp;<a href='../../../../org/simplemes/eframe/search/SearchResult.html'>SearchResult</a> <strong>search</strong>(java.lang.String uri, java.lang.String query, java.util.Map params)</h4>
                                 <p> Performs an internal search (global or domain) for the given query string and the given URI. <DL><DT><B>Parameters:</B></DT><DD><code>uri</code> -  The URI to search on.</DD><DD><code>query</code> -  The query string.  If it starts with &#123; then the string is used as the body for the GET request.</DD><DD><code>params</code> -  Optional query parameters.  Supported elements: from and size.</DD><DD><code>The</code> -  search results.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="setUnderscoreOnCustomFields(java.lang.Object, boolean)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;static&nbsp;void <strong>setUnderscoreOnCustomFields</strong>(java.lang.Object object, boolean useUnderscore)</h4>
+                                <p> Set or clear the underscore flag on the fieldHolderMap in the given object and all children objects.
+ Calls recursively. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object to set/clear the flag on.</DD><DD><code>useUnderscore</code> -  The underscore flag.</DD></DL></p>
                             </li>
                         </ul>
                     

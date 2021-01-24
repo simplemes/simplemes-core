@@ -168,21 +168,35 @@ extends java.util.Map</pre>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#mergeMap(org.simplemes.eframe.custom.FieldHolderMapInterface, java.lang.Object)">mergeMap</a></strong>(<a href='../../../../org/simplemes/eframe/custom/FieldHolderMapInterface.html'>FieldHolderMapInterface</a> src, java.lang.Object context)</code><br>Merges the given map into this map.  </td>
+                            <td class="colLast"><code>boolean</code></td>
+                            <td class="colLast"><code><strong><a href="#isUseUnderscoresInJson()">isUseUnderscoresInJson</a></strong>()</code><br>True if the the generated JSON should use an underscore as a prefix on the custom field
+ and _config elements.  </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
-                            <td class="colLast"><code><strong><a href="#setDirty(boolean)">setDirty</a></strong>(boolean dirty)</code><br>Sets the dirty flag.</td>
+                            <td class="colLast"><code><strong><a href="#mergeMap(org.simplemes.eframe.custom.FieldHolderMapInterface, java.lang.Object)">mergeMap</a></strong>(<a href='../../../../org/simplemes/eframe/custom/FieldHolderMapInterface.html'>FieldHolderMapInterface</a> src, java.lang.Object context)</code><br>Merges the given map into this map.  </td>
                         </tr>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#setDirty(boolean)">setDirty</a></strong>(boolean dirty)</code><br>Sets the dirty flag.</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#setParsingFromJSON(boolean)">setParsingFromJSON</a></strong>(boolean dirty)</code><br>RSet to True if the Map has changed since the last time the JSON was generated (toJSON()).
  </td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>void</code></td>
+                            <td class="colLast"><code><strong><a href="#setUseUnderscoresInJson(boolean)">setUseUnderscoresInJson</a></strong>(boolean useUnderscoresInJson)</code><br>True if the the generated JSON should use an underscore as a prefix on the custom field
+ and _config elements.  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -260,6 +274,22 @@ extends java.util.Map</pre>
                             </li>
                         </ul>
                     
+                        <a name="isUseUnderscoresInJson()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;boolean <strong>isUseUnderscoresInJson</strong>()</h4>
+                                <p> True if the the generated JSON should use an underscore as a prefix on the custom field
+ and _config elements.  Defaults to true.
+ This is reset to true after toJSON() is called.
+ This is used mainly by the search engine interface to make the custom fields visible to the search
+ engine.
+ <p>
+ <b>Note:</b> Setting this to false is not supported by the <a href='../../../../org/simplemes/eframe/json/FieldHolderMapDeserializer.html' title='FieldHolderMapDeserializer'>FieldHolderMapDeserializer</a>.
+ For internal Jackson reasons, the underscores must be used on the main custom field name (e.g. _fields).
+   </p>
+                            </li>
+                        </ul>
+                    
                         <a name="mergeMap(org.simplemes.eframe.custom.FieldHolderMapInterface, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -286,6 +316,22 @@ extends java.util.Map</pre>
                                 <p> RSet to True if the Map has changed since the last time the JSON was generated (toJSON()).
  Defaults to true to work around issues with JSON parser.
     <DL><DT><B>Parameters:</B></DT><DD><code>dirty</code> -  True if the Map has changed since the last time the JSON was generated (toJSON()).</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="setUseUnderscoresInJson(boolean)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>public&nbsp;void <strong>setUseUnderscoresInJson</strong>(boolean useUnderscoresInJson)</h4>
+                                <p> True if the the generated JSON should use an underscore as a prefix on the custom field
+ and _config elements.  Defaults to true.
+ This is reset to true after toJSON() is called.
+ This is used mainly by the search engine interface to make the custom fields visible to the search
+ engine.
+ <p>
+ <b>Note:</b> Setting this to false is not supported by the <a href='../../../../org/simplemes/eframe/json/FieldHolderMapDeserializer.html' title='FieldHolderMapDeserializer'>FieldHolderMapDeserializer</a>.
+ For internal Jackson reasons, the underscores must be used on the main custom field name (e.g. _fields).
+   </p>
                             </li>
                         </ul>
                     
