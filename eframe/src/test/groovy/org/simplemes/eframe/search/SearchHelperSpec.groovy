@@ -10,6 +10,7 @@ import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.archive.FileArchiver
 import org.simplemes.eframe.archive.domain.ArchiveLog
 import org.simplemes.eframe.date.DateOnly
+import org.simplemes.eframe.domain.annotation.DomainEntityHelper
 import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.misc.FileFactory
 import org.simplemes.eframe.test.BaseSpecification
@@ -1064,7 +1065,7 @@ class SearchHelperSpec extends BaseSpecification {
 
   def "verify that isSimpleQueryString detects the supported cases"() {
     expect: 'the simple/complex test is made correctly'
-    SearchHelper.isSimpleQueryString(query) == result
+    SearchHelper.instance.isSimpleQueryString(query) == result
 
     where:
     query         | result
@@ -1077,6 +1078,19 @@ class SearchHelperSpec extends BaseSpecification {
     'abc OR xyz'  | false
     'abc and xyz' | false
     'abc AND xyz' | false
+  }
+
+  def "verify that clearRequestSent clears the flag"() {
+    given: 'a domain with sent flag set'
+    def sampleParent = new SampleParent() as DomainEntityInterface
+    DomainEntityHelper.instance.setDomainSettingValue(sampleParent, SearchHelper.SETTINGS_SEARCH_REQUEST_SENT, true)
+    assert DomainEntityHelper.instance.getDomainSettingValue(sampleParent, SearchHelper.SETTINGS_SEARCH_REQUEST_SENT)
+
+    when: 'the flagged is cleared'
+    SearchHelper.instance.clearRequestSent(sampleParent)
+
+    then: 'the setting is cleared'
+    DomainEntityHelper.instance.getDomainSettingValue(sampleParent, SearchHelper.SETTINGS_SEARCH_REQUEST_SENT) == false
   }
 
   def "verify that getDomainClassForIndex handles the supported cases"() {

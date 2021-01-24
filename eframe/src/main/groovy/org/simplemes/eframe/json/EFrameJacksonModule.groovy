@@ -70,7 +70,6 @@ class EFrameJacksonModule extends SimpleModule {
     def serializers = new SimpleSerializers()
     def deserializers = new SimpleDeserializers()
     serializers.addSerializer(DateOnly, new DateOnlySerializer())
-    serializers.addSerializer(FieldHolderMapInterface, new FieldHolderMapSerializer())
     deserializers.addDeserializer(DateOnly, new DateOnlyDeserializer())
     deserializers.addDeserializer(FieldHolderMapInterface, new FieldHolderMapDeserializer())
 
@@ -223,6 +222,8 @@ class EFrameBeanSerializerModifier extends BeanSerializerModifier {
         //  fieldsToRemove << fieldName
       } else if (EFrameJacksonModule.isComplexCustomFieldHolder(fieldName)) {
         w.assignSerializer(new ComplexCustomFieldSerializer(clazz))
+      } else if (w.type.rawClass == FieldHolderMapInterface) {
+        w.assignSerializer(new FieldHolderMapSerializer(FieldHolderMapInterface, fieldName))
       } else {
         // Check for reference ID field (e.g. sampleParentId) to be removed.
         if (fieldName.endsWith('Id')) {

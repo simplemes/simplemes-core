@@ -7,6 +7,9 @@ package org.simplemes.eframe.search
 import ch.qos.logback.classic.Level
 import org.simplemes.eframe.application.EFrameConfiguration
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.data.format.DateOnlyFieldFormat
+import org.simplemes.eframe.date.DateOnly
+import org.simplemes.eframe.date.ISODate
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.MockAppender
@@ -734,9 +737,15 @@ class SearchEngineClientSpec extends BaseSpecification {
   def "verify that formatForIndex does a deep format with custom child list"() {
     given: 'a domain object with custom values'
     def order = new Order(order: 'ABC')
-    order.customComponents << new CustomOrderComponent(sequence: 10, product: 'A1')
-    order.customComponents << new CustomOrderComponent(sequence: 20, product: 'A2')
-    order.customComponents << new CustomOrderComponent(sequence: 30, product: 'A3')
+    def component1 = new CustomOrderComponent(sequence: 10, product: 'A1')
+    def component2 = new CustomOrderComponent(sequence: 20, product: 'A2')
+    def component3 = new CustomOrderComponent(sequence: 30, product: 'A3')
+    component1.setFieldValue('subCustom1', 'XYZ1')
+    component2.setFieldValue('subCustom1', 'XYZ2')
+    component3.setFieldValue('subCustom1', 'XYZ3')
+    order.customComponents << component1
+    order.customComponents << component2
+    order.customComponents << component3
     order.save()
 
     when: 'the object is formatted'
@@ -752,15 +761,19 @@ class SearchEngineClientSpec extends BaseSpecification {
     json.customComponents[0].product == 'A1'
     json.customComponents[2].uuid == order.customComponents[2].uuid.toString()
     json.customComponents[2].product == 'A3'
+
+    and: 'the custom fields are stored in the right element - no leading underscore'
+    json.customComponents[2].customFields.subCustom1 == 'XYZ3'
   }
 
   @Rollback
   @SuppressWarnings("GroovyAssignabilityCheck")
   def "verify that formatForIndex does a deep format with custom fields"() {
     given: 'a domain object with custom values'
-    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: Order)
+    DataGenerator.buildCustomField(fieldName: 'custom1', domainClass: Order, fieldFormat: DateOnlyFieldFormat.instance)
+    def dateOnly = new DateOnly()
     def order = new Order(order: 'ABC')
-    order.custom1 = 'XYZ'
+    order.custom1 = dateOnly
     order.save()
 
     when: 'the object is formatted'
@@ -771,7 +784,12 @@ class SearchEngineClientSpec extends BaseSpecification {
 
     then: 'the JSON contents are correct'
     json.order == "ABC"
-    json._customFields.custom1 == 'XYZ'
+
+    and: 'the custom fields are stored in the right element - no leading underscore'
+    json.customFields.custom1 == ISODate.format(dateOnly)
+
+    and: 'the _config element is exposed as config so the history can be searched'
+    json.customFields.config.custom1.type
   }
 
 

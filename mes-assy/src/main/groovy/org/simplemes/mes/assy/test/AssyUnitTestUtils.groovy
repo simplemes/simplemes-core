@@ -1,7 +1,10 @@
 package org.simplemes.mes.assy.test
 
 import org.simplemes.eframe.custom.domain.FlexType
+import org.simplemes.eframe.domain.annotation.DomainEntityHelper
+import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.misc.ArgumentUtils
+import org.simplemes.eframe.search.SearchHelper
 import org.simplemes.eframe.security.SecurityUtils
 import org.simplemes.mes.assy.demand.AssembledComponentStateEnum
 import org.simplemes.mes.assy.demand.domain.OrderAssembledComponent
@@ -185,6 +188,8 @@ class AssyUnitTestUtils extends MESUnitTestUtils {
         }
         //println "orderAssembledComponent = $orderAssembledComponent"
         order.assembledComponents << orderAssembledComponent
+        // Force a re-index, even if the order was already index recently
+        SearchHelper.instance.clearRequestSent(order)
         order.save()
       }
     } finally {

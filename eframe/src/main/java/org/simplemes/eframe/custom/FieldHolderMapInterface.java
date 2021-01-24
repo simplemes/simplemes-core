@@ -50,6 +50,30 @@ public interface FieldHolderMapInterface extends Map {
   void setParsingFromJSON(boolean dirty);
 
   /**
+   * True if the the generated JSON should use an underscore as a prefix on the custom field
+   * and _config elements.  Defaults to true.
+   * This is reset to true after toJSON() is called.
+   * This is used mainly by the search engine interface to make the custom fields visible to the search
+   * engine.
+   * <p>
+   * <b>Note:</b> Setting this to false is not supported by the {@link org.simplemes.eframe.json.FieldHolderMapDeserializer}.
+   * For internal Jackson reasons, the underscores must be used on the main custom field name (e.g. _fields).
+   */
+  boolean isUseUnderscoresInJson();
+
+  /**
+   * True if the the generated JSON should use an underscore as a prefix on the custom field
+   * and _config elements.  Defaults to true.
+   * This is reset to true after toJSON() is called.
+   * This is used mainly by the search engine interface to make the custom fields visible to the search
+   * engine.
+   * <p>
+   * <b>Note:</b> Setting this to false is not supported by the {@link org.simplemes.eframe.json.FieldHolderMapDeserializer}.
+   * For internal Jackson reasons, the underscores must be used on the main custom field name (e.g. _fields).
+   */
+  void setUseUnderscoresInJson(boolean useUnderscoresInJson);
+
+  /**
    * Serializes this Map to JSON.
    *
    * @return The JSON.

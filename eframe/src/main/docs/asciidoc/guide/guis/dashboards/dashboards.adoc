@@ -4,7 +4,6 @@
 ifeval::["{backend}" != "pdf"]
 
 [inline-toc]#<<Interactive Dashboard Flow>>#
-[inline-toc]#<<Custom Dashboard Page>>#
 [inline-toc]#<<Debugging Dashboard Activities>>#
 [inline-toc]#<<Dashboard Activities>>#
 [inline-toc]#<<Dashboard Configuration>>#
@@ -12,6 +11,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Undo>>#
 [inline-toc]#<<Dashboard Reports>>#
 [inline-toc]#<<Dashboard Activity Testing>>#
+[inline-toc]#<<Custom Dashboard Page>>#
 
 
 endif::[]

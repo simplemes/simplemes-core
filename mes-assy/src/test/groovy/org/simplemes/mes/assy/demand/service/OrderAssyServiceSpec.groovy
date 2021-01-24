@@ -1233,11 +1233,11 @@ class OrderAssyServiceSpec extends BaseSpecification {
 
     where:
     query            | result
-    'lot:abc*'       | 'assembledComponents.LOT:abc*'
-    'LOT:abc*'       | 'assembledComponents.LOT:abc*'
-    'assy.lot:abc*'  | 'assembledComponents.LOT:abc*'
-    'ASSY.lot:abc*'  | 'assembledComponents.LOT:abc*'
-    'assy.LOT:abc'   | 'assembledComponents.LOT:abc*'
+    'lot:abc*'       | 'assembledComponents.fields.LOT:abc*'
+    'LOT:abc*'       | 'assembledComponents.fields.LOT:abc*'
+    'assy.lot:abc*'  | 'assembledComponents.fields.LOT:abc*'
+    'ASSY.lot:abc*'  | 'assembledComponents.fields.LOT:abc*'
+    'assy.LOT:abc'   | 'assembledComponents.fields.LOT:abc*'
     '"complex"'      | '"complex"'
     'notLot'         | 'notLot*'
     'defect.LOT:abc' | 'defect.LOT:abc*'

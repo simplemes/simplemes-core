@@ -1226,6 +1226,18 @@ public class DomainEntityHelper {
     return res;
   }
 
+  /**
+   * Notifies the framework that a child record was updated directly without updating the parent.
+   * This is mainly used to force an indexing of object in the SearchEngine.
+   *
+   * @param parent The parent domain record.
+   * @param child  The child domain record.
+   */
+  public void childRecordUpdated(DomainEntityInterface parent, @SuppressWarnings("unused") DomainEntityInterface child) {
+    // Publish an event on commit for things like Search to handle.
+    ApplicationEventPublisher eventPublisher = getApplicationContext().getBean(ApplicationEventPublisher.class);
+    eventPublisher.publishEvent(new DomainSaveTransactionEvent(parent));
+  }
 
   /**
    * A cached copy of the the result of the isEnvironmentTest() method.

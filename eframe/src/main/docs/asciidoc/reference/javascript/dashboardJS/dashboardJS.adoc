@@ -2,9 +2,6 @@
 
 ifeval::["{backend}" != "pdf"]
 
-[inline-toc-header]#Examples#
-[inline-toc]#<<Dashboard Usage>>#
-
 [inline-toc-header]#Functions#
 [inline-toc]#<<checkForUndoActions>>#
 [inline-toc]#<<clickButton>>#
@@ -14,6 +11,9 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<postActivity>>#
 [inline-toc]#<<sendEvent>>#
 [inline-toc]#<<undoAction>>#
+
+[inline-toc-header]#Marker Usage#
+[inline-toc]#<<Custom Dashboard Usage>>#
 
 
 endif::[]
@@ -25,8 +25,6 @@ configuration so that your users can tailor the display and behavior to their ne
 These dashboards can display one or more pages in a resizable set of
 panels so that a lot of information can be visible to your users to operate on.
 
-
-include::dashboardUsage.adoc[]
 
 include::checkForUndoActions.adoc[]
 
@@ -43,4 +41,6 @@ include::postActivity.adoc[]
 include::sendEvent.adoc[]
 
 include::undoAction.adoc[]
+
+include::dashboardUsage.adoc[]
 

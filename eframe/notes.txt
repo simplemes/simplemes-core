@@ -1,31 +1,29 @@
 Scratch
 =======
 
-FieldTrait (FlexField, FieldExtension, CustomFieldDefinition)
------------------------
-Needs these values:
-  fieldName
-  fieldLabel
-  fieldFormat
-  maxLength
-  sequence
-  valueClassName
-  required
-  historyTracking (Added to CustomFieldDefinition).
-  guiHints
+MVP
+---
+Defect Tracking
+Assembly
+Data Entry
+Work Instructions
+Routing/LSN Support in Dashboard UIs/Reports.
+Multi-tenant
+Mobile UI.
+API Docs with 'Try it' option.
+Monitoring Dashboard.
+Onboarding new customer automation.
+Website.
+UI Branding and Look/feel stds.
 
-Tasks for History Tracking
---------------------------
-ConfigTypeFields - History Tracking
-FieldExtensions - Tracking
-FieldHolderMap - put() records history, if needed.
-Does Elastic search and queries still work?
+
 
 Questions
 ---------
+Need some sort of way to force product for order.  Config by user?
+Need way replace dialog contents for Defect Code selection.
 No default dashboard found.  Maybe add link on error message to run demoData?
 Enum need varying in DB?  All limited length fields need varchar()?  Maybe length too short?
-Add pothole for missing transactionManager (Synch or Asynch) means no DB info in the .yml file.
 TaskMenu - Refresh with dev mode?
 How are keys defined in domains?  fieldOrder then keys.
 No fieldOrder, find by key on CRUDRest does a 'find by null()'.
@@ -41,9 +39,9 @@ Custom Field Rework
 Tasks
 =====
   Add API for adding value to fields.  Supports tracking options.
-    Test with tracking and Rest API updates?
-    Update docs for mes-core, assy with API custom examples.
-  x Dirty Map ready for saving.
+    x Test with tracking and Rest API updates?
+    x Update docs for mes-core, assy with API custom examples.
+    x Dirty Map ready for saving.
     x FieldHolderMap - put() marks as dirty.  Has Text ready for saving.  Dirty= changedSinceLastJsonSerialize.
       x new method put(name,value,CustomFieldConfig).
   REST API - Disable _config export/import by default.  Some mechanism to enable it on get?
@@ -68,39 +66,6 @@ Domain/POGO:
     Round-trip - Update with value details history.
     Round-trip - With config change (no history to full history).
 
-
- Option 3 - One map of config values.
-    "fields": {
-      "color": "123A",
-      "returnCode": "DEFECTIVE",
-      "_config": {
-        "color": {
-          "type": "S",
-          "tracking": "ALL",
-          "valueClassName": "o.s....",  // Domain Reference, enum, EncodedValue
-          "history": {
-            "color": [
-              {
-                "color": "122B",
-                "user": "PWB",
-                "dateTime": "2009-02-13T18:31:30.000-05:00"
-              },
-              {
-                "color": "121A",
-                "user": "MPH",
-                "dateTime": "2009-02-13T18:31:30.000-05:00"
-              },
-              {
-                "color": "123C",
-                "user": "RLB",
-                "dateTime": "2009-02-14T17:23:53.000-05:00"
-              }
-            ]
-          }
-        },
-        "returnCode": {}
-      }
-    }
 
 
 Data Entry
@@ -141,6 +106,8 @@ Tasks
 ISSUE: API: Look at just sending fields jsonb as sub-JSON instead of naming conventions and special logic.
 ISSUE: Support in non-CRUD endpoint with Domain as part of request.
 ISSUE: JSON Mapper ignores invalid fields on input (non-CRUD endpoint).
+PERF: Child save (DomainEntityHelper.childRecordUpdated() calls) forces parent to search engine.
+      Possible performance issue with multiple saves.  Needs some sort of queue with coalescing logic to reduce updates to Search Engine.
 
 Look at mes-assy Assemble Dialog use of buttons.  The .ftl file does not define the Ok/Cancel button logic.
 Look at Large BOM/Defect list affect on basic read/update of Order. Cascade updates.

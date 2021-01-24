@@ -981,6 +981,27 @@ class DomainEntityHelperSpec extends BaseSpecification {
     SearchHelper.instance = new SearchHelper()
   }
 
+  def "verify that childRecordUpdated calls the handlePersistenceChange method for the search helper"() {
+    given: 'the events are cleared'
+    TestSearchTransactionEventListener.lastEvent = null
+
+    and: 'parent and child records'
+    def order = new Order(order: 'ABC')
+    def orderLine = new OrderLine()
+    Order.withTransaction {
+      // Must commit the txn to trigger the event publishing.
+      order.orderLines << orderLine
+      order.save()
+    }
+
+    when: 'the method is called'
+    DomainEntityHelper.instance.childRecordUpdated(order as DomainEntityInterface, orderLine as DomainEntityInterface)
+
+    then: 'the event is correct'
+    TestSearchTransactionEventListener.lastEvent
+    TestSearchTransactionEventListener.lastEvent.domainObject.order == 'ABC'
+  }
+
   @Rollback
   def "verify that validate calls the beforeValidate method on the domain"() {
     when: 'the domain is validated'

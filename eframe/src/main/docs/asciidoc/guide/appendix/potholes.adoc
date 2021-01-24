@@ -420,3 +420,32 @@ To avoid this warning, run your tests with this option:
 ----
 -Dnashorn.args="--no-deprecation-warning"
 ----
+
+==== NoSuchBeanException - SynchronousTransactionManager Bean Cannot be Created
+
+The exception is:
+
+  io.micronaut.context.exceptions.NoSuchBeanException: No bean of type [io.micronaut.transaction.SynchronousTransactionManager] exists. Make sure the bean is not disabled by bean requirements (enable trace logging for 'io.micronaut.context.condition' to check) and if the bean is enabled then ensure the class is declared a bean and annotation processing is enabled (for Java and Kotlin the 'micronaut-inject-java' dependency should be configured as an annotation processor).
+
+This exception is caused when the datasources section in the _application.yml_ file
+is not found.  The SynchronousTransactionManager bean is created for each datasource listed in the
+_application.yml_ file.  If there is no section or the fiel can't be found, then
+the bean won't be created.
+
+The possible causes include:
+
+* No _application.yml_ file defined.
+* The resources folder is not on the class path.
+
+If running from IDEA as an application, then the output resources folder must be on the
+classpath.  Normally, performing a Gradle resynch in IDEA solves the problem.
+
+Sometimes, you will have to manually add the output folder's class path
+to the dependencies.  This is done in the Modules part of the 'Project Structure' dialog.
+
+By default, you would add this folder as a Classes directory:
+
+  simplemes-core\eframe\out\production\resources
+
+This assumes you have IDEA handling the build (not gradle) and the output path is
+_simplemes-core\eframe\out_.

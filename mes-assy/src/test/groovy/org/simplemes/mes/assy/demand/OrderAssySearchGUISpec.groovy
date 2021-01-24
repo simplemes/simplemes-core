@@ -38,12 +38,8 @@ class OrderAssySearchGUISpec extends BaseGUISpecification {
    * @param searchString The query string to wait for a hit on.
    */
   def waitForSearchHit(String searchString) {
-    for (i in 1..20) {
-      if (SearchHelper.instance.globalSearch(searchString).hits.size() > 0) {
-        break
-      }
-      standardGUISleep()
-      //println "waitForSearchHit $i"
+    waitFor {
+      SearchHelper.instance.globalSearch(searchString).hits.size() > 0
     }
   }
 
@@ -56,21 +52,26 @@ class OrderAssySearchGUISpec extends BaseGUISpecification {
     SearchEnginePoolExecutor.startPool()
 
     and: 'an order has some components assembled'
+    def id = "O_${System.currentTimeMillis()}"
     def uniqueName = "TestName${System.currentTimeMillis()}"
     def flexType = DataGenerator.buildFlexType(fieldName: 'LOT')
-    def order = AssyUnitTestUtils.releaseOrder(components: ['CPU', 'MOTHERBOARD'], assemblyDataType: flexType)
+    def order = AssyUnitTestUtils.releaseOrder(id: id, components: ['CPU', 'MOTHERBOARD'], assemblyDataType: flexType)
+    waitForSearchHit(id+"*")
+    def lot1 = "ACME1-$uniqueName".toString()
+    def lot2 = "ACME2_$uniqueName".toString()
     AssyUnitTestUtils.assembleComponent(order, [bomSequence     : 20, sequence: 20, qty: 0.1,
-                                                assemblyDataType: flexType, assemblyDataValues: [LOT: "ACME1-$uniqueName"]])
+                                                assemblyDataType: flexType, assemblyDataValues: [LOT: lot1]])
     AssyUnitTestUtils.assembleComponent(order, [bomSequence     : 20, sequence: 21, qty: 0.13,
-                                                assemblyDataType: flexType, assemblyDataValues: [LOT: "ACME2-$uniqueName"]])
+                                                assemblyDataType: flexType, assemblyDataValues: [LOT: lot2]])
+    waitForSearchHit(lot2)
 
     when: 'the search page is displayed and a search is started'
     login()
     to SearchIndexPage
-    searchField.value("assy.LOT:*$uniqueName*")
+    searchField.value("assy.LOT:*$lot1*")
 
     and: 'the search engine has finished indexing the unique object.'
-    waitForSearchHit(uniqueName)
+    //waitForSearchHit(uniqueName+"*")
     searchButton.click()
     waitFor {
       searchResultsHeader.displayed

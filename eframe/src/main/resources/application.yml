@@ -75,6 +75,8 @@ datasources:
     url: ${DATABASE_URL}
     driverClassName: "org.postgresql.Driver"
     dialect: POSTGRES
+    username: "mph"
+    password: "mh1234"
 
 ---
 flyway:

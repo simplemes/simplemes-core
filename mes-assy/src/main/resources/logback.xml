@@ -26,6 +26,7 @@
   <logger name="org.simplemes.eframe.application" level="error"/>  <!--warn:workAround, debug: allBeans -->
   <logger name="org.simplemes.eframe.domain" level="warn"/>
   <logger name="org.simplemes.eframe.test" level="warn"/>
+  <logger name="org.simplemes.eframe.search" level="warn"/>
   <logger name="org.simplemes.eframe.preference" level="warn"/>
   <logger name="org.simplemes.eframe" level="warn"/>
 

@@ -6,7 +6,7 @@ below.
 NOTE: This is subject to change and just a general guide.  We (the development team) welcome
       suggestions on priorities and directions.
 
-=== Alpha (0.8 - 2018)
+=== Alpha (0.8 - 2021)
 
 The main goals for the alpha release is to demonstrate the technology and key approaches.
 The main deliverable is a public <<Demo Server>> that allows
@@ -25,7 +25,7 @@ The planned features include:
 ** Assembly
 ** Production
 
-=== Beta (0.9 - 2019)
+=== Beta (0.9 - 2022)
 
 The main goals of the beta release is a feature complete implementation of the high-level features.
 This is mainly a functional implementation.
@@ -34,7 +34,6 @@ The planned features include:
 
 * Full LSN (lot/Serial Number) Support
 * Defect Tracking
-* Work Center Setup and Assembly from Bins/Feeders
 * Order Archiving (manual and automatic)
 * Full Routing Support in GUIs
 

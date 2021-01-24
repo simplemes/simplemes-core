@@ -17,6 +17,8 @@ import org.apache.http.util.EntityUtils
 import org.elasticsearch.client.Request
 import org.elasticsearch.client.RestClient
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.custom.ExtensibleFieldHelper
+import org.simplemes.eframe.data.format.CustomChildListFieldFormat
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.LogUtils
 import org.simplemes.eframe.misc.URLUtils
@@ -376,10 +378,43 @@ class SearchEngineClient implements SearchEngineClientInterface {
     def settings = SearchHelper.instance.getSearchDomainSettings(object.getClass())
     def filter = new SearchableJacksonFilter(settings?.exclude, object.getClass())
 
+    setUnderscoreOnCustomFields(object, false)
+
     FilterProvider filters = new SimpleFilterProvider().addFilter("searchableFilter", (PropertyFilter) filter)
     def writer = Holders.objectMapper.writer(filters)
-    return writer.writeValueAsString(object)
+    def res = writer.writeValueAsString(object)
+
+    setUnderscoreOnCustomFields(object, true)
+    return res
   }
+
+  /**
+   * Set or clear the underscore flag on the fieldHolderMap in the given object and all children objects.
+   * Calls recursively.
+   * @param object The object to set/clear the flag on.
+   * @param useUnderscore The underscore flag.
+   */
+  protected static void setUnderscoreOnCustomFields(Object object, boolean useUnderscore) {
+    // Drop the underscore for the custom field holder
+    def clazz = object.getClass()
+    def fieldName = ExtensibleFieldHelper.instance.getCustomHolderFieldName(object)
+    //println "fieldName = $fieldName for ${object.getClass()}"
+    if (fieldName) {
+      //println "  Setting underscore to $useUnderscore  for ${clazz}. Original = ${object[fieldName+"Map"]?.isUseUnderscoresInJson()}"
+      object[fieldName + "Map"]?.setUseUnderscoresInJson(useUnderscore)
+    }
+
+    // Now, process a children lists.
+    for (fieldDef in ExtensibleFieldHelper.instance.getEffectiveFieldDefinitions(clazz)) {
+      if (Collection.isAssignableFrom(fieldDef.type) || fieldDef.format == CustomChildListFieldFormat.instance) {
+        def list = fieldDef.getFieldValue(object)
+        for (record in list) {
+          setUnderscoreOnCustomFields(record, useUnderscore)
+        }
+      }
+    }
+  }
+
 
   /**
    * Builds the URI needed to send the PUT request to index the object.

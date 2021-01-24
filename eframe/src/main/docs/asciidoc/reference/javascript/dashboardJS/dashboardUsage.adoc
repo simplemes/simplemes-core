@@ -1,5 +1,5 @@
 
-=== Dashboard Usage
+=== Custom Dashboard Usage
 
 This dashboard library is used with the <<efDashboard>> tag to handle the complex interactions
 between the dashboard and its related activities.  The example below shows the basic usage of
@@ -10,7 +10,8 @@ NOTE: Any methods that start with and underscore (eg. __checkMissing_) are inter
       and are subject to change.
 
 
-The standard dashboard .ftl file page is shown below.
+The standard dashboard .ftl file page is shown below.  Most applications won't need to
+use this.  The default index.ftl file should work for most scenarios.
 
 [source,html]
 .Dashboard index.ftl
@@ -33,37 +34,5 @@ The standard dashboard .ftl file page is shown below.
 <.> The `<@efDashboard>` tag displays the dashboard based on the passed in category or
     dashboard name (with default value).
 
-
-A simple dashboard activity page is shown below.
-
-[source,html]
-.Avoid Javascript Name Collisions
-----
-<#assign panel = "${params._panel}"/>  // <.>
-<div id="Header${panel}">
-  <@efField field="rmaNumber" required="false" label="Code"/>   // <.>
-  <@efField field="description" label="Description"/>
-  <@efButtonGroup>
-    <@efButton label="Close" click="done${panel}();"/>
-  </@efButtonGroup>
-
-  <script>
-    function done${panel}() {  // <.>
-      dashboard.finished('${panel}');
-    }
-  </script>
-</div>
-----
-<.> Defines the unique ID for this activity.  Used in many elements to make the HTML ID unique.
-    Note the parameter name is `_panel`, but this assigns it to a shorter variable `panel`
-    for simpler code.
-<.> The content: Two fields and a button.
-<.> A function to notify the dashboard that the activity is done.
-
-
-
-This results in a dashboard with one displayed activity that looks like this:
-
-image::guis/dashboardLogFailure.png[DashboardLogFailure,align="center"]
 
 

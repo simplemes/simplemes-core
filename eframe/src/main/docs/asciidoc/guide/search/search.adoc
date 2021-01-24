@@ -244,6 +244,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<Excluded Fields>>#
 [inline-toc]#<<Indices Created>>#
 [inline-toc]#<<Default Mapping>>#
+[inline-toc]#<<Search and Child Record Updates>>#
 
 endif::[]
 
@@ -360,6 +361,36 @@ _'RMA'_ and _'Rma'_ is not allowed).
 The default mapping is the same as for the <<api-formats>>.  This means child records will be indexed fully.
 Foreign references to other domains will be indexed with only their key fields.  This means you can search for
 domains that have a foreign reference to the FlexType _'SERIAL'_ and the global search will find them.
+
+==== Search and Child Record Updates
+
+It is very common for the application to update a child record without updating the parent
+record.  For example, an Order might have some order line item records.  If one of those
+child records is updated without updating the parent, then the search engine logic
+won't be automatically called.
+
+Instead, you should explicitly let the framework know that you updated the child record.
+This is done for assembly records using logic like this:
+
+[source,groovy]
+.Example - Update Child Record without Parent Update
+----
+  OrderAssembledComponent addComponent(AddOrderAssembledComponentRequest request) {
+
+    . . .    <.>
+
+    def orderAssembledComponent = new OrderAssembledComponent()
+    orderAssembledComponent.save()                                <.>
+    DomainEntityHelper.instance.childRecordUpdated(order, orderAssembledComponent)  <.>
+    return orderAssembledComponent
+  }
+
+----
+<.> Application logic to allow building the child OrderAssembledComponent record.
+<.> The child record is saved without saving the parent order for performance reasons.
+<.> Notify the framework and search engine that the order has changed.  This normally
+    triggers a re-indexing of the parent record.
+
 
 === Query String Adjustments
 

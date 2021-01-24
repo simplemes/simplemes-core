@@ -78,6 +78,18 @@ class FieldHolderMap extends HashMap implements FieldHolderMapInterface {
   protected boolean parsingFromJSON = true
 
   /**
+   * True if the the generated JSON should use an underscore as a prefix on the custom field
+   * and _config elements.  Defaults to true.
+   * This is reset to true after toJSON() is called.
+   * This is used mainly by the search engine interface to make the custom fields visible to the search
+   * engine.
+   * <p>
+   * <b>Note:</b> Setting this to false is not supported by the {@link org.simplemes.eframe.json.FieldHolderMapDeserializer}.
+   *              For internal Jackson reasons, the underscores must be used on the main custom field name (e.g. _fields).
+   */
+  boolean useUnderscoresInJson = true
+
+  /**
    * Parses the given JSON text into this Map.  Removes any existing elements.
    * @param text The JSON text.
    */
@@ -97,6 +109,7 @@ class FieldHolderMap extends HashMap implements FieldHolderMapInterface {
   String toJSON() {
     def text = Holders.objectMapper.writeValueAsString(this)
     log.trace("toJSON(): Created JSON {}", text)
+    useUnderscoresInJson = true
     return text
   }
 
@@ -462,4 +475,13 @@ class FieldHolderMap extends HashMap implements FieldHolderMapInterface {
   void setParsingFromJSON(boolean parsingFromJSON) {
     this.parsingFromJSON = parsingFromJSON
   }
+
+  boolean isUseUnderscoresInJson() {
+    return useUnderscoresInJson
+  }
+
+  void setUseUnderscoresInJson(boolean useUnderscoresInJson) {
+    this.useUnderscoresInJson = useUnderscoresInJson
+  }
+
 }

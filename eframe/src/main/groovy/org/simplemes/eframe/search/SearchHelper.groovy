@@ -90,7 +90,7 @@ class SearchHelper {
    * The name of the element in the domain settings holder that will contain flag that the domain has
    * been sent for search engine marking.  The setting is a Boolean.
    */
-  public static final String SETTINGS_SEARCH_REQUEST_SENT = "sentSearchRequest"
+  protected static final String SETTINGS_SEARCH_REQUEST_SENT = "sentSearchRequest"
 
   /**
    * The time the current/last bulk index request was started.
@@ -672,13 +672,14 @@ class SearchHelper {
    * Will create and submit an indexObject request to the search engine.
    * @param object The object to index.  Only searchable domain objects will be indexed.
    */
-  static void requestBackgroundIndexObject(Object object) {
+  void requestBackgroundIndexObject(Object object) {
     ArgumentUtils.checkMissing(object, 'object')
     def clazz = object.getClass()
     def settings = SearchHelper.instance.getSearchDomainSettings(clazz)
     //new IllegalArgumentException().printStackTrace()
     if (DomainEntityHelper.instance.getDomainSettingValue((DomainEntityInterface) object, SETTINGS_SEARCH_REQUEST_SENT)) {
       // Already marked for indexing.
+      log.trace('requestBackgroundIndexObject(): Skipping Index Request for {}.  Already marked for indexing.', object)
       return
     }
     if (settings.isSearchable()) {
@@ -700,7 +701,7 @@ class SearchHelper {
    * Will create and submit a deleteObject request to the search engine.
    * @param object The object remove from the index.  Only searchable domain objects will be removed from the index.
    */
-  static void requestBackgroundObjectRemoval(Object object) {
+  void requestBackgroundObjectRemoval(Object object) {
     ArgumentUtils.checkMissing(object, 'object')
     def clazz = object.getClass()
     if (!SearchHelper.instance.isSearchable(clazz)) {
@@ -711,12 +712,23 @@ class SearchHelper {
 
   /**
    * Determines if this query string is simple.  This means it does no contain logic or quotes.
+   * This should stay a statuic method to avoid issues with Spock Mocks.
    * @param queryString The string to check.
    * @return True if simple.
    */
   static boolean isSimpleQueryString(String queryString) {
     // Checks for ()'" and the strings ' or ', ' and '
     return !(queryString =~ /'|"| [oO][rR] | [aA][nN][dD] |\(|\)/)
+  }
+
+  /**
+   * Clears the request sent flag for the given domain index.  This is used mainly by
+   * tests that make several updates to the object.  The test wants the object indexed by
+   * the search engine multiple times.
+   * @param object The object to clear the flag on.
+   */
+  void clearRequestSent(DomainEntityInterface object) {
+    DomainEntityHelper.instance.setDomainSettingValue(object, SETTINGS_SEARCH_REQUEST_SENT, false)
   }
 
 }

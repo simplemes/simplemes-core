@@ -460,7 +460,7 @@ class OrderAssyService implements OrderReleasePoint, AdjustQueryInterface {
         def fieldName = coreQuery[0..(loc - 1)]
         def flexField = FlexField.findByFieldNameIlike(fieldName)
         if (flexField) {
-          results = "order.assembledComponents.assemblyDataValues.${flexField.fieldName}${coreQuery[loc..-1]}"
+          results = "order.assembledComponents.fields.${flexField.fieldName}${coreQuery[loc..-1]}"
         }
       }
     }
@@ -509,7 +509,7 @@ class OrderAssyService implements OrderReleasePoint, AdjustQueryInterface {
         def list = FlexField.findAllByFieldNameIlike(fieldName)
         if (list) {
           def flexField = list[0]
-          results = "assembledComponents.${flexField.fieldName}${response[loc..-1]}"
+          results = "assembledComponents.fields.${flexField.fieldName}${response[loc..-1]}"
         }
       }
     }
