@@ -98,6 +98,7 @@ rebuildApplicationJar.mustRunAfter removeInternalJars
 shadowJar {
   append 'assets/manifest.properties'
   append 'i18n/messages.properties'
+  append 'jasperreports_extension.properties'
   mergeServiceFiles()
 }
 

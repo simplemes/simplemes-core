@@ -34,13 +34,13 @@ micronaut:
         signatures:
           secret:
             generator:
-              secret: ${eframe.key}
+              secret: ${EFRAME_KEY}
         generator:
           access-token.expiration: 937  #
           refresh-token:
             enabled: true
             base64: true
-            secret: ${eframe.key}
+            secret: ${EFRAME_KEY}
       refresh:
         cookie:
           cookie-path: '/'

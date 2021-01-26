@@ -4,6 +4,7 @@ Scratch
 MVP
 ---
 Defect Tracking
+  Yield Reporting - Configurable at oper/workType?
 Assembly
 Data Entry
 Work Instructions
@@ -103,12 +104,22 @@ Link To objects (Order, Product, Routing/Oper, WorkCenter, WorkType).  Needs to 
 
 Tasks
 =====
-ISSUE: Blanks in search string fail.  Needs URL encoding.
-ISSUE: API: Look at just sending fields jsonb as sub-JSON instead of naming conventions and special logic.
+ISSUE: IDAT Save failure.  Exception shows ValidationExpcetion.toString()='null'  Happened when required custom field added to domain and IDAT is missing it.
+ISSUE: API: Look at just sending  fields jsonb as sub-JSON instead of naming conventions and special logic.
 ISSUE: Support in non-CRUD endpoint with Domain as part of request.
 ISSUE: JSON Mapper ignores invalid fields on input (non-CRUD endpoint).
 PERF: Child save (DomainEntityHelper.childRecordUpdated() calls) forces parent to search engine.
       Possible performance issue with multiple saves.  Needs some sort of queue with coalescing logic to reduce updates to Search Engine.
+ISSUE: Exception in Freemarker always comes back as 400 response.  Need real message and real exception.
+ISSUE: .ftl issue with Domain in Controller
+       modelAndView['defect'] = new Defect()
+       efField detects domain on new Defect() and triggers domain logic on order field!!!
+DOC: Precedence on dashboard activity with execute() and display() functions.  (Display() first?).
+DOC: Search all docs?
+ENH: Icon to clear messages on top.
+ISSUE: JS displayDialog button labels as 'Yes' shows as 'Yes.label'.
+ISSUE: Release Product with routing and LSNs does not create LSN_OPER_STATE from GUI.
+ISSUE: Action Log report not receiving order when run from .jar file.
 
 Look at mes-assy Assemble Dialog use of buttons.  The .ftl file does not define the Ok/Cancel button logic.
 Look at Large BOM/Defect list affect on basic read/update of Order. Cascade updates.

@@ -14,6 +14,7 @@ import io.micronaut.http.MediaType
 import io.micronaut.http.annotation.Error
 import io.micronaut.security.authentication.AuthorizationException
 import io.micronaut.views.ViewsRenderer
+import net.sf.jasperreports.engine.JRRuntimeException
 import org.simplemes.eframe.application.Holders
 import org.simplemes.eframe.application.controller.GlobalErrorController
 import org.simplemes.eframe.exception.MessageHolder
@@ -55,7 +56,14 @@ abstract class BaseController {
    */
   @Error
   HttpResponse error(HttpRequest request, Throwable throwable) {
+    if (log.debugEnabled) {
+      log.debug("Throwable caught by controller")
+    }
     try {
+      if (log.traceEnabled) {
+        log.debug("Throwable.stacktrace = {}", throwable.stackTrace)
+        log.debug("Throwable.toString() = {}", throwable.toString())
+      }
       if (throwable instanceof AuthorizationException) {
         // Use the standard login re-direct.
         return GlobalErrorController.buildLoginRedirect(request)
@@ -96,18 +104,50 @@ abstract class BaseController {
         return HttpResponse.status(HttpStatus.BAD_REQUEST).body(Holders.objectMapper.writeValueAsString(holder))
       }
     } catch (Throwable ex) {
+      if (log.debugEnabled) {
+        log.debug("Exception caught while trying to return as HTTP response. ")
+      }
       // Make sure this error handler doesn't throw an infinite loop of exceptions.
-      LogUtils.logStackTrace(log, ex, null)
-      def s = ex.toString()
-      def msg = """
-        {
-          "message": {
-           "level": "error",
-           "text": "Infinite exception loop detected: $s",
-           "otherMessages": [ ]
+      def msg = "Unknown - Exception thrown during error handling."
+      def exceptionClass = '???'
+      try {
+        exceptionClass = ex?.getClass()
+        def s = ex.toString()
+        msg = """
+          {
+            "message": {
+             "level": "error",
+             "text": "Infinite exception loop detected: $s",
+             "otherMessages": [ ]
+            }
+          }      
+        """
+        LogUtils.logStackTrace(log, ex, null)
+      } catch (Throwable ignored) {
+        if (log.debugEnabled) {
+          //noinspection GroovyUnusedCatchParameter
+          try {
+            if (throwable instanceof JRRuntimeException) {
+              log.trace("Original exception is JRRuntimeException")
+              log.trace("Original messageKey ${throwable.messageKey}, ${throwable.args}")
+              log.trace("Original stack ${throwable.stackTrace}")
+            }
+            log.debug("Exception caught while trying print nested exception. $exceptionClass.  ")
+          } catch (Throwable ignored2) {
           }
-        }      
-      """
+        }
+        if (!msg) {
+          msg = """
+          {
+            "message": {
+             "level": "error",
+             "text": "Infinite exception loop detected: could not call toString() on exception (class = $exceptionClass).",
+             "otherMessages": [ ]
+            }
+          }      
+          """
+        }
+      }
       return HttpResponse.status(HttpStatus.BAD_REQUEST).body(msg)
     }
   }
