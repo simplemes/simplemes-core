@@ -4450,8 +4450,12 @@ startup time.  Don&#8217;t add extensive or slow logic if you can avoid it.</p>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>Always return the records that are provided by the initial data load process, even if
-they already exist.  These values returned will be ignored when checking for
-<a href="#test-data-pollution">Test Data Pollution</a>.  See <a href="#initial-data-loading-and-tests">Initial Data Loading and Tests</a> for more details.</td>
+they already exist. This lets you specify which records to leave in the database
+after a test is run. This helps with the issue of <a href="#test-data-pollution">Test Data Pollution</a>.
+The format of these strings is important.  These strings
+should match the format of the <a href="#toshortstring">toShortString()</a> on the domain record.
+See <a href="#initial-data-loading-and-tests">Initial Data Loading and Tests</a> for more details
+on the format of these Lists of Strings.</td>
 </tr>
 </table>
 </div>
@@ -20371,7 +20375,7 @@ to the dependencies.  This is done in the Modules part of the 'Project Structure
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-01-26 00:30:26 UTC
+Last updated 2021-01-26 17:05:16 UTC
 </div>
 </div>
 <style>

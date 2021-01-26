@@ -226,10 +226,16 @@ extends java.lang.RuntimeException</pre>
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#toString()">toString</a></strong>()</code><br>Format the exception as a string.</td>
+                            <td class="colLast"><code><strong><a href="#getMessage()">getMessage</a></strong>()</code><br>Returns the detail message string of this throwable.</td>
                         </tr>
                         
                         <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.lang.String</code></td>
+                            <td class="colLast"><code><strong><a href="#toString()">toString</a></strong>()</code><br>Format the exception as a string.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#toStringLocalized(java.util.Locale)">toStringLocalized</a></strong>(java.util.Locale locale)</code><br>Build a human-readable version of this exception.</td>
@@ -352,6 +358,16 @@ extends java.lang.RuntimeException</pre>
                     <!--   -->
                 </a>
                     <h3>Method Detail</h3>
+                    
+                        <a name="getMessage()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@java.lang.Override
+java.lang.String <strong>getMessage</strong>()</h4>
+                                <p> Returns the detail message string of this throwable. <DL><DT><B>Returns:</B></DT><DD>the detail message string of this <CODE>Throwable</CODE> instance
+          (which may be <CODE>null</CODE>).</DD></DL></p>
+                            </li>
+                        </ul>
                     
                         <a name="toString()"><!-- --></a>
                         <ul class="blockListLast">
