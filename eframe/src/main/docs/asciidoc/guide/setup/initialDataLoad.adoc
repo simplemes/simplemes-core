@@ -43,8 +43,12 @@ static Map<String,List<String>> initialDataLoad() {
 ----
 <.> Create the admin user, only if it does not exist already.
 <.> Always return the records that are provided by the initial data load process, even if
-    they already exist.  These values returned will be ignored when checking for
-    <<Test Data Pollution>>.  See <<Initial Data Loading and Tests>> for more details.
+    they already exist. This lets you specify which records to leave in the database
+    after a test is run. This helps with the issue of <<Test Data Pollution>>.
+    The format of these strings is important.  These strings
+    should match the format of the <<toShortString()>> on the domain record.
+    See <<Initial Data Loading and Tests>> for more details
+    on the format of these Lists of Strings.
 
 
 Keep this `initialDataLoad()` method simple.  Any errors could affect startup, which will frustrate your users.

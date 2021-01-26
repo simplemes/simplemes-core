@@ -46,7 +46,7 @@ class InitialDataLoader {
     List<IDL> idlList = []
     for (clazz in allDomains) {
       if (TypeUtils.doesClassHaveStaticMethod(clazz, 'initialDataLoad')) {
-        def o = clazz.newInstance()
+        def o = clazz.getConstructor().newInstance()
         def after = checkForPrecedence(o, 'initialDataLoadAfter')
         def before = checkForPrecedence(o, 'initialDataLoadBefore')
         idlList << new IDL(domainClass: clazz, afterClassNames: after, beforeClassNames: before)
@@ -59,6 +59,7 @@ class InitialDataLoader {
         classesLoaded << idl.domainClass
       } catch (Exception e) {
         // Can't use LogUtils.logStackTrace(log...) since the save validation might be a BusinessException.
+        //log.error("Error during InitialDataLoad {}", e,e?.toString())
         log.error("Error during InitialDataLoad", e)
       }
     }

@@ -68,7 +68,12 @@ class MessageBasedException extends RuntimeException {
    * @return The formatted message.
    */
   String toString() {
-    return toStringLocalized()
+    try {
+      return toStringLocalized()
+    } catch (Throwable ex) {
+      // Needed to avoid stack overflow if an exception occurs in the toStringLocalized() method.
+      return "Exception occurred in toString() of this exception.  Exception ${ex?.getClass()}, stack trace = ${ex.stackTrace}"
+    }
   }
 
   /**
@@ -78,6 +83,17 @@ class MessageBasedException extends RuntimeException {
    */
   String toStringLocalized(Locale locale = null) {
     return GlobalUtils.lookup("error.${code}.message", locale, params as Object[]) + " (${code})"
+  }
+
+  /**
+   * Returns the detail message string of this throwable.
+   *
+   * @return the detail message string of this {@code Throwable} instance
+   *          (which may be {@code null}).
+   */
+  @Override
+  String getMessage() {
+    return toString()
   }
 
 }

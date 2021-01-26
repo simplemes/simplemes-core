@@ -9,6 +9,7 @@ import org.simplemes.eframe.data.SimpleFieldDefinition
 import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.domain.DomainReference
 import org.simplemes.eframe.misc.ArgumentUtils
+import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.web.ui.WidgetFactory
 
 /**
@@ -66,7 +67,21 @@ class FieldMarker extends BaseMarker {
     def widgetContext = buildWidgetContext(fieldDefinition)
     widgetContext.object = domainObject ?: [:]
     if (parameters.value) {
-      widgetContext.object[fieldName] = parameters.value
+      // Make sure it is safe to set the value on the object/map.
+      if (widgetContext?.object instanceof Map) {
+        widgetContext.object[fieldName] = parameters.value
+      } else {
+        if (widgetContext?.object?.hasProperty(fieldName)) {
+          widgetContext.object[fieldName] = parameters.value
+        } else {
+          def object = widgetContext.object
+          def name = object?.getClass()?.simpleName ?: "unknown"
+          def s = "The domain object $name does not have the field '$fieldName'.\n"
+          s += "You probably have an element in the model named '${NameUtils.lowercaseFirstLetter(name)} '.\n"
+          s += "This confuses the marker logic when 'value=${}' is used.  Consider renaming the model element. Object = ${object}.\n"
+          throw new MarkerException(s, this)
+        }
+      }
     }
     if (parameters.readOnly) {
       widgetContext.readOnly = ArgumentUtils.convertToBoolean(parameters.readOnly)

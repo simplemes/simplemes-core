@@ -9,8 +9,11 @@ import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.test.BaseMarkerSpecification
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.JavascriptTestUtils
+import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.annotation.Rollback
 import sample.controller.SampleParentController
 import sample.domain.RMA
+import sample.domain.SampleParent
 
 /**
  * Tests.
@@ -45,6 +48,29 @@ class FieldMarkerAPISpec extends BaseMarkerSpecification {
     def content = JavascriptTestUtils.extractBlock(holder, 'id: "rmaTypeContent",rows: [')
     def field1Line = TextUtils.findLine(content, 'id: "FIELD1"')
     JavascriptTestUtils.extractProperty(field1Line, 'view') == 'text'
+
+  }
+
+  @Rollback
+  def "verify that the marker detects when a model element matches the domain name - in non-definition page scenario"() {
+    // Happens when the model has a 'sampleParent' domain object in it and the value is specified.
+    // This triggers some un-wanted definition-page logic.
+    given: 'a domain record'
+    def sampleParent = new SampleParent(name: 'ABC', title: 'abc').save()
+
+    when: 'the marker is built'
+    def src = """
+      <@efForm id="edit">
+           <@efField field="sampleParent"  value="${sampleParent.name}" readOnly="true"  />
+           <@efField field="SampleParent.title"  />
+      </@efForm>
+    """
+
+    execute(source: src, controllerClass: SampleParentController, dataModel: [sampleParent: sampleParent])
+
+    then: 'the right exception is thrown'
+    def ex = thrown(Exception)
+    UnitTestUtils.assertExceptionIsValid(ex, ['sampleParent', 'ABC', 'model'])
 
   }
 
