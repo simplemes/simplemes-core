@@ -71,7 +71,26 @@ class FieldMarkerAPISpec extends BaseMarkerSpecification {
     then: 'the right exception is thrown'
     def ex = thrown(Exception)
     UnitTestUtils.assertExceptionIsValid(ex, ['sampleParent', 'ABC', 'model'])
+  }
 
+  def "verify that the marker generates the on change handler - combobox scenario"() {
+    when: 'the marker is built'
+    def src = """
+      <@efForm id="edit">
+        <@efField field="SampleParent.allFieldsDomain" onChange="someChangeLogic()"/>
+      </@efForm>
+    """
+
+    def page = execute(source: src, controllerClass: SampleParentController)
+    println "page = $page"
+
+    // We can't check the JS since the on:{onChange...} syntax fails.
+    // Assume it is checked in ComboboxWidgetGUISpec tests.
+    //checkPage(page)
+
+    then: 'the CSS is correct'
+    def fieldLine = TextUtils.findLine(page, 'id: "allFieldsDomain"')
+    fieldLine.contains("on:{onChange(newValue, oldValue){someChangeLogic()}}")
   }
 
 }

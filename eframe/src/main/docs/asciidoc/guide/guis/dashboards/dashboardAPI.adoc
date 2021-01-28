@@ -160,7 +160,7 @@ dashboard activities.  To send an event you need to use javascript like this:
 .Example Javascript to Trigger Dashboard Event
 ----
   function onBlur${panel}(...) {  // <.>
-    var event = {type: 'SELECTION_CHANGED', source: 'example', listID='OrderList'};  // <.>
+    var event = {type: 'SELECTION_CHANGED', source: 'example', order='M1001'};  // <.>
     dashboard.sendEvent(event);
   }
 ----

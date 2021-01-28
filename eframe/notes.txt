@@ -1,6 +1,14 @@
 Scratch
 =======
 
+GUI - Investigations
+--------------------
+  vue - Has issues with dynamic elements.  May be fixed in 3.0x: https://v3.vuejs.org/guide/component-dynamic-async.html#async-components
+ES6 style syntax - works in modules .js files.
+Morph from https://gist.github.com/gaearon/6668a1f6986742109c00a581ce704605 to es6 imports and see what works.
+Also look at https://primefaces.org/primereact/showcase/#/splitter for another simple render example with no component stuff.
+
+
 MVP
 ---
 Defect Tracking
@@ -110,21 +118,8 @@ ISSUE: JSON Mapper ignores invalid fields on input (non-CRUD endpoint).
 PERF: Child save (DomainEntityHelper.childRecordUpdated() calls) forces parent to search engine.
       Possible performance issue with multiple saves.  Needs some sort of queue with coalescing logic to reduce updates to Search Engine.
 ISSUE: Exception in Freemarker always comes back as 400 response.  Need real message and real exception.
-ISSUE: .ftl issue with Domain in Controller
-       modelAndView['defect'] = new Defect()
-       efField detects domain on new Defect() and triggers domain logic on order field!!!
-       <@efForm id="assignDefect" dashboard="true">
-           <@efField field="Order.order"  id="orderfield" value="${order}" readOnly="true"  />
-           <@efField field="Defect.defectCode"  />
-           <@efButtonGroup>
-               <@efButton label="ok.label" click="dashboard.finished('${params._panel}')"/>
-               <@efButton label="cancel.label" click="dashboard.finished('${params._panel}')"/>
-           </@efButtonGroup>
-       </@efForm>
 
 
-
-DOC: Precedence on dashboard activity with execute() and display() functions.  (Display() first?).
 DOC: Search all docs?
 ENH: Icon to clear messages on top.
 ISSUE: JS displayDialog button labels as 'Yes' shows as 'Yes.label'.

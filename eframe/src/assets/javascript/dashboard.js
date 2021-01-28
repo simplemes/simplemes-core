@@ -518,7 +518,8 @@ ef.dashboard = function () {
             $$(parentViewName).removeView(contentViewName);
             $$(parentViewName).addView({view: 'form', type: "clean", borderless: true, id: contentViewName, margin: 0, rows: [content]}, 0);
             dashboard._addButtonsIfNeeded(panelName);
-            dashboard._runScriptOrFunction(window[sharedVarName].postScript);
+            ef._runScriptOrFunction(window[sharedVarName]._postScript);
+            ef._runScriptOrFunction(window[sharedVarName].postScript);
             dashboard._restoreActivityState(sharedVarName, window[sharedVarName]._url);
           } else {
             // Non-GUI activity.
@@ -531,7 +532,8 @@ ef.dashboard = function () {
                 JL().debug('_load(): Executing ' + sharedVarName + '.execute()');
                 execute();
               }
-              dashboard._runScriptOrFunction(window[sharedVarName].postScript);
+              ef._runScriptOrFunction(window[sharedVarName]._postScript);
+              ef._runScriptOrFunction(window[sharedVarName].postScript);
             } catch (e) {
               var msg2 = "Invalid Javascript for dashboard. Error: '" + e.toString() + "' on " + url + '. (Set client.dashboard Trace log level for details).';
               ef.displayMessage({error: msg2});
@@ -564,16 +566,6 @@ ef.dashboard = function () {
           path = path.substr(0, path.indexOf('?'));
         }
         activityState[path] = window[variableName].getState();
-      }
-    },
-    _runScriptOrFunction: function (scriptOrFunction) {
-      // Runs the given script/function.
-      if (scriptOrFunction) {
-        if (ef._isString(scriptOrFunction)) {
-          eval(scriptOrFunction);
-        } else {
-          scriptOrFunction();
-        }
       }
     },
     _resetToDefaults: function () {

@@ -378,6 +378,7 @@ _ef_tk.toolkit = function () {
           options.body = content;
           options.bodyURL = undefined;
           options.postScriptB = window[__dialogContentName].postScript;
+          options._postScript = window[__dialogContentName]._postScript;
           tk._displayDialogSuccess(options);
         });
 
@@ -535,24 +536,12 @@ _ef_tk.toolkit = function () {
       topDialog.insertBefore(theDiv, topDialog.children[0]);
 
       // Call any script to done after the dialog content is rendered
-      if (options.postScript || options.postScriptB) {
+      if (options.postScript || options.postScriptB || options._postScript) {
         webix.delay(function () {
           //console.log(options);
-          if (options.postScript) {
-            if (ef._isString(options.postScript)) {
-              eval(options.postScript);
-            } else {
-              options.postScript();
-            }
-          }
-          if (options.postScriptB) {
-            if (ef._isString(options.postScriptB)) {
-              //console.log('B: '+options.postScriptB);
-              eval(options.postScriptB);
-            } else {
-              options.postScriptB();
-            }
-          }
+          ef._runScriptOrFunction(options._postScript);
+          ef._runScriptOrFunction(options.postScript);
+          ef._runScriptOrFunction(options.postScriptB);
         })
       }
       return dialogID;

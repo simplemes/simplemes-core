@@ -67,6 +67,7 @@ The main parameters/body supported are:
 | *after* | The field name to display this after.  Use only inside of edit/create/show fields.
 | *onChange* | Javascript to execute when the field changes (on field exit).
                This javascript has two variables available (`newValue`, `oldValue`).
+               This works on a limited number of field types (Text Field and Combobox fields).
 | *readOnly* | If 'true', then this field will be a read-only field.
                 (*Default:* false).
 |*css* | The css class(es) to add to the field.  Multiple classes are supported, using space as

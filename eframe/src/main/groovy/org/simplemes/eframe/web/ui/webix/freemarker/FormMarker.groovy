@@ -67,7 +67,7 @@ class FormMarker extends BaseMarker {
       def variable = params?._variable
       // Need to wrap the post-script logic in a function since the dashboard activity is not
       // executed immediately.
-      postScript = """ ${variable}.postScript= function ${id}Postscript() { $postScript};"""
+      postScript = """ ${variable}._postScript= function ${id}Postscript() { $postScript};"""
     }
 
     def width = parameters.width ?: '90%'

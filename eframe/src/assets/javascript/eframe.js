@@ -584,6 +584,16 @@ _ef.eframe = function () {
       }
       return s;
     },
+    _runScriptOrFunction: function (scriptOrFunction) {
+      // Runs the given script/function.
+      if (scriptOrFunction) {
+        if (ef._isString(scriptOrFunction)) {
+          eval(scriptOrFunction);
+        } else {
+          scriptOrFunction();
+        }
+      }
+    },
     // Fixes common issues with evaluating the Javascript for evaluating some script.
     // Remove <script></script> tags.
     _sanitizeJavascript: function (js) {

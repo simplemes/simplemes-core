@@ -197,8 +197,8 @@ and handle it differently.  In this scenario, the page will contain no display e
 displaying a page in a panel, the Javascript will be evaluated without a change to the panel display.
 When this Javascript finishes, the dashboard will remove the Javascript from the page.
 
-NOTE: The panels will still have the current activities active while the non-GUI activity is
-      executing.
+NOTE: The other panels will still have the current activities active while the non-GUI
+      activity is executing.
 
 These non-GUI activities can have these capabilities:
 
@@ -218,6 +218,8 @@ Javascript methods from the browser.  There is no need to call the <<dashboard-f
 
 See <<Non-GUI Activity>> example below for details on how you can use this feature.
 
+NOTE: If an activity defines a .execute() method and uses the `<@efForm>`, then the execute()
+      method will not be called.
 
 ===== Debugging Dashboard Activities
 

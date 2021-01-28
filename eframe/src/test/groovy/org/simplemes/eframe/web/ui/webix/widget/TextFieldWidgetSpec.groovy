@@ -248,6 +248,7 @@ class TextFieldWidgetSpec extends BaseWidgetSpecification {
     when: 'the UI element is built'
     def widgetContext = buildWidgetContext(parameters: [onChange: 'someChangeLogic'])
     def page = new TextFieldWidget(widgetContext).build().toString()
+    println "page = $page"
 
     then: 'the onChange script is used'
     def fieldLine = TextUtils.findLine(page, 'id: "aField"')

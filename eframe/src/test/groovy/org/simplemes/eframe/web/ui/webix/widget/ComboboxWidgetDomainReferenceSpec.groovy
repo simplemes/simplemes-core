@@ -172,6 +172,17 @@ class ComboboxWidgetDomainReferenceSpec extends BaseWidgetSpecification {
     }
   }
 
+  def "verify that the onChange javascript can be passed in"() {
+    when: 'the UI element is built'
+    def widgetContext = buildWidgetContext(parameters: [onChange: 'someChangeLogic'])
+    def page = new ComboboxWidget(widgetContext).build().toString()
+    //println "page = $page"
+
+    then: 'the onChange script is used'
+    def fieldLine = TextUtils.findLine(page, 'id: "aField"')
+    fieldLine.contains("""on:{onChange(newValue, oldValue){someChangeLogic}}""")
+  }
+
 
   // GUI Test drop down works.
   // test row limits/ dynamic retrieval

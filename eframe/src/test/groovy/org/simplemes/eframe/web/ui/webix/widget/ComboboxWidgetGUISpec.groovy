@@ -82,7 +82,10 @@ class ComboboxWidgetGUISpec extends BaseGUISpecification {
     //standardGUISleep()
     $('div.webix_list').find('div.webix_list_item', 1).click()
 
-    and: 'the record is saved'
+    then: 'the onChange handler for the combobox is called'
+    messages.text() == 'allFieldsDomain changed'
+
+    when: 'the record is saved'
     updateButton.click()
     waitForRecordChange(sampleParent)
 

@@ -52,6 +52,9 @@ class ComboboxWidget extends TextFieldWidget {
       def width = """,inputWidth: tk.pw("${adjustFieldCharacterWidth(inputWidth)}em")"""
       def options = """, editable: true"""
       def cssS = widgetContext.error ? ',css: "webix_invalid" ' : ''
+      if (widgetContext.parameters.onChange) {
+        options += ",on:{onChange(newValue, oldValue){$widgetContext.parameters.onChange}}"
+      }
       return """{view: "${view}", id: "$id", name: "$id", value: "$s" $options $cssS $width $values}"""
     }
   }
