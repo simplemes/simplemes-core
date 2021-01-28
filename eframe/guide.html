@@ -6552,7 +6552,7 @@ class must provide a list of valid values for the sub-classes defined in the cor
 </div>
 <div class="imageblock text-center">
 <div class="content">
-<img src="images/encodedTypeExample.png" alt="encodedTypeExample" width="629" height="371">
+<img src="images/encodedTypeExample.png" alt="encodedTypeExample" width="635" height="371">
 </div>
 <div class="title">Figure 9. EncodedTypeList and EncodedType Classes</div>
 </div>
@@ -10135,8 +10135,8 @@ When this Javascript finishes, the dashboard will remove the Javascript from the
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-The panels will still have the current activities active while the non-GUI activity is
-      executing.
+The other panels will still have the current activities active while the non-GUI
+      activity is executing.
 </td>
 </tr>
 </table>
@@ -10176,6 +10176,19 @@ Javascript methods from the browser.  There is no need to call the <a href="#das
 </div>
 <div class="paragraph">
 <p>See <a href="#non-gui-activity">Non-GUI Activity</a> example below for details on how you can use this feature.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+If an activity defines a .execute() method and uses the <code>&lt;@efForm&gt;</code>, then the execute()
+      method will not be called.
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect4">
@@ -10786,7 +10799,7 @@ dashboard activities.  To send an event you need to use javascript like this:</p
 <div class="title">Example Javascript to Trigger Dashboard Event</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="javascript">  <span class="keyword">function</span> <span class="predefined">onBlur$</span>{panel}(...) {  <i class="conum" data-value="1"></i><b>(1)</b>
-    <span class="keyword">var</span> event = {<span class="key">type</span>: <span class="string"><span class="delimiter">'</span><span class="content">SELECTION_CHANGED</span><span class="delimiter">'</span></span>, <span class="key">source</span>: <span class="string"><span class="delimiter">'</span><span class="content">example</span><span class="delimiter">'</span></span>, listID=<span class="string"><span class="delimiter">'</span><span class="content">OrderList</span><span class="delimiter">'</span></span>};  <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="keyword">var</span> event = {<span class="key">type</span>: <span class="string"><span class="delimiter">'</span><span class="content">SELECTION_CHANGED</span><span class="delimiter">'</span></span>, <span class="key">source</span>: <span class="string"><span class="delimiter">'</span><span class="content">example</span><span class="delimiter">'</span></span>, order=<span class="string"><span class="delimiter">'</span><span class="content">M1001</span><span class="delimiter">'</span></span>};  <i class="conum" data-value="2"></i><b>(2)</b>
     dashboard.sendEvent(event);
   }</code></pre>
 </div>
@@ -20375,7 +20388,7 @@ to the dependencies.  This is done in the Modules part of the 'Project Structure
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-01-26 17:05:16 UTC
+Last updated 2021-01-28 19:01:11 UTC
 </div>
 </div>
 <style>
