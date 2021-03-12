@@ -16506,6 +16506,27 @@ The JSON format for these references can use the 'id' format:</p>
 </tr>
 </table>
 </div>
+<div class="paragraph">
+<p>You can also use the key fields in a simple format using the simplified
+<a href="#json-by-key">@JSONByKey</a> format:</p>
+</div>
+<div class="listingblock">
+<div class="title">JSONByKey Foreign Reference by Key Field</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="json">{
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">orderCode</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">10102-23</span><span class="delimiter">&quot;</span></span>,
+  <span class="key"><span class="delimiter">&quot;</span><span class="content">product</span><span class="delimiter">&quot;</span></span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">BIKE_27</span><span class="delimiter">&quot;</span></span>  <i class="conum" data-value="1"></i><b>(1)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The primary key of the foreign record to reference.</td>
+</tr>
+</table>
+</div>
 <div class="admonitionblock note">
 <table>
 <tr>
@@ -16513,9 +16534,7 @@ The JSON format for these references can use the 'id' format:</p>
 <i class="fa icon-note" title="Note"></i>
 </td>
 <td class="content">
-Some POGOs may use the <a href="#json-by-key">@JSONByKey</a> annotation which will use
-      a shorter format (e.g. just <em>"product": "BIKE_27"</em>).  This is up to the
-      developer.
+You must mark the reference using the &lt;json-by-key,@JSONByKey&gt;&gt; annotation.
 </td>
 </tr>
 </table>
@@ -20388,7 +20407,7 @@ to the dependencies.  This is done in the Modules part of the 'Project Structure
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-01-28 19:01:11 UTC
+Last updated 2021-03-12 12:55:29 UTC
 </div>
 </div>
 <style>

@@ -1724,6 +1724,9 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/simplemes/eframe/security/AutoRefreshTokenFilter.html#doFilter(HttpRequest<?>, io.micronaut.http.filter.ServerFilterChain)" title="Method in AutoRefreshTokenFilter">doFilter(HttpRequest&lt;?&gt;, io.micronaut.http.filter.ServerFilterChain)</a></span> - Method in <a href="org/simplemes/eframe/security/AutoRefreshTokenFilter.html">AutoRefreshTokenFilter</a>
 </dt><dd> <div class="block">Variation of the <a href='#doFilter(io.micronaut.http.HttpRequest, io.micronaut.http.filter.FilterChain)'>doFilter(HttpRequest, io.micronaut.http.filter.FilterChain)</a> method that accepts a ServerFilterChain
  which allows to mutate the outgoing HTTP response.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/web/asset/WebClientAssetFilter.html#doFilter(HttpRequest<?>, io.micronaut.http.filter.ServerFilterChain)" title="Method in WebClientAssetFilter">doFilter(HttpRequest&lt;?&gt;, io.micronaut.http.filter.ServerFilterChain)</a></span> - Method in <a href="org/simplemes/eframe/web/asset/WebClientAssetFilter.html">WebClientAssetFilter</a>
+</dt><dd> <div class="block">Handles the request for the vue-based client asset requests on the '/client/**' path.
+ </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/DataGenerator.html#doGenerate()" title="Method in DataGenerator">doGenerate()</a></span> - Method in <a href="org/simplemes/eframe/test/DataGenerator.html">DataGenerator</a>
 </dt><dd> <div class="block">Generates the data.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/CRUDGUITester.html#domain(java.lang.Class)" title="Method in CRUDGUITester">domain(java.lang.Class)</a></span> - Method in <a href="org/simplemes/eframe/test/CRUDGUITester.html">CRUDGUITester</a>
@@ -3465,6 +3468,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 
 <dt><span class="strong"><a href="org/simplemes/eframe/web/asset/EFrameAssetPipelineService.html#handleAsset(java.lang.String, io.micronaut.http.MediaType, java.lang.String, HttpRequest<?>, io.micronaut.http.filter.ServerFilterChain)" title="Method in EFrameAssetPipelineService">handleAsset(java.lang.String, io.micronaut.http.MediaType, java.lang.String, HttpRequest&lt;?&gt;, io.micronaut.http.filter.ServerFilterChain)</a></span> - Method in <a href="org/simplemes/eframe/web/asset/EFrameAssetPipelineService.html">EFrameAssetPipelineService</a>
 </dt><dd> <div class="block">Handles the asset request, but falls back to dev mode if the asset is no in the manifest.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/web/asset/WebClientAssetService.html#handleAsset(java.lang.String, HttpRequest<?>, io.micronaut.http.filter.ServerFilterChain)" title="Method in WebClientAssetService">handleAsset(java.lang.String, HttpRequest&lt;?&gt;, io.micronaut.http.filter.ServerFilterChain)</a></span> - Method in <a href="org/simplemes/eframe/web/asset/WebClientAssetService.html">WebClientAssetService</a>
+</dt><dd> <div class="block">Handles the request from the client for web assets.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/asset/EFrameAssetPipelineService.html#handleAssetWorkAround(java.lang.String, io.micronaut.http.MediaType, java.lang.String, HttpRequest<?>, io.micronaut.http.filter.ServerFilterChain)" title="Method in EFrameAssetPipelineService">handleAssetWorkAround(java.lang.String, io.micronaut.http.MediaType, java.lang.String, HttpRequest&lt;?&gt;, io.micronaut.http.filter.ServerFilterChain)</a></span> - Method in <a href="org/simplemes/eframe/web/asset/EFrameAssetPipelineService.html">EFrameAssetPipelineService</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/preference/event/ColumnResized.html#handleEvent(java.util.Map)" title="Method in ColumnResized">handleEvent(java.util.Map)</a></span> - Method in <a href="org/simplemes/eframe/preference/event/ColumnResized.html">ColumnResized</a>
@@ -6099,6 +6104,21 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Waits for any outstanding panels to finish loading.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseSpecification.html#waitForRecordChange(java.lang.Object)" title="Method in BaseSpecification">waitForRecordChange(java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/test/BaseSpecification.html">BaseSpecification</a>
 </dt><dd> <div class="block">Wait for a record to change in the database.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/web/asset/WebClientAsset.html" title="Class in org.simplemes.eframe.web.asset">WebClientAsset</a></span> - Class in <a href="./org/simplemes/eframe/web/asset/package-summary.html">org.simplemes.eframe.web.asset</a>
+</dt><dd><div class="block">Defines a single asset for the client.
+ </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/web/asset/WebClientAsset.html#WebClientAsset()" title="Constructor in WebClientAsset">WebClientAsset()</a></span> - Constructor in <a href="org/simplemes/eframe/web/asset/WebClientAsset.html">WebClientAsset</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/web/asset/WebClientAssetFilter.html" title="Class in org.simplemes.eframe.web.asset">WebClientAssetFilter</a></span> - Class in <a href="./org/simplemes/eframe/web/asset/package-summary.html">org.simplemes.eframe.web.asset</a>
+</dt><dd><div class="block">This filter provides access to the client (vue-based) assets.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/web/asset/WebClientAssetFilter.html#WebClientAssetFilter()" title="Constructor in WebClientAssetFilter">WebClientAssetFilter()</a></span> - Constructor in <a href="org/simplemes/eframe/web/asset/WebClientAssetFilter.html">WebClientAssetFilter</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/web/asset/WebClientAssetService.html" title="Class in org.simplemes.eframe.web.asset">WebClientAssetService</a></span> - Class in <a href="./org/simplemes/eframe/web/asset/package-summary.html">org.simplemes.eframe.web.asset</a>
+</dt><dd><div class="block">Handles requests for assets from the client (vue-based).  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/web/asset/WebClientAssetFilter.html#webClientAssetService" title="Field in WebClientAssetFilter">webClientAssetService</a></span> - Field in <a href="org/simplemes/eframe/web/asset/WebClientAssetFilter.html">WebClientAssetFilter</a>
+</dt><dd> <div class="block"></div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/web/asset/WebClientAssetService.html#WebClientAssetService()" title="Constructor in WebClientAssetService">WebClientAssetService()</a></span> - Constructor in <a href="org/simplemes/eframe/web/asset/WebClientAssetService.html">WebClientAssetService</a>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/webix/widget/WidgetContext.html" title="Class in org.simplemes.eframe.web.ui.webix.widget">WidgetContext</a></span> - Class in <a href="./org/simplemes/eframe/web/ui/webix/widget/package-summary.html">org.simplemes.eframe.web.ui.webix.widget</a>
 </dt><dd><div class="block">The context the widget is executing in.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/webix/widget/WidgetContext.html#WidgetContext()" title="Constructor in WidgetContext">WidgetContext()</a></span> - Constructor in <a href="org/simplemes/eframe/web/ui/webix/widget/WidgetContext.html">WidgetContext</a>
