@@ -116,9 +116,21 @@ You can also use the key fields for these foreign references:
 ----
 <1> The primary key of the foreign record to reference.
 
-NOTE: Some POGOs may use the <<json-by-key,@JSONByKey>> annotation which will use
-      a shorter format (e.g. just _"product": "BIKE_27"_).  This is up to the
-      developer.
+
+You can also use the key fields in a simple format using the simplified
+<<json-by-key,@JSONByKey>> format:
+
+[source,json]
+.JSONByKey Foreign Reference by Key Field
+----
+{
+  "orderCode": "10102-23",
+  "product": "BIKE_27"  // <1>
+}
+----
+<1> The primary key of the foreign record to reference.
+
+NOTE: You must mark the reference using the <json-by-key,@JSONByKey>> annotation.
 
 
 ==== Custom Fields

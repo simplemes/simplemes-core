@@ -59,6 +59,13 @@ task groovydocAll {
   }
 }
 
+task publishToMavenLocalAll {
+  includedBuilds.tokenize(',').each { buildName ->
+    if (buildName != 'webix') {
+      dependsOn gradle.includedBuild(buildName).task(':groovydoc')
+    }
+  }
+}
 
 task publishAll {
   includedBuilds.tokenize(',').each { buildName ->

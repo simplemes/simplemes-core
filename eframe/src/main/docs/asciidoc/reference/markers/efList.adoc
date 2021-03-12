@@ -83,6 +83,9 @@ The main parameters/body supported are:
                         See <<List Action Buttons>> below for details.
 | *_name_@buttonIcon* | The type of icon to use instead of a label.  Supported icons include
                         the Font Awesome icons such as: '_fa-plus-square_' and '_fa-minus-square_'.
+                        You need to add 'fa-' to the
+                        https://fontawesome.com/icons?d=gallery&m=free[Font Awesome]
+                        icon name.
 | *_name_@buttonHandler* | The javascript to execute when the button is clicked.
                         Available variables: (Object rowData, String listID).
                         This value must be set for the button to displayed in the list.

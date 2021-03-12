@@ -112,22 +112,91 @@ Link To objects (Order, Product, Routing/Oper, WorkCenter, WorkType).  Needs to 
 
 Tasks
 =====
+ENH: Look at ArchUnit: https://www.archunit.org/ (uses bytecode).
 ISSUE: API: Look at just sending  fields jsonb as sub-JSON instead of naming conventions and special logic.
 ISSUE: Support in non-CRUD endpoint with Domain as part of request.
 ISSUE: JSON Mapper ignores invalid fields on input (non-CRUD endpoint).
 PERF: Child save (DomainEntityHelper.childRecordUpdated() calls) forces parent to search engine.
       Possible performance issue with multiple saves.  Needs some sort of queue with coalescing logic to reduce updates to Search Engine.
 ISSUE: Exception in Freemarker always comes back as 400 response.  Need real message and real exception.
+ISSUE: $$('defectData').setValue(uuid) - Displays the UUID, not the display value?
+ISSUE: Create Flex Type with duplicate FlexType - Error displayed, but not on create screen any more.
+ISSUE: Add tk.setComboValue(uuid) for the config type field.  ReadOnly and not readOnly()
+ISSUE: Domain Ref as readOnly show the UUID.  Needs to display the short string.
+ENH: Auto create order if not exists?  In Jackson, or controller?  Client question?  MDE?  or Flag in client with button to create?
+ISSUE: Sort order in findDefects conflict with sorting.  If an order is passed in for filter criteria, then it is overwritten by the sorting 'order=asc' parameter.
+ISSUE: <@efField> is still using the controller's model name in textField and similar places.  Needs to detect this case and
+       not grab the model from the modelAndView in non-definition GUI scenarios.  Force the user to use the modleName="..." option.
 
 
 DOC: Search all docs?
+DOC: ASCIIDoc TOC on left, collapse all but current. 2.0 HTML generation into separate pages.
+     Joint server-side/client side sample.
+     Top-Level Guide Entries
+       How to Create a new Module.
+    Doc answers these questions:
+      How to display a dialog?
+      How to build a list in a dashboard?
+      How to popup dialog to edit/add record?  Pass uuid into server-side
 ENH: Icon to clear messages on top.
 ISSUE: JS displayDialog button labels as 'Yes' shows as 'Yes.label'.
 ISSUE: Release Product with routing and LSNs does not create LSN_OPER_STATE from GUI.
 ISSUE: Action Log report not receiving order when run from .jar file.  (Parameter is ordr).
+SECURITY: Move all o.s.eframe.test to separate .jar file.  Include test hooks for:
+            request user fallback (all fallbacks).
 
 Look at mes-assy Assemble Dialog use of buttons.  The .ftl file does not define the Ok/Cancel button logic.
 Look at Large BOM/Defect list affect on basic read/update of Order. Cascade updates.
+
+FileList field format.
+  Multiples.
+  Generic table of list.
+  Abstract storage.
+  Archive binary or reference to could location.
+
+Vue vs. Dashboard
+-----------------
+  https://www.mindk.com/blog/react-vs-vue/
+  Dashboard
+  ---------
+    con - Config nightmare.
+    con - setup
+    con - developer learning curve
+    pro - Very dynamic
+
+  Vue Composition
+  ---------------
+    pro - Mostly markup and custom components (e.g. LogDefect UI).
+    con - npm/Typescript hurdles (one time hit ?)
+    con - Static flow in dashboard.
+    pro - complex layout/features possible.
+      
+
+Buefy - Bad Key tabbing in calendar.
+Bootstrap Vue- Ok, but not enough components.  No editable drop-down.
+Prime more themes
+  Need to include calendar localization data.
+Element UI - Looks good, good updates.  https://element.eleme.io/#/en-US/component/menu
+Vuetify - Odd keyboard in calendar.  Has summary on frameworks.
+Quasar Bad keys for calendar.  Has splitter.
+
+
+Comparison:
+  https://vuetifyjs.com/en/introduction/why-vuetify#comparison-to-other-frameworks
+
+Splitter:
+  https://vuejsexamples.com/a-vue-js-simple-and-touch-ready-panes-splitter-resizer/  -- Good.
+
+The big issue is the dynamic needs of a dashboard.  Vue seems to handle this poorly.
+You can send dynamic HTML/Vue using the render function of the component definition.
+This can retrieve the content and build it each time is is rendered, but it is very cumbersome.  Must
+build a virtual DOM for each element.  Probably means parsing HTML in javascript (ugh).
+Alternative: Use the template option on the component definition.  This works, but the definition is fixed now.
+             We would need pass data values to it somehow.  The normal v-model doesn't seem to work.
+Alternative2: Pass down the HTML for the component once, with data elements.  Not sure how
+              to get them into the v-model.
+
+
 
 Scan Dashboard - Input field for use with phone keyboard.
 Traveller report shows M1001 not current order.
