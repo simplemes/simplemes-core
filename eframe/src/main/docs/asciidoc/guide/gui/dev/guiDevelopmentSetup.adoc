@@ -1,0 +1,236 @@
+
+=== GUI Development Setup
+
+ifeval::["{backend}" != "pdf"]
+[inline-toc]#<<GUI Setup - New Client Module>>#
+[inline-toc]#<<GUI Setup - Existing Client Module>>#
+[inline-toc]#<<GUI Setup - Common Setup>>#
+[inline-toc]#<<GUI Setup - IDEA>>#
+[inline-toc]#<<Client Module Version Dependencies>>#
+
+endif::[]
+
+
+If you have cloned the GIT repository for an existing client sub-module, then follow the
+<<GUI Setup - Existing Client Module>> instructions.  For new client sub-modules,
+follow the <<GUI Setup - New Client Module>> instructions.
+
+Some important notes about client development:
+
+* _npm_ will install most modules in the sub-folder (_node_modules_).  This tends to be
+  a huge directory.  You will want to make sure it is in the git
+  <<IDEA and the Client Folder,exclude>> file.
+* Each client sub-module will use its own set of modules/versions.  These will be
+  packaged for each module separately.
+* Some packages are installed globally.  This means they are not in the (_node_modules_)
+  folder.  You can see which ones are global with the command _npm list -g --depth=0_  .
+
+
+
+==== GUI Setup - Install Node and npm
+
+Install https://nodejs.org/en/[node and npm^].  This provides the npm tool, which is
+used to install all of the javascript modules such as Vue and related modules.
+
+==== GUI Setup - New Client Module
+
+Creating a new client module is somewhat complex.  You will need to create a node/npm/Vue
+project structure using these commands:
+
+[source,script]
+.Client First Time Setup
+----
+  cd src/client
+  npm install -g @vue/cli <.>
+  vue create moduleName <.>
+  cd moduleName
+  npm install vue@next --save <.>
+  npm install primevue --save  <.>
+  npm install primeicons --save
+  npm install primeflex --save
+  npm install vue-i18n@next --save
+  npm install axios vue-axios --save
+  npm install vuex@next --save
+  npm install in-memoriam --save
+  npm install @intlify/vue-i18n-loader --save-dev
+  npm install compression-webpack-plugin@6.0.5 --save-dev
+  npm install webpack-bundle-analyzer --save <.>
+
+----
+<.> Installs the command line tool as a global utility.
+    *This only needs to be done once for a given development system.*
+    This provides the _vue_ command used next.
+<.> Select the Vue3 option if prompted.
+    Creates a new module folder with an empty project structure.
+    The _moduleName_ should match the module name used for the server-side.  See
+    <<IDEA and the Client Folder>> if you see the error that vue.ps1 is disabled (on windows
+    powershell).
+<.> Should install latest Vue 3.x.
+<.> The rest of the locally installed modules for use in your client module.
+<.> Analysis tool for exploring your package assets for production.
+
+
+To test your client project, you can run the local development server that was
+created by the _vue create_ command above:
+
+[source,script]
+.Test Empty Client Module
+----
+  cd moduleName
+  npm run serve
+----
+
+This runs the template client for testing purposes.  You will replace most of the
+template html, javascript and Vue files for your module.
+
+
+// TODO: Fill in with files to copy from eframe or template?
+
+===== Replace Files
+
+Some of the files created above will need to be replaced by copies from the eframe module:
+
+* _package-lock.json_ - Need to change the top-level name/version.
+
+==== GUI Setup - Existing Client Module
+
+Once you have cloned the GIT repository, you will need to execute these commands:
+
+==== GUI Setup - Common Setup
+
+These setup actions apply to new and existing installations.
+
+===== Powershell on Windows
+
+Many Vue/npm commands are shipped as powershell commands (*.ps1).  By default, these are
+restricted in powershell.  You will get an error like this:
+
+[source,script]
+.Client First Time Setup
+----
+vue --version <.>
+
+
+vue : File ..\vue.ps1 cannot be loaded because running scripts is disabled on this
+system. For more information, see about_Execution_Policies at https:/go.microsoft.com/...
+At line:1 char:1
++ vue --version
++ ~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess
+----
+<.> Command to print current version of vue in the client folder.  Will fail on
+    systems with Windows Powershell.
+
+To avoid this, you should add _.cmd_ to the end of the command:
+
+[source,script]
+.Client First Time Setup
+----
+  vue.cmd --version
+----
+
+===== GIT Exclude File
+
+Node/npm has a lot of files copied to your development folder.  These should be excluded
+from the IDEA and GIT since they are generated files or open source libraries.
+This means you should have these lines in your project's GIT exclude file:
+
+
+[source,script]
+..git/info/exclude
+----
+/eframe/src/main/resources/client/
+/eframe/src/client/eframe/node_modules/
+----
+
+
+
+
+
+==== GUI Setup - IDEA
+
+The IDEA setup for npm development is fairly simple.  There are two basic run
+configurations.
+
+.Localhost (Dev)
+
+The first is to run the development server as localhost:8081.  This lets you change your
+client code and the server will update with those changes without restarting.
+
+
+[cols="1,1,6"]
+|===
+|Setting|Value|Description
+
+| *type*| npm| The task is created from the npm template (Add New Configuration).
+| *package.json*| package.json| The package-json for the client module.
+| *command*| run|
+| *scripts*| serve| Starts the dev server with hot-updates for your changes.
+| *arguments*| --port8081| The local host server is on port 8081, if you already have
+                           the micronaut application server running on port 8080.
+                           This allows the client to make requests to the 8080 server.
+
+|===
+
+.Build
+
+The second is the task to build the production assets for the client pages.
+You will run this and then start/restart the micronaut application server to test
+your client in a live server.  This will build the assets and store them in the
+_src/main/resources/client_ so the development server will have access to them for use
+in the live server.
+
+[cols="1,3,6"]
+|===
+|Setting|Value|Description
+
+| *type*| npm| The task is created from the npm template (Add New Configuration).
+| *package.json*| package.json| The package-json for the client module.
+| *command*| run|
+| *scripts*| build| Builds the production assets for a live micronaut server.
+| *arguments*| -- --dest ../../main/resources/client/eframe| This is where the assets
+                                          will be created.
+                                          This folder is the normal resource folder so that
+                                          IDEA will copy them for use in the running development
+                                          server.
+
+|===
+
+
+
+
+===== IDEA and the Client Folder
+
+.node_modules
+
+After installing these packages, the IDEA _Commit_ tab will contain thousands of files
+from the _node_modules_ folder.  You should exclude this folder.  Select the folder
+in the _Project_ tab and choose the _Git_ -> _.git/info/exclude_ option to exclude these
+from the Git logic.
+
+This will add it to the _.git/info/exclude_ folder.
+
+
+
+==== Client Module Version Dependencies
+
+npm uses two files for version control:
+
+* _package-lock.json_ - The main module version listing for all modules.
+  This includes the exact version installed for all modules.
+  This file supercedes the _package.json_ when the _npm install_ command is used.
+* _package.json_ - The top-level modules used.  Contains the general versions for the
+  modules.  This is usually something like '^3.0.7' which means any 3.x version.
+
+The _package.json_ and _package-lock.json_ files are updated when you install a new
+module as we did above with the tasks in <<GUI Setup - New Client Module>>.
+
+When building the client modules on other systems from the git source, we use the command
+_npm install_.  This installs all of the dependencies specified in the _package-lock.json_
+file.  This uses the exact version from the _package-lock.json_ file.  The version from
+the _package.json_ is not used for this scenario.
+
+NOTE: The _package-lock.json_ is the primary source of the versioning for npm.
+      Unfortunately, this is independent of the _build.gradle_ files.
+

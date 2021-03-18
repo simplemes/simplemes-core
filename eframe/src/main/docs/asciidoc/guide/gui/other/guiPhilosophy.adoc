@@ -1,0 +1,76 @@
+
+=== GUI Philosophy and Decisions
+
+Clean, functional GUIs are critical to any web application's success.
+SimpleMES is no different.
+Since GUIs are so important to your application's success, we made some key decisions
+on how to define the GUIs and how they work with the server-side.
+
+https://v3.vuejs.org/guide/introduction.html#what-is-vue-js/[Vue^] was chosen for the
+client-side display because of its support for multiple-page apps and for its reactive
+support.  This makes for a very rich client-side experience.
+
+Vue does complicate the developer process and makes for more complex GUI code.
+Because of this, we use a hybrid Gradle/Groovy and
+https://nodejs.org/[Node^] / https://docs.npmjs.com/[npm^] development environment.
+
+
+These decisions are based on some simple GUI philosophies:
+
+None of these decisions are perfect.  They all involve trade-offs.  We tried to make sure
+the end result is a smooth operating application, even in slow environments.
+There are scenarios where the framework supports a more interactive approach such
+as <<Dashboards>>.
+
+You can do things differently if you prefer.  It just means the framework won't be helping
+as much as it could. 
+
+
+==== Solution
+
+To overcome these issues, we decided to use Vue with PrimeVue components. This provides the best user experience with a
+larger developer base than the other choices.
+
+===== Pros
+
+The main benefits of this solution include:
+
+* Large developer base.
+* Extensive tutorials available.
+* Responsive UI easily implemented.
+* Modern look/feel.
+
+===== Cons
+
+The main drawbacks of this solution include:
+
+* Client development is different from the server-side.  (Javascript/node vs. Java/Groovy).
+* Integrating the two environments causes issues.
+* Vue makes dynamic, end-user GUIs more difficult.
+* Vue makes re-use of code more difficult. Inheritance is discouraged. This means some common features (like
+  localization) is copied to each page manually.
+
+==== Guidelines
+
+To work around the drawbacks of this approach, some conventions will be followed.
+
+==== Development Process
+
+In particular, all pages will be generated with the Vue/JS world. This means all UI features are built/configured in the
+node/JS world. The node/npm world will generate the client assets which will be served up by the server-side.
+
+This means most development will be done while running the npm/VueCLI in development mode, then doing a build to create
+the assets for the server-side core to serve.
+
+==== Integration During Development
+
+The npm/VueCLI will run the app in developer mode. The access to the server-side will be to another process on a
+different port. This is done to keep the development mode code the same as the production as much as possible.
+
+The axios module use a proxy for development mode to access http://localhost:8080/ while the client code is run
+on http://localhost:8081/
+
+
+
+
+

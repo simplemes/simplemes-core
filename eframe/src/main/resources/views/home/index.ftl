@@ -12,6 +12,7 @@
     </@efButtonGroup>
     <@efButtonGroup spacerWidth="5%">
       <@efButton id="OrderButton" label='Orders' click="window.location='/order'"/>
+      <@efButton id="FlexTypeButton" label='Flex Type - Vue' click="window.location='/client/eframe/flexType'"/>
       <@efButton id="GlobalSearchButton" label='Search' click="window.location='/search'"/>
     </@efButtonGroup>
     <@efHTML height="5%">Production</@efHTML>

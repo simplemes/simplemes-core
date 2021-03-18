@@ -1,0 +1,181 @@
+
+=== GUI Development
+
+ifeval::["{backend}" != "pdf"]
+[inline-toc]#<<GUI Module Structure>>#
+[inline-toc]#<<GUI Development Tasks>>#
+
+endif::[]
+
+The GUI development environment is somewhat complex due to the hybrid nature.
+We use Groovy/Java on the server-side and Vue on the client-side.
+This forces us to develop the client-side GUIs in isolation from the server-side.
+The client is then served up by the server-side.
+
+
+==== GUI Module Structure
+
+The basic structure for the modular application will look
+something like this:
+
+
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-build}
+
+[ditaa,"clientModulesExample"]
+----
++-------------+---------+-------------+---------+
+| App Module A| Client  | App Module B| Client  |
+|             |         |             |         |
+|       c33B  |    c33B |        cYEL |    cYEL |
++-------------+---------+----------+--+---------+
+|      Application Core Module     |  Client    |
+|                             cGRE |       cGRE |
++--------------------------------+-+------------+
+|         Enterprise Framework     |  Client    |
+|                                  |            |
++----------------------------------+------------+
+
+----
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+Each module can supply a client one or more sub-modules with the assets needed for
+the clients.  These client sub-modules will be built using the npm processes typically
+used for Vue applications.
+
+
+
+
+The application pages will be organized like this during the production deployment:
+
+
+
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-build}
+
+[plantuml,"clientPages",align="center"]
+.Production Deployment - URL Locations
+----
+@startuml
+
+node client as "<b>/client"
+
+node eframe as "<b>/eframe"
+file flexType [
+  <b>/flexType
+  --
+  FlexType.vue
+  flexType.js
+]
+
+file logging [
+  <b>/logging
+  --
+  Logging.vue
+  logging.js
+]
+
+file search [
+  <b>/search
+  --
+  Search.vue
+  search.js
+]
+
+
+node mesCore as "<b>/mes-core"
+file order [
+  <b>/order
+  --
+  Order.vue
+  order.js
+]
+
+file orderDashboard [
+  <b>/orderDashboard
+  --
+  OrderDashboard.vue
+  orderDashboard.js
+  --
+  WorkList.vue
+  WorkCenterSelection.vue
+]
+
+file assyReport [
+  <b>/assyReport
+  --
+  AssyReport.vue
+  assyReport.js
+]
+
+node mesAssy as "<b>/mes-assy"
+file assyDashboard [
+  <b>/assyDashboard
+  --
+  AssyDashboard.vue
+  assyDashboard.js
+  --
+  AssemblyList.vue
+  WorkList.vue - <b>mes-core
+]
+
+client -- eframe
+client -- mesCore
+client -- mesAssy
+eframe -- flexType
+eframe -- logging
+eframe -- search
+
+mesCore -- order
+mesCore -- orderDashboard
+
+mesAssy -- assyReport
+mesAssy -- assyDashboard
+
+
+@enduml
+----
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+
+==== GUI Development Tasks
+
+GUI development involves working with the client sub-module and then moving it to the
+production server for deployment.  The basic flow is:
+
+. _Create/Edit client page_ - Write/edit the client-side components code.
+  This includes .vue and .js file changes.  The developer can use the _npm run server_
+  task to allow hot-updates to the running client-side application while they make
+  changes.
+
+. _Build the assets_ - Use the _npm run build_ to create the assets.
+
+. _Deploy the client_ - Use the Gradle task _deployClient_ to deploy the client assets
+  to the Groovy server.  The server is then restarted.  This makes the compiled
+  assets available within a running application server.
+
+. _Build .jar_ - When ready to publish the module, the run-time .jar file is built
+  and the assets are included in the .jar file.  This is done by the Gradle
+  task _publishToMavenLocal_ task.
+   
+
+
+
+===== Common npm Tasks
+
+https://docs.npmjs.com/[npm^] is used to build the normal client sub-modules.
+
+
+* _npm run server --port8081_  - Runs the development mode server for client development.
+  Supports hot-update for most client-side JS/Vue changes.
+
+* _npm run build_  - Builds the client-side assets (JS/CSS/Images) for the client sub-module.
+  These assets will need to be transferred to the resource folder using the Gradle task
+  _deployClient_.
+
+

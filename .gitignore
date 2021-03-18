@@ -20,3 +20,4 @@ staging/
 .asciidoctor/
 {imagesdir-build}/
 {imagesdir-src}/
+node_modules/

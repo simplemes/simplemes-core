@@ -1,0 +1,7 @@
+{
+  "completeLabel": "Complete",
+  "orderLSN": "Auftrag/LSN",
+  "reportsLabel": "Reports",
+  "selectedOrdersLSNsMessage": "({count} selected)",
+  "startLabel": "Start"
+}

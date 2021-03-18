@@ -1,12 +1,62 @@
 Scratch
 =======
 
-GUI - Investigations
+GUI - Vue Conversion
 --------------------
-  vue - Has issues with dynamic elements.  May be fixed in 3.0x: https://v3.vuejs.org/guide/component-dynamic-async.html#async-components
-ES6 style syntax - works in modules .js files.
-Morph from https://gist.github.com/gaearon/6668a1f6986742109c00a581ce704605 to es6 imports and see what works.
-Also look at https://primefaces.org/primereact/showcase/#/splitter for another simple render example with no component stuff.
+  Scenarios
+    ☑ OrderDashboard
+    ☑ Flex Fields
+    ☑ Testing and using live server for data?
+    ☑ Server submits (Test and real).
+    ☑ Mockup LSN Dashboard - With Routing support/option?
+    CRUD for definition GUI - Custom Fields.
+    ☑ Localization/preferences.
+    Theme - Dynamic   See https://forum.primefaces.org/viewtopic.php?f=110&t=65497&p=188847&hilit=theme#p188847
+    Define Component in eframe and use in mes-core.
+    Security - /flexType/index controller method enforces initial permissions/re-direct for login.
+    Samples.
+
+  Tasks
+  -----
+    Needs store hierarchy.  See: https://medium.com/3yourmind/large-scale-vuex-application-structures-651e44863e2f
+      Patterns: https://learn-vuejs.github.io/vue-patterns/patterns/
+    Move boilerplate to common area (Standard Header?)
+    Define Gradle tasks
+      buildClient
+      testClient
+    Publish npm module for each eframe/mes module?
+    Determine how much of eframe/app definitions can be automatically pulled into the client-side components/app:
+      Field Order
+      Field Size/type
+      Labels/I18n.
+      How is this info passed to components. (new layer efInputText? or REST API to get page definitions.)
+      Re-use .css?  Using an import?
+    Build way to package/serve client modules (from dist folder?, as-is or adjusted?).  Multiple module support.
+      chunk.vendors
+      pages/module/index.js + .vue files (compiled).
+    Document developer setup, running, building and testing procedures.
+    Document guidelines
+      file naming convention (index.html everywhere?)
+    How is doc for components defined (e.g. Javadoc equivalent).
+    How to use common client-side features (e.g. Ajax)?
+    Define Dashboard Requirements
+      Configurable buttons?  Maybe just string pre-defined activities together?
+
+  Resources/Notes
+  ---------------
+    Tutorial: https://v3.vuejs.org/guide/instance.html
+    CLI/Pages: https://cli.vuejs.org/config/#pages
+    Chrome plugin (v3-beta): https://chrome.google.com/webstore/detail/vuejs-devtools/ljjemllljcmogpfapbkkighbhhppjdbg
+    Mustache syntax can't be used in attributes.  Won't work: value='{{ message }}'.  Needs v-bind:value='message'
+    Ajax Lib: https://cdn.jsdelivr.net/npm/axios@0.12.0/dist/axios.min.js
+    Best Practices: https://www.telerik.com/blogs/10-good-practices-building-maintaining-large-vuejs-projects
+    Web Pack analyzer: https://www.npmjs.com/package/webpack-bundle-analyzer
+    Code generation: Empty dashboard?
+
+  Doc/Guide Notes/Conventions
+  ---------------------------
+    The main vue component is stored as window.$page.  Available globally.  Set in root component's created()
+    Use reduced syntax standards: http://es6-features.org/#reduced
 
 
 MVP

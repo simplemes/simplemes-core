@@ -47,7 +47,7 @@ include::guide/controllers/controllers.adoc[]
 
 include::guide/services/services.adoc[]
 
-include::guide/guis/guis.adoc[]
+include::guide/gui/gui.adoc[]
 
 include::guide/monitor/monitor.adoc[]
 

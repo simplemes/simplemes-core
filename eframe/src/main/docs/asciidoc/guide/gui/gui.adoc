@@ -1,0 +1,35 @@
+
+== GUIs
+
+ifeval::["{backend}" != "pdf"]
+[inline-toc]#<<GUI Dependencies>>#
+[inline-toc]#<<GUI Philosophy and Decisions>>#
+[inline-toc]#<<GUI Development>>#
+[inline-toc]#<<GUI Development Setup>>#
+
+endif::[]
+
+
+Standardized GUIs are a key part of the user experience in enterprise applications.
+Customers expect your GUIs to work the same way across the entire application.  To keep the
+GUIs consistent, the framework provides a set of common GUI components and support objects
+to reduce the developer complexity.
+
+=== GUI Dependencies
+
+The following client modules are used by the clients sub-modules:
+
+* https://v3.vuejs.org/guide/introduction.html#what-is-vue-js/[Vue^] - The main reactive client system.
+* https://cli.vuejs.org/guide/[VueCLI^] - The command line tool for creating/managing the client sub-module.
+  Includes Webpack for packaging the client assets for production.
+* https://primefaces.org/primevue/[PrimeVue^] - Component library.
+* https://next.vuex.vuejs.org/[VueX^] - Global state management for the client.
+* https://github.com/axios/axios[Axios^] - Client/Server requests (AJAX).
+
+
+
+
+
+include::other/guiPhilosophy.adoc[]
+include::dev/guiDevelopment.adoc[]
+include::dev/guiDevelopmentSetup.adoc[]
