@@ -7936,7 +7936,8 @@ within its own transaction.</td>
 <p><span class="inline-toc"><a href="#gui-dependencies">GUI Dependencies</a></span>
 <span class="inline-toc"><a href="#gui-philosophy-and-decisions">GUI Philosophy and Decisions</a></span>
 <span class="inline-toc"><a href="#gui-development">GUI Development</a></span>
-<span class="inline-toc"><a href="#gui-development-setup">GUI Development Setup</a></span></p>
+<span class="inline-toc"><a href="#gui-development-setup">GUI Development Setup</a></span>
+<span class="inline-toc"><a href="#gui-i18n">GUI I18n</a></span></p>
 </div>
 <div class="paragraph">
 <p>Standardized GUIs are a key part of the user experience in enterprise applications.
@@ -8232,7 +8233,6 @@ project structure using these commands:</p>
   npm install axios vue-axios --save
   npm install vuex@next --save
   npm install in-memoriam --save
-  npm install @intlify/vue-i18n-loader --save-dev
   npm install compression-webpack-plugin@6.0.5 --save-dev
   npm install webpack-bundle-analyzer --save <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
 </div>
@@ -8525,6 +8525,87 @@ The <em>package-lock.json</em> is the primary source of the versioning for npm.
 </tr>
 </table>
 </div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="gui-i18n"><a class="link" href="#gui-i18n">GUI I18n</a></h3>
+<div class="paragraph">
+<p>All GUIs must be localized.  The client sub-module supports multiple locales, with varying
+support for languages.  The fallback language (English) is fully supported.
+All text used on all display elements should be localized.</p>
+</div>
+<div class="paragraph">
+<p>To support this localization, the client side of the framework supports locale files
+for each supported language.  For example, the English file will look something like this:</p>
+</div>
+<div class="listingblock">
+<div class="title">Locale JS File - en.js</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">export</span> <span class="keyword">default</span> {
+  getLocale() {  <i class="conum" data-value="1"></i><b>(1)</b>
+    <span class="keyword">return</span> <span class="string"><span class="delimiter">'</span><span class="content">en</span><span class="delimiter">'</span></span>
+  },
+  getMessages() {  <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="keyword">return</span> {
+      <span class="key">label</span>: {     <i class="conum" data-value="3"></i><b>(3)</b>
+        <span class="key">category</span>: <span class="string"><span class="delimiter">'</span><span class="content">Category</span><span class="delimiter">'</span></span>,
+        <span class="key">fields</span>: <span class="string"><span class="delimiter">'</span><span class="content">Fields</span><span class="delimiter">'</span></span>,
+        <span class="key">flexType</span>: <span class="string"><span class="delimiter">'</span><span class="content">Flex Type</span><span class="delimiter">'</span></span>,
+        <span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">Title</span><span class="delimiter">'</span></span>,
+        <span class="key">searchStatusGreen</span>: <span class="string"><span class="delimiter">'</span><span class="content">Green</span><span class="delimiter">'</span></span>,
+      }
+    }
+  }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Provides the locale (language only supported).</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Provides the localized text.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The basic types include (e.g. 'label', 'title', etc.)</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>These are used in components with the following syntax:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example - Locale Usage in Vue File</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="tag">&lt;template&gt;</span>
+  <span class="tag">&lt;h3&gt;</span>{{ $t('label.flexType')  }}<span class="tag">&lt;/h3&gt;</span>   <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="tag">&lt;/template&gt;</span>
+
+
+<span class="reserved">export</span> <span class="keyword">default</span> {
+  <span class="key">methods</span>: {
+    getLabel() {
+      <span class="keyword">return</span> <span class="local-variable">this</span>.<span class="predefined">$t</span>(<span class="string"><span class="delimiter">'</span><span class="content">label.flexType</span><span class="delimiter">'</span></span>)}  <i class="conum" data-value="2"></i><b>(2)</b>
+    },
+  }
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Use the 'mustache' syntax in the template/HTML section.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Use the global <em>$t()</em> syntax within Javascript.</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -16064,7 +16145,7 @@ to the dependencies.  This is done in the Modules part of the 'Project Structure
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-03-18 16:01:43 UTC
+Last updated 2021-03-19 12:34:51 UTC
 </div>
 </div>
 <style>
