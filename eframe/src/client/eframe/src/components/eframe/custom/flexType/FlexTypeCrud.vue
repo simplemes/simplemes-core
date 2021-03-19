@@ -59,10 +59,10 @@ export default {
     window.$topComponent = this
     window.$page = new GeneralPage(this)
     this.columns = [
-      {field: 'flexType', header: this.$t('flexType-label')},
-      {field: 'category', header: this.$t('category-label')},
-      {field: 'title', header: this.$t('title-label')},
-      {field: 'fieldSummary', header: this.$t('fields-label')},
+      {field: 'flexType', header: this.$t('label.flexType')},
+      {field: 'category', header: this.$t('label.category')},
+      {field: 'title', header: this.$t('label.title')},
+      {field: 'fieldSummary', header: this.$t('label.fields')},
     ];
   },
   methods: {

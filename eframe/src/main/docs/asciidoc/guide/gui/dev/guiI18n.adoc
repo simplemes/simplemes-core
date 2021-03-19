@@ -1,0 +1,55 @@
+
+=== GUI I18n
+
+All GUIs must be localized.  The client sub-module supports multiple locales, with varying
+support for languages.  The fallback language (English) is fully supported.
+All text used on all display elements should be localized.
+
+To support this localization, the client side of the framework supports locale files
+for each supported language.  For example, the English file will look something like this:
+
+[source,javascript]
+.Locale JS File - en.js
+----
+export default {
+  getLocale() {  // <.>
+    return 'en'
+  },
+  getMessages() {  // <.>
+    return {
+      label: {     // <.>
+        category: 'Category',
+        fields: 'Fields',
+        flexType: 'Flex Type',
+        title: 'Title',
+        searchStatusGreen: 'Green',
+      }
+    }
+  }
+}
+----
+<.> Provides the locale (language only supported).
+<.> Provides the localized text.
+<.> The basic types include (e.g. 'label', 'title', etc.)
+
+
+These are used in components with the following syntax:
+
+[source,javascript]
+.Example - Locale Usage in Vue File
+----
+<template>
+  <h3>{{ $t('label.flexType')  }}</h3>   // <.>
+</template>
+
+
+export default {
+  methods: {
+    getLabel() {
+      return this.$t('label.flexType')}  // <.>
+    },
+  }
+}
+----
+<.> Use the 'mustache' syntax in the template/HTML section.
+<.> Use the global _$t()_ syntax within Javascript.

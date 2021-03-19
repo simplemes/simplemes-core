@@ -1,6 +1,6 @@
-const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+//const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const CompressionPlugin = require('compression-webpack-plugin');
-const path = require('path');
+//const path = require('path');
 
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ? '/client/eframe' : '/',
@@ -32,21 +32,5 @@ module.exports = {
       //new BundleAnalyzerPlugin()  // https://www.npmjs.com/package/webpack-bundle-analyzer
       new CompressionPlugin({threshold: 500})
     ],
-  },
-  chainWebpack: config => {
-    config.module
-      .rule('i18n-resource')
-      .test(/\.(json?|ya?ml)$/)
-      .include.add(path.resolve(__dirname, './src/locales'))
-      .end()
-      .type('javascript/auto')
-      .use('i18n-resource')
-      .loader('@intlify/vue-i18n-loader')
-    config.module
-      .rule('i18n')
-      .resourceQuery(/blockType=i18n/)
-      .type('javascript/auto')
-      .use('i18n')
-      .loader('@intlify/vue-i18n-loader');
   },
 }

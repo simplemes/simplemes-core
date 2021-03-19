@@ -1,6 +1,7 @@
 import {createApp} from 'vue'
 import FlexType from '@/components/eframe/custom/flexType/FlexTypeCrud.vue';
 import '@/assets/styles/global.css';
+import Locales from '@/locales/Locales.js';
 
 import 'primevue/resources/themes/saga-blue/theme.css';
 import 'primevue/resources/primevue.min.css';
@@ -65,7 +66,7 @@ const i18n = createI18n({
   locale: navigator.language,
   fallbackLocale: 'en',
   legacy: true,
-  messages: {},
+  messages: Locales.getLocales(),
   silentTranslationWarn: true, silentFallbackWarn: true
 });
 
@@ -83,22 +84,6 @@ app.use(i18n)
 app.use(VueAxios, axios)
 
 app.mount('#app');
-
-let bundle = "en"
-if (navigator.language.startsWith('de')) {
-  bundle = "de"
-}
-
-import(
-  /* webpackChunkName: "locale-mes-core" */ `../../../../src/locales/${bundle}.json` )
-  .then(value => {
-    let dummyComponent = {options: {}};
-    value.default(dummyComponent);
-    //console.log(JSON.parse(dummyComponent.options.__i18n[0]));
-
-    i18n.global.setLocaleMessage('en', JSON.parse(dummyComponent.options.__i18n[0]))
-  });
-
 
 //app.showToast();
 //app.$toast.add({severity:'success', summary: 'Success Message', detail:'Order submitted', life: 3000});

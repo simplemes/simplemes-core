@@ -52,7 +52,6 @@ project structure using these commands:
   npm install axios vue-axios --save
   npm install vuex@next --save
   npm install in-memoriam --save
-  npm install @intlify/vue-i18n-loader --save-dev
   npm install compression-webpack-plugin@6.0.5 --save-dev
   npm install webpack-bundle-analyzer --save <.>
 
