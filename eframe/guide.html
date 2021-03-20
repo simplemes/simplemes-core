@@ -8234,7 +8234,9 @@ project structure using these commands:</p>
   npm install vuex@next --save
   npm install in-memoriam --save
   npm install compression-webpack-plugin@6.0.5 --save-dev
-  npm install webpack-bundle-analyzer --save <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+  npm install webpack-bundle-analyzer --save <i class="conum" data-value="5"></i><b>(5)</b>
+
+  npx vue add i18n <i class="conum" data-value="6"></i><b>(6)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -8264,6 +8266,11 @@ powershell).</td>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
 <td>Analysis tool for exploring your package assets for production.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Adds i18n bundler options to the CLI environment.  This affects the build process.
+See <a href="https://github.com/intlify/vue-cli-plugin-i18n" target="_blank" rel="noopener">plugin</a> for details.</td>
 </tr>
 </table>
 </div>
@@ -8470,6 +8477,15 @@ in the live server.</p>
 </tr>
 </tbody>
 </table>
+</div>
+<div class="sect3">
+<h4 id="excluding-the-client-folder-from-searches"><a class="link" href="#excluding-the-client-folder-from-searches">Excluding the Client Folder from Searches</a></h4>
+<div class="paragraph">
+<p>Since the client assets are copied to the <em>main/resources/client</em> folder, the contents
+will show up by default in the IDEA searches.  This is inconvenient. In the IDEA
+Project Structure dialog (module <em>eframe/main</em>) you can 'exclude' the
+<em>resources/client/eframe</em> folder.  (Replace <em>eframe</em> with the client sub-module name).</p>
+</div>
 <div class="sect4">
 <h5 id="idea-and-the-client-folder"><a class="link" href="#idea-and-the-client-folder">IDEA and the Client Folder</a></h5>
 <div class="paragraph">
@@ -16145,7 +16161,7 @@ to the dependencies.  This is done in the Modules part of the 'Project Structure
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-03-19 12:34:51 UTC
+Last updated 2021-03-20 12:56:39 UTC
 </div>
 </div>
 <style>
