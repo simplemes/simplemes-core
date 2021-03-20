@@ -70,6 +70,7 @@ const i18n = createI18n({
   silentTranslationWarn: true, silentFallbackWarn: true
 });
 
+// TODO: Hide in base/component class?
 
 const app = createApp(FlexType);
 //window.app = app

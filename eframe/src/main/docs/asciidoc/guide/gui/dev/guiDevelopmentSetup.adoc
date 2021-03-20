@@ -55,6 +55,8 @@ project structure using these commands:
   npm install compression-webpack-plugin@6.0.5 --save-dev
   npm install webpack-bundle-analyzer --save <.>
 
+  npx vue add i18n <.>
+
 ----
 <.> Installs the command line tool as a global utility.
     *This only needs to be done once for a given development system.*
@@ -67,6 +69,9 @@ project structure using these commands:
 <.> Should install latest Vue 3.x.
 <.> The rest of the locally installed modules for use in your client module.
 <.> Analysis tool for exploring your package assets for production.
+<.> Adds i18n bundler options to the CLI environment.  This affects the build process.
+    See https://github.com/intlify/vue-cli-plugin-i18n[plugin^] for details.
+
 
 
 To test your client project, you can run the local development server that was
@@ -195,6 +200,14 @@ in the live server.
                                           server.
 
 |===
+
+==== Excluding the Client Folder from Searches
+
+Since the client assets are copied to the _main/resources/client_ folder, the contents
+will show up by default in the IDEA searches.  This is inconvenient. In the IDEA
+Project Structure dialog (module _eframe/main_) you can 'exclude' the
+_resources/client/eframe_ folder.  (Replace _eframe_ with the client sub-module name).
+
 
 
 

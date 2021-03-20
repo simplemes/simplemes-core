@@ -56,7 +56,7 @@ export default {
     }
   },
   created() {
-    window.$topComponent = this
+    //window.$topComponent = this
     window.$page = new GeneralPage(this)
     this.columns = [
       {field: 'flexType', header: this.$t('label.flexType')},

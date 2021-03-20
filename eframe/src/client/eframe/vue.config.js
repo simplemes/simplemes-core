@@ -33,4 +33,15 @@ module.exports = {
       new CompressionPlugin({threshold: 500})
     ],
   },
+  pluginOptions: {
+    i18n: {
+      fallbackLocale: 'en',
+      enableLegacy: true,
+      locale: 'en',
+      //localeDir: 'locales',
+      runtimeOnly: false,
+      compositionOnly: false,
+      fullInstall: true
+    }
+  }
 }
