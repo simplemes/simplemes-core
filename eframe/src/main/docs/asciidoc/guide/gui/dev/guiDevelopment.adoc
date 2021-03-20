@@ -148,7 +148,7 @@ mesAssy -- assyDashboard
 GUI development involves working with the client sub-module and then moving it to the
 production server for deployment.  The basic flow is:
 
-. _Create/Edit client page_ - Write/edit the client-side components code.
+. <<Create Client Page>> - Create/edit the client-side components code.
   This includes .vue and .js file changes.  The developer can use the _npm run server_
   task to allow hot-updates to the running client-side application while they make
   changes.
@@ -163,19 +163,121 @@ production server for deployment.  The basic flow is:
   and the assets are included in the .jar file.  This is done by the Gradle
   task _publishToMavenLocal_ task.
    
+===== Create Client Page
+
+The client page defines a single endpoint (URL) for the application.  For example,
+the CRUD page for the Flex Type records is at '/client/eframe/flexType'.  It is made
+up of these elements:
+
+flexType.js - uses PageApp
+FlexTypeCrud.vue - Uses CrudTable element
 
 
 
-===== Common npm Tasks
+//workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-build}
 
-https://docs.npmjs.com/[npm^] is used to build the normal client sub-modules.
+[plantuml,"clientElements",align="center"]
+.Client Elements
+----
+@startuml
+
+node url as "url: <b>/client/eframe/flexType"
+
+file flexType.js  [
+  <b>flexType.js
+  --
+  app = PageApp.createApp(FlexType)
+  app.mount('#app')
+]
+
+file flexType.vue  [
+  <b>flexType.vue
+  --
+<template>
+  <StandardHeader/>
+    <<b>CrudTable :value="flexTypes"
+               :totalRecords="totalRecords"
+               :loading="loading"
+               @page="onPage($event)">
+   </CrudTable>
+</template>]
 
 
-* _npm run server --port8081_  - Runs the development mode server for client development.
-  Supports hot-update for most client-side JS/Vue changes.
+url -- flexType.js
+url -- flexType.vue 
 
-* _npm run build_  - Builds the client-side assets (JS/CSS/Images) for the client sub-module.
-  These assets will need to be transferred to the resource folder using the Gradle task
-  _deployClient_.
+
+
+@enduml
+----
+
+//end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
+:imagesdir: {imagesdir-src}
+
+The _.js_ file is fairly simple.  Most of the common logic is provided by the PageApp:
+
+[source,javascript]
+.Example - page.js
+----
+/**
+ * Basic CRUD page for a single object.
+ */
+
+import FlexType from '@/components/eframe/custom/flexType/FlexTypeCrud.vue'
+import PageApp from '@/components/eframe/web/PageApp'
+import '@/assets/styles/global.css'
+
+
+const app = PageApp.createApp(FlexType)  // <.>
+app.mount('#app')                        // <.>
+
+----
+<.> Uses standard features such as Toast, Axios and <<GUI I18n>> support.
+<.> Mounts the FlexType crud table in the standard page using the _'app'_ HTML ID.
+
+The _.vue_ file for most Crud pages is also fairly simple.
+This uses the CrudTable component:
+
+[source,javascript]
+.Example - FlexTypeCrud.vue
+----
+/**
+ * Basic CRUD component for a single object.
+ */
+<template>
+  <CrudTable :columns="columns" :service="service"/>  // <.>
+</template>
+
+<script>
+
+import CrudTable from '@/components/eframe/web/CrudTable';
+import FlexTypeService from '@/components/eframe/custom/flexType/FlexTypeService'
+
+export default {
+  components: {
+    CrudTable
+  },
+  data() {
+    return {
+      columns: [                                                // <.>
+        {field: 'flexType', header: this.$t('label.flexType')},
+        {field: 'category', header: this.$t('label.category')},
+        {field: 'title', header: this.$t('label.title')},
+        {field: 'fieldSummary', header: this.$t('label.fields')},
+      ],
+      service: FlexTypeService                                  // <.>
+    }
+  },
+}
+
+</script>
+----
+<.> Defines the standard CRUD page with a header.  The `columns` and `service` values
+    are required.
+<.> The columns displayed are listed.
+<.> The service that implements the `list()` and other CRUD-related methods.
+    See <<GUI - CRUD Requirements>> for details.
+
 
 

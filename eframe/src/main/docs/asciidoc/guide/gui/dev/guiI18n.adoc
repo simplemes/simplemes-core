@@ -39,7 +39,7 @@ These are used in components with the following syntax:
 .Example - Locale Usage in Vue File
 ----
 <template>
-  <h3>{{ $t('label.flexType')  }}</h3>   // <.>
+  <Button>{{ $t('label.flexType')  }}</Button>   // <.>
 </template>
 
 
@@ -51,5 +51,12 @@ export default {
   }
 }
 ----
-<.> Use the 'mustache' syntax in the template/HTML section.
+<.> Use the 'mustache' syntax in the template/HTML section.  The localized text can't
+    be used as the content of an attribute.
 <.> Use the global _$t()_ syntax within Javascript.
+
+
+CAUTION: The 'mustache' syntax can't be used in an HTML attribute.  For example this won't
+      work:  _<Button label="{{ $t('label.flexType')  }}"/>_.  You will need to
+      place the text outside of the attributes as done above or
+      use the text as a data element with binding (e.g. _:label="name"_).
