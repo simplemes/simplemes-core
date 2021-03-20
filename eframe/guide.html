@@ -7937,6 +7937,7 @@ within its own transaction.</td>
 <span class="inline-toc"><a href="#gui-philosophy-and-decisions">GUI Philosophy and Decisions</a></span>
 <span class="inline-toc"><a href="#gui-development">GUI Development</a></span>
 <span class="inline-toc"><a href="#gui-development-setup">GUI Development Setup</a></span>
+<span class="inline-toc"><a href="#gui-requirements">GUI Requirements</a></span>
 <span class="inline-toc"><a href="#gui-i18n">GUI I18n</a></span></p>
 </div>
 <div class="paragraph">
@@ -8130,7 +8131,7 @@ production server for deployment.  The basic flow is:</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><em>Create/Edit client page</em> - Write/edit the client-side components code.
+<p><a href="#create-client-page">Create Client Page</a> - Create/edit the client-side components code.
 This includes .vue and .js file changes.  The developer can use the <em>npm run server</em>
 task to allow hot-updates to the running client-side application while they make
 changes.</p>
@@ -8151,22 +8152,109 @@ task <em>publishToMavenLocal</em> task.</p>
 </ol>
 </div>
 <div class="sect4">
-<h5 id="common-npm-tasks"><a class="link" href="#common-npm-tasks">Common npm Tasks</a></h5>
+<h5 id="create-client-page"><a class="link" href="#create-client-page">Create Client Page</a></h5>
 <div class="paragraph">
-<p><a href="https://docs.npmjs.com/" target="_blank" rel="noopener">npm</a> is used to build the normal client sub-modules.</p>
+<p>The client page defines a single endpoint (URL) for the application.  For example,
+the CRUD page for the Flex Type records is at '/client/eframe/flexType'.  It is made
+up of these elements:</p>
 </div>
-<div class="ulist">
-<ul>
-<li>
-<p><em>npm run server --port8081</em>  - Runs the development mode server for client development.
-Supports hot-update for most client-side JS/Vue changes.</p>
-</li>
-<li>
-<p><em>npm run build</em>  - Builds the client-side assets (JS/CSS/Images) for the client sub-module.
-These assets will need to be transferred to the resource folder using the Gradle task
-<em>deployClient</em>.</p>
-</li>
-</ul>
+<div class="paragraph">
+<p>flexType.js - uses PageApp
+FlexTypeCrud.vue - Uses CrudTable element</p>
+</div>
+<div class="imageblock text-center">
+<div class="content">
+<img src="images/clientElements.png" alt="clientElements" width="629" height="299">
+</div>
+<div class="title">Figure 12. Client Elements</div>
+</div>
+<div class="paragraph">
+<p>The <em>.js</em> file is fairly simple.  Most of the common logic is provided by the PageApp:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example - page.js</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="comment">/**
+ * Basic CRUD page for a single object.
+ */</span>
+
+<span class="reserved">import</span> FlexType from <span class="string"><span class="delimiter">'</span><span class="content">@/components/eframe/custom/flexType/FlexTypeCrud.vue</span><span class="delimiter">'</span></span>
+<span class="reserved">import</span> PageApp from <span class="string"><span class="delimiter">'</span><span class="content">@/components/eframe/web/PageApp</span><span class="delimiter">'</span></span>
+<span class="reserved">import</span> <span class="string"><span class="delimiter">'</span><span class="content">@/assets/styles/global.css</span><span class="delimiter">'</span></span>
+
+
+const app = PageApp.createApp(FlexType)  <i class="conum" data-value="1"></i><b>(1)</b>
+app.mount(<span class="string"><span class="delimiter">'</span><span class="content">#app</span><span class="delimiter">'</span></span>)                        <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Uses standard features such as Toast, Axios and <a href="#gui-i18n">GUI I18n</a> support.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Mounts the FlexType crud table in the standard page using the <em>'app'</em> HTML ID.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The <em>.vue</em> file for most Crud pages is also fairly simple.
+This uses the CrudTable component:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example - FlexTypeCrud.vue</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="comment">/**
+ * Basic CRUD component for a single object.
+ */</span>
+<span class="tag">&lt;template&gt;</span>
+  <span class="tag">&lt;CrudTable</span> <span class="attribute-name">:columns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">columns</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">:service</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">service</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>  <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="tag">&lt;/template&gt;</span>
+
+<span class="tag">&lt;script&gt;</span>
+<span class="inline">
+<span class="reserved">import</span> CrudTable from <span class="string"><span class="delimiter">'</span><span class="content">@/components/eframe/web/CrudTable</span><span class="delimiter">'</span></span>;
+<span class="reserved">import</span> FlexTypeService from <span class="string"><span class="delimiter">'</span><span class="content">@/components/eframe/custom/flexType/FlexTypeService</span><span class="delimiter">'</span></span>
+
+<span class="reserved">export</span> <span class="keyword">default</span> {
+  <span class="key">components</span>: {
+    CrudTable
+  },
+  data() {
+    <span class="keyword">return</span> {
+      <span class="key">columns</span>: [                                                <i class="conum" data-value="2"></i><b>(2)</b>
+        {<span class="key">field</span>: <span class="string"><span class="delimiter">'</span><span class="content">flexType</span><span class="delimiter">'</span></span>, <span class="key">header</span>: <span class="local-variable">this</span>.<span class="predefined">$t</span>(<span class="string"><span class="delimiter">'</span><span class="content">label.flexType</span><span class="delimiter">'</span></span>)},
+        {<span class="key">field</span>: <span class="string"><span class="delimiter">'</span><span class="content">category</span><span class="delimiter">'</span></span>, <span class="key">header</span>: <span class="local-variable">this</span>.<span class="predefined">$t</span>(<span class="string"><span class="delimiter">'</span><span class="content">label.category</span><span class="delimiter">'</span></span>)},
+        {<span class="key">field</span>: <span class="string"><span class="delimiter">'</span><span class="content">title</span><span class="delimiter">'</span></span>, <span class="key">header</span>: <span class="local-variable">this</span>.<span class="predefined">$t</span>(<span class="string"><span class="delimiter">'</span><span class="content">label.title</span><span class="delimiter">'</span></span>)},
+        {<span class="key">field</span>: <span class="string"><span class="delimiter">'</span><span class="content">fieldSummary</span><span class="delimiter">'</span></span>, <span class="key">header</span>: <span class="local-variable">this</span>.<span class="predefined">$t</span>(<span class="string"><span class="delimiter">'</span><span class="content">label.fields</span><span class="delimiter">'</span></span>)},
+      ],
+      <span class="key">service</span>: FlexTypeService                                  <i class="conum" data-value="3"></i><b>(3)</b>
+    }
+  },
+}</span>
+
+<span class="tag">&lt;/script&gt;</span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Defines the standard CRUD page with a header.  The <code>columns</code> and <code>service</code> values
+are required.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The columns displayed are listed.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The service that implements the <code>list()</code> and other CRUD-related methods.
+See <a href="#gui-crud-requirements">GUI - CRUD Requirements</a> for details.</td>
+</tr>
+</table>
 </div>
 </div>
 </div>
@@ -8544,6 +8632,123 @@ The <em>package-lock.json</em> is the primary source of the versioning for npm.
 </div>
 </div>
 <div class="sect2">
+<h3 id="gui-requirements"><a class="link" href="#gui-requirements">GUI Requirements</a></h3>
+<div class="paragraph">
+<p><span class="inline-toc"><a href="#gui-crud-service-requirements">GUI - CRUD Service Requirements</a></span></p>
+</div>
+<div class="paragraph">
+<p>The GUI development environment requires some server and client-side objects
+to make the pieces all work together.</p>
+</div>
+<div class="sect3">
+<h4 id="gui-crud-requirements"><a class="link" href="#gui-crud-requirements">GUI - CRUD Requirements</a></h4>
+<div class="paragraph">
+<p>To use the helper objects on the client-side, you will need to implement some special
+objects.  For example, a Service is needed that will access the CRUD actions on the object
+being maintained.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="gui-crud-service-requirements"><a class="link" href="#gui-crud-service-requirements">GUI - CRUD Service Requirements</a></h4>
+<div class="paragraph">
+<p>The CRUD helper objects require a Service that implements common features for your
+object.  This includes methods such as <code>list()</code>.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example - FlexTypeService</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">export</span> <span class="keyword">default</span> {
+  list(options, successFunction) {  <i class="conum" data-value="1"></i><b>(1)</b>
+    const url = <span class="string"><span class="delimiter">'</span><span class="content">/flexType/list</span><span class="delimiter">'</span></span>    <i class="conum" data-value="2"></i><b>(2)</b>
+
+    window.<span class="predefined">$page</span>.vue.axios.get(url, {<span class="key">params</span>: options}).then((response) =&gt; {  <i class="conum" data-value="3"></i><b>(3)</b>
+      <span class="keyword">if</span> (successFunction) {
+        successFunction(response.data)
+      }
+    }).<span class="keyword">catch</span>((error) =&gt; {
+      window.<span class="predefined">$page</span>.handleError(error, url)
+    })
+  },
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The service <code>list()</code> method.  See <a href="#client-service-requirements">Client Service Requirements</a> for details.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The server-side URI for this list() method.  This is usually provided by
+the <a href="#basecrudcontroller">BaseCrudController</a> class.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The actual call to the <code>list</code> URI on the server.  Executed asynchronously.</td>
+</tr>
+</table>
+</div>
+<div class="sect4">
+<h5 id="client-service-requirements"><a class="link" href="#client-service-requirements">Client Service Requirements</a></h5>
+<div class="sect5">
+<h6 id="client-service-list-parameters"><a class="link" href="#client-service-list-parameters">list() Parameters</a></h6>
+<div class="paragraph">
+<p>The parameters for the list are:</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<caption class="title">Table 1. Parameters</caption>
+<colgroup>
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top" colspan="2">Argument/Option</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>options</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">A javascript object with the supported options listed here (<strong>Required</strong>).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>count</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The number of records (page size).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>start</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The first record in the page.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>search</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The search filter (optional).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>sort[fieldName]=asc</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Defines sorting on the given field name with (asc)ending or
+                          (des)cending.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top" colspan="2"><p class="tableblock"><strong>successFunction</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The function called when the list returns values.
+                      The object passed to this function is result of the
+                      list() request (converted from JSON).  Values include:
+                      <code>total_count</code> and <code>data</code> (the records) (<strong>Required</strong>).</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
 <h3 id="gui-i18n"><a class="link" href="#gui-i18n">GUI I18n</a></h3>
 <div class="paragraph">
 <p>All GUIs must be localized.  The client sub-module supports multiple locales, with varying
@@ -8598,7 +8803,7 @@ for each supported language.  For example, the English file will look something 
 <div class="title">Example - Locale Usage in Vue File</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="javascript"><span class="tag">&lt;template&gt;</span>
-  <span class="tag">&lt;h3&gt;</span>{{ $t('label.flexType')  }}<span class="tag">&lt;/h3&gt;</span>   <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="tag">&lt;Button&gt;</span>{{ $t('label.flexType')  }}<span class="tag">&lt;/Button&gt;</span>   <i class="conum" data-value="1"></i><b>(1)</b>
 <span class="tag">&lt;/template&gt;</span>
 
 
@@ -8615,11 +8820,27 @@ for each supported language.  For example, the English file will look something 
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Use the 'mustache' syntax in the template/HTML section.</td>
+<td>Use the 'mustache' syntax in the template/HTML section.  The localized text can&#8217;t
+be used as the content of an attribute.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
 <td>Use the global <em>$t()</em> syntax within Javascript.</td>
+</tr>
+</table>
+</div>
+<div class="admonitionblock caution">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-caution" title="Caution"></i>
+</td>
+<td class="content">
+The 'mustache' syntax can&#8217;t be used in an HTML attribute.  For example this won&#8217;t
+      work:  <em>&lt;Button label="{{ $t('label.flexType')  }}"/&gt;</em>.  You will need to
+      place the text outside of the attributes as done above or
+      use the text as a data element with binding (e.g. <em>:label="name"</em>).
+</td>
 </tr>
 </table>
 </div>
@@ -8958,7 +9179,7 @@ objects involved are:</p>
 <div class="content">
 <img src="images/searchLayers.png" alt="searchLayers" width="630" height="294">
 </div>
-<div class="title">Figure 12. Search Layers</div>
+<div class="title">Figure 13. Search Layers</div>
 </div>
 <div class="paragraph">
 <p>The <a href="groovydoc/org/simplemes/eframe/search/service/SearchService.html" target="_blank" rel="noopener">SearchService</a>
@@ -9453,7 +9674,7 @@ tasks that pending (including a background index rebuild tasks).</p>
 <div class="content">
 <img src="images/guis/searchAdmin.png" alt="searchAdmin" width="750">
 </div>
-<div class="title">Figure 13. Search Admin</div>
+<div class="title">Figure 14. Search Admin</div>
 </div>
 <div class="sect3">
 <h4 id="rebuild-search-indices"><a class="link" href="#rebuild-search-indices">Rebuild Search Indices</a></h4>
@@ -11386,7 +11607,7 @@ for easy access by the test spec.  The UI will look something like this:</p>
 <div class="content">
 <img src="images/guis/dashboardEventHelperActivity.png" alt="dashboardEventHelperActivity" width="800">
 </div>
-<div class="title">Figure 14. dashboardEventHelperActivity</div>
+<div class="title">Figure 15. dashboardEventHelperActivity</div>
 </div>
 <div class="paragraph">
 <p>The event is rendered as JSON text that can be accessed by the test for verification.</p>
@@ -11453,7 +11674,7 @@ to be triggered. The UI will look something like this:</p>
 <div class="content">
 <img src="images/guis/dashboardEventTriggerHelperActivity.png" alt="dashboardEventTriggerHelperActivity" width="800">
 </div>
-<div class="title">Figure 15. dashboardEventTriggerHelperActivity</div>
+<div class="title">Figure 16. dashboardEventTriggerHelperActivity</div>
 </div>
 </div>
 </div>
@@ -13194,7 +13415,7 @@ boiler-plate code you must write.  Most of the time, these types are used
 internally in the framework and you won&#8217;t need to use them directly.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 1. Field Types</caption>
+<caption class="title">Table 2. Field Types</caption>
 <colgroup>
 <col style="width: 33.3333%;">
 <col style="width: 33.3333%;">
@@ -13412,7 +13633,7 @@ of your application.  The features that are associated with custom fields includ
 <div class="content">
 <img src="images/customFieldDesign.png" alt="customFieldDesign" width="950" height="448">
 </div>
-<div class="title">Figure 16. Custom Field Design</div>
+<div class="title">Figure 17. Custom Field Design</div>
 </div>
 <div class="paragraph">
 <p>All of these types of custom fields store the values in the JSON column <code>fields</code>
@@ -13463,7 +13684,7 @@ actions (save/retrieve).</p>
 <div class="content">
 <img src="images/customFieldMapDesign.png" alt="customFieldMapDesign" width="990" height="252">
 </div>
-<div class="title">Figure 17. Custom Field Design</div>
+<div class="title">Figure 18. Custom Field Design</div>
 </div>
 <div class="paragraph">
 <p>The Map is the primary interface used by
@@ -14364,7 +14585,7 @@ diagram below for the example customizations above:</p>
 <div class="content">
 <img src="images/fieldOrderCustomization.png" alt="fieldOrderCustomization" width="880" height="280">
 </div>
-<div class="title">Figure 18. Data Field Layout</div>
+<div class="title">Figure 19. Data Field Layout</div>
 </div>
 <div class="paragraph">
 <p>The FieldGUIExtension is created for the domain class to be customized (User in this case).
@@ -14382,7 +14603,7 @@ relationships are shown below:</p>
 <div class="content">
 <img src="images/FieldGUIExtension.png" alt="FieldGUIExtension" width="649" height="250">
 </div>
-<div class="title">Figure 19. Class Relationships - FieldGUIExtension</div>
+<div class="title">Figure 20. Class Relationships - FieldGUIExtension</div>
 </div>
 <div class="paragraph">
 <p>Other GUI field placement actions are allowed:</p>
@@ -14444,7 +14665,7 @@ Flex types allow you to define this order type and make the data fields dependen
 <div class="content">
 <img src="images/guis/flexTypeCreate.png" alt="flexTypeCreate" width="75%">
 </div>
-<div class="title">Figure 20. Flex Type Create</div>
+<div class="title">Figure 21. Flex Type Create</div>
 </div>
 <div class="sect3">
 <h4 id="flex-type-field-names-uppercase-or-lowercase"><a class="link" href="#flex-type-field-names-uppercase-or-lowercase">Flex Type Field Names - Uppercase or Lowercase?</a></h4>
@@ -14487,7 +14708,7 @@ be the best approach.</p>
 The basic limitations/features of each approach is shown below.</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 75%;">
-<caption class="title">Table 2. Comparison - Flex Types vs. Configurable Types</caption>
+<caption class="title">Table 3. Comparison - Flex Types vs. Configurable Types</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 16.6666%;">
@@ -14557,7 +14778,7 @@ are defined as Micronaut beans. This is handled by the
 <div class="content">
 <img src="images/extensionPointDesign.png" alt="extensionPointDesign" width="890" height="252">
 </div>
-<div class="title">Figure 21. Custom Field Design</div>
+<div class="title">Figure 22. Custom Field Design</div>
 </div>
 <div class="paragraph">
 <p>The core <code>release()</code> method is marked as an <em>@ExtensionPoint</em>.  There are two additions
@@ -15081,7 +15302,7 @@ to the <em>Order</em> domain.</p>
 <p>The Addition supports these top-level options:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 75%;">
-<caption class="title">Table 3. Addition Options</caption>
+<caption class="title">Table 4. Addition Options</caption>
 <colgroup>
 <col style="width: 20%;">
 <col style="width: 80%;">
@@ -15157,7 +15378,7 @@ to GUIs in core domains and import/export the values.</p>
 <p>These field extensions provide a lot of configuration options:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 75%;">
-<caption class="title">Table 4. Addition Field Options</caption>
+<caption class="title">Table 5. Addition Field Options</caption>
 <colgroup>
 <col style="width: 20%;">
 <col style="width: 80%;">
@@ -15211,7 +15432,7 @@ to GUIs in core domains and import/export the values.</p>
 <p>The options supported by the <code>fieldOrder</code> element above are:</p>
 </div>
 <table class="tableblock frame-all grid-all" style="width: 50%;">
-<caption class="title">Table 5. fieldOrder - Options</caption>
+<caption class="title">Table 6. fieldOrder - Options</caption>
 <colgroup>
 <col style="width: 20%;">
 <col style="width: 80%;">
@@ -16113,7 +16334,7 @@ to the dependencies.  This is done in the Modules part of the 'Project Structure
 <em>simplemes-core\eframe\out</em>.</p>
 </div>
 <table class="tableblock frame-all grid-all stretch">
-<caption class="title">Table 6. ASCIIDOCTOR Attributes</caption>
+<caption class="title">Table 7. ASCIIDOCTOR Attributes</caption>
 <colgroup>
 <col style="width: 50%;">
 <col style="width: 50%;">
@@ -16161,7 +16382,7 @@ to the dependencies.  This is done in the Modules part of the 'Project Structure
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-03-20 12:56:39 UTC
+Last updated 2021-03-20 18:14:12 UTC
 </div>
 </div>
 <style>
