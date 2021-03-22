@@ -8266,6 +8266,7 @@ See <a href="#gui-crud-requirements">GUI - CRUD Requirements</a> for details.</t
 <span class="inline-toc"><a href="#gui-setup-existing-client-module">GUI Setup - Existing Client Module</a></span>
 <span class="inline-toc"><a href="#gui-setup-common-setup">GUI Setup - Common Setup</a></span>
 <span class="inline-toc"><a href="#gui-setup-idea">GUI Setup - IDEA</a></span>
+<span class="inline-toc"><a href="#gui-setup-build-eframe-library">GUI Setup - Build Eframe Library</a></span>
 <span class="inline-toc"><a href="#client-module-version-dependencies">Client Module Version Dependencies</a></span></p>
 </div>
 <div class="paragraph">
@@ -8565,14 +8566,14 @@ in the live server.</p>
 </tr>
 </tbody>
 </table>
-</div>
-<div class="sect3">
-<h4 id="excluding-the-client-folder-from-searches"><a class="link" href="#excluding-the-client-folder-from-searches">Excluding the Client Folder from Searches</a></h4>
+<div class="sect4">
+<h5 id="excluding-the-client-folder-from-searches"><a class="link" href="#excluding-the-client-folder-from-searches">Excluding the Client Folder from Searches</a></h5>
 <div class="paragraph">
 <p>Since the client assets are copied to the <em>main/resources/client</em> folder, the contents
 will show up by default in the IDEA searches.  This is inconvenient. In the IDEA
 Project Structure dialog (module <em>eframe/main</em>) you can 'exclude' the
 <em>resources/client/eframe</em> folder.  (Replace <em>eframe</em> with the client sub-module name).</p>
+</div>
 </div>
 <div class="sect4">
 <h5 id="idea-and-the-client-folder"><a class="link" href="#idea-and-the-client-folder">IDEA and the Client Folder</a></h5>
@@ -8586,6 +8587,53 @@ from the Git logic.</p>
 <div class="paragraph">
 <p>This will add it to the <em>.git/info/exclude</em> folder.</p>
 </div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="gui-setup-build-eframe-library"><a class="link" href="#gui-setup-build-eframe-library">GUI Setup - Build Eframe Library</a></h4>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+This is temporary.
+      These are the manual steps to manually create the frame library for other modules.
+</td>
+</tr>
+</table>
+</div>
+<div class="listingblock">
+<div class="title">Manual Steps to build eframe-lib.</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">sfc-init - Creates mostly empty project.
+npm i
+npm run serve
+
+<span class="comment">// Commands to build library for use as module in other client sub-modules</span>
+
+npm build   <i class="conum" data-value="1"></i><b>(1)</b>
+npm pack    <i class="conum" data-value="2"></i><b>(2)</b>
+npm i ..<span class="regexp"><span class="delimiter">/</span><span class="content">eframe-lib-0.5.0.tgz  <i class="conum" data-value="3"></i><b>(3)</b>
+</span></span></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Builds the summary fields (in the dist folder).</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Packs the components into a .tgz file for installation.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Installs in another module.</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect3">
@@ -16382,7 +16430,7 @@ to the dependencies.  This is done in the Modules part of the 'Project Structure
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-03-20 18:14:12 UTC
+Last updated 2021-03-22 17:15:19 UTC
 </div>
 </div>
 <style>
