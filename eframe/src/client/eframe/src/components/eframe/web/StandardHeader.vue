@@ -26,8 +26,8 @@ export default {
     Button, Toast, Toolbar
   },
   methods: {
-    handleHomeClick(event) {
-      console.log(event);
+    handleHomeClick() {
+      console.log('Home clicked');
       window.location = "/"
     },
   }

@@ -34,8 +34,8 @@ import Column from 'primevue/column';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 
-import PageHolder from '@/components/eframe/web/PageHolder';
-import StandardHeader from '@/components/eframe/web/StandardHeader';
+import PageHolder from './PageHolder';
+import StandardHeader from './StandardHeader';
 
 
 export default {

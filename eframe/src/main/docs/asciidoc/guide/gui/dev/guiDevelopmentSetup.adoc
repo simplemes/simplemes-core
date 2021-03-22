@@ -6,6 +6,7 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<GUI Setup - Existing Client Module>>#
 [inline-toc]#<<GUI Setup - Common Setup>>#
 [inline-toc]#<<GUI Setup - IDEA>>#
+[inline-toc]#<<GUI Setup - Build Eframe Library>>#
 [inline-toc]#<<Client Module Version Dependencies>>#
 
 endif::[]
@@ -201,7 +202,7 @@ in the live server.
 
 |===
 
-==== Excluding the Client Folder from Searches
+===== Excluding the Client Folder from Searches
 
 Since the client assets are copied to the _main/resources/client_ folder, the contents
 will show up by default in the IDEA searches.  This is inconvenient. In the IDEA
@@ -223,6 +224,28 @@ from the Git logic.
 
 This will add it to the _.git/info/exclude_ folder.
 
+==== GUI Setup - Build Eframe Library
+
+NOTE: This is temporary.
+      These are the manual steps to manually create the frame library for other modules.
+
+[source,javascript]
+.Manual Steps to build eframe-lib.
+----
+sfc-init - Creates mostly empty project.
+npm i
+npm run serve
+
+// Commands to build library for use as module in other client sub-modules
+
+npm build   // <.>
+npm pack    // <.>
+npm i ../eframe-lib-0.5.0.tgz  // <.>
+
+----
+<.> Builds the summary fields (in the dist folder).
+<.> Packs the components into a .tgz file for installation.
+<.> Installs in another module.
 
 
 ==== Client Module Version Dependencies
