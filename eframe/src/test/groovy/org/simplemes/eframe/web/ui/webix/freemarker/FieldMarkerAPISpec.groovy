@@ -82,7 +82,6 @@ class FieldMarkerAPISpec extends BaseMarkerSpecification {
     """
 
     def page = execute(source: src, controllerClass: SampleParentController)
-    println "page = $page"
 
     // We can't check the JS since the on:{onChange...} syntax fails.
     // Assume it is checked in ComboboxWidgetGUISpec tests.

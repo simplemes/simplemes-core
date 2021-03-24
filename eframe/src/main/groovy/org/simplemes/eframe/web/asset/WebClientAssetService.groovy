@@ -37,6 +37,7 @@ class WebClientAssetService {
    */
   Flowable<MutableHttpResponse<?>> handleAsset(String filename, HttpRequest<?> request, ServerFilterChain chain) {
     // TODO: Tests?
+    log.trace("Looking for asset {}", filename)
     def resource = WebClientAssetService.classLoader.getResource(filename)
     if (!resource) {
       // Try as a .html case.
@@ -61,7 +62,6 @@ class WebClientAssetService {
 
     return assetFlowable.switchMap(asset -> {
       if (asset.exists) {
-        final Boolean gzip = acceptEncoding != null && acceptEncoding.contains("gzip") && asset.gzipExists
         String ifNoneMatch = request.getHeaders().get("If-None-Match")
         if (ifNoneMatch != null && ifNoneMatch == etagHeader) {
           log.debug("{} not modified.  Details: {}", filename, asset)
@@ -69,10 +69,18 @@ class WebClientAssetService {
         } else {
           log.debug("{} found.  Returning: {}", filename, asset)
           return Flowable.fromCallable(() -> {
-            URLConnection urlCon = asset.gzipExists ? asset.getGzipResource().openConnection() : asset.getResource().openConnection()
+            URLConnection urlCon
+            def gzipped = false
+            def gzipAllowed = acceptEncoding != null && acceptEncoding.contains("gzip") && asset.gzipExists
+            if (asset.gzipExists && gzipAllowed) {
+              urlCon = asset.getGzipResource().openConnection()
+              gzipped = true
+            } else {
+              urlCon = asset.getResource().openConnection()
+            }
             StreamedFile streamedFile = new StreamedFile(urlCon.getInputStream(), contentType, urlCon.getLastModified(), urlCon.getContentLength())
             MutableHttpResponse<StreamedFile> response = HttpResponse.ok(streamedFile)
-            if (gzip) {
+            if (gzipped) {
               response.header("Content-Encoding", "gzip")
             }
             if (encoding) {
@@ -87,7 +95,7 @@ class WebClientAssetService {
         }
 
       } else {
-        return chain.proceed(request)
+        return chain?.proceed(request)
       }
     })
   }

@@ -4,7 +4,7 @@
 
 package org.simplemes.eframe.controller
 
-import groovy.json.JsonSlurper
+
 import io.micronaut.http.HttpHeaders
 import io.micronaut.http.HttpStatus
 import org.simplemes.eframe.custom.domain.FlexType
@@ -20,15 +20,12 @@ import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.MockPrincipal
 import org.simplemes.eframe.test.MockRenderer
 import org.simplemes.eframe.test.MockSecurityUtils
-import org.simplemes.eframe.test.UnitTestUtils
 import org.simplemes.eframe.test.annotation.Rollback
-import org.simplemes.eframe.web.ui.UIDefaults
 import sample.controller.RMAController
 import sample.domain.AllFieldsDomain
 import sample.domain.RMA
 import sample.domain.SampleChild
 import sample.domain.SampleParent
-import spock.lang.Ignore
 
 /**
  * Tests.
@@ -52,172 +49,6 @@ class BaseCrudControllerSpec extends BaseAPISpecification {
       }
     """
     return CompilerTestUtils.compileSource(src)
-  }
-
-  @Rollback
-  def "verify list checks for controller-level secured annotation and fails when user has wrong permissions"() {
-    given: 'a controller for SampleParent'
-    Class clazz = buildSampleParentController()
-    def controller = clazz.newInstance()
-
-    and: 'a mocked security utils that will fail'
-    new MockSecurityUtils(this, HttpStatus.FORBIDDEN).install()
-
-    when: 'the list is called from the controller'
-    def res = controller.list(mockRequest(), null)
-
-    then: 'the correct values are returned'
-    res.status == HttpStatus.FORBIDDEN
-  }
-
-  @Rollback
-  def "verify list works for basic case for the SampleParent domain and controller"() {
-    given: 'a controller for SampleParent'
-    Class clazz = buildSampleParentController()
-
-    and: 'some test data is created'
-    def records = DataGenerator.generate {
-      domain SampleParent
-      count 20
-    } as List<SampleParent>
-
-    when: 'the list is called from the controller'
-    def controller = clazz.newInstance()
-    def res = controller.list(mockRequest(), null)
-    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(res.body())}"
-
-    then: 'the correct values are returned'
-    res.status == HttpStatus.OK
-    def json = new JsonSlurper().parseText((String) res.body())
-    json.total_count == 20
-    def list = json.data as List<SampleParent>
-    list.size() == UIDefaults.PAGE_SIZE
-    list[0].name == records[0].name
-    list[UIDefaults.PAGE_SIZE - 1].name == records[UIDefaults.PAGE_SIZE - 1].name
-  }
-
-  @Rollback
-  def "verify list works with simple sorting"() {
-    given: 'some test data is created'
-    def records = DataGenerator.generate {
-      domain SampleParent
-      count 20
-    } as List<SampleParent>
-    Class clazz = buildSampleParentController()
-
-    when: 'the list is called from the controller'
-    def res = clazz.newInstance().list(mockRequest([sort: 'title']), null)
-
-    then: 'the correct values are returned'
-    res.status == HttpStatus.OK
-    def json = new JsonSlurper().parseText((String) res.body())
-    def list = json.data as List<SampleParent>
-    list.size() == UIDefaults.PAGE_SIZE
-    list[0].name == records[19].name
-  }
-
-  @Ignore("https://github.com/micronaut-projects/micronaut-data/issues/404")
-  @Rollback
-  def "verify list works with case insensitive sorting"() {
-    given: 'some test data is created'
-    new SampleParent(name: 'ABC4').save()
-    new SampleParent(name: 'abc3').save()
-    new SampleParent(name: 'abc2').save()
-    new SampleParent(name: 'ABC1').save()
-    Class clazz = buildSampleParentController()
-
-    when: 'the list is called from the controller'
-    def res = clazz.newInstance().list(mockRequest([sort: 'name']), null)
-
-    then: 'the correct values are returned'
-    res.status == HttpStatus.OK
-    def json = new JsonSlurper().parseText((String) res.body())
-    def list = json.data as List<SampleParent>
-    list[0].name == 'ABC1'
-    list[1].name == 'abc2'
-    list[2].name == 'abc3'
-    list[3].name == 'ABC4'
-  }
-
-  @Rollback
-  def "verify list works for basic paging case for the SampleParent domain and controller"() {
-    given: 'some test data is created'
-    def records = DataGenerator.generate {
-      domain SampleParent
-      count 20
-    } as List<SampleParent>
-    Class clazz = buildSampleParentController()
-
-    when: 'the list is called from the controller'
-    def res = clazz.newInstance().list(mockRequest([count: '5', start: '10']), null)
-
-    then: 'the correct values are returned'
-    res.status == HttpStatus.OK
-    def json = new JsonSlurper().parseText((String) res.body())
-    def list = json.data as List<SampleParent>
-    list.size() == 5
-    list[0].name == records[10].name
-    list[4].name == records[14].name
-  }
-
-  def "verify list with no domain fails gracefully"() {
-    given: 'a controller with invalid domain'
-    def src = """package sample
-      import org.simplemes.eframe.controller.BaseCrudController
-      import groovy.util.logging.Slf4j
-      import io.micronaut.security.annotation.Secured
-
-      @Slf4j
-      @Secured("isAnonymous()")
-      class _TestController extends BaseCrudController {
-      }
-    """
-    Class clazz = CompilerTestUtils.compileSource(src)
-
-    when: 'the list is called from the controller'
-    def controller = clazz.newInstance()
-    controller.list(mockRequest(), null)
-
-    then: 'an exception is thrown'
-    def ex = thrown(Exception)
-    UnitTestUtils.assertExceptionIsValid(ex, ['_Test'])
-  }
-
-  @SuppressWarnings("GroovyAssignabilityCheck")
-  def "verify index creates the correct model and view"() {
-    given: 'a controller'
-    def controller = buildSampleParentController().newInstance()
-
-    and: 'a mock renderer'
-    def mock = new MockRenderer(this).install()
-
-    when: 'the index is called from the controller'
-    def res = controller.index(new MockPrincipal())
-
-    then: 'the values are set correctly'
-    res.status == HttpStatus.OK
-    def model = mock.model
-    model[StandardModelAndView.LOGGED_IN] == true
-    model[StandardModelAndView.USER_NAME] == SecurityUtils.TEST_USER
-    model[StandardModelAndView.MARKER_CONTEXT].controller == controller
-    model[StandardModelAndView.MARKER_CONTEXT].view == 'sampleParent/index'
-    mock.view == 'sampleParent/index'
-  }
-
-  @Rollback
-  def "verify index checks for controller-level secured annotation and fails when user has wrong permissions"() {
-    given: 'a controller for SampleParent'
-    Class clazz = buildSampleParentController()
-    def controller = clazz.newInstance()
-
-    and: 'a mocked security utils that will fail'
-    new MockSecurityUtils(this, HttpStatus.FORBIDDEN).install()
-
-    when: 'the page method is called on the controller'
-    def res = controller.index(null)
-
-    then: 'the correct values are returned'
-    res.status == HttpStatus.FORBIDDEN
   }
 
 
@@ -735,30 +566,6 @@ class BaseCrudControllerSpec extends BaseAPISpecification {
 
     then: 'the correct values are returned'
     res.status == HttpStatus.FORBIDDEN
-  }
-
-  def "verify that index works in a live server"() {
-    when: 'the page is read'
-    waitForInitialDataLoad()
-    login()
-    def res = sendRequest(uri: "/sample", method: 'get')
-
-    then: 'the page is correct'
-    res.contains('parentGrid')
-  }
-
-  def "verify that index prevents access without the correct role in a live server"() {
-    given: 'a user without the MANAGER Role'
-    User.withTransaction {
-      new User(userName: 'TEST', password: 'TEST').save()
-    }
-
-    when: 'the page is read'
-    login('TEST', 'TEST')
-    sendRequest(uri: "/sample", method: 'get', status: HttpStatus.FORBIDDEN)
-
-    then: 'not error is found'
-    notThrown(Throwable)
   }
 
   def "verify that delete works in a live server with related records"() {

@@ -43,7 +43,7 @@ class WebClientAssetFilter implements HttpServerFilter {
 
     String fileUri = request.getUri()
     if (fileUri.startsWith('/client/')) {
-      fileUri = fileUri[1..-1]  // Strip the leading / since the classloader will nto find it.
+      fileUri = fileUri[1..-1]  // Strip the leading / since the classloader will not find it.
       return webClientAssetService.handleAsset(fileUri, request, chain)
     }
     //final String baseAssetUrl = "/" + assetMapping;
