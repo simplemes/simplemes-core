@@ -17,6 +17,9 @@ import org.simplemes.mes.product.domain.MasterRouting
  */
 class OperationTraitSpec extends BaseSpecification {
 
+  @SuppressWarnings('unused')
+  static specNeeds = GUI
+
   def "constraint enforces sequence greater than 0"() {
     given: 'a routing operation'
     def mr = new MasterRouting()
