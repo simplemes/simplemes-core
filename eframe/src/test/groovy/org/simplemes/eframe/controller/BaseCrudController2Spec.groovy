@@ -17,6 +17,7 @@ import org.simplemes.eframe.test.annotation.Rollback
 import org.simplemes.eframe.web.ui.UIDefaults
 import sample.domain.RMA
 import sample.domain.SampleParent
+import spock.lang.Ignore
 
 /**
  * Tests.
@@ -59,6 +60,7 @@ class BaseCrudController2Spec extends BaseAPISpecification {
     res.status == HttpStatus.FORBIDDEN
   }
 
+  @Ignore("Ignored test.  Re-enabled when client/eframe is available on github build action.")
   def "verify that index works in a live server"() {
     when: 'the page is read'
     waitForInitialDataLoad()
