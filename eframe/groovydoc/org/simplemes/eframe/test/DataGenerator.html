@@ -236,6 +236,18 @@ extends java.lang.Object</pre>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.util.Collection</code></td>
+                            <td class="colLast"><code><strong><a href="#cloneCollection(java.util.Collection, java.util.Map)">cloneCollection</a></strong>(java.util.Collection collection, java.util.Map params)</code><br>Clones the given collection of Domain objects.  </td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code><a href='../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a></code></td>
+                            <td class="colLast"><code><strong><a href="#cloneDomainObject(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.util.Map)">cloneDomainObject</a></strong>(<a href='../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.util.Map params)</code><br>Clones the given Domain object.  </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>void</code></td>
                             <td class="colLast"><code><strong><a href="#count(java.lang.Integer)">count</a></strong>(java.lang.Integer count)</code><br>Sets the number of records to generate (<b>Default:</b> 1).</td>
                         </tr>
@@ -435,6 +447,22 @@ static&nbsp;<a href='../../../../org/simplemes/eframe/custom/domain/FlexType.htm
                                 <h4>static&nbsp;void <strong>buildTestUser</strong>(java.lang.String userName)</h4>
                                 <p> Creates one user with one role.  The user name is used to determine the role.
  'none' has no roles. <DL><DT><B>Parameters:</B></DT><DD><code>userName</code> -  The user name (must be 'designer', 'customizer', 'manager', or 'none').</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="cloneCollection(java.util.Collection, java.util.Map)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.util.Collection <strong>cloneCollection</strong>(java.util.Collection collection, java.util.Map params)</h4>
+                                <p> Clones the given collection of Domain objects.  Does a shallow clone of each row. <DL><DT><B>Parameters:</B></DT><DD><code>collection</code> -  The collection.</DD><DD><code>params</code> -  The replaceable parameters for field elements.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The clone.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="cloneDomainObject(org.simplemes.eframe.domain.annotation.DomainEntityInterface, java.util.Map)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4><a href='../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> <strong>cloneDomainObject</strong>(<a href='../../../../org/simplemes/eframe/domain/annotation/DomainEntityInterface.html'>DomainEntityInterface</a> object, java.util.Map params)</h4>
+                                <p> Clones the given Domain object.  Does a shallow clone of the properties. <DL><DT><B>Parameters:</B></DT><DD><code>object</code> -  The object.</DD><DD><code>params</code> -  The replaceable parameters for field elements.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The clone.</DD></DL></p>
                             </li>
                         </ul>
                     

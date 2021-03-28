@@ -8706,7 +8706,7 @@ object.  This includes methods such as <code>list()</code>.</p>
 <div class="title">Example - FlexTypeService</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">export</span> <span class="keyword">default</span> {
-  list(options, successFunction) {  <i class="conum" data-value="1"></i><b>(1)</b>
+  list(options, successFunction, errorFunction) {  <i class="conum" data-value="1"></i><b>(1)</b>
     const url = <span class="string"><span class="delimiter">'</span><span class="content">/flexType/list</span><span class="delimiter">'</span></span>    <i class="conum" data-value="2"></i><b>(2)</b>
 
     window.<span class="predefined">$page</span>.vue.axios.get(url, {<span class="key">params</span>: options}).then((response) =&gt; {  <i class="conum" data-value="3"></i><b>(3)</b>
@@ -8715,6 +8715,9 @@ object.  This includes methods such as <code>list()</code>.</p>
       }
     }).<span class="keyword">catch</span>((error) =&gt; {
       window.<span class="predefined">$page</span>.handleError(error, url)
+      <span class="keyword">if</span> (errorFunction) {  <i class="conum" data-value="4"></i><b>(4)</b>
+        errorFunction(error,url)
+      }
     })
   },
 }</code></pre>
@@ -8734,6 +8737,10 @@ the <a href="#basecrudcontroller">BaseCrudController</a> class.</td>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
 <td>The actual call to the <code>list</code> URI on the server.  Executed asynchronously.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Supports cleanup on the client.  Frequently used to reset 'loading' indicators.</td>
 </tr>
 </table>
 </div>
@@ -16430,7 +16437,7 @@ to the dependencies.  This is done in the Modules part of the 'Project Structure
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-03-24 22:29:41 UTC
+Last updated 2021-03-28 15:39:45 UTC
 </div>
 </div>
 <style>
