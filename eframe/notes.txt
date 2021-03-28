@@ -10,12 +10,18 @@ GUI - Vue Conversion
     ☑ Server submits (Test and real).
     ☑ Mockup LSN Dashboard - With Routing support/option?
     CRUD for definition GUI - Custom Fields.
+      Docs for basic CRUD UI.
+      CRUDGUITester updates.
     ☑ Localization/preferences.
     Theme - Dynamic   See https://forum.primefaces.org/viewtopic.php?f=110&t=65497&p=188847&hilit=theme#p188847
     Define Component in eframe and use in mes-core.
-    Security - /flexType/index controller method enforces initial permissions/re-direct for login.
+    ☑ Security - /flexType/index controller method enforces initial permissions/re-direct for login.
     Samples.
     Gradle tasks: build client files. make client library.
+    Remove old tests, pages, markers, widgets, .js files and adocs.
+    Remove webix module/docs.
+    Review BaseGUISpec for webix logic.
+
 
   Tasks
   -----

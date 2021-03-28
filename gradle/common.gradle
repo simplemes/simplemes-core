@@ -360,4 +360,14 @@ bintray {
 
 }
 
+task npmBuild(type: Exec, group: 'build', description: 'Builds the npm client module') {
+  workingDir("${project.file("src/client/eframe")}")
+  if (System.getProperty("os.name").toLowerCase().contains("windows"))
+    commandLine("cmd.exe", "/C", "npm.cmd run build -- --dest ../../main/resources/client/eframe")
+  else // assume *nix.
+    commandLine("npm", "run", "build") //
+}
+
+
+
 

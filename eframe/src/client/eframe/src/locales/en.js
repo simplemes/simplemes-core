@@ -18,6 +18,8 @@ export default {
         title: 'Title',
         searchStatusGreen: 'Green',
 
+        _notInOtherLanguages: 'Not',  // Do not add to the other languages.
+
       }
     }
   }

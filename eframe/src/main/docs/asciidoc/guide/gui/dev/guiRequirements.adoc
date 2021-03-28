@@ -27,7 +27,7 @@ object.  This includes methods such as `list()`.
 .Example - FlexTypeService
 ----
 export default {
-  list(options, successFunction) {  // <.>
+  list(options, successFunction, errorFunction) {  // <.>
     const url = '/flexType/list'    // <.>
 
     window.$page.vue.axios.get(url, {params: options}).then((response) => {  // <.>
@@ -36,6 +36,9 @@ export default {
       }
     }).catch((error) => {
       window.$page.handleError(error, url)
+      if (errorFunction) {  // <.>
+        errorFunction(error,url)
+      }
     })
   },
 }
@@ -44,6 +47,7 @@ export default {
 <.> The server-side URI for this list() method.  This is usually provided by
     the <<BaseCrudController>> class.
 <.> The actual call to the `list` URI on the server.  Executed asynchronously.
+<.> Supports cleanup on the client.  Frequently used to reset 'loading' indicators.
 
 
 ===== Client Service Requirements

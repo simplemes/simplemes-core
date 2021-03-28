@@ -67,6 +67,14 @@ class BaseGUISpecification extends BaseSpecification {
   }
 
   /**
+   * Restores any globals that were mocked.
+   */
+  void cleanup() {
+    log.trace('Clearing browser localStorage')
+    driver.executeScript("localStorage.clear()")
+  }
+
+  /**
    * Logs the user in as the given user, if not already logged in.
    * If the user is different from the previous login, then the user will be logged out before the new user is logged in.
    * @param _userName The user to login as <b>Required</b>.
@@ -200,6 +208,18 @@ class BaseGUISpecification extends BaseSpecification {
       count = (int) domainClass.count()
     }
     return count > 0
+  }
+
+  /**
+   * Waits for the combobox in a grid to display the input value.  Assumes the focus is in the cell with
+   * the combobox.
+   * @param value The value in the current combobox editor field.
+   */
+  void waitForAjaxCompletion() {
+    waitFor {
+      def res = driver.executeScript("return window._ajaxPending()")
+      return res == false
+    }
   }
 
   /**
@@ -446,7 +466,7 @@ class BaseGUISpecification extends BaseSpecification {
   @Override
   String lookup(String key, Locale locale = null, Object... args) {
     locale = locale ?: currentLocale
-    return super.lookup(key, locale, args)
+    return WebClientLookup.lookup(key, locale, args)
   }
 
   /**
@@ -461,8 +481,7 @@ class BaseGUISpecification extends BaseSpecification {
    */
   @Override
   String lookupRequired(String key, Locale locale = null, Object... args) {
-    locale = locale ?: currentLocale
-    return super.lookupRequired(key, locale, args)
+    return '*' + lookup(key, locale, args)
   }
 
   /**

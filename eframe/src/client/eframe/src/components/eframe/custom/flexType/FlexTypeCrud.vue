@@ -1,5 +1,5 @@
 <template>
-  <CrudTable :columns="columns" :service="service"/>
+  <CrudTable :columns="columns" :service="service" storageKey="flexTypeCrudList"/>
 </template>
 
 <script>
@@ -14,9 +14,9 @@ export default {
   data() {
     return {
       columns: [
-        {field: 'flexType', header: this.$t('label.flexType')},
-        {field: 'category', header: this.$t('label.category')},
-        {field: 'title', header: this.$t('label.title')},
+        {field: 'flexType', header: this.$t('label.flexType'), sort: true},
+        {field: 'category', header: this.$t('label.category'), sort: true},
+        {field: 'title', header: this.$t('label.title'), sort: true},
         {field: 'fieldSummary', header: this.$t('label.fields')},
       ],
       service: FlexTypeService

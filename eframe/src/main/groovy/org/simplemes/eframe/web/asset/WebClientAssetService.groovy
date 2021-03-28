@@ -36,14 +36,17 @@ class WebClientAssetService {
    * @return
    */
   Flowable<MutableHttpResponse<?>> handleAsset(String filename, HttpRequest<?> request, ServerFilterChain chain) {
-    // TODO: Tests?
+    // TODO: Add Tests.  Also add check on relative paths (/client/eframe/../../src
     log.trace("Looking for asset {}", filename)
     def resource = WebClientAssetService.classLoader.getResource(filename)
+    def allowCache = true
     if (!resource) {
       // Try as a .html case.
       resource = WebClientAssetService.classLoader.getResource(filename + '.html')
       if (resource) {
+        // Never cache the HTML pages.  This forces a permission check each time.
         filename += ".html"
+        allowCache = false
       }
     }
     def gzipResource = WebClientAssetService.classLoader.getResource(filename + ".gz")
@@ -89,7 +92,9 @@ class WebClientAssetService {
             response.contentType(requestContentType)
             //response.header("ETag", etagHeader)
             response.header("Vary", "Accept-Encoding")
-            response.header("Cache-Control", "public, max-age=31536000")
+            if (allowCache) {
+              response.header("Cache-Control", "public, max-age=31536000")
+            }
             return response
           })
         }

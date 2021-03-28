@@ -10,12 +10,15 @@ import org.simplemes.eframe.i18n.GlobalUtils
 /**
  * The general base class for all pages tested in the framework.
  * Provides basic methods to wait for Ajax completion on load and when needed.
+ * <p>
  * If the variable 'waitForAjaxOnLoad=true', then the page will wait until the jQuery Ajax methods are done.
  * On your constructor, you would set this using the code:
  * <pre>
  * public LoginPage() &#123;
  *   // No need to wait for Ajax finish on load.
- *   waitForAjaxOnLoad=false
+ *   boolean getWaitForAjaxOnLoad() &#123;
+ *     return true
+ *   &#125;
  * &#125;
  * </pre>
  * <p/>
@@ -67,8 +70,8 @@ class AbstractPage extends Page {
   void waitForCompletion() {
     if (waitForAjaxOnLoad) {
       waitFor() {
-        def res = driver.executeScript("return tk.docState()")
-        return res.size() == 0
+        def res = driver.executeScript("return window._ajaxPending()")
+        return res == false
       }
     } else {
       // No ajax check needed, so just wait for the page to load

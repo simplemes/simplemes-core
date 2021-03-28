@@ -131,6 +131,17 @@ class Holders {
   }
 
   /**
+   * Returns true if the current environment is production.
+   * @return True if production.
+   */
+  static boolean isEnvironmentProduction() {
+    if (simulateProductionEnvironment) {
+      return true
+    }
+    return getEnvironmentNames().contains('prod')
+  }
+
+  /**
    * A mock request, returned when the environment is test.
    */
   static HttpRequest mockRequest = null

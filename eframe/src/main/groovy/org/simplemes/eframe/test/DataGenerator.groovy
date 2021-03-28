@@ -16,6 +16,7 @@ import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.domain.DomainUtils
+import org.simplemes.eframe.domain.annotation.DomainEntityInterface
 import org.simplemes.eframe.misc.ArgumentUtils
 import org.simplemes.eframe.misc.TextUtils
 import org.simplemes.eframe.security.domain.Role
@@ -126,6 +127,8 @@ class DataGenerator {
             object[k] = new DateOnly(v.time + incr * DateUtils.MILLIS_PER_DAY)
           } else if (v instanceof Date) {
             object[k] = new Date(v.time + incr * DateUtils.MILLIS_PER_DAY)
+          } else if (v instanceof Collection) {
+            object[k] = cloneCollection(v, gStringParams)
           } else {
             // Fall back to just a simple object reference
             object[k] = v
@@ -137,6 +140,47 @@ class DataGenerator {
       }
     }
     return res
+  }
+
+  /**
+   * Clones the given collection of Domain objects.  Does a shallow clone of each row.
+   * @param collection The collection.
+   * @param params The replaceable parameters for field elements.
+   * @return The clone.
+   */
+  Collection cloneCollection(Collection collection, Map params) {
+    def res = []
+
+    // Need to clone each element in the collection if it is a domain object.
+    for (row in collection) {
+      if (row instanceof DomainEntityInterface) {
+        res << cloneDomainObject(row, params)
+      } else {
+        res << row
+      }
+    }
+
+    return res
+  }
+
+  /**
+   * Clones the given Domain object.  Does a shallow clone of the properties.
+   * @param object The object.
+   * @param params The replaceable parameters for field elements.
+   * @return The clone.
+   */
+  DomainEntityInterface cloneDomainObject(DomainEntityInterface object, Map params) {
+    def clone = object.class.getConstructor().newInstance()
+    def fields = DomainUtils.instance.getPersistentFields(object.class)
+    for (field in fields) {
+      def v = object[field.name]
+      if (v instanceof String) {
+        v = TextUtils.evaluateGString(v, params)
+      }
+      clone[field.name] = v
+    }
+
+    return clone
   }
 
   /**

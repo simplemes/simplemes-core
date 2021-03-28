@@ -21,7 +21,7 @@ module.exports = {
     },
     'flexType': {
       entry: 'src/entry/custom/flexType/flexType.js',
-      title: 'FlexType',
+      title: 'Flex Type',
     },
   },
   devServer: {

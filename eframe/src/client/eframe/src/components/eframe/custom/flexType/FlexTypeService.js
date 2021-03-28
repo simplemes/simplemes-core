@@ -18,7 +18,7 @@ export default {
     })
   },
   // List for crud-style pages.
-  list(options, successFunction) {
+  list(options, successFunction, errorFunction) {
     const url = '/flexType/list';
 
     window.$page.vue.axios.get(url, {params: options}).then((response) => {
@@ -27,6 +27,9 @@ export default {
       }
     }).catch((error) => {
       window.$page.handleError(error, url)
+      if (errorFunction) {
+        errorFunction(error, url)
+      }
     })
   },
 };

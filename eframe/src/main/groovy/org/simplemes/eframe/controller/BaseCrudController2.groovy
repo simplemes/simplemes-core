@@ -142,6 +142,7 @@ abstract class BaseCrudController2 extends BaseController {
       }
       log.debug('list(): {}', data)
       json = Holders.objectMapper.writeValueAsString([data: data, pos: from * max, total_count: totalCount, sort: sortField, sortDir: sortDir])
+      log.trace('list()-JSON: {}', json)
     }
     ControllerUtils.instance.delayForTesting('BaseCrudController.list()')
     return HttpResponse.status(HttpStatus.OK).body(json)

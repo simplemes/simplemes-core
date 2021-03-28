@@ -5,6 +5,8 @@
 package org.simplemes.eframe.test
 
 
+import org.simplemes.eframe.custom.domain.FlexField
+import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.date.DateOnly
 import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.security.domain.Role
@@ -19,7 +21,7 @@ import sample.domain.SampleParent
 class DataGeneratorSpec extends BaseSpecification {
 
   @SuppressWarnings("unused")
-  static dirtyDomains = [SampleParent]
+  static dirtyDomains = [SampleParent, FlexType]
 
   def "verify that simple case works without rollback annotation"() {
     when: 'some data is generated'
@@ -50,6 +52,29 @@ class DataGeneratorSpec extends BaseSpecification {
     then: 'the generated records are expected'
     records.size() == 1
     records[0].name == 'ABC001'
+  }
+
+  def "verify that list of child records can be passed as value"() {
+    when: 'some data is generated'
+    def records = DataGenerator.generate {
+      domain FlexType
+      count 3
+      values flexType: 'XYZ$r', fields: [new FlexField(sequence: 1, fieldName: 'F1_$i', fieldLabel: 'f1-$r')]
+    } as List<FlexType>
+
+    then: 'the child records are saved for each parent generated'
+    FlexField.list().size() == 3
+
+    and: 'each generated row has the right number of child records'
+    for (record in records) {
+      def flexType = FlexType.findByUuid(record.uuid)
+      assert flexType.fields.size() == 1
+    }
+
+    and: 'the simple reference to $r and $i are replaced in the child components'
+    def flexType = FlexType.findByFlexType('XYZ001')
+    flexType.fields[0].fieldName == 'F1_003'
+    flexType.fields[0].fieldLabel == 'f1-001'
   }
 
   @Rollback
