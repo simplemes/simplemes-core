@@ -1,0 +1,67 @@
+=== CRUDTable
+
+The `CRUDTable` component defines the initial CRUD table for most definition
+objects.  This also provides the components needed to maintain these objects (add/edit/delete)
+and object-specific actions.
+
+
+==== Properties
+
+The main properties supported are:
+
+
+.Parameters
+[cols="1,6"]
+|===
+|Property|Description
+
+|*:columns*| The array containing the columns to be displayed in the table *(Required)*.
+             Elements include: *field*, *header*, and *sort* (boolean).
+|*:service*| The name of the Javascript object that interfaces to the server-side
+             logic *(Required)*.  This service must provide the <<CRUDService>> methods.
+|*storageKey*| The name of the local browser storage element to store the state of
+               the table.  This includes the sorting and current page (*Required*).
+|*:domainClassName*| The variable that will hold the qualified class name of the domain class being
+               maintained by this table (*Required*).
+
+
+
+|===
+
+
+
+[source,html]
+.Example - CRUDTable Usage
+----
+<template>
+  <CrudTable :columns="columns" :service="service" storageKey="flexTypeCrudList"
+             :domainClassName="domainClassName"/>
+</template>
+
+<script>
+
+import CrudTable from '@/components/eframe/web/CrudTable';
+import FlexTypeService from '@/components/eframe/custom/flexType/FlexTypeService'
+
+export default {
+  components: {
+    CrudTable
+  },
+  data() {
+    return {
+      columns: [
+        {field: 'flexType', header: this.$t('label.flexType'), sort: true},
+        {field: 'category', header: this.$t('label.category'), sort: true},
+        {field: 'title', header: this.$t('label.title'), sort: true},
+        {field: 'fieldSummary', header: this.$t('label.fields')},
+      ],
+      service: FlexTypeService,
+      domainClassName: 'org.simplemes.eframe.custom.domain.FlexType',
+    }
+  },
+}
+
+</script>
+
+----
+

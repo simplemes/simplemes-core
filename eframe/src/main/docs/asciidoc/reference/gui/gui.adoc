@@ -1,0 +1,23 @@
+== GUI
+
+ifeval::["{backend}" != "pdf"]
+
+[inline-toc-header]#Components#
+[inline-toc]#<<CRUDTable>>#
+
+[inline-toc-header]#Services#
+[inline-toc]#<<CRUDService>>#
+
+endif::[]
+
+
+
+This section is the reference section for the GUI components used in the GUI sub-modules.
+These are Vue modules that are used by the GUIs to simplify GUI development.
+
+
+include::CRUDTable.adoc[]
+
+include::CRUDService.adoc[]
+
+

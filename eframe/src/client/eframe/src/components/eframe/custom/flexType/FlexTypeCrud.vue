@@ -1,5 +1,5 @@
 <template>
-  <CrudTable :columns="columns" :service="service" storageKey="flexTypeCrudList"/>
+  <CrudTable :columns="columns" :service="service" storageKey="flexTypeCrudList" :domainClassName="domainClassName"/>
 </template>
 
 <script>
@@ -19,7 +19,8 @@ export default {
         {field: 'title', header: this.$t('label.title'), sort: true},
         {field: 'fieldSummary', header: this.$t('label.fields')},
       ],
-      service: FlexTypeService
+      service: FlexTypeService,
+      domainClassName: 'org.simplemes.eframe.custom.domain.FlexType',
     }
   },
 }

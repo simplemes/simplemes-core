@@ -36,9 +36,8 @@ include::reference/general/general.adoc[]
 
 include::reference/domain/domain.adoc[]
 
-include::reference/markers/markers.adoc[]
+include::reference/gui/gui.adoc[]
 
-include::reference/javascript/javascript.adoc[]
 
 
 

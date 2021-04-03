@@ -85,6 +85,7 @@ class FlexField implements FieldInterface, FieldTrait {
    */
   @Column(length = FieldSizes.MAX_NOTES_LENGTH, nullable = true)
   String guiHints
+  // TODO: Drop GUIHints or replace with vue-style of some sort?
 
   /**
    * The option for tracking historical values for this field.

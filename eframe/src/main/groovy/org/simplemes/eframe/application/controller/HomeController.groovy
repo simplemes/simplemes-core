@@ -21,7 +21,7 @@ import java.security.Principal
 */
 
 /**
- *
+ * The main index page (home).
  */
 @Slf4j
 @Secured(SecurityRule.IS_ANONYMOUS)

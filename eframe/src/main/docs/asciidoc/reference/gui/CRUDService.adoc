@@ -1,0 +1,69 @@
+=== CRUDService
+
+These services are used by the <<CRUDTable>> component to maintain domain objects.
+The services must provide the `list()` and other methods to support creation/update
+of objects.
+
+
+
+The `CRUDTable` component defines the initial CRUD table for most definition
+objects.  This also provides the components needed to maintain these objects (add/edit/delete)
+and object-specific actions.
+
+
+==== Methods
+
+
+===== list()
+
+The main properties supported are:
+
+
+.Parameters
+[cols="1,6"]
+|===
+|Argument|Description
+
+|*:options*| The options supported are the standard options from the server-side
+             link:groovydoc/org/simplemes/eframe/controller/BaseCrudController.html[BaseCrudController^] icon:share-square-o[role="link-blue"].
+             This includes: *rows*, *first*, *search*, and sort (e.g. *sort[fieldName]=asc*}
+             (*Required*).
+
+|*:success*| The Javascript function called when the list call returns with data *(Required)*.
+             This method is passed the results as a javascript object (from the JSON).
+
+|*:error*| The Javascript function called when a server-side error is returned *(Optional)*.
+           This method does NOT need to display any error message.  That is handled by
+           the caller (e.g. <<CRUDTable>>).
+
+
+|===
+
+
+
+[source,javascript]
+.Example - CRUDService
+----
+import InMemoriam from 'in-memoriam';
+
+const cache = new InMemoriam(50, 60000);
+
+export default {
+  // List for crud-style pages.
+  list(options, successFunction, errorFunction) {
+    const url = '/flexType/list';
+
+    window.$page.vue.axios.get(url, {params: options}).then((response) => {
+      if (successFunction) {
+        successFunction(response.data)
+      }
+    }).catch((error) => {
+      window.$page.handleError(error, url)
+      if (errorFunction) {
+        errorFunction(error, url)
+      }
+    })
+  },
+};
+----
+

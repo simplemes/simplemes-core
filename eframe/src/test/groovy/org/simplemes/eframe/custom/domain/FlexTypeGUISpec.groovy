@@ -6,6 +6,7 @@ import org.simplemes.eframe.custom.domain.page.FlexTypeShowPage
 import org.simplemes.eframe.test.BaseGUISpecification
 import org.simplemes.eframe.test.CRUDGUITester
 import org.simplemes.eframe.test.DataGenerator
+import spock.lang.Ignore
 import spock.lang.IgnoreIf
 
 /*
@@ -37,6 +38,7 @@ class FlexTypeGUISpec extends BaseGUISpecification {
     }
   }
 
+  @Ignore('Enabled when CRUD is done')
   def "verify that the add row action defaults the sequence correctly"() {
     given: 'a domain record'
     def flexType = DataGenerator.buildFlexType(flexType: 'XYZ')
