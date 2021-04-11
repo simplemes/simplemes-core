@@ -20,6 +20,7 @@ org.simplemes.eframe.data.format
 org.simplemes.eframe.date
 org.simplemes.eframe.domain
 org.simplemes.eframe.domain.annotation
+org.simplemes.eframe.domain.controller
 org.simplemes.eframe.domain.validate
 org.simplemes.eframe.exception
 org.simplemes.eframe.i18n
