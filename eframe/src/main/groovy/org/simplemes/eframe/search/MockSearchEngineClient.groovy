@@ -202,7 +202,7 @@ class MockSearchEngineClient implements SearchEngineClientInterface {
    * @return True if they are the same.
    */
   boolean compareActions(Map a, Map b) {
-    log.error("Comparing A ${a.object.getClass()}, B ${b.object.getClass()}")
+    //log.error("Comparing A ${a.object.getClass()}, B ${b.object.getClass()}")
     if (a?.equals(b)) {
       // Simple test with exact matching Maps.
       return true

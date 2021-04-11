@@ -55,7 +55,7 @@ jobs:
           java-version: 14
 
       - name: Build and Test
-        run: ./gradlew cleanAll testAll -DwriteTests=false
+        run: ./gradlew cleanAll testAll -DwriteTests=false -Dnashorn.args="--no-deprecation-warning"
 
       - name: Archive test artifacts on failure
         if: ${{ failure() }}

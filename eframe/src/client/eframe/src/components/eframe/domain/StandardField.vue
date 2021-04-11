@@ -79,7 +79,6 @@ export default {
   },
   mounted() {
     //console.log("this.field: " + JSON.stringify(this.field));
-
   }
 
 }

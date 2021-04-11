@@ -33,6 +33,7 @@ class AutoRefreshAuthenticationFetcherSpec extends BaseAPISpecification {
 
   def "verify that auto refresh is triggered when no JWT is passed"() {
     given: 'a logged out user'
+    waitForInitialDataLoad()
     logout()
 
     when: 'the user is logged in'
