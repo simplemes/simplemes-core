@@ -7,7 +7,7 @@ export default {
   // eslint-disable-next-line no-unused-vars
   getDisplayFields(domainClassName, successFunction, errorFunction) {
     // TODO: Replace with real query/caching.
-    console.log("domainClassName: " + domainClassName);
+    //console.log("domainClassName: " + domainClassName);
 
     const dummy = {
       top: [
@@ -48,6 +48,7 @@ export default {
               fieldName: 'sequence',
               fieldLabel: 'label.sequence',
               fieldFormat: 'I',
+              defaultValue: "_max('sequence')+10",
             },
             {
               fieldName: 'fieldName',

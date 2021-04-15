@@ -39,10 +39,10 @@
   </div>
   <Dialog v-model:visible="addDialogVisible" :breakpoints="{'960px': '95vw', '640px': '100vw'}" :style="{width: '80vw'}"
           header="Add" :modal="true" :maximizable="true">
-    <div class="p-fluid p-formgrid p-grid">
-      <StandardField v-for="field in fields.top" :key="field.fieldName" :field="field" class="p-inputtext-sm"/>
+    <div class="p-fluid p-formgrid p-grid p-ai-center">
+      <StandardField v-for="field in fields.top" :key="field.fieldName" :field="field"/>
       <div class="p-col-12"></div>
-      <StandardField v-for="field in fields.bottom" :key="field.fieldName" :field="field" class="p-inputtext-sm"/>
+      <StandardField v-for="field in fields.bottom" :key="field.fieldName" :field="field"/>
     </div>
 
     <template #footer>
@@ -69,7 +69,7 @@ import StandardField from "@/components/eframe/domain/StandardField"
 export default {
   name: 'CrudTable',
   components: {
-    StandardHeader, StandardField, DataTable, Column, InputText, Button, Dialog
+    StandardHeader, StandardField, DataTable, Column, InputText, Button, Dialog,
   },
   props: {
     columns: Array,
@@ -173,7 +173,7 @@ export default {
     // Load the fields needed for the add/edit dialogs.
     DomainService.getDisplayFields(this.domainClassName, (data) => {
       this.fields = data
-      console.log("top: " + JSON.stringify(data.top));
+      //console.log("top: " + JSON.stringify(data.top));
 
 
     });

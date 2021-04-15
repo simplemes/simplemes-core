@@ -366,7 +366,15 @@ task npmBuild(type: Exec, group: 'build', description: 'Builds the npm client mo
   if (System.getProperty("os.name").toLowerCase().contains("windows"))
     commandLine("cmd.exe", "/C", "npm.cmd run build -- --dest ../../main/resources/client/eframe")
   else // assume *nix.
-    commandLine("npm", "run", "build") //
+    commandLine("npm", "run", "build","--","--dest", "../../main/resources/client/eframe") //
+}
+
+task npmInit(type: Exec, group: 'build', description: 'Initializes the local npm node_modules for the npm client module') {
+  workingDir("${project.file("src/client/eframe")}")
+  if (System.getProperty("os.name").toLowerCase().contains("windows"))
+    commandLine("cmd.exe", "/C", "npm.cmd install")
+  else // assume *nix.
+    commandLine("npm", "install")
 }
 
 

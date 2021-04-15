@@ -3,18 +3,22 @@ Should be used inside the div: 'div class="p-fluid p-formgrid p-grid"'
 
 
 <template>
-  <div class="p-field p-col-12" :class="textFieldClass(field)">
-    <div class="p-field" v-if="field.fieldFormat==='S'">
-      <label :for="field.fieldName">{{ $t(field.fieldLabel) }}</label>
-      <InputText v-bind:id="field.fieldName" :maxlength="field.maxLength"/>
+  <div class="p-col-12">
+    <div class="p-field p-grid" v-if="field.fieldFormat==='S'">
+      <label :for="field.fieldName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">{{ $t(field.fieldLabel) }}</label>
+      <div class="p-col-12 " :class="textFieldClass(field)">
+        <InputText v-bind:id="field.fieldName" :maxlength="field.maxLength"/>
+      </div>
     </div>
     <div class="p-field" v-if="field.fieldFormat==='C'">
       <label :for="field.fieldName">{{ $t(field.fieldLabel) }}</label>
       <InlineGrid :storageKey="field.fieldName" :columns="field.fields"/>
     </div>
-    <div class="p-field-checkbox" v-if="field.fieldFormat==='B'">
-      <Checkbox v-bind:id="field.fieldName"/>
-      <label :for="field.fieldName">{{ $t(field.fieldLabel) }}</label>
+    <div class="p-field p-grid" v-if="field.fieldFormat==='B'">
+      <label :for="field.fieldName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">{{ $t(field.fieldLabel) }}</label>
+      <div class="p-col-12 p-md-2">
+        <Checkbox v-bind:id="field.fieldName" v-model="checkbox0" :binary="true"/>
+      </div>
     </div>
     <div class="p-field " v-if="field.fieldFormat==='I'">
       <InputNumber :id="field.fieldName" v-model="value" locale="en-US" mode="decimal" style="width:14em"
@@ -60,6 +64,7 @@ export default {
     return {
       value: null,
       index: -1,
+      checkbox0: true,
     }
   },
   props: ['field'],
@@ -67,14 +72,15 @@ export default {
     InputText, InputNumber, Checkbox, InlineGrid
   },
   methods: {
+    // Determines the class(es) needed for the given field.
     textFieldClass(theField) {
       if (theField.maxLength < 30) {
         return "p-md-4"
       } else if (theField.maxLength < 80) {
         return "p-md-6"
+      } else {
+        return "p-md-8"
       }
-
-      return ""
     }
   },
   mounted() {

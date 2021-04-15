@@ -6,7 +6,7 @@
     <template #header>
       <div class="p-d-flex p-jc-between">
         <Button type="button" icon="pi pi-plus  p-input-icon-right" class="p-button-outlined" @click="addRow"/>
-        <Button type="button" icon="pi pi-minus p-input-icon-right" class="p-button-outlined" @click="openAddDialog"/>
+        <Button type="button" icon="pi pi-minus p-input-icon-right" class="p-button-outlined" @click="addRow"/>
       </div>
     </template>
     <Column v-for="col of columns" :field="col.fieldName" :header="$t(col.fieldLabel)" :key="col.fieldName"
@@ -43,8 +43,17 @@ export default {
   },
   methods: {
     addRow() {
-      this.records[this.records.length] = {sequence: 10}
-      console.log("recs: " + JSON.stringify(this.records));
+      var row = {sequence: 10}
+      for (let col of this.columns) {
+        if (col.defaultValue) {
+          theRecords = this.records
+          let value = eval(col.defaultValue)
+          if (value) {
+            row[col.fieldName] = value
+          }
+        }
+      }
+      this.records[this.records.length] = row
     },
   },
   mounted() {
@@ -52,6 +61,23 @@ export default {
   },
 }
 
+let theRecords;
+
+// Method to calculate the max value of the a column in the current inline grid.
+// eslint-disable-next-line no-unused-vars
+function _max(fieldName) {
+  let max = 0
+  for (let record of theRecords) {
+    if (record[fieldName]) {
+      if (record[fieldName] > max) {
+        max = record[fieldName]
+      }
+    }
+  }
+
+  return max
+
+}
 
 </script>
 

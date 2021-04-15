@@ -99,7 +99,17 @@ Some of the files created above will need to be replaced by copies from the efra
 
 ==== GUI Setup - Existing Client Module
 
-Once you have cloned the GIT repository, you will need to execute these commands:
+Once you have cloned the GIT repository, you will need to run these Gradle tasks:
+
+* (once) *npmInit* or *npmInitAll* - Runs the _npm install_ command in the client module(s).
+  This downloads the npm libraries used by the client.
+
+* (after updates) *npmBuild* or *npmBuildAll* - Runs the _npm build_ command in the
+  client module(s). This builds the production assets.  Typically, this is run after
+  client module code changes.
+
+
+
 
 ==== GUI Setup - Common Setup
 
