@@ -7,7 +7,7 @@ Should be used inside the div: 'div class="p-fluid p-formgrid p-grid"'
     <div class="p-field p-grid" v-if="field.fieldFormat==='S'">
       <label :for="field.fieldName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">{{ $t(field.fieldLabel) }}</label>
       <div class="p-col-12 " :class="textFieldClass(field)">
-        <InputText v-bind:id="field.fieldName" :maxlength="field.maxLength"/>
+        <InputText v-bind:id="field.fieldName" :maxlength="field.maxLength" v-model="value"/>
       </div>
     </div>
     <div class="p-field" v-if="field.fieldFormat==='C'">
@@ -62,7 +62,6 @@ Configurable Type - G
 export default {
   data() {
     return {
-      value: null,
       index: -1,
       checkbox0: true,
     }
@@ -70,6 +69,20 @@ export default {
   props: ['field'],
   components: {
     InputText, InputNumber, Checkbox, InlineGrid
+  },
+  computed: {
+    value: {
+      get() {
+        //console.log(this.field.fieldName+": "+JSON.stringify(this.$attrs.record));
+        //console.log(" value:"+this.$attrs.record[this.field.fieldName]);
+
+        return this.$attrs.record[this.field.fieldName]
+      },
+      set(value) {
+        this.$attrs.record[this.field.fieldName] = value
+        //this.$emit('update:modelValue', value)
+      }
+    }
   },
   methods: {
     // Determines the class(es) needed for the given field.
@@ -85,6 +98,7 @@ export default {
   },
   mounted() {
     //console.log("this.field: " + JSON.stringify(this.field));
+    //console.log("this.record: " + JSON.stringify(this.record));
   }
 
 }

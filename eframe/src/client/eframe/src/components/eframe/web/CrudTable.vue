@@ -12,7 +12,7 @@
               <template #header>
                 <div class="p-d-flex p-jc-between">
                   <Button type="button" icon="pi pi-plus" label="Add" class="p-button-outlined"
-                          @click="openAddDialog"/>
+                          @click="addRecord"/>
                   <span class="p-input-icon-left p-input-icon-right">
                     <i class="pi pi-search"/>
                     <InputText v-model="requestParams.filter" placeholder="Search" @change="searchChanged"
@@ -37,19 +37,8 @@
       </div>
     </div>
   </div>
-  <Dialog v-model:visible="addDialogVisible" :breakpoints="{'960px': '95vw', '640px': '100vw'}" :style="{width: '80vw'}"
-          header="Add" :modal="true" :maximizable="true">
-    <div class="p-fluid p-formgrid p-grid p-ai-center">
-      <StandardField v-for="field in fields.top" :key="field.fieldName" :field="field"/>
-      <div class="p-col-12"></div>
-      <StandardField v-for="field in fields.bottom" :key="field.fieldName" :field="field"/>
-    </div>
-
-    <template #footer>
-      <Button icon="pi pi-times" :label="$t('label.cancel')" class="p-button-text" @click="closeAddDialog"/>
-      <Button icon="pi pi-check" :label="$t('label.save')" class="p-button-text"/>
-    </template>
-  </Dialog>
+  <CrudDialog :domainClassName="domainClassName" :service="service" ref="addDialog"/>
+  <CrudDialog :domainClassName="domainClassName" :service="service" ref="editDialog"/>
 </template>
 
 <script>
@@ -58,18 +47,17 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
-import Dialog from 'primevue/dialog'
 
 import PageHolder from './PageHolder'
 import StandardHeader from './StandardHeader'
+import CrudDialog from "@/components/eframe/web/CrudDialog"
 import DomainService from "@/components/eframe/domain/DomainService"
-import StandardField from "@/components/eframe/domain/StandardField"
 
 
 export default {
   name: 'CrudTable',
   components: {
-    StandardHeader, StandardField, DataTable, Column, InputText, Button, Dialog,
+    StandardHeader, DataTable, Column, InputText, Button, CrudDialog
   },
   props: {
     columns: Array,
@@ -92,7 +80,6 @@ export default {
       pageSize: 10,
       records: [],
       requestParams: {},
-      addDialogVisible: false,
       fields: {},
     }
   },
@@ -100,21 +87,19 @@ export default {
     window.$page = new PageHolder(this)
   },
   methods: {
+    addRecord() {
+      this.$refs.addDialog.openDialog({})
+    },
     clearFilter() {
       this.requestParams.filter = ''
       this.updateData()
-    },
-    closeAddDialog() {
-      this.addDialogVisible = false
-    },
-    openAddDialog() {
-      this.addDialogVisible = true
     },
     optionsMenu(row) {
       console.log("options row: " + JSON.stringify(row));
     },
     editRecord(row) {
-      console.log("row: " + JSON.stringify(row));
+      var clonedRow = JSON.parse(JSON.stringify(row));
+      this.$refs.editDialog.openDialog(clonedRow)
     },
     loadData() {
       this.updateData()
