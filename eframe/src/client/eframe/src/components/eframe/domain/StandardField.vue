@@ -12,7 +12,7 @@ Should be used inside the div: 'div class="p-fluid p-formgrid p-grid"'
     </div>
     <div class="p-field" v-if="field.fieldFormat==='C'">
       <label :for="field.fieldName">{{ $t(field.fieldLabel) }}</label>
-      <InlineGrid :storageKey="field.fieldName" :columns="field.fields"/>
+      <InlineGrid :storageKey="field.fieldName" :columns="field.fields" :records="this.$attrs.record[field.fieldName]"/>
     </div>
     <div class="p-field p-grid" v-if="field.fieldFormat==='B'">
       <label :for="field.fieldName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">{{ $t(field.fieldLabel) }}</label>

@@ -2,7 +2,7 @@ A standard dialog for performing CRUD-style maintenance on single domain records
 
 <template>
   <Dialog v-model:visible="dialogVisible" :breakpoints="{'960px': '95vw', '640px': '100vw'}" :style="{width: '80vw'}"
-          header="Add/Edit" :modal="true" :maximizable="true">
+          :header="mode=='add' ? $t('title.add') : $t('title.edit')" :modal="true" :maximizable="true">
     <div class="p-fluid p-formgrid p-grid p-ai-center">
       <StandardField v-for="field in fields.top" :key="field.fieldName" :field="field" :record="record"/>
       <div class="p-col-12"></div>
@@ -52,12 +52,21 @@ export default {
     openDialog(recordValue) {
       this.dialogVisible = true
       this.$data.record = recordValue
-      //console.log("recordValue: "+JSON.stringify(recordValue));
     },
     saveDialog() {
       console.log("saving: " + JSON.stringify(this.$data.record));
       this.dialogVisible = false
     },
+  },
+  computed: {
+    mode: {
+      get() {
+        if (this.$data.record) {
+          return this.$data.record.uuid ? 'edit' : 'add'
+        }
+        return 'add'
+      }
+    }
   },
   created() {
     // Load the fields needed for the dialog.

@@ -15,7 +15,7 @@
                           @click="addRecord"/>
                   <span class="p-input-icon-left p-input-icon-right">
                     <i class="pi pi-search"/>
-                    <InputText v-model="requestParams.filter" placeholder="Search" @change="searchChanged"
+                    <InputText v-model="requestParams.filter" :placeholder="$t('label.search')" @change="searchChanged"
                                ref="filter"/>
                     <i class="pi pi-times" @click="clearFilter"/>
                 </span>
@@ -37,8 +37,7 @@
       </div>
     </div>
   </div>
-  <CrudDialog :domainClassName="domainClassName" :service="service" ref="addDialog"/>
-  <CrudDialog :domainClassName="domainClassName" :service="service" ref="editDialog"/>
+  <CrudDialog :domainClassName="domainClassName" :service="service" ref="crudDialog"/>
 </template>
 
 <script>
@@ -88,7 +87,7 @@ export default {
   },
   methods: {
     addRecord() {
-      this.$refs.addDialog.openDialog({})
+      this.$refs.crudDialog.openDialog(DomainService._emptyDomain(this.$data.fields))
     },
     clearFilter() {
       this.requestParams.filter = ''
@@ -99,7 +98,7 @@ export default {
     },
     editRecord(row) {
       var clonedRow = JSON.parse(JSON.stringify(row));
-      this.$refs.editDialog.openDialog(clonedRow)
+      this.$refs.crudDialog.openDialog(clonedRow)
     },
     loadData() {
       this.updateData()
@@ -158,12 +157,7 @@ export default {
     // Load the fields needed for the add/edit dialogs.
     DomainService.getDisplayFields(this.domainClassName, (data) => {
       this.fields = data
-      //console.log("top: " + JSON.stringify(data.top));
-
-
     });
-
-
   },
 }
 

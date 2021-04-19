@@ -125,5 +125,43 @@ export default {
 
     successFunction(dummy)
 
+  },
+  // Return the field definitions- in a flattened array.
+  // eslint-disable-next-line no-unused-vars
+  _flattenFieldList(theFields) {
+    var fields = []
+
+    for (let field of theFields.top) {
+      fields[fields.length] = field
+    }
+    for (let field of theFields.bottom) {
+      fields[fields.length] = field
+    }
+    for (let tab of theFields.tabs) {
+      for (let field of tab.fields) {
+        fields[fields.length] = field
+      }
+    }
+
+    return fields
+  },
+  // Creates an empty record of the domain being maintained.
+  // eslint-disable-next-line no-unused-vars
+  _emptyDomain(fields) {
+    let record = {}
+
+    //console.log("theComponent.fields: "+JSON.stringify(theComponent.$data.fields));
+    let allFields = this._flattenFieldList(fields)
+
+    // Force an empty array for the child record list for the inline grid support.
+    for (let field of allFields) {
+      if (field.fieldFormat == 'C') {
+        record[field.fieldName] = []
+      }
+    }
+
+    return record
   }
+
+
 }

@@ -24,14 +24,18 @@ export default {
         maxLength: 'Max Length',
         required: 'required',
         save: 'Save',
+        search: 'Search',
         searchStatusGreen: 'Green',
         sequence: 'Sequence',
         title: 'Title',
         valueClassName: 'Value Class',
 
-        _notInOtherLanguages: 'Not',  // Do not add to the other languages.
-
-      }
+        _notInOtherLanguages: 'Not',  // Used for testing. Do not add to the other languages.
+      },
+      title: {
+        add: 'Add',
+        edit: 'Edit',
+      },
     }
   }
 }
