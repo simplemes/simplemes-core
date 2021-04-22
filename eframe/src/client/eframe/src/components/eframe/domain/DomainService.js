@@ -3,11 +3,33 @@
  */
 
 export default {
+
+  fieldFormats: {
+    'STRING': 'S',
+    'INT': 'I',
+    'ENUM': 'E',
+    'BOOLEAN': 'B',
+    /*
+BigDecimal - N
+DateOnly - D
+DateTime - T
+☑ Boolean/boolean - B
+⌧ Long/long - L
+Domain Reference - R
+List of Refs - Q
+List of Children - C
+List of Custom Children - K
+Enumeration - E
+EncodedType - Y
+Configurable Type - G
+     */
+  },
+
   // Return the field definitions.
   // eslint-disable-next-line no-unused-vars
   getDisplayFields(domainClassName, successFunction, errorFunction) {
     // TODO: Replace with real query/caching.
-    //console.log("domainClassName: " + domainClassName);
+    //console.log("getting domain fields: " + domainClassName);
 
     const dummy = {
       top: [
@@ -81,8 +103,14 @@ export default {
             {
               fieldName: 'historyTracking',
               fieldLabel: 'label.historyTracking',  // TODO: Support Enum?
-              fieldFormat: 'S',
+              fieldFormat: 'E',
               maxLength: 30,
+              defaultValue: "'NONE'",
+              validValues: [
+                {value: 'NONE', label: 'None'},  // TODO: Localize on server, with synch of en.js to messages.properties?
+                {value: 'VALUES', label: 'Values'},
+                {value: 'ALL', label: 'All'},
+              ]
             },
             {
               fieldName: 'valueClassName',

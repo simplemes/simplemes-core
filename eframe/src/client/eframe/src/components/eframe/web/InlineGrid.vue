@@ -1,9 +1,11 @@
 <template>
   <DataTable :value="this.$attrs.records" ref="inlineGrid" class="p-datatable-sm editable-cells-table"
-             @sort="onSort($event)"
+             responsiveLayout="scroll"
+             v-model:selection="selectedRow" selectionMode="single"
              data-testid="inlineGrid"
              stateStorage="local" :stateKey="storageKey" :rowHover="false"
-             editMode="cell" @cellEditInit="onCellEditInit">
+             editMode="row" v-model:editingRows="editingRows"
+             @rowEditInit="onRowEditInit" @rowEditCancel="onRowEditCancel">
     <template #header>
       <div class="p-d-flex p-jc-between">
         <Button type="button" icon="pi pi-plus  p-input-icon-right" class="p-button-outlined" @click="addRow"/>
@@ -13,9 +15,33 @@
     <Column v-for="col of columns" :field="col.fieldName" :header="$t(col.fieldLabel)" :key="col.fieldName"
             :sortable="col.sort">
       <template #editor="slotProps">
-        <InputText v-model="slotProps.data[slotProps.column.props.field]" id="cellEditorField"/>
+        <div v-if="col.fieldFormat===domainService().fieldFormats.ENUM">
+          <Dropdown v-model="slotProps.data[col.fieldName]" :options="col.validValues" optionLabel="label"
+                    optionValue="value">
+            <template #option="slotProps">
+              <span>{{ slotProps.option.label }}</span>
+            </template>
+          </Dropdown>
+        </div>
+        <div v-else-if="col.fieldFormat===domainService().fieldFormats.BOOLEAN">
+          <Checkbox v-model="slotProps.data[col.fieldName]" :value="slotProps.data[slotProps.column.props.field]"
+                    :binary="true"/>
+        </div>
+        <div v-else>
+          <InputText v-model="slotProps.data[slotProps.column.props.field]"/>
+        </div>
+      </template>
+      <template #body="slotProps">
+        <div v-if="col.fieldFormat===domainService().fieldFormats.ENUM">
+          {{ getDropDownLabel(col, slotProps.data[col.fieldName]) }}
+        </div>
+        <div v-else>
+          {{ getDisplayValue(col, slotProps.data[col.fieldName]) }}
+        </div>
       </template>
     </Column>
+    <Column :rowEditor="true" bodyStyle="text-align:center" style="width: 10%; min-width:8rem"></Column>
+
   </DataTable>
 </template>
 
@@ -25,12 +51,23 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
+import Dropdown from 'primevue/dropdown'
+import Checkbox from 'primevue/checkbox'
+
+import DomainService from "@/components/eframe/domain/DomainService"
 
 
 export default {
   name: 'InlineGrid',
   components: {
-    DataTable, Column, Button, InputText
+    DataTable, Column, Button, InputText, Dropdown, Checkbox
+  },
+  data() {
+    return {
+      checked: null,
+      editingRows: [],
+      selectedRow: null,
+    }
   },
   props: {
     columns: Array,
@@ -39,8 +76,9 @@ export default {
       required: true
     },
   }, // ['columns', 'service', 'storageKey'],
-
+  originalEditRecord: null,
   created() {
+    this.originalEditRecord = {}
   },
   methods: {
     addRow() {
@@ -59,17 +97,47 @@ export default {
 
       }
       this.$attrs.records[this.$attrs.records.length] = row
+      // TODO: Add logic to automatically enter edit mode on new row?
+    },
+    domainService() {
+      return DomainService
+    },
+    getDisplayValue(column, fieldValue) {
+      return fieldValue
+    },
+    getDropDownLabel(column, fieldValue) {
+      //console.log("fieldName: "+fieldName+" fieldValue: "+fieldValue);
+      const validValues = column.validValues
+      if (validValues) {
+        for (let row of validValues) {
+          if (row.value == fieldValue) {
+            return row.label
+          }
+        }
+      }
+
+      return fieldValue
+    },
+    onRowEditInit(event) {
+      this.originalEditRecord[event.index] = {...this.$attrs.records[event.index]};
+    },
+    onRowEditCancel(event) {
+      this.$attrs.records[event.index] = this.originalEditRecord[event.index];
     },
     onCellEditInit() {
       //const fieldName = event.field
       setTimeout(function () {
-        const element = document.getElementById('cellEditorField')
-        if (element) {
-          element.focus()
-          element.select()
+        const elementNames = ['cellEditorField', 'cellEditorFieldDropDown']
+        for (let elementName of elementNames) {
+          const element = document.getElementById(elementName)
+          if (element) {
+            element.focus()
+            //element.select()
+            return
+          }
         }
 
-      }, 100)
+      }, 50)
 
     },
   },
