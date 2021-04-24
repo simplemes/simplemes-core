@@ -9,20 +9,13 @@ export default {
     'INT': 'I',
     'ENUM': 'E',
     'BOOLEAN': 'B',
-    /*
-BigDecimal - N
-DateOnly - D
-DateTime - T
-☑ Boolean/boolean - B
-⌧ Long/long - L
-Domain Reference - R
-List of Refs - Q
-List of Children - C
-List of Custom Children - K
-Enumeration - E
-EncodedType - Y
-Configurable Type - G
-     */
+    'CHILD_LIST': 'C',
+    'NUMBER': 'N',
+    'DATE': 'D',
+    'DATE_TIME': 'T',
+    'DOMAIN_REFERENCE': 'R',
+    'REFERENCE_LIST': 'Q',
+    'CONFIG_TYPE': 'G',
   },
 
   // Return the field definitions.
@@ -86,9 +79,22 @@ Configurable Type - G
             },
             {
               fieldName: 'fieldFormat',
-              fieldLabel: 'label.fieldFormat',  // TODO: Support Enum?
-              fieldFormat: 'S',
-              maxLength: 30,
+              fieldLabel: 'label.fieldFormat',
+              fieldFormat: 'E',
+              defaultValue: "'NONE'",
+              validValues: [
+                {value: 'S', label: 'label.fieldFormatString'},
+                {value: 'I', label: 'label.fieldFormatInteger'},
+                {value: 'N', label: 'label.fieldFormatNumber'},
+                {value: 'D', label: 'label.fieldFormatDate'},
+                {value: 'T', label: 'label.fieldFormatDateTime'},
+                {value: 'B', label: 'label.fieldFormatBoolean'},
+                {value: 'R', label: 'label.fieldFormatDomainReference'},
+                {value: 'Q', label: 'label.fieldFormatListOfDomainReferences'},
+                {value: 'C', label: 'label.fieldFormatChildList'},
+                {value: 'E', label: 'label.fieldFormatEnumeration'},
+                {value: 'G', label: 'label.fieldFormatConfigurableType'},
+              ],
             },
             {
               fieldName: 'maxLength',
@@ -102,15 +108,14 @@ Configurable Type - G
             },
             {
               fieldName: 'historyTracking',
-              fieldLabel: 'label.historyTracking',  // TODO: Support Enum?
+              fieldLabel: 'label.historyTracking',
               fieldFormat: 'E',
-              maxLength: 30,
               defaultValue: "'NONE'",
               validValues: [
-                {value: 'NONE', label: 'None'},  // TODO: Localize on server, with synch of en.js to messages.properties?
-                {value: 'VALUES', label: 'Values'},
-                {value: 'ALL', label: 'All'},
-              ]
+                {value: 'NONE', label: 'label.historyTrackingNone'},
+                {value: 'VALUES', label: 'label.historyTrackingValues'},
+                {value: 'ALL', label: 'label.historyTrackingAll'},
+              ],
             },
             {
               fieldName: 'valueClassName',
@@ -151,6 +156,7 @@ Configurable Type - G
       ]
     }
 
+    this._localizeLabels(dummy, true)
     successFunction(dummy)
 
   },
@@ -189,7 +195,28 @@ Configurable Type - G
     }
 
     return record
-  }
+  },
+  // Localizes the labels found in the domain definitions.  Walks all fields.
+  _localizeLabels(theFields, flatten) {
+    var fields = theFields
+    if (flatten) {
+      fields = this._flattenFieldList(theFields)
+    }
 
+    for (let field of fields) {
+      if (field.validValues) {
+        for (let v of field.validValues) {
+          if (v.label && v.label.indexOf('.') >= 0) {
+            v.label = window.$page.vue.$t(v.label)
+          }
+        }
+      }
 
+      // Localize any fields in a child inline grid.
+      if (field.fieldFormat === this.fieldFormats.CHILD_LIST) {
+        this._localizeLabels(field.fields, false)
+      }
+
+    }
+  },
 }

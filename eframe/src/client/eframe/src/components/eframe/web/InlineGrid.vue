@@ -15,7 +15,7 @@
     <Column v-for="col of columns" :field="col.fieldName" :header="$t(col.fieldLabel)" :key="col.fieldName"
             :sortable="col.sort">
       <template #editor="slotProps">
-        <div v-if="col.fieldFormat===domainService().fieldFormats.ENUM">
+        <div v-if="col.fieldFormat===page().domainService.fieldFormats.ENUM">
           <Dropdown v-model="slotProps.data[col.fieldName]" :options="col.validValues" optionLabel="label"
                     optionValue="value">
             <template #option="slotProps">
@@ -23,7 +23,7 @@
             </template>
           </Dropdown>
         </div>
-        <div v-else-if="col.fieldFormat===domainService().fieldFormats.BOOLEAN">
+        <div v-else-if="col.fieldFormat===page().domainService.fieldFormats.BOOLEAN">
           <Checkbox v-model="slotProps.data[col.fieldName]" :value="slotProps.data[slotProps.column.props.field]"
                     :binary="true"/>
         </div>
@@ -32,8 +32,12 @@
         </div>
       </template>
       <template #body="slotProps">
-        <div v-if="col.fieldFormat===domainService().fieldFormats.ENUM">
+        <div v-if="col.fieldFormat===page().domainService.fieldFormats.ENUM">
           {{ getDropDownLabel(col, slotProps.data[col.fieldName]) }}
+        </div>
+        <div v-else-if="col.fieldFormat===page().domainService.fieldFormats.BOOLEAN" class="p-checkbox p-highlight"
+             role="checkbox">
+          <span v-if="slotProps.data[col.fieldName]" class="p-checkbox-icon pi pi-check"/>
         </div>
         <div v-else>
           {{ getDisplayValue(col, slotProps.data[col.fieldName]) }}
@@ -53,9 +57,6 @@ import Button from 'primevue/button'
 import InputText from 'primevue/inputtext'
 import Dropdown from 'primevue/dropdown'
 import Checkbox from 'primevue/checkbox'
-
-import DomainService from "@/components/eframe/domain/DomainService"
-
 
 export default {
   name: 'InlineGrid',
@@ -99,10 +100,10 @@ export default {
       this.$attrs.records[this.$attrs.records.length] = row
       // TODO: Add logic to automatically enter edit mode on new row?
     },
-    domainService() {
-      return DomainService
+    page() {
+      return window.$page
     },
-    getDisplayValue(column, fieldValue) {
+    getDisplayValue(column, fieldValue) {      // TODO: Move dropdown/grid logic to its own component?
       return fieldValue
     },
     getDropDownLabel(column, fieldValue) {

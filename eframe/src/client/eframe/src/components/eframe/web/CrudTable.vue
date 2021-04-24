@@ -83,7 +83,7 @@ export default {
     }
   },
   created() {
-    window.$page = new PageHolder(this)
+    window.$page = new PageHolder(this, DomainService)
   },
   methods: {
     addRecord() {

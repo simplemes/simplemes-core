@@ -3,7 +3,7 @@
  */
 'use strict';
 
-module.exports = function (component) {
+module.exports = function (component, domainService) {
   const topComponent = component;
 
 
@@ -11,6 +11,13 @@ module.exports = function (component) {
    * The top vue component.
    */
   this.vue = topComponent
+
+  /**
+   * Domain Service being used.
+   */
+  this.domainService = domainService
+  console.log(domainService);
+
 
   /**
    * Handles the common errors.  Supports axios errors.
