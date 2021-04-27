@@ -16401,6 +16401,36 @@ to the dependencies.  This is done in the Modules part of the 'Project Structure
 <p>This assumes you have IDEA handling the build (not gradle) and the output path is
 <em>simplemes-core\eframe\out</em>.</p>
 </div>
+</div>
+<div class="sect3">
+<h4 id="vue-invalid-prop-type-check-failed-for-prop"><a class="link" href="#vue-invalid-prop-type-check-failed-for-prop">Vue - Invalid prop: type check failed for prop</a></h4>
+<div class="paragraph">
+<p>This happens when you pass a string to a property that expects a numeric value.
+The javascript console message in the browser is:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>Invalid prop: type check failed for prop "xyz". Expected Number with value 9999, got String with value "9999".</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>When used with a Vue reference like this:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example - Invalid prop: type check failed for prop -</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">  <span class="tag">&lt;Toast</span> <span class="attribute-name">baseZIndex</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">9999</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <strong>CORRECT</strong> syntax is to bind the value to a JS expression like this:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example - Works</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript">  <span class="tag">&lt;Toast</span> <span class="attribute-name">:baseZIndex</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">9999</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span></code></pre>
+</div>
+</div>
 <table class="tableblock frame-all grid-all stretch">
 <caption class="title">Table 7. ASCIIDOCTOR Attributes</caption>
 <colgroup>
@@ -16450,7 +16480,7 @@ to the dependencies.  This is done in the Modules part of the 'Project Structure
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-04-24 14:56:16 UTC
+Last updated 2021-04-27 11:25:37 UTC
 </div>
 </div>
 <style>
