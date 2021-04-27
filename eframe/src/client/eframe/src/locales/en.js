@@ -46,10 +46,14 @@ export default {
 
         _notInOtherLanguages: 'Not',  // Used for testing. Do not add to the other languages.
       },
+      message: {
+        saved: 'Record Saved'
+      },
       title: {
         add: 'Add',
         edit: 'Edit',
         error: 'Error',
+        saved: 'Saved',
       },
     }
   }

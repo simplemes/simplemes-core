@@ -32,10 +32,17 @@ export default {
       }
     })
   },
-  update(object, successFunction, errorFunction) {
-    const url = '/flexType/crud/' + object.uuid;
+  // Updates/creates the record as needed.
+  save(object, successFunction, errorFunction) {
+    // Determine if this is a new record or existing.
+    let url = '/flexType/crud'
+    let saveFunction = window.$page.vue.axios.post
+    if (object.uuid) {
+      url = '/flexType/crud/' + object.uuid
+      saveFunction = window.$page.vue.axios.put
+    }
 
-    window.$page.vue.axios.put(url, object).then((response) => {
+    saveFunction(url, object).then((response) => {
       if (successFunction) {
         successFunction(response.data)
       }

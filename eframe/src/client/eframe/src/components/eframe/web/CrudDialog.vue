@@ -58,9 +58,11 @@ export default {
     },
     saveDialog() {
       //console.log("saving: " + JSON.stringify(this.$data.record) + " with "+this.service);
-      this.service.update(this.$data.record, () => {
+      this.service.save(this.$data.record, () => {
         this.dialogVisible = false
         this.$emit('updatedRecord', {record: this.$data.record})
+        const s = this.$t('message.saved')
+        this.$toast.add({severity: 'success', summary: this.$t('title.saved'), detail: s, life: 9000})
       })
     },
   },
