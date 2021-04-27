@@ -49,6 +49,7 @@ export default {
       title: {
         add: 'Add',
         edit: 'Edit',
+        error: 'Error',
       },
     }
   }

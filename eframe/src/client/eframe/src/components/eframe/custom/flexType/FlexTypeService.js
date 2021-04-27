@@ -32,4 +32,20 @@ export default {
       }
     })
   },
+  update(object, successFunction, errorFunction) {
+    const url = '/flexType/crud/' + object.uuid;
+
+    window.$page.vue.axios.put(url, object).then((response) => {
+      if (successFunction) {
+        successFunction(response.data)
+      }
+    }).catch((error) => {
+      window.$page.handleError(error, url)
+      if (errorFunction) {
+        errorFunction(error, url)
+      }
+    })
+
+
+  },
 };

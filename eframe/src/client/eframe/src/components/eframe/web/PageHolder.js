@@ -16,8 +16,6 @@ module.exports = function (component, domainService) {
    * Domain Service being used.
    */
   this.domainService = domainService
-  console.log(domainService);
-
 
   /**
    * Handles the common errors.  Supports axios errors.
@@ -30,8 +28,12 @@ module.exports = function (component, domainService) {
     if ('message' in error) {
       s = error.message + ': ' + context
     }
+    if (error.response && error.response.data) {
+      console.log(error.response.data);
+      s += "\n" + error.response.data.message.text
+    }
 
-    topComponent.$toast.add({severity: 'error', summary: 'Metric', detail: s, life: 3000})
+    topComponent.$toast.add({severity: 'error', summary: topComponent.$t('title.error'), detail: s, life: 9000})
   }
 
 }

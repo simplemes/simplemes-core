@@ -37,7 +37,7 @@
       </div>
     </div>
   </div>
-  <CrudDialog :domainClassName="domainClassName" :service="service" ref="crudDialog"/>
+  <CrudDialog :domainClassName="domainClassName" :service="service" ref="crudDialog" @updatedRecord="onUpdatedRecord"/>
 </template>
 
 <script>
@@ -133,6 +133,10 @@ export default {
     },
     onSort(event) {
       this.requestParams = event
+      this.updateData()
+    },
+    onUpdatedRecord() {
+      //console.log("event: "+JSON.stringify(event));
       this.updateData()
     },
   },

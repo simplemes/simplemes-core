@@ -449,3 +449,28 @@ By default, you would add this folder as a Classes directory:
 
 This assumes you have IDEA handling the build (not gradle) and the output path is
 _simplemes-core\eframe\out_.
+
+==== Vue - Invalid prop: type check failed for prop
+
+This happens when you pass a string to a property that expects a numeric value.
+The javascript console message in the browser is:
+
+  Invalid prop: type check failed for prop "xyz". Expected Number with value 9999, got String with value "9999".
+
+When used with a Vue reference like this:
+
+[source,javascript]
+.Example - Invalid prop: type check failed for prop -
+----
+  <Toast baseZIndex="9999"/>
+----
+
+The *CORRECT* syntax is to bind the value to a JS expression like this:
+
+[source,javascript]
+.Example - Works
+----
+  <Toast :baseZIndex="9999"/>
+----
+
+

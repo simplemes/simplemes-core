@@ -1,5 +1,5 @@
 <template>
-  <Toast/>
+  <Toast :baseZIndex="9999"/>
   <Toolbar>
     <template #left>
       <Button icon="pi pi-bars" class="p-mr-2"/>

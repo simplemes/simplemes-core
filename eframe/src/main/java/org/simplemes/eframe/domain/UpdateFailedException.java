@@ -26,6 +26,10 @@ public class UpdateFailedException extends RuntimeException {
     this.entity = entity;
   }
 
+  @Override
+  public String toString() {
+    return "Update failed (probably updated by another user).  Record: " + entity;
+  }
 
   public Object getEntity() {
     return entity;

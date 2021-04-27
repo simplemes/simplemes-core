@@ -66,6 +66,11 @@ class DeserializationProblemHandler extends com.fasterxml.jackson.databind.deser
       return true
     }
 
+    if (propertyName == 'id') {
+      // Ignore the 'id' added by the json serializer (due to the micronaut @Id annotation).
+      return true
+    }
+
     // Check for a custom field
     def fieldDefinitions = ExtensibleFieldHelper.instance.getEffectiveFieldDefinitions(beanOrClass.class)
     def fieldDefinition = fieldDefinitions[propertyName]

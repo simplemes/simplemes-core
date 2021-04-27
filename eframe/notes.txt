@@ -21,6 +21,7 @@ GUI - Vue Conversion
     Remove old tests, pages, markers, widgets, .js files and adocs.
     Remove webix module/docs.
     Review BaseGUISpec for webix logic.
+	Look at global package install for DomainService, PageHolder?: https://forum.vuejs.org/t/best-way-to-instantiate-a-global-library-in-vue/115085/2 for
 
 
   Tasks
@@ -56,7 +57,7 @@ GUI - Vue Conversion
         npm build
         npm pack
         npm i C:\Users\mph\Documents\tmp\vue3\sfc-rollup\sfc-lib\sfc-lib-1.0.0.tgz
-      
+    Change 400 response for optimistic locking fail (UpdateFailedException).  Needs human readable display on Vue clients.
 
 
 

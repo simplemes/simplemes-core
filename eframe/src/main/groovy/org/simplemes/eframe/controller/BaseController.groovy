@@ -96,6 +96,7 @@ abstract class BaseController {
         def renderer = Holders.applicationContext.getBean(ViewsRenderer)
         Writable writable = renderer.render(modelAndView.view.get(), modelAndView.model.get())
 
+        log.trace("error(): Handling exception via error page {}", throwable)
         return HttpResponse.status(HttpStatus.OK).contentType(MediaType.TEXT_HTML).body(writable)
       } else {
         def holder = new MessageHolder(text: throwable.toString())

@@ -1,7 +1,7 @@
 A standard dialog for performing CRUD-style maintenance on single domain records.  Suitable for use in CRUDTable components.
 
 <template>
-  <Dialog v-model:visible="dialogVisible" :breakpoints="{'960px': '95vw', '640px': '100vw'}" :style="{width: '80vw'}"
+  <Dialog v-model:visible="dialogVisible" :breakpoints="{'960px': '95vw', '640px': '100vw'}" :style="{width: '90vw'}"
           :header="mode=='add' ? $t('title.add') : $t('title.edit')" :modal="true" :maximizable="true">
     <div class="p-fluid p-formgrid p-grid p-ai-center">
       <StandardField v-for="field in fields.top" :key="field.fieldName" :field="field" :record="record"/>
@@ -31,9 +31,12 @@ export default {
     StandardField, Button, Dialog,
   },
   props: {
-    service: Object,
     domainClassName: {
       type: String,
+      required: true
+    },
+    service: {
+      type: Object,
       required: true
     },
   },
@@ -54,8 +57,11 @@ export default {
       this.$data.record = recordValue
     },
     saveDialog() {
-      console.log("saving: " + JSON.stringify(this.$data.record));
-      this.dialogVisible = false
+      //console.log("saving: " + JSON.stringify(this.$data.record) + " with "+this.service);
+      this.service.update(this.$data.record, () => {
+        this.dialogVisible = false
+        this.$emit('updatedRecord', {record: this.$data.record})
+      })
     },
   },
   computed: {
@@ -67,6 +73,9 @@ export default {
         return 'add'
       }
     }
+  },
+  emits: {
+    updatedRecord: null
   },
   created() {
     // Load the fields needed for the dialog.
