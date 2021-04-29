@@ -8907,10 +8907,24 @@ be used as the content of an attribute.</td>
 The 'mustache' syntax can&#8217;t be used in an HTML attribute.  For example this won&#8217;t
       work:  <em>&lt;Button label="{{ $t('label.flexType')  }}"/&gt;</em>.  You will need to
       place the text outside of the attributes as done above or
-      use the text as a data element with binding (e.g. <em>:label="name"</em>).
+      use the text as a data element with binding (e.g. <em>:label="$t('label.cancel')"</em>).
 </td>
 </tr>
 </table>
+</div>
+<div class="sect3">
+<h4 id="lookup-in-gui-tests"><a class="link" href="#lookup-in-gui-tests">Lookup in GUI Tests</a></h4>
+<div class="paragraph">
+<p>The <a href="groovydoc/org/simplemes/eframe/test/BaseGUISpecification.html" target="_blank" rel="noopener">BaseGUISpecification</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>
+tests will need to verify that labels are looked up correctly from the <em>en/de.js</em> files.
+This is done with the utility
+<a href="groovydoc/org/simplemes/eframe/test/WebClientLookup.html" target="_blank" rel="noopener">WebClientLookup</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>.
+The <em>WebClientLookup</em> class parses the <em>en/de.js</em> file(s) and uses the values from the .js
+files for the lookup.</p>
+</div>
+<div class="paragraph">
+<p>This avoids two mechanisms for localization (.js and .properties).</p>
+</div>
 </div>
 </div>
 </div>
@@ -16480,7 +16494,7 @@ The javascript console message in the browser is:</p>
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-04-27 12:39:18 UTC
+Last updated 2021-04-29 17:01:50 UTC
 </div>
 </div>
 <style>
