@@ -39,6 +39,7 @@ export default {
 
     app.use(ToastService);
     app.use(PrimeVueConfig);
+    app.component('router-link', i18n) // Use a dummy router-link component to avoid missing component warning.
     app.use(i18n)
     app.use(VueAxios, axios)
 

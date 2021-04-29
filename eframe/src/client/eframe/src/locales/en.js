@@ -12,9 +12,10 @@ export default {
   getMessages() {
     return {
       label: {
-        defaultFlexType: 'Default Flex Type',
         cancel: 'Cancel',
         category: 'Category',
+        defaultFlexType: 'Default Flex Type',
+        delete: 'Delete',
         fieldFormat: 'Format',
         fieldFormatBoolean: 'Boolean',
         fieldFormatChildList: 'Child List',
@@ -47,10 +48,13 @@ export default {
         _notInOtherLanguages: 'Not',  // Used for testing. Do not add to the other languages.
       },
       message: {
-        saved: 'Record Saved'
+        deleted: '{record} Deleted',
+        deleteConfirm: 'Are you sure you want to delete the selected record ({record})?',
+        saved: '{record} Saved',
       },
       title: {
         add: 'Add',
+        deleted: 'Deleted',
         edit: 'Edit',
         error: 'Error',
         saved: 'Saved',

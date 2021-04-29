@@ -28,7 +28,8 @@
                   <Button icon="pi pi-pencil" class="p-button-rounded p-button-outlined p-mr-2"
                           @click="editRecord(slotProps.data)"/>
                   <Button icon="pi pi-ellipsis-h" class="p-button-rounded p-button-outlined p-button-success "
-                          @click="optionsMenu(slotProps.data)"/>
+                          @click="optionsMenu(slotProps.data,$event)" aria-haspopup="true"
+                          aria-controls="overlay_menu"/>
                 </template>
               </Column>
             </DataTable>
@@ -37,7 +38,19 @@
       </div>
     </div>
   </div>
+  <Menu id="rowMenu" ref="rowMenu" :model="rowMenuItems" :popup="true"/>
   <CrudDialog :domainClassName="domainClassName" :service="service" ref="crudDialog" @updatedRecord="onUpdatedRecord"/>
+  <Dialog v-model:visible="confirmDeleteDialogVisible" :style="{width: '450px'}" header="Confirm" :modal="true">
+    <div class="confirmation-content">
+      <i class="pi pi-exclamation-triangle p-mr-3" style="font-size: 2rem"/>
+      <span>{{ $t('message.deleteConfirm', {record: this.service.buildLabel(this.rowMenuRecord, true)}) }}</span>
+    </div>
+    <template #footer>
+      <Button :label="$t('label.cancel')" icon="pi pi-times" class="p-button-text"
+              @click="confirmDeleteDialogVisible = false"/>
+      <Button :label="$t('label.delete')" icon="pi pi-check" class="p-button-text" @click="deleteSelectedRow"/>
+    </template>
+  </Dialog>
 </template>
 
 <script>
@@ -46,6 +59,8 @@ import DataTable from 'primevue/datatable'
 import Column from 'primevue/column'
 import InputText from 'primevue/inputtext'
 import Button from 'primevue/button'
+import Menu from 'primevue/menu'
+import Dialog from 'primevue/dialog'
 
 import PageHolder from './PageHolder'
 import StandardHeader from './StandardHeader'
@@ -56,7 +71,7 @@ import DomainService from "@/components/eframe/domain/DomainService"
 export default {
   name: 'CrudTable',
   components: {
-    StandardHeader, DataTable, Column, InputText, Button, CrudDialog
+    StandardHeader, DataTable, Column, InputText, Button, CrudDialog, Menu, Dialog
   },
   props: {
     columns: Array,
@@ -80,6 +95,18 @@ export default {
       records: [],
       requestParams: {},
       fields: {},
+      confirmDeleteDialogVisible: false,
+      rowMenuRecord: {},  // The record for the row menu.
+      rowMenuVisible: false,
+      rowMenuItems: [
+        {
+          label: this.$t('label.delete'),
+          icon: 'pi pi-times',
+          command: () => {
+            this.confirmDeleteDialogVisible = true
+          }
+        }
+      ],
     }
   },
   created() {
@@ -93,11 +120,21 @@ export default {
       this.requestParams.filter = ''
       this.updateData()
     },
-    optionsMenu(row) {
-      console.log("options row: " + JSON.stringify(row));
+    optionsMenu(row, event) {
+      this.rowMenuRecord = row
+      this.$refs.rowMenu.toggle(event)
+    },
+    deleteSelectedRow() {
+      this.service.delete(this.rowMenuRecord, () => {
+        this.confirmDeleteDialogVisible = false
+        this.updateData()
+        const s = this.$t('message.deleted', {record: this.service.buildLabel(this.rowMenuRecord, true)})
+        this.$toast.add({severity: 'success', summary: this.$t('title.deleted'), detail: s, life: 5000})
+      })
+
     },
     editRecord(row) {
-      var clonedRow = JSON.parse(JSON.stringify(row));
+      var clonedRow = JSON.parse(JSON.stringify(row))
       this.$refs.crudDialog.openDialog(clonedRow)
     },
     loadData() {

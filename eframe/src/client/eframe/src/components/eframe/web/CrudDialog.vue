@@ -61,7 +61,8 @@ export default {
       this.service.save(this.$data.record, () => {
         this.dialogVisible = false
         this.$emit('updatedRecord', {record: this.$data.record})
-        const s = this.$t('message.saved')
+        const s = this.$t('message.saved', {record: this.service.buildLabel(this.$data.record, true)})
+
         this.$toast.add({severity: 'success', summary: this.$t('title.saved'), detail: s, life: 9000})
       })
     },

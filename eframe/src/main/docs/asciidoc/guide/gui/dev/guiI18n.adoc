@@ -59,4 +59,16 @@ export default {
 CAUTION: The 'mustache' syntax can't be used in an HTML attribute.  For example this won't
       work:  _<Button label="{{ $t('label.flexType')  }}"/>_.  You will need to
       place the text outside of the attributes as done above or
-      use the text as a data element with binding (e.g. _:label="name"_).
+      use the text as a data element with binding (e.g. _:label="$t('label.cancel')"_).
+
+==== Lookup in GUI Tests
+
+The link:groovydoc/org/simplemes/eframe/test/BaseGUISpecification.html[BaseGUISpecification^] icon:share-square-o[role="link-blue"]
+tests will need to verify that labels are looked up correctly from the _en/de.js_ files.
+This is done with the utility
+link:groovydoc/org/simplemes/eframe/test/WebClientLookup.html[WebClientLookup^] icon:share-square-o[role="link-blue"].
+The _WebClientLookup_ class parses the _en/de.js_ file(s) and uses the values from the .js
+files for the lookup.
+
+This avoids two mechanisms for localization (.js and .properties).
+

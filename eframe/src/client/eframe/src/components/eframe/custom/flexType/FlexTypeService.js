@@ -3,6 +3,15 @@ import InMemoriam from 'in-memoriam';
 const cache = new InMemoriam(50, 60000);
 
 export default {
+  buildLabel(record, includeType = false) {
+    // Builds the Label for the given object.  If
+    let s = record.flexType
+    if (includeType) {
+      s = window.$page.vue.$t('label.flexType') + ' ' + s
+    }
+
+    return s
+  },
   find(uuid, successFunction) {
     if (cache.get(uuid)) {
       successFunction(cache.get(uuid))
@@ -16,8 +25,9 @@ export default {
     }).catch((error) => {
       window.$page.handleError(error, url)
     })
-  },
-  // List for crud-style pages.
+  }
+  ,
+// List for crud-style pages.
   list(options, successFunction, errorFunction) {
     const url = '/flexType/list';
 
@@ -31,8 +41,28 @@ export default {
         errorFunction(error, url)
       }
     })
-  },
-  // Updates/creates the record as needed.
+  }
+  ,
+// Deletes the record.
+  delete(object, successFunction, errorFunction) {
+    // Determine if this is a new record or existing.
+    const url = '/flexType/crud/' + object.uuid
+
+    window.$page.vue.axios.delete(url, object).then((response) => {
+      if (successFunction) {
+        successFunction(response.data)
+      }
+    }).catch((error) => {
+      window.$page.handleError(error, url)
+      if (errorFunction) {
+        errorFunction(error, url)
+      }
+    })
+
+
+  }
+  ,
+// Updates/creates the record as needed.
   save(object, successFunction, errorFunction) {
     // Determine if this is a new record or existing.
     let url = '/flexType/crud'
@@ -54,5 +84,7 @@ export default {
     })
 
 
-  },
-};
+  }
+  ,
+}
+;
