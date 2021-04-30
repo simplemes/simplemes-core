@@ -59,6 +59,10 @@ export default {
         error: 'Error',
         saved: 'Saved',
       },
+      tooltip: {
+        addRow: 'Add Row',
+        removeRow: 'Remove Row',
+      },
     }
   }
 }

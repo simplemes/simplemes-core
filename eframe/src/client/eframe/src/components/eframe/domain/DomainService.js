@@ -70,6 +70,7 @@ export default {
               fieldLabel: 'label.fieldName',
               fieldFormat: 'S',
               maxLength: 30,
+              defaultValue: "'field'+(_max('sequence')+10)",
             },
             {
               fieldName: 'fieldLabel',
@@ -81,7 +82,7 @@ export default {
               fieldName: 'fieldFormat',
               fieldLabel: 'label.fieldFormat',
               fieldFormat: 'E',
-              defaultValue: "'NONE'",
+              defaultValue: "'S'",
               validValues: [
                 {value: 'S', label: 'label.fieldFormatString'},
                 {value: 'I', label: 'label.fieldFormatInteger'},

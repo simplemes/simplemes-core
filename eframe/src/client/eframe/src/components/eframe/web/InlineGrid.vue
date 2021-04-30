@@ -5,11 +5,13 @@
              data-testid="inlineGrid"
              stateStorage="local" :stateKey="storageKey" :rowHover="false"
              editMode="row" v-model:editingRows="editingRows"
-             @rowEditInit="onRowEditInit" @rowEditCancel="onRowEditCancel">
+             @rowEditInit="onRowEditInit" @rowEditCancel="onRowEditCancel" @rowClick="onRowClick">
     <template #header>
       <div class="p-d-flex p-jc-between">
-        <Button type="button" icon="pi pi-plus  p-input-icon-right" class="p-button-outlined" @click="addRow"/>
-        <Button type="button" icon="pi pi-minus p-input-icon-right" class="p-button-outlined" @click="addRow"/>
+        <Button type="button" icon="pi pi-plus  p-input-icon-right" class="p-button-outlined" @click="addRow"
+                :title="$t('tooltip.addRow')"/>
+        <Button type="button" icon="pi pi-minus p-input-icon-right" class="p-button-outlined" @click="removeRow"
+                :title="$t('tooltip.removeRow')"/>
       </div>
     </template>
     <Column v-for="col of columns" :field="col.fieldName" :header="$t(col.fieldLabel)" :key="col.fieldName"
@@ -68,6 +70,7 @@ export default {
       checked: null,
       editingRows: [],
       selectedRow: null,
+      selectedRowIndex: null,
     }
   },
   props: {
@@ -98,7 +101,6 @@ export default {
 
       }
       this.$attrs.records[this.$attrs.records.length] = row
-      // TODO: Add logic to automatically enter edit mode on new row?
     },
     page() {
       return window.$page
@@ -119,7 +121,20 @@ export default {
 
       return fieldValue
     },
+    onRowClick(event) {
+      this.selectedRowIndex = event.index
+      // Check for double-click on the row.
+      const now = Date.now()
+      if (now - lastRowClickTime < 300) {
+        // A double click on a row
+        this.$refs.inlineGrid.onRowEditInit(event)
+      }
+      lastRowClickTime = now
+
+    },
     onRowEditInit(event) {
+      console.log(event);
+
       this.originalEditRecord[event.index] = {...this.$attrs.records[event.index]};
     },
     onRowEditCancel(event) {
@@ -141,13 +156,19 @@ export default {
       }, 50)
 
     },
+    removeRow() {
+      if (this.selectedRowIndex != undefined) {
+        this.$attrs.records.splice(this.selectedRowIndex, 1)
+      }
+    },
   },
   mounted() {
 
   },
 }
 
-let theRecords;
+let theRecords
+let lastRowClickTime = 0
 
 // Method to calculate the max value of the a column in the current inline grid.
 // eslint-disable-next-line no-unused-vars
@@ -167,6 +188,5 @@ function _max(fieldName) {
   return max
 
 }
-
 </script>
 

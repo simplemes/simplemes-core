@@ -98,7 +98,7 @@ export default {
       confirmDeleteDialogVisible: false,
       rowMenuRecord: {},  // The record for the row menu.
       rowMenuVisible: false,
-      rowMenuItems: [
+      rowMenuItems: [         // TODO: Support added menu acrions. Using a computed method to combine.
         {
           label: this.$t('label.delete'),
           icon: 'pi pi-times',
