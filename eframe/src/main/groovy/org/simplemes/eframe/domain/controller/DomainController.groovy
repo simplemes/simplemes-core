@@ -21,7 +21,7 @@ import org.simplemes.eframe.controller.BaseController
 
 /**
  * The controller for domain class configuration queries.   Provides Get access to domain class's
- * fields, including extensions and hints on GUII display order.
+ * fields, including extensions and hints on GUI display order.
  */
 @Slf4j
 @Secured(SecurityRule.IS_AUTHENTICATED)

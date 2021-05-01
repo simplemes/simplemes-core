@@ -31,6 +31,7 @@ export default {
           fieldLabel: 'label.flexType',
           fieldFormat: 'S',
           fieldDefault: '',
+          required: true,
           maxLength: 30,
         },
       ],
@@ -132,22 +133,50 @@ export default {
         {
           tab: 'MAIN',
           tabLabel: 'label.main',
-          fields: [{
-            fieldName: 'title',
-            fieldLabel: 'label.title',
-            fieldFormat: 'S',
-            fieldDefault: '',
-            maxLength: 20,
-          }
+          fields: [
+            {
+              fieldName: 'title3',
+              fieldLabel: 'label.title',
+              fieldFormat: 'S',
+              fieldDefault: '',
+              maxLength: 20,
+            },
+            {
+              fieldName: 'category3',
+              fieldLabel: 'label.category',
+              fieldFormat: 'S',
+              fieldDefault: '',
+              required: false,
+              maxLength: 20,
+            },
+            {
+              fieldName: 'historyTracking',
+              fieldLabel: 'label.historyTracking',
+              fieldFormat: 'E',
+              defaultValue: "'NONE'",
+              required: true,
+              validValues: [
+                {value: 'NONE', label: 'label.historyTrackingNone'},
+                {value: 'VALUES', label: 'label.historyTrackingValues'},
+                {value: 'ALL', label: 'label.historyTrackingAll'},
+              ],
+            },
           ]
         },
         {
           tab: 'DETAILS',
-          tabLabel: 'Details',
+          tabLabel: 'label.details',
           fields: [
             {
+              fieldName: 'category2',
+              fieldLabel: 'label.category',
+              fieldFormat: 'S',
+              fieldDefault: '',
+              maxLength: 20,
+            },
+            {
               fieldName: 'warehouse',
-              fieldLabel: 'label.warehouse',
+              fieldLabel: 'label.fieldFormatDomainReference',
               fieldFormat: 'S',
               fieldDefault: '',
               maxLength: 20,

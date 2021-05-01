@@ -9,7 +9,7 @@ export default {
     if (includeType) {
       s = window.$page.vue.$t('label.flexType') + ' ' + s
     }
-
+                  // TODO: Move boiler plate to common file.  See https://github.com/primefaces/primevue/blob/master/src/components/utils/ObjectUtils.js
     return s
   },
   find(uuid, successFunction) {

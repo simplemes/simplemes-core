@@ -17,7 +17,7 @@
     <Column v-for="col of columns" :field="col.fieldName" :header="$t(col.fieldLabel)" :key="col.fieldName"
             :sortable="col.sort">
       <template #editor="slotProps">
-        <div v-if="col.fieldFormat===page().domainService.fieldFormats.ENUM">
+        <div v-if="col.fieldFormat===$page().domainService.fieldFormats.ENUM">
           <Dropdown v-model="slotProps.data[col.fieldName]" :options="col.validValues" optionLabel="label"
                     optionValue="value">
             <template #option="slotProps">
@@ -25,7 +25,7 @@
             </template>
           </Dropdown>
         </div>
-        <div v-else-if="col.fieldFormat===page().domainService.fieldFormats.BOOLEAN">
+        <div v-else-if="col.fieldFormat===$page().domainService.fieldFormats.BOOLEAN">
           <Checkbox v-model="slotProps.data[col.fieldName]" :value="slotProps.data[slotProps.column.props.field]"
                     :binary="true"/>
         </div>
@@ -34,10 +34,10 @@
         </div>
       </template>
       <template #body="slotProps">
-        <div v-if="col.fieldFormat===page().domainService.fieldFormats.ENUM">
+        <div v-if="col.fieldFormat===$page().domainService.fieldFormats.ENUM">
           {{ getDropDownLabel(col, slotProps.data[col.fieldName]) }}
         </div>
-        <div v-else-if="col.fieldFormat===page().domainService.fieldFormats.BOOLEAN" class="p-checkbox p-highlight"
+        <div v-else-if="col.fieldFormat===$page().domainService.fieldFormats.BOOLEAN" class="p-checkbox p-highlight"
              role="checkbox">
           <span v-if="slotProps.data[col.fieldName]" class="p-checkbox-icon pi pi-check"/>
         </div>
@@ -102,7 +102,8 @@ export default {
       }
       this.$attrs.records[this.$attrs.records.length] = row
     },
-    page() {
+    $page() {
+      // Returns the global $page element for access to common services
       return window.$page
     },
     getDisplayValue(column, fieldValue) {      // TODO: Move dropdown/grid logic to its own component?

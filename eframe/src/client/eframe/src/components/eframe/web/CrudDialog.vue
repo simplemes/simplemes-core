@@ -7,6 +7,13 @@ A standard dialog for performing CRUD-style maintenance on single domain records
       <StandardField v-for="field in fields.top" :key="field.fieldName" :field="field" :record="record"/>
       <div class="p-col-12"></div>
       <StandardField v-for="field in fields.bottom" :key="field.fieldName" :field="field" :record="record"/>
+      <TabView v-if="fields.tabs.length>0" class="p-col-12">
+        <TabPanel v-for="tab in fields.tabs" :header="$t(tab.tabLabel)" :key="tab.tab">
+          <div class="p-fluid p-formgrid p-grid p-ai-center">
+            <StandardField v-for="field in tab.fields" :key="field.fieldName" :field="field" :record="record"/>
+          </div>
+        </TabPanel>
+      </TabView>
     </div>
 
     <template #footer>
@@ -20,6 +27,8 @@ A standard dialog for performing CRUD-style maintenance on single domain records
 
 import Button from 'primevue/button'
 import Dialog from 'primevue/dialog'
+import TabView from 'primevue/tabview'
+import TabPanel from 'primevue/tabpanel'
 
 import DomainService from "@/components/eframe/domain/DomainService"
 import StandardField from "@/components/eframe/domain/StandardField"
@@ -28,7 +37,7 @@ import StandardField from "@/components/eframe/domain/StandardField"
 export default {
   name: 'CrudDialog',
   components: {
-    StandardField, Button, Dialog,
+    StandardField, Button, Dialog, TabView, TabPanel,
   },
   props: {
     domainClassName: {

@@ -4,23 +4,33 @@ Should be used inside the div: 'div class="p-fluid p-formgrid p-grid"'
 
 <template>
   <div class="p-col-12">
-    <div class="p-field p-grid" v-if="field.fieldFormat==='S'">
-      <label :for="field.fieldName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">{{ $t(field.fieldLabel) }}</label>
+    <div class="p-field p-grid" v-if="field.fieldFormat===$page().domainService.fieldFormats.STRING">
+      <label :for="field.fieldName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"><span
+          v-if="field.required">*</span>{{ $t(field.fieldLabel) }}</label>
       <div class="p-col-12 " :class="textFieldClass(field)">
         <InputText v-bind:id="field.fieldName" :maxlength="field.maxLength" v-model="value"/>
       </div>
     </div>
-    <div class="p-field" v-if="field.fieldFormat==='C'">
-      <label :for="field.fieldName">{{ $t(field.fieldLabel) }}</label>
+    <div class="p-field" v-else-if="field.fieldFormat===$page().domainService.fieldFormats.CHILD_LIST">
+      <label :for="field.fieldName"><span v-if="field.required">*</span>{{ $t(field.fieldLabel) }}</label>
       <InlineGrid :storageKey="field.fieldName" :columns="field.fields" :records="this.$attrs.record[field.fieldName]"/>
     </div>
-    <div class="p-field p-grid" v-if="field.fieldFormat==='B'">
+    <div class="p-field p-grid" v-else-if="field.fieldFormat===$page().domainService.fieldFormats.BOOLEAN">
       <label :for="field.fieldName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">{{ $t(field.fieldLabel) }}</label>
       <div class="p-col-12 p-md-2">
         <Checkbox v-bind:id="field.fieldName" v-model="checkbox0" :binary="true"/>
       </div>
     </div>
-    <div class="p-field " v-if="field.fieldFormat==='I'">
+    <div class="p-field p-grid" v-else-if="field.fieldFormat===$page().domainService.fieldFormats.ENUM">
+      <label :for="field.fieldName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"><span
+          v-if="field.required">*</span>{{ $t(field.fieldLabel) }}</label>
+      <div class="p-col-12 p-md-2">
+        <Dropdown v-bind:id="field.fieldName" v-model="value" :options="field.validValues" optionLabel="label"
+                  optionValue="value">
+        </Dropdown>
+      </div>
+    </div>
+    <div class="p-field " v-else-if="field.fieldFormat===$page().domainService.fieldFormats.INT">
       <InputNumber :id="field.fieldName" v-model="value" locale="en-US" mode="decimal" style="width:14em"
                    :minFractionDigits="0" :maxFractionDigits="0"
                    showButtons buttonLayout="horizontal"
@@ -28,6 +38,12 @@ Should be used inside the div: 'div class="p-fluid p-formgrid p-grid"'
                    incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus"
                    :step="1.0" :placeholder="field.fieldLabel"
       />
+    </div>
+    <div class="p-field p-grid" v-else>
+      <label :for="field.fieldName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">{{ $t(field.fieldLabel) }}</label>
+      <div class="p-col-12 p-md-2">
+        <InputText v-bind:id="field.fieldName" :maxlength="field.maxLength" v-model="value"/>
+      </div>
     </div>
   </div>
 </template>
@@ -37,6 +53,7 @@ Should be used inside the div: 'div class="p-fluid p-formgrid p-grid"'
 import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
 import Checkbox from 'primevue/checkbox';
+import Dropdown from 'primevue/dropdown';
 
 import InlineGrid from '@/components/eframe/web/InlineGrid';
 
@@ -68,7 +85,7 @@ export default {
   },
   props: ['field'],
   components: {
-    InputText, InputNumber, Checkbox, InlineGrid
+    InputText, InputNumber, Checkbox, InlineGrid, Dropdown
   },
   computed: {
     value: {
@@ -94,12 +111,17 @@ export default {
       } else {
         return "p-md-8"
       }
+    },
+    $page() {
+      // Returns the global $page element for access to common services
+      return window.$page
     }
   },
   mounted() {
     //console.log("this.field: " + JSON.stringify(this.field));
     //console.log("this.record: " + JSON.stringify(this.record));
-  }
+  },
+
 
 }
 </script>
