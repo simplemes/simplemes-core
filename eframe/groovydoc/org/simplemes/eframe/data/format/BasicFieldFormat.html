@@ -255,7 +255,19 @@ implements <a href='../../../../../org/simplemes/eframe/data/ChoiceListInterface
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getGridEditor(org.simplemes.eframe.data.FieldDefinitionInterface)">getGridEditor</a></strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Defines the editor to use for this type of field when used in an editable inline grid.</td>
+                            <td class="colLast"><code><strong><a href="#getClientFormatType()">getClientFormatType</a></strong>()</code><br>Returns the client format type code.  </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.lang.String</code></td>
+                            <td class="colLast"><code><strong><a href="#getDisplayValue()">getDisplayValue</a></strong>()</code><br>Returns the display value for the choice list.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.lang.String</code></td>
+                            <td class="colLast"><code><strong><a href="#getGridEditor(org.simplemes.eframe.data.FieldDefinitionInterface)">getGridEditor</a></strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br></td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -272,30 +284,36 @@ implements <a href='../../../../../org/simplemes/eframe/data/ChoiceListInterface
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.lang.String</code></td>
+                            <td class="colLast"><code><strong><a href="#getValidValuesURI(org.simplemes.eframe.data.FieldDefinitionInterface)">getValidValuesURI</a></strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Returns the URI used for the suggest/auto-complete lookup for this field.  </td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#getValue()">getValue</a></strong>()</code><br>Returns the value for the choice list (e.g. a domain record of enum element).</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
                             <td class="colLast"><code><strong><a href="#isDefaultChoice()">isDefaultChoice</a></strong>()</code><br>Returns true if this choice is the default choice in the list.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#parseForm(java.lang.String, java.util.Locale, org.simplemes.eframe.data.FieldDefinitionInterface)">parseForm</a></strong>(java.lang.String value, java.util.Locale locale, <a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</code><br>Parses the given value from a string using the form submission format.
  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#toStringLocalized(java.util.Locale)">toStringLocalized</a></strong>(java.util.Locale locale)</code><br>Returns a localized string representation of the object.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;<a href='../../../../../org/simplemes/eframe/data/format/BasicFieldFormat.html'>BasicFieldFormat</a></code></td>
                             <td class="colLast"><code><strong><a href="#valueOf(java.lang.String)">valueOf</a></strong>(java.lang.String id)</code><br>Returns the instance for the given DB ID.</td>
@@ -468,14 +486,28 @@ java.lang.String <strong>formatForm</strong>(java.lang.Object value, java.util.L
                             </li>
                         </ul>
                     
+                        <a name="getClientFormatType()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.lang.String <strong>getClientFormatType</strong>()</h4>
+                                <p> Returns the client format type code.  Used by the Vue client logic only. <DL><DT><B>Returns:</B></DT><DD>The client code.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getDisplayValue()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>java.lang.String <strong>getDisplayValue</strong>()</h4>
+                                <p> Returns the display value for the choice list. <DL><DT><B>Returns:</B></DT><DD>The display value.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
                         <a name="getGridEditor(org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
                                 <h4>@java.lang.Override
 java.lang.String <strong>getGridEditor</strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
-                                <p> Defines the editor to use for this type of field when used in an editable inline grid.
- <p>
- This base class defaults to the simple text editor.  Other sub-classes will provide their own editors. <DL><DT><B>Parameters:</B></DT><DD><code>fieldDefinition</code> -  The field definition used to define this field (optional, provided additional details such as valid values).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The editor (e.g. 'text').</DD></DL></p>
+                                <p></p>
                             </li>
                         </ul>
                     
@@ -493,6 +525,15 @@ java.lang.String <strong>getGridEditor</strong>(<a href='../../../../../org/simp
                                 <h4>@java.lang.Override
 java.util.List&lt;ChoiceListItemInterface&gt; <strong>getValidValues</strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
                                 <p> Returns the list of valid values for those formats that use a combobox or similar widget. <DL><DT><B>Parameters:</B></DT><DD><code>fieldDefinition</code> -  The field definition used to define this field (optional, provided additional details such as valid values).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of valid values.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getValidValuesURI(org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@java.lang.Override
+java.lang.String <strong>getValidValuesURI</strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDefinition)</h4>
+                                <p> Returns the URI used for the suggest/auto-complete lookup for this field.  See docs for details on auto-complete. <DL><DT><B>Parameters:</B></DT><DD><code>fieldDefinition</code> -  The field definition used to define this field (optional, provides additional details on the value class).</DD></DL><DL><DT><B>Returns:</B></DT><DD>The URI.</DD></DL></p>
                             </li>
                         </ul>
                     

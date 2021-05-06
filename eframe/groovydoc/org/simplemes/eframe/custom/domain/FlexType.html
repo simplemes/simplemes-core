@@ -292,48 +292,54 @@ implements <a href='../../../../../org/simplemes/eframe/data/ChoiceListItemInter
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
+                            <td class="colLast"><code><strong><a href="#getDisplayValue()">getDisplayValue</a></strong>()</code><br>Returns the display value for the choice list (e.g. a domain record or enum element).</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#getFieldSummary()">getFieldSummary</a></strong>()</code><br>Builds the transient list of the fields defined for this flex type.
  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#getId()">getId</a></strong>()</code><br>Returns internal ID for this choice.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#getValue()">getValue</a></strong>()</code><br>Returns the value for the choice list (e.g. a domain record or enum element).</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>boolean</code></td>
                             <td class="colLast"><code><strong><a href="#isDefaultChoice()">isDefaultChoice</a></strong>()</code><br>Returns true if this choice is the default choice in the list.</td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#toString()">toString</a></strong>()</code><br>Build human readable version of this object.
  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#toStringLocalized(java.util.Locale)">toStringLocalized</a></strong>(java.util.Locale locale)</code><br>Gets the localized display name for this type of configurable object.  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#toStringLocalized()">toStringLocalized</a></strong>()</code><br>Returns the localized display value for the choice (uses the default locale).</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>java.lang.Object</code></td>
                             <td class="colLast"><code><strong><a href="#validate()">validate</a></strong>()</code><br></td>
@@ -545,6 +551,15 @@ java.util.List&lt;FieldDefinitionInterface&gt; <strong>determineInputFields</str
                                 <p> Builds the fields needed to configure this type.  This will be used to build the GUI field HTML elements. <DL><DT><B>Parameters:</B></DT><DD><code>configurableTypeFieldName</code> -  The name of the Configurable Type field that the caller wants the fields for.
                                   This is used to specify the prefix for the values in the custom field holder.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of fields needed to configure this type.  These fields should match the names and types of the
          related flex type.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="getDisplayValue()"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@io.micronaut.data.annotation.Transient
+java.lang.String <strong>getDisplayValue</strong>()</h4>
+                                <p> Returns the display value for the choice list (e.g. a domain record or enum element). <DL><DT><B>Returns:</B></DT><DD>The value.</DD></DL></p>
                             </li>
                         </ul>
                     

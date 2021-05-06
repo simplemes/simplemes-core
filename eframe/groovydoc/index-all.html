@@ -656,6 +656,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Builds the correct field definition for a normal Java field.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/reports/ReportHelper.html#buildFieldDefinitionsFromParameters(org.simplemes.eframe.reports.Report)" title="Method in ReportHelper">buildFieldDefinitionsFromParameters(org.simplemes.eframe.reports.Report)</a></span> - Method in <a href="org/simplemes/eframe/reports/ReportHelper.html">ReportHelper</a>
 </dt><dd> <div class="block">Builds the FieldDefinitions from the list of report parameters.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/domain/controller/DomainController.html#buildFieldElement(org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in DomainController">buildFieldElement(org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/domain/controller/DomainController.html">DomainController</a>
+</dt><dd> <div class="block">Builds the single field definition needed for the client.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/webix/freemarker/BaseDefinitionPageMarker.html#buildFields(List<String>, java.lang.Boolean)" title="Method in BaseDefinitionPageMarker">buildFields(List&lt;String&gt;, java.lang.Boolean)</a></span> - Method in <a href="org/simplemes/eframe/web/ui/webix/freemarker/BaseDefinitionPageMarker.html">BaseDefinitionPageMarker</a>
 </dt><dd> <div class="block">Builds the fields for the given panel (optional).</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/web/ui/webix/widget/ConfigurableTypeFieldWidget.html#buildFields(org.simplemes.eframe.data.ConfigurableTypeInterface)" title="Method in ConfigurableTypeFieldWidget">buildFields(org.simplemes.eframe.data.ConfigurableTypeInterface)</a></span> - Method in <a href="org/simplemes/eframe/web/ui/webix/widget/ConfigurableTypeFieldWidget.html">ConfigurableTypeFieldWidget</a>
@@ -1712,7 +1714,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseDashboardSpecification.html#displayDashboard(java.util.Map)" title="Method in BaseDashboardSpecification">displayDashboard(java.util.Map)</a></span> - Method in <a href="org/simplemes/eframe/test/BaseDashboardSpecification.html">BaseDashboardSpecification</a>
 </dt><dd> <div class="block">Navigates to the dashboard page with the given options.
  </div></dd>
-<dt><span class="strong"><a href="org/simplemes/eframe/domain/controller/DomainController.html#displayFields(io.micronaut.http.HttpRequest)" title="Method in DomainController">displayFields(io.micronaut.http.HttpRequest)</a></span> - Method in <a href="org/simplemes/eframe/domain/controller/DomainController.html">DomainController</a>
+<dt><span class="strong"><a href="org/simplemes/eframe/domain/controller/DomainController.html#displayFields(io.micronaut.http.HttpRequest, java.lang.String)" title="Method in DomainController">displayFields(io.micronaut.http.HttpRequest, java.lang.String)</a></span> - Method in <a href="org/simplemes/eframe/domain/controller/DomainController.html">DomainController</a>
 </dt><dd> <div class="block">Provides the domain class fields define, including field extensions.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseJSSpecification.html#displayTesterPage()" title="Method in BaseJSSpecification">displayTesterPage()</a></span> - Method in <a href="org/simplemes/eframe/test/BaseJSSpecification.html">BaseJSSpecification</a>
 </dt><dd> <div class="block">Displays the tester page, if not already displayed.</div></dd>
@@ -2749,6 +2751,22 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/simplemes/eframe/test/BaseAPISpecification.html#getClient()" title="Method in BaseAPISpecification">getClient()</a></span> - Method in <a href="org/simplemes/eframe/test/BaseAPISpecification.html">BaseAPISpecification</a>
 </dt><dd> <div class="block">Gets the current (static) client for requests sent to the embedded server.
  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/data/format/BasicFieldFormat.html#getClientFormatType()" title="Method in BasicFieldFormat">getClientFormatType()</a></span> - Method in <a href="org/simplemes/eframe/data/format/BasicFieldFormat.html">BasicFieldFormat</a>
+</dt><dd> <div class="block">Returns the client format type code.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/data/format/ChildListFieldFormat.html#getClientFormatType()" title="Method in ChildListFieldFormat">getClientFormatType()</a></span> - Method in <a href="org/simplemes/eframe/data/format/ChildListFieldFormat.html">ChildListFieldFormat</a>
+</dt><dd> <div class="block">Returns the client format type code.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/data/format/ConfigurableTypeDomainFormat.html#getClientFormatType()" title="Method in ConfigurableTypeDomainFormat">getClientFormatType()</a></span> - Method in <a href="org/simplemes/eframe/data/format/ConfigurableTypeDomainFormat.html">ConfigurableTypeDomainFormat</a>
+</dt><dd> <div class="block">Returns the client format type code.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/data/format/CustomChildListFieldFormat.html#getClientFormatType()" title="Method in CustomChildListFieldFormat">getClientFormatType()</a></span> - Method in <a href="org/simplemes/eframe/data/format/CustomChildListFieldFormat.html">CustomChildListFieldFormat</a>
+</dt><dd> <div class="block">Returns the client format type code.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#getClientFormatType()" title="Method in DomainReferenceFieldFormat">getClientFormatType()</a></span> - Method in <a href="org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html">DomainReferenceFieldFormat</a>
+</dt><dd> <div class="block">Returns the client format type code.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/data/format/EncodedTypeFieldFormat.html#getClientFormatType()" title="Method in EncodedTypeFieldFormat">getClientFormatType()</a></span> - Method in <a href="org/simplemes/eframe/data/format/EncodedTypeFieldFormat.html">EncodedTypeFieldFormat</a>
+</dt><dd> <div class="block">Returns the client format type code.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/data/format/FieldFormatInterface.html#getClientFormatType()" title="Method in FieldFormatInterface">getClientFormatType()</a></span> - Method in <a href="org/simplemes/eframe/data/format/FieldFormatInterface.html">FieldFormatInterface</a>
+</dt><dd> <div class="block">Returns the client format type code.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/data/format/LongFieldFormat.html#getClientFormatType()" title="Method in LongFieldFormat">getClientFormatType()</a></span> - Method in <a href="org/simplemes/eframe/data/format/LongFieldFormat.html">LongFieldFormat</a>
+</dt><dd> <div class="block">Returns the client format type code.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/system/controller/LoggingController.html#getClientLevels()" title="Method in LoggingController">getClientLevels()</a></span> - Method in <a href="org/simplemes/eframe/system/controller/LoggingController.html">LoggingController</a>
 </dt><dd> <div class="block">Returns the list of client javascript levels defined in the system.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/domain/validate/ValidationError.html#getCode()" title="Method in ValidationError">getCode()</a></span> - Method in <a href="org/simplemes/eframe/domain/validate/ValidationError.html">ValidationError</a>
@@ -2824,6 +2842,14 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Finds the defined report parameters.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/search/ArchiveSearchHit.html#getDisplayValue()" title="Method in ArchiveSearchHit">getDisplayValue()</a></span> - Method in <a href="org/simplemes/eframe/search/ArchiveSearchHit.html">ArchiveSearchHit</a>
 </dt><dd> <div class="block">Builds the display value for this hit.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/data/format/BasicFieldFormat.html#getDisplayValue()" title="Method in BasicFieldFormat">getDisplayValue()</a></span> - Method in <a href="org/simplemes/eframe/data/format/BasicFieldFormat.html">BasicFieldFormat</a>
+</dt><dd> <div class="block">Returns the display value for the choice list.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/system/BasicStatus.html#getDisplayValue()" title="Method in BasicStatus">getDisplayValue()</a></span> - Method in <a href="org/simplemes/eframe/system/BasicStatus.html">BasicStatus</a>
+</dt><dd> <div class="block">Returns the display value for the choice list.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/data/ChoiceListItemInterface.html#getDisplayValue()" title="Method in ChoiceListItemInterface">getDisplayValue()</a></span> - Method in <a href="org/simplemes/eframe/data/ChoiceListItemInterface.html">ChoiceListItemInterface</a>
+</dt><dd> <div class="block">The display value for the choice.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/custom/domain/FlexType.html#getDisplayValue()" title="Method in FlexType">getDisplayValue()</a></span> - Method in <a href="org/simplemes/eframe/custom/domain/FlexType.html">FlexType</a>
+</dt><dd> <div class="block">Returns the display value for the choice list (e.g. a domain record or enum element).</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/search/SearchHit.html#getDisplayValue()" title="Method in SearchHit">getDisplayValue()</a></span> - Method in <a href="org/simplemes/eframe/search/SearchHit.html">SearchHit</a>
 </dt><dd> <div class="block">Builds the display value for this hit.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/controller/BaseCrudController.html#getDomain()" title="Method in BaseCrudController">getDomain()</a></span> - Method in <a href="org/simplemes/eframe/controller/BaseCrudController.html">BaseCrudController</a>
@@ -2953,7 +2979,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Returns the current global postscript (as a string).
  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/data/format/BasicFieldFormat.html#getGridEditor(org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in BasicFieldFormat">getGridEditor(org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/data/format/BasicFieldFormat.html">BasicFieldFormat</a>
-</dt><dd> <div class="block">Defines the editor to use for this type of field when used in an editable inline grid.</div></dd>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/data/format/BooleanFieldFormat.html#getGridEditor(org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in BooleanFieldFormat">getGridEditor(org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/data/format/BooleanFieldFormat.html">BooleanFieldFormat</a>
 </dt><dd> <div class="block">Defines the editor to use for this type of field when used in an editable inline grid.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/data/format/DateFieldFormat.html#getGridEditor(org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in DateFieldFormat">getGridEditor(org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/data/format/DateFieldFormat.html">DateFieldFormat</a>
@@ -3399,6 +3425,12 @@ if (location.href.indexOf('is-external=true') == -1) {
 </dt><dd> <div class="block">Returns the list of valid values for those formats that use a combobox or similar widget.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/data/format/FieldFormatInterface.html#getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in FieldFormatInterface">getValidValues(org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/data/format/FieldFormatInterface.html">FieldFormatInterface</a>
 </dt><dd> <div class="block">Returns the list of valid values for those formats that use a combobox or similar widget.</div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/data/format/BasicFieldFormat.html#getValidValuesURI(org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in BasicFieldFormat">getValidValuesURI(org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/data/format/BasicFieldFormat.html">BasicFieldFormat</a>
+</dt><dd> <div class="block">Returns the URI used for the suggest/auto-complete lookup for this field.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html#getValidValuesURI(org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in DomainReferenceFieldFormat">getValidValuesURI(org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/data/format/DomainReferenceFieldFormat.html">DomainReferenceFieldFormat</a>
+</dt><dd> <div class="block">Returns the URI used for the suggest/auto-complete lookup for this field.  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/data/format/FieldFormatInterface.html#getValidValuesURI(org.simplemes.eframe.data.FieldDefinitionInterface)" title="Method in FieldFormatInterface">getValidValuesURI(org.simplemes.eframe.data.FieldDefinitionInterface)</a></span> - Method in <a href="org/simplemes/eframe/data/format/FieldFormatInterface.html">FieldFormatInterface</a>
+</dt><dd> <div class="block">Returns the URI used for the suggest/auto-complete lookup for this field.  </div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/data/format/BasicFieldFormat.html#getValue()" title="Method in BasicFieldFormat">getValue()</a></span> - Method in <a href="org/simplemes/eframe/data/format/BasicFieldFormat.html">BasicFieldFormat</a>
 </dt><dd> <div class="block">Returns the value for the choice list (e.g. a domain record of enum element).</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/system/BasicStatus.html#getValue()" title="Method in BasicStatus">getValue()</a></span> - Method in <a href="org/simplemes/eframe/system/BasicStatus.html">BasicStatus</a>
@@ -4782,6 +4814,8 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/simplemes/eframe/application/StartupHandler.html#preStart()" title="Method in StartupHandler">preStart()</a></span> - Method in <a href="org/simplemes/eframe/application/StartupHandler.html">StartupHandler</a>
 </dt><dd> <div class="block">This method should be called from your Application class before the   Micronaut.run() method is called.
  </div></dd>
+<dt><span class="strong"><a href="org/simplemes/eframe/misc/TextUtils.html#prettyFormat(java.lang.Object)" title="Method in TextUtils">prettyFormat(java.lang.Object)</a></span> - Method in <a href="org/simplemes/eframe/misc/TextUtils.html">TextUtils</a>
+</dt><dd> <div class="block">Pretty format a map/list using JSON syntax.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/HistoryTracking.html#previous()" title="Method in HistoryTracking">previous()</a></span> - Method in <a href="org/simplemes/eframe/custom/HistoryTracking.html">HistoryTracking</a>
 </dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/reports/ReportTimeIntervalEnum.html#previous()" title="Method in ReportTimeIntervalEnum">previous()</a></span> - Method in <a href="org/simplemes/eframe/reports/ReportTimeIntervalEnum.html">ReportTimeIntervalEnum</a>
@@ -5915,7 +5949,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 <dt><span class="strong"><a href="org/simplemes/eframe/reports/ReportTimeIntervalEnum.html#toStringLocalized(java.util.Locale)" title="Method in ReportTimeIntervalEnum">toStringLocalized(java.util.Locale)</a></span> - Method in <a href="org/simplemes/eframe/reports/ReportTimeIntervalEnum.html">ReportTimeIntervalEnum</a>
 </dt><dd> <div class="block">Build a human-readable version of this object.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/data/SimpleChoiceListItem.html#toStringLocalized(java.util.Locale)" title="Method in SimpleChoiceListItem">toStringLocalized(java.util.Locale)</a></span> - Method in <a href="org/simplemes/eframe/data/SimpleChoiceListItem.html">SimpleChoiceListItem</a>
-</dt><dd> <div class="block">Returns the localized display value for the choice.</div></dd>
+</dt><dd> <div class="block"></div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/exception/ValidationException.html#toStringLocalized(java.util.Locale)" title="Method in ValidationException">toStringLocalized(java.util.Locale)</a></span> - Method in <a href="org/simplemes/eframe/exception/ValidationException.html">ValidationException</a>
 </dt><dd> <div class="block">Build a human-readable version of this exception.</div></dd>
 <dt><span class="strong"><a href="org/simplemes/eframe/custom/FieldHolderMap.html#trackHistory(java.lang.Object, org.simplemes.eframe.custom.HistoryTracking)" title="Method in FieldHolderMap">trackHistory(java.lang.Object, org.simplemes.eframe.custom.HistoryTracking)</a></span> - Method in <a href="org/simplemes/eframe/custom/FieldHolderMap.html">FieldHolderMap</a>

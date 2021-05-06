@@ -193,8 +193,14 @@ extends <a href='../../../../../org/simplemes/eframe/controller/BaseController.h
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;java.util.Map</code></td>
+                            <td class="colLast"><code><strong><a href="#buildFieldElement(org.simplemes.eframe.data.FieldDefinitionInterface)">buildFieldElement</a></strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</code><br>Builds the single field definition needed for the client.</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>io.micronaut.http.HttpResponse</code></td>
-                            <td class="colLast"><code><strong><a href="#displayFields(io.micronaut.http.HttpRequest)">displayFields</a></strong>(io.micronaut.http.HttpRequest request)</code><br>Provides the domain class fields define, including field extensions.  </td>
+                            <td class="colLast"><code><strong><a href="#displayFields(io.micronaut.http.HttpRequest, java.lang.String)">displayFields</a></strong>(io.micronaut.http.HttpRequest request, java.lang.String domain)</code><br>Provides the domain class fields define, including field extensions.  </td>
                         </tr>
                         
                     </table>
@@ -265,13 +271,22 @@ extends <a href='../../../../../org/simplemes/eframe/controller/BaseController.h
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="displayFields(io.micronaut.http.HttpRequest)"><!-- --></a>
+                        <a name="buildFieldElement(org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
+                                <h4>protected&nbsp;java.util.Map <strong>buildFieldElement</strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</h4>
+                                <p> Builds the single field definition needed for the client. <DL><DT><B>Parameters:</B></DT><DD><code>fieldDef</code> -  The field.</DD></DL><DL><DT><B>Returns:</B></DT><DD>A Map with the field definition for the client's use.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="displayFields(io.micronaut.http.HttpRequest, java.lang.String)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+@io.micronaut.security.annotation.Secured(value: SecurityRule.IS_ANONYMOUS)
 @io.micronaut.http.annotation.Produces(value: MediaType.APPLICATION_JSON)
 @io.micronaut.http.annotation.Get(value: /displayFields)
-io.micronaut.http.HttpResponse <strong>displayFields</strong>(io.micronaut.http.HttpRequest request)</h4>
+io.micronaut.http.HttpResponse <strong>displayFields</strong>(io.micronaut.http.HttpRequest request, @io.micronaut.http.annotation.QueryValue java.lang.String domain)</h4>
                                 <p> Provides the domain class fields define, including field extensions.  Provides the fields displayed in
  a format suitable for the client rendering. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The fields.</DD></DL></p>
                             </li>
