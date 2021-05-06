@@ -1,7 +1,6 @@
 package org.simplemes.eframe.data.format
 
 import org.simplemes.eframe.data.SimpleFieldDefinition
-import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.reports.ReportTimeIntervalEnum
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.MockFieldDefinitions
@@ -92,10 +91,6 @@ class EnumFieldFormatSpec extends BaseSpecification {
     list.size() > 2
     list.find { it.id == ReportTimeIntervalEnum.LAST_7_DAYS.toString() }
     list.find { it.id == ReportTimeIntervalEnum.YESTERDAY.toString() }
-
-    and: 'the display value is localized'
-    def yesterday = list.find { it.id == ReportTimeIntervalEnum.YESTERDAY.toString() }
-    yesterday.toStringLocalized() == GlobalUtils.lookup("reportTimeInterval.YESTERDAY.label", null)
 
   }
 

@@ -128,6 +128,26 @@ class BasicFieldFormatSpec extends BaseSpecification {
     expect: 'the convert methods call the corresponding encode/decode methods'
     object.convertToJsonFormat(437, null) == 'xyzzy'
     object.convertFromJsonFormat('437', null) == 237
-
   }
+
+  def "verify that getDisplayValue works"() {
+    expect: 'the method works'
+    value.instance.getDisplayValue() == result
+
+    where:
+    value                      | result
+    StringFieldFormat          | 'label.stringFieldFormat'
+    IntegerFieldFormat         | 'label.integerFieldFormat'
+    LongFieldFormat            | 'label.longFieldFormat'
+    BigDecimalFieldFormat      | 'label.bigDecimalFieldFormat'
+    BooleanFieldFormat         | 'label.booleanFieldFormat'
+    DateOnlyFieldFormat        | 'label.dateOnlyFieldFormat'
+    DateFieldFormat            | 'label.dateFieldFormat'
+    DomainReferenceFieldFormat | 'label.domainReferenceFieldFormat'
+    EnumFieldFormat            | 'label.enumFieldFormat'
+    EncodedTypeFieldFormat     | 'label.encodedTypeFieldFormat'
+    ChildListFieldFormat       | 'label.childListFieldFormat'
+    CustomChildListFieldFormat | 'label.customChildListFieldFormat'
+  }
+
 }

@@ -36,7 +36,7 @@ class BaseLabeledFieldWidgetSpec extends BaseWidgetSpecification {
     def labelLine = TextUtils.findLine(page, 'id: "aFieldLabel"')
     JavascriptTestUtils.extractProperty(labelLine, 'view') == "label"
     JavascriptTestUtils.extractProperty(labelLine, 'id') == "aFieldLabel"
-    JavascriptTestUtils.extractProperty(labelLine, 'label') == "aField.label"
+    JavascriptTestUtils.extractProperty(labelLine, 'label') == "label.aField"
     JavascriptTestUtils.extractProperty(labelLine, 'align') == "right"
     labelLine.contains("width: tk.pw(ef.getPageOption('${JSPageOptions.LABEL_WIDTH_NAME}','${JSPageOptions.LABEL_WIDTH_DEFAULT}'))")
   }

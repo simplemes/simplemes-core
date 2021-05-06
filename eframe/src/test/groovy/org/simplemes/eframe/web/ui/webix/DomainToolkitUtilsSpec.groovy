@@ -179,7 +179,6 @@ class DomainToolkitUtilsSpec extends BaseSpecification {
     def suggestText = JavascriptTestUtils.extractBlock(rtiText, 'suggest: {')
     JavascriptTestUtils.extractProperty(suggestText, 'fitMaster') == 'false'
     def width = TextFieldWidget.adjustFieldCharacterWidth(15)
-    JavascriptTestUtils.extractProperty(suggestText, 'width') == """tk.pw("${width}em")"""
 
     and: 'the list of values is correct'
     def optionsBlock = JavascriptTestUtils.extractBlock(page, 'options: [')

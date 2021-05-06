@@ -52,4 +52,9 @@ class ChildListFieldFormatSpec extends BaseSpecification {
     thrown(UnsupportedOperationException)
   }
 
+  def "verify that the client ID is correct - mapped to enum list format on client"() {
+    expect: 'the value is correct'
+    ChildListFieldFormat.instance.clientFormatType == EnumFieldFormat.instance.clientFormatType
+  }
+
 }

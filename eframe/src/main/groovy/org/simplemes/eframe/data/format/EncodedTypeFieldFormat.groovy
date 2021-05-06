@@ -136,6 +136,16 @@ class EncodedTypeFieldFormat extends BasicFieldFormat {
   }
 
   /**
+   * Returns the client format type code.  Used by the Vue client logic only.
+   * @return The client code.
+   */
+  @Override
+  String getClientFormatType() {
+    // This is treated as list of valid choices on the client.
+    return EnumFieldFormat.instance.id
+  }
+
+  /**
    * Returns a string representation of the object.
    *
    * @return a string representation of the object.

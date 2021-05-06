@@ -23,7 +23,7 @@ class FieldDefinitionFactorySpec extends BaseSpecification {
     then: 'the correct field is created'
     field.name == 'order'
     field.type == String
-    field.label == 'order.label'
+    field.label == 'label.order'
     field.columnName == 'ordr'
   }
 

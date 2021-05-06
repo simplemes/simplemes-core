@@ -4,7 +4,7 @@
 
 package org.simplemes.eframe.data.format
 
-
+import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.test.BaseSpecification
 import org.simplemes.eframe.test.DataGenerator
 import org.simplemes.eframe.test.MockFieldDefinitions
@@ -189,5 +189,20 @@ class DomainReferenceFieldFormatSpec extends BaseSpecification {
     ''    | null
     null  | null
   }
+
+  def "verify that the client ID is correct - mapped to enum list format on client"() {
+    expect: 'the value is correct'
+    DomainReferenceFieldFormat.instance.clientFormatType == EnumFieldFormat.instance.clientFormatType
+  }
+
+  def "verify that suggest URI is correct"() {
+    given: 'a field definition'
+    def fieldDefinitions = DomainUtils.instance.getFieldDefinitions(AllFieldsDomain)
+    def fieldDef = fieldDefinitions.order
+
+    expect: 'the value is correct'
+    DomainReferenceFieldFormat.instance.getValidValuesURI(fieldDef) == '/order/suggest'
+  }
+
 
 }

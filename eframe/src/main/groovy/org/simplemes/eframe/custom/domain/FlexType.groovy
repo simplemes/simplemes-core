@@ -168,6 +168,15 @@ class FlexType implements ConfigurableTypeInterface, ChoiceListItemInterface {
   }
 
   /**
+   * Returns the display value for the choice list (e.g. a domain record or enum element).
+   * @return The value.
+   */
+  @Transient
+  String getDisplayValue() {
+    return flexType
+  }
+
+  /**
    * Returns internal ID for this choice.
    * @return The ID.
    */

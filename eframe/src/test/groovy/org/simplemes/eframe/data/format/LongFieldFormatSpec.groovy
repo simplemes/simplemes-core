@@ -91,4 +91,9 @@ class LongFieldFormatSpec extends BaseSpecification {
     127.2 | _
   }
 
+  def "verify that the client ID is correct - mapped to integer format on client"() {
+    expect: 'the value is correct'
+    LongFieldFormat.instance.clientFormatType == IntegerFieldFormat.instance.clientFormatType
+  }
+
 }

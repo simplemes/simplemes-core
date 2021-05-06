@@ -78,4 +78,11 @@ class ConfigurableTypeDomainFormatSpec extends BaseSpecification {
     then: 'the fields are correct'
     fields.size() == 0
   }
+
+  def "verify that the client ID is correct - mapped to enum list format on client"() {
+    expect: 'the value is correct'
+    ConfigurableTypeDomainFormat.instance.clientFormatType == EnumFieldFormat.instance.clientFormatType
+  }
+
+
 }

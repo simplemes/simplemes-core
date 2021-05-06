@@ -24,7 +24,7 @@ class SimpleChoiceListItem implements ChoiceListItemInterface {
   Object id
 
   /**
-   * The display value for the current locale.
+   * The display value for the choice.  Usually a lookup key in the language bundle.
    */
   String displayValue
 
@@ -53,6 +53,7 @@ class SimpleChoiceListItem implements ChoiceListItemInterface {
    * @param locale The locale to use for the localized string.
    * @return The display value.
    */
+  // TODO: Drop toStringLocalized() everywhere
   @Override
   String toStringLocalized(Locale locale = null) {
     return displayValue

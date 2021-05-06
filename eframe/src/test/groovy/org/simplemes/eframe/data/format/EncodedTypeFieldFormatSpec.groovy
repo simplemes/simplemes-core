@@ -115,4 +115,11 @@ class EncodedTypeFieldFormatSpec extends BaseSpecification {
     DisabledStatus.instance | _
     null                    | _
   }
+
+  def "verify that the client ID is correct - mapped to enum list format on client"() {
+    expect: 'the value is correct'
+    EncodedTypeFieldFormat.instance.clientFormatType == EnumFieldFormat.instance.clientFormatType
+  }
+
+
 }

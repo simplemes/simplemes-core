@@ -39,22 +39,6 @@ class ExtensionServiceSpec extends BaseSpecification {
   }
 
   @Rollback
-  def "verify that getExtensionConfiguration works with normal domain and no custom fields"() {
-    when: 'the configuration is found'
-    def (List available, List configured) = extensionService.getExtensionConfiguration(SampleParent)
-
-    then: 'the configured list is correct'
-    configured.size() == SampleParent.fieldOrder.size()
-    configured[0] == [name: 'name', type: 'textField', label: lookup('name.label'), custom: false]
-    configured[1] == [name: 'title', type: 'textField', label: lookup('title.label'), custom: false]
-
-    and: 'the available list is correct'
-    available.size() > 0
-    def f = available.find() { it.name == 'notDisplayed' }
-    f == [name: 'notDisplayed', type: 'textField', label: 'notDisplayed.label', custom: false]
-  }
-
-  @Rollback
   def "verify that getExtensionConfiguration filters out the non-fields"() {
     when: 'the configuration is found'
     //noinspection GroovyUnusedAssignment

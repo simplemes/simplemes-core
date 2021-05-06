@@ -44,7 +44,7 @@ class PanelUtils {
   static Map<String, List<String>> organizeFieldsIntoPanels(List<String> fields) {
     def res = [:]
     if (!fields) {
-      return res
+      return res as Map<String, List<String>>
     }
 
     def panels = []
@@ -71,7 +71,7 @@ class PanelUtils {
         }
       }
     }
-    return res
+    return res as Map<String, List<String>>
   }
 
 }

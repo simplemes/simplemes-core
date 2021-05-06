@@ -32,7 +32,7 @@ class TextFieldWidgetSpec extends BaseWidgetSpecification {
     def labelLine = TextUtils.findLine(page, 'id: "aFieldLabel"')
     JavascriptTestUtils.extractProperty(labelLine, 'view') == "label"
     JavascriptTestUtils.extractProperty(labelLine, 'id') == "aFieldLabel"
-    JavascriptTestUtils.extractProperty(labelLine, 'label') == "aField.label"
+    JavascriptTestUtils.extractProperty(labelLine, 'label') == "label.aField"
     JavascriptTestUtils.extractProperty(labelLine, 'align') == "right"
     labelLine.contains("width: tk.pw(ef.getPageOption('${JSPageOptions.LABEL_WIDTH_NAME}','${JSPageOptions.LABEL_WIDTH_DEFAULT}'))")
 
@@ -219,30 +219,6 @@ class TextFieldWidgetSpec extends BaseWidgetSpecification {
     JavascriptTestUtils.extractProperty(fieldLine, 'inputWidth') == """tk.pw("20%")"""
   }
 
-  def "verify that the field is flagged as required correctly"() {
-    when: 'the UI element is built'
-    def page = new TextFieldWidget(buildWidgetContext(readOnly: false, value: 'ABC',
-                                                      parameters: [required: required])).build().toString()
-
-    then: 'the page is valid'
-    JavascriptTestUtils.checkScriptFragment(page)
-
-    and: 'the field label is flagged as required'
-    def labelLine = TextUtils.findLine(page, 'id: "aFieldLabel"')
-    JavascriptTestUtils.extractProperty(labelLine, 'label') == label
-
-    and: 'the field value is flagged as required'
-    def fieldLine = TextUtils.findLine(page, 'id: "aField"')
-    JavascriptTestUtils.extractProperty(fieldLine, 'required') == fieldFlag
-
-    where:
-    required | label           | fieldFlag
-    'true'   | '*aField.label' | "true"
-    true     | '*aField.label' | "true"
-    'false'  | 'aField.label'  | null
-    false    | 'aField.label'  | null
-    null     | 'aField.label'  | null
-  }
 
   def "verify that the onChange javascript can be passed in"() {
     when: 'the UI element is built'

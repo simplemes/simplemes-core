@@ -10,6 +10,7 @@ import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.data.SimpleChoiceListItem
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.misc.ArgumentUtils
+import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.TypeUtils
 import org.simplemes.eframe.misc.UUIDUtils
 
@@ -129,21 +130,34 @@ class DomainReferenceFieldFormat extends BasicFieldFormat {
    */
   @Override
   List<ChoiceListItemInterface> getValidValues(FieldDefinitionInterface fieldDefinition) {
-    ArgumentUtils.checkMissing(fieldDefinition, 'fieldDefinitions')
+    ArgumentUtils.checkMissing(fieldDefinition, 'fieldDefinition')
 
     List<ChoiceListItemInterface> res = []
     def referencedClass = fieldDefinition.referenceType
     def key = DomainUtils.instance.getPrimaryKeyField(referencedClass)
     //referencedClass.withTransaction {
       def list = referencedClass.list()
-      // Sort by the primary key
-      list = list.sort { a, b -> a[key] <=> b[key] }
-      for (record in list) {
-        res << new SimpleChoiceListItem(id: record.uuid, value: record,
-                                        displayValue: TypeUtils.toShortString(record, true))
-      }
+    // Sort by the primary key
+    list = list.sort { a, b -> a[key] <=> b[key] }
+    for (record in list) {
+      res << new SimpleChoiceListItem(id: record.uuid, value: record,
+                                      displayValue: TypeUtils.toShortString(record, true))
+    }
     //}
     return res
+  }
+
+  /**
+   * Returns the URI used for the suggest/auto-complete lookup for this field.  See docs for details on auto-complete.
+   * @param fieldDefinition The field definition used to define this field (optional, provides additional details on the value class).
+   * @return The URI.
+   */
+  @Override
+  String getValidValuesURI(FieldDefinitionInterface fieldDefinition) {
+    def referencedClass = fieldDefinition.referenceType
+    def s = NameUtils.lowercaseFirstLetter(referencedClass.simpleName)
+
+    return "/$s/suggest"
   }
 
   /**
@@ -168,6 +182,16 @@ class DomainReferenceFieldFormat extends BasicFieldFormat {
     return decode((String) value, fieldDefinition)
   }
 
+
+  /**
+   * Returns the client format type code.  Used by the Vue client logic only.
+   * @return The client code.
+   */
+  @Override
+  String getClientFormatType() {
+    // This is treated as list of valid choices on the client.
+    return EnumFieldFormat.instance.id
+  }
 
   /**
    * Returns a string representation of the object.

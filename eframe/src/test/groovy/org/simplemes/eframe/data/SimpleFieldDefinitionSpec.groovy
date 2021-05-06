@@ -31,7 +31,7 @@ class SimpleFieldDefinitionSpec extends BaseSpecification {
     then: 'the correct field is created'
     field.name == 'order'
     field.type == String
-    field.label == 'order.label'
+    field.label == 'label.order'
     field.columnName == 'ordr'
   }
 
@@ -42,7 +42,7 @@ class SimpleFieldDefinitionSpec extends BaseSpecification {
     then: 'the correct field is created'
     field.name == 'title'
     field.type == Integer
-    field.label == 'title.label'
+    field.label == 'label.title'
   }
 
   def "verify that isReference works for supported field types"() {
@@ -198,7 +198,7 @@ class SimpleFieldDefinitionSpec extends BaseSpecification {
     def field = FindComponentResponseDetail.getDeclaredField('assemblyData')
 
     expect: 'the isReference method works'
-    new SimpleFieldDefinition(field).label == 'assemblyData.label'
+    new SimpleFieldDefinition(field).label == 'label.assemblyData'
   }
 
 

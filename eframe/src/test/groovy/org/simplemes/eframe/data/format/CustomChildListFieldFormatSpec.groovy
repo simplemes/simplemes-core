@@ -157,4 +157,9 @@ class CustomCustomChildListFieldFormatSpec extends BaseSpecification {
     list[1] == sampleParent2
   }
 
+  def "verify that the client ID is correct - mapped to enum list format on client"() {
+    expect: 'the value is correct'
+    CustomChildListFieldFormat.instance.clientFormatType == EnumFieldFormat.instance.clientFormatType
+  }
+
 }

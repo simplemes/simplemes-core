@@ -58,7 +58,7 @@ GUI - Vue Conversion
         npm build
         npm pack
         npm i C:\Users\mph\Documents\tmp\vue3\sfc-rollup\sfc-lib\sfc-lib-1.0.0.tgz
-
+     Remove all to..localized() methods and docs.
 
 
   Resources/Notes

@@ -4,6 +4,8 @@
 
 package org.simplemes.eframe.misc
 
+
+import com.fasterxml.jackson.databind.ObjectMapper
 import groovy.text.GStringTemplateEngine
 import groovy.util.logging.Slf4j
 
@@ -213,5 +215,14 @@ class TextUtils {
       sb.append('...')
     }
     return sb
+  }
+
+  /**
+   * Pretty format a map/list using JSON syntax.
+   * @param map The map/list to format.
+   * @return The pretty formatted JSON form of the Map/list.
+   */
+  static String prettyFormat(Object map) {
+    return new ObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(map)
   }
 }

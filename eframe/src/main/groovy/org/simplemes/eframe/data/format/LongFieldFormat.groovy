@@ -104,6 +104,15 @@ class LongFieldFormat extends BasicFieldFormat {
   }
 
   /**
+   * Returns the client format type code.  Used by the Vue client logic only.
+   * @return The client code.
+   */
+  @Override
+  String getClientFormatType() {
+    return IntegerFieldFormat.instance.id
+  }
+
+  /**
    * Returns a string representation of the object.
    *
    * @return a string representation of the object.

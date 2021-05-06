@@ -35,6 +35,16 @@ class BasicStatusSpec extends BaseSpecification {
     'bad'      | null
   }
 
+  def "verify that getDisplayValue works for core statuses"() {
+    expect:
+    status.instance.getDisplayValue() == results
+
+    where:
+    status         | results
+    EnabledStatus  | 'label.enabledStatus'
+    DisabledStatus | 'label.disabledStatus'
+  }
+
 /*
   def "verify that valueOf works for added elements"() {
     given: 'a simple mocked addition'

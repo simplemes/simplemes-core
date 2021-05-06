@@ -7,6 +7,7 @@ import org.simplemes.eframe.data.EncodedTypeInterface
 import org.simplemes.eframe.data.EncodedTypeListUtils
 import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.i18n.GlobalUtils
+import org.simplemes.eframe.misc.NameUtils
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.
@@ -83,6 +84,15 @@ abstract class LSNStatus implements EncodedTypeInterface, ChoiceListInterface, C
   static List<ChoiceListItemInterface> getValidValues(FieldDefinitionInterface fieldDefinition) {
     return EncodedTypeListUtils.instance.getAllValues(LSNStatus)
   }
+
+  /**
+   * Returns the display value for the choice list.
+   * @return The display value.
+   */
+  String getDisplayValue() {
+    return "label.${NameUtils.lowercaseFirstLetter(this.getClass().simpleName)}"
+  }
+
 
   /**
    * Returns the localized display value for the choice.

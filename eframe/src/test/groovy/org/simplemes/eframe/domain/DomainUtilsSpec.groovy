@@ -54,7 +54,19 @@ class DomainUtilsSpec extends BaseSpecification {
     then: 'all of the expected fields are found'
     def names = fields*.name
     names.containsAll(['name', 'title', 'notes', 'dateCreated', 'dateUpdated'])
+  }
 
+  def "verify that getTransientFields only includes the ones marked with the annotation"() {
+    when: 'the persistent fields are found'
+    def fields = DomainUtils.instance.getTransientFields(RMA)
+
+    then: 'none of the special fields are added'
+    def names = fields*.name
+    !names.find { it.startsWith('_') }
+    !names.contains('metaClass')
+
+    and: 'the field marked with the annotation are listed'
+    names.contains('rmaSummary')
   }
 
   def "verify that getAllDomains works"() {

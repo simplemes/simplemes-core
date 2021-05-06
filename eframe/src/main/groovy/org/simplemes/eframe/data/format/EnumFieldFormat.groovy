@@ -4,8 +4,8 @@ import groovy.transform.CompileStatic
 import org.simplemes.eframe.data.ChoiceListItemInterface
 import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.data.SimpleChoiceListItem
-import org.simplemes.eframe.i18n.GlobalUtils
 import org.simplemes.eframe.misc.ArgumentUtils
+import org.simplemes.eframe.misc.NameUtils
 import org.simplemes.eframe.misc.TypeUtils
 
 /*
@@ -121,7 +121,8 @@ class EnumFieldFormat extends BasicFieldFormat {
     def enums = enumClass.enumConstants
     def list = []
     for (e in enums) {
-      list << new SimpleChoiceListItem(id: e.toString(), displayValue: GlobalUtils.toStringLocalized(e))
+      def s = NameUtils.lowercaseFirstLetter(enumClass.simpleName)
+      list << new SimpleChoiceListItem(id: e.toString(), displayValue: "${s}.${e.toString()}".toString())
     }
     return list
   }

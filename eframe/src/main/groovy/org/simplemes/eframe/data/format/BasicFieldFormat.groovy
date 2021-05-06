@@ -9,6 +9,7 @@ import org.simplemes.eframe.data.EncodedTypeInterface
 import org.simplemes.eframe.data.EncodedTypeListUtils
 import org.simplemes.eframe.data.FieldDefinitionInterface
 import org.simplemes.eframe.i18n.GlobalUtils
+import org.simplemes.eframe.misc.NameUtils
 
 /*
  * Copyright Michael Houston 2018. All rights reserved.
@@ -124,9 +125,18 @@ abstract class BasicFieldFormat implements FieldFormatInterface, EncodedTypeInte
    * @param fieldDefinition The field definition used to define this field (optional, provided additional details such as valid values).
    * @return The editor (e.g. 'text').
    */
+  // TODO: Remove when webix removed
   @Override
   String getGridEditor(FieldDefinitionInterface fieldDefinition) {
     return 'text'
+  }
+
+  /**
+   * Returns the client format type code.  Used by the Vue client logic only.
+   * @return The client code.
+   */
+  String getClientFormatType() {
+    return getId()
   }
 
   /**
@@ -136,6 +146,16 @@ abstract class BasicFieldFormat implements FieldFormatInterface, EncodedTypeInte
    */
   @Override
   List<ChoiceListItemInterface> getValidValues(FieldDefinitionInterface fieldDefinition) {
+    return null
+  }
+
+  /**
+   * Returns the URI used for the suggest/auto-complete lookup for this field.  See docs for details on auto-complete.
+   * @param fieldDefinition The field definition used to define this field (optional, provides additional details on the value class).
+   * @return The URI.
+   */
+  @Override
+  String getValidValuesURI(FieldDefinitionInterface fieldDefinition) {
     return null
   }
 
@@ -193,6 +213,14 @@ abstract class BasicFieldFormat implements FieldFormatInterface, EncodedTypeInte
   @Override
   Object convertFromJsonFormat(Object value, FieldDefinitionInterface fieldDefinition) {
     return decode((String) value, fieldDefinition)
+  }
+
+  /**
+   * Returns the display value for the choice list.
+   * @return The display value.
+   */
+  String getDisplayValue() {
+    return "label.${NameUtils.lowercaseFirstLetter(this.getClass().simpleName)}"
   }
 
   /**

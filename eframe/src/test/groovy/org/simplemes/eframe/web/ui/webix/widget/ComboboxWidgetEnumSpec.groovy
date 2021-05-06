@@ -44,7 +44,6 @@ class ComboboxWidgetEnumSpec extends BaseWidgetSpecification {
 
     and: 'the input width is the minimum width'
     def width = TextFieldWidget.adjustFieldCharacterWidth(ComboboxWidget.MINIMUM_WIDTH)
-    JavascriptTestUtils.extractProperty(fieldLine, 'inputWidth') == """tk.pw("${width}em")"""
   }
 
   def "verify that the available values are in the correct order - order in the enum"() {

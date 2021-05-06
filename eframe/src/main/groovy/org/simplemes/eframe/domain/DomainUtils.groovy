@@ -71,6 +71,11 @@ class DomainUtils {
   }
 
   /**
+   * A list of fields to ignore from the transient field list.
+   */
+  static List<String> ignoredTransientFields = ['customFieldsMap', ExtensibleFieldHolder.COMPLEX_CUSTOM_FIELD_NAME]
+
+  /**
    * Gets the transient fields for the given domain entity class.
    * @param domainClass The class to find the fields in.
    * @return A list of transient fields.
@@ -79,7 +84,7 @@ class DomainUtils {
     List<Field> res = []
     for (field in domainClass.getDeclaredFields()) {
       def ann = field.getAnnotation(Transient)
-      if (Modifier.isTransient(field.modifiers) || ann) {
+      if (ann && !ignoredTransientFields.contains(field.name)) {
         res << field
       }
     }

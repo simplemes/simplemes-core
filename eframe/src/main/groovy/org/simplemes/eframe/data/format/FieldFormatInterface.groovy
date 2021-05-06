@@ -106,11 +106,24 @@ interface FieldFormatInterface {
   String getGridEditor(FieldDefinitionInterface fieldDefinition)
 
   /**
+   * Returns the client format type code.  Used by the Vue client logic only.
+   * @return The client code.
+   */
+  String getClientFormatType()
+
+  /**
    * Returns the list of valid values for those formats that use a combobox or similar widget.
    * @param fieldDefinition The field definition used to define this field (optional, provided additional details such as valid values).
    * @return The list of valid values.
    */
   List<ChoiceListItemInterface> getValidValues(FieldDefinitionInterface fieldDefinition)
+
+  /**
+   * Returns the URI used for the suggest/auto-complete lookup for this field.  See docs for details on auto-complete.
+   * @param fieldDefinition The field definition used to define this field (optional, provides additional details on the value class).
+   * @return The URI.
+   */
+  String getValidValuesURI(FieldDefinitionInterface fieldDefinition)
 
   /**
    * Converts the given value to a format suitable for JSON storage.

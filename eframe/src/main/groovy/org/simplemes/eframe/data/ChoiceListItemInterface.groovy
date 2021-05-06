@@ -42,4 +42,9 @@ interface ChoiceListItemInterface {
    */
   boolean isDefaultChoice()
 
+  /**
+   * The display value for the choice.  Usually a lookup key in the language bundle.
+   */
+  String getDisplayValue()
+
 }
