@@ -34,7 +34,7 @@ class FlexFieldSpec extends BaseSpecification {
       maxSize 'fieldName', FieldSizes.MAX_CODE_LENGTH
       notNullCheck 'flexType'
       notNullCheck 'fieldName'
-      notInFieldOrder(['flexType'])
+      notInFieldOrder(['flexType', 'guiHints'])
     }
   }
 

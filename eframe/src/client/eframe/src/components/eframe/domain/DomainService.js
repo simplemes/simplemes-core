@@ -1,6 +1,9 @@
 /**
  * JS Service for access to domain object details (DomainController).
  */
+import InMemoriam from 'in-memoriam'
+
+const cache = new InMemoriam(10, 600000)
 
 export default {
 
@@ -21,173 +24,32 @@ export default {
   // Return the field definitions.
   // eslint-disable-next-line no-unused-vars
   getDisplayFields(domainClassName, successFunction, errorFunction) {
-    // TODO: Replace with real query/caching.
-    //console.log("getting domain fields: " + domainClassName);
-
-    const dummy = {
-      top: [
-        {
-          fieldName: 'flexType',
-          fieldLabel: 'label.flexType',
-          fieldFormat: 'S',
-          fieldDefault: '',
-          required: true,
-          maxLength: 30,
-        },
-      ],
-      bottom: [
-        {
-          fieldName: 'category',
-          fieldLabel: 'label.category',
-          fieldFormat: 'S',
-          fieldDefault: '',
-          maxLength: 20,
-        },
-        {
-          fieldName: 'defaultFlexType',
-          fieldLabel: 'label.defaultFlexType',
-          fieldFormat: 'B',
-        },
-        {
-          fieldName: 'title',
-          fieldLabel: 'label.title',
-          fieldFormat: 'S',
-          fieldDefault: '',
-          maxLength: 80,
-        },
-        {
-          fieldName: 'fields',
-          fieldLabel: 'label.fields',
-          fieldFormat: 'C',
-          fields: [
-            {
-              fieldName: 'sequence',
-              fieldLabel: 'label.sequence',
-              fieldFormat: 'I',
-              defaultValue: "_max('sequence')+10",
-            },
-            {
-              fieldName: 'fieldName',
-              fieldLabel: 'label.fieldName',
-              fieldFormat: 'S',
-              maxLength: 30,
-              defaultValue: "'field'+(_max('sequence')+10)",
-            },
-            {
-              fieldName: 'fieldLabel',
-              fieldLabel: 'label.fieldLabel',
-              fieldFormat: 'S',
-              maxLength: 80,
-            },
-            {
-              fieldName: 'fieldFormat',
-              fieldLabel: 'label.fieldFormat',
-              fieldFormat: 'E',
-              defaultValue: "'S'",
-              validValues: [
-                {value: 'S', label: 'label.fieldFormatString'},
-                {value: 'I', label: 'label.fieldFormatInteger'},
-                {value: 'N', label: 'label.fieldFormatNumber'},
-                {value: 'D', label: 'label.fieldFormatDate'},
-                {value: 'T', label: 'label.fieldFormatDateTime'},
-                {value: 'B', label: 'label.fieldFormatBoolean'},
-                {value: 'R', label: 'label.fieldFormatDomainReference'},
-                {value: 'Q', label: 'label.fieldFormatListOfDomainReferences'},
-                {value: 'C', label: 'label.fieldFormatChildList'},
-                {value: 'E', label: 'label.fieldFormatEnumeration'},
-                {value: 'G', label: 'label.fieldFormatConfigurableType'},
-              ],
-            },
-            {
-              fieldName: 'maxLength',
-              fieldLabel: 'label.maxLength',
-              fieldFormat: 'I',
-            },
-            {
-              fieldName: 'required',
-              fieldLabel: 'label.required',
-              fieldFormat: 'B',
-            },
-            {
-              fieldName: 'historyTracking',
-              fieldLabel: 'label.historyTracking',
-              fieldFormat: 'E',
-              defaultValue: "'NONE'",
-              validValues: [
-                {value: 'NONE', label: 'label.historyTrackingNone'},
-                {value: 'VALUES', label: 'label.historyTrackingValues'},
-                {value: 'ALL', label: 'label.historyTrackingAll'},
-              ],
-            },
-            {
-              fieldName: 'valueClassName',
-              fieldLabel: 'label.valueClassName',
-              fieldFormat: 'S',
-              maxLength: 255,
-            },
-
-          ],
-        },
-      ],
-      tabs: [
-        {
-          tab: 'MAIN',
-          tabLabel: 'label.main',
-          fields: [
-            {
-              fieldName: 'title3',
-              fieldLabel: 'label.title',
-              fieldFormat: 'S',
-              fieldDefault: '',
-              maxLength: 20,
-            },
-            {
-              fieldName: 'category3',
-              fieldLabel: 'label.category',
-              fieldFormat: 'S',
-              fieldDefault: '',
-              required: false,
-              maxLength: 20,
-            },
-            {
-              fieldName: 'historyTracking',
-              fieldLabel: 'label.historyTracking',
-              fieldFormat: 'E',
-              defaultValue: "'NONE'",
-              required: true,
-              validValues: [
-                {value: 'NONE', label: 'label.historyTrackingNone'},
-                {value: 'VALUES', label: 'label.historyTrackingValues'},
-                {value: 'ALL', label: 'label.historyTrackingAll'},
-              ],
-            },
-          ]
-        },
-        {
-          tab: 'DETAILS',
-          tabLabel: 'label.details',
-          fields: [
-            {
-              fieldName: 'category2',
-              fieldLabel: 'label.category',
-              fieldFormat: 'S',
-              fieldDefault: '',
-              maxLength: 20,
-            },
-            {
-              fieldName: 'warehouse',
-              fieldLabel: 'label.fieldFormatDomainReference',
-              fieldFormat: 'S',
-              fieldDefault: '',
-              maxLength: 20,
-            }
-          ]
-        }
-      ]
+    if (cache.get(domainClassName)) {
+      successFunction(cache.get(domainClassName))
+      console.log("cache: " + JSON.stringify(cache.stats));
+      return
     }
 
-    this._localizeLabels(dummy, true)
-    successFunction(dummy)
+    const url = '/domain/displayFields?domain=' + domainClassName;
+    window.$page.vue.axios.get(url).then((response) => {
+      let theFields = response.data
+      // Make sure all the top-level elements are present (empty)
+      if (!theFields.tabs) {
+        theFields.tabs = []
+      }
+      if (!theFields.top) {
+        theFields.top = []
+      }
+      if (!theFields.bottom) {
+        theFields.bottom = []
+      }
+      this._localizeLabels(theFields, true)
+
+      successFunction(theFields)
+      cache.set(domainClassName, theFields)
+    }).catch((error) => {
+      window.$page.handleError(error, url)
+    })
 
   },
   // Return the field definitions- in a flattened array.
@@ -221,6 +83,16 @@ export default {
     for (let field of allFields) {
       if (field.fieldFormat == 'C') {
         record[field.fieldName] = []
+      }
+    }
+
+    // Fill in any default values.
+    for (let field of allFields) {
+      if (field.defaultValue) {
+        let value = eval(field.defaultValue)
+        if (value) {
+          record[field.fieldName] = value
+        }
       }
     }
 

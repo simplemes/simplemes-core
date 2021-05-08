@@ -115,8 +115,8 @@ class CustomChildListFieldFormat extends BasicFieldFormat implements ListFieldLo
    */
   @Override
   String getClientFormatType() {
-    // This is treated as list of valid choices on the client.
-    return EnumFieldFormat.instance.id
+    // This is treated as normal child list of valid choices on the client.
+    return ChildListFieldFormat.instance.id
   }
 
   /**

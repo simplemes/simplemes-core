@@ -36,7 +36,7 @@ import javax.persistence.OneToMany
 @MappedEntity
 @DomainEntity
 @EqualsAndHashCode(includes = ["flexType"])
-@JsonIgnoreProperties(['value', 'defaultChoice'])
+@JsonIgnoreProperties(['value', 'defaultChoice', 'displayValue'])
 @ToString(includePackage = false, includeNames = true, excludes = ['flexType'])
 class FlexType implements ConfigurableTypeInterface, ChoiceListItemInterface {
 

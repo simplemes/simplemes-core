@@ -107,14 +107,17 @@ class FlexField implements FieldInterface, FieldTrait {
   /**
    * Defines the order the fields are shown in the edit/show/etc GUIs.
    */
-  static fieldOrder = ['sequence', 'fieldName', 'fieldLabel', 'fieldFormat', 'maxLength', 'required', 'historyTracking', 'valueClassName', 'guiHints']
+  static fieldOrder = ['sequence', 'fieldName', 'fieldLabel', 'fieldFormat', 'maxLength', 'required', 'historyTracking', 'valueClassName']
+
+  /**
+   * Provides the default values for new rows inserted into the inline grid on the client.
+   */
+  static clientDefaults = [sequence: "_max('sequence')+10", fieldName: "'field'+(_max('sequence')+10)"]
 
   /**
    * The primary keys for this object.
    */
   static keys = ['flexType', 'fieldName']
-
-
 
 
 }

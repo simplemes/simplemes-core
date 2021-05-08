@@ -80,7 +80,7 @@ export default {
   data() {
     return {
       index: -1,
-      checkbox0: true,
+      checkbox0: false,
     }
   },
   props: ['field'],

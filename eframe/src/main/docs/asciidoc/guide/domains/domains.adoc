@@ -328,7 +328,44 @@ ordering in your domain classes, then you can specify the field ordering on the 
 <<reference.adoc#efshow,efShow>> markers in your HTML files.  This means updating 3  files
 whenever you add a new field to a domain class.  This is your choice.
 
-See <<reference.adoc#field-order,fieldOrder >> for details.
+See link:reference.html#field-order[fieldOrder^] icon:share-square-o[role="link-blue"]
+for more details.
+
+==== clientDefaults
+
+To make life easier for the end users, we provide several mechanisms for default values.
+The simplest is the default value in the domain fields (e.g. _String title="ABC"_).
+This works well for most cases, but fails for some client-side use cases.  In particular,
+the adding of new rows in inline grids on the client requires some special client-side
+processing.
+
+To support this client-side default mechanism, you can add a static property to your domain
+to provide the default values.  For example, the fields for <<Flex Types>> uses as sequence
+default to reduce the user input on the client.  This is defined in the FlexField using
+this definition:
+
+[source,groovy]
+.Example - clientDefaults
+----
+class FlexField {
+  BasicFieldFormat fieldFormat = StringFieldFormat.instance  // <.>
+  HistoryTracking historyTracking = HistoryTracking.NONE
+
+  static clientDefaults = [sequence:  "_max('sequence')+10",  // <.>
+                           fieldName: "'field'+(_max('sequence')+10)"] // <.>
+}
+
+----
+<.> Normal server-side default value for two enum fields.
+<.> Uses the current max 'sequence' from the inline grid rows and adds 10.
+<.> Creates a string `fieldName` using like _'field20'_.
+
+The `_max()` method is defined for the inline grid client-side element.  The default
+string is javascript than is executed on the client when the user clicks the 'Add'
+row button.
+
+NOTE: The clientDefaults will override the normal field default values when
+      both are defined for the domain class.
 
 ==== Supported Annotations
 

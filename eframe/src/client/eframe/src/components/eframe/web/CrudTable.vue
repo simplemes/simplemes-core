@@ -94,7 +94,6 @@ export default {
       pageSize: 10,
       records: [],
       requestParams: {},
-      fields: {},
       confirmDeleteDialogVisible: false,
       rowMenuRecord: {},  // The record for the row menu.
       rowMenuVisible: false,
@@ -114,7 +113,10 @@ export default {
   },
   methods: {
     addRecord() {
-      this.$refs.crudDialog.openDialog(DomainService._emptyDomain(this.$data.fields))
+      // Load the fields needed for the add dialog.
+      DomainService.getDisplayFields(this.domainClassName, (fields) => {
+        this.$refs.crudDialog.openDialog(DomainService._emptyDomain(fields))
+      });
     },
     clearFilter() {
       this.requestParams.filter = ''
@@ -194,11 +196,6 @@ export default {
     this.loading = true
     this.loadData()
     this.$refs.filter.$el.focus()
-
-    // Load the fields needed for the add/edit dialogs.
-    DomainService.getDisplayFields(this.domainClassName, (data) => {
-      this.fields = data
-    });
   },
 }
 

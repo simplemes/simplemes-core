@@ -6,6 +6,7 @@ package org.simplemes.eframe.domain.controller
 
 import io.micronaut.http.HttpStatus
 import org.simplemes.eframe.application.Holders
+import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.data.format.BigDecimalFieldFormat
 import org.simplemes.eframe.data.format.BooleanFieldFormat
 import org.simplemes.eframe.data.format.EnumFieldFormat
@@ -13,11 +14,13 @@ import org.simplemes.eframe.data.format.IntegerFieldFormat
 import org.simplemes.eframe.data.format.StringFieldFormat
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.reports.ReportTimeIntervalEnum
+import org.simplemes.eframe.security.domain.User
 import org.simplemes.eframe.system.BasicStatus
 import org.simplemes.eframe.test.BaseAPISpecification
 import org.simplemes.eframe.test.DataGenerator
 import sample.domain.AllFieldsDomain
 import sample.domain.RMA
+import sample.domain.SampleChild
 import sample.domain.SampleParent
 
 /**
@@ -94,6 +97,101 @@ class DomainControllerSpec extends BaseAPISpecification {
     fieldNames1 == ['notes', 'transientField', 'reportTimeInterval', 'order', 'status', 'displayOnlyText']
   }
 
+  def "verify that basic displayFields GET works - child field list for inline grids"() {
+    when: 'the get is triggered'
+    login()
+    def s = sendRequest(uri: "/domain/displayFields?domain=${FlexType.name}")
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+
+    then: 'the JSON is valid'
+    def map = Holders.objectMapper.readValue(s, Map)
+    def bottom = map.bottom
+    def fieldList = bottom.find { it.fieldName == 'fields' }
+    fieldList.fieldFormat == 'C'
+    def fields = fieldList.fields
+    fields.size() == 8
+
+    def names = fields*.fieldName
+    names.contains('sequence')
+    names.contains('fieldName')
+    names.contains('fieldLabel')
+    names.contains('fieldFormat')
+    names.contains('maxLength')
+    names.contains('required')
+    names.contains('historyTracking')
+    names.contains('valueClassName')
+  }
+
+  def "verify that displayFields provides the server-side defaults"() {
+    when: 'the get is triggered'
+    login()
+    def s = sendRequest(uri: "/domain/displayFields?domain=${FlexType.name}")
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+
+    then: 'the JSON is valid'
+    def map = Holders.objectMapper.readValue(s, Map)
+    def bottom = map.bottom
+    def fieldList = bottom.find { it.fieldName == 'fields' }
+    fieldList.fieldFormat == 'C'
+    def fields = fieldList.fields
+
+    def sequenceField = fields.find { it.fieldName == 'sequence' }
+    sequenceField.defaultValue == "_max('sequence')+10"
+
+    def formatField = fields.find { it.fieldName == 'fieldFormat' }
+    formatField.defaultValue == "'S'"
+
+    def historyField = fields.find { it.fieldName == 'historyTracking' }
+    historyField.defaultValue == "'NONE'"
+
+    and: 'the top-level default values are correct'
+    def categoryField = bottom.find { it.fieldName == 'category' }
+    categoryField.defaultValue == "'${FlexType.CATEGORY_BASIC}'"
+  }
+
+  def "verify that displayFields provides the server-side defaults - boolean set to true"() {
+    when: 'the get is triggered'
+    login()
+    def s = sendRequest(uri: "/domain/displayFields?domain=${User.name}")
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+
+    then: 'the JSON is valid'
+    def map = Holders.objectMapper.readValue(s, Map)
+    def bottom = map.bottom
+    def enabledField = bottom.find { it.fieldName == 'enabled' }
+    enabledField.defaultValue == "true"
+  }
+
+  def "verify that displayFields provides the server-side defaults - integer set to non-zero"() {
+    when: 'the get is triggered'
+    login()
+    def s = sendRequest(uri: "/domain/displayFields?domain=${SampleChild.name}")
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+
+    then: 'the JSON is valid'
+    def map = Holders.objectMapper.readValue(s, Map)
+    def bottom = map.bottom
+    def sequenceField = bottom.find { it.fieldName == 'sequence' }
+    sequenceField.defaultValue == "10"
+  }
+
+  def "verify that displayFields provides the client-side defaults"() {
+    when: 'the get is triggered'
+    login()
+    def s = sendRequest(uri: "/domain/displayFields?domain=${FlexType.name}")
+    //println "JSON = ${groovy.json.JsonOutput.prettyPrint(s)}"
+
+    then: 'the JSON is valid'
+    def map = Holders.objectMapper.readValue(s, Map)
+    def bottom = map.bottom
+    def fieldList = bottom.find { it.fieldName == 'fields' }
+    fieldList.fieldFormat == 'C'
+    def fields = fieldList.fields
+
+    def sequenceField = fields.find { it.fieldName == 'sequence' }
+    sequenceField.defaultValue == "_max('sequence')+10"
+  }
+
   def "verify that displayFields fails with bad request status with missing domain name"() {
     when: 'the get is triggered'
     login()
@@ -107,7 +205,7 @@ class DomainControllerSpec extends BaseAPISpecification {
   def "verify that buildFieldElement works on the various types"() {
     when: 'the build method is called'
     def fieldDef = DomainUtils.instance.getFieldDefinitions(AllFieldsDomain)[fieldName]
-    def map = new DomainController().buildFieldElement(fieldDef)
+    def map = new DomainController().buildFieldElement(fieldDef, AllFieldsDomain)
 
     then: 'the field values are valid'
     map.fieldName == fieldName
@@ -127,7 +225,7 @@ class DomainControllerSpec extends BaseAPISpecification {
   def "verify that buildFieldElement builds the right valid values - enums"() {
     when: 'the build method is called'
     def fieldDef = DomainUtils.instance.getFieldDefinitions(AllFieldsDomain)['reportTimeInterval']
-    def map = new DomainController().buildFieldElement(fieldDef)
+    def map = new DomainController().buildFieldElement(fieldDef, AllFieldsDomain)
     //println "map = ${TextUtils.prettyFormat(map)}"
 
     then: 'the valid values are correct'
@@ -140,7 +238,7 @@ class DomainControllerSpec extends BaseAPISpecification {
   def "verify that buildFieldElement builds the right valid values - encodedType"() {
     when: 'the build method is called'
     def fieldDef = DomainUtils.instance.getFieldDefinitions(AllFieldsDomain)['status']
-    def map = new DomainController().buildFieldElement(fieldDef)
+    def map = new DomainController().buildFieldElement(fieldDef, AllFieldsDomain)
     //println "map = ${TextUtils.prettyFormat(map)}"
 
     then: 'the valid values are correct'
@@ -153,7 +251,7 @@ class DomainControllerSpec extends BaseAPISpecification {
   def "verify that buildFieldElement builds the right valid values - domain ref"() {
     when: 'the build method is called'
     def fieldDef = DomainUtils.instance.getFieldDefinitions(AllFieldsDomain)['order']
-    def map = new DomainController().buildFieldElement(fieldDef)
+    def map = new DomainController().buildFieldElement(fieldDef, AllFieldsDomain)
 
     then: 'the valid values are correct'
     !map.validValues
@@ -169,7 +267,7 @@ class DomainControllerSpec extends BaseAPISpecification {
 
     when: 'the build method is called'
     def fieldDef = DomainUtils.instance.getFieldDefinitions(SampleParent)['allFieldsDomains']
-    def map = new DomainController().buildFieldElement(fieldDef)
+    def map = new DomainController().buildFieldElement(fieldDef, SampleParent)
     //println "map = ${TextUtils.prettyFormat(map)}"
 
     then: 'the valid values are correct'
@@ -180,6 +278,5 @@ class DomainControllerSpec extends BaseAPISpecification {
   }
 
   // configurable type
-  // default value
 
 }
