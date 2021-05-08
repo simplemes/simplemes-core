@@ -5633,7 +5633,70 @@ ordering in your domain classes, then you can specify the field ordering on the 
 whenever you add a new field to a domain class.  This is your choice.</p>
 </div>
 <div class="paragraph">
-<p>See <a href="reference.html#field-order">fieldOrder </a> for details.</p>
+<p>See <a href="reference.html#field-order" target="_blank" rel="noopener">fieldOrder</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>
+for more details.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="clientdefaults"><a class="link" href="#clientdefaults">clientDefaults</a></h4>
+<div class="paragraph">
+<p>To make life easier for the end users, we provide several mechanisms for default values.
+The simplest is the default value in the domain fields (e.g. <em>String title="ABC"</em>).
+This works well for most cases, but fails for some client-side use cases.  In particular,
+the adding of new rows in inline grids on the client requires some special client-side
+processing.</p>
+</div>
+<div class="paragraph">
+<p>To support this client-side default mechanism, you can add a static property to your domain
+to provide the default values.  For example, the fields for <a href="#flex-types">Flex Types</a> uses as sequence
+default to reduce the user input on the client.  This is defined in the FlexField using
+this definition:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example - clientDefaults</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="type">class</span> <span class="class">FlexField</span> {
+  BasicFieldFormat fieldFormat = StringFieldFormat.instance  <i class="conum" data-value="1"></i><b>(1)</b>
+  HistoryTracking historyTracking = HistoryTracking.NONE
+
+  <span class="directive">static</span> clientDefaults = [<span class="key">sequence</span>:  <span class="string"><span class="delimiter">&quot;</span><span class="content">_max('sequence')+10</span><span class="delimiter">&quot;</span></span>,  <i class="conum" data-value="2"></i><b>(2)</b>
+                           <span class="key">fieldName</span>: <span class="string"><span class="delimiter">&quot;</span><span class="content">'field'+(_max('sequence')+10)</span><span class="delimiter">&quot;</span></span>] <i class="conum" data-value="3"></i><b>(3)</b>
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Normal server-side default value for two enum fields.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Uses the current max 'sequence' from the inline grid rows and adds 10.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Creates a string <code>fieldName</code> using like <em>'field20'</em>.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The <code>_max()</code> method is defined for the inline grid client-side element.  The default
+string is javascript than is executed on the client when the user clicks the 'Add'
+row button.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The clientDefaults will override the normal field default values when
+      both are defined for the domain class.
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect3">
@@ -16494,7 +16557,7 @@ The javascript console message in the browser is:</p>
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-05-06 16:38:58 UTC
+Last updated 2021-05-08 13:57:17 UTC
 </div>
 </div>
 <style>

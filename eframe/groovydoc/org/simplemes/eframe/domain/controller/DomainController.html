@@ -193,14 +193,33 @@ extends <a href='../../../../../org/simplemes/eframe/controller/BaseController.h
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;java.lang.String</code></td>
+                            <td class="colLast"><code><strong><a href="#buildDefault(org.simplemes.eframe.data.FieldDefinitionInterface, java.lang.Class)">buildDefault</a></strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef, java.lang.Class domainClass)</code><br>Builds the default value for the given field (if any).</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.util.Map</code></td>
-                            <td class="colLast"><code><strong><a href="#buildFieldElement(org.simplemes.eframe.data.FieldDefinitionInterface)">buildFieldElement</a></strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</code><br>Builds the single field definition needed for the client.</td>
+                            <td class="colLast"><code><strong><a href="#buildFieldElement(org.simplemes.eframe.data.FieldDefinitionInterface, java.lang.Class)">buildFieldElement</a></strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef, java.lang.Class domainClass)</code><br>Builds the single field definition needed for the client.</td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;java.lang.String</code></td>
+                            <td class="colLast"><code><strong><a href="#buildJavascriptForDefault(org.simplemes.eframe.data.FieldDefinitionInterface, java.lang.Object)">buildJavascriptForDefault</a></strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef, java.lang.Object value)</code><br>Builds the JS-legal form of the given object for use as a default.
+ </td>
                         </tr>
                         
                         <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>io.micronaut.http.HttpResponse</code></td>
                             <td class="colLast"><code><strong><a href="#displayFields(io.micronaut.http.HttpRequest, java.lang.String)">displayFields</a></strong>(io.micronaut.http.HttpRequest request, java.lang.String domain)</code><br>Provides the domain class fields define, including field extensions.  </td>
+                        </tr>
+                        
+                        <tr class="altColor">
+                            <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>protected&nbsp;java.util.List</code></td>
+                            <td class="colLast"><code><strong><a href="#expandChildElement(org.simplemes.eframe.data.FieldDefinitionInterface)">expandChildElement</a></strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</code><br>Expands the given field as a child list.</td>
                         </tr>
                         
                     </table>
@@ -271,11 +290,29 @@ extends <a href='../../../../../org/simplemes/eframe/controller/BaseController.h
                 </a>
                     <h3>Method Detail</h3>
                     
-                        <a name="buildFieldElement(org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
+                        <a name="buildDefault(org.simplemes.eframe.data.FieldDefinitionInterface, java.lang.Class)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>protected&nbsp;java.util.Map <strong>buildFieldElement</strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</h4>
-                                <p> Builds the single field definition needed for the client. <DL><DT><B>Parameters:</B></DT><DD><code>fieldDef</code> -  The field.</DD></DL><DL><DT><B>Returns:</B></DT><DD>A Map with the field definition for the client's use.</DD></DL></p>
+                                <h4>protected&nbsp;java.lang.String <strong>buildDefault</strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef, java.lang.Class domainClass)</h4>
+                                <p> Builds the default value for the given field (if any). <DL><DT><B>Parameters:</B></DT><DD><code>fieldDef</code> -  The field.</DD><DD><code>domainClass</code> -  The domain class this field is part of.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The default value string (generally a Javascript expression).</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="buildFieldElement(org.simplemes.eframe.data.FieldDefinitionInterface, java.lang.Class)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;java.util.Map <strong>buildFieldElement</strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef, java.lang.Class domainClass)</h4>
+                                <p> Builds the single field definition needed for the client. <DL><DT><B>Parameters:</B></DT><DD><code>fieldDef</code> -  The field.</DD><DD><code>domainClass</code> -  The domain class this field is part of.</DD></DL><DL><DT><B>Returns:</B></DT><DD>A Map with the field definition for the client's use.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="buildJavascriptForDefault(org.simplemes.eframe.data.FieldDefinitionInterface, java.lang.Object)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+protected&nbsp;java.lang.String <strong>buildJavascriptForDefault</strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef, java.lang.Object value)</h4>
+                                <p> Builds the JS-legal form of the given object for use as a default.
+ This provides a string that is legal for the JS eval() method. <DL><DT><B>Parameters:</B></DT><DD><code>fieldDef</code> -  The field.</DD><DD><code>value</code> -  The object value.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The default value string (generally a Javascript expression).</DD></DL></p>
                             </li>
                         </ul>
                     
@@ -289,6 +326,14 @@ extends <a href='../../../../../org/simplemes/eframe/controller/BaseController.h
 io.micronaut.http.HttpResponse <strong>displayFields</strong>(io.micronaut.http.HttpRequest request, @io.micronaut.http.annotation.QueryValue java.lang.String domain)</h4>
                                 <p> Provides the domain class fields define, including field extensions.  Provides the fields displayed in
  a format suitable for the client rendering. <DL><DT><B>Parameters:</B></DT><DD><code>request</code> -  The user logged in.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The fields.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
+                        <a name="expandChildElement(org.simplemes.eframe.data.FieldDefinitionInterface)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>protected&nbsp;java.util.List <strong>expandChildElement</strong>(<a href='../../../../../org/simplemes/eframe/data/FieldDefinitionInterface.html'>FieldDefinitionInterface</a> fieldDef)</h4>
+                                <p> Expands the given field as a child list. <DL><DT><B>Parameters:</B></DT><DD><code>fieldDef</code> -  The field.</DD></DL><DL><DT><B>Returns:</B></DT><DD>The list of fields for the given child list.</DD></DL></p>
                             </li>
                         </ul>
                     
