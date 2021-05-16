@@ -1,9 +1,13 @@
+/*
+ * Copyright (c) Michael Houston 2021. All rights reserved.
+ */
+
 /**
  * Standard App startup services for a normal page-oriented app.
  * Includes all standard features needed by most GUIs: Toast, PrimeVueConfig
  *
  * Basic use:
- *  import PageApp from '@/components/eframe/web/PageApp';
+ *  import PageApp from 'eframe-lib/components/web/PageApp';
  *  const app = PageApp.createApp('appID')
  *  app.use(...)
  *  app.mount()

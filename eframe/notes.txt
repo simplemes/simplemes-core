@@ -50,15 +50,26 @@ GUI - Vue Conversion
     How to use common client-side features (e.g. Ajax)?
     Define Dashboard Requirements
       Configurable buttons?  Maybe just string pre-defined activities together?
-    ☑ Make Library: https://github.com/team-innovation/vue-sfc-rollup
-      sfc-init - Creates mostly empty project.
-      npm i
-      npm run serve
-      To Build/install in client (after changes):
-        npm build
-        npm pack
-        npm i C:\Users\mph\Documents\tmp\vue3\sfc-rollup\sfc-lib\sfc-lib-1.0.0.tgz
      Remove all to..localized() methods and docs.
+     Publish Lib:
+       Consider:
+         Storing re-useable comps in src/eframe-lib/components...
+         Copy to node_modules with gradle task.
+       https://dev.to/shubhadip/vue-3-component-library-2le8
+       Test install at C:\Users\mph\Documents\tmp\vue3\vue3-component-library-master\dist\esm
+         npm run build
+         npm run build:js    // Creates \dist\esm   See Readme/md for how to import.
+	     X https://cli.vuejs.org/guide/build-targets.html#library
+       X https://snipcart.com/blog/vue-js-plugin  Tutorial
+     ☑ Make Library: https://github.com/team-innovation/vue-sfc-rollup
+        sfc-init - Creates mostly empty project.
+        npm i
+        npm run serve
+        To Build/install in client (after changes):
+          npm build
+          npm pack
+          npm i C:\Users\mph\Documents\tmp\vue3\sfc-rollup\sfc-lib\sfc-lib-1.0.0.tgz
+`
 
 
   Resources/Notes

@@ -3,8 +3,8 @@
  */
 
 import FlexTypeCrud from '@/components/eframe/custom/flexType/FlexTypeCrud.vue'
-import PageApp from '@/components/eframe/web/PageApp'
-import '@/assets/styles/global.css'
+import PageApp from 'eframe-lib/components/web/PageApp.js'
+import 'eframe-lib/assets/styles/global.css'
 
 
 const app = PageApp.createApp(FlexTypeCrud)

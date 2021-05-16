@@ -35,8 +35,71 @@ used to install all of the javascript modules such as Vue and related modules.
 
 ==== GUI Setup - New Client Module
 
-Creating a new client module is somewhat complex.  You will need to create a node/npm/Vue
-project structure using these commands:
+Creating a new client module is somewhat complex.  The easiest solution is to copy the
+_eframe/src/templates/client/sample_ folder to a new client folder in your module.
+It should be copied to the _module/src/client/module_ folder (replace _module_ with your
+ne module's name).
+
+[source,script]
+.New Client Sub-Module Creation - Linux Commands
+----
+  cd src/client
+  mkdir quality <.>
+  cd quality
+  cp -r ../eframe/src/templates/client/sample .  <.>
+----
+<.> Creates a sub-module named _'quality'_.  Use the sub-module name for your new client
+    sub-module.
+<.> Use the correct source path for the eframe templates folder here.
+
+
+
+
+===== Edit Files
+
+Some of the files created above will need to be replaced by copies from the sample
+templates module.  The notes below assume the new client module name is _'quality'_.
+Use your module name instead.
+
+NOTE: While editing in Intellij, you will receive requests to run 'npm install'.  Ignore
+      these requests until you have finished editing the files below.
+
+* _package.json_ - Need to change the top-level name/version.  You may need to
+  adjust versions to match the current eframe _package.json_ file.
+* _vue.config.js_ - Change the '_/client/sample_' path to _'/client/sample'_.
+* _vue.config.js_ - Change the '_GUIPage_' section to the name of your page(s).
+* _gradle.properties_ - Set the `clientModules`=quality
+
+The _gradle.properties_ file should have an element like this:
+
+[source,groovy]
+.Adding clientModules to gradle.properties
+----
+clientModules=quality <.>
+----
+<.> The list of client modules to init/build.  This can be a comma-delimited list for multiple
+    modules.
+
+See <<Entry Page Structure>> for more details on how the client pages are defined.
+
+
+===== Run npm Init
+
+Next, you will need to initialize the npm module system with this gradle option:
+
+[source,script]
+.New Client Sub-Module Creation - Linux Commands
+----
+  cd moduleRoot <.>
+  ./gradlew npmInit
+----
+
+
+
+==== GUI Setup - New Client Module without Template
+
+Creating a new client module without the template is a complex task.  Don't attempt this
+without a good reason.
 
 [source,script]
 .Client First Time Setup
@@ -88,14 +151,6 @@ created by the _vue create_ command above:
 This runs the template client for testing purposes.  You will replace most of the
 template html, javascript and Vue files for your module.
 
-
-// TODO: Fill in with files to copy from eframe or template?
-
-===== Replace Files
-
-Some of the files created above will need to be replaced by copies from the eframe module:
-
-* _package-lock.json_ - Need to change the top-level name/version.
 
 ==== GUI Setup - Existing Client Module
 
@@ -246,16 +301,18 @@ sfc-init - Creates mostly empty project.
 npm i
 npm run serve
 
-// Commands to build library for use as module in other client sub-modules
+// Commands to build eframe library for use as module in other client sub-modules
 
 npm build   // <.>
 npm pack    // <.>
-npm i ../eframe-lib-0.5.0.tgz  // <.>
+cd (client module)  // <.>
+npm i ../eframe/eframe-lib-0.5.0.tgz  // <.>
 
 ----
 <.> Builds the summary fields (in the dist folder).
 <.> Packs the components into a .tgz file for installation.
-<.> Installs in another module.
+<.> Change to the client module folder (e.g. _src/client/sample_)
+<.> Installs in another module.  The path should point to the lib that was built.
 
 
 ==== Client Module Version Dependencies

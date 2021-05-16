@@ -4,6 +4,10 @@
 ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<GUI Module Structure>>#
 [inline-toc]#<<GUI Development Tasks>>#
+[inline-toc]#<<GUI Development Cycle>>#
+[inline-toc]#<<GUI Entry Page>>#
+[inline-toc]#<<CrudTable Service Requirements>>#
+[inline-toc]#<<eframe-lib>>#
 
 endif::[]
 
@@ -43,7 +47,7 @@ something like this:
 :imagesdir: {imagesdir-src}
 
 Each module can supply a client one or more sub-modules with the assets needed for
-the clients.  These client sub-modules will be built using the npm processes typically
+the clients.  These client sub-modules will be built using the *npm* processes typically
 used for Vue applications.
 
 
@@ -142,36 +146,125 @@ mesAssy -- assyDashboard
 //end workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
 :imagesdir: {imagesdir-src}
 
+Each of these URIs is called a <<GUI Entry Page>>.  It is an HTML page that is
+accessible directly from within the browser.  Typically, these pages all show up
+in the <<Task Menu>>.
+
 
 ==== GUI Development Tasks
 
 GUI development involves working with the client sub-module and then moving it to the
 production server for deployment.  The basic flow is:
 
-. <<Create Client Page>> - Create/edit the client-side components code.
-  This includes .vue and .js file changes.  The developer can use the _npm run server_
-  task to allow hot-updates to the running client-side application while they make
-  changes.
+. Create a client module (if not done already for your module).  See
+  <<GUI Setup - New Client Module>> for details on creating the module from
+  the _templates_ folder.  You will use the gradle _npmInit_ task to install
+  the vue and related client libraries.
 
-. _Build the assets_ - Use the _npm run build_ to create the assets.
+. Create a <<GUI Entry Page>> - Create/edit the client-side components code.
+  This includes .vue and .js files.  See the <<GUI Development Cycle>> for suggestions
+  on how to edit/test your GUIs.
 
-. _Deploy the client_ - Use the Gradle task _deployClient_ to deploy the client assets
-  to the Groovy server.  The server is then restarted.  This makes the compiled
-  assets available within a running application server.
+. When you are ready to deploy to a server, you will use the gradle _npmBuild_ to
+  create the assets for production (runs _npm run build_ command).
 
 . _Build .jar_ - When ready to publish the module, the run-time .jar file is built
   and the assets are included in the .jar file.  This is done by the Gradle
   task _publishToMavenLocal_ task.
-   
-===== Create Client Page
+
+  NOTE: You can use the _npm run server_ task to allow hot-updates to the running client-side
+        application while you make changes.  Highly recommended.
+
+
+==== GUI Development Cycle
+
+
+. Start localhost (server-side).
+. Start client side development mode: _npm run server_
+. Edit .js/.vue files.
+. Try in browser (on port 8081).
+. Repeat from  #4 until satisfied.
+. Build using gradle _npmBuild_ for use in production.  Restart localhost (server-side)
+  to use use the client module in 'production'.
+. Write GEB/Spock tests of the GUI (no javascript-based tests).
+
+NOTE: After running the gradle task _npmBuild_, you may need to refresh the server-side
+      with the new lib.  This can be done manually of by simply using Intellij's
+      'Reload All Gradle Projects' (refresh symbol in the 'Gradle' sidebar).
+
+==== GUI Entry Page
+
+Vue supports multi-page applications.  These are web applications that allow display of
+multiple pages at different URLs.  This fits well with enterprise apps.
+
+To make this work, you will need to define each entry page.  For the most part, each domain
+object definition page is an entry page (e.g. Flex Type definition is page, User
+definition is a page, etc).  Other complex pages (such as a dashboard) are also entry points.
+This framework does not directly support the Vue router concept for single page applications.
+
+See <<GUI Module Structure>> for an overview of the client
+module layout and <<Entry Page Structure>> for details.
+
+You will need to create some files for each page.  The _templates_ folder contains
+a sample GUI page and related files.  See <<GUI Setup - New Client Module>> for details.
+
+You will need to edit the _vue.config.js_ for your module.  It should have
+an entry like this (for the FlexType example):
+
+[source,javascript]
+.Example - vue.config.js
+----
+
+ . . .
+
+module.exports = {
+  publicPath: process.env.NODE_ENV === 'production' ? '/client/sample' : '/',  // <.>
+  pages: {
+    index: {  // <.>
+      entry: 'src/entry/index.js',
+      template: 'public/index.html',
+      filename: 'index.html',
+      title: 'Index Page',
+      chunks: ['chunk-vendors', 'chunk-common', 'index']
+    },
+    'flexType': {  // <.>
+      entry: 'src/entry/custom/flexType/flexType.js',
+      title: 'Flex Type',
+    },
+  },
+  . . .
+}
+
+----
+<.> The `publicPath` is where the generated client module is served-up by the server side
+    in production.  The 'sample' in _'/client/sample'_ should be changed to your module name.
+<.> The index page is usually only used for development mode (e.g. when run using
+    _'npm run server'_ for hot-reloading during client development).  This _index.js_ will
+    usually have simple HTML links to your pages for development uses.
+<.> This where your client page(s) will go.  Each top-level entry page should
+    be listed.
+
+You will need to change the _publicPath_ and the _'flexType'_ entry above for your
+entry page(s).
+
+Each entry page is made up of two main elements:
+
+. _.js_ file - This file creates the page and displays it using the template
+  _public/index.html_.  This code links the _.vue_ component with the HTML tag
+  _'<div id="app">'_.
+
+. _.vue_ file - This file defines what is displayed on the page.
+  For simple CRUD definition pages, this usually just refers to <<CrudTable>> component
+  with some configuration options.
+
+The files for the Flex Type definition page is shown below.
+
+
+===== Entry Page Structure
 
 The client page defines a single endpoint (URL) for the application.  For example,
-the CRUD page for the Flex Type records is at '/client/eframe/flexType'.  It is made
+the CRUD page for the Flex Type records is at _'/client/eframe/flexType'_.  It is made
 up of these elements:
-
-flexType.js - uses PageApp
-FlexTypeCrud.vue - Uses CrudTable element
-
 
 
 //workaround for https://github.com/asciidoctor/asciidoctor-pdf/issues/271
@@ -187,25 +280,23 @@ node url as "url: <b>/client/eframe/flexType"
 file flexType.js  [
   <b>flexType.js
   --
-  app = PageApp.createApp(FlexType)
+  app = PageApp.createApp(FlexTypeCrud)
   app.mount('#app')
 ]
 
-file flexType.vue  [
-  <b>flexType.vue
+file FlexTypeCrud.vue  [
+  <b>FlexTypeCrud.vue
   --
 <template>
-  <StandardHeader/>
-    <<b>CrudTable :value="flexTypes"
-               :totalRecords="totalRecords"
-               :loading="loading"
-               @page="onPage($event)">
-   </CrudTable>
+  <CrudTable :columns="columns"
+    :service="service"
+    storageKey="flexTypeCrudList"
+    :domainClassName="domainClassName"/>
 </template>]
 
 
 url -- flexType.js
-url -- flexType.vue 
+url -- FlexTypeCrud.vue
 
 
 
@@ -218,26 +309,26 @@ url -- flexType.vue
 The _.js_ file is fairly simple.  Most of the common logic is provided by the PageApp:
 
 [source,javascript]
-.Example - page.js
+.Example - flexType.js
 ----
 /**
  * Basic CRUD page for a single object.
  */
 
-import FlexType from '@/components/eframe/custom/flexType/FlexTypeCrud.vue'
-import PageApp from '@/components/eframe/web/PageApp'
+import FlexTypeCrud from 'eframe-lib/components/custom/flexType/FlexTypeCrud.vue'
+import PageApp from 'eframe-lib/components/web/PageApp'
 import '@/assets/styles/global.css'
 
 
-const app = PageApp.createApp(FlexType)  // <.>
-app.mount('#app')                        // <.>
+const app = PageApp.createApp(FlexTypeCrud)  // <.>
+app.mount('#app')                            // <.>
 
 ----
 <.> Uses standard features such as Toast, Axios and <<GUI I18n>> support.
 <.> Mounts the FlexType crud table in the standard page using the _'app'_ HTML ID.
 
 The _.vue_ file for most Crud pages is also fairly simple.
-This uses the CrudTable component:
+This uses the <<CrudTable>> component:
 
 [source,javascript]
 .Example - FlexTypeCrud.vue
@@ -246,13 +337,15 @@ This uses the CrudTable component:
  * Basic CRUD component for a single object.
  */
 <template>
-  <CrudTable :columns="columns" :service="service"/>  // <.>
+  <CrudTable :columns="columns" :service="service"  <.>
+             storageKey="flexTypeCrudList"
+             :domainClassName="domainClassName"/>
 </template>
 
 <script>
 
-import CrudTable from '@/components/eframe/web/CrudTable';
-import FlexTypeService from '@/components/eframe/custom/flexType/FlexTypeService'
+import CrudTable from 'eframe-lib/components/web/CrudTable';
+import FlexTypeService from 'eframe-lib/components/custom/flexType/FlexTypeService'
 
 export default {
   components: {
@@ -260,24 +353,88 @@ export default {
   },
   data() {
     return {
-      columns: [                                                // <.>
-        {field: 'flexType', header: this.$t('label.flexType')},
-        {field: 'category', header: this.$t('label.category')},
-        {field: 'title', header: this.$t('label.title')},
+      columns: [  <.>
+        {field: 'flexType', header: this.$t('label.flexType'), sort: true},
+        {field: 'category', header: this.$t('label.category'), sort: true},
+        {field: 'title', header: this.$t('label.title'), sort: true},
         {field: 'fieldSummary', header: this.$t('label.fields')},
       ],
-      service: FlexTypeService                                  // <.>
+      service: FlexTypeService,   <.>
+      domainClassName: 'org.simplemes.eframe.custom.domain.FlexType',  <.>
     }
   },
 }
 
 </script>
 ----
-<.> Defines the standard CRUD page with a header.  The `columns` and `service` values
-    are required.
-<.> The columns displayed are listed.
-<.> The service that implements the `list()` and other CRUD-related methods.
+<.> Defines the standard CRUD page with a header.  This links the data elements below with
+    the CrudTable component.
+<.> The columns displayed are listed with localized headers and related options.
+<.> The client-side (javascript) service that implements the `list()` and other CRUD-related methods.
     See <<GUI - CRUD Requirements>> for details.
+<.> The domain class that is being maintained by this CRUD page.  This is the
+    class name from the server-side.
 
+==== CrudTable Service Requirements
+
+The service for FlexType CRUD pages is shown below.  This particular service is needed
+for the CrudTable component.  Other components may need other services.  It is
+recommended that all interaction between the client and server be handled by a
+service-style script.
+
+[source,javascript]
+.Example - FlexTypeService.js
+----
+import ServiceUtils from 'eframe-lib/components/web/ServiceUtils'  // <.>
+
+export default {
+  buildLabel(record, includeType = false) {  // <.>
+    return ServiceUtils.buildLabel(record.flexType, includeType ? 'label.flexType' : undefined)
+  },
+  find(uuid, successFunction, errorFunction) { // <.>
+    return ServiceUtils.find('/flexType', uuid, successFunction, errorFunction)
+  },
+  list(options, successFunction, errorFunction) { // <.>
+    return ServiceUtils.list('/flexType', options, successFunction, errorFunction)
+  },
+  delete(object, successFunction, errorFunction) { // <.>
+    return ServiceUtils.delete('/flexType', object, successFunction, errorFunction)
+  },
+  save(object, successFunction, errorFunction) { // <.>
+    return ServiceUtils.save('/flexType', object, successFunction, errorFunction)
+  },
+}
+
+----
+<.> The standard _ServiceUtils_ for the client-side access to CRUD methods for domain objects.
+<.> Builds the label/key value suitable for use in confirmation dialogs and similar uses.
+<.> Retrieves a record from the server.
+<.> Retrieves a list of matching records for the domain object.  Supports
+    paging/sorting/filtering.
+<.> Deletes a single domain object.
+<.> Saves (creatse/updates) a single domain object.
+
+The basic methods needed include:
+
+// TODO: Flesh out the methods in the reference.
+
+. `list()`
+. `buildLabel()`
+. `find()`
+. `save()`
+. `delete()`
+
+// TODO: ServiceUtils docs.  Uses cache.
+
+==== eframe-lib
+
+The common components provided by the framework are provided in the eframe-lib module.
+This is copied from the eframe source tree to the client module's _node_modules_ folder
+using the gradle command `copyEframeLib`.  This does a simple copy to avoid the whole
+npm package creation logic.
+
+Normal client module developers will only need to run this gradle command when the eframe-lib
+changes.  If you are developing inside of the eframe-lib, you will need to run this command
+more frequently.
 
 

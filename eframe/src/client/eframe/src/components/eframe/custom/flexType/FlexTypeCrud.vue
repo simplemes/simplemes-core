@@ -4,7 +4,7 @@
 
 <script>
 
-import CrudTable from '@/components/eframe/web/CrudTable';
+import CrudTable from 'eframe-lib/components/web/CrudTable';
 import FlexTypeService from '@/components/eframe/custom/flexType/FlexTypeService'
 
 export default {

@@ -40,8 +40,8 @@ The main properties supported are:
 
 <script>
 
-import CrudTable from '@/components/eframe/web/CrudTable';
-import FlexTypeService from '@/components/eframe/custom/flexType/FlexTypeService'
+import CrudTable from 'eframe-lib/components/web/CrudTable';
+import FlexTypeService from 'eframe-lib/components/custom/flexType/FlexTypeService'
 
 export default {
   components: {

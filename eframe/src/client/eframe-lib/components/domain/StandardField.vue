@@ -2,6 +2,10 @@ StandardField run-time display component.  Supports multiple fieldFormat values.
 Should be used inside the div: 'div class="p-fluid p-formgrid p-grid"'
 
 
+<!--
+  - Copyright (c) Michael Houston 2021. All rights reserved.
+  -->
+
 <template>
   <div class="p-col-12">
     <div class="p-field p-grid" v-if="field.fieldFormat===$page().domainService.fieldFormats.STRING">
@@ -55,7 +59,7 @@ import InputNumber from 'primevue/inputnumber';
 import Checkbox from 'primevue/checkbox';
 import Dropdown from 'primevue/dropdown';
 
-import InlineGrid from '@/components/eframe/web/InlineGrid';
+import InlineGrid from 'eframe-lib/components/web/InlineGrid';
 
 // InputText supports :placeholder="field.fieldLabel"
 /*

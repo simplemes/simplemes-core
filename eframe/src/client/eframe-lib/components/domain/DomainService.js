@@ -26,7 +26,7 @@ export default {
   getDisplayFields(domainClassName, successFunction, errorFunction) {
     if (cache.get(domainClassName)) {
       successFunction(cache.get(domainClassName))
-      console.log("cache: " + JSON.stringify(cache.stats));
+      //console.log("cache: " + JSON.stringify(cache.stats));
       return
     }
 

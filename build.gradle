@@ -79,6 +79,18 @@ task dependenciesAll {
   }
 }
 
+task npmInitAll {
+  includedBuilds.tokenize(',').each { buildName ->
+    dependsOn gradle.includedBuild(buildName).task(':npmInit')
+  }
+}
+
+task npmBuildAll {
+  includedBuilds.tokenize(',').each { buildName ->
+    dependsOn gradle.includedBuild(buildName).task(':npmBuild')
+  }
+}
+
 task bintrayUploadAll {
   includedBuilds.tokenize(',').each { buildName ->
     dependsOn gradle.includedBuild(buildName).task(':bintrayUpload')

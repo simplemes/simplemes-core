@@ -361,21 +361,43 @@ bintray {
 
 }
 
-task npmBuild(type: Exec, group: 'build', description: 'Builds the npm client module') {
-  workingDir("${project.file("src/client/eframe")}")
-  if (System.getProperty("os.name").toLowerCase().contains("windows"))
-    commandLine("cmd.exe", "/C", "npm.cmd run build -- --dest ../../main/resources/client/eframe")
-  else // assume *nix.
-    commandLine("npm", "run", "build","--","--dest", "../../main/resources/client/eframe") //
+// Tasks for the client module(s). Supports multiple modules from the gradle.properties (clientModules variable).
+clientModules.tokenize(',').each { moduleName ->
+  task "npmInit${moduleName}"(type: Exec, group: 'build', description: "Initializes the local npm node_modules for the npm client module ${moduleName}") {
+    workingDir("${project.file("src/client/${moduleName}")}")
+    if (System.getProperty("os.name").toLowerCase().contains("windows"))
+      commandLine("cmd.exe", "/C", "npm.cmd install")
+    else // assume *nix.
+      commandLine("npm", "install")
+  }
+}
+task npmInit(dependsOn: clientModules.tokenize(',').collect{ moduleName -> "npmInit${moduleName}" },
+             group: 'build', description: "Initializes the local npm node_modules for the npm client modules") {
 }
 
-task npmInit(type: Exec, group: 'build', description: 'Initializes the local npm node_modules for the npm client module') {
-  workingDir("${project.file("src/client/eframe")}")
-  if (System.getProperty("os.name").toLowerCase().contains("windows"))
-    commandLine("cmd.exe", "/C", "npm.cmd install")
-  else // assume *nix.
-    commandLine("npm", "install")
+clientModules.tokenize(',').each { moduleName ->
+  task "npmBuild${moduleName}"(type: Exec, group: 'build', description: "Builds the npm assets for the client module ${moduleName}") {
+    workingDir("${project.file("src/client/${moduleName}")}")
+    if (System.getProperty("os.name").toLowerCase().contains("windows"))
+      commandLine("cmd.exe", "/C", "npm.cmd run build -- --dest ../../main/resources/client/${moduleName}")
+    else // assume *nix.
+      commandLine("npm", "run", "build","--","--dest", "../../main/resources/client/${moduleName}") //
+  }
 }
+task npmBuild(dependsOn: clientModules.tokenize(',').collect{ moduleName -> "npmBuild${moduleName}" },
+             group: 'build', description: "Builds the npm assets for the client modules") {
+}
+
+clientModules.tokenize(',').each { moduleName ->
+  task "copyEframeLib${moduleName}"(type: Copy, group: 'build', description: "Copies the eframe-lib files to node_modules in client module ${moduleName}") {
+    from file("${project.file("../eframe/src/client/eframe-lib")}")
+    into file("${project.file("src/client/${moduleName}/node_modules/eframe-lib")}")
+  }
+}
+task copyEframeLib(dependsOn: clientModules.tokenize(',').collect{ moduleName -> "copyEframeLib${moduleName}" },
+             group: 'build', description: "Copies the eframe-lib files to node_modules for all client modules ") {
+}
+
 
 
 

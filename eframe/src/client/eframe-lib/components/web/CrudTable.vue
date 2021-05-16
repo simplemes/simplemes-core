@@ -1,3 +1,7 @@
+<!--
+  - Copyright (c) Michael Houston 2021. All rights reserved.
+  -->
+
 <template>
   <StandardHeader/>
   <div class="app-container">
@@ -64,8 +68,8 @@ import Dialog from 'primevue/dialog'
 
 import PageHolder from './PageHolder'
 import StandardHeader from './StandardHeader'
-import CrudDialog from "@/components/eframe/web/CrudDialog"
-import DomainService from "@/components/eframe/domain/DomainService"
+import CrudDialog from "eframe-lib/components/web/CrudDialog"
+import DomainService from "eframe-lib/components/domain/DomainService"
 
 
 export default {

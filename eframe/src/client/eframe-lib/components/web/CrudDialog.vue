@@ -1,5 +1,9 @@
 A standard dialog for performing CRUD-style maintenance on single domain records.  Suitable for use in CRUDTable components.
 
+<!--
+  - Copyright (c) Michael Houston 2021. All rights reserved.
+  -->
+
 <template>
   <Dialog v-model:visible="dialogVisible" :breakpoints="{'960px': '95vw', '640px': '100vw'}" :style="{width: '90vw'}"
           :header="mode=='add' ? $t('title.add') : $t('title.edit')" :modal="true" :maximizable="true">
@@ -30,8 +34,8 @@ import Dialog from 'primevue/dialog'
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 
-import DomainService from "@/components/eframe/domain/DomainService"
-import StandardField from "@/components/eframe/domain/StandardField"
+import DomainService from "eframe-lib/components/domain/DomainService"
+import StandardField from "eframe-lib/components/domain/StandardField"
 
 
 export default {
