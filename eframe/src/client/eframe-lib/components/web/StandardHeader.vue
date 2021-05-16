@@ -1,3 +1,7 @@
+<!--
+  - Copyright (c) Michael Houston 2021. All rights reserved.
+  -->
+
 <template>
   <Toast :baseZIndex="9999"/>
   <Toolbar>

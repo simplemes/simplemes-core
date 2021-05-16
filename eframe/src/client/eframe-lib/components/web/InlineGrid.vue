@@ -1,3 +1,7 @@
+<!--
+  - Copyright (c) Michael Houston 2021. All rights reserved.
+  -->
+
 <template>
   <DataTable :value="this.$attrs.records" ref="inlineGrid" class="p-datatable-sm editable-cells-table"
              responsiveLayout="scroll"

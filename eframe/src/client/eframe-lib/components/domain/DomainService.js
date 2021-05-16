@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) Michael Houston 2021. All rights reserved.
+ */
+
 /**
  * JS Service for access to domain object details (DomainController).
  */
