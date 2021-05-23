@@ -8151,7 +8151,11 @@ on <a href="http://localhost:8081/" class="bare">http://localhost:8081/</a></p>
 <h3 id="gui-development"><a class="link" href="#gui-development">GUI Development</a></h3>
 <div class="paragraph">
 <p><span class="inline-toc"><a href="#gui-module-structure">GUI Module Structure</a></span>
-<span class="inline-toc"><a href="#gui-development-tasks">GUI Development Tasks</a></span></p>
+<span class="inline-toc"><a href="#gui-development-tasks">GUI Development Tasks</a></span>
+<span class="inline-toc"><a href="#gui-development-cycle">GUI Development Cycle</a></span>
+<span class="inline-toc"><a href="#gui-entry-page">GUI Entry Page</a></span>
+<span class="inline-toc"><a href="#crudtable-service-requirements">CrudTable Service Requirements</a></span>
+<span class="inline-toc"><a href="#eframe-lib">eframe-lib</a></span></p>
 </div>
 <div class="paragraph">
 <p>The GUI development environment is somewhat complex due to the hybrid nature.
@@ -8172,7 +8176,7 @@ something like this:</p>
 </div>
 <div class="paragraph">
 <p>Each module can supply a client one or more sub-modules with the assets needed for
-the clients.  These client sub-modules will be built using the npm processes typically
+the clients.  These client sub-modules will be built using the <strong>npm</strong> processes typically
 used for Vue applications.</p>
 </div>
 <div class="paragraph">
@@ -8184,6 +8188,11 @@ used for Vue applications.</p>
 </div>
 <div class="title">Figure 11. Production Deployment - URL Locations</div>
 </div>
+<div class="paragraph">
+<p>Each of these URIs is called a <a href="#gui-entry-page">GUI Entry Page</a>.  It is an HTML page that is
+accessible directly from within the browser.  Typically, these pages all show up
+in the <a href="#Task Menu">[Task Menu]</a>.</p>
+</div>
 </div>
 <div class="sect3">
 <h4 id="gui-development-tasks"><a class="link" href="#gui-development-tasks">GUI Development Tasks</a></h4>
@@ -8194,40 +8203,179 @@ production server for deployment.  The basic flow is:</p>
 <div class="olist arabic">
 <ol class="arabic">
 <li>
-<p><a href="#create-client-page">Create Client Page</a> - Create/edit the client-side components code.
-This includes .vue and .js file changes.  The developer can use the <em>npm run server</em>
-task to allow hot-updates to the running client-side application while they make
-changes.</p>
+<p>Create a client module (if not done already for your module).  See
+<a href="#gui-setup-new-client-module">GUI Setup - New Client Module</a> for details on creating the module from
+the <em>templates</em> folder.  You will use the gradle <em>npmInit</em> task to install
+the vue and related client libraries.</p>
 </li>
 <li>
-<p><em>Build the assets</em> - Use the <em>npm run build</em> to create the assets.</p>
+<p>Create a <a href="#gui-entry-page">GUI Entry Page</a> - Create/edit the client-side components code.
+This includes .vue and .js files.  See the <a href="#gui-development-cycle">GUI Development Cycle</a> for suggestions
+on how to edit/test your GUIs.</p>
 </li>
 <li>
-<p><em>Deploy the client</em> - Use the Gradle task <em>deployClient</em> to deploy the client assets
-to the Groovy server.  The server is then restarted.  This makes the compiled
-assets available within a running application server.</p>
+<p>When you are ready to deploy to a server, you will use the gradle <em>npmBuild</em> to
+create the assets for production (runs <em>npm run build</em> command).</p>
 </li>
 <li>
 <p><em>Build .jar</em> - When ready to publish the module, the run-time .jar file is built
 and the assets are included in the .jar file.  This is done by the Gradle
 task <em>publishToMavenLocal</em> task.</p>
+<div class="literalblock">
+<div class="content">
+<pre>NOTE: You can use the _npm run server_ task to allow hot-updates to the running client-side
+      application while you make changes.  Highly recommended.</pre>
+</div>
+</div>
 </li>
 </ol>
 </div>
-<div class="sect4">
-<h5 id="create-client-page"><a class="link" href="#create-client-page">Create Client Page</a></h5>
+</div>
+<div class="sect3">
+<h4 id="gui-development-cycle"><a class="link" href="#gui-development-cycle">GUI Development Cycle</a></h4>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>Start localhost (server-side).</p>
+</li>
+<li>
+<p>Start client side development mode: <em>npm run server</em></p>
+</li>
+<li>
+<p>Edit .js/.vue files.</p>
+</li>
+<li>
+<p>Try in browser (on port 8081).</p>
+</li>
+<li>
+<p>Repeat from  #4 until satisfied.</p>
+</li>
+<li>
+<p>Build using gradle <em>npmBuild</em> for use in production.  Restart localhost (server-side)
+to use use the client module in 'production'.</p>
+</li>
+<li>
+<p>Write GEB/Spock tests of the GUI (no javascript-based tests).</p>
+</li>
+</ol>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+After running the gradle task <em>npmBuild</em>, you may need to refresh the server-side
+      with the new lib.  This can be done manually of by simply using Intellij&#8217;s
+      'Reload All Gradle Projects' (refresh symbol in the 'Gradle' sidebar).
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect3">
+<h4 id="gui-entry-page"><a class="link" href="#gui-entry-page">GUI Entry Page</a></h4>
 <div class="paragraph">
-<p>The client page defines a single endpoint (URL) for the application.  For example,
-the CRUD page for the Flex Type records is at '/client/eframe/flexType'.  It is made
-up of these elements:</p>
+<p>Vue supports multi-page applications.  These are web applications that allow display of
+multiple pages at different URLs.  This fits well with enterprise apps.</p>
 </div>
 <div class="paragraph">
-<p>flexType.js - uses PageApp
-FlexTypeCrud.vue - Uses CrudTable element</p>
+<p>To make this work, you will need to define each entry page.  For the most part, each domain
+object definition page is an entry page (e.g. Flex Type definition is page, User
+definition is a page, etc).  Other complex pages (such as a dashboard) are also entry points.
+This framework does not directly support the Vue router concept for single page applications.</p>
+</div>
+<div class="paragraph">
+<p>See <a href="#gui-module-structure">GUI Module Structure</a> for an overview of the client
+module layout and <a href="#entry-page-structure">Entry Page Structure</a> for details.</p>
+</div>
+<div class="paragraph">
+<p>You will need to create some files for each page.  The <em>templates</em> folder contains
+a sample GUI page and related files.  See <a href="#gui-setup-new-client-module">GUI Setup - New Client Module</a> for details.</p>
+</div>
+<div class="paragraph">
+<p>You will need to edit the <em>vue.config.js</em> for your module.  It should have
+an entry like this (for the FlexType example):</p>
+</div>
+<div class="listingblock">
+<div class="title">Example - vue.config.js</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"> . . .
+
+module.exports = {
+  <span class="key">publicPath</span>: process.env.NODE_ENV === <span class="string"><span class="delimiter">'</span><span class="content">production</span><span class="delimiter">'</span></span> ? <span class="string"><span class="delimiter">'</span><span class="content">/client/sample</span><span class="delimiter">'</span></span> : <span class="string"><span class="delimiter">'</span><span class="content">/</span><span class="delimiter">'</span></span>,  <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="key">pages</span>: {
+    <span class="key">index</span>: {  <i class="conum" data-value="2"></i><b>(2)</b>
+      <span class="key">entry</span>: <span class="string"><span class="delimiter">'</span><span class="content">src/entry/index.js</span><span class="delimiter">'</span></span>,
+      <span class="key">template</span>: <span class="string"><span class="delimiter">'</span><span class="content">public/index.html</span><span class="delimiter">'</span></span>,
+      <span class="key">filename</span>: <span class="string"><span class="delimiter">'</span><span class="content">index.html</span><span class="delimiter">'</span></span>,
+      <span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">Index Page</span><span class="delimiter">'</span></span>,
+      <span class="key">chunks</span>: [<span class="string"><span class="delimiter">'</span><span class="content">chunk-vendors</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">chunk-common</span><span class="delimiter">'</span></span>, <span class="string"><span class="delimiter">'</span><span class="content">index</span><span class="delimiter">'</span></span>]
+    },
+    <span class="key"><span class="delimiter">'</span><span class="content">flexType</span><span class="delimiter">'</span></span>: {  <i class="conum" data-value="3"></i><b>(3)</b>
+      <span class="key">entry</span>: <span class="string"><span class="delimiter">'</span><span class="content">src/entry/custom/flexType/flexType.js</span><span class="delimiter">'</span></span>,
+      <span class="key">title</span>: <span class="string"><span class="delimiter">'</span><span class="content">Flex Type</span><span class="delimiter">'</span></span>,
+    },
+  },
+  . . .
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The <code>publicPath</code> is where the generated client module is served-up by the server side
+in production.  The 'sample' in <em>'/client/sample'</em> should be changed to your module name.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The index page is usually only used for development mode (e.g. when run using
+<em>'npm run server'</em> for hot-reloading during client development).  This <em>index.js</em> will
+usually have simple HTML links to your pages for development uses.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>This where your client page(s) will go.  Each top-level entry page should
+be listed.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You will need to change the <em>publicPath</em> and the <em>'flexType'</em> entry above for your
+entry page(s).</p>
+</div>
+<div class="paragraph">
+<p>Each entry page is made up of two main elements:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><em>.js</em> file - This file creates the page and displays it using the template
+<em>public/index.html</em>.  This code links the <em>.vue</em> component with the HTML tag
+<em>'&lt;div id="app"&gt;'</em>.</p>
+</li>
+<li>
+<p><em>.vue</em> file - This file defines what is displayed on the page.
+For simple CRUD definition pages, this usually just refers to <a href="#CrudTable">[CrudTable]</a> component
+with some configuration options.</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>The files for the Flex Type definition page is shown below.</p>
+</div>
+<div class="sect4">
+<h5 id="entry-page-structure"><a class="link" href="#entry-page-structure">Entry Page Structure</a></h5>
+<div class="paragraph">
+<p>The client page defines a single endpoint (URL) for the application.  For example,
+the CRUD page for the Flex Type records is at <em>'/client/eframe/flexType'</em>.  It is made
+up of these elements:</p>
 </div>
 <div class="imageblock text-center">
 <div class="content">
-<img src="images/clientElements.png" alt="clientElements" width="629" height="299">
+<img src="images/clientElements.png" alt="clientElements" width="713" height="267">
 </div>
 <div class="title">Figure 12. Client Elements</div>
 </div>
@@ -8235,19 +8383,19 @@ FlexTypeCrud.vue - Uses CrudTable element</p>
 <p>The <em>.js</em> file is fairly simple.  Most of the common logic is provided by the PageApp:</p>
 </div>
 <div class="listingblock">
-<div class="title">Example - page.js</div>
+<div class="title">Example - flexType.js</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="javascript"><span class="comment">/**
  * Basic CRUD page for a single object.
  */</span>
 
-<span class="reserved">import</span> FlexType from <span class="string"><span class="delimiter">'</span><span class="content">@/components/eframe/custom/flexType/FlexTypeCrud.vue</span><span class="delimiter">'</span></span>
-<span class="reserved">import</span> PageApp from <span class="string"><span class="delimiter">'</span><span class="content">@/components/eframe/web/PageApp</span><span class="delimiter">'</span></span>
+<span class="reserved">import</span> FlexTypeCrud from <span class="string"><span class="delimiter">'</span><span class="content">eframe-lib/components/custom/flexType/FlexTypeCrud.vue</span><span class="delimiter">'</span></span>
+<span class="reserved">import</span> PageApp from <span class="string"><span class="delimiter">'</span><span class="content">eframe-lib/components/web/PageApp</span><span class="delimiter">'</span></span>
 <span class="reserved">import</span> <span class="string"><span class="delimiter">'</span><span class="content">@/assets/styles/global.css</span><span class="delimiter">'</span></span>
 
 
-const app = PageApp.createApp(FlexType)  <i class="conum" data-value="1"></i><b>(1)</b>
-app.mount(<span class="string"><span class="delimiter">'</span><span class="content">#app</span><span class="delimiter">'</span></span>)                        <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+const app = PageApp.createApp(FlexTypeCrud)  <i class="conum" data-value="1"></i><b>(1)</b>
+app.mount(<span class="string"><span class="delimiter">'</span><span class="content">#app</span><span class="delimiter">'</span></span>)                            <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -8264,7 +8412,7 @@ app.mount(<span class="string"><span class="delimiter">'</span><span class="cont
 </div>
 <div class="paragraph">
 <p>The <em>.vue</em> file for most Crud pages is also fairly simple.
-This uses the CrudTable component:</p>
+This uses the <a href="#CrudTable">[CrudTable]</a> component:</p>
 </div>
 <div class="listingblock">
 <div class="title">Example - FlexTypeCrud.vue</div>
@@ -8273,13 +8421,15 @@ This uses the CrudTable component:</p>
  * Basic CRUD component for a single object.
  */</span>
 <span class="tag">&lt;template&gt;</span>
-  <span class="tag">&lt;CrudTable</span> <span class="attribute-name">:columns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">columns</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">:service</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">service</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>  <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="tag">&lt;CrudTable</span> <span class="attribute-name">:columns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">columns</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">:service</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">service</span><span class="delimiter">&quot;</span></span>  <i class="conum" data-value="1"></i><b>(1)</b>
+             <span class="attribute-name">storageKey</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">flexTypeCrudList</span><span class="delimiter">&quot;</span></span>
+             <span class="attribute-name">:domainClassName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">domainClassName</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
 <span class="tag">&lt;/template&gt;</span>
 
 <span class="tag">&lt;script&gt;</span>
 <span class="inline">
-<span class="reserved">import</span> CrudTable from <span class="string"><span class="delimiter">'</span><span class="content">@/components/eframe/web/CrudTable</span><span class="delimiter">'</span></span>;
-<span class="reserved">import</span> FlexTypeService from <span class="string"><span class="delimiter">'</span><span class="content">@/components/eframe/custom/flexType/FlexTypeService</span><span class="delimiter">'</span></span>
+<span class="reserved">import</span> CrudTable from <span class="string"><span class="delimiter">'</span><span class="content">eframe-lib/components/web/CrudTable</span><span class="delimiter">'</span></span>;
+<span class="reserved">import</span> FlexTypeService from <span class="string"><span class="delimiter">'</span><span class="content">eframe-lib/components/custom/flexType/FlexTypeService</span><span class="delimiter">'</span></span>
 
 <span class="reserved">export</span> <span class="keyword">default</span> {
   <span class="key">components</span>: {
@@ -8287,13 +8437,14 @@ This uses the CrudTable component:</p>
   },
   data() {
     <span class="keyword">return</span> {
-      <span class="key">columns</span>: [                                                <i class="conum" data-value="2"></i><b>(2)</b>
-        {<span class="key">field</span>: <span class="string"><span class="delimiter">'</span><span class="content">flexType</span><span class="delimiter">'</span></span>, <span class="key">header</span>: <span class="local-variable">this</span>.<span class="predefined">$t</span>(<span class="string"><span class="delimiter">'</span><span class="content">label.flexType</span><span class="delimiter">'</span></span>)},
-        {<span class="key">field</span>: <span class="string"><span class="delimiter">'</span><span class="content">category</span><span class="delimiter">'</span></span>, <span class="key">header</span>: <span class="local-variable">this</span>.<span class="predefined">$t</span>(<span class="string"><span class="delimiter">'</span><span class="content">label.category</span><span class="delimiter">'</span></span>)},
-        {<span class="key">field</span>: <span class="string"><span class="delimiter">'</span><span class="content">title</span><span class="delimiter">'</span></span>, <span class="key">header</span>: <span class="local-variable">this</span>.<span class="predefined">$t</span>(<span class="string"><span class="delimiter">'</span><span class="content">label.title</span><span class="delimiter">'</span></span>)},
+      <span class="key">columns</span>: [  <i class="conum" data-value="2"></i><b>(2)</b>
+        {<span class="key">field</span>: <span class="string"><span class="delimiter">'</span><span class="content">flexType</span><span class="delimiter">'</span></span>, <span class="key">header</span>: <span class="local-variable">this</span>.<span class="predefined">$t</span>(<span class="string"><span class="delimiter">'</span><span class="content">label.flexType</span><span class="delimiter">'</span></span>), <span class="key">sort</span>: <span class="predefined-constant">true</span>},
+        {<span class="key">field</span>: <span class="string"><span class="delimiter">'</span><span class="content">category</span><span class="delimiter">'</span></span>, <span class="key">header</span>: <span class="local-variable">this</span>.<span class="predefined">$t</span>(<span class="string"><span class="delimiter">'</span><span class="content">label.category</span><span class="delimiter">'</span></span>), <span class="key">sort</span>: <span class="predefined-constant">true</span>},
+        {<span class="key">field</span>: <span class="string"><span class="delimiter">'</span><span class="content">title</span><span class="delimiter">'</span></span>, <span class="key">header</span>: <span class="local-variable">this</span>.<span class="predefined">$t</span>(<span class="string"><span class="delimiter">'</span><span class="content">label.title</span><span class="delimiter">'</span></span>), <span class="key">sort</span>: <span class="predefined-constant">true</span>},
         {<span class="key">field</span>: <span class="string"><span class="delimiter">'</span><span class="content">fieldSummary</span><span class="delimiter">'</span></span>, <span class="key">header</span>: <span class="local-variable">this</span>.<span class="predefined">$t</span>(<span class="string"><span class="delimiter">'</span><span class="content">label.fields</span><span class="delimiter">'</span></span>)},
       ],
-      <span class="key">service</span>: FlexTypeService                                  <i class="conum" data-value="3"></i><b>(3)</b>
+      <span class="key">service</span>: FlexTypeService,   <i class="conum" data-value="3"></i><b>(3)</b>
+      <span class="key">domainClassName</span>: <span class="string"><span class="delimiter">'</span><span class="content">org.simplemes.eframe.custom.domain.FlexType</span><span class="delimiter">'</span></span>,  <i class="conum" data-value="4"></i><b>(4)</b>
     }
   },
 }</span>
@@ -8305,20 +8456,123 @@ This uses the CrudTable component:</p>
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Defines the standard CRUD page with a header.  The <code>columns</code> and <code>service</code> values
-are required.</td>
+<td>Defines the standard CRUD page with a header.  This links the data elements below with
+the CrudTable component.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The columns displayed are listed.</td>
+<td>The columns displayed are listed with localized headers and related options.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The service that implements the <code>list()</code> and other CRUD-related methods.
+<td>The client-side (javascript) service that implements the <code>list()</code> and other CRUD-related methods.
 See <a href="#gui-crud-requirements">GUI - CRUD Requirements</a> for details.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The domain class that is being maintained by this CRUD page.  This is the
+class name from the server-side.</td>
 </tr>
 </table>
 </div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="crudtable-service-requirements"><a class="link" href="#crudtable-service-requirements">CrudTable Service Requirements</a></h4>
+<div class="paragraph">
+<p>The service for FlexType CRUD pages is shown below.  This particular service is needed
+for the CrudTable component.  Other components may need other services.  It is
+recommended that all interaction between the client and server be handled by a
+service-style script.</p>
+</div>
+<div class="listingblock">
+<div class="title">Example - FlexTypeService.js</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">import</span> ServiceUtils from <span class="string"><span class="delimiter">'</span><span class="content">eframe-lib/components/web/ServiceUtils</span><span class="delimiter">'</span></span>  <i class="conum" data-value="1"></i><b>(1)</b>
+
+<span class="reserved">export</span> <span class="keyword">default</span> {
+  buildLabel(record, includeType = <span class="predefined-constant">false</span>) {  <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="keyword">return</span> ServiceUtils.buildLabel(record.flexType, includeType ? <span class="string"><span class="delimiter">'</span><span class="content">label.flexType</span><span class="delimiter">'</span></span> : <span class="predefined-constant">undefined</span>)
+  },
+  find(uuid, successFunction, errorFunction) { <i class="conum" data-value="3"></i><b>(3)</b>
+    <span class="keyword">return</span> ServiceUtils.find(<span class="string"><span class="delimiter">'</span><span class="content">/flexType</span><span class="delimiter">'</span></span>, uuid, successFunction, errorFunction)
+  },
+  list(options, successFunction, errorFunction) { <i class="conum" data-value="4"></i><b>(4)</b>
+    <span class="keyword">return</span> ServiceUtils.list(<span class="string"><span class="delimiter">'</span><span class="content">/flexType</span><span class="delimiter">'</span></span>, options, successFunction, errorFunction)
+  },
+  <span class="keyword">delete</span>(object, successFunction, errorFunction) { <i class="conum" data-value="5"></i><b>(5)</b>
+    <span class="keyword">return</span> ServiceUtils.<span class="keyword">delete</span>(<span class="string"><span class="delimiter">'</span><span class="content">/flexType</span><span class="delimiter">'</span></span>, object, successFunction, errorFunction)
+  },
+  save(object, successFunction, errorFunction) { <i class="conum" data-value="6"></i><b>(6)</b>
+    <span class="keyword">return</span> ServiceUtils.save(<span class="string"><span class="delimiter">'</span><span class="content">/flexType</span><span class="delimiter">'</span></span>, object, successFunction, errorFunction)
+  },
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The standard <em>ServiceUtils</em> for the client-side access to CRUD methods for domain objects.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Builds the label/key value suitable for use in confirmation dialogs and similar uses.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Retrieves a record from the server.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Retrieves a list of matching records for the domain object.  Supports
+paging/sorting/filtering.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Deletes a single domain object.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="6"></i><b>6</b></td>
+<td>Saves (creatse/updates) a single domain object.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>The basic methods needed include:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><code>list()</code></p>
+</li>
+<li>
+<p><code>buildLabel()</code></p>
+</li>
+<li>
+<p><code>find()</code></p>
+</li>
+<li>
+<p><code>save()</code></p>
+</li>
+<li>
+<p><code>delete()</code></p>
+</li>
+</ol>
+</div>
+</div>
+<div class="sect3">
+<h4 id="eframe-lib"><a class="link" href="#eframe-lib">eframe-lib</a></h4>
+<div class="paragraph">
+<p>The common components provided by the framework are provided in the eframe-lib module.
+This is copied from the eframe source tree to the client module&#8217;s <em>node_modules</em> folder
+using the gradle command <code>copyEframeLib</code>.  This does a simple copy to avoid the whole
+npm package creation logic.</p>
+</div>
+<div class="paragraph">
+<p>Normal client module developers will only need to run this gradle command when the eframe-lib
+changes.  If you are developing inside of the eframe-lib, you will need to run this command
+more frequently.</p>
 </div>
 </div>
 </div>
@@ -8367,8 +8621,112 @@ used to install all of the javascript modules such as Vue and related modules.</
 <div class="sect3">
 <h4 id="gui-setup-new-client-module"><a class="link" href="#gui-setup-new-client-module">GUI Setup - New Client Module</a></h4>
 <div class="paragraph">
-<p>Creating a new client module is somewhat complex.  You will need to create a node/npm/Vue
-project structure using these commands:</p>
+<p>Creating a new client module is somewhat complex.  The easiest solution is to copy the
+<em>eframe/src/templates/client/sample</em> folder to a new client folder in your module.
+It should be copied to the <em>module/src/client/module</em> folder (replace <em>module</em> with your
+ne module&#8217;s name).</p>
+</div>
+<div class="listingblock">
+<div class="title">New Client Sub-Module Creation - Linux Commands</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="script">  cd src/client
+  mkdir quality <i class="conum" data-value="1"></i><b>(1)</b>
+  cd quality
+  cp -r ../eframe/src/templates/client/sample .  <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Creates a sub-module named <em>'quality'</em>.  Use the sub-module name for your new client
+sub-module.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Use the correct source path for the eframe templates folder here.</td>
+</tr>
+</table>
+</div>
+<div class="sect4">
+<h5 id="edit-files"><a class="link" href="#edit-files">Edit Files</a></h5>
+<div class="paragraph">
+<p>Some of the files created above will need to be replaced by copies from the sample
+templates module.  The notes below assume the new client module name is <em>'quality'</em>.
+Use your module name instead.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+While editing in Intellij, you will receive requests to run 'npm install'.  Ignore
+      these requests until you have finished editing the files below.
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>package.json</em> - Need to change the top-level name/version.  You may need to
+adjust versions to match the current eframe <em>package.json</em> file.</p>
+</li>
+<li>
+<p><em>vue.config.js</em> - Change the '<em>/client/sample</em>' path to <em>'/client/sample'</em>.</p>
+</li>
+<li>
+<p><em>vue.config.js</em> - Change the '<em>GUIPage</em>' section to the name of your page(s).</p>
+</li>
+<li>
+<p><em>gradle.properties</em> - Set the <code>clientModules</code>=quality</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <em>gradle.properties</em> file should have an element like this:</p>
+</div>
+<div class="listingblock">
+<div class="title">Adding clientModules to gradle.properties</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">clientModules=quality <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The list of client modules to init/build.  This can be a comma-delimited list for multiple
+modules.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>See <a href="#entry-page-structure">Entry Page Structure</a> for more details on how the client pages are defined.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="run-npm-init"><a class="link" href="#run-npm-init">Run npm Init</a></h5>
+<div class="paragraph">
+<p>Next, you will need to initialize the npm module system with this gradle option:</p>
+</div>
+<div class="listingblock">
+<div class="title">New Client Sub-Module Creation - Linux Commands</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="script">  cd moduleRoot <i class="conum" data-value="1"></i><b>(1)</b>
+  ./gradlew npmInit
+  ./gradlew copyEframeLib</code></pre>
+</div>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="gui-setup-new-client-module-without-template"><a class="link" href="#gui-setup-new-client-module-without-template">GUI Setup - New Client Module without Template</a></h4>
+<div class="paragraph">
+<p>Creating a new client module without the template is a complex task.  Don&#8217;t attempt this
+without a good reason.</p>
 </div>
 <div class="listingblock">
 <div class="title">Client First Time Setup</div>
@@ -8440,19 +8798,6 @@ created by the <em>vue create</em> command above:</p>
 <div class="paragraph">
 <p>This runs the template client for testing purposes.  You will replace most of the
 template html, javascript and Vue files for your module.</p>
-</div>
-<div class="sect4">
-<h5 id="replace-files"><a class="link" href="#replace-files">Replace Files</a></h5>
-<div class="paragraph">
-<p>Some of the files created above will need to be replaced by copies from the eframe module:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><em>package-lock.json</em> - Need to change the top-level name/version.</p>
-</li>
-</ul>
-</div>
 </div>
 </div>
 <div class="sect3">
@@ -8687,12 +9032,12 @@ This is temporary.
 npm i
 npm run serve
 
-<span class="comment">// Commands to build library for use as module in other client sub-modules</span>
+<span class="comment">// Commands to build eframe library for use as module in other client sub-modules</span>
 
 npm build   <i class="conum" data-value="1"></i><b>(1)</b>
 npm pack    <i class="conum" data-value="2"></i><b>(2)</b>
-npm i ..<span class="regexp"><span class="delimiter">/</span><span class="content">eframe-lib-0.5.0.tgz  <i class="conum" data-value="3"></i><b>(3)</b>
-</span></span></code></pre>
+cd (client module)  <i class="conum" data-value="3"></i><b>(3)</b>
+npm i ..<span class="regexp"><span class="delimiter">/</span><span class="content">eframe</span><span class="delimiter">/</span></span>eframe-lib-<span class="float">0.5</span><span class="float">.0</span>.tgz  <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
@@ -8707,7 +9052,11 @@ npm i ..<span class="regexp"><span class="delimiter">/</span><span class="conten
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Installs in another module.</td>
+<td>Change to the client module folder (e.g. <em>src/client/sample</em>)</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>Installs in another module.  The path should point to the lib that was built.</td>
 </tr>
 </table>
 </div>
@@ -16557,7 +16906,7 @@ The javascript console message in the browser is:</p>
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-05-08 13:57:17 UTC
+Last updated 2021-05-23 12:06:41 UTC
 </div>
 </div>
 <style>
