@@ -92,6 +92,7 @@ Next, you will need to initialize the npm module system with this gradle option:
 ----
   cd moduleRoot <.>
   ./gradlew npmInit
+  ./gradlew copyEframeLib
 ----
 
 
