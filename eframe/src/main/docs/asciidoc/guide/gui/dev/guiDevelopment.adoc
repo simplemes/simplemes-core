@@ -383,7 +383,7 @@ recommended that all interaction between the client and server be handled by a
 service-style script.
 
 [source,javascript]
-.Example - FlexTypeService.js
+.Example - SampleParentService.js
 ----
 import ServiceUtils from 'eframe-lib/components/web/ServiceUtils'  // <.>
 

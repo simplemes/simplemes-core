@@ -14,7 +14,8 @@
  */
 'use strict';
 
-import Locales from "@/locales/Locales";
+import libLocales from "../locales/Locales"
+import MultiLocales from "./MultiLocales"
 
 import {createApp} from 'vue'
 import ToastService from "primevue/toastservice";
@@ -31,18 +32,22 @@ import {createI18n} from 'vue-i18n'
 
 
 export default {
-  createApp: function (component) {
+  createApp: function (component, moduleLocales) {
+    MultiLocales.addLocale(libLocales)
+    MultiLocales.addLocale(moduleLocales)
     const app = createApp(component)
     const i18n = createI18n({
       locale: navigator.language,
       fallbackLocale: 'en',
       legacy: true,
-      messages: Locales.getLocales(),
+      messages: MultiLocales.getLocales(),
       silentTranslationWarn: true, silentFallbackWarn: true
     });
 
     app.use(ToastService);
     app.use(PrimeVueConfig);
+    console.log('ABC_5')
+
     app.component('router-link', i18n) // Use a dummy router-link component to avoid missing component warning.
     app.use(i18n)
     app.use(VueAxios, axios)
@@ -90,3 +95,4 @@ export default {
     return app
   }
 }
+

@@ -6,10 +6,8 @@
  * Provides the getLocales() function to define all supported locales for this client.
  */
 
-import en from '@/locales/en.js';
+import en from './en.js';
 import de from './de.js';
-
-console.log(en);
 
 export default {
   getLocales() {

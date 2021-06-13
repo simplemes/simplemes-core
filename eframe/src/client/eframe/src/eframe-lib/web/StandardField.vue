@@ -59,7 +59,7 @@ import InputNumber from 'primevue/inputnumber';
 import Checkbox from 'primevue/checkbox';
 import Dropdown from 'primevue/dropdown';
 
-import InlineGrid from 'eframe-lib/components/web/InlineGrid';
+import InlineGrid from './InlineGrid';
 
 // InputText supports :placeholder="field.fieldLabel"
 /*

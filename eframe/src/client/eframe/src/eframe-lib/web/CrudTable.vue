@@ -68,8 +68,8 @@ import Dialog from 'primevue/dialog'
 
 import PageHolder from './PageHolder'
 import StandardHeader from './StandardHeader'
-import CrudDialog from "eframe-lib/components/web/CrudDialog"
-import DomainService from "eframe-lib/components/domain/DomainService"
+import CrudDialog from "./CrudDialog"
+import DomainService from "../domain/DomainService"
 
 
 export default {

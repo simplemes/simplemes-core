@@ -34,8 +34,8 @@ import Dialog from 'primevue/dialog'
 import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 
-import DomainService from "eframe-lib/components/domain/DomainService"
-import StandardField from "eframe-lib/components/domain/StandardField"
+import DomainService from "../domain/DomainService"
+import StandardField from "./StandardField"
 
 
 export default {

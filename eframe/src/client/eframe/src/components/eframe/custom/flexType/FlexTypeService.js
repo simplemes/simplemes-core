@@ -1,4 +1,4 @@
-import ServiceUtils from 'eframe-lib/components/web/ServiceUtils'
+import ServiceUtils from '@/eframe-lib/domain/ServiceUtils'
 
 export default {
   buildLabel(record, includeType = false) {

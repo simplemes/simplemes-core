@@ -12,8 +12,9 @@ export default {
   getMessages() {
     return {
       label: {
-        flexType: 'Flex Typ',
-        searchStatusGreen: 'Grün',
+        category: 'Kategorie',
+        fields: 'Felder',
+        title: 'Titel',
       }
 
     }
