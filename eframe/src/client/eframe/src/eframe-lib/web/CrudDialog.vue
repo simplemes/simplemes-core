@@ -68,6 +68,7 @@ export default {
     openDialog(recordValue) {
       this.dialogVisible = true
       this.$data.record = recordValue
+      fixMissingChildLists(this.$data.record, this.$data.fields)
     },
     saveDialog() {
       //console.log("saving: " + JSON.stringify(this.$data.record) + " with "+this.service);
@@ -100,6 +101,22 @@ export default {
       //console.log("DomainService data: "+JSON.stringify(data));
     });
   },
+}
+
+/**
+ * Makes sure the record to be edited has an empty array for all child lists that are undefined (missing).
+ * @param theRecord The record for the dialog.
+ * @param fieldDefs The fields.
+ */
+function fixMissingChildLists(theRecord, fieldDefs) {
+  let fields = DomainService._flattenFieldList(fieldDefs)
+  for (let field of fields) {
+    if (field.fieldFormat == DomainService.fieldFormats.CHILD_LIST) {
+      if (!theRecord[field.fieldName]) {
+        theRecord[field.fieldName] = []
+      }
+    }
+  }
 }
 
 
