@@ -9,8 +9,6 @@
 import en from '@/locales/en.js';
 import de from './de.js';
 
-console.log(en);
-
 export default {
   getLocales() {
     return {en: en.getMessages(), de: de.getMessages()}

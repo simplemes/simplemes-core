@@ -131,7 +131,7 @@ class WebClientLookup {
     if (loadedJSFiles) {
       return
     }
-    File folder = new File("src/client/eframe/src/locales")
+    File folder = new File("src/client/eframe/src/eframe-lib/locales")
     for (file in folder.listFiles()) {
       def locale = determineLocale(file.path)
       cache[locale.language] = new WebClientLookup(file.path)

@@ -25,7 +25,6 @@ export default {
       let list = locale.getLocales()
       combined = mergeDeep(combined, list)
     }
-    console.log("combined: " + JSON.stringify(combined));
 
     return combined
   },
