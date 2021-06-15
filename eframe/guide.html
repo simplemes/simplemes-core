@@ -8000,7 +8000,6 @@ within its own transaction.</td>
 <span class="inline-toc"><a href="#gui-philosophy-and-decisions">GUI Philosophy and Decisions</a></span>
 <span class="inline-toc"><a href="#gui-development">GUI Development</a></span>
 <span class="inline-toc"><a href="#gui-development-setup">GUI Development Setup</a></span>
-<span class="inline-toc"><a href="#gui-requirements">GUI Requirements</a></span>
 <span class="inline-toc"><a href="#gui-i18n">GUI I18n</a></span></p>
 </div>
 <div class="paragraph">
@@ -8114,6 +8113,13 @@ larger developer base than the other choices.</p>
 <p>Vue makes re-use of code more difficult. Inheritance is discouraged. This means some common features (like
 localization) is copied to each page manually.</p>
 </li>
+<li>
+<p>The Javascript Node/npm world is much more fragmented than the Java/Groovy world.
+For example, there are 6+ ways to handle localization.</p>
+</li>
+<li>
+<p>Module loading in a browser is simply a mess.</p>
+</li>
 </ul>
 </div>
 </div>
@@ -8121,29 +8127,47 @@ localization) is copied to each page manually.</p>
 <div class="sect3">
 <h4 id="guidelines-2"><a class="link" href="#guidelines-2">Guidelines</a></h4>
 <div class="paragraph">
-<p>To work around the drawbacks of this approach, some conventions will be followed.</p>
+<p>To work around the drawbacks of this approach, some conventions will be followed:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>Client Sub-Modules</strong> - Each module of your application should have a client sub-module.</p>
+</li>
+<li>
+<p><strong>Use eframe-lib</strong> - Your module will (should) use the <a href="#eframe-lib">eframe-lib</a> for common
+features such as CRUD, server interaction and localization (<a href="#gui-i18n">GUI I18n</a>).</p>
+</li>
+<li>
+<p><strong>GUI Testing</strong> - You should follow the general <a href="#gui-testing">GUI Testing</a> approach used by the
+framework.  This means GUI testing is done in Geb/Groovy instead of
+in the node/npm world.</p>
+</li>
+</ol>
 </div>
 </div>
 <div class="sect3">
 <h4 id="development-process"><a class="link" href="#development-process">Development Process</a></h4>
 <div class="paragraph">
-<p>In particular, all pages will be generated with the Vue/JS world. This means all UI features are built/configured in the
-node/JS world. The node/npm world will generate the client assets which will be served up by the server-side.</p>
+<p>In particular, all pages will be generated with the Vue/JS world. This means all UI
+features are built/configured in the node/JS world. The node/npm world will generate
+the client assets which will be served up by the server-side.</p>
 </div>
 <div class="paragraph">
-<p>This means most development will be done while running the npm/VueCLI in development mode, then doing a build to create
-the assets for the server-side core to serve.</p>
+<p>This means most development will be done while running the npm/VueCLI in development mode,
+then doing a build to create the assets for the server-side core to serve.</p>
 </div>
 </div>
 <div class="sect3">
 <h4 id="integration-during-development"><a class="link" href="#integration-during-development">Integration During Development</a></h4>
 <div class="paragraph">
-<p>The npm/VueCLI will run the app in developer mode. The access to the server-side will be to another process on a
-different port. This is done to keep the development mode code the same as the production as much as possible.</p>
+<p>The npm/VueCLI will run the app in developer mode. The access to the server-side will
+be to another process on a different port. This is done to keep the development mode
+code the same as the production as much as possible.</p>
 </div>
 <div class="paragraph">
-<p>The axios module use a proxy for development mode to access <a href="http://localhost:8080/" class="bare">http://localhost:8080/</a> while the client code is run
-on <a href="http://localhost:8081/" class="bare">http://localhost:8081/</a></p>
+<p>The axios module use a proxy for development mode to access <em><a href="http://localhost:8080/" class="bare">http://localhost:8080/</a></em>
+while the client code is run on <em><a href="http://localhost:8081/" class="bare">http://localhost:8081/</a></em>.</p>
 </div>
 </div>
 </div>
@@ -8215,7 +8239,9 @@ on how to edit/test your GUIs.</p>
 </li>
 <li>
 <p>When you are ready to deploy to a server, you will use the gradle <em>npmBuild</em> to
-create the assets for production (runs <em>npm run build</em> command).</p>
+create the assets for production (runs <em>npm run build</em> command).
+This copies the client run-time files to the <em>src/main/resources/client</em> folder
+for the IDEA <em>localhost</em> process to use.</p>
 </li>
 <li>
 <p><em>Build .jar</em> - When ready to publish the module, the run-time .jar file is built
@@ -8224,7 +8250,7 @@ task <em>publishToMavenLocal</em> task.</p>
 <div class="literalblock">
 <div class="content">
 <pre>NOTE: You can use the _npm run server_ task to allow hot-updates to the running client-side
-      application while you make changes.  Highly recommended.</pre>
+      application while you make changes.  *Highly recommended*.</pre>
 </div>
 </div>
 </li>
@@ -8252,7 +8278,8 @@ task <em>publishToMavenLocal</em> task.</p>
 </li>
 <li>
 <p>Build using gradle <em>npmBuild</em> for use in production.  Restart localhost (server-side)
-to use use the client module in 'production'.</p>
+to use use the client module in 'production'.  You may need to force a refresh
+of the IDEA out folder for the new client files (Gradle refresh seems to work).</p>
 </li>
 <li>
 <p>Write GEB/Spock tests of the GUI (no javascript-based tests).</p>
@@ -8375,7 +8402,7 @@ up of these elements:</p>
 </div>
 <div class="imageblock text-center">
 <div class="content">
-<img src="images/clientElements.png" alt="clientElements" width="713" height="267">
+<img src="images/clientElements.png" alt="clientElements" width="765" height="267">
 </div>
 <div class="title">Figure 12. Client Elements</div>
 </div>
@@ -8385,27 +8412,29 @@ up of these elements:</p>
 <div class="listingblock">
 <div class="title">Example - flexType.js</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="javascript"><span class="comment">/**
- * Basic CRUD page for a single object.
- */</span>
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">import</span> FlexTypeCrud from <span class="string"><span class="delimiter">'</span><span class="content">@/components/eframe/custom/flexType/FlexTypeCrud.vue</span><span class="delimiter">'</span></span>
+<span class="reserved">import</span> PageApp from <span class="string"><span class="delimiter">'</span><span class="content">@/eframe-lib/web/PageApp.js</span><span class="delimiter">'</span></span>
+<span class="reserved">import</span> <span class="string"><span class="delimiter">'</span><span class="content">@/eframe-lib/assets/styles/global.css</span><span class="delimiter">'</span></span>
 
-<span class="reserved">import</span> FlexTypeCrud from <span class="string"><span class="delimiter">'</span><span class="content">eframe-lib/components/custom/flexType/FlexTypeCrud.vue</span><span class="delimiter">'</span></span>
-<span class="reserved">import</span> PageApp from <span class="string"><span class="delimiter">'</span><span class="content">eframe-lib/components/web/PageApp</span><span class="delimiter">'</span></span>
-<span class="reserved">import</span> <span class="string"><span class="delimiter">'</span><span class="content">@/assets/styles/global.css</span><span class="delimiter">'</span></span>
+<span class="reserved">import</span> Locales from <span class="string"><span class="delimiter">&quot;</span><span class="content">@/locales/Locales</span><span class="delimiter">&quot;</span></span>               <i class="conum" data-value="1"></i><b>(1)</b>
 
 
-const app = PageApp.createApp(FlexTypeCrud)  <i class="conum" data-value="1"></i><b>(1)</b>
-app.mount(<span class="string"><span class="delimiter">'</span><span class="content">#app</span><span class="delimiter">'</span></span>)                            <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+const app = PageApp.createApp(FlexTypeCrud, Locales)  <i class="conum" data-value="2"></i><b>(2)</b>
+app.mount(<span class="string"><span class="delimiter">'</span><span class="content">#app</span><span class="delimiter">'</span></span>)                                     <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
 </div>
 </div>
 <div class="colist arabic">
 <table>
 <tr>
 <td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Uses standard features such as Toast, Axios and <a href="#gui-i18n">GUI I18n</a> support.</td>
+<td>Provides the locale-specific labels/etc for this module.  See <a href="#gui-i18n">GUI I18n</a>.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Uses standard features such as Toast, Axios and <a href="#gui-i18n">GUI I18n</a> support.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
 <td>Mounts the FlexType crud table in the standard page using the <em>'app'</em> HTML ID.</td>
 </tr>
 </table>
@@ -8417,10 +8446,7 @@ This uses the <a href="#CrudTable">[CrudTable]</a> component:</p>
 <div class="listingblock">
 <div class="title">Example - FlexTypeCrud.vue</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="javascript"><span class="comment">/**
- * Basic CRUD component for a single object.
- */</span>
-<span class="tag">&lt;template&gt;</span>
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="tag">&lt;template&gt;</span>
   <span class="tag">&lt;CrudTable</span> <span class="attribute-name">:columns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">columns</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">:service</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">service</span><span class="delimiter">&quot;</span></span>  <i class="conum" data-value="1"></i><b>(1)</b>
              <span class="attribute-name">storageKey</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">flexTypeCrudList</span><span class="delimiter">&quot;</span></span>
              <span class="attribute-name">:domainClassName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">domainClassName</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
@@ -8428,8 +8454,8 @@ This uses the <a href="#CrudTable">[CrudTable]</a> component:</p>
 
 <span class="tag">&lt;script&gt;</span>
 <span class="inline">
-<span class="reserved">import</span> CrudTable from <span class="string"><span class="delimiter">'</span><span class="content">eframe-lib/components/web/CrudTable</span><span class="delimiter">'</span></span>;
-<span class="reserved">import</span> FlexTypeService from <span class="string"><span class="delimiter">'</span><span class="content">eframe-lib/components/custom/flexType/FlexTypeService</span><span class="delimiter">'</span></span>
+<span class="reserved">import</span> CrudTable from <span class="string"><span class="delimiter">'</span><span class="content">@/eframe-lib/web/CrudTable</span><span class="delimiter">'</span></span>
+<span class="reserved">import</span> FlexTypeService from <span class="string"><span class="delimiter">'</span><span class="content">@/components/eframe/custom/flexType/FlexTypeService</span><span class="delimiter">'</span></span>
 
 <span class="reserved">export</span> <span class="keyword">default</span> {
   <span class="key">components</span>: {
@@ -8466,7 +8492,7 @@ the CrudTable component.</td>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
 <td>The client-side (javascript) service that implements the <code>list()</code> and other CRUD-related methods.
-See <a href="#gui-crud-requirements">GUI - CRUD Requirements</a> for details.</td>
+See <a href="#GUI - CRUD Requirements">[GUI - CRUD Requirements]</a> for details.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
@@ -8488,23 +8514,23 @@ service-style script.</p>
 <div class="listingblock">
 <div class="title">Example - SampleParentService.js</div>
 <div class="content">
-<pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">import</span> ServiceUtils from <span class="string"><span class="delimiter">'</span><span class="content">eframe-lib/components/web/ServiceUtils</span><span class="delimiter">'</span></span>  <i class="conum" data-value="1"></i><b>(1)</b>
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">import</span> ServiceUtils from <span class="string"><span class="delimiter">'</span><span class="content">@/eframe-lib/domain/ServiceUtils</span><span class="delimiter">'</span></span>  <i class="conum" data-value="1"></i><b>(1)</b>
 
 <span class="reserved">export</span> <span class="keyword">default</span> {
   buildLabel(record, includeType = <span class="predefined-constant">false</span>) {  <i class="conum" data-value="2"></i><b>(2)</b>
-    <span class="keyword">return</span> ServiceUtils.buildLabel(record.flexType, includeType ? <span class="string"><span class="delimiter">'</span><span class="content">label.flexType</span><span class="delimiter">'</span></span> : <span class="predefined-constant">undefined</span>)
+    <span class="keyword">return</span> ServiceUtils.buildLabel(record.name, includeType ? <span class="string"><span class="delimiter">'</span><span class="content">label.sampleParent</span><span class="delimiter">'</span></span> : <span class="predefined-constant">undefined</span>)
   },
   find(uuid, successFunction, errorFunction) { <i class="conum" data-value="3"></i><b>(3)</b>
-    <span class="keyword">return</span> ServiceUtils.find(<span class="string"><span class="delimiter">'</span><span class="content">/flexType</span><span class="delimiter">'</span></span>, uuid, successFunction, errorFunction)
+    <span class="keyword">return</span> ServiceUtils.find(<span class="string"><span class="delimiter">'</span><span class="content">/sampleParent</span><span class="delimiter">'</span></span>, uuid, successFunction, errorFunction)
   },
   list(options, successFunction, errorFunction) { <i class="conum" data-value="4"></i><b>(4)</b>
-    <span class="keyword">return</span> ServiceUtils.list(<span class="string"><span class="delimiter">'</span><span class="content">/flexType</span><span class="delimiter">'</span></span>, options, successFunction, errorFunction)
+    <span class="keyword">return</span> ServiceUtils.list(<span class="string"><span class="delimiter">'</span><span class="content">/sampleParent</span><span class="delimiter">'</span></span>, options, successFunction, errorFunction)
   },
   <span class="keyword">delete</span>(object, successFunction, errorFunction) { <i class="conum" data-value="5"></i><b>(5)</b>
-    <span class="keyword">return</span> ServiceUtils.<span class="keyword">delete</span>(<span class="string"><span class="delimiter">'</span><span class="content">/flexType</span><span class="delimiter">'</span></span>, object, successFunction, errorFunction)
+    <span class="keyword">return</span> ServiceUtils.<span class="keyword">delete</span>(<span class="string"><span class="delimiter">'</span><span class="content">/sampleParent</span><span class="delimiter">'</span></span>, object, successFunction, errorFunction)
   },
   save(object, successFunction, errorFunction) { <i class="conum" data-value="6"></i><b>(6)</b>
-    <span class="keyword">return</span> ServiceUtils.save(<span class="string"><span class="delimiter">'</span><span class="content">/flexType</span><span class="delimiter">'</span></span>, object, successFunction, errorFunction)
+    <span class="keyword">return</span> ServiceUtils.save(<span class="string"><span class="delimiter">'</span><span class="content">/sampleParent</span><span class="delimiter">'</span></span>, object, successFunction, errorFunction)
   },
 }</code></pre>
 </div>
@@ -8526,7 +8552,8 @@ service-style script.</p>
 <tr>
 <td><i class="conum" data-value="4"></i><b>4</b></td>
 <td>Retrieves a list of matching records for the domain object.  Supports
-paging/sorting/filtering.</td>
+paging/sorting/filtering.   This is usually provided by
+the <a href="#basecrudcontroller">BaseCrudController</a> class.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="5"></i><b>5</b></td>
@@ -8534,7 +8561,7 @@ paging/sorting/filtering.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Saves (creatse/updates) a single domain object.</td>
+<td>Saves (create/update) a single domain object.</td>
 </tr>
 </table>
 </div>
@@ -8559,615 +8586,6 @@ paging/sorting/filtering.</td>
 <p><code>delete()</code></p>
 </li>
 </ol>
-</div>
-</div>
-<div class="sect3">
-<h4 id="eframe-lib"><a class="link" href="#eframe-lib">eframe-lib</a></h4>
-<div class="paragraph">
-<p>The common components provided by the framework are provided in the eframe-lib module.
-This is copied from the eframe source tree to the client module&#8217;s <em>node_modules</em> folder
-using the gradle command <code>copyEframeLib</code>.  This does a simple copy to avoid the whole
-npm package creation logic.</p>
-</div>
-<div class="paragraph">
-<p>Normal client module developers will only need to run this gradle command when the eframe-lib
-changes.  If you are developing inside of the eframe-lib, you will need to run this command
-more frequently.</p>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="gui-development-setup"><a class="link" href="#gui-development-setup">GUI Development Setup</a></h3>
-<div class="paragraph">
-<p><span class="inline-toc"><a href="#gui-setup-new-client-module">GUI Setup - New Client Module</a></span>
-<span class="inline-toc"><a href="#gui-setup-existing-client-module">GUI Setup - Existing Client Module</a></span>
-<span class="inline-toc"><a href="#gui-setup-common-setup">GUI Setup - Common Setup</a></span>
-<span class="inline-toc"><a href="#gui-setup-idea">GUI Setup - IDEA</a></span>
-<span class="inline-toc"><a href="#gui-setup-build-eframe-library">GUI Setup - Build Eframe Library</a></span>
-<span class="inline-toc"><a href="#client-module-version-dependencies">Client Module Version Dependencies</a></span></p>
-</div>
-<div class="paragraph">
-<p>If you have cloned the GIT repository for an existing client sub-module, then follow the
-<a href="#gui-setup-existing-client-module">GUI Setup - Existing Client Module</a> instructions.  For new client sub-modules,
-follow the <a href="#gui-setup-new-client-module">GUI Setup - New Client Module</a> instructions.</p>
-</div>
-<div class="paragraph">
-<p>Some important notes about client development:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><em>npm</em> will install most modules in the sub-folder (<em>node_modules</em>).  This tends to be
-a huge directory.  You will want to make sure it is in the git
-<a href="#idea-and-the-client-folder">exclude</a> file.</p>
-</li>
-<li>
-<p>Each client sub-module will use its own set of modules/versions.  These will be
-packaged for each module separately.</p>
-</li>
-<li>
-<p>Some packages are installed globally.  This means they are not in the (<em>node_modules</em>)
-folder.  You can see which ones are global with the command <em>npm list -g --depth=0</em>  .</p>
-</li>
-</ul>
-</div>
-<div class="sect3">
-<h4 id="gui-setup-install-node-and-npm"><a class="link" href="#gui-setup-install-node-and-npm">GUI Setup - Install Node and npm</a></h4>
-<div class="paragraph">
-<p>Install <a href="https://nodejs.org/en/" target="_blank" rel="noopener">node and npm</a>.  This provides the npm tool, which is
-used to install all of the javascript modules such as Vue and related modules.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="gui-setup-new-client-module"><a class="link" href="#gui-setup-new-client-module">GUI Setup - New Client Module</a></h4>
-<div class="paragraph">
-<p>Creating a new client module is somewhat complex.  The easiest solution is to copy the
-<em>eframe/src/templates/client/sample</em> folder to a new client folder in your module.
-It should be copied to the <em>module/src/client/module</em> folder (replace <em>module</em> with your
-ne module&#8217;s name).</p>
-</div>
-<div class="listingblock">
-<div class="title">New Client Sub-Module Creation - Linux Commands</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="script">  cd src/client
-  mkdir quality <i class="conum" data-value="1"></i><b>(1)</b>
-  cd quality
-  cp -r ../eframe/src/templates/client/sample .  <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Creates a sub-module named <em>'quality'</em>.  Use the sub-module name for your new client
-sub-module.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Use the correct source path for the eframe templates folder here.</td>
-</tr>
-</table>
-</div>
-<div class="sect4">
-<h5 id="edit-files"><a class="link" href="#edit-files">Edit Files</a></h5>
-<div class="paragraph">
-<p>Some of the files created above will need to be replaced by copies from the sample
-templates module.  The notes below assume the new client module name is <em>'quality'</em>.
-Use your module name instead.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-While editing in Intellij, you will receive requests to run 'npm install'.  Ignore
-      these requests until you have finished editing the files below.
-</td>
-</tr>
-</table>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><em>package.json</em> - Need to change the top-level name/version.  You may need to
-adjust versions to match the current eframe <em>package.json</em> file.</p>
-</li>
-<li>
-<p><em>vue.config.js</em> - Change the '<em>/client/sample</em>' path to <em>'/client/sample'</em>.</p>
-</li>
-<li>
-<p><em>vue.config.js</em> - Change the '<em>GUIPage</em>' section to the name of your page(s).</p>
-</li>
-<li>
-<p><em>gradle.properties</em> - Set the <code>clientModules</code>=quality</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The <em>gradle.properties</em> file should have an element like this:</p>
-</div>
-<div class="listingblock">
-<div class="title">Adding clientModules to gradle.properties</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="groovy">clientModules=quality <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The list of client modules to init/build.  This can be a comma-delimited list for multiple
-modules.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>See <a href="#entry-page-structure">Entry Page Structure</a> for more details on how the client pages are defined.</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="run-npm-init"><a class="link" href="#run-npm-init">Run npm Init</a></h5>
-<div class="paragraph">
-<p>Next, you will need to initialize the npm module system with this gradle option:</p>
-</div>
-<div class="listingblock">
-<div class="title">New Client Sub-Module Creation - Linux Commands</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="script">  cd moduleRoot <i class="conum" data-value="1"></i><b>(1)</b>
-  ./gradlew npmInit
-  ./gradlew copyEframeLib</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="gui-setup-new-client-module-without-template"><a class="link" href="#gui-setup-new-client-module-without-template">GUI Setup - New Client Module without Template</a></h4>
-<div class="paragraph">
-<p>Creating a new client module without the template is a complex task.  Don&#8217;t attempt this
-without a good reason.</p>
-</div>
-<div class="listingblock">
-<div class="title">Client First Time Setup</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="script">  cd src/client
-  npm install -g @vue/cli <i class="conum" data-value="1"></i><b>(1)</b>
-  vue create moduleName <i class="conum" data-value="2"></i><b>(2)</b>
-  cd moduleName
-  npm install vue@next --save <i class="conum" data-value="3"></i><b>(3)</b>
-  npm install primevue --save  <i class="conum" data-value="4"></i><b>(4)</b>
-  npm install primeicons --save
-  npm install primeflex --save
-  npm install vue-i18n@next --save
-  npm install axios vue-axios --save
-  npm install vuex@next --save
-  npm install in-memoriam --save
-  npm install compression-webpack-plugin@6.0.5 --save-dev
-  npm install webpack-bundle-analyzer --save <i class="conum" data-value="5"></i><b>(5)</b>
-
-  npx vue add i18n <i class="conum" data-value="6"></i><b>(6)</b></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Installs the command line tool as a global utility.
-<strong>This only needs to be done once for a given development system.</strong>
-This provides the <em>vue</em> command used next.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Select the Vue3 option if prompted.
-Creates a new module folder with an empty project structure.
-The <em>moduleName</em> should match the module name used for the server-side.  See
-<a href="#idea-and-the-client-folder">IDEA and the Client Folder</a> if you see the error that vue.ps1 is disabled (on windows
-powershell).</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Should install latest Vue 3.x.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>The rest of the locally installed modules for use in your client module.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="5"></i><b>5</b></td>
-<td>Analysis tool for exploring your package assets for production.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="6"></i><b>6</b></td>
-<td>Adds i18n bundler options to the CLI environment.  This affects the build process.
-See <a href="https://github.com/intlify/vue-cli-plugin-i18n" target="_blank" rel="noopener">plugin</a> for details.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>To test your client project, you can run the local development server that was
-created by the <em>vue create</em> command above:</p>
-</div>
-<div class="listingblock">
-<div class="title">Test Empty Client Module</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="script">  cd moduleName
-  npm run serve</code></pre>
-</div>
-</div>
-<div class="paragraph">
-<p>This runs the template client for testing purposes.  You will replace most of the
-template html, javascript and Vue files for your module.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="gui-setup-existing-client-module"><a class="link" href="#gui-setup-existing-client-module">GUI Setup - Existing Client Module</a></h4>
-<div class="paragraph">
-<p>Once you have cloned the GIT repository, you will need to run these Gradle tasks:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p>(once) <strong>npmInit</strong> or <strong>npmInitAll</strong> - Runs the <em>npm install</em> command in the client module(s).
-This downloads the npm libraries used by the client.</p>
-</li>
-<li>
-<p>(after updates) <strong>npmBuild</strong> or <strong>npmBuildAll</strong> - Runs the <em>npm build</em> command in the
-client module(s). This builds the production assets.  Typically, this is run after
-client module code changes.</p>
-</li>
-</ul>
-</div>
-</div>
-<div class="sect3">
-<h4 id="gui-setup-common-setup"><a class="link" href="#gui-setup-common-setup">GUI Setup - Common Setup</a></h4>
-<div class="paragraph">
-<p>These setup actions apply to new and existing installations.</p>
-</div>
-<div class="sect4">
-<h5 id="powershell-on-windows"><a class="link" href="#powershell-on-windows">Powershell on Windows</a></h5>
-<div class="paragraph">
-<p>Many Vue/npm commands are shipped as powershell commands (*.ps1).  By default, these are
-restricted in powershell.  You will get an error like this:</p>
-</div>
-<div class="listingblock">
-<div class="title">Client First Time Setup</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="script">vue --version <i class="conum" data-value="1"></i><b>(1)</b>
-
-
-vue : File ..\vue.ps1 cannot be loaded because running scripts is disabled on this
-system. For more information, see about_Execution_Policies at https:/go.microsoft.com/...
-At line:1 char:1
-+ vue --version
-+ ~~~
-    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
-    + FullyQualifiedErrorId : UnauthorizedAccess</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Command to print current version of vue in the client folder.  Will fail on
-systems with Windows Powershell.</td>
-</tr>
-</table>
-</div>
-<div class="paragraph">
-<p>To avoid this, you should add <em>.cmd</em> to the end of the command:</p>
-</div>
-<div class="listingblock">
-<div class="title">Client First Time Setup</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="script">  vue.cmd --version</code></pre>
-</div>
-</div>
-</div>
-<div class="sect4">
-<h5 id="git-exclude-file"><a class="link" href="#git-exclude-file">GIT Exclude File</a></h5>
-<div class="paragraph">
-<p>Node/npm has a lot of files copied to your development folder.  These should be excluded
-from the IDEA and GIT since they are generated files or open source libraries.
-This means you should have these lines in your project&#8217;s GIT exclude file:</p>
-</div>
-<div class="listingblock">
-<div class="title">.git/info/exclude</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="script">/eframe/src/main/resources/client/
-/eframe/src/client/eframe/node_modules/</code></pre>
-</div>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="gui-setup-idea"><a class="link" href="#gui-setup-idea">GUI Setup - IDEA</a></h4>
-<div class="paragraph">
-<p>The IDEA setup for npm development is fairly simple.  There are two basic run
-configurations.</p>
-</div>
-<div class="paragraph">
-<div class="title">Localhost (Dev)</div>
-<p>The first is to run the development server as localhost:8081.  This lets you change your
-client code and the server will update with those changes without restarting.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 12.5%;">
-<col style="width: 12.5%;">
-<col style="width: 75%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Setting</th>
-<th class="tableblock halign-left valign-top">Value</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>type</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">npm</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The task is created from the npm template (Add New Configuration).</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>package.json</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">package.json</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The package-json for the client module.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>command</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">run</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>scripts</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">serve</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Starts the dev server with hot-updates for your changes.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>arguments</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">--port8081</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The local host server is on port 8081, if you already have
-                           the micronaut application server running on port 8080.
-                           This allows the client to make requests to the 8080 server.</p></td>
-</tr>
-</tbody>
-</table>
-<div class="paragraph">
-<div class="title">Build</div>
-<p>The second is the task to build the production assets for the client pages.
-You will run this and then start/restart the micronaut application server to test
-your client in a live server.  This will build the assets and store them in the
-<em>src/main/resources/client</em> so the development server will have access to them for use
-in the live server.</p>
-</div>
-<table class="tableblock frame-all grid-all stretch">
-<colgroup>
-<col style="width: 10%;">
-<col style="width: 30%;">
-<col style="width: 60%;">
-</colgroup>
-<thead>
-<tr>
-<th class="tableblock halign-left valign-top">Setting</th>
-<th class="tableblock halign-left valign-top">Value</th>
-<th class="tableblock halign-left valign-top">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>type</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">npm</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The task is created from the npm template (Add New Configuration).</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>package.json</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">package.json</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The package-json for the client module.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>command</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">run</p></td>
-<td class="tableblock halign-left valign-top"></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>scripts</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">build</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">Builds the production assets for a live micronaut server.</p></td>
-</tr>
-<tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>arguments</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">&#8201;&#8212;&#8201;--dest ../../main/resources/client/eframe</p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">This is where the assets
-                                          will be created.
-                                          This folder is the normal resource folder so that
-                                          IDEA will copy them for use in the running development
-                                          server.</p></td>
-</tr>
-</tbody>
-</table>
-<div class="sect4">
-<h5 id="excluding-the-client-folder-from-searches"><a class="link" href="#excluding-the-client-folder-from-searches">Excluding the Client Folder from Searches</a></h5>
-<div class="paragraph">
-<p>Since the client assets are copied to the <em>main/resources/client</em> folder, the contents
-will show up by default in the IDEA searches.  This is inconvenient. In the IDEA
-Project Structure dialog (module <em>eframe/main</em>) you can 'exclude' the
-<em>resources/client/eframe</em> folder.  (Replace <em>eframe</em> with the client sub-module name).</p>
-</div>
-</div>
-<div class="sect4">
-<h5 id="idea-and-the-client-folder"><a class="link" href="#idea-and-the-client-folder">IDEA and the Client Folder</a></h5>
-<div class="paragraph">
-<div class="title">node_modules</div>
-<p>After installing these packages, the IDEA <em>Commit</em> tab will contain thousands of files
-from the <em>node_modules</em> folder.  You should exclude this folder.  Select the folder
-in the <em>Project</em> tab and choose the <em>Git</em> &#8594; <em>.git/info/exclude</em> option to exclude these
-from the Git logic.</p>
-</div>
-<div class="paragraph">
-<p>This will add it to the <em>.git/info/exclude</em> folder.</p>
-</div>
-</div>
-</div>
-<div class="sect3">
-<h4 id="gui-setup-build-eframe-library"><a class="link" href="#gui-setup-build-eframe-library">GUI Setup - Build Eframe Library</a></h4>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-This is temporary.
-      These are the manual steps to manually create the frame library for other modules.
-</td>
-</tr>
-</table>
-</div>
-<div class="listingblock">
-<div class="title">Manual Steps to build eframe-lib.</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="javascript">sfc-init - Creates mostly empty project.
-npm i
-npm run serve
-
-<span class="comment">// Commands to build eframe library for use as module in other client sub-modules</span>
-
-npm build   <i class="conum" data-value="1"></i><b>(1)</b>
-npm pack    <i class="conum" data-value="2"></i><b>(2)</b>
-cd (client module)  <i class="conum" data-value="3"></i><b>(3)</b>
-npm i ..<span class="regexp"><span class="delimiter">/</span><span class="content">eframe</span><span class="delimiter">/</span></span>eframe-lib-<span class="float">0.5</span><span class="float">.0</span>.tgz  <i class="conum" data-value="4"></i><b>(4)</b></code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>Builds the summary fields (in the dist folder).</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Packs the components into a .tgz file for installation.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>Change to the client module folder (e.g. <em>src/client/sample</em>)</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Installs in another module.  The path should point to the lib that was built.</td>
-</tr>
-</table>
-</div>
-</div>
-<div class="sect3">
-<h4 id="client-module-version-dependencies"><a class="link" href="#client-module-version-dependencies">Client Module Version Dependencies</a></h4>
-<div class="paragraph">
-<p>npm uses two files for version control:</p>
-</div>
-<div class="ulist">
-<ul>
-<li>
-<p><em>package-lock.json</em> - The main module version listing for all modules.
-This includes the exact version installed for all modules.
-This file supercedes the <em>package.json</em> when the <em>npm install</em> command is used.</p>
-</li>
-<li>
-<p><em>package.json</em> - The top-level modules used.  Contains the general versions for the
-modules.  This is usually something like '^3.0.7' which means any 3.x version.</p>
-</li>
-</ul>
-</div>
-<div class="paragraph">
-<p>The <em>package.json</em> and <em>package-lock.json</em> files are updated when you install a new
-module as we did above with the tasks in <a href="#gui-setup-new-client-module">GUI Setup - New Client Module</a>.</p>
-</div>
-<div class="paragraph">
-<p>When building the client modules on other systems from the git source, we use the command
-<em>npm install</em>.  This installs all of the dependencies specified in the <em>package-lock.json</em>
-file.  This uses the exact version from the <em>package-lock.json</em> file.  The version from
-the <em>package.json</em> is not used for this scenario.</p>
-</div>
-<div class="admonitionblock note">
-<table>
-<tr>
-<td class="icon">
-<i class="fa icon-note" title="Note"></i>
-</td>
-<td class="content">
-The <em>package-lock.json</em> is the primary source of the versioning for npm.
-      Unfortunately, this is independent of the <em>build.gradle</em> files.
-</td>
-</tr>
-</table>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="gui-requirements"><a class="link" href="#gui-requirements">GUI Requirements</a></h3>
-<div class="paragraph">
-<p><span class="inline-toc"><a href="#gui-crud-service-requirements">GUI - CRUD Service Requirements</a></span></p>
-</div>
-<div class="paragraph">
-<p>The GUI development environment requires some server and client-side objects
-to make the pieces all work together.</p>
-</div>
-<div class="sect3">
-<h4 id="gui-crud-requirements"><a class="link" href="#gui-crud-requirements">GUI - CRUD Requirements</a></h4>
-<div class="paragraph">
-<p>To use the helper objects on the client-side, you will need to implement some special
-objects.  For example, a Service is needed that will access the CRUD actions on the object
-being maintained.</p>
-</div>
-</div>
-<div class="sect3">
-<h4 id="gui-crud-service-requirements"><a class="link" href="#gui-crud-service-requirements">GUI - CRUD Service Requirements</a></h4>
-<div class="paragraph">
-<p>The CRUD helper objects require a Service that implements common features for your
-object.  This includes methods such as <code>list()</code>.</p>
-</div>
-<div class="listingblock">
-<div class="title">Example - FlexTypeService</div>
-<div class="content">
-<pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">export</span> <span class="keyword">default</span> {
-  list(options, successFunction, errorFunction) {  <i class="conum" data-value="1"></i><b>(1)</b>
-    const url = <span class="string"><span class="delimiter">'</span><span class="content">/flexType/list</span><span class="delimiter">'</span></span>    <i class="conum" data-value="2"></i><b>(2)</b>
-
-    window.<span class="predefined">$page</span>.vue.axios.get(url, {<span class="key">params</span>: options}).then((response) =&gt; {  <i class="conum" data-value="3"></i><b>(3)</b>
-      <span class="keyword">if</span> (successFunction) {
-        successFunction(response.data)
-      }
-    }).<span class="keyword">catch</span>((error) =&gt; {
-      window.<span class="predefined">$page</span>.handleError(error, url)
-      <span class="keyword">if</span> (errorFunction) {  <i class="conum" data-value="4"></i><b>(4)</b>
-        errorFunction(error,url)
-      }
-    })
-  },
-}</code></pre>
-</div>
-</div>
-<div class="colist arabic">
-<table>
-<tr>
-<td><i class="conum" data-value="1"></i><b>1</b></td>
-<td>The service <code>list()</code> method.  See <a href="#client-service-requirements">Client Service Requirements</a> for details.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>The server-side URI for this list() method.  This is usually provided by
-the <a href="#basecrudcontroller">BaseCrudController</a> class.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The actual call to the <code>list</code> URI on the server.  Executed asynchronously.</td>
-</tr>
-<tr>
-<td><i class="conum" data-value="4"></i><b>4</b></td>
-<td>Supports cleanup on the client.  Frequently used to reset 'loading' indicators.</td>
-</tr>
-</table>
 </div>
 <div class="sect4">
 <h5 id="client-service-requirements"><a class="link" href="#client-service-requirements">Client Service Requirements</a></h5>
@@ -9227,6 +8645,570 @@ the <a href="#basecrudcontroller">BaseCrudController</a> class.</td>
 </div>
 </div>
 </div>
+<div class="sect3">
+<h4 id="eframe-lib"><a class="link" href="#eframe-lib">eframe-lib</a></h4>
+<div class="paragraph">
+<p>The common components provided by the framework are provided in the eframe-lib pseudo-module.
+This is copied from the eframe source tree to the client module&#8217;s <em>src</em> folder
+using the gradle command <code>copyEframeLib</code>.  This does a simple copy to avoid the whole
+npm package creation logic.</p>
+</div>
+<div class="paragraph">
+<p>Normal client module developers will only need to run this gradle command when the eframe-lib
+changes.  If you are developing inside of the eframe-lib, you will need to run this command
+more frequently.</p>
+</div>
+<div class="sect4">
+<h5 id="why-copy-the-eframe-lib"><a class="link" href="#why-copy-the-eframe-lib">Why Copy the eframe-lib?</a></h5>
+<div class="paragraph">
+<p>Node/npm supports a quirky module system that is used to provide libraries for client
+applications.  This seems to work well for other systems, but has proven to be a
+nightmare for this enterprise framework.</p>
+</div>
+<div class="paragraph">
+<p>To avoid this nightmare, we chose to simply copy the library (eframe-lib) to the <em>src</em> tree
+of each client module.  Since you would need to run some sort of gradle task to update
+the library for each client module, we decided to just use a simple copy.</p>
+</div>
+<div class="paragraph">
+<p>Why not use the node/npm mechanisms?</p>
+</div>
+<div class="paragraph">
+<p>Well, after losing a month of development time, we chose the simplest solution that worked.
+The biggest problem we had was that using Vue 3.0, Vue-CLI and Primevue together seems to
+cause problems with the production run-time.  When using a normal npm library publishing
+mechanism, the rendered page was blank.</p>
+</div>
+<div class="paragraph">
+<p>There seems to be some issue with getting those 3 libraries to work together in a production
+build.  Why is that?  We have no idea.  There seem to be almost no examples of working
+with this combination in a published library or on Github.</p>
+</div>
+<div class="paragraph">
+<p>So, rather than to continue spending time on this, we chose the simplest approach that worked
+in all scenarios/modules: copy the source to each client.  The node/npm library world
+is simply too fragmented.  For example, there are 6+ ways to publish a library.  We tried most
+of them and could not find a way to get Primevue to work with any of them.</p>
+</div>
+<div class="paragraph">
+<p>Someday, if we ever solve this, we will convert to a published library mechanism.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="gui-development-setup"><a class="link" href="#gui-development-setup">GUI Development Setup</a></h3>
+<div class="paragraph">
+<p><span class="inline-toc"><a href="#gui-setup-new-client-module">GUI Setup - New Client Module</a></span>
+<span class="inline-toc"><a href="#gui-setup-existing-client-module">GUI Setup - Existing Client Module</a></span>
+<span class="inline-toc"><a href="#gui-setup-common-setup">GUI Setup - Common Setup</a></span>
+<span class="inline-toc"><a href="#gui-setup-idea">GUI Setup - IDEA</a></span>
+<span class="inline-toc"><a href="#GUI Setup - Build Eframe Library">[GUI Setup - Build Eframe Library]</a></span>
+<span class="inline-toc"><a href="#client-module-version-dependencies">Client Module Version Dependencies</a></span></p>
+</div>
+<div class="paragraph">
+<p>If you have cloned the GIT repository for an existing client sub-module, then follow the
+<a href="#gui-setup-existing-client-module">GUI Setup - Existing Client Module</a> instructions.  For new client sub-modules,
+follow the <a href="#gui-setup-new-client-module">GUI Setup - New Client Module</a> instructions.</p>
+</div>
+<div class="paragraph">
+<p>Some important notes about client development:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>npm</em> will install most modules in the sub-folder (<em>node_modules</em>).  This tends to be
+a huge directory.  You will want to make sure it is in the git
+<a href="#idea-and-the-client-folder">exclude</a> file.</p>
+</li>
+<li>
+<p>Each client sub-module will use its own set of modules/versions.  These will be
+packaged for each module separately.</p>
+</li>
+<li>
+<p>Some packages are installed globally.  This means they are not in the (<em>node_modules</em>)
+folder.  You can see which ones are global with the command <em>npm list -g --depth=0</em>  .</p>
+</li>
+</ul>
+</div>
+<div class="sect3">
+<h4 id="gui-setup-install-node-and-npm"><a class="link" href="#gui-setup-install-node-and-npm">GUI Setup - Install Node and npm</a></h4>
+<div class="paragraph">
+<p>Install <a href="https://nodejs.org/en/" target="_blank" rel="noopener">node and npm</a>.  This provides the npm tool, which is
+used to install all of the javascript modules such as Vue and related modules.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="gui-setup-new-client-module"><a class="link" href="#gui-setup-new-client-module">GUI Setup - New Client Module</a></h4>
+<div class="paragraph">
+<p>Creating a new client module is somewhat complex.  The easiest solution is to copy the
+<em>eframe/src/templates/client/sample</em> folder to a new client folder in your module.
+It should be copied to the <em>module/src/client/module</em> folder (replace <em>module</em> with your
+ne module&#8217;s name).</p>
+</div>
+<div class="listingblock">
+<div class="title">New Client Sub-Module Creation - Linux Commands</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="script">  cd src/client
+  mkdir quality <i class="conum" data-value="1"></i><b>(1)</b>
+  cd quality
+  cp -r ../../../../templates/client/sample .  <i class="conum" data-value="2"></i><b>(2)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Creates a sub-module named <em>'quality'</em>.  Use the sub-module name for your new client
+sub-module.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Use the correct source path for the eframe templates folder here.
+Linux command shown.  Use drag/drop on Windows.</td>
+</tr>
+</table>
+</div>
+<div class="sect4">
+<h5 id="edit-copied-files"><a class="link" href="#edit-copied-files">Edit Copied Files</a></h5>
+<div class="paragraph">
+<p>Some of the files created above will need to be changed for your new client module.
+The notes below assume the new client module name is <em>'quality'</em>.
+Use your module name instead.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+While editing in Intellij, you will receive requests to run 'npm install'.  Ignore
+      these requests until you have finished editing the files below.
+</td>
+</tr>
+</table>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>package.json</em> - Need to change the top-level name/version.  You may need to
+adjust versions to match the current eframe <em>package.json</em> file.</p>
+</li>
+<li>
+<p><em>vue.config.js</em> - Change the '<em>/client/sample</em>' path to <em>'/client/sample'</em>.</p>
+</li>
+<li>
+<p><em>vue.config.js</em> - Change the '<em>GUIPage</em>' section to the name of your page(s).</p>
+</li>
+<li>
+<p><em>gradle.properties</em> - Set the <code>clientModules</code>=quality</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <em>gradle.properties</em> file should have an element like this:</p>
+</div>
+<div class="listingblock">
+<div class="title">Adding clientModules to gradle.properties</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy">clientModules=quality <i class="conum" data-value="1"></i><b>(1)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The list of client modules to init/build.  This can be a comma-delimited list for multiple
+modules.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>See <a href="#entry-page-structure">Entry Page Structure</a> for more details on how the client pages are defined.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="run-npm-init"><a class="link" href="#run-npm-init">Run npm Init</a></h5>
+<div class="paragraph">
+<p>Next, you will need to initialize the npm module system with this gradle option or
+let Intellij run it for you when prompted.  The gradle commands are:</p>
+</div>
+<div class="listingblock">
+<div class="title">New Client Sub-Module Creation - Linux Commands</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="script">  cd quality <i class="conum" data-value="1"></i><b>(1)</b>
+  ./gradlew npmInit
+  ./gradlew copyEframeLib</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The new client modiel created above.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="gui-setup-new-client-module-without-template"><a class="link" href="#gui-setup-new-client-module-without-template">GUI Setup - New Client Module without Template</a></h4>
+<div class="paragraph">
+<p>Creating a new client module without the template is a complex task.  Don&#8217;t attempt this
+without a good reason.</p>
+</div>
+<div class="listingblock">
+<div class="title">Client First Time Setup</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="script">  cd src/client
+  npm install -g @vue/cli <i class="conum" data-value="1"></i><b>(1)</b>
+  vue create moduleName <i class="conum" data-value="2"></i><b>(2)</b>
+  cd moduleName
+  npm install vue@next --save <i class="conum" data-value="3"></i><b>(3)</b>
+  npm install primevue --save  <i class="conum" data-value="4"></i><b>(4)</b>
+  npm install primeicons --save
+  npm install primeflex --save
+  npm install vue-i18n@next --save
+  npm install axios vue-axios --save
+  npm install vuex@next --save
+  npm install in-memoriam --save
+  npm install compression-webpack-plugin@6.0.5 --save-dev
+  npm install webpack-bundle-analyzer --save <i class="conum" data-value="5"></i><b>(5)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Installs the command line tool as a global utility.
+<strong>This only needs to be done once for a given development system.</strong>
+This provides the <em>vue</em> command used next.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Select the Vue3 option if prompted.
+Creates a new module folder with an empty project structure.
+The <em>moduleName</em> should match the module name used for the server-side.  See
+<a href="#idea-and-the-client-folder">IDEA and the Client Folder</a> if you see the error that vue.ps1 is disabled (on windows
+powershell).</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Should install latest Vue 3.x.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="4"></i><b>4</b></td>
+<td>The rest of the locally installed modules for use in your client module.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="5"></i><b>5</b></td>
+<td>Analysis tool for exploring your package assets for production.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To run your client project, you can run the local development server that was
+created by the <em>vue create</em> command above:</p>
+</div>
+<div class="listingblock">
+<div class="title">Run Empty Client Module</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="script">  cd quality
+  npm run serve</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This runs the template client for testing purposes.  You will replace most of the
+template html, javascript and Vue files for your module.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="gui-setup-existing-client-module"><a class="link" href="#gui-setup-existing-client-module">GUI Setup - Existing Client Module</a></h4>
+<div class="paragraph">
+<p>Once you have cloned the GIT repository, you will need to run these Gradle tasks:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p>(once) <strong>npmInit</strong> or <strong>npmInitAll</strong> - Runs the <em>npm install</em> command in the client module(s).
+This downloads the npm libraries used by the client.</p>
+</li>
+<li>
+<p>(after updates) <strong>npmBuild</strong> or <strong>npmBuildAll</strong> - Runs the <em>npm build</em> command in the
+client module(s). This builds the production assets.  Typically, this is run after
+client module code changes.</p>
+</li>
+<li>
+<p>(after updates) <strong>copyEframeLib</strong> or <strong>copyEframeLibAll</strong> - Copies the current <a href="#eframe-lib">eframe-lib</a>
+files to your module.   This is needed whenever the source for the <a href="#eframe-lib">eframe-lib</a>
+changes.</p>
+</li>
+</ul>
+</div>
+</div>
+<div class="sect3">
+<h4 id="gui-setup-common-setup"><a class="link" href="#gui-setup-common-setup">GUI Setup - Common Setup</a></h4>
+<div class="paragraph">
+<p>These setup actions apply to new and existing installations.</p>
+</div>
+<div class="sect4">
+<h5 id="powershell-on-windows"><a class="link" href="#powershell-on-windows">Powershell on Windows</a></h5>
+<div class="paragraph">
+<p>Many Vue/npm commands are shipped as powershell commands (*.ps1).  By default, these are
+restricted in powershell.  You will get an error like this:</p>
+</div>
+<div class="listingblock">
+<div class="title">Client First Time Setup</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="script">vue --version <i class="conum" data-value="1"></i><b>(1)</b>
+
+
+vue : File ..\vue.ps1 cannot be loaded because running scripts is disabled on this
+system. For more information, see about_Execution_Policies at https:/go.microsoft.com/...
+At line:1 char:1
++ vue --version
++ ~~~
+    + CategoryInfo          : SecurityError: (:) [], PSSecurityException
+    + FullyQualifiedErrorId : UnauthorizedAccess</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Command to print current version of vue in the client folder.  Will fail on
+systems with Windows Powershell.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>To avoid this, you should add <em>.cmd</em> to the end of the command:</p>
+</div>
+<div class="listingblock">
+<div class="title">Client First Time Setup</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="script">  vue.cmd --version</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You could also just remove the <em>.ps1</em> file from the global npm folder (<em>C:\Users\XYZ\AppData\Roaming\npm</em>)
+or enable execution of .ps1 files are described by Microsoft.</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="git-exclude-file"><a class="link" href="#git-exclude-file">GIT Exclude File</a></h5>
+<div class="paragraph">
+<p>Node/npm has a lot of files copied to your development folder.  These should be excluded
+from the IDEA and GIT since they are generated files or open source libraries.
+This means you should have these lines in your project&#8217;s GIT exclude file:</p>
+</div>
+<div class="listingblock">
+<div class="title">.git/info/exclude</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="script">/eframe/src/main/resources/client/         <i class="conum" data-value="1"></i><b>(1)</b>
+/eframe/src/client/eframe/node_modules/    <i class="conum" data-value="2"></i><b>(2)</b>
+/eframe/src/client/sample/src/eframe-lib/  <i class="conum" data-value="3"></i><b>(3)</b></code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The production files created by the <code>npmBuildLib</code> task.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The client module&#8217;s dependencies (huge).</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>The copied <a href="#eframe-lib">eframe-lib</a> source for support code for each client module.</td>
+</tr>
+</table>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="gui-setup-idea"><a class="link" href="#gui-setup-idea">GUI Setup - IDEA</a></h4>
+<div class="paragraph">
+<p>The IDEA setup for npm development is fairly simple.  There are two basic run
+configurations.</p>
+</div>
+<div class="paragraph">
+<div class="title">Localhost (Dev)</div>
+<p>The first is to run the development server as localhost:8081.  This lets you change your
+client code and the server will update with those changes without restarting.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 12.5%;">
+<col style="width: 12.5%;">
+<col style="width: 75%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Setting</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>type</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">npm</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The task is created from the npm template (Add New Configuration).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>package.json</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">package.json</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The package-json for the client module.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>command</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">run</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>scripts</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">serve</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Starts the dev server with hot-updates for your changes.</p></td>
+</tr>
+</tbody>
+</table>
+<div class="paragraph">
+<div class="title">Build</div>
+<p>The second is the task to build the production assets for the client pages.
+You will run this and then start/restart the micronaut application server to test
+your client in a live server.  This will build the assets and store them in the
+<em>src/main/resources/client</em> so the development server will have access to them for use
+in the live server.</p>
+</div>
+<table class="tableblock frame-all grid-all stretch">
+<colgroup>
+<col style="width: 10%;">
+<col style="width: 30%;">
+<col style="width: 60%;">
+</colgroup>
+<thead>
+<tr>
+<th class="tableblock halign-left valign-top">Setting</th>
+<th class="tableblock halign-left valign-top">Value</th>
+<th class="tableblock halign-left valign-top">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>type</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">npm</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The task is created from the npm template (Add New Configuration).</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>package.json</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">package.json</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">The package-json for the client module.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>command</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">run</p></td>
+<td class="tableblock halign-left valign-top"></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>scripts</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">build</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">Builds the production assets for a live micronaut server.</p></td>
+</tr>
+<tr>
+<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>arguments</strong></p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">&#8201;&#8212;&#8201;--dest ../../main/resources/client/eframe</p></td>
+<td class="tableblock halign-left valign-top"><p class="tableblock">This is where the assets
+                                          will be created.
+                                          This folder is the normal resource folder so that
+                                          IDEA will copy them for use in the running development
+                                          server.  (The <strong>arguments</strong> starts with two hyphens).</p></td>
+</tr>
+</tbody>
+</table>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+Intellij doesn&#8217;t always copy the <em>main/resources/client/</em> files to the <em>out</em>
+      folder after a re-build.  We found that a Gradle 'Reload all Gradle Projects' in the
+      Gradle window works.  After the reload, you will need to restart the localhost
+      process.
+</td>
+</tr>
+</table>
+</div>
+<div class="sect4">
+<h5 id="excluding-the-client-folder-from-searches"><a class="link" href="#excluding-the-client-folder-from-searches">Excluding the Client Folder from Searches</a></h5>
+<div class="paragraph">
+<p>Since the client assets are copied to the <em>main/resources/client</em> folder, the contents
+will show up by default in the IDEA searches.  This is inconvenient. In the IDEA
+Project Structure dialog (module <em>eframe/main</em>) you can 'exclude' the
+<em>resources/client/eframe</em> folder.  (Replace <em>eframe</em> with the client sub-module name).</p>
+</div>
+</div>
+<div class="sect4">
+<h5 id="idea-and-the-client-folder"><a class="link" href="#idea-and-the-client-folder">IDEA and the Client Folder</a></h5>
+<div class="paragraph">
+<div class="title">node_modules</div>
+<p>After installing these packages, the IDEA <em>Commit</em> tab will contain thousands of files
+from the <em>node_modules</em> folder.  You should exclude this folder.  Select the folder
+in the <em>Project</em> tab and choose the <em>Git</em> &#8594; <em>.git/info/exclude</em> option to exclude these
+from the Git logic.</p>
+</div>
+<div class="paragraph">
+<p>This will add it to the <em>.git/info/exclude</em> folder.</p>
+</div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="client-module-version-dependencies"><a class="link" href="#client-module-version-dependencies">Client Module Version Dependencies</a></h4>
+<div class="paragraph">
+<p>npm uses two files for version control:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><em>package-lock.json</em> - The main module version listing for all modules.
+This includes the exact version installed for all modules.
+This file supercedes the <em>package.json</em> when the <em>npm install</em> command is used.</p>
+</li>
+<li>
+<p><em>package.json</em> - The top-level modules used.  Contains the general versions for the
+modules.  This is usually something like '^3.0.7' which means any 3.x version.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>The <em>package.json</em> and <em>package-lock.json</em> files are updated when you install a new
+module as we did above with the tasks in <a href="#gui-setup-new-client-module">GUI Setup - New Client Module</a>.</p>
+</div>
+<div class="paragraph">
+<p>When building the client modules on other systems from the git source, we use the command
+<em>npm install</em>.  This installs all of the dependencies specified in the <em>package-lock.json</em>
+file.  This uses the exact version from the <em>package-lock.json</em> file.  The version from
+the <em>package.json</em> is not used for this scenario.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <em>package-lock.json</em> is the primary source of the versioning for npm.
+      Unfortunately, this is independent of the <em>build.gradle</em> files.
+</td>
+</tr>
+</table>
+</div>
+</div>
 </div>
 <div class="sect2">
 <h3 id="gui-i18n"><a class="link" href="#gui-i18n">GUI I18n</a></h3>
@@ -9237,10 +9219,26 @@ All text used on all display elements should be localized.</p>
 </div>
 <div class="paragraph">
 <p>To support this localization, the client side of the framework supports locale files
-for each supported language.  For example, the English file will look something like this:</p>
+for each supported language.  A typical set of files for a client module will include:</p>
+</div>
+<div class="ulist">
+<ul>
+<li>
+<p><strong>src/locales/en.js</strong> - The English language values.  The fallback language.</p>
+</li>
+<li>
+<p><strong>src/locales/de.js</strong> - The German language values (Optional).  Other languages can be used too.</p>
+</li>
+<li>
+<p><strong>src/locales/Locales.js</strong> - The combined language locales for the module.</p>
+</li>
+</ul>
+</div>
+<div class="paragraph">
+<p>For example, the English file will look something like this:</p>
 </div>
 <div class="listingblock">
-<div class="title">Locale JS File - en.js</div>
+<div class="title">Locale JS File - src/locales/en.js</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">export</span> <span class="keyword">default</span> {
   getLocale() {  <i class="conum" data-value="1"></i><b>(1)</b>
@@ -9272,25 +9270,55 @@ for each supported language.  For example, the English file will look something 
 </tr>
 <tr>
 <td><i class="conum" data-value="3"></i><b>3</b></td>
-<td>The basic types include (e.g. 'label', 'title', etc.)</td>
+<td>The basic types include (e.g. 'label', 'title', etc.).  The lookup key will be something
+like <em>'label.title'</em>.</td>
 </tr>
 </table>
 </div>
 <div class="paragraph">
-<p>These are used in components with the following syntax:</p>
+<p>These en.js, de.js, etc files are references in a single file for your module:</p>
+</div>
+<div class="listingblock">
+<div class="title">Locale JS File - src/locales/Locales.js</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="javascript"><span class="reserved">import</span> en from <span class="string"><span class="delimiter">'</span><span class="content">./en.js</span><span class="delimiter">'</span></span>  <i class="conum" data-value="1"></i><b>(1)</b>
+<span class="reserved">import</span> de from <span class="string"><span class="delimiter">'</span><span class="content">./de.js</span><span class="delimiter">'</span></span>
+
+<span class="reserved">export</span> <span class="keyword">default</span> {
+  getLocales() {  <i class="conum" data-value="2"></i><b>(2)</b>
+    <span class="keyword">return</span> {<span class="key">en</span>: en.getMessages(), <span class="key">de</span>: de.getMessages()}
+  },
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>Loads the specific locale files for each language.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>Provides the locales to the I18n system.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>Using the Locales in your client app is farily simple.  There are two approaches allowed:</p>
 </div>
 <div class="listingblock">
 <div class="title">Example - Locale Usage in Vue File</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="javascript"><span class="tag">&lt;template&gt;</span>
-  <span class="tag">&lt;Button&gt;</span>{{ $t('label.flexType')  }}<span class="tag">&lt;/Button&gt;</span>   <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="tag">&lt;Button&gt;</span>{{ $t('label.flexType')  }}<span class="tag">&lt;/Button&gt;</span>  <i class="conum" data-value="1"></i><b>(1)</b>
+  <span class="tag">&lt;Button</span> <span class="attribute-name">:label</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">$t('label.cancel')</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>         <i class="conum" data-value="2"></i><b>(2)</b>
 <span class="tag">&lt;/template&gt;</span>
 
 
 <span class="reserved">export</span> <span class="keyword">default</span> {
   <span class="key">methods</span>: {
     getLabel() {
-      <span class="keyword">return</span> <span class="local-variable">this</span>.<span class="predefined">$t</span>(<span class="string"><span class="delimiter">'</span><span class="content">label.flexType</span><span class="delimiter">'</span></span>)}  <i class="conum" data-value="2"></i><b>(2)</b>
+      <span class="keyword">return</span> <span class="local-variable">this</span>.<span class="predefined">$t</span>(<span class="string"><span class="delimiter">'</span><span class="content">label.flexType</span><span class="delimiter">'</span></span>)}  <i class="conum" data-value="3"></i><b>(3)</b>
     },
   }
 }</code></pre>
@@ -9305,7 +9333,11 @@ be used as the content of an attribute.</td>
 </tr>
 <tr>
 <td><i class="conum" data-value="2"></i><b>2</b></td>
-<td>Use the global <em>$t()</em> syntax within Javascript.</td>
+<td>Used as a property/data element on the component.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="3"></i><b>3</b></td>
+<td>Used as a method call with the global <em>$t()</em> syntax within Javascript.</td>
 </tr>
 </table>
 </div>
@@ -9318,8 +9350,7 @@ be used as the content of an attribute.</td>
 <td class="content">
 The 'mustache' syntax can&#8217;t be used in an HTML attribute.  For example this won&#8217;t
       work:  <em>&lt;Button label="{{ $t('label.flexType')  }}"/&gt;</em>.  You will need to
-      place the text outside of the attributes as done above or
-      use the text as a data element with binding (e.g. <em>:label="$t('label.cancel')"</em>).
+      use option 2 above (e.g. <em>:label="$t('label.cancel')"</em>).
 </td>
 </tr>
 </table>
@@ -16906,7 +16937,7 @@ The javascript console message in the browser is:</p>
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-06-14 12:42:06 UTC
+Last updated 2021-06-15 13:50:36 UTC
 </div>
 </div>
 <style>
