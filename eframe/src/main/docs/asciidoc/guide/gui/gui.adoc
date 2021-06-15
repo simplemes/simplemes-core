@@ -6,7 +6,6 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<GUI Philosophy and Decisions>>#
 [inline-toc]#<<GUI Development>>#
 [inline-toc]#<<GUI Development Setup>>#
-[inline-toc]#<<GUI Requirements>>#
 [inline-toc]#<<GUI I18n>>#
 
 endif::[]
@@ -35,5 +34,4 @@ The following client modules are used by the clients sub-modules:
 include::other/guiPhilosophy.adoc[]
 include::dev/guiDevelopment.adoc[]
 include::dev/guiDevelopmentSetup.adoc[]
-include::dev/guiRequirements.adoc[]
 include::dev/guiI18n.adoc[]

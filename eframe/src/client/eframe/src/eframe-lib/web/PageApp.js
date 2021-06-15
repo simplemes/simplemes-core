@@ -46,7 +46,7 @@ export default {
 
     app.use(ToastService);
     app.use(PrimeVueConfig);
-    console.log('ABC_5')
+    console.log('ABC_6')
 
     app.component('router-link', i18n) // Use a dummy router-link component to avoid missing component warning.
     app.use(i18n)

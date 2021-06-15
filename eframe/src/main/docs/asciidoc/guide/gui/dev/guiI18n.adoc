@@ -6,10 +6,19 @@ support for languages.  The fallback language (English) is fully supported.
 All text used on all display elements should be localized.
 
 To support this localization, the client side of the framework supports locale files
-for each supported language.  For example, the English file will look something like this:
+for each supported language.  A typical set of files for a client module will include:
+
+* *src/locales/en.js* - The English language values.  The fallback language.
+* *src/locales/de.js* - The German language values (Optional).  Other languages can be used too.
+* *src/locales/Locales.js* - The combined language locales for the module.
+
+
+
+
+For example, the English file will look something like this:
 
 [source,javascript]
-.Locale JS File - en.js
+.Locale JS File - src/locales/en.js
 ----
 export default {
   getLocale() {  // <.>
@@ -30,16 +39,36 @@ export default {
 ----
 <.> Provides the locale (language only supported).
 <.> Provides the localized text.
-<.> The basic types include (e.g. 'label', 'title', etc.)
+<.> The basic types include (e.g. 'label', 'title', etc.).  The lookup key will be something
+    like _'label.title'_.
+
+These en.js, de.js, etc files are references in a single file for your module:
+
+[source,javascript]
+.Locale JS File - src/locales/Locales.js
+----
+import en from './en.js'  <.>
+import de from './de.js'
+
+export default {
+  getLocales() {  <.>
+    return {en: en.getMessages(), de: de.getMessages()}
+  },
+}
+----
+<.> Loads the specific locale files for each language.
+<.> Provides the locales to the I18n system.
 
 
-These are used in components with the following syntax:
+Using the Locales in your client app is farily simple.  There are two approaches allowed:
+
 
 [source,javascript]
 .Example - Locale Usage in Vue File
 ----
 <template>
-  <Button>{{ $t('label.flexType')  }}</Button>   // <.>
+  <Button>{{ $t('label.flexType')  }}</Button>  // <.>
+  <Button :label="$t('label.cancel')"/>         // <.>
 </template>
 
 
@@ -53,13 +82,13 @@ export default {
 ----
 <.> Use the 'mustache' syntax in the template/HTML section.  The localized text can't
     be used as the content of an attribute.
-<.> Use the global _$t()_ syntax within Javascript.
+<.> Used as a property/data element on the component.
+<.> Used as a method call with the global _$t()_ syntax within Javascript.
 
 
 CAUTION: The 'mustache' syntax can't be used in an HTML attribute.  For example this won't
       work:  _<Button label="{{ $t('label.flexType')  }}"/>_.  You will need to
-      place the text outside of the attributes as done above or
-      use the text as a data element with binding (e.g. _:label="$t('label.cancel')"_).
+      use option 2 above (e.g. _:label="$t('label.cancel')"_).
 
 ==== Lookup in GUI Tests
 

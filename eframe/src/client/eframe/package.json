@@ -5,7 +5,6 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "build-lib": "cross-env NODE_ENV=production rollup --config rollup/rollup.config.js",
     "lint": "vue-cli-service lint",
     "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\""
   },
@@ -15,7 +14,7 @@
     "in-memoriam": "^1.1.0",
     "primeflex": "^2.0.0",
     "primeicons": "^4.1.0",
-    "primevue": "^3.3.5",
+    "primevue": "^3.5.0",
     "vue": "^3.0.7",
     "vue-axios": "^3.2.4",
     "vue-i18n": "^9.0.0",

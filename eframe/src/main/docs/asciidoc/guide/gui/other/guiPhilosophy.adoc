@@ -49,26 +49,38 @@ The main drawbacks of this solution include:
 * Vue makes dynamic, end-user GUIs more difficult.
 * Vue makes re-use of code more difficult. Inheritance is discouraged. This means some common features (like
   localization) is copied to each page manually.
+* The Javascript Node/npm world is much more fragmented than the Java/Groovy world.
+  For example, there are 6+ ways to handle localization.
+* Module loading in a browser is simply a mess.
 
 ==== Guidelines
 
-To work around the drawbacks of this approach, some conventions will be followed.
+To work around the drawbacks of this approach, some conventions will be followed:
+
+. *Client Sub-Modules* - Each module of your application should have a client sub-module.
+. *Use eframe-lib* - Your module will (should) use the <<eframe-lib>> for common
+                     features such as CRUD, server interaction and localization (<<GUI I18n>>).
+. *GUI Testing* - You should follow the general <<GUI Testing>> approach used by the
+                  framework.  This means GUI testing is done in Geb/Groovy instead of
+                  in the node/npm world.
 
 ==== Development Process
 
-In particular, all pages will be generated with the Vue/JS world. This means all UI features are built/configured in the
-node/JS world. The node/npm world will generate the client assets which will be served up by the server-side.
+In particular, all pages will be generated with the Vue/JS world. This means all UI
+features are built/configured in the node/JS world. The node/npm world will generate
+the client assets which will be served up by the server-side.
 
-This means most development will be done while running the npm/VueCLI in development mode, then doing a build to create
-the assets for the server-side core to serve.
+This means most development will be done while running the npm/VueCLI in development mode,
+then doing a build to create the assets for the server-side core to serve.
 
 ==== Integration During Development
 
-The npm/VueCLI will run the app in developer mode. The access to the server-side will be to another process on a
-different port. This is done to keep the development mode code the same as the production as much as possible.
+The npm/VueCLI will run the app in developer mode. The access to the server-side will
+be to another process on a different port. This is done to keep the development mode
+code the same as the production as much as possible.
 
-The axios module use a proxy for development mode to access http://localhost:8080/ while the client code is run
-on http://localhost:8081/
+The axios module use a proxy for development mode to access _http://localhost:8080/_
+while the client code is run on _http://localhost:8081/_.
 
 
 

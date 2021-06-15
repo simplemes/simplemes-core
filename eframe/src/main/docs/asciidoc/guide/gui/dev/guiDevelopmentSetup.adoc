@@ -46,19 +46,20 @@ ne module's name).
   cd src/client
   mkdir quality <.>
   cd quality
-  cp -r ../eframe/src/templates/client/sample .  <.>
+  cp -r ../../../../templates/client/sample .  <.>
 ----
 <.> Creates a sub-module named _'quality'_.  Use the sub-module name for your new client
     sub-module.
 <.> Use the correct source path for the eframe templates folder here.
+    Linux command shown.  Use drag/drop on Windows.
 
 
 
 
-===== Edit Files
+===== Edit Copied Files
 
-Some of the files created above will need to be replaced by copies from the sample
-templates module.  The notes below assume the new client module name is _'quality'_.
+Some of the files created above will need to be changed for your new client module.
+The notes below assume the new client module name is _'quality'_.
 Use your module name instead.
 
 NOTE: While editing in Intellij, you will receive requests to run 'npm install'.  Ignore
@@ -85,15 +86,17 @@ See <<Entry Page Structure>> for more details on how the client pages are define
 
 ===== Run npm Init
 
-Next, you will need to initialize the npm module system with this gradle option:
+Next, you will need to initialize the npm module system with this gradle option or
+let Intellij run it for you when prompted.  The gradle commands are:
 
 [source,script]
 .New Client Sub-Module Creation - Linux Commands
 ----
-  cd moduleRoot <.>
+  cd quality <.>
   ./gradlew npmInit
   ./gradlew copyEframeLib
 ----
+<.> The new client modiel created above.
 
 
 
@@ -120,8 +123,6 @@ without a good reason.
   npm install compression-webpack-plugin@6.0.5 --save-dev
   npm install webpack-bundle-analyzer --save <.>
 
-  npx vue add i18n <.>
-
 ----
 <.> Installs the command line tool as a global utility.
     *This only needs to be done once for a given development system.*
@@ -134,18 +135,16 @@ without a good reason.
 <.> Should install latest Vue 3.x.
 <.> The rest of the locally installed modules for use in your client module.
 <.> Analysis tool for exploring your package assets for production.
-<.> Adds i18n bundler options to the CLI environment.  This affects the build process.
-    See https://github.com/intlify/vue-cli-plugin-i18n[plugin^] for details.
 
 
 
-To test your client project, you can run the local development server that was
+To run your client project, you can run the local development server that was
 created by the _vue create_ command above:
 
 [source,script]
-.Test Empty Client Module
+.Run Empty Client Module
 ----
-  cd moduleName
+  cd quality
   npm run serve
 ----
 
@@ -164,6 +163,9 @@ Once you have cloned the GIT repository, you will need to run these Gradle tasks
   client module(s). This builds the production assets.  Typically, this is run after
   client module code changes.
 
+* (after updates) *copyEframeLib* or *copyEframeLibAll* - Copies the current <<eframe-lib>>
+  files to your module.   This is needed whenever the source for the <<eframe-lib>>
+  changes.
 
 
 
@@ -201,6 +203,10 @@ To avoid this, you should add _.cmd_ to the end of the command:
   vue.cmd --version
 ----
 
+You could also just remove the _.ps1_ file from the global npm folder (_C:\Users\XYZ\AppData\Roaming\npm_)
+or enable execution of .ps1 files are described by Microsoft.
+
+
 ===== GIT Exclude File
 
 Node/npm has a lot of files copied to your development folder.  These should be excluded
@@ -211,10 +217,13 @@ This means you should have these lines in your project's GIT exclude file:
 [source,script]
 ..git/info/exclude
 ----
-/eframe/src/main/resources/client/
-/eframe/src/client/eframe/node_modules/
+/eframe/src/main/resources/client/         <.>
+/eframe/src/client/eframe/node_modules/    <.>
+/eframe/src/client/sample/src/eframe-lib/  <.>
 ----
-
+<.> The production files created by the `npmBuildLib` task.
+<.> The client module's dependencies (huge).
+<.> The copied <<eframe-lib>> source for support code for each client module.
 
 
 
@@ -238,11 +247,9 @@ client code and the server will update with those changes without restarting.
 | *package.json*| package.json| The package-json for the client module.
 | *command*| run|
 | *scripts*| serve| Starts the dev server with hot-updates for your changes.
-| *arguments*| --port8081| The local host server is on port 8081, if you already have
-                           the micronaut application server running on port 8080.
-                           This allows the client to make requests to the 8080 server.
 
 |===
+
 
 .Build
 
@@ -264,9 +271,14 @@ in the live server.
                                           will be created.
                                           This folder is the normal resource folder so that
                                           IDEA will copy them for use in the running development
-                                          server.
+                                          server.  (The *arguments* starts with two hyphens).
 
 |===
+
+NOTE: Intellij doesn't always copy the _main/resources/client/_ files to the _out_
+      folder after a re-build.  We found that a Gradle 'Reload all Gradle Projects' in the
+      Gradle window works.  After the reload, you will need to restart the localhost
+      process.
 
 ===== Excluding the Client Folder from Searches
 
@@ -290,30 +302,7 @@ from the Git logic.
 
 This will add it to the _.git/info/exclude_ folder.
 
-==== GUI Setup - Build Eframe Library
 
-NOTE: This is temporary.
-      These are the manual steps to manually create the frame library for other modules.
-
-[source,javascript]
-.Manual Steps to build eframe-lib.
-----
-sfc-init - Creates mostly empty project.
-npm i
-npm run serve
-
-// Commands to build eframe library for use as module in other client sub-modules
-
-npm build   // <.>
-npm pack    // <.>
-cd (client module)  // <.>
-npm i ../eframe/eframe-lib-0.5.0.tgz  // <.>
-
-----
-<.> Builds the summary fields (in the dist folder).
-<.> Packs the components into a .tgz file for installation.
-<.> Change to the client module folder (e.g. _src/client/sample_)
-<.> Installs in another module.  The path should point to the lib that was built.
 
 
 ==== Client Module Version Dependencies

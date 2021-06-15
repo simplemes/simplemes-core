@@ -38,7 +38,7 @@ something like this:
 |                             cGRE |       cGRE |
 +--------------------------------+-+------------+
 |         Enterprise Framework     |  Client    |
-|                                  |            |
+|             (eframe-lib)         |            |
 +----------------------------------+------------+
 
 ----
@@ -167,13 +167,15 @@ production server for deployment.  The basic flow is:
 
 . When you are ready to deploy to a server, you will use the gradle _npmBuild_ to
   create the assets for production (runs _npm run build_ command).
+  This copies the client run-time files to the _src/main/resources/client_ folder
+  for the IDEA _localhost_ process to use.
 
 . _Build .jar_ - When ready to publish the module, the run-time .jar file is built
   and the assets are included in the .jar file.  This is done by the Gradle
   task _publishToMavenLocal_ task.
 
   NOTE: You can use the _npm run server_ task to allow hot-updates to the running client-side
-        application while you make changes.  Highly recommended.
+        application while you make changes.  *Highly recommended*.
 
 
 ==== GUI Development Cycle
@@ -185,7 +187,8 @@ production server for deployment.  The basic flow is:
 . Try in browser (on port 8081).
 . Repeat from  #4 until satisfied.
 . Build using gradle _npmBuild_ for use in production.  Restart localhost (server-side)
-  to use use the client module in 'production'.
+  to use use the client module in 'production'.  You may need to force a refresh
+  of the IDEA out folder for the new client files (Gradle refresh seems to work).
 . Write GEB/Spock tests of the GUI (no javascript-based tests).
 
 NOTE: After running the gradle task _npmBuild_, you may need to refresh the server-side
@@ -280,7 +283,7 @@ node url as "url: <b>/client/eframe/flexType"
 file flexType.js  [
   <b>flexType.js
   --
-  app = PageApp.createApp(FlexTypeCrud)
+  app = PageApp.createApp(FlexTypeCrud,locales)
   app.mount('#app')
 ]
 
@@ -311,19 +314,19 @@ The _.js_ file is fairly simple.  Most of the common logic is provided by the Pa
 [source,javascript]
 .Example - flexType.js
 ----
-/**
- * Basic CRUD page for a single object.
- */
+import FlexTypeCrud from '@/components/eframe/custom/flexType/FlexTypeCrud.vue'
+import PageApp from '@/eframe-lib/web/PageApp.js'
+import '@/eframe-lib/assets/styles/global.css'
 
-import FlexTypeCrud from 'eframe-lib/components/custom/flexType/FlexTypeCrud.vue'
-import PageApp from 'eframe-lib/components/web/PageApp'
-import '@/assets/styles/global.css'
+import Locales from "@/locales/Locales"               // <.>
 
 
-const app = PageApp.createApp(FlexTypeCrud)  // <.>
-app.mount('#app')                            // <.>
+const app = PageApp.createApp(FlexTypeCrud, Locales)  // <.>
+app.mount('#app')                                     // <.>
+
 
 ----
+<.> Provides the locale-specific labels/etc for this module.  See <<GUI I18n>>.
 <.> Uses standard features such as Toast, Axios and <<GUI I18n>> support.
 <.> Mounts the FlexType crud table in the standard page using the _'app'_ HTML ID.
 
@@ -333,9 +336,6 @@ This uses the <<CrudTable>> component:
 [source,javascript]
 .Example - FlexTypeCrud.vue
 ----
-/**
- * Basic CRUD component for a single object.
- */
 <template>
   <CrudTable :columns="columns" :service="service"  <.>
              storageKey="flexTypeCrudList"
@@ -344,8 +344,8 @@ This uses the <<CrudTable>> component:
 
 <script>
 
-import CrudTable from 'eframe-lib/components/web/CrudTable';
-import FlexTypeService from 'eframe-lib/components/custom/flexType/FlexTypeService'
+import CrudTable from '@/eframe-lib/web/CrudTable'
+import FlexTypeService from '@/components/eframe/custom/flexType/FlexTypeService'
 
 export default {
   components: {
@@ -385,23 +385,23 @@ service-style script.
 [source,javascript]
 .Example - SampleParentService.js
 ----
-import ServiceUtils from 'eframe-lib/components/web/ServiceUtils'  // <.>
+import ServiceUtils from '@/eframe-lib/domain/ServiceUtils'  // <.>
 
 export default {
   buildLabel(record, includeType = false) {  // <.>
-    return ServiceUtils.buildLabel(record.flexType, includeType ? 'label.flexType' : undefined)
+    return ServiceUtils.buildLabel(record.name, includeType ? 'label.sampleParent' : undefined)
   },
   find(uuid, successFunction, errorFunction) { // <.>
-    return ServiceUtils.find('/flexType', uuid, successFunction, errorFunction)
+    return ServiceUtils.find('/sampleParent', uuid, successFunction, errorFunction)
   },
   list(options, successFunction, errorFunction) { // <.>
-    return ServiceUtils.list('/flexType', options, successFunction, errorFunction)
+    return ServiceUtils.list('/sampleParent', options, successFunction, errorFunction)
   },
   delete(object, successFunction, errorFunction) { // <.>
-    return ServiceUtils.delete('/flexType', object, successFunction, errorFunction)
+    return ServiceUtils.delete('/sampleParent', object, successFunction, errorFunction)
   },
   save(object, successFunction, errorFunction) { // <.>
-    return ServiceUtils.save('/flexType', object, successFunction, errorFunction)
+    return ServiceUtils.save('/sampleParent', object, successFunction, errorFunction)
   },
 }
 
@@ -410,9 +410,10 @@ export default {
 <.> Builds the label/key value suitable for use in confirmation dialogs and similar uses.
 <.> Retrieves a record from the server.
 <.> Retrieves a list of matching records for the domain object.  Supports
-    paging/sorting/filtering.
+    paging/sorting/filtering.   This is usually provided by
+    the <<BaseCrudController>> class.
 <.> Deletes a single domain object.
-<.> Saves (creatse/updates) a single domain object.
+<.> Saves (create/update) a single domain object.
 
 The basic methods needed include:
 
@@ -426,10 +427,39 @@ The basic methods needed include:
 
 // TODO: ServiceUtils docs.  Uses cache.
 
+===== Client Service Requirements
+
+[[client-service-list-parameters]]
+====== list() Parameters
+
+The parameters for the list are:
+
+.Parameters
+[cols="1,1,6"]
+|===
+2+|Argument/Option|Description
+
+2+| *options*    | A javascript object with the supported options listed here (*Required*).
+|| *count*    | The number of records (page size).
+|| *start*    | The first record in the page.
+|| *search*   | The search filter (optional).
+|| *sort[fieldName]=asc*|  Defines sorting on the given field name with (asc)ending or
+                          (des)cending.
+2+| *successFunction* | The function called when the list returns values.
+                      The object passed to this function is result of the
+                      list() request (converted from JSON).  Values include:
+                      `total_count` and `data` (the records) (*Required*).
+
+|===
+
+
+
+
+[[eframe-lib]]
 ==== eframe-lib
 
-The common components provided by the framework are provided in the eframe-lib module.
-This is copied from the eframe source tree to the client module's _node_modules_ folder
+The common components provided by the framework are provided in the eframe-lib pseudo-module.
+This is copied from the eframe source tree to the client module's _src_ folder
 using the gradle command `copyEframeLib`.  This does a simple copy to avoid the whole
 npm package creation logic.
 
@@ -437,4 +467,31 @@ Normal client module developers will only need to run this gradle command when t
 changes.  If you are developing inside of the eframe-lib, you will need to run this command
 more frequently.
 
+===== Why Copy the eframe-lib?
+
+Node/npm supports a quirky module system that is used to provide libraries for client
+applications.  This seems to work well for other systems, but has proven to be a
+nightmare for this enterprise framework.
+
+To avoid this nightmare, we chose to simply copy the library (eframe-lib) to the _src_ tree
+of each client module.  Since you would need to run some sort of gradle task to update
+the library for each client module, we decided to just use a simple copy.
+
+Why not use the node/npm mechanisms?
+
+Well, after losing a month of development time, we chose the simplest solution that worked.
+The biggest problem we had was that using Vue 3.0, Vue-CLI and Primevue together seems to
+cause problems with the production run-time.  When using a normal npm library publishing
+mechanism, the rendered page was blank.
+
+There seems to be some issue with getting those 3 libraries to work together in a production
+build.  Why is that?  We have no idea.  There seem to be almost no examples of working
+with this combination in a published library or on Github.
+
+So, rather than to continue spending time on this, we chose the simplest approach that worked
+in all scenarios/modules: copy the source to each client.  The node/npm library world
+is simply too fragmented.  For example, there are 6+ ways to publish a library.  We tried most
+of them and could not find a way to get Primevue to work with any of them.
+
+Someday, if we ever solve this, we will convert to a published library mechanism.
 
