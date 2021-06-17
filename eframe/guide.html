@@ -8178,8 +8178,10 @@ while the client code is run on <em><a href="http://localhost:8081/" class="bare
 <span class="inline-toc"><a href="#gui-development-tasks">GUI Development Tasks</a></span>
 <span class="inline-toc"><a href="#gui-development-cycle">GUI Development Cycle</a></span>
 <span class="inline-toc"><a href="#gui-entry-page">GUI Entry Page</a></span>
+<span class="inline-toc"><a href="#controller-for-gui-entry-page">Controller for GUI Entry Page</a></span>
 <span class="inline-toc"><a href="#crudtable-service-requirements">CrudTable Service Requirements</a></span>
-<span class="inline-toc"><a href="#eframe-lib">eframe-lib</a></span></p>
+<span class="inline-toc"><a href="#eframe-lib">eframe-lib</a></span>
+<span class="inline-toc"><a href="#gui-related-gradlenpm-tasks">GUI Related Gradle/NPM Tasks</a></span></p>
 </div>
 <div class="paragraph">
 <p>The GUI development environment is somewhat complex due to the hybrid nature.
@@ -8244,6 +8246,10 @@ This copies the client run-time files to the <em>src/main/resources/client</em> 
 for the IDEA <em>localhost</em> process to use.</p>
 </li>
 <li>
+<p>Then, you will need a controller that serves up these client assets from the server.
+See <a href="#controller-for-gui-entry-page">Controller for GUI Entry Page</a> for details.</p>
+</li>
+<li>
 <p><em>Build .jar</em> - When ready to publish the module, the run-time .jar file is built
 and the assets are included in the .jar file.  This is done by the Gradle
 task <em>publishToMavenLocal</em> task.</p>
@@ -8265,7 +8271,9 @@ task <em>publishToMavenLocal</em> task.</p>
 <p>Start localhost (server-side).</p>
 </li>
 <li>
-<p>Start client side development mode: <em>npm run server</em></p>
+<p>Start client side development mode: <em>npm run server</em>.  Starting this after
+the localhost (server-side, port 8080) will force the client-side 'server' to
+run on port 8081.</p>
 </li>
 <li>
 <p>Edit .js/.vue files.</p>
@@ -8402,7 +8410,7 @@ up of these elements:</p>
 </div>
 <div class="imageblock text-center">
 <div class="content">
-<img src="images/clientElements.png" alt="clientElements" width="765" height="267">
+<img src="images/clientElements.png" alt="clientElements" width="765" height="250">
 </div>
 <div class="title">Figure 12. Client Elements</div>
 </div>
@@ -8448,7 +8456,6 @@ This uses the <a href="#CrudTable">[CrudTable]</a> component:</p>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="javascript"><span class="tag">&lt;template&gt;</span>
   <span class="tag">&lt;CrudTable</span> <span class="attribute-name">:columns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">columns</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">:service</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">service</span><span class="delimiter">&quot;</span></span>  <i class="conum" data-value="1"></i><b>(1)</b>
-             <span class="attribute-name">storageKey</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">flexTypeCrudList</span><span class="delimiter">&quot;</span></span>
              <span class="attribute-name">:domainClassName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">domainClassName</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
 <span class="tag">&lt;/template&gt;</span>
 
@@ -8501,6 +8508,68 @@ class name from the server-side.</td>
 </tr>
 </table>
 </div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="controller-for-gui-entry-page"><a class="link" href="#controller-for-gui-entry-page">Controller for GUI Entry Page</a></h4>
+<div class="paragraph">
+<p>The <a href="#gui-entry-page">GUI Entry Page</a> needs to be served up by the server.  The entry page assets are
+packaged by the Gradle command <code>npmBuild</code>.  See <a href="#gui-related-gradlenpm-tasks">GUI Related Gradle/NPM Tasks</a>
+for more details on these tasks.</p>
+</div>
+<div class="paragraph">
+<p>The controller is usually a sub-class of
+<a href="groovydoc/org/simplemes/eframe/controller/BaseController.html" target="_blank" rel="noopener">BaseController</a> <span class="icon link-blue"><i class="fa fa-share-square-o"></i></span>.
+This provide the standard <code>index()</code> method to serve-up the normal client assets.
+The controller will look something like this:</p>
+</div>
+<div class="listingblock">
+<div class="title">Example -</div>
+<div class="content">
+<pre class="CodeRay highlight"><code data-lang="groovy"><span class="annotation">@Secured</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">CUSTOMIZER</span><span class="delimiter">&quot;</span></span>)
+<span class="annotation">@Controller</span>(<span class="string"><span class="delimiter">&quot;</span><span class="content">/flexType</span><span class="delimiter">&quot;</span></span>)
+<span class="type">class</span> <span class="class">FlexTypeController</span> <span class="directive">extends</span> BaseCrudController {
+  <span class="keyword">def</span> taskMenuItems = [<span class="keyword">new</span> TaskMenuItem(<span class="key">folder</span>: <span class="string"><span class="delimiter">'</span><span class="content">custom:100</span><span class="delimiter">'</span></span>,     <i class="conum" data-value="1"></i><b>(1)</b>
+                                        <span class="key">name</span>: <span class="string"><span class="delimiter">'</span><span class="content">flexType</span><span class="delimiter">'</span></span>,
+                                        <span class="key">uri</span>: <span class="string"><span class="delimiter">'</span><span class="content">/flexType</span><span class="delimiter">'</span></span>,
+                                        <span class="key">displayOrder</span>: <span class="integer">110</span>,
+                                        <span class="key">clientRootActivity</span>: <span class="predefined-constant">true</span>)]
+
+  <span class="predefined-type">String</span> indexView = <span class="string"><span class="delimiter">'</span><span class="content">client/eframe/flexType</span><span class="delimiter">'</span></span>  <i class="conum" data-value="2"></i><b>(2)</b>
+
+
+}</code></pre>
+</div>
+</div>
+<div class="colist arabic">
+<table>
+<tr>
+<td><i class="conum" data-value="1"></i><b>1</b></td>
+<td>The CRUD page is added to the standard <a href="#Task Menu">[Task Menu]</a>.</td>
+</tr>
+<tr>
+<td><i class="conum" data-value="2"></i><b>2</b></td>
+<td>The URI location of the index page.</td>
+</tr>
+</table>
+</div>
+<div class="paragraph">
+<p>You will need to change the value for the <code>indexView</code> to match where your entry page is
+located.  See <a href="#gui-entry-page">GUI Entry Page</a>.</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<i class="fa icon-note" title="Note"></i>
+</td>
+<td class="content">
+The <em>BaseCrudController</em> class also provides the normal REST API methods needed
+      for the crud pages.  These are accessed using the method from your client-side
+      service object.  See <a href="#crudtable-service-requirements">CrudTable Service Requirements</a>.
+</td>
+</tr>
+</table>
 </div>
 </div>
 <div class="sect3">
@@ -8693,6 +8762,34 @@ of them and could not find a way to get Primevue to work with any of them.</p>
 <div class="paragraph">
 <p>Someday, if we ever solve this, we will convert to a published library mechanism.</p>
 </div>
+</div>
+</div>
+<div class="sect3">
+<h4 id="gui-related-gradlenpm-tasks"><a class="link" href="#gui-related-gradlenpm-tasks">GUI Related Gradle/NPM Tasks</a></h4>
+<div class="paragraph">
+<p>There are a number of <em>npm</em> and Gradle tasks used to run/build the client GUI pages.</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p><strong>npm run serve</strong> - Starts a local server for the client that allows hot-redeploy of the
+client code.  Used for most client-side development.</p>
+</li>
+<li>
+<p><strong>npmBuild</strong> (Gradle) - Builds the client assets needed for the production application
+server.  This is done to allow the Micronaut application server to provide the
+client GUI to the browser.  See <a href="#controller-for-gui-entry-page">Controller for GUI Entry Page</a> for more details
+on how this is served up by the application server.</p>
+</li>
+<li>
+<p><strong>copyEframeLib</strong> (Gradle) - Copies the <a href="#eframe-lib">eframe-lib</a> source to the client module&#8217;s
+<em>src</em> folder.  This makes it easier to re-use the library features such as <a href="#CrudTable">[CrudTable]</a>.</p>
+</li>
+<li>
+<p><strong>npmInit</strong> (Gradle) - Runs the <code>npm install</code> command on a client module.  Typically only
+needed once on creation of cloning of the repository fro Git.</p>
+</li>
+</ol>
 </div>
 </div>
 </div>
@@ -16937,7 +17034,7 @@ The javascript console message in the browser is:</p>
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-06-15 13:50:36 UTC
+Last updated 2021-06-17 17:00:09 UTC
 </div>
 </div>
 <style>

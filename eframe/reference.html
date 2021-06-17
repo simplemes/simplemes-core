@@ -2797,11 +2797,6 @@ and object-specific actions.</p>
              logic <strong>(Required)</strong>.  This service must provide the <a href="#crudservice">CRUDService</a> methods.</p></td>
 </tr>
 <tr>
-<td class="tableblock halign-left valign-top"><p class="tableblock"><strong>storageKey</strong></p></td>
-<td class="tableblock halign-left valign-top"><p class="tableblock">The name of the local browser storage element to store the state of
-               the table.  This includes the sorting and current page (<strong>Required</strong>).</p></td>
-</tr>
-<tr>
 <td class="tableblock halign-left valign-top"><p class="tableblock"><strong>:domainClassName</strong></p></td>
 <td class="tableblock halign-left valign-top"><p class="tableblock">The variable that will hold the qualified class name of the domain class being
                maintained by this table (<strong>Required</strong>).</p></td>
@@ -2812,7 +2807,7 @@ and object-specific actions.</p>
 <div class="title">Example - CRUDTable Usage</div>
 <div class="content">
 <pre class="CodeRay highlight"><code data-lang="html"><span class="tag">&lt;template&gt;</span>
-  <span class="tag">&lt;CrudTable</span> <span class="attribute-name">:columns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">columns</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">:service</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">service</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">storageKey</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">flexTypeCrudList</span><span class="delimiter">&quot;</span></span>
+  <span class="tag">&lt;CrudTable</span> <span class="attribute-name">:columns</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">columns</span><span class="delimiter">&quot;</span></span> <span class="attribute-name">:service</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">service</span><span class="delimiter">&quot;</span></span>
              <span class="attribute-name">:domainClassName</span>=<span class="string"><span class="delimiter">&quot;</span><span class="content">domainClassName</span><span class="delimiter">&quot;</span></span><span class="tag">/&gt;</span>
 <span class="tag">&lt;/template&gt;</span>
 
@@ -2972,7 +2967,7 @@ const cache = <span class="keyword">new</span> InMemoriam(<span class="integer">
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-06-15 13:50:36 UTC
+Last updated 2021-06-17 17:00:09 UTC
 </div>
 </div>
 <style>
