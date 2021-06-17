@@ -5,7 +5,7 @@ import io.micronaut.http.HttpResponse
 import io.micronaut.http.annotation.Controller
 import io.micronaut.http.annotation.Get
 import io.micronaut.security.annotation.Secured
-import org.simplemes.eframe.controller.BaseCrudRestController
+import org.simplemes.eframe.controller.BaseCrudController2
 import org.simplemes.eframe.domain.DomainUtils
 import org.simplemes.eframe.web.task.TaskMenuItem
 import sample.domain.SampleParent
@@ -24,7 +24,7 @@ import sample.domain.SampleParent
 @Slf4j
 @Secured("MANAGER")
 @Controller("/sampleParent")
-class SampleParentController extends BaseCrudRestController {
+class SampleParentController extends BaseCrudController2 {
 
   static domainClass = SampleParent
 
@@ -35,6 +35,10 @@ class SampleParentController extends BaseCrudRestController {
   def taskMenuItems = [new TaskMenuItem(folder: 'sample:9500', name: 'sampleParent', uri: '/sampleParent',
                                         displayOrder: 9510, clientRootActivity: true)]
 
+  /**
+   * The location of the index page.
+   */
+  String indexView = 'client/sample/sampleParent'
 
   @Get("/get")
   HttpResponse<SampleParent> get() {
@@ -47,15 +51,4 @@ class SampleParentController extends BaseCrudRestController {
     return HttpResponse.ok(p)
   }
 
-  /**
-   * Determines the view to display for the given method.  This can be overridden in your controller class to
-   * use a different naming scheme.<p>
-   * This sub-class points to a sample directory.
-   * @param methodName The method that needs the view (e.g. 'index').
-   * @return The resulting view path.
-   */
-  @Override
-  String getView(String methodName) {
-    return "sample/sampleParent/$methodName"
-  }
 }

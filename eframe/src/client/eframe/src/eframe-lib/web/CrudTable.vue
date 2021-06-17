@@ -12,7 +12,7 @@
             <DataTable :value="records" :lazy="true" :paginator="true" :rows="pageSize" ref="crudTable"
                        :totalRecords="totalRecords" :loading="loading" @page="onPage($event)" @sort="onSort($event)"
                        data-testid="CrudTable"
-                       stateStorage="local" :stateKey="storageKey" :rowHover="false">
+                       stateStorage="local" :stateKey="computedStateKey" :rowHover="false">
               <template #header>
                 <div class="p-d-flex p-jc-between">
                   <Button type="button" icon="pi pi-plus" label="Add" class="p-button-outlined"
@@ -84,11 +84,7 @@ export default {
       type: String,
       required: true
     },
-    storageKey: {
-      type: String,
-      required: true
-    },
-  }, // ['columns', 'service', 'storageKey'],
+  },
 
   data() {
     return {
@@ -110,6 +106,12 @@ export default {
           }
         }
       ],
+    }
+  },
+  computed: {
+    computedStateKey() {
+      // Provides a state key name for the list's local storage.  Uses domainClass.
+      return this.domainClassName + 'List'
     }
   },
   created() {
@@ -191,7 +193,7 @@ export default {
       sortOrder: null,
       filter: ''
     }
-    let s = localStorage.getItem(this.storageKey)
+    let s = localStorage.getItem(this.computedStateKey)
     if (s) {
       params = JSON.parse(s)
     }

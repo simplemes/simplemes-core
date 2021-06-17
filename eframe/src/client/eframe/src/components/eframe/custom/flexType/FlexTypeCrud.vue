@@ -1,5 +1,5 @@
 <template>
-  <CrudTable :columns="columns" :service="service" storageKey="flexTypeCrudList" :domainClassName="domainClassName"/>
+  <CrudTable :columns="columns" :service="service" :domainClassName="domainClassName"/>
 </template>
 
 <script>

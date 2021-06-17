@@ -6,8 +6,10 @@ ifeval::["{backend}" != "pdf"]
 [inline-toc]#<<GUI Development Tasks>>#
 [inline-toc]#<<GUI Development Cycle>>#
 [inline-toc]#<<GUI Entry Page>>#
+[inline-toc]#<<Controller for GUI Entry Page>>#
 [inline-toc]#<<CrudTable Service Requirements>>#
 [inline-toc]#<<eframe-lib>>#
+[inline-toc]#<<GUI Related Gradle/NPM Tasks>>#
 
 endif::[]
 
@@ -170,6 +172,9 @@ production server for deployment.  The basic flow is:
   This copies the client run-time files to the _src/main/resources/client_ folder
   for the IDEA _localhost_ process to use.
 
+. Then, you will need a controller that serves up these client assets from the server.
+  See <<Controller for GUI Entry Page>> for details.
+
 . _Build .jar_ - When ready to publish the module, the run-time .jar file is built
   and the assets are included in the .jar file.  This is done by the Gradle
   task _publishToMavenLocal_ task.
@@ -182,7 +187,9 @@ production server for deployment.  The basic flow is:
 
 
 . Start localhost (server-side).
-. Start client side development mode: _npm run server_
+. Start client side development mode: _npm run server_.  Starting this after
+  the localhost (server-side, port 8080) will force the client-side 'server' to
+  run on port 8081.
 . Edit .js/.vue files.
 . Try in browser (on port 8081).
 . Repeat from  #4 until satisfied.
@@ -293,7 +300,6 @@ file FlexTypeCrud.vue  [
 <template>
   <CrudTable :columns="columns"
     :service="service"
-    storageKey="flexTypeCrudList"
     :domainClassName="domainClassName"/>
 </template>]
 
@@ -338,7 +344,6 @@ This uses the <<CrudTable>> component:
 ----
 <template>
   <CrudTable :columns="columns" :service="service"  <.>
-             storageKey="flexTypeCrudList"
              :domainClassName="domainClassName"/>
 </template>
 
@@ -374,6 +379,44 @@ export default {
     See <<GUI - CRUD Requirements>> for details.
 <.> The domain class that is being maintained by this CRUD page.  This is the
     class name from the server-side.
+
+==== Controller for GUI Entry Page
+
+The <<GUI Entry Page>> needs to be served up by the server.  The entry page assets are
+packaged by the Gradle command `npmBuild`.  See <<GUI Related Gradle/NPM Tasks>>
+for more details on these tasks.
+
+The controller is usually a sub-class of
+link:groovydoc/org/simplemes/eframe/controller/BaseController.html[BaseController^] icon:share-square-o[role="link-blue"].
+This provide the standard `index()` method to serve-up the normal client assets.
+The controller will look something like this:
+
+[source,groovy]
+.Example -
+----
+@Secured("CUSTOMIZER")
+@Controller("/flexType")
+class FlexTypeController extends BaseCrudController {
+  def taskMenuItems = [new TaskMenuItem(folder: 'custom:100',     // <.>
+                                        name: 'flexType',
+                                        uri: '/flexType',
+                                        displayOrder: 110,
+                                        clientRootActivity: true)]
+
+  String indexView = 'client/eframe/flexType'  // <.>
+
+
+}
+----
+<.> The CRUD page is added to the standard <<Task Menu>>.
+<.> The URI location of the index page.
+
+You will need to change the value for the `indexView` to match where your entry page is
+located.  See <<GUI Entry Page>>.
+
+NOTE: The _BaseCrudController_ class also provides the normal REST API methods needed
+      for the crud pages.  These are accessed using the method from your client-side
+      service object.  See <<CrudTable Service Requirements>>.
 
 ==== CrudTable Service Requirements
 
@@ -494,4 +537,22 @@ is simply too fragmented.  For example, there are 6+ ways to publish a library. 
 of them and could not find a way to get Primevue to work with any of them.
 
 Someday, if we ever solve this, we will convert to a published library mechanism.
+
+==== GUI Related Gradle/NPM Tasks
+
+There are a number of _npm_ and Gradle tasks used to run/build the client GUI pages.
+
+. *npm run serve* - Starts a local server for the client that allows hot-redeploy of the
+  client code.  Used for most client-side development.
+
+. *npmBuild* (Gradle) - Builds the client assets needed for the production application
+  server.  This is done to allow the Micronaut application server to provide the
+  client GUI to the browser.  See <<Controller for GUI Entry Page>> for more details
+  on how this is served up by the application server.
+
+. *copyEframeLib* (Gradle) - Copies the <<eframe-lib>> source to the client module's
+  _src_ folder.  This makes it easier to re-use the library features such as <<CrudTable>>.
+   
+. *npmInit* (Gradle) - Runs the `npm install` command on a client module.  Typically only
+  needed once on creation of cloning of the repository fro Git.
 

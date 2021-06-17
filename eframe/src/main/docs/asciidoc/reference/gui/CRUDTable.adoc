@@ -19,8 +19,6 @@ The main properties supported are:
              Elements include: *field*, *header*, and *sort* (boolean).
 |*:service*| The name of the Javascript object that interfaces to the server-side
              logic *(Required)*.  This service must provide the <<CRUDService>> methods.
-|*storageKey*| The name of the local browser storage element to store the state of
-               the table.  This includes the sorting and current page (*Required*).
 |*:domainClassName*| The variable that will hold the qualified class name of the domain class being
                maintained by this table (*Required*).
 
@@ -34,7 +32,7 @@ The main properties supported are:
 .Example - CRUDTable Usage
 ----
 <template>
-  <CrudTable :columns="columns" :service="service" storageKey="flexTypeCrudList"
+  <CrudTable :columns="columns" :service="service" 
              :domainClassName="domainClassName"/>
 </template>
 
