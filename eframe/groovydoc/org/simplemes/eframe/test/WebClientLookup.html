@@ -139,8 +139,8 @@ extends java.lang.Object</pre>
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.Map&lt;java.lang.String, <a href='../../../../org/simplemes/eframe/test/WebClientLookup.html' title='WebClientLookup'>WebClientLookup</a>&gt;</strong></code>&nbsp;</td>
-                            <td class="colLast"><code><a href="#cache">cache</a></code><br></td>
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;<a href='../../../../org/simplemes/eframe/test/WebClientLookup.html' title='WebClientLookup'>WebClientLookup</a>&gt;&gt;</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#cache">cache</a></code><br>The cached lookups.  </td>
                         </tr>
                         
                         <tr class="rowColor">
@@ -159,6 +159,12 @@ extends java.lang.Object</pre>
                         </tr>
                         
                         <tr class="altColor">
+                            <td class="colFirst"><code><strong>private&nbsp;static&nbsp;java.util.List&lt;java.lang.String&gt;</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#localeFolders">localeFolders</a></code><br>The list of default folders to check for locales.
+ </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong>private&nbsp;java.util.Map</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#map">map</a></code><br>The map for this .js file.</td>
                         </tr>
@@ -219,36 +225,42 @@ extends java.lang.Object</pre>
                         
                         <tr class="altColor">
                             <td class="colFirst"><code></code></td>
+                            <td class="colLast"><code>static&nbsp;java.lang.Object</code></td>
+                            <td class="colLast"><code><strong><a href="#addLocaleFolder(java.lang.String)">addLocaleFolder</a></strong>(java.lang.String folder)</code><br>Adds the locale folder to the web client lookup.  </td>
+                        </tr>
+                        
+                        <tr class="rowColor">
+                            <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;static&nbsp;java.util.Locale</code></td>
                             <td class="colLast"><code><strong><a href="#determineLocale(java.lang.String)">determineLocale</a></strong>(java.lang.String fileName)</code><br>Determines the locale for the given file.  </td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#findString(java.lang.String)">findString</a></strong>(java.lang.String key)</code><br>Finds the given key from the locale-specific resources.  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;void</code></td>
                             <td class="colLast"><code><strong><a href="#loadLocales()">loadLocales</a></strong>()</code><br>Loads the locales from the client sub-module(s).</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>static&nbsp;java.lang.String</code></td>
                             <td class="colLast"><code><strong><a href="#lookup(java.lang.String, java.util.Locale, java.lang.Object)">lookup</a></strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</code><br>Convenience method for general client localization lookup.
  </td>
                         </tr>
                         
-                        <tr class="altColor">
+                        <tr class="rowColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;java.util.Map</code></td>
                             <td class="colLast"><code><strong><a href="#parseFile(java.lang.String)">parseFile</a></strong>(java.lang.String fileName)</code><br>Parses the given JS file for message definitions.</td>
                         </tr>
                         
-                        <tr class="rowColor">
+                        <tr class="altColor">
                             <td class="colFirst"><code></code></td>
                             <td class="colLast"><code>protected&nbsp;groovy.lang.Tuple2&lt;java.lang.String, java.lang.String&gt;</code></td>
                             <td class="colLast"><code><strong><a href="#parseLine(java.lang.String)">parseLine</a></strong>(java.lang.String line)</code><br>Parses the given text line into valid key/value pair.  </td>
@@ -300,8 +312,8 @@ extends java.lang.Object</pre>
                         <a name="cache"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>private&nbsp;static&nbsp;java.util.Map&lt;java.lang.String, <a href='../../../../org/simplemes/eframe/test/WebClientLookup.html' title='WebClientLookup'>WebClientLookup</a>&gt; <strong>cache</strong></h4>
-                                <p></p>
+                                <h4>private&nbsp;static&nbsp;java.util.Map&lt;java.lang.String, java.util.List&lt;<a href='../../../../org/simplemes/eframe/test/WebClientLookup.html' title='WebClientLookup'>WebClientLookup</a>&gt;&gt; <strong>cache</strong></h4>
+                                <p> The cached lookups.  Contains one entry for each language.  Each entry is a list of lookups.</p>
                             </li>
                         </ul>
                     
@@ -326,6 +338,15 @@ extends java.lang.Object</pre>
                             <li class="blockList">
                                 <h4>private&nbsp;static&nbsp;boolean <strong>loadedJSFiles</strong></h4>
                                 <p> If true, then all client modules' locales have been loaded.</p>
+                            </li>
+                        </ul>
+                    
+                        <a name="localeFolders"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;static&nbsp;java.util.List&lt;java.lang.String&gt; <strong>localeFolders</strong></h4>
+                                <p> The list of default folders to check for locales.
+ Use addLocaleFolder() to add client-specific locales.</p>
                             </li>
                         </ul>
                     
@@ -380,6 +401,15 @@ extends java.lang.Object</pre>
                 </a>
                     <h3>Method Detail</h3>
                     
+                        <a name="addLocaleFolder(java.lang.String)"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>static&nbsp;java.lang.Object <strong>addLocaleFolder</strong>(java.lang.String folder)</h4>
+                                <p> Adds the locale folder to the web client lookup.  Use this when the lookups needed are not in the
+ the default list (e.g. not in "src/client/eframe/src/eframe-lib/locales"). <DL><DT><B>Parameters:</B></DT><DD><code>folder</code> -  The folder to add.</DD></DL></p>
+                            </li>
+                        </ul>
+                    
                         <a name="determineLocale(java.lang.String)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
@@ -407,7 +437,8 @@ extends java.lang.Object</pre>
                         <a name="lookup(java.lang.String, java.util.Locale, java.lang.Object)"><!-- --></a>
                         <ul class="blockListLast">
                             <li class="blockList">
-                                <h4>static&nbsp;java.lang.String <strong>lookup</strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</h4>
+                                <h4>@java.lang.SuppressWarnings(value: unused)
+static&nbsp;java.lang.String <strong>lookup</strong>(java.lang.String key, java.util.Locale locale, java.lang.Object[] args)</h4>
                                 <p> Convenience method for general client localization lookup.
  <p/>
  <b>Note: </b>Not supported for production.

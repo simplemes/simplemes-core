@@ -8598,8 +8598,8 @@ service-style script.</p>
   <span class="keyword">delete</span>(object, successFunction, errorFunction) { <i class="conum" data-value="5"></i><b>(5)</b>
     <span class="keyword">return</span> ServiceUtils.<span class="keyword">delete</span>(<span class="string"><span class="delimiter">'</span><span class="content">/sampleParent</span><span class="delimiter">'</span></span>, object, successFunction, errorFunction)
   },
-  save(object, successFunction, errorFunction) { <i class="conum" data-value="6"></i><b>(6)</b>
-    <span class="keyword">return</span> ServiceUtils.save(<span class="string"><span class="delimiter">'</span><span class="content">/sampleParent</span><span class="delimiter">'</span></span>, object, successFunction, errorFunction)
+  save(object, fields, successFunction, errorFunction) { <i class="conum" data-value="6"></i><b>(6)</b>
+    <span class="keyword">return</span> ServiceUtils.save(<span class="string"><span class="delimiter">'</span><span class="content">/sampleParent</span><span class="delimiter">'</span></span>, object, fields, successFunction, errorFunction)
   },
 }</code></pre>
 </div>
@@ -17034,7 +17034,7 @@ The javascript console message in the browser is:</p>
 <div id="footer">
 <div id="footer-text">
 Version 0.5<br>
-Last updated 2021-06-17 17:00:09 UTC
+Last updated 2021-06-24 15:14:18 UTC
 </div>
 </div>
 <style>

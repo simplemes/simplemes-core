@@ -70,11 +70,11 @@ if (location.href.indexOf('is-external=true') == -1) {
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;<li><a href="#property_summary">Property</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;<li><a href="#property_summary">Property</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;Method&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>
-            Field&nbsp;&nbsp;&nbsp;<li><a href="#prop_detail">Property</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Field&nbsp;&nbsp;&nbsp;<li><a href="#prop_detail">Property</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;Method&nbsp;&nbsp;&nbsp;
         </ul>
     </div>
     <a name="skip-navbar_top">
@@ -91,7 +91,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 </div>
 <div class="contentContainer">
 <ul class="inheritance">
-<li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li>sample.controller.AllFieldsDomainController
+<li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li><ul class="inheritance"></ul></li><li>sample.controller.AllFieldsDomainController
 </ul>
 <div class="description">
     <ul class="blockList">
@@ -107,7 +107,7 @@ if (location.href.indexOf('is-external=true') == -1) {
 @io.micronaut.security.annotation.Secured(value: ADMIN)
 @io.micronaut.http.annotation.Controller(value: /allFieldsDomain)
 class AllFieldsDomainController
-extends <a href='../../org/simplemes/eframe/controller/BaseCrudRestController.html'>BaseCrudRestController</a></pre>
+extends <a href='../../org/simplemes/eframe/controller/BaseCrudController2.html'>BaseCrudController2</a></pre>
 
     <p> Handles the controller actions for the AllFieldsDomain objects.  Includes CRUD actions on the AllFieldsDomain sample
  test domain.</p>
@@ -161,6 +161,11 @@ extends <a href='../../org/simplemes/eframe/controller/BaseCrudRestController.ht
                         </tr>
                         
                         <tr class="altColor">
+                            <td class="colFirst"><code><strong>private&nbsp;java.lang.String</strong></code>&nbsp;</td>
+                            <td class="colLast"><code><a href="#indexView">indexView</a></code><br>The location of the index page.</td>
+                        </tr>
+                        
+                        <tr class="rowColor">
                             <td class="colFirst"><code><strong>private&nbsp;java.lang.Object</strong></code>&nbsp;</td>
                             <td class="colLast"><code><a href="#taskMenuItems">taskMenuItems</a></code><br>Defines the entry(s) in the main Task Menu.</td>
                         </tr>
@@ -203,27 +208,6 @@ extends <a href='../../org/simplemes/eframe/controller/BaseCrudRestController.ht
         <ul class="blockList">
             
             <li class="blockList"><a name="method_summary"><!--   --></a>
-                    <h3>Methods Summary</h3>
-                    <ul class="blockList">
-                    <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Methods Summary table">
-                        <caption><span>Methods</span><span class="tabEnd">&nbsp;</span></caption>
-                        <tr>
-                            <th class="colFirst" scope="col">Type Params</th>
-                            <th class="colLast" scope="col">Return Type</th>
-                            <th class="colLast" scope="col">Name and description</th>
-                        </tr>
-                        
-                        <tr class="altColor">
-                            <td class="colFirst"><code></code></td>
-                            <td class="colLast"><code>java.lang.String</code></td>
-                            <td class="colLast"><code><strong><a href="#getView(java.lang.String)">getView</a></strong>(java.lang.String methodName)</code><br>Determines the view to display for the given method.</td>
-                        </tr>
-                        
-                    </table>
-                   </ul>
-              </li>
-            
-            <li class="blockList"><a name="method_summary"><!--   --></a>
                     <h3>Inherited Methods Summary</h3>
                     <ul class="blockList">
                     <table class="overviewSummary" border="0" cellpadding="3" cellspacing="0" summary="Inherited Methods Summary table">
@@ -234,12 +218,8 @@ extends <a href='../../org/simplemes/eframe/controller/BaseCrudRestController.ht
                         </tr>
                         
                         <tr class="altColor">
-                            <td class="colFirst"><code>class <a href='../../org/simplemes/eframe/controller/BaseCrudRestController.html'>BaseCrudRestController</a></code></td>
-                            <td class="colLast"><code><a href='../../org/simplemes/eframe/controller/BaseCrudRestController.html#restDelete(java.lang.String, java.security.Principal)'>restDelete</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudRestController.html#restGet(java.lang.String, java.security.Principal)'>restGet</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudRestController.html#restPost(io.micronaut.http.HttpRequest, java.security.Principal)'>restPost</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudRestController.html#restPut(java.lang.String, io.micronaut.http.HttpRequest, java.security.Principal)'>restPut</a></code></td>
-                        </tr>
-                        <tr class="altColor">
-                            <td class="colFirst"><code>class <a href='../../org/simplemes/eframe/controller/BaseCrudController.html'>BaseCrudController</a></code></td>
-                            <td class="colLast"><code><a href='../../org/simplemes/eframe/controller/BaseCrudController.html#bindEvent(java.lang.Object, java.lang.Object)'>bindEvent</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController.html#create(java.security.Principal)'>create</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController.html#createPost(io.micronaut.http.HttpRequest, java.lang.Object, java.security.Principal)'>createPost</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController.html#delete(io.micronaut.http.HttpRequest, java.lang.Object, java.security.Principal)'>delete</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController.html#edit(java.lang.String, java.security.Principal)'>edit</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController.html#editPost(io.micronaut.http.HttpRequest, java.lang.Object, java.security.Principal)'>editPost</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController.html#getDomain()'>getDomain</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController.html#getRootPath()'>getRootPath</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController.html#getView(java.lang.String)'>getView</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController.html#index(java.security.Principal)'>index</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController.html#list(io.micronaut.http.HttpRequest, java.security.Principal)'>list</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController.html#show(java.lang.String, java.security.Principal)'>show</a></code></td>
+                            <td class="colFirst"><code>class <a href='../../org/simplemes/eframe/controller/BaseCrudController2.html'>BaseCrudController2</a></code></td>
+                            <td class="colLast"><code><a href='../../org/simplemes/eframe/controller/BaseCrudController2.html#getDomain()'>getDomain</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController2.html#getIndexView()'>getIndexView</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController2.html#getRootPath()'>getRootPath</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController2.html#getWebClientAssetService()'>getWebClientAssetService</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController2.html#index(io.micronaut.http.HttpRequest, java.security.Principal)'>index</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController2.html#list(io.micronaut.http.HttpRequest, java.security.Principal)'>list</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController2.html#restDelete(java.lang.String, java.security.Principal)'>restDelete</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController2.html#restGet(java.lang.String, java.security.Principal)'>restGet</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController2.html#restPost(io.micronaut.http.HttpRequest, java.security.Principal)'>restPost</a>, <a href='../../org/simplemes/eframe/controller/BaseCrudController2.html#restPut(java.lang.String, io.micronaut.http.HttpRequest, java.security.Principal)'>restPut</a></code></td>
                         </tr>
                         <tr class="altColor">
                             <td class="colFirst"><code>class <a href='../../org/simplemes/eframe/controller/BaseController.html'>BaseController</a></code></td>
@@ -269,6 +249,14 @@ extends <a href='../../org/simplemes/eframe/controller/BaseCrudRestController.ht
                     <!--   -->
                 </a>
                     <h3>Property Detail</h3>
+                    
+                        <a name="indexView"><!-- --></a>
+                        <ul class="blockListLast">
+                            <li class="blockList">
+                                <h4>private&nbsp;java.lang.String <strong>indexView</strong></h4>
+                                <p> The location of the index page.</p>
+                            </li>
+                        </ul>
                     
                         <a name="taskMenuItems"><!-- --></a>
                         <ul class="blockListLast">
@@ -306,26 +294,6 @@ extends <a href='../../org/simplemes/eframe/controller/BaseCrudRestController.ht
 
 
             
-            <!-- =========== METHOD DETAIL =========== -->
-            <ul class="blockList">
-                <li class="blockList"><a name="method_detail">
-                    <!--   -->
-                </a>
-                    <h3>Method Detail</h3>
-                    
-                        <a name="getView(java.lang.String)"><!-- --></a>
-                        <ul class="blockListLast">
-                            <li class="blockList">
-                                <h4>@java.lang.Override
-java.lang.String <strong>getView</strong>(java.lang.String methodName)</h4>
-                                <p> Determines the view to display for the given method.  <p>
- This sample class uses the views from the sample folder. <DL><DT><B>Parameters:</B></DT><DD><code>methodName</code> -  The method that needs the view (e.g. 'index').</DD></DL><DL><DT><B>Returns:</B></DT><DD>The resulting view path.</DD></DL></p>
-                            </li>
-                        </ul>
-                    
-                </li>
-            </ul>
-            
         </li>
     </ul>
 </div>
@@ -357,11 +325,11 @@ java.lang.String <strong>getView</strong>(java.lang.String methodName)</h4>
     <div>
         <ul class="subNavList">
             <li>Summary:&nbsp;</li>
-            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;<li><a href="#property_summary">Property</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_summary">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Nested&nbsp;&nbsp;&nbsp;Field&nbsp;&nbsp;&nbsp;<li><a href="#property_summary">Property</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#constructor_summary">Constructor</a></li>&nbsp;&nbsp;&nbsp;Method&nbsp;&nbsp;&nbsp;
         </ul>
         <ul class="subNavList">
             <li>&nbsp;|&nbsp;Detail:&nbsp;</li>
-            Field&nbsp;&nbsp;&nbsp;<li><a href="#prop_detail">Property</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#method_detail">Method</a></li>&nbsp;&nbsp;&nbsp;
+            Field&nbsp;&nbsp;&nbsp;<li><a href="#prop_detail">Property</a></li>&nbsp;&nbsp;&nbsp;<li><a href="#constructor_detail">Constructor</a></li>&nbsp;&nbsp;&nbsp;Method&nbsp;&nbsp;&nbsp;
         </ul>
     </div>
     <p>Groovy Documentation</p>
