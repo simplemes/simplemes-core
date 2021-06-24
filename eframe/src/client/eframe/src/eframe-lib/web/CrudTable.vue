@@ -15,8 +15,8 @@
                        stateStorage="local" :stateKey="computedStateKey" :rowHover="false">
               <template #header>
                 <div class="p-d-flex p-jc-between">
-                  <Button type="button" icon="pi pi-plus" label="Add" class="p-button-outlined"
-                          @click="addRecord"/>
+                  <Button type="button" icon="pi pi-plus" class="p-button-outlined" @click="addRecord"
+                          :label="$t('label.add')" :title="$t('tooltip.addCrud')" id="addRecord"/>
                   <span class="p-input-icon-left p-input-icon-right">
                     <i class="pi pi-search"/>
                     <InputText v-model="requestParams.filter" :placeholder="$t('label.search')" @change="searchChanged"
@@ -163,6 +163,7 @@ export default {
         }
         options[key] = order
       }
+      options.domainClassName = this.domainClassName
       this.service.list(options, (data) => {
         this.records = data.data
         this.totalRecords = data.total_count

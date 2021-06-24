@@ -5,6 +5,7 @@
 package org.simplemes.eframe.test.page
 
 import geb.Module
+import geb.navigator.Navigator
 
 /**
  * Defines the GEB page elements for a standard editable text field.
@@ -35,18 +36,23 @@ class BooleanFieldModule extends Module {
   String field
 
   static content = {
-    label { $('div.webix_el_label', view_id: "${field}Label").text() }
-    input { $('div.webix_el_checkbox', view_id: "${field}").find('button') }
+    label { $('label', for: field).text() }
+    parent { $('label', for: field).parent() }
   }
 
   void setValue(Object setValue) {
     if (getValue() != setValue) {
-      input.click()
+      parent.click()
     }
   }
 
+  Navigator click() {
+    //parent.click()
+    parent.find('div.p-checkbox').click()
+  }
+
   Boolean getValue() {
-    return input.@'aria-checked' == 'true'
+    return parent.find('div.p-checkbox-box', role: 'checkbox').@'aria-checked' == 'true'
   }
 
 }

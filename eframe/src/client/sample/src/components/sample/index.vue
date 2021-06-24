@@ -4,6 +4,7 @@
     </div>
   </div>
   <a href="sampleParent">Sample Parent</a>
+  <a href="allFieldsDomain">All Fields Domain</a>
 </template>
 
 <script>

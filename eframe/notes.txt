@@ -19,6 +19,7 @@ GUI - Vue Conversion
     Samples.
     Gradle tasks: build client files. make client library.
     Remove old tests, pages, markers, widgets, .js files and adocs.
+      All Create/Show/Edit/List pages
     Remove webix module/docs.
     Review BaseGUISpec for webix logic.
 	Look at global package install for DomainService, PageHolder?: https://forum.vuejs.org/t/best-way-to-instantiate-a-global-library-in-vue/115085/2 for

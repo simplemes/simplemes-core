@@ -4,7 +4,7 @@ import groovy.transform.CompileStatic
 import groovy.util.logging.Slf4j
 import io.micronaut.http.annotation.Controller
 import io.micronaut.security.annotation.Secured
-import org.simplemes.eframe.controller.BaseCrudRestController
+import org.simplemes.eframe.controller.BaseCrudController2
 import org.simplemes.eframe.web.task.TaskMenuItem
 
 /*
@@ -21,7 +21,7 @@ import org.simplemes.eframe.web.task.TaskMenuItem
 @Slf4j
 @Secured("ADMIN")
 @Controller("/allFieldsDomain")
-class AllFieldsDomainController extends BaseCrudRestController {
+class AllFieldsDomainController extends BaseCrudController2 {
 
   /**
    * Defines the entry(s) in the main Task Menu.
@@ -32,20 +32,9 @@ class AllFieldsDomainController extends BaseCrudRestController {
                        new TaskMenuItem(folder: 'sample:9500', name: 'pageTester', uri: '/pageTester', displayOrder: 9620)]
 
 
-  /*
-    <li><a href="/javascriptTester?s=ef.alert('Hi');">Javascript Tester</a></li>
-  <li><a href="/pageTester">pageTester</a></li>
-
-   */
-
   /**
-   * Determines the view to display for the given method.  <p>
-   * This sample class uses the views from the sample folder.
-   * @param methodName The method that needs the view (e.g. 'index').
-   * @return The resulting view path.
+   * The location of the index page.
    */
-  @Override
-  String getView(String methodName) {
-    return "sample/allFieldsDomain/$methodName"
-  }
+  String indexView = 'client/sample/allFieldsDomain'
+
 }

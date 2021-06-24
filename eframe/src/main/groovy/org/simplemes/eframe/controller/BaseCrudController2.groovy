@@ -282,6 +282,7 @@ abstract class BaseCrudController2 extends BaseController {
 
     HttpResponse res = null
     _domain.withTransaction { status ->
+      log.trace('restPost() body = "{}"', body)
       def record = Holders.objectMapper.readValue(body, _domain)
       // Force a null UUID to make sure the record is created.
       record.uuid = null

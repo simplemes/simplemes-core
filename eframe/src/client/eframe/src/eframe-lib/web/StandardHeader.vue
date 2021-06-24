@@ -3,7 +3,7 @@
   -->
 
 <template>
-  <Toast :baseZIndex="9999"/>
+  <Toast :autoZIndex="false" :baseZIndex="1000" class="toast-class"/>
   <Toolbar>
     <template #left>
       <Button icon="pi pi-bars" class="p-mr-2"/>
@@ -16,7 +16,6 @@
     </template>
   </Toolbar>
 </template>
-
 
 <script>
 

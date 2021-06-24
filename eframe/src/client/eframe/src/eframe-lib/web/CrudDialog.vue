@@ -6,9 +6,10 @@ A standard dialog for performing CRUD-style maintenance on single domain records
 
 <template>
   <Dialog v-model:visible="dialogVisible" :breakpoints="{'960px': '95vw', '640px': '100vw'}" :style="{width: '90vw'}"
-          :header="mode=='add' ? $t('title.add') : $t('title.edit')" :modal="true" :maximizable="true">
+          :header="mode=='add' ? $t('title.add') : $t('title.edit')" :modal="true" :maximizable="true"
+          :autoZIndex="true" :baseZIndex="90">
     <div class="p-fluid p-formgrid p-grid p-ai-center">
-      <StandardField v-for="field in fields.top" :key="field.fieldName" :field="field" :record="record"/>
+      <StandardField v-for="field in fields.top" :key="field.fieldName" :field="field" :record="record" ref="keyField"/>
       <div class="p-col-12"></div>
       <StandardField v-for="field in fields.bottom" :key="field.fieldName" :field="field" :record="record"/>
       <TabView v-if="fields.tabs.length>0" class="p-col-12">
@@ -21,8 +22,9 @@ A standard dialog for performing CRUD-style maintenance on single domain records
     </div>
 
     <template #footer>
-      <Button icon="pi pi-times" :label="$t('label.cancel')" class="p-button-text" @click="cancelDialog"/>
-      <Button icon="pi pi-check" :label="$t('label.save')" class="p-button-text" @click="saveDialog"/>
+      <Button icon="pi pi-times" :label="$t('label.cancel')" id="CancelButton" class="p-button-text"
+              @click="cancelDialog"/>
+      <Button icon="pi pi-check" :label="$t('label.save')" id="SaveButton" class="p-button-text" @click="saveDialog"/>
     </template>
   </Dialog>
 </template>
@@ -35,6 +37,7 @@ import TabView from 'primevue/tabview'
 import TabPanel from 'primevue/tabpanel'
 
 import DomainService from "../domain/DomainService"
+import ServiceUtils from "../domain/ServiceUtils"
 import StandardField from "./StandardField"
 
 
@@ -69,10 +72,19 @@ export default {
       this.dialogVisible = true
       this.$data.record = recordValue
       fixMissingChildLists(this.$data.record, this.$data.fields)
+      ServiceUtils.fixFieldTypesForEdit(this.$data.record, this.$data.fields)
+      let primaryKeyField = this.$data.fields.top[0].fieldName
+      setTimeout(function () {
+        const element = document.getElementById(primaryKeyField)
+        if (element) {
+          element.focus()
+        }
+      }, 50)
+
     },
     saveDialog() {
       //console.log("saving: " + JSON.stringify(this.$data.record) + " with "+this.service);
-      this.service.save(this.$data.record, () => {
+      this.service.save(this.$data.record, this.$data.fields, () => {
         this.dialogVisible = false
         this.$emit('updatedRecord', {record: this.$data.record})
         const s = this.$t('message.saved', {record: this.service.buildLabel(this.$data.record, true)})

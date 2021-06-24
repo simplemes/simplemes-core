@@ -36,10 +36,17 @@ class TextFieldModule extends Module {
   String field
 
   static content = {
-    label { $('div.webix_el_label', view_id: "${field}Label").text() }
-    input { $('div.webix_el_text', view_id: "${field}").find('input') }
-    invalid { $('div.webix_el_text', view_id: "${field}").classes().contains('webix_invalid') }
-    required { $('div.webix_el_text', view_id: "${field}").find('input').attr('aria-required') == 'true' }
+    label { sanitize($('label', for: field).text()) }
+    input { $("input#${field}") }
+  }
+
+  /**
+   * Sanitizes non-printable characters from the HTML text.
+   * @param html The HTML.
+   * @return The sanitized text.
+   */
+  String sanitize(String html) {
+    return html?.replaceAll('\n', '')
   }
 
 }

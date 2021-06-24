@@ -38,10 +38,11 @@ class MessagesModule extends Module {
   def divID
 
   static content = {
-    _text { $("div#$divID").text() }
-    _info { $("div#$divID").find("div.info-message").displayed }
-    _warn { $("div#$divID").find("div.warning-message").displayed }
-    _error { $("div#$divID").find("div.error-message").displayed }
+    _text { $("div.p-toast").text() }
+    _info { $("div.p-toast").find("div.p-toast-message-info").displayed }
+    _success { $("div.p-toast").find("div.p-toast-message-success").displayed }
+    _warn { $("div.p-toast").find("div.p-toast-message-warn").displayed }
+    _error { $("div.p-toast").find("div.p-toast-message-error").displayed }
   }
 
   String text() {
@@ -58,6 +59,10 @@ class MessagesModule extends Module {
 
   boolean isInfo() {
     return _info
+  }
+
+  boolean isSuccess() {
+    return _success
   }
 
   boolean isWarning() {

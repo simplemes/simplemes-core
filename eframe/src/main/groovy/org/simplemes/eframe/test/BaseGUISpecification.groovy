@@ -275,7 +275,7 @@ class BaseGUISpecification extends BaseSpecification {
    * @return The input field element.
    */
   Navigator getInputField(String fieldName) {
-    return $('div.webix_el_text', view_id: fieldName).find('input')
+    return $("input#$fieldName")
   }
 
   /**
@@ -351,8 +351,7 @@ class BaseGUISpecification extends BaseSpecification {
    * @return The field label text.
    */
   String getFieldLabel(String fieldName) {
-    //        label { $('div.webix_el_label', view_id: "${field}Label").text() }
-    return $('div.webix_el_label', view_id: "${fieldName}Label").text()
+    return $('label', for: fieldName).text()
   }
   /**
    * Finds the field value (text) for the given field name.

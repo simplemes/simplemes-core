@@ -13,7 +13,7 @@ export default {
   delete(object, successFunction, errorFunction) {
     return ServiceUtils.delete('/sampleParent', object, successFunction, errorFunction)
   },
-  save(object, successFunction, errorFunction) {
-    return ServiceUtils.save('/sampleParent', object, successFunction, errorFunction)
+  save(object, fields, successFunction, errorFunction) {
+    return ServiceUtils.save('/sampleParent', object, fields, successFunction, errorFunction)
   },
 }

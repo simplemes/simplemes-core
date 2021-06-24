@@ -23,6 +23,10 @@ module.exports = {
       entry: 'src/entry/sample/SampleParent.js',
       title: 'Sample Parent',
     },
+    'allFieldsDomain': {
+      entry: 'src/entry/sample/AllFieldsDomain.js',
+      title: 'All Fields Domain',
+    },
   },
   devServer: {
     proxy: 'http://localhost:8080'

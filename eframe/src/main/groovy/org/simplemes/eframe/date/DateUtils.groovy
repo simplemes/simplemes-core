@@ -127,14 +127,12 @@ class DateUtils {
    */
   static DateFormat getDateFormat(Locale locale = null) {
     def dateFormatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.MEDIUM, GlobalUtils.getRequestLocale(locale))
-/* JQWidgets work-around
     if (dateFormatter instanceof SimpleDateFormat) {
       // Work around a jqWidgets bug with 2 year dates and keyboard input.
       def s = dateFormatter.toPattern()
       s = (s =~ /yy/).replaceAll("yyyy")
       dateFormatter = new SimpleDateFormat(s, GlobalUtils.getRequestLocale(locale))
     }
-*/
     return dateFormatter
   }
 
@@ -145,13 +143,11 @@ class DateUtils {
    */
   static DateFormat getDateOnlyFormat(Locale locale = null) {
     def dateFormatter = DateFormat.getDateInstance(DateFormat.SHORT, GlobalUtils.getRequestLocale(locale))
-/*  JQWidgets work-around
     if (dateFormatter instanceof SimpleDateFormat) {
       def s = dateFormatter.toPattern()
       s = (s =~ /yy/).replaceAll("yyyy")
       dateFormatter = new SimpleDateFormat(s, GlobalUtils.getRequestLocale(locale))
     }
-*/
     dateFormatter.setTimeZone(TIMEZONE_UTC)
     return dateFormatter
   }

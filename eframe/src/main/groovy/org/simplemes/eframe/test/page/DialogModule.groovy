@@ -43,9 +43,8 @@ class DialogModule extends Module {
   def index = 0
 
   static content = {
-    view { $('div', view_id: "dialog${index}") }
+    view { $('div.p-dialog', index) }
 
-    exists(required: false) { $('div.webix_window', view_id: "dialog${index}").text() != null }
     okButton { $('div.webix_el_button', view_id: "dialog${index}-ok").find('button') }
     cancelButton { $('div.webix_el_button', view_id: "dialog${index}-cancel").find('button') }
 
@@ -60,6 +59,15 @@ class DialogModule extends Module {
     templateContent { $('div.webix_window', view_id: "dialog${index}").find('div.webix_template') }
 
     body { $('div.webix_win_body', view_id: "dialog${index}") }
+  }
+
+
+  /**
+   * Returns true if the dialog is visible.
+   * @return True if visible.
+   */
+  boolean getExists() {
+    return view.text() != null
   }
 
 }

@@ -22,7 +22,7 @@ Should be used inside the div: 'div class="p-fluid p-formgrid p-grid"'
     <div class="p-field p-grid" v-else-if="field.fieldFormat===$page().domainService.fieldFormats.BOOLEAN">
       <label :for="field.fieldName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">{{ $t(field.fieldLabel) }}</label>
       <div class="p-col-12 p-md-2">
-        <Checkbox v-bind:id="field.fieldName" v-model="checkbox0" :binary="true"/>
+        <Checkbox :id="field.fieldName" v-model="value" :binary="true"/>
       </div>
     </div>
     <div class="p-field p-grid" v-else-if="field.fieldFormat===$page().domainService.fieldFormats.ENUM">
@@ -34,14 +34,36 @@ Should be used inside the div: 'div class="p-fluid p-formgrid p-grid"'
         </Dropdown>
       </div>
     </div>
-    <div class="p-field " v-else-if="field.fieldFormat===$page().domainService.fieldFormats.INT">
-      <InputNumber :id="field.fieldName" v-model="value" locale="en-US" mode="decimal" style="width:14em"
-                   :minFractionDigits="0" :maxFractionDigits="0"
-                   showButtons buttonLayout="horizontal"
-                   decrementButtonClass="p-button-danger" decrementButtonIcon="pi pi-minus"
-                   incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus"
-                   :step="1.0" :placeholder="field.fieldLabel"
-      />
+    <div class="p-field p-grid" v-else-if="field.fieldFormat===$page().domainService.fieldFormats.INT">
+      <label :for="field.fieldName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"><span
+          v-if="field.required">*</span>{{ $t(field.fieldLabel) }}</label>
+      <div class="p-col-12 p-md-2">
+        <InputNumber :id="field.fieldName" v-model="value" locale="en-US" mode="decimal" style="width:14em"
+                     :minFractionDigits="0" :maxFractionDigits="0"
+                     showButtons
+                     decrementButtonClass="p-button-danger" decrementButtonIcon="pi pi-minus"
+                     incrementButtonClass="p-button-success" incrementButtonIcon="pi pi-plus"
+                     :step="1.0"
+        />
+      </div>
+    </div>
+    <div class="p-field p-grid" v-else-if="field.fieldFormat===$page().domainService.fieldFormats.DATE_TIME">
+      <label :for="field.fieldName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"><span
+          v-if="field.required">*</span>{{ $t(field.fieldLabel) }}</label>
+      <div class="p-col-12 p-md-2">
+        <Calendar :id="field.fieldName" v-model="value" :showIcon="true" hourFormat="12" style="width:14em"
+                  :showTime="true" :showOnFocus="false" :hideOnDateTimeSelect="true"
+        />
+      </div>
+    </div>
+    <div class="p-field p-grid" v-else-if="field.fieldFormat===$page().domainService.fieldFormats.DATE">
+      <label :for="field.fieldName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0"><span
+          v-if="field.required">*</span>{{ $t(field.fieldLabel) }}</label>
+      <div class="p-col-12 p-md-2">
+        <Calendar :id="field.fieldName" v-model="value" :showIcon="true"
+                  :showTime="false" :showOnFocus="false"
+        />
+      </div>
     </div>
     <div class="p-field p-grid" v-else>
       <label :for="field.fieldName" class="p-col-12 p-mb-2 p-md-2 p-mb-md-0">{{ $t(field.fieldLabel) }}</label>
@@ -58,6 +80,7 @@ import InputText from 'primevue/inputtext';
 import InputNumber from 'primevue/inputnumber';
 import Checkbox from 'primevue/checkbox';
 import Dropdown from 'primevue/dropdown';
+import Calendar from 'primevue/calendar';
 
 import InlineGrid from './InlineGrid';
 
@@ -89,7 +112,7 @@ export default {
   },
   props: ['field'],
   components: {
-    InputText, InputNumber, Checkbox, InlineGrid, Dropdown
+    InputText, InputNumber, Checkbox, InlineGrid, Dropdown, Calendar
   },
   computed: {
     value: {

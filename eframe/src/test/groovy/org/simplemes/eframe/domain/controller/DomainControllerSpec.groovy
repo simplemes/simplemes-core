@@ -210,6 +210,7 @@ class DomainControllerSpec extends BaseAPISpecification {
     then: 'the field values are valid'
     map.fieldName == fieldName
     map.fieldFormat == format
+    !map.required
 
     where:
     fieldName            | format
@@ -275,6 +276,26 @@ class DomainControllerSpec extends BaseAPISpecification {
 
     map.validValues.find { it.value == 'ABC001' }
     map.validValues.find { it.value == 'ABC010' }
+  }
+
+  def "verify that buildFieldElement detects required key field"() {
+    when: 'the build method is called'
+    def fieldDef = DomainUtils.instance.getFieldDefinitions(User)['userName']
+    def map = new DomainController().buildFieldElement(fieldDef, User)
+    //println "map = ${TextUtils.prettyFormat(map)}"
+
+    then: 'the field is marked as required'
+    map.required
+  }
+
+  def "verify that buildFieldElement detects required field"() {
+    when: 'the build method is called'
+    def fieldDef = DomainUtils.instance.getFieldDefinitions(User)['password']
+    def map = new DomainController().buildFieldElement(fieldDef, User)
+    //println "map = ${TextUtils.prettyFormat(map)}"
+
+    then: 'the field is marked as required'
+    map.required
   }
 
   // configurable type

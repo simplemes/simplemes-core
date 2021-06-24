@@ -112,6 +112,7 @@ class DomainController extends BaseController {
     res.fieldLabel = fieldDef.label
     res.fieldFormat = fieldDef.format.clientFormatType
     res.maxLength = fieldDef.maxLength
+    res.required = fieldDef.required
     def defaultValue = buildDefault(fieldDef, domainClass)
     if (defaultValue) {
       res.defaultValue = defaultValue

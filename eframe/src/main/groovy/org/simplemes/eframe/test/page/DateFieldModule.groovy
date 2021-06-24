@@ -36,9 +36,8 @@ class DateFieldModule extends Module {
   String field
 
   static content = {
-    label { $('div.webix_el_label', view_id: "${field}Label").text() }
-    input { $('div.webix_el_datepicker', view_id: "${field}").find('input') }
-    invalid { $('div.webix_el_datepicker', view_id: "${field}").classes().contains('webix_invalid') }
+    label { $('label', for: field).text() }
+    input { $("input#${field}") }
   }
 
 }

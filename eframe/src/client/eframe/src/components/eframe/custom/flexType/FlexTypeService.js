@@ -13,7 +13,7 @@ export default {
   delete(object, successFunction, errorFunction) {
     return ServiceUtils.delete('/flexType', object, successFunction, errorFunction)
   },
-  save(object, successFunction, errorFunction) {
-    return ServiceUtils.save('/flexType', object, successFunction, errorFunction)
+  save(object, fields, successFunction, errorFunction) {
+    return ServiceUtils.save('/flexType', object, fields, successFunction, errorFunction)
   },
 }

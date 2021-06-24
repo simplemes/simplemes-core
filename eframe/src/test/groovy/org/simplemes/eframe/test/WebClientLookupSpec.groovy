@@ -64,4 +64,16 @@ class WebClientLookupSpec extends BaseSpecification {
     Locale.US      | 'Title'
     Locale.GERMANY | 'Titel'
   }
+
+  def "verify that the addLocaleFolder works"() {
+    when: 'the locale is added'
+    WebClientLookup.addLocaleFolder("src/client/sample/src/locales")
+
+    then: 'the lookup finds the value from the added folder'
+    WebClientLookup.lookup('label.name', Locale.US) == 'Name'
+
+    and: 'the default locale lookups still work'
+    WebClientLookup.lookup('label.title', Locale.US) == 'Title'
+
+  }
 }

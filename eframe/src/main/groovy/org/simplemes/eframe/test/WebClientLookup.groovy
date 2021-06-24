@@ -21,9 +21,19 @@ class WebClientLookup {
    */
   static boolean loadedJSFiles = false
 
-  static Map<String, WebClientLookup> cache = [:]
+  /**
+   * The cached lookups.  Contains one entry for each language.  Each entry is a list of lookups.
+   */
+  static Map<String, List<WebClientLookup>> cache = [:]
 
   static String fallbackLanguage = 'en'
+
+  /**
+   * The list of default folders to check for locales.
+   * Use addLocaleFolder() to add client-specific locales.
+   */
+  static List<String> localeFolders = ["src/client/eframe/src/eframe-lib/locales"]
+
 
   /**
    * The map for this .js file.
@@ -131,10 +141,14 @@ class WebClientLookup {
     if (loadedJSFiles) {
       return
     }
-    File folder = new File("src/client/eframe/src/eframe-lib/locales")
-    for (file in folder.listFiles()) {
-      def locale = determineLocale(file.path)
-      cache[locale.language] = new WebClientLookup(file.path)
+    for (s in localeFolders) {
+      for (file in new File(s).listFiles()) {
+        def locale = determineLocale(file.path)
+        if (cache[locale.language] == null) {
+          cache[locale.language] = []
+        }
+        cache[locale.language] << new WebClientLookup(file.path)
+      }
     }
     loadedJSFiles = true
   }
@@ -151,6 +165,7 @@ class WebClientLookup {
    * @param args The replaceable arguments used by the message (if any).
    * @return The looked up message.
    */
+  @SuppressWarnings('unused')
   static String lookup(String key, Locale locale = null, Object... args) {
     loadLocales()
     if (locale == null && GlobalUtils.defaultLocale) {
@@ -162,11 +177,22 @@ class WebClientLookup {
       prefix = '*'
     }
     String lang = locale?.language ?: Locale.default.language
-    def lookup = cache[lang]
-    def fallbackLookup = cache[fallbackLanguage]
-    String value = lookup?.findString(key) ?: fallbackLookup?.findString(key) ?: "${key}.not.found"
+    for (lookup in cache[lang]) {
+      String value = lookup?.findString(key)
+      if (value) {
+        return prefix + value
+      }
+    }
 
-    return prefix + value
+    // Now, try the fallback language
+    for (lookup in cache[fallbackLanguage]) {
+      String value = lookup?.findString(key)
+      if (value) {
+        return prefix + value
+      }
+    }
+
+    return "${key}.not.found"
   }
 
   /**
@@ -185,5 +211,16 @@ class WebClientLookup {
     return locale
   }
 
+  /**
+   * Adds the locale folder to the web client lookup.  Use this when the lookups needed are not in the
+   * the default list (e.g. not in "src/client/eframe/src/eframe-lib/locales").
+   * @param folder The folder to add.
+   */
+  static addLocaleFolder(String folder) {
+    if (!localeFolders.contains(folder)) {
+      loadedJSFiles = false
+      localeFolders << folder
+    }
+  }
 
 }

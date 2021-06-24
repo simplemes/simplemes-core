@@ -1,8 +1,5 @@
-/*
- * Copyright (c) Michael Houston 2020. All rights reserved.
- */
+package org.simplemes.eframe.client.web
 
-package org.simplemes.eframe.web.ui.webix.freemarker
 
 import org.simplemes.eframe.custom.domain.FieldExtension
 import org.simplemes.eframe.custom.domain.FieldGUIExtension
@@ -13,52 +10,88 @@ import org.simplemes.eframe.date.DateUtils
 import org.simplemes.eframe.misc.NumberUtils
 import org.simplemes.eframe.test.BaseGUISpecification
 import org.simplemes.eframe.test.UnitTestUtils
+import org.simplemes.eframe.test.WebClientLookup
 import sample.domain.AllFieldsDomain
-import sample.page.AllFieldsDomainCreatePage
-import sample.page.AllFieldsDomainListPage
-import sample.page.AllFieldsDomainShowPage
+import sample.page.AllFieldsDomainCrudPage
 import spock.lang.IgnoreIf
 
+/*
+ * Copyright Michael Houston. All rights reserved.
+ * Original Author: mph
+ *
+*/
+
 /**
- * Tests.
+ * Tests the base CRUDTable component for Create tests.  Uses real production pages for the tests.
  */
 @IgnoreIf({ !sys['geb.env'] })
-class CreateMarkerGUISpec extends BaseGUISpecification {
+class CrudTableCreateGUISpec extends BaseGUISpecification {
+
   @SuppressWarnings("unused")
   static dirtyDomains = [AllFieldsDomain, FieldExtension, FieldGUIExtension]
 
-  def "verify that basic create works"() {
-    when: 'the create page is displayed'
+  def setup() {
+    WebClientLookup.addLocaleFolder("src/client/sample/src/locales")
+  }
+
+  /**
+   * Opens the Create/Add dialog, optionally makes sure the main panel is displayed.
+   */
+  def openCreateDialog(boolean showMainPanel = true) {
     login()
-    to AllFieldsDomainCreatePage
+    to AllFieldsDomainCrudPage
 
-    then: 'the key field has focus and can accept input'
+    crudList.addRecordButton.click()
+    waitFor { dialog0.exists }
+    if (showMainPanel) {
+      mainPanel.click() // Make sure the main panel is displayed
+    }
+  }
+
+  def "verify that basic create works"() {
+    when: 'the create dialog is displayed'
+    openCreateDialog(false)
+
+    and: 'a value is entered in the key field'
     sendKey('ABC')
-    mainPanel.click() // Make sure the main panel is displayed
 
-    and: 'the key field is correct'
-    name.label == lookupRequired('name.label')
+    then: 'the key field is correct'
     name.input.value() == 'ABC'
+    name.label == lookupRequired('label.name')
 
     when: 'the data field is set and the record saved in the db'
+    mainPanel.click() // Make sure the main panel is displayed
     titleField.label == lookup('title.label')
     titleField.input.value('abc')
-    createButton.click()
+    saveButton.click()
+
+    then: 'the correct message is displayed'
+    waitFor {
+      messages
+    }
+
+    then: 'the correct message is shown'
+    messages.text().contains('ABC')
+
+    and: 'the message is displayed with the right class'
+    messages.isSuccess()
+
+    then: 'the record in the database is correct and the correct show page is displayed'
     waitFor {
       nonZeroRecordCount(AllFieldsDomain)
     }
-
-    then: 'the record in the database is correct and the correct show page is displayed'
     AllFieldsDomain.withTransaction {
       def record = AllFieldsDomain.findByName('ABC')
       assert record.name == 'ABC'
       assert record.title == 'abc'
-      assert driver.currentUrl.endsWith("/allFieldsDomain/show/${record.uuid}")
       true
     }
 
-    and: 'the show page is displayed for the record'
-    at AllFieldsDomainShowPage
+    and: 'the crud list is updated to display the record'
+    waitFor {
+      crudList.cell(0, 0).text() == 'ABC'
+    }
+    crudList.cell(0, 1).text() == 'abc'
   }
 
   def "verify that basic create works with the supported field type"() {
@@ -66,15 +99,15 @@ class CreateMarkerGUISpec extends BaseGUISpecification {
     def dueDateValue = new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS)
     def dateTimeValue = new Date(UnitTestUtils.SAMPLE_TIME_NO_FRACTION_MS)
 
-    when: 'the create page is displayed'
-    login()
-    to AllFieldsDomainCreatePage
-    mainPanel.click() // Make sure the main panel is displayed
+    when: 'the create dialog is displayed'
+    openCreateDialog()
 
     then: 'the field labels are correct'
-    qty.label == lookup('qty.label')
-    count.label == lookup('count.label')
-    enabled.label == lookup('enabled.label')
+    qty.label == lookup('label.qty')
+    count.label == lookup('label.count')
+    enabled.label == lookup('label.enabled')
+    dueDate.label == lookup('label.dueDate')
+    dateTime.label == lookup('label.dateTime')
 
     when: 'the fields are filled in'
     name.input.value('ABC')
@@ -83,10 +116,10 @@ class CreateMarkerGUISpec extends BaseGUISpecification {
     count.input.value('437')
     dueDate.input.value(DateUtils.formatDate(dueDateValue, currentLocale))
     dateTime.input.value(DateUtils.formatDate(dateTimeValue, currentLocale))
-    enabled.input.click()
+    enabled.click()
 
     and: 'the data field is set and the record saved in the db'
-    createBottomButton.click()
+    saveButton.click()
     waitFor {
       nonZeroRecordCount(AllFieldsDomain)
     }
@@ -101,28 +134,20 @@ class CreateMarkerGUISpec extends BaseGUISpecification {
       assert record.enabled
       assert record.dueDate == dueDateValue
       assert record.dateTime == dateTimeValue
-
-      assert driver.currentUrl.endsWith("/allFieldsDomain/show/${record.uuid}")
       true
     }
-
-    and: 'the show page is displayed for the record'
-    at AllFieldsDomainShowPage
   }
 
-  @SuppressWarnings("GroovyAssignabilityCheck")
   def "verify that save validation errors are handled correctly"() {
-    when: 'the create page is displayed'
-    login()
-    to AllFieldsDomainCreatePage
-    mainPanel.click() // Make sure the main panel is displayed
+    when: 'the create dialog is displayed'
+    openCreateDialog()
 
     then: 'the key field has focus and can accept input'
     name.input.value('ABC')
 
     when: 'the data field is set and the record saved in the db'
     count.input.value('-237')
-    createButton.click()
+    saveButton.click()
     waitFor {
       messages
     }
@@ -132,40 +157,6 @@ class CreateMarkerGUISpec extends BaseGUISpecification {
 
     and: 'the message is displayed with the right class'
     messages.isError()
-
-    and: 'the bad field has the focus'
-    sendKey('888')
-    count.input.value().contains('888')
-
-    and: 'the field is highlighted as an error'
-    count.invalid == true
-  }
-
-  def "verify that tab selection is retained when page is re-displayed"() {
-    when: 'the page is displayed'
-    login()
-    to AllFieldsDomainCreatePage
-
-    and: 'the details panel is displayed'
-    detailsPanel.click()
-
-    and: 'the page is redisplayed'
-    to AllFieldsDomainCreatePage
-
-    then: 'the details tab fields are visible'
-    transientField.label == lookup('transientField.label')
-  }
-
-  def "verify that list toolbar button works"() {
-    when: 'the page is displayed'
-    login()
-    to AllFieldsDomainCreatePage
-
-    and: 'the list toolbar button is clicked'
-    listButtonOnCreate.click()
-
-    then: 'the list page is shown'
-    at AllFieldsDomainListPage
   }
 
   def "verify that basic page display works - custom field added"() {
@@ -178,10 +169,8 @@ class CreateMarkerGUISpec extends BaseGUISpecification {
       fg.save()
     }
 
-    when: 'the page is displayed'
-    login()
-    to AllFieldsDomainCreatePage
-    mainPanel.click() // Make sure the main panel is displayed
+    when: 'the create dialog is displayed'
+    openCreateDialog()
 
     then: 'the page has the custom field'
     getFieldLabel('custom1') == 'custom1'
@@ -189,7 +178,7 @@ class CreateMarkerGUISpec extends BaseGUISpecification {
 
     when: 'the record is saved'
     name.input.value('ABC')
-    createButton.click()
+    saveButton.click()
     waitFor {
       nonZeroRecordCount(AllFieldsDomain)
     }
@@ -201,14 +190,10 @@ class CreateMarkerGUISpec extends BaseGUISpecification {
       true
     }
 
-    and: 'the show page is displayed for the record'
-    at AllFieldsDomainShowPage
+    and: 'the crud list is updated to display the record'
+    waitFor {
+      crudList.cell(0, 0).text() == 'ABC'
+    }
   }
-
-
-  // GUI Tests
-  // CRUDGUITester Test all fields tabbed/non-tabbed
-  // test enum and simple link, link list, child list fields on save
-
 
 }

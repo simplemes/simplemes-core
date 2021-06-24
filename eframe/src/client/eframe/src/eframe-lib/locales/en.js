@@ -12,11 +12,13 @@ export default {
   getMessages() {
     return {
       label: {
+        add: 'Add',
         bigDecimalFieldFormat: 'Number',
         booleanFieldFormat: 'Boolean',
         cancel: 'Cancel',
         category: 'Category',
         childListFieldFormat: 'Child List',
+        count: 'Count',
         customChildListFieldFormat: 'Custom Child List',
         dateFieldFormat: 'Date/Time',
         dateOnlyFieldFormat: 'Date',
@@ -26,7 +28,7 @@ export default {
         details: 'Details',
         disabledStatus: 'disabledStatus',
         domainReferenceFieldFormat: 'Domain Reference',
-        enabled: 'enabled',
+        enabled: 'Enabled',
         enabledStatus: 'enabledStatus',
         encodedTypeFieldFormat: 'Encoded Type',
         enumFieldFormat: 'Enumeration',
@@ -82,6 +84,7 @@ export default {
         saved: 'Saved',
       },
       tooltip: {
+        addCrud: 'Add New Record',
         addRow: 'Add Row',
         removeRow: 'Remove Row',
       },

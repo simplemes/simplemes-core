@@ -11,6 +11,12 @@
   text-align: center;
 }
 
+.toast-class {
+  z-index: 99999;
+  color: #2c3e50;
+}
+
+
 body #app {
   margin-left: .2em;
 }

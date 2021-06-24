@@ -30,7 +30,7 @@ module.exports = function (component, domainService) {
     }
     if (error.response && error.response.data) {
       console.log(error.response.data);
-      s += "\n" + error.response.data.message.text
+      s = error.response.data.message.text
     }
 
     topComponent.$toast.add({severity: 'error', summary: topComponent.$t('title.error'), detail: s, life: 9000})

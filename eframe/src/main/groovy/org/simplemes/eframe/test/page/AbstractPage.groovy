@@ -47,9 +47,9 @@ class AbstractPage extends Page {
     //$('a.webix_list_item', webix_l_id: "showMoreMenu")
     menu { id -> $('a.webix_list_item', webix_l_id: id) }
 
-    dialog0 { module(new DialogModule(index: '0')) }
-    dialog1 { module(new DialogModule(index: '1')) }
-    dialog2 { module(new DialogModule(index: '2')) }
+    dialog0 { module(new DialogModule(index: 0)) }
+    dialog1 { module(new DialogModule(index: 1)) }
+    dialog2 { module(new DialogModule(index: 2)) }
     dialog0Messages { $("div#dialog0Messages") }
     dialog1Messages { $("div#dialog1Messages") }
     dialog2Messages { $("div#dialog2Messages") }
