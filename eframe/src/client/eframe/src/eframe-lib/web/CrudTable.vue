@@ -29,10 +29,10 @@
                       :sortable="col.sort"></Column>
               <Column :exportable="false">
                 <template #body="slotProps">
-                  <Button icon="pi pi-pencil" class="p-button-rounded p-button-outlined p-mr-2"
+                  <Button icon="pi pi-pencil" class="p-button-rounded p-button-outlined p-mr-2" id="EditRow"
                           @click="editRecord(slotProps.data)"/>
                   <Button icon="pi pi-ellipsis-h" class="p-button-rounded p-button-outlined p-button-success "
-                          @click="optionsMenu(slotProps.data,$event)" aria-haspopup="true"
+                          @click="optionsMenu(slotProps.data,$event)" aria-haspopup="true" id="RowMenuButton"
                           aria-controls="overlay_menu"/>
                 </template>
               </Column>
@@ -97,7 +97,7 @@ export default {
       confirmDeleteDialogVisible: false,
       rowMenuRecord: {},  // The record for the row menu.
       rowMenuVisible: false,
-      rowMenuItems: [         // TODO: Support added menu acrions. Using a computed method to combine.
+      rowMenuItems: [         // TODO: Support added menu actions. Using a computed method to combine.
         {
           label: this.$t('label.delete'),
           icon: 'pi pi-times',

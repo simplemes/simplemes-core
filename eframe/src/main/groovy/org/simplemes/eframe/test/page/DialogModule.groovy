@@ -45,8 +45,9 @@ class DialogModule extends Module {
   static content = {
     view { $('div.p-dialog', index) }
 
-    okButton { $('div.webix_el_button', view_id: "dialog${index}-ok").find('button') }
-    cancelButton { $('div.webix_el_button', view_id: "dialog${index}-cancel").find('button') }
+    okButton { view.find('span.pi-check') }
+    //okButton { $('div.webix_el_button', view_id: "dialog${index}-ok").find('button') }
+    cancelButton { view.find('span.pi-times') }
 
     title {
       $('div.webix_window', view_id: "dialog${index}").find('div.webix_win_head').find('div.webix_el_label').text()

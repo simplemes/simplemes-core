@@ -94,6 +94,31 @@ class CrudTableCreateGUISpec extends BaseGUISpecification {
     crudList.cell(0, 1).text() == 'abc'
   }
 
+  def "verify that create with tabbed panels works"() {
+    when: 'the create dialog is displayed'
+    openCreateDialog(false)
+
+    and: 'the key field is correct'
+    name.input.value('ABC')
+
+    and: 'the data field is set and the record saved in the db'
+    detailsPanel.click() // Make sure the details panel is displayed
+    notes.label == lookup('label.title')
+    notes.input.value('xyz')
+    saveButton.click()
+
+    then: 'the record in the database is correct and the correct show page is displayed'
+    waitFor {
+      nonZeroRecordCount(AllFieldsDomain)
+    }
+    AllFieldsDomain.withTransaction {
+      def record = AllFieldsDomain.findByName('ABC')
+      assert record.name == 'ABC'
+      assert record.notes == 'xyz'
+      true
+    }
+  }
+
   def "verify that basic create works with the supported field type"() {
     given: 'some values for the record'
     def dueDateValue = new DateOnly(UnitTestUtils.SAMPLE_DATE_ONLY_MS)

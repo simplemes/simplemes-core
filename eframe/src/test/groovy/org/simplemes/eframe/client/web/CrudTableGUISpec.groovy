@@ -6,6 +6,7 @@ import org.simplemes.eframe.custom.domain.FlexType
 import org.simplemes.eframe.custom.domain.page.FlexTypeCrudPage
 import org.simplemes.eframe.test.BaseGUISpecification
 import org.simplemes.eframe.test.DataGenerator
+import org.simplemes.eframe.test.WebClientLookup
 import spock.lang.IgnoreIf
 
 /*
@@ -23,6 +24,9 @@ class CrudTableGUISpec extends BaseGUISpecification {
   @SuppressWarnings("unused")
   static dirtyDomains = [FlexType]
 
+  def setup() {
+    WebClientLookup.addLocaleFolder("src/client/eframe/src/locales")
+  }
 
   def "verify that the crud list is correct"() {
     given: 'some domain records'
@@ -128,12 +132,52 @@ class CrudTableGUISpec extends BaseGUISpecification {
     crudList.cell(0, 2).text() == flexType.title
   }
 
+  def "verify that delete action works"() {
+    given: 'a domain record'
+    DataGenerator.generate {
+      domain FlexType
+      values flexType: 'XYZ$r', title: '<script>abc</script>-$r', fields: [new FlexField(sequence: 1, fieldName: 'F1_$i', fieldLabel: 'f1-$i')]
+    }
 
-  // TODO: Add rest of tests
+    when: 'the list page is displayed'
+    login()
+    to FlexTypeCrudPage
+
+    and: 'the row menu button is triggered'
+    crudList.rowMenuButton(0).click()
+
+    and: 'the delete action is triggered'
+    waitFor {
+      crudList.deleteRowButton.displayed
+    }
+
+    and: 'the delete is confirmed'
+    crudList.deleteRowButton.click()
+
+    and: 'the delete confirmed'
+    waitFor {
+      dialog0.exists
+    }
+    dialog0.okButton.click()
+
+    then: 'the deleted message is displayed'
+    waitFor {
+      messages
+    }
+    messages.text().contains('XYZ001')
+
+
+    and: 'the record is deleted in the DB'
+    waitFor {
+      return FlexType.list().size() == 0
+    }
+
+    and: 'the display is updated'
+    !crudList.cell(0, 0).text().contains('XYZ001')
+  }
+
+
   /*
-    Create button works
-    Edit button works.
-    Delete action works.
     More actions works.
     Add to FlexTypeGUISpec:
       Verify that column label localizations.

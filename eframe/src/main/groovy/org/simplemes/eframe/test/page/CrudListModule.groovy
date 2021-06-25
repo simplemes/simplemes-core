@@ -54,6 +54,9 @@ class CrudListModule extends Module {
     rows { $("div.p-datatable", 'data-testid': testID).find('tbody').find('tr') }
     cell { row, col -> $("div.p-datatable", 'data-testid': testID).find('tr', row + 1).find('td', col) }
     pagerButtons { $("div.p-datatable", 'data-testid': testID).find('button.p-paginator-page') }
+    editRowButton { row -> $("button#EditRow", row) }
+    rowMenuButton { row -> $("button#RowMenuButton", row) }
+    deleteRowButton(required: false) { $("div.p-menu").find('span.pi-times') }
 
     searchField { $("div.p-datatable", 'data-testid': testID).find('input') }
   }
