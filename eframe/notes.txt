@@ -13,14 +13,14 @@ GUI - Vue Conversion
       Docs for basic CRUD UI.
       CRUDGUITester updates.
     ☑ Localization/preferences.
+    Implement Dashboard?  Where?  MES and child projects?
     Theme - Dynamic   See https://forum.primefaces.org/viewtopic.php?f=110&t=65497&p=188847&hilit=theme#p188847
     Define Component in eframe and use in mes-core.
     ☑ Security - /flexType/index controller method enforces initial permissions/re-direct for login.
     Samples.
     Gradle tasks: build client files. make client library.
     Remove old tests, pages, markers, widgets, .js files and adocs.
-      All Show/Edit/List pages
-      ☑ Create
+    ☑ Create/Edit/List GUI Tests
     Remove webix module/docs.
     Review BaseGUISpec for webix logic.
 	Look at global package install for DomainService, PageHolder?: https://forum.vuejs.org/t/best-way-to-instantiate-a-global-library-in-vue/115085/2 for
